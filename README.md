@@ -24,7 +24,6 @@ the system:
   [for Linux / MacOS](http://www.boost.org/doc/libs/release/more/getting_started/unix-variants.html),
   [for Microsoft Windows](http://www.boost.org/doc/libs/release/more/getting_started/windows.html)
   </small>
-* [FFTW](http://fftw.org/) 3.3.4 or later
 * [NTL](http://shoup.net/ntl/) 6.2.1 or later *(optional)*
 * [Git](http://git-scm.com/) *(optional for downloading the source code)*
 * [Doxygen](http://www.stack.nl/~dimitri/doxygen/) *(optional for generating
@@ -36,7 +35,6 @@ software](http://www.macports.org/install.php), then by installing the
 following packages:
 [python27](https://trac.macports.org/browser/trunk/dports/lang/python27/Portfile),
 [boost](https://trac.macports.org/browser/trunk/dports/devel/boost/Portfile),
-[fftw-3](https://trac.macports.org/browser/trunk/dports/math/fftw-3/Portfile),
 [git](https://trac.macports.org/browser/trunk/dports/devel/git/Portfile) and
 [doxygen](https://trac.macports.org/browser/trunk/dports/textproc/doxygen/Portfile).
 
@@ -87,8 +85,8 @@ to see the various commands and options.
 The most relevant options include `--out` to specify the directory in which the
 files created during the build process will be placed, `--prefix` to specify
 the directory under which you wish to install the LatCommon software
-**once it is compiled**, and `--boost` and `--fftw` to specify the directories
-under which Boost and FFTW were installed, if not under standard system
+**once it is compiled**, and `--boost` and `--ntl` to specify the directories
+under which Boost and NTL were installed, if not under standard system
 directories.  First, the project must be configured with:
 
 	./waf configure --prefix $HOME/latsoft
@@ -99,15 +97,15 @@ Here, `$HOME` will expand to your own home directory; you can specify any other
 directory to which you have permissions for write access, e.g., with `--prefix
 /tmp/latsoft`.
 
-If Boost and FFTW are not part of the standard system installation and were
-manually installed under, say, the `/opt/boost` and `/opt/fftw` directories —
-which means that `/opt/boost` and `/opt/fftw` both contain subdirectories named
+If Boost and NTL are not part of the standard system installation and were
+manually installed under, say, the `/opt/boost` and `/opt/ntl` directories —
+which means that `/opt/boost` and `/opt/ntl` both contain subdirectories named
 `include` and `lib` — the following command indicates `waf` where to find these
 two libraries:
 
-	./waf configure --prefix $HOME/latsoft --boost /opt/boost --fftw /opt/fftw configure --link-static
+	./waf configure --prefix $HOME/latsoft --boost /opt/boost --ntl /opt/ntl configure --link-static
 
-The `--link-static` option suggested above will cause the Boost and FFTW
+The `--link-static` option suggested above will cause the Boost and NTL
 libraries to be linked statically to the executable program, which may be
 desirable especially if these are not installed in standard locations.
 
@@ -127,7 +125,7 @@ appending the following options to `waf configure`:
   programs, under the `examples/tutorial/output` subdirectory.
 
 Errors will be reported if required software components cannot be found.  In
-that case, you should check the Boost and FFTW installation paths.
+that case, you should check the Boost and NTL installation paths.
 
 ### Building and Installing
 

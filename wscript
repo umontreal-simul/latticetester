@@ -19,9 +19,8 @@ NUMTYPES = {'LLDD': 1, 'ZZDD': 2, 'ZZRR': 3}
 
 def options(ctx):
     ctx.load('compiler_c compiler_cxx gnu_dirs waf_unit_test')
-    ctx.add_option('--link-static', action='store_true', help='statically link with Boost, FFTW and NTL')
+    ctx.add_option('--link-static', action='store_true', help='statically link with Boost and NTL')
     ctx.add_option('--boost', action='store', help='prefix under which Boost is installed')
-    ctx.add_option('--fftw',  action='store', help='prefix under which FFTW is installed')
     ctx.add_option('--ntl',  action='store', help='prefix under which NTL is installed')
     ctx.add_option('--ntltypes', action='store', help='set NTL integer/real types: {}'.format(', '.join(NUMTYPES)))
 
@@ -68,16 +67,10 @@ def configure(ctx):
     # options
     if ctx.options.boost:
         deps.add_deps_path(ctx, 'Boost', ctx.options.boost)
-    if ctx.options.fftw:
-        deps.add_deps_path(ctx, 'FFTW', ctx.options.fftw)
     if ctx.options.ntl:
         deps.add_deps_path(ctx, 'NTL', ctx.options.ntl)
 
     ctx_check = deps.shared_or_static(ctx, ctx.check)
-
-    # FFTW
-    ctx_check(features='cxx cxxprogram', header_name='fftw3.h')
-    ctx_check(features='cxx cxxprogram', lib='fftw3', uselib_store='FFTW')
 
     if ctx.options.ntltypes:
         # NTL

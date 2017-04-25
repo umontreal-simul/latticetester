@@ -24,7 +24,6 @@ int main(int argc, const char * argv[]) {
     Base base_test(2,7);
 //    for(NormType k = SUPNORM; k <=  ZAREMBANORM; k++){
 //        cout << k << endl;
-    //gg
 //    }
 
     enum NormType { SUPNORM = 1, L1NORM = 3, L2NORM = 3, ZAREMBANORM = 4 };

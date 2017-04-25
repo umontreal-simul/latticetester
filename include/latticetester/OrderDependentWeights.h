@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,17 +15,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATCOMMON__ORDER_DEPENDENT_WEIGHTS_H
-#define LATCOMMON__ORDER_DEPENDENT_WEIGHTS_H
+#ifndef LATTICETESTER__ORDER_DEPENDENT_WEIGHTS_H
+#define LATTICETESTER__ORDER_DEPENDENT_WEIGHTS_H
 
-#include "latcommon/Weights.h"
+#include "latticetester/Weights.h"
 #include <vector>
 #ifdef WITH_XML
 #include <pugixml.hpp>
 #endif
 
 
-namespace LatCommon {
+namespace LatticeTester {
 /**
  * Order-dependent weights.
  *
@@ -52,7 +52,7 @@ public:
     * Destructor.
     */
    virtual ~OrderDependentWeights()
-   { } 
+   { }
 
    /**
     * Returns the weight of the projection specified by \c projection.
@@ -63,7 +63,7 @@ public:
     * Returns the weight associated to the given order.
     */
    virtual Weight getWeightForOrder (Coordinates::size_type order) const
-   { return order < m_weights.size() ? m_weights[order] : m_defaultWeight; } 
+   { return order < m_weights.size() ? m_weights[order] : m_defaultWeight; }
 
    /**
     * Sets the weight for the order specified by \c order.
@@ -74,7 +74,7 @@ public:
     * Sets the default weight of all orders for which a weight
     * has not been set explicitly set using #setWeightForOrder().
     */
-   virtual void setDefaultWeight (Weight weight) 
+   virtual void setDefaultWeight (Weight weight)
    { m_defaultWeight = weight; }
 
 #ifdef WITH_XML
@@ -86,7 +86,7 @@ public:
 #endif
 
 protected:
-   /// \copydoc LatCommon::Weights::format()
+   /// \copydoc LatticeTester::Weights::format()
    virtual void format(std::ostream& os) const;
 };
 

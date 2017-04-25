@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,18 +15,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATCOMMON__INTLATTICE_H
-#define LATCOMMON__INTLATTICE_H
-#include "latcommon/Types.h"
-#include "latcommon/Const.h"
-#include "latcommon/Base.h"
-#include "latcommon/Normalizer.h"
-#include "latcommon/CoordinateSets.h"
-#include "latcommon/Lacunary.h"
+#ifndef LATTICETESTER__INTLATTICE_H
+#define LATTICETESTER__INTLATTICE_H
+#include "latticetester/Types.h"
+#include "latticetester/Const.h"
+#include "latticetester/Base.h"
+#include "latticetester/Normalizer.h"
+#include "latticetester/CoordinateSets.h"
+#include "latticetester/Lacunary.h"
 #include <string>
 
 
-namespace LatCommon {
+namespace LatticeTester {
 
 /**
  * This class offers tools to manipulate lattice bases. Each lattice is

@@ -8,17 +8,17 @@
 
 
 #include <iostream>
-#include "latcommon/Util.h"
-#include "latcommon/Base.h"
-#include "latcommon/Const.h"
-#include "latcommon/Types.h"
-#include "latcommon/IntFactor.h"
-#include "latcommon/IntLattice.h"
-#include "latcommon/Rank1Lattice.h"
+#include "latticetester/Util.h"
+#include "latticetester/Base.h"
+#include "latticetester/Const.h"
+#include "latticetester/Types.h"
+#include "latticetester/IntFactor.h"
+#include "latticetester/IntLattice.h"
+#include "latticetester/Rank1Lattice.h"
 
 
 using namespace std;
-using namespace LatCommon;
+using namespace LatticeTester;
 
 int main(int argc, const char * argv[]) {
     Base base_test(2,7);

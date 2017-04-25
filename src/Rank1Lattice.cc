@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,9 +15,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "latcommon/Rank1Lattice.h"
-#include "latcommon/Util.h"
-#include <cassert> 
+#include "latticetester/Rank1Lattice.h"
+#include "latticetester/Util.h"
+#include <cassert>
 // #include <boost/numeric/ublas/matrix.hpp>
 // #include <boost/numeric/ublas/matrix_proxy.hpp>
 
@@ -29,7 +29,7 @@ using namespace boost::numeric::ublas;
 using namespace std;
 
 
-namespace LatCommon
+namespace LatticeTester
 {
 
 Rank1Lattice::Rank1Lattice (const MScal & n, const MVect & a, int maxDim,
@@ -54,7 +54,7 @@ Rank1Lattice::~Rank1Lattice()
 
 void Rank1Lattice::init()
 {
-   IntLattice::init();   
+   IntLattice::init();
    for (int r = 2; r <= getMaxDim(); r++)
       m_lgVolDual2[r] = m_lgVolDual2[r - 1];
 }

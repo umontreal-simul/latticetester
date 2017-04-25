@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,13 +16,13 @@
 // limitations under the License.
 
 /* NormaRogers.h for ISO C++ */
-#ifndef LATCOMMON__NORMAROGERS_H
-#define LATCOMMON__NORMAROGERS_H
-#include "latcommon/Normalizer.h"
+#ifndef LATTICETESTER__NORMAROGERS_H
+#define LATTICETESTER__NORMAROGERS_H
+#include "latticetester/Normalizer.h"
 #include <stdexcept>
 
 
-namespace LatCommon {
+namespace LatticeTester {
 
 /**
  * This class implements the *Rogers* bounds on the density of sphere

@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,14 +15,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATCOMMON__RANK1LATTICE_H
-#define LATCOMMON__RANK1LATTICE_H
-#include "latcommon/Types.h"
-#include "latcommon/Const.h"
-#include "latcommon/IntLattice.h"
+#ifndef LATTICETESTER__RANK1LATTICE_H
+#define LATTICETESTER__RANK1LATTICE_H
+#include "latticetester/Types.h"
+#include "latticetester/Const.h"
+#include "latticetester/IntLattice.h"
 
 
-namespace LatCommon {
+namespace LatticeTester {
 
 /**
  * This class implements a general rank 1 lattice basis. For the values

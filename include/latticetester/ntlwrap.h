@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,7 +32,7 @@ typedef NTL::Vec<double> vec_double;
 typedef NTL::Mat<double> mat_double;
 typedef NTL::Vec<long>   vec_zz;
 typedef NTL::Mat<long>   mat_zz;
-   
+
 // define a specialization of vector<T> as a wrapper around NTL vec_T
 #define WRAP_NTL_VECTOR(S,T) \
    template <> \

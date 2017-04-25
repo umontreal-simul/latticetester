@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,15 +16,15 @@
 // limitations under the License.
 
 /* Normalizer.h for ISO C++ */
-#ifndef LATCOMMON__NORMALIZER_H
-#define LATCOMMON__NORMALIZER_H 
-#include "latcommon/Types.h"
-#include "latcommon/Util.h"
-#include "latcommon/Const.h"
+#ifndef LATTICETESTER__NORMALIZER_H
+#define LATTICETESTER__NORMALIZER_H
+#include "latticetester/Types.h"
+#include "latticetester/Util.h"
+#include "latticetester/Const.h"
 #include <string>
 
 
-namespace LatCommon {
+namespace LatticeTester {
 
 /**
  * Classes which inherit from this base class are used in implementing bounds

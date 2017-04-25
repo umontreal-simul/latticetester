@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,13 +15,13 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "latcommon/Const.h"
+#include "latticetester/Const.h"
 #include <string>
 
 
 using namespace std;
 
-namespace LatCommon
+namespace LatticeTester
 {
 
 //===========================================================================

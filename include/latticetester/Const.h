@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
 // limitations under the License.
 
 /**
- * \file latcommon/Const.h
+ * \file latticetester/Const.h
  *
  * This module contains global constants used in LatMRG and Lattice Builder.
  * \remark **Richard:** Most of these are used only in LatMRG; thus should
@@ -24,12 +24,12 @@
  *
  */
 
-#ifndef LATCOMMON__CONST_H
-#define LATCOMMON__CONST_H
+#ifndef LATTICETESTER__CONST_H
+#define LATTICETESTER__CONST_H
 #include <string>
 
 
-namespace LatCommon {
+namespace LatticeTester {
 
 /**
  * Indicates which norm is used to measure the length of vectors. For \f$X =

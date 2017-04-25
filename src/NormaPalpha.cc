@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,12 +15,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "latcommon/NormaPalpha.h"
-#include "latcommon/IntFactor.h"
+#include "latticetester/NormaPalpha.h"
+#include "latticetester/IntFactor.h"
 #include <stdexcept>
 
 
-namespace LatCommon
+namespace LatticeTester
 {
 
 NormaPalpha::NormaPalpha (const MScal & m, int alp, int s, NormType norm)
@@ -73,7 +73,7 @@ double NormaPalpha::calcBound (int alpha, int dim)
 
    Term1 = (2.0 * Term1 + dim) * eBase / dim;
    int j;
-   
+
    double Res = Term1;
    for (j = 1; j < dim; ++j)
       Res *= Term1;

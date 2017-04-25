@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,19 +16,19 @@
 // limitations under the License.
 
 /**
- * 
- * \file latcommon/Num.h
- * 
+ *
+ * \file latticetester/Num.h
+ *
  * This module implements a few useful mathematical functions.
- * 
- * 
+ *
+ *
  */
 
-#ifndef NUME_H
-#define NUME_H
+#ifndef LATTICETESTER__NUM_H
+#define LATTICETESTER__NUM_H
 
 
-namespace LatCommon {
+namespace LatticeTester {
 
 /**
  * Calculates \f$t!\f$, the factorial of \f$t\f$.
@@ -54,7 +54,7 @@ double Digamma (double x);
  * B_5(x) &= x^5 - 5x^4/2 + 5x^3/3 - x/6  \\
  * B_6(x) &= x^6-3x^5+5x^4/2-x^2/2+1/42  \\
  * B_7(x) &= x^7 - 7x^6/2 +  7x^5/2 - 7x^3/6 + x/6  \\
- * B_8(x) &= x^8-4x^7+14x^6/3 - 7x^4/3 +2x^2/3-1/30. 
+ * B_8(x) &= x^8-4x^7+14x^6/3 - 7x^4/3 +2x^2/3-1/30.
  * \f}
  * Only degrees \f$n \le 8\f$ are programmed for now.
  */

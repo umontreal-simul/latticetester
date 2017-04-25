@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,14 +15,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LACUNARY_H
-#define LACUNARY_H
-#include "latcommon/Types.h"
-#include "latcommon/Util.h"
+#ifndef LATTICETESTER__LACUNARY_H
+#define LATTICETESTER__LACUNARY_H
+#include "latticetester/Types.h"
+#include "latticetester/Util.h"
 #include <string>
 
 
-namespace LatCommon {
+namespace LatticeTester {
 
 /**
  * This class implements sets of lacunary indices.

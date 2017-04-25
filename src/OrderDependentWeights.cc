@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,14 +15,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "latcommon/OrderDependentWeights.h"
+#include "latticetester/OrderDependentWeights.h"
 #include <sstream>
 
 #include <boost/lexical_cast.hpp>
 using boost::lexical_cast;
 using boost::bad_lexical_cast;
 
-namespace LatCommon
+namespace LatticeTester
 {
 
 //===========================================================================
@@ -52,18 +52,18 @@ Weight OrderDependentWeights::getWeight (const Coordinates& projection) const
 
 void OrderDependentWeights::format(std::ostream& os) const
 {
-   using LatCommon::operator<<;
+   using LatticeTester::operator<<;
    os << "OrderDependentWeights(" << m_weights << ", default=" << m_defaultWeight << ")";
 }
 
-} // namespace LatCommon
+} // namespace LatticeTester
 
 //===========================================================================
 
 #ifdef WITH_XML
 #include "xmlerror.hpp"
 
-namespace LatCommon
+namespace LatticeTester
 {
 
 OrderDependentWeights* OrderDependentWeights::createFromXML (const pugi::xml_node& root)
@@ -103,5 +103,5 @@ OrderDependentWeights* OrderDependentWeights::createFromXML (const pugi::xml_nod
    }
 }
 
-} // namespace LatCommon
+} // namespace LatticeTester
 #endif

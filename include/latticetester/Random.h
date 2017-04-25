@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,14 +15,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RANDOM_H
-#define RANDOM_H
+#ifndef LATTICETESTER__RANDOM_H
+#define LATTICETESTER__RANDOM_H
 
 
-namespace LatCommon {
+namespace LatticeTester {
 /**
- * 
- * 
+ *
+ *
  * This class generates random numbers (in fact pseudo-random numbers).
  * The generator used is the 64-bits generator \c LFSR258
  * from L'Ecuyer \cite rLEC99a  with period length near \f$2^{258}\f$
@@ -30,8 +30,8 @@ namespace LatCommon {
  * from L'Ecuyer \cite rLEC99a  with period length near \f$2^{113}\f$
  * on  32-bits machines. Thus the random numbers generated will be
  * different on 32-bits and 64-bits machines.
- * 
- * 
+ *
+ *
  */
 class Random {
 public:
@@ -45,7 +45,7 @@ public:
    /**
     * Destructor.
     */
-   ~Random()  {} 
+   ~Random()  {}
 
    /**
     * Returns a random number in \f$[0, 1)\f$. The number has 53 random bits

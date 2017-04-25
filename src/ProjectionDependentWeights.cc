@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "latcommon/ProjectionDependentWeights.h"
+#include "latticetester/ProjectionDependentWeights.h"
 #include <iostream>
 #include <string>
 #include <cstdlib>
@@ -28,7 +28,7 @@ using boost::bad_lexical_cast;
 
 using namespace std;
 
-namespace LatCommon
+namespace LatticeTester
 {
 
 const ProjectionDependentWeights::WeightsMap ProjectionDependentWeights::m_emptyWeights;
@@ -92,7 +92,7 @@ const ProjectionDependentWeights::WeightsMap& ProjectionDependentWeights::getWei
 
 void ProjectionDependentWeights::format(ostream& os) const
 {
-   using LatCommon::operator<<;
+   using LatticeTester::operator<<;
    os << "ProjectionDependentWeights(" << m_weights << ")";
 #if 0
    // line by line
@@ -204,7 +204,7 @@ istream& operator>> (istream& is, ProjectionDependentWeights& weights)
 #ifdef WITH_XML
 #include "xmlerror.hpp"
 
-namespace LatCommon
+namespace LatticeTester
 {
 
 ProjectionDependentWeights* ProjectionDependentWeights::createFromXML (const pugi::xml_node& root)

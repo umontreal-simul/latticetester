@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,10 +15,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATCOMMON__PROJECTION_DEPENDENT_WEIGHTS_H
-#define LATCOMMON__PROJECTION_DEPENDENT_WEIGHTS_H
+#ifndef LATTICETESTER__PROJECTION_DEPENDENT_WEIGHTS_H
+#define LATTICETESTER__PROJECTION_DEPENDENT_WEIGHTS_H
 
-#include "latcommon/Weights.h"
+#include "latticetester/Weights.h"
 #include <map>
 #include <vector>
 #ifdef WITH_XML
@@ -26,7 +26,7 @@
 #endif
 
 
-namespace LatCommon {
+namespace LatticeTester {
 /**
  * Projection-dependent weights.
  *
@@ -56,7 +56,7 @@ public:
    /**
     * Destructor.
     */
-   virtual ~ProjectionDependentWeights()  {} 
+   virtual ~ProjectionDependentWeights()  {}
 
    /**
     * Copy constructor.
@@ -88,7 +88,7 @@ public:
    virtual void setWeight (const Coordinates & projection, Weight weight);
 
 protected:
-   /// \copydoc LatCommon::Weights::format()
+   /// \copydoc LatticeTester::Weights::format()
    virtual void format(std::ostream& os) const;
 
    friend std::istream& operator>> (std::istream&, ProjectionDependentWeights&);
@@ -106,7 +106,7 @@ protected:
  * associated to the projection-match <tt>\<match<i>n</i>\></tt>, and
  * <tt>\<match<i>n</i>\></tt> is one of:
  * - a set of coordinates, as specified in
- *   #operator>>(std::istream&, LatCommon::Coordinates&)
+ *   #operator>>(std::istream&, LatticeTester::Coordinates&)
  *   to explicitly set the weight for the projection that
  *   correspond to these coordinates;
  * - the string <tt>order <i>m</i></tt> to implicitly set the weights of
@@ -120,7 +120,7 @@ protected:
  *
  * \remark The colons (\c :) can be replaced with <tt>=\></tt> or <tt>-\></tt>.
  *
- * \sa  #operator>>(std::istream&, LatCommon::Coordinates&)
+ * \sa  #operator>>(std::istream&, LatticeTester::Coordinates&)
  */
 std::istream& operator>> (std::istream& is, ProjectionDependentWeights& weights);
 

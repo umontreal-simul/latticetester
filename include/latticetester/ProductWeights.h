@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,17 +15,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATCOMMON__PRODUCT_WEIGHTS_H
-#define LATCOMMON__PRODUCT_WEIGHTS_H
+#ifndef LATTICETESTER__PRODUCT_WEIGHTS_H
+#define LATTICETESTER__PRODUCT_WEIGHTS_H
 
-#include "latcommon/Weights.h"
+#include "latticetester/Weights.h"
 #include <vector>
 #ifdef WITH_XML
 #include <pugixml.hpp>
 #endif
 
 
-namespace LatCommon {
+namespace LatticeTester {
 /**
  * Product weights.
  *
@@ -50,7 +50,7 @@ public:
    /**
     * Destructor.
     */
-   virtual ~ProductWeights()  {} 
+   virtual ~ProductWeights()  {}
 
    /**
     * Returns the weight of the projection specified by \c projection.
@@ -61,7 +61,7 @@ public:
     * Returns the weight associated to the given coordinate.
     */
    virtual Weight getWeightForCoordinate (Coordinates::size_type coordinate) const  {
-      return coordinate < m_weights.size() ? m_weights[coordinate] : m_defaultWeight; } 
+      return coordinate < m_weights.size() ? m_weights[coordinate] : m_defaultWeight; }
 
    /**
     * Sets the weight for the coordinate specified by \c coordinate.
@@ -72,7 +72,7 @@ public:
     * Sets the default weight of all coordinates for which a weight
     * has not been set explicitly set using #setWeightForCoordinate().
     */
-   virtual void setDefaultWeight (Weight weight) 
+   virtual void setDefaultWeight (Weight weight)
    { m_defaultWeight = weight; }
 
 #ifdef WITH_XML
@@ -84,7 +84,7 @@ public:
 #endif
 
 protected:
-   /// \copydoc LatCommon::Weights::format()
+   /// \copydoc LatticeTester::Weights::format()
    virtual void format(std::ostream& os) const;
 };
 

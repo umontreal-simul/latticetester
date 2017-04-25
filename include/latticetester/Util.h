@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,15 +16,15 @@
 // limitations under the License.
 
 /**
- * \file latcommon/Util.h
+ * \file latticetester/Util.h
  *
  * This module describes various useful functions as well as functions
  * interfacing with NTL.
  *
  */
 
-#ifndef LATCOMMON__UTIL_H
-#define LATCOMMON__UTIL_H
+#ifndef LATTICETESTER__UTIL_H
+#define LATTICETESTER__UTIL_H
 #include <string>
 #include <sstream>
 #include <iostream>
@@ -34,8 +34,8 @@
 #include <map>
 #include <cmath>
 #include <cstdlib>
-#include "latcommon/Types.h"
-#include "latcommon/Const.h"
+#include "latticetester/Types.h"
+#include "latticetester/Const.h"
 
 #ifdef WITH_NTL
 #include "NTL/tools.h"
@@ -43,7 +43,7 @@
 #endif
 
 
-namespace LatCommon {
+namespace LatticeTester {
 
 #define SEPAR "===============================================================\n"
 
@@ -147,7 +147,7 @@ inline void set9 (long & x)
 /**
  * Sets \f$x\f$ to 1.
  */
-inline void set9 (NTL::ZZ & x) 
+inline void set9 (NTL::ZZ & x)
 {
     NTL::set(x);
 }
@@ -202,7 +202,7 @@ inline double mysqrt (double x)
 }
 
 /**
- * Returns \f$\sqrt{x}\f$. 
+ * Returns \f$\sqrt{x}\f$.
  * \remark **Richard:** Cette fonction est-elle encore utilisée?
  */
 inline double SqrRoot (double x)
@@ -554,13 +554,13 @@ long gcd (long a, long b);
  * For given \f$a\f$ and \f$b\f$, returns the values \f$C\f$, \f$D\f$,
  * \f$E\f$, \f$F\f$ and \f$G\f$ such that:
  * \f{align*}{
- *    C a + D b 
- *    & 
+ *    C a + D b
+ *    &
  *   =
- *    G = \mbox{GCD } (a,b) 
- *  \\ 
- *   E a + F b 
- *    & 
+ *    G = \mbox{GCD } (a,b)
+ *  \\
+ *   E a + F b
+ *    &
  *   =
  *    0.
  * \f}
@@ -1114,7 +1114,7 @@ void CalcDual (const Matr & A, Matr & B, int d, const MScal & m)
 
 /**
  * \name Debugging functions
- * 
+ *
  * @{
  */
 
@@ -1138,7 +1138,7 @@ void MyExit (int status, std::string msg);
  * Formats a pair as: \c (first,second).
  */
 template <class T1, class T2>
-std::ostream & operator<< (std::ostream & out, const std::pair<T1,T2> & x) 
+std::ostream & operator<< (std::ostream & out, const std::pair<T1,T2> & x)
 {
    out << "(" << x.first << "," << x.second << ")";
    return out;
@@ -1150,7 +1150,7 @@ std::ostream & operator<< (std::ostream & out, const std::pair<T1,T2> & x)
  * Formats a vector as: <tt>[ val1, ..., valN ]</tt>.
  */
 template <class T, class A>
-std::ostream & operator<< (std::ostream & out, const std::vector<T,A> & x) 
+std::ostream & operator<< (std::ostream & out, const std::vector<T,A> & x)
 {
    out << "[";
    typename std::vector<T,A>::const_iterator it = x.begin();
@@ -1169,7 +1169,7 @@ std::ostream & operator<< (std::ostream & out, const std::vector<T,A> & x)
  * Formats a set as: \texttt{\{ val1, ..., valN \}}.
  */
 template <class K, class C, class A>
-std::ostream & operator<< (std::ostream & out, const std::set<K,C,A> & x) 
+std::ostream & operator<< (std::ostream & out, const std::set<K,C,A> & x)
 {
    out << "{";
    typename std::set<K,C,A>::const_iterator it = x.begin();
@@ -1188,7 +1188,7 @@ std::ostream & operator<< (std::ostream & out, const std::set<K,C,A> & x)
  * Formats a map as: \texttt{\{ key1=>val1, ..., keyN=>valN \}}.
  */
 template <class K, class T, class C, class A>
-std::ostream & operator<< (std::ostream & out, const std::map<K,T,C,A> & x) 
+std::ostream & operator<< (std::ostream & out, const std::map<K,T,C,A> & x)
 {
    out << "{";
    typename std::map<K,T,C,A>::const_iterator it = x.begin();
@@ -1205,7 +1205,7 @@ std::ostream & operator<< (std::ostream & out, const std::map<K,T,C,A> & x)
  * @}
  */
 
-}     // namespace LatCommon
+}     // namespace LatticeTester
 
 
 #ifdef WITH_NTL

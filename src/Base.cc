@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,10 +19,10 @@
 #include <cassert>
 #include <ostream>
 
-#include "latcommon/Types.h"
-#include "latcommon/Const.h"
-#include "latcommon/Base.h"
-#include "latcommon/Util.h"
+#include "latticetester/Types.h"
+#include "latticetester/Const.h"
+#include "latticetester/Base.h"
+#include "latticetester/Util.h"
 
 
 #ifdef WITH_NTL
@@ -36,7 +36,7 @@ using namespace boost::numeric::ublas;
 using namespace std;
 
 
-namespace LatCommon
+namespace LatticeTester
 {
 
 //===========================================================================
@@ -99,7 +99,7 @@ void Base::kill ()
       m_negFlag = 0;
    }
    m_vecNorm.clear ();
-   BMat::clear (); 
+   BMat::clear ();
 }
 
 /*=========================================================================*/
@@ -129,10 +129,10 @@ void Base::permute (int i, int j)
    if (i == j)
       return ;
    for (int k = 1; k <= m_dim; k++) {
-      LatCommon::swap9 ((*this)(j,k), (*this)(i,k));
+      LatticeTester::swap9 ((*this)(j,k), (*this)(i,k));
    }
-   LatCommon::swap9 (m_vecNorm[i], m_vecNorm[j]);
-   LatCommon::swap9 (m_negFlag[i], m_negFlag[j]);
+   LatticeTester::swap9 (m_vecNorm[i], m_vecNorm[j]);
+   LatticeTester::swap9 (m_negFlag[i], m_negFlag[j]);
 }
 
 
@@ -176,12 +176,12 @@ void Base::setVecNorm (NScal & value, int i)
 
 void Base::swap (Base & b)
 {
-   LatCommon::swap9 (m_dim, b.m_dim);
-   LatCommon::swap9 (m_maxDim, b.m_maxDim);
-   LatCommon::swap9 (m_vecNorm, b.m_vecNorm);
-   LatCommon::swap9 (*this, b);
-   LatCommon::swap9 (m_negFlag, b.m_negFlag);
-   LatCommon::swap9 (m_norm, b.m_norm);
+   LatticeTester::swap9 (m_dim, b.m_dim);
+   LatticeTester::swap9 (m_maxDim, b.m_maxDim);
+   LatticeTester::swap9 (m_vecNorm, b.m_vecNorm);
+   LatticeTester::swap9 (*this, b);
+   LatticeTester::swap9 (m_negFlag, b.m_negFlag);
+   LatticeTester::swap9 (m_norm, b.m_norm);
 }
 
 
@@ -215,7 +215,7 @@ void Base::updateVecNorm (int d)
          ",  dim = " << m_dim << endl;
          cout << "Basis vector:   ";
          matrix_row<BMat> row2(*this, i);
-         cout << LatCommon::toString (row2, 0, m_dim, "  ") << endl;
+         cout << LatticeTester::toString (row2, 0, m_dim, "  ") << endl;
          exit(1);
       }
    }
@@ -236,7 +236,7 @@ void Base::updateScalL2Norm (int i)
       ",  dim = " << m_dim << endl;
       cout << "Basis vector:   ";
       matrix_row<BMat> row2(*this, i);
-      cout << LatCommon::toString (row2, 0, m_dim, "  ") << endl;
+      cout << LatticeTester::toString (row2, 0, m_dim, "  ") << endl;
       exit(1);
    }
 }
@@ -259,7 +259,7 @@ void Base::updateScalL2Norm (int k1, int k2)
          cout << "Basis vector:   ";
 
          matrix_row<BMat> row2(*this, i);
-         cout << LatCommon::toString (row2, 0, m_dim, "  ") << endl;
+         cout << LatticeTester::toString (row2, 0, m_dim, "  ") << endl;
          exit(1);
       }
    }

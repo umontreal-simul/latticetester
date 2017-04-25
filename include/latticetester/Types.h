@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,7 +16,7 @@
 // limitations under the License.
 
 /**
- * \file latcommon/Types.h
+ * \file latticetester/Types.h
  *
  * Sets the <tt>typedef</tt>’s for all the types used in LatMRG. Depending on
  * how `NTL_TYPES_CODE` is defined, all types used will be primitives, like `long`,
@@ -25,10 +25,10 @@
  *
  */
 
-#ifndef TYPES_H
-#define TYPES_H
+#ifndef LATTICETESTER__TYPES_H
+#define LATTICETESTER__TYPES_H
 
-#ifdef WITH_NTL 
+#ifdef WITH_NTL
 
    #include <NTL/vector.h>
    #include <NTL/matrix.h>
@@ -38,14 +38,14 @@
 
 #if NTL_TYPES_CODE == 1
    // the case  "LLDD"
-   
+
    #include "NTL/lzz_p.h"
    #include "NTL/vec_lzz_p.h"
    #include "NTL/mat_lzz_p.h"
    #include "NTL/lzz_pX.h"
    #include "NTL/lzz_pE.h"
    #include "NTL/lzz_pEX.h"
-   
+
    typedef long              MScal;
    typedef NTL::vector<long> MVect;
    typedef NTL::matrix<long> MMat;
@@ -65,7 +65,7 @@
    typedef zz_pE    PolE;
 #elif NTL_TYPES_CODE == 2
    // the case  "ZZDD"
-   
+
    #include "NTL/ZZ.h"
    #include "NTL/vec_ZZ.h"
    #include "NTL/mat_ZZ.h"
@@ -75,7 +75,7 @@
    #include "NTL/ZZ_pE.h"
    #include "NTL/ZZ_pX.h"
    #include "NTL/ZZ_pEX.h"
-   
+
    typedef ZZ              MScal;
    typedef NTL::vector<ZZ> MVect;
    typedef NTL::matrix<ZZ> MMat;
@@ -95,7 +95,7 @@
    typedef ZZ_pE    PolE;
 #elif NTL_TYPES_CODE == 3
    // the case  "ZZRR"
-   
+
    #include "NTL/ZZ.h"
    #include "NTL/vec_ZZ.h"
    #include "NTL/mat_ZZ.h"
@@ -108,7 +108,7 @@
    #include "NTL/ZZ_pE.h"
    #include "NTL/ZZ_pX.h"
    #include "NTL/ZZ_pEX.h"
-   
+
    typedef ZZ              MScal;
    typedef NTL::vector<ZZ> MVect;
    typedef NTL::matrix<ZZ> MMat;
@@ -143,20 +143,20 @@
    #include <boost/numeric/ublas/vector_proxy.hpp>
    #include <boost/numeric/ublas/matrix.hpp>
    #include <boost/numeric/ublas/matrix_proxy.hpp>
-   
-   
+
+
    typedef long                                 MScal;
    typedef boost::numeric::ublas::vector<long>  MVect;
    typedef boost::numeric::ublas::matrix<long>  MMat;
-   
+
    typedef long                                 BScal;
    typedef boost::numeric::ublas::vector<long>  BVect;
    typedef boost::numeric::ublas::matrix<long>  BMat;
-   
+
    typedef double                                 NScal;
    typedef boost::numeric::ublas::vector<double>  NVect;
    typedef boost::numeric::ublas::matrix<double>  NMat;
-   
+
    typedef double                                 RScal;
    typedef boost::numeric::ublas::vector<double>  RVect;
    typedef boost::numeric::ublas::matrix<double>  RMat;

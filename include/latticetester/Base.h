@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,16 +15,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATCOMMON__BASE_H
-#define LATCOMMON__BASE_H
+#ifndef LATTICETESTER__BASE_H
+#define LATTICETESTER__BASE_H
 
-#include "latcommon/Const.h"
-#include "latcommon/Types.h"
-#include "latcommon/Util.h"
+#include "latticetester/Const.h"
+#include "latticetester/Types.h"
+#include "latticetester/Util.h"
 #include <string>
 
 
-namespace LatCommon {
+namespace LatticeTester {
 
 /**
  * This class represents a basis for a lattice. To compute the length of
@@ -43,8 +43,7 @@ NTL::matrix<long> ou boost::numeric::ublas::matrix<long>) définit dans Types.h.
 Elle hérite donc d'une structure de matrice : une Base A contient des éléments
 A(i,j) (j-ème composante du i-ème vecteur).
 
-L'initialisation de cette classe peut se faire à l'aide de vecteur (permettant de
-former une base). Checkons donc cette possibilité.
+Ces éléments sont modifiés grâces aux méthodes fournies dans IntLattice.
 
 
 */
@@ -57,11 +56,6 @@ public:
     * `maxDim` and with norm `norm`.
     */
    Base (int d, int maxDim, NormType norm = SUPNORM);
-
-   /** Erwan
-    * Constructor. Buils a basis with vectors gived in argument.
-    */
-   Base ();
 
 
    /**

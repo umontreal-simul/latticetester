@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,14 +15,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATCOMMON__INTFACTOR_H
-#define LATCOMMON__INTFACTOR_H
+#ifndef LATTICETESTER__INTFACTOR_H
+#define LATTICETESTER__INTFACTOR_H
 #include <string>
-#include "latcommon/Types.h"
-#include "latcommon/Const.h"
- 
+#include "latticetester/Types.h"
+#include "latticetester/Const.h"
 
-namespace LatCommon {
+
+namespace LatticeTester {
 
 /**
  * The objects of this class are the "prime" factors in the decomposition of
@@ -41,7 +41,7 @@ public:
     * `stat`.
     */
    IntFactor (const MScal & x, int mult = 1,
-                 LatCommon::PrimeType stat = LatCommon::UNKNOWN):
+                 LatticeTester::PrimeType stat = LatticeTester::UNKNOWN):
                  m_factor (x), m_multiplicity (mult), m_status (stat) {   }
 
    /**
@@ -67,12 +67,12 @@ public:
    /**
     * Returns the status of this object.
     */
-   LatCommon::PrimeType getStatus () const { return m_status; }
+   LatticeTester::PrimeType getStatus () const { return m_status; }
 
    /**
     * Sets the status of this object to \f$s\f$.
     */
-   void setStatus (LatCommon::PrimeType s) { m_status = s; }
+   void setStatus (LatticeTester::PrimeType s) { m_status = s; }
 
    /**
     * Tests whether \f$y\f$ is prime. First tests whether \f$y\f$ is
@@ -80,18 +80,18 @@ public:
     * kept in file `prime.dat`. Then applies the Miller-Rabin probability
     * test with \f$k\f$ trials.
     */
-   static LatCommon::PrimeType isPrime (const MScal & y, long k);
+   static LatticeTester::PrimeType isPrime (const MScal & y, long k);
 
    /**
     * Tests whether this factor is prime. Similar to `isPrime` above.
     */
-   LatCommon::PrimeType isPrime (long k);
+   LatticeTester::PrimeType isPrime (long k);
 
    /**
     * Transforms status `stat` in an easily readable string and returns
     * it.
     */
-   static std::string toString (LatCommon::PrimeType stat);
+   static std::string toString (LatticeTester::PrimeType stat);
 
    /**
     * Returns this object as a string.
@@ -113,14 +113,14 @@ private:
    /**
     * The status of this factor, i.e. whether it is prime, composite, ...
     */
-   LatCommon::PrimeType m_status;
+   LatticeTester::PrimeType m_status;
 
 #ifdef WITH_NTL
    /**
     * Applies the Miller-Rabin probability test with \f$k\f$ trials to
     * \f$y\f$.
     */
-   static LatCommon::PrimeType isProbPrime (const MScal & y, long k);
+   static LatticeTester::PrimeType isProbPrime (const MScal & y, long k);
 #endif
 };    // class IntFactor
 

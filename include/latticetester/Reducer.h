@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,21 +15,21 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATCOMMON__REDUCER_H
-#define LATCOMMON__REDUCER_H
+#ifndef LATTICETESTER__REDUCER_H
+#define LATTICETESTER__REDUCER_H
 
-#include "latcommon/Types.h"
-#include "latcommon/Const.h"
-#include "latcommon/Util.h"
-#include "latcommon/Base.h"
-#include "latcommon/IntLattice.h"
+#include "latticetester/Types.h"
+#include "latticetester/Const.h"
+#include "latticetester/Util.h"
+#include "latticetester/Base.h"
+#include "latticetester/IntLattice.h"
 
 #include <fstream>
 #include <sstream>
 #include <vector>
 
 
-namespace LatCommon {
+namespace LatticeTester {
 
 /**
  * For a given lattice, this class implements methods to reduce its basis in
@@ -333,5 +333,5 @@ private:
     */
 };
 
-}     // namespace LatCommon
+}     // namespace LatticeTester
 #endif // REDUCER_H

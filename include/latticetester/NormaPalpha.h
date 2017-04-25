@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,12 +16,12 @@
 // limitations under the License.
 
 /* NormaPalpha.h for ISO C++ */
-#ifndef NORMAPALPHA_H
-#define NORMAPALPHA_H
-#include "latcommon/Normalizer.h"
+#ifndef LATTICETESTER__NORMAPALPHA_H
+#define LATTICETESTER__NORMAPALPHA_H
+#include "latticetester/Normalizer.h"
 
 
-namespace LatCommon {
+namespace LatticeTester {
 
 /**
  * This class implements theoretical bounds on the values of

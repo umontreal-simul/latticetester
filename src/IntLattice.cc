@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,14 +15,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "latcommon/Util.h"
-#include "latcommon/IntLattice.h"
-#include "latcommon/NormaBestLat.h"
-#include "latcommon/NormaLaminated.h"
-#include "latcommon/NormaRogers.h"
-#include "latcommon/NormaMinkL1.h"
-#include "latcommon/NormaMinkowski.h"
-#include "latcommon/NormaPalpha.h"
+#include "latticetester/Util.h"
+#include "latticetester/IntLattice.h"
+#include "latticetester/NormaBestLat.h"
+#include "latticetester/NormaLaminated.h"
+#include "latticetester/NormaRogers.h"
+#include "latticetester/NormaMinkL1.h"
+#include "latticetester/NormaMinkowski.h"
+#include "latticetester/NormaPalpha.h"
 
 #include <fstream>
 #include <cassert>
@@ -47,7 +47,7 @@ using namespace std;
 
 #define SEPAR "===============================================================\n"
 
-namespace LatCommon
+namespace LatticeTester
 {
 
 

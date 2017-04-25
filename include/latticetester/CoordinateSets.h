@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,28 +15,28 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATCOMMON__COORDINATE_SETS_H
-#define LATCOMMON__COORDINATE_SETS_H
+#ifndef LATTICETESTER__COORDINATE_SETS_H
+#define LATTICETESTER__COORDINATE_SETS_H
 
 #include <set>
 #include <map>
 #include <iostream>
-#include "latcommon/Util.h"
-#include "latcommon/Coordinates.h"
+#include "latticetester/Util.h"
+#include "latticetester/Coordinates.h"
 #include <boost/iterator/iterator_facade.hpp>
 #include <boost/iterator/iterator_adaptor.hpp>
 #include <boost/config.hpp>
 
 
-namespace LatCommon {
+namespace LatticeTester {
 
 /**
  * Sequences of coordinate sets.
- * 
+ *
  * These can be used to specify a set of projections of lattices or point sets.
  * The classes in this namespace are iterable but are not containers, so they
  * require very little storage.  They virtually contain objects of type
- * LatCommon::Coordinates.
+ * LatticeTester::Coordinates.
  */
 namespace CoordinateSets {
 
@@ -54,7 +54,7 @@ public:
     * one may use the declaration <tt>FromRanges range(1, 3, 2, 4)</tt>;
     * this gives the sets
     * <tt>range = {{2}, {3}, {4}, {2, 3}, {2, 4}, {3, 4}, {2, 3, 4}}</tt>.
-    * 
+    *
     */
    FromRanges (
       Coordinates::size_type  minOrder, Coordinates::size_type  maxOrder,
@@ -62,7 +62,7 @@ public:
 
    /**
     * Constructs an empty set of coordinate sets.
-    * 
+    *
     */
    FromRanges();
 
@@ -245,7 +245,7 @@ class AddCoordinate {
  * Constructs a set based on <tt>baseSets</tt> by adding coordinate
  * \c coord to each of the sets in <tt>baseSets</tt>.
  * Warning: do not use a temporary object as <tt>baseSets</tt>.
- * 
+ *
  */
 public:
    typedef BASE Base;
@@ -254,14 +254,14 @@ public:
     * Constructs a sequence of coordinate sets by adding the coordinate \c coord
     * to each element in the base sequence \c base.
     */
-   AddCoordinate (const Base& base, Coordinates::value_type coord): 
+   AddCoordinate (const Base& base, Coordinates::value_type coord):
       m_base(base), m_coord(coord)
-   { } 
+   { }
 
 #ifdef BOOST_HAS_RVALUE_REFS
-   AddCoordinate (Base&& base, Coordinates::value_type coord): 
+   AddCoordinate (Base&& base, Coordinates::value_type coord):
       m_base(std::move(base)), m_coord(coord)
-   { } 
+   { }
 #endif
 
    /**

@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,9 +26,9 @@
 #include <typeinfo>
 #include <stdexcept>
 
-#include "latcommon/Util.h"
-#include "latcommon/Normalizer.h"
-#include "latcommon/Reducer.h"
+#include "latticetester/Util.h"
+#include "latticetester/Normalizer.h"
+#include "latticetester/Reducer.h"
 
 #ifdef WITH_NTL
 #else
@@ -41,7 +41,7 @@ using namespace boost::numeric::ublas;
 using namespace std;
 
 
-namespace LatCommon
+namespace LatticeTester
 {
 
 // Initialization of non-const static members

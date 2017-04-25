@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,19 +15,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATCOMMON__POD_WEIGHTS_H
-#define LATCOMMON__POD_WEIGHTS_H
+#ifndef LATTICETESTER__POD_WEIGHTS_H
+#define LATTICETESTER__POD_WEIGHTS_H
 
-#include "latcommon/Weights.h"
-#include "latcommon/OrderDependentWeights.h"
-#include "latcommon/ProductWeights.h"
+#include "latticetester/Weights.h"
+#include "latticetester/OrderDependentWeights.h"
+#include "latticetester/ProductWeights.h"
 #include <vector>
 #ifdef WITH_XML
 #include <pugixml.hpp>
 #endif
 
 
-namespace LatCommon {
+namespace LatticeTester {
 /**
  * Product and order-dependent (POD) weights.
  *
@@ -52,7 +52,7 @@ public:
     * Destructor.
     */
    virtual ~PODWeights()
-   { } 
+   { }
 
    /**
     * Returns the weight of the projection specified by \c projection.
@@ -86,7 +86,7 @@ public:
 #endif
 
 protected:
-   /// \copydoc LatCommon::Weights::format()
+   /// \copydoc LatticeTester::Weights::format()
    virtual void format(std::ostream& os) const;
 };
 

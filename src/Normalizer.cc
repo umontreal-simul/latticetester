@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -27,11 +27,11 @@
 #include <sstream>
 #include <string>
 
-#include "latcommon/Types.h"
-#include "latcommon/Normalizer.h"
+#include "latticetester/Types.h"
+#include "latticetester/Normalizer.h"
 
 
-namespace LatCommon
+namespace LatticeTester
 {
 
 const int Normalizer::MAX_DIM;

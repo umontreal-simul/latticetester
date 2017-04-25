@@ -260,8 +260,8 @@ bool IntLattice::checkDuality () const
 
    for (int i = 1; i <= dim; i++) {
       for (int j = 1; j <= dim; j++) {
-         matrix_row<const Base> row1(m_v, i);
-         matrix_row<const Base> row2(m_w, j);
+         matrix_row<const Basis> row1(m_v, i);
+         matrix_row<const Basis> row2(m_w, j);
          ProdScal (row1, row2, dim, S);
          if (j != i) {
             if (S != 0) {
@@ -293,16 +293,16 @@ bool IntLattice::baseEquivalence (const IntLattice & lat) const
 
    for (int i = 1; i <= d; i++) {
       for (int j = 1; j <= d; j++) {
-         matrix_row<const Base> row1(m_v, i);
-         matrix_row<const Base> row2(m_w, j);
+         matrix_row<const Basis> row1(m_v, i);
+         matrix_row<const Basis> row2(m_w, j);
          ProdScal (row1, row2, d, R);
          conv (Q, lat.m_m);
          Divide (Q, R, R, Q);
          if (R != 0) {
             return false;
          }
-         matrix_row<const Base> row3(lat.m_v, i);
-         matrix_row<const Base> row4(lat.m_w, j);
+         matrix_row<const Basis> row3(lat.m_v, i);
+         matrix_row<const Basis> row4(lat.m_w, j);
          ProdScal (row3, row4, d, R);
          conv (Q, m_m);
          Divide (Q, R, R, Q);
@@ -520,13 +520,13 @@ void IntLattice::buildProjection (IntLattice* lattice, const Coordinates & proj)
    lattice->setDim (static_cast<int>(proj.size()));
    lattice->m_order = m_order;
 
-   Triangularization<Base> (lattice->m_w, lattice->m_v, dim, static_cast<int>(proj.size()), m_m);
+   Triangularization<Basis> (lattice->m_w, lattice->m_v, dim, static_cast<int>(proj.size()), m_m);
 // lattice->trace("\nESPION_4");
 /* cout << "  ***** build 2\n";
 lattice->getPrimalBasis ().setNegativeNorm (true);
 lattice->getPrimalBasis ().updateScalL2Norm (1,proj.size());
 lattice->getPrimalBasis ().write();*/
-   CalcDual<Base> (lattice->m_v, lattice->m_w, static_cast<int>(proj.size()), m_m);
+   CalcDual<Basis> (lattice->m_v, lattice->m_w, static_cast<int>(proj.size()), m_m);
 /*
 cout << "  ***** build 3\n";
 lattice->getDualBasis ().setNegativeNorm (true);

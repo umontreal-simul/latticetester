@@ -241,8 +241,8 @@ inline void Reducer::calculGramVD ()
 
    for (int i = 1; i <= dim; i++) {
       for (int j = i; j <= dim; j++) {
-         matrix_row<Base> row1(m_lat->getPrimalBasis(), i);
-         matrix_row<Base> row2(m_lat->getPrimalBasis(), j);
+         matrix_row<Basis> row1(m_lat->getPrimalBasis(), i);
+         matrix_row<Basis> row2(m_lat->getPrimalBasis(), j);
          ProdScal (row1, row2, dim, m_gramVD(i,j));
          m_gramVD(j,i) = m_gramVD(i,j);
       }
@@ -261,8 +261,8 @@ inline void Reducer::miseAJourGramVD (int j)
 {
    const int dim = m_lat->getDim ();
    for (int i = 1; i <= dim; i++) {
-      matrix_row<Base> row1(m_lat->getPrimalBasis(), i);
-      matrix_row<Base> row2(m_lat->getPrimalBasis(), j);
+      matrix_row<Basis> row1(m_lat->getPrimalBasis(), i);
+      matrix_row<Basis> row2(m_lat->getPrimalBasis(), j);
       ProdScal (row1, row2, dim, m_gramVD(i,j));
       m_gramVD(j,i) = m_gramVD(i,j);
    }
@@ -295,8 +295,8 @@ bool Reducer::calculCholeski (RVect & DC2, RMat & C0)
          if (j == i)
             conv (m_c2(i,i), m_lat->getPrimalBasis ().getVecNorm (i));
          else {
-            matrix_row<Base> row1(m_lat->getPrimalBasis(), i);
-            matrix_row<Base> row2(m_lat->getPrimalBasis(), j);
+            matrix_row<Basis> row1(m_lat->getPrimalBasis(), i);
+            matrix_row<Basis> row2(m_lat->getPrimalBasis(), j);
             ProdScal (row1, row2, dim, m_c2(i,j));
          }
          for (k = 1; k < i; k++)
@@ -320,8 +320,8 @@ bool Reducer::calculCholeski (RVect & DC2, RMat & C0)
          if (j == i)
             conv (m_c2(i,i), m_lat->getDualBasis ().getVecNorm (i));
          else {
-            matrix_row<Base> row1(m_lat->getDualBasis(), i);
-            matrix_row<Base> row2(m_lat->getDualBasis(), j);
+            matrix_row<Basis> row1(m_lat->getDualBasis(), i);
+            matrix_row<Basis> row2(m_lat->getDualBasis(), j);
             ProdScal (row1, row2, dim, m_c2(i,j));
          }
          for (k = i + 1; k <= dim; k++)
@@ -380,8 +380,8 @@ void Reducer::pairwiseRedPrimal (int i, int d)
          continue;
       modifFlag = false;
       {
-         matrix_row<Base> row1(m_lat->getPrimalBasis(), i);
-         matrix_row<Base> row2(m_lat->getPrimalBasis(), j);
+         matrix_row<Basis> row1(m_lat->getPrimalBasis(), i);
+         matrix_row<Basis> row2(m_lat->getPrimalBasis(), j);
          ProdScal (row1, row2, dim, m_ns);
       }
       DivideRound <NScal> (m_ns, m_lat->getPrimalBasis ().getVecNorm (i),
@@ -399,20 +399,20 @@ void Reducer::pairwiseRedPrimal (int i, int d)
 
          // Verify that m_lat->getPrimalBasis()[j] is really shorter
          {
-         matrix_row<Base> row1(m_lat->getPrimalBasis(), j);
+         matrix_row<Basis> row1(m_lat->getPrimalBasis(), j);
          ProdScal (row1, row1, dim, m_ns);
          }
          if (m_ns >= m_lat->getPrimalBasis ().getVecNorm (j)) {
-            matrix_row<Base> row1(m_lat->getPrimalBasis(), j);
-            matrix_row<Base> row2(m_lat->getPrimalBasis(), i);
+            matrix_row<Basis> row1(m_lat->getPrimalBasis(), j);
+            matrix_row<Basis> row2(m_lat->getPrimalBasis(), i);
             ModifVect (row1, row2, m_bs, dim);
          } else {
             modifFlag = true;
             m_lat->getPrimalBasis ().setVecNorm (m_ns, j);
          }
       } else {
-         matrix_row<Base> row1(m_lat->getPrimalBasis(), j);
-         matrix_row<Base> row2(m_lat->getPrimalBasis(), i);
+         matrix_row<Basis> row1(m_lat->getPrimalBasis(), j);
+         matrix_row<Basis> row2(m_lat->getPrimalBasis(), i);
          ModifVect (row1, row2, -m_bs, dim);
          //   ModifVect (m_lat->getPrimalBasis ()[j],
          //             m_lat->getPrimalBasis ()[i], -m_bs, dim);
@@ -423,8 +423,8 @@ void Reducer::pairwiseRedPrimal (int i, int d)
       if (modifFlag) {
          m_countDieter = 0;
          ++m_cpt;
-         matrix_row<Base> row1(m_lat->getDualBasis(), i);
-         matrix_row<Base> row2(m_lat->getDualBasis(), j);
+         matrix_row<Basis> row1(m_lat->getDualBasis(), i);
+         matrix_row<Basis> row2(m_lat->getDualBasis(), j);
          ModifVect (row1, row2, m_bs, dim);
 
          //    ModifVect (m_lat->getDualBasis ()[i], m_lat->getDualBasis ()[j],
@@ -448,12 +448,12 @@ void Reducer::pairwiseRedDual (int i)
 
    ++m_countDieter;
    m_lat->getDualBasis ().updateScalL2Norm (i);
-   matrix_row<Base> row9(m_lat->getPrimalBasis(), i);
+   matrix_row<Basis> row9(m_lat->getPrimalBasis(), i);
    m_bv = row9;
    for (j = 1; j <= dim; j++) {
       if (i != j) {
-         matrix_row<Base> row1(m_lat->getDualBasis(), i);
-         matrix_row<Base> row2(m_lat->getDualBasis(), j);
+         matrix_row<Basis> row1(m_lat->getDualBasis(), i);
+         matrix_row<Basis> row2(m_lat->getDualBasis(), j);
          ProdScal (row1, row2, dim, m_ns);
          // ProdScal (m_lat->getDualBasis ()[i], m_lat->getDualBasis ()[j],
          //           dim, m_ns);
@@ -461,7 +461,7 @@ void Reducer::pairwiseRedDual (int i)
                               m_nv[j]);
          if (m_nv[j] != 0) {
             conv (m_bs, m_nv[j]);
-            matrix_row<Base> row7(m_lat->getPrimalBasis(), j);
+            matrix_row<Basis> row7(m_lat->getPrimalBasis(), j);
             ModifVect (m_bv, row7, m_bs, dim);
          }
       }
@@ -472,7 +472,7 @@ void Reducer::pairwiseRedDual (int i)
    if (m_ns < m_lat->getPrimalBasis ().getVecNorm (i)) {
       ++m_cpt;
       m_countDieter = 0;
-      matrix_row<Base> row6(m_lat->getPrimalBasis(), i);
+      matrix_row<Basis> row6(m_lat->getPrimalBasis(), i);
       for (j = 1; j <= dim; j++)
          row6(j) = m_bv[j];
       m_lat->getPrimalBasis ().setNegativeNorm (true, i);
@@ -481,8 +481,8 @@ void Reducer::pairwiseRedDual (int i)
       for (j = 1; j <= dim; j++) {
          if (i != j && m_nv[j] != 0) {
             conv (m_bs, -m_nv[j]);
-            matrix_row<Base> row1(m_lat->getDualBasis(), j);
-            matrix_row<Base> row2(m_lat->getDualBasis(), i);
+            matrix_row<Basis> row1(m_lat->getDualBasis(), j);
+            matrix_row<Basis> row2(m_lat->getDualBasis(), i);
             ModifVect (row1, row2, m_bs, dim);
             //  ModifVect (m_lat->getDualBasis ()[j], m_lat->getDualBasis ()[i],
             //            m_bs, dim);
@@ -545,14 +545,14 @@ void Reducer::reductionFaible (int i, int j)
       // On peut representer cte en LONGINT.
       if (fabs (cte) > 0.5) {
          conv (cteLI, Round (cte));
-         matrix_row<Base> row1(m_lat->getPrimalBasis(), j);
-         matrix_row<Base> row2(m_lat->getPrimalBasis(), i);
+         matrix_row<Basis> row1(m_lat->getPrimalBasis(), j);
+         matrix_row<Basis> row2(m_lat->getPrimalBasis(), i);
          ModifVect (row1, row2, -cteLI, dim);
          //  ModifVect (m_lat->getPrimalBasis ()[j], m_lat->getPrimalBasis ()[i],
          //            -cteLI, dim);
 
-         matrix_row<Base> row3(m_lat->getDualBasis(), i);
-         matrix_row<Base> row4(m_lat->getDualBasis(), j);
+         matrix_row<Basis> row3(m_lat->getDualBasis(), i);
+         matrix_row<Basis> row4(m_lat->getDualBasis(), j);
          ModifVect (row3, row4, cteLI, dim);
          //  ModifVect (m_lat->getDualBasis ()[i], m_lat->getDualBasis ()[j],
          //            cteLI, dim);
@@ -563,13 +563,13 @@ void Reducer::reductionFaible (int i, int j)
       // On represente cte en double.
       if (fabs (cte) < std::numeric_limits<long double>::max())
          cte = Round (cte);
-      matrix_row<Base> row1(m_lat->getPrimalBasis(), j);
-      matrix_row<Base> row2(m_lat->getPrimalBasis(), i);
+      matrix_row<Basis> row1(m_lat->getPrimalBasis(), j);
+      matrix_row<Basis> row2(m_lat->getPrimalBasis(), i);
       ModifVect (row1, row2, -cte, dim);
          //      ModifVect (m_lat->getPrimalBasis ()[j], m_lat->getPrimalBasis ()[i],
          //          -cte, dim);
-      matrix_row<Base> row3(m_lat->getDualBasis(), i);
-      matrix_row<Base> row4(m_lat->getDualBasis(), j);
+      matrix_row<Basis> row3(m_lat->getDualBasis(), i);
+      matrix_row<Basis> row4(m_lat->getDualBasis(), j);
       ModifVect (row3, row4, cte, dim);
       //  ModifVect (m_lat->getDualBasis ()[i], m_lat->getDualBasis ()[j], cte, dim);
    }
@@ -699,14 +699,14 @@ void Reducer::transformStage3 (std::vector<long> & z, int & k)
          if (q) {
             // On ajoute q * v[i] au vecteur m_lat->getPrimalBasis()[j]
             z[i] -= q * z[j];
-            matrix_row<Base> row2(m_lat->getPrimalBasis(), i);
-            matrix_row<Base> row1(m_lat->getPrimalBasis(), j);
+            matrix_row<Basis> row2(m_lat->getPrimalBasis(), i);
+            matrix_row<Basis> row1(m_lat->getPrimalBasis(), j);
             //    ModifVect (m_lat->getPrimalBasis ()[j], m_lat->getPrimalBasis ()[i],
             //            q, dim);
             ModifVect (row1, row2, q, dim);
 
-            matrix_row<Base> row3(m_lat->getDualBasis(), i);
-            matrix_row<Base> row4(m_lat->getDualBasis(), j);
+            matrix_row<Basis> row3(m_lat->getDualBasis(), i);
+            matrix_row<Basis> row4(m_lat->getDualBasis(), j);
             //    ModifVect (m_lat->getDualBasis ()[i], m_lat->getDualBasis ()[j],
             //             -q, dim);
             ModifVect (row3, row4, -q, dim);
@@ -725,7 +725,7 @@ void Reducer::transformStage3 (std::vector<long> & z, int & k)
 
 //=========================================================================
 
-bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const Base & WTemp)
+bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const Basis & WTemp)
 // Si m_countNodes > MaxNodes retourne false, sinon retourne true.
 {
    long max0, min0;
@@ -821,17 +821,17 @@ bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const Base & WTemp)
       if (j == 1) {
          if (m_n2[0] < m_lMin2) {
             // On verifie si on a vraiment trouve un vecteur plus court
-            matrix_row<const Base> row1(m_lat->getPrimalBasis(), dim);
+            matrix_row<const Basis> row1(m_lat->getPrimalBasis(), dim);
             m_bv = row1;
             //    m_bv = m_lat->getPrimalBasis ()[dim];
             for (k = 1; k < dim; k++) {
                if (m_zLI[k] != 0) {
-                  matrix_row<const Base> row1(m_lat->getPrimalBasis(), k);
+                  matrix_row<const Basis> row1(m_lat->getPrimalBasis(), k);
                   ModifVect (m_bv, row1, m_zLI[k], dim);
                }
             }
             if (Stage == 3) {
-               matrix_row<const Base> row1(m_lat->getPrimalBasis(), dim);
+               matrix_row<const Basis> row1(m_lat->getPrimalBasis(), dim);
                ModifVect (m_bv, row1, m_zLR[dim] - 1.0, dim);
             }
 
@@ -844,7 +844,7 @@ bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const Base & WTemp)
                      m_zShort = m_zLI;
                   else {
                      for (k = 1; k < dim; k++) {
-                        matrix_row<const Base> row1(WTemp, k);
+                        matrix_row<const Basis> row1(WTemp, k);
                         ProdScal (m_bv, row1, dim, S2);
                         Quotient (S2, mR, S3);
                         conv (m_zShort[k], S3);
@@ -858,7 +858,7 @@ bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const Base & WTemp)
                   }
                } else {
                   for (k = 1; k <= dim; k++) {
-                     matrix_row<const Base> row1(WTemp, k);
+                     matrix_row<const Basis> row1(WTemp, k);
                      ProdScal (m_bv, row1, dim, S2);
                      Quotient (S2, mR, S3);
                      conv (m_zShort[k], S3);
@@ -914,7 +914,7 @@ bool Reducer::redBB (int i, int d, int Stage, bool & smaller)
 {
    const int dim = m_lat->getDim ();
    const int maxDim = m_lat->getMaxDim ();
-   Base VTemp (dim, maxDim), WTemp (dim, maxDim);
+   Basis VTemp (dim, maxDim), WTemp (dim, maxDim);
    bool XXTemp[1 + maxDim];
    NScal tmp;
 // trace( "AVANT redBB");
@@ -922,7 +922,7 @@ bool Reducer::redBB (int i, int d, int Stage, bool & smaller)
 
    // Approximation du carre de la longueur de Vi.
    if (m_lat->getPrimalBasis ().isNegativeNorm (i)) {
-      matrix_row<Base> row1(m_lat->getPrimalBasis(), i);
+      matrix_row<Basis> row1(m_lat->getPrimalBasis(), i);
       ProdScal (row1, row1, dim, tmp);
       //  ProdScal (m_lat->getPrimalBasis()[i], m_lat->getPrimalBasis()[i],
       //            dim, tmp);
@@ -933,7 +933,7 @@ bool Reducer::redBB (int i, int d, int Stage, bool & smaller)
    if (Stage == 3)
    {
       if (m_lat->getDualBasis ().isNegativeNorm (i)) {
-         matrix_row<Base> row1(m_lat->getDualBasis(), i);
+         matrix_row<Basis> row1(m_lat->getDualBasis(), i);
          ProdScal (row1, row1, dim, tmp);
          //   ProdScal (m_lat->getDualBasis()[i], m_lat->getDualBasis()[i],
          //            dim, tmp);
@@ -986,21 +986,21 @@ bool Reducer::redBB (int i, int d, int Stage, bool & smaller)
          k = dim;
       else
          transformStage3 (m_zShort, k);
-      matrix_row<Base> row1(m_lat->getPrimalBasis(), k);
+      matrix_row<Basis> row1(m_lat->getPrimalBasis(), k);
       for (h = 1; h <= dim; h++)
          row1(h) = m_bv[h];
       //  m_lat->getPrimalBasis ()[k] = m_bv;
       m_lat->getPrimalBasis ().setNegativeNorm (true, k);
       if (m_zShort[k] < 0) {
-         matrix_row<Base> row2(m_lat->getDualBasis(), k);
+         matrix_row<Basis> row2(m_lat->getDualBasis(), k);
          ChangeSign (row2, dim);
       }
       /* Mise a jour des vecteurs de la base duale selon le nouveau
          m_lat->getPrimalBasis()[k] */
       for (h = 1; h <= dim; h++) {
          if ((m_zShort[h] != 0) && (h != k)) {
-            matrix_row<Base> row1(m_lat->getDualBasis(), h);
-            matrix_row<Base> row2(m_lat->getDualBasis(), k);
+            matrix_row<Basis> row1(m_lat->getDualBasis(), h);
+            matrix_row<Basis> row2(m_lat->getDualBasis(), k);
             ModifVect (row1, row2, -m_zShort[h], dim);
             m_lat->getDualBasis ().setNegativeNorm (true, h);
             if (Stage == 2) {
@@ -1118,7 +1118,7 @@ bool Reducer::tryZ0 (int j, bool & smaller)
                SetZero (m_bv, dim);
                for (k = 1; k <= dim; k++) {
                   if (m_zLI[k] != 0) {
-                     matrix_row<Base> row1(m_lat->getPrimalBasis(), k);
+                     matrix_row<Basis> row1(m_lat->getPrimalBasis(), k);
                      ModifVect (m_bv, row1, m_zLI[k], dim);
                   }
                }
@@ -1199,10 +1199,10 @@ bool Reducer::redBB0 (NormType norm)
       conv (m_lMin2, m_lat->getPrimalBasis ().getVecNorm (1));
 
    } else {
-      matrix_row<Base> row1(m_lat->getPrimalBasis(), 1);
+      matrix_row<Basis> row1(m_lat->getPrimalBasis(), 1);
       CalcNorm <BVect, NScal> (row1, dim, m_lMin, norm);
       for (k = 2; k <= dim; k++) {
-         matrix_row<Base> row2(m_lat->getPrimalBasis(), k);
+         matrix_row<Basis> row2(m_lat->getPrimalBasis(), k);
          CalcNorm <BVect, NScal> (row2, dim, x, norm);
          if (x < m_lMin)
             m_lMin = x;
@@ -1232,7 +1232,7 @@ bool Reducer::redBB0 (NormType norm)
    if (smaller) {
       // We have found a shorter vector. Its square length is in m_lMin2.
       transformStage3 (m_zShort, k);
-      matrix_row<Base> row1(m_lat->getPrimalBasis(), k);
+      matrix_row<Basis> row1(m_lat->getPrimalBasis(), k);
       for (h = 1; h <= dim; h++)
          row1(h) = m_bw[h];
       m_lat->getPrimalBasis ().setNegativeNorm (true, k);
@@ -1240,13 +1240,13 @@ bool Reducer::redBB0 (NormType norm)
       /* The new shorter vector is now in m_lat->getPrimalBasis()[k].  */
       /* We update the vectors of the dual basis.  */
       if (m_zShort[k] < 0) {
-         matrix_row<Base> row2(m_lat->getDualBasis(), k);
+         matrix_row<Basis> row2(m_lat->getDualBasis(), k);
          ChangeSign (row2, dim);
       }
       for (h = 1; h <= dim; h++) {
          if (m_zShort[h] && h != k) {
-            matrix_row<Base> row3(m_lat->getDualBasis(), h);
-            matrix_row<Base> row4(m_lat->getDualBasis(), k);
+            matrix_row<Basis> row3(m_lat->getDualBasis(), h);
+            matrix_row<Basis> row4(m_lat->getDualBasis(), k);
             ModifVect (row3, row4, -m_zShort[h], dim);
             m_lat->getDualBasis ().setNegativeNorm (true, h);
          }
@@ -1258,7 +1258,7 @@ bool Reducer::redBB0 (NormType norm)
       if (norm == L2NORM)
          m_lat->permute (k, 1);
       else {
-         matrix_row<Base> row5(m_lat->getPrimalBasis(), k);
+         matrix_row<Basis> row5(m_lat->getPrimalBasis(), k);
          CalcNorm (row5, dim, x, norm);
          if (x < m_lMin) {
             m_lMin = x;
@@ -1319,12 +1319,12 @@ bool Reducer::redDieter (NormType norm)
    {
       if (z[k] < supz[k]) {
          ++z[k];
-         matrix_row<Base> row1(m_lat->getPrimalBasis(), k);
+         matrix_row<Basis> row1(m_lat->getPrimalBasis(), k);
          ModifVect (m_bv, row1, 1, dim);
          while (k < dim) {
             ++k;
             z[k] = -supz[k];
-            matrix_row<Base> row2(m_lat->getPrimalBasis(), k);
+            matrix_row<Basis> row2(m_lat->getPrimalBasis(), k);
             ModifVect (m_bv, row2, 2 * z[k], dim);
          }
          CalcNorm <BVect, RScal> (m_bv, dim, x, norm);

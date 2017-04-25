@@ -21,7 +21,7 @@
 
 #include "latticetester/Types.h"
 #include "latticetester/Const.h"
-#include "latticetester/Base.h"
+#include "latticetester/Basis.h"
 #include "latticetester/Util.h"
 
 
@@ -41,7 +41,7 @@ namespace LatticeTester
 
 //===========================================================================
 
-Base::Base (int d, int maxDim, NormType norm)
+Basis::Basis (int d, int maxDim, NormType norm)
 {
    assert (d > 0);
    assert (maxDim > 0);
@@ -67,7 +67,7 @@ Base::Base (int d, int maxDim, NormType norm)
 
 /*=========================================================================*/
 
-Base::Base (const Base & base): BMat (base)
+Basis::Basis (const Basis & base): BMat (base)
 {
    m_dim = base.m_dim;
    m_maxDim = base.m_maxDim;
@@ -84,7 +84,7 @@ Base::Base (const Base & base): BMat (base)
 
 /*=========================================================================*/
 
-Base::~Base ()
+Basis::~Basis ()
 {
    kill ();
 }
@@ -92,7 +92,7 @@ Base::~Base ()
 
 /*=========================================================================*/
 
-void Base::kill ()
+void Basis::kill ()
 {
    if (m_negFlag != 0) {
       delete[] m_negFlag;
@@ -104,7 +104,7 @@ void Base::kill ()
 
 /*=========================================================================*/
 
-Base & Base::operator= (const Base & base)
+Basis & Basis::operator= (const Basis & base)
 {
    if (this == &base)
       return * this;
@@ -124,7 +124,7 @@ Base & Base::operator= (const Base & base)
 
 /*=========================================================================*/
 
-void Base::permute (int i, int j)
+void Basis::permute (int i, int j)
 {
    if (i == j)
       return ;
@@ -138,7 +138,7 @@ void Base::permute (int i, int j)
 
 /*=========================================================================*/
 
-void Base::setDim (int d)
+void Basis::setDim (int d)
 {
    assert (d > 0);
 
@@ -152,7 +152,7 @@ void Base::setDim (int d)
 
 /*=========================================================================*/
 
-void Base::setNorm (NormType norm)
+void Basis::setNorm (NormType norm)
 {
    if (m_norm == norm)
       return ;
@@ -163,7 +163,7 @@ void Base::setNorm (NormType norm)
 
 /*=========================================================================*/
 
-void Base::setVecNorm (NScal & value, int i)
+void Basis::setVecNorm (NScal & value, int i)
 {
    //   assert (value >= 0);
    //   assert (i > 0 && i <= m_maxDim);
@@ -174,7 +174,7 @@ void Base::setVecNorm (NScal & value, int i)
 
 /*=========================================================================*/
 
-void Base::swap (Base & b)
+void Basis::swap (Basis & b)
 {
    LatticeTester::swap9 (m_dim, b.m_dim);
    LatticeTester::swap9 (m_maxDim, b.m_maxDim);
@@ -187,7 +187,7 @@ void Base::swap (Base & b)
 
 /*=========================================================================*/
 
-void Base::updateVecNorm ()
+void Basis::updateVecNorm ()
 {
    updateVecNorm (0);
 }
@@ -195,7 +195,7 @@ void Base::updateVecNorm ()
 
 /*=========================================================================*/
 
-void Base::updateVecNorm (int d)
+void Basis::updateVecNorm (int d)
 {
    assert (d >= 0);
 
@@ -224,7 +224,7 @@ void Base::updateVecNorm (int d)
 
 /*=========================================================================*/
 
-void Base::updateScalL2Norm (int i)
+void Basis::updateScalL2Norm (int i)
 {
    if (m_negFlag[i]) {
       matrix_row<BMat> row(*this, i);
@@ -244,7 +244,7 @@ void Base::updateScalL2Norm (int i)
 
 /*=========================================================================*/
 
-void Base::updateScalL2Norm (int k1, int k2)
+void Basis::updateScalL2Norm (int k1, int k2)
 {
    for (int i = k1; i <= k2; i++) {
       if (m_negFlag[i]) {
@@ -268,7 +268,7 @@ void Base::updateScalL2Norm (int k1, int k2)
 
 /*=========================================================================*/
 
-void Base::setNegativeNorm (bool flag)
+void Basis::setNegativeNorm (bool flag)
 {
    for (int i = 1; i <= m_dim; i++) {
       m_negFlag[i] = flag;
@@ -278,7 +278,7 @@ void Base::setNegativeNorm (bool flag)
 
 /*=========================================================================*/
 
-string Base::toString() const
+string Basis::toString() const
 {
    ostringstream os;
    os << "Basis:\n";
@@ -308,11 +308,11 @@ string Base::toString() const
 
 /*=========================================================================*/
 
-string Base::toString(int i) const
+string Basis::toString(int i) const
 {
    ostringstream os;
    os << "Dim = " << m_dim << " \n";
-   os << "   Base[" << i << "] =  [";
+   os << "   Basis[" << i << "] =  [";
    for (int j = 1; j <= m_dim; j++)
       os << "  " << (*this)(i,j);
    os << " ]\n";
@@ -339,7 +339,7 @@ string Base::toString(int i) const
 
 /*=========================================================================*/
 
-void Base::write () const
+void Basis::write () const
 {
    cout << "Dim = " << m_dim << " \n";
    for (int i = 1; i <= m_dim; i++) {
@@ -368,10 +368,10 @@ void Base::write () const
 
 /*=========================================================================*/
 
-void Base::write (int i) const
+void Basis::write (int i) const
 {
    cout << "Dim = " << m_dim << " \n";
-   cout << "   Base[" << i << "] =  [ ";
+   cout << "   Basis[" << i << "] =  [ ";
    for (int j = 1; j <= m_dim; j++) {
       cout << setprecision (15) << (*this)(i,j) << "  ";
    }

@@ -21,7 +21,7 @@
 #include "latticetester/Types.h"
 #include "latticetester/Const.h"
 #include "latticetester/Util.h"
-#include "latticetester/Base.h"
+#include "latticetester/Basis.h"
 #include "latticetester/IntLattice.h"
 
 #include <fstream>
@@ -154,7 +154,7 @@ public:
    /**
     * Tries to find shorter vectors in `reductMinkowski`.
     */
-   bool tryZ  (int j, int i, int Stage, bool & smaller, const Base & WTemp);
+   bool tryZ  (int j, int i, int Stage, bool & smaller, const Basis & WTemp);
 
    /**
     * Tries to find a shorter vector in `shortestVector`.

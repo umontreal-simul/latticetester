@@ -40,7 +40,7 @@ namespace LatticeTester {
 /* Erwan
 Cette classe représente une base pour un réseau. Elle hérite de BMat (aka
 NTL::matrix<long> ou boost::numeric::ublas::matrix<long>) définit dans Types.h.
-Elle hérite donc d'une structure de matrice : une Base A contient des éléments
+Elle hérite donc d'une structure de matrice : une Basis A contient des éléments
 A(i,j) (j-ème composante du i-ème vecteur).
 
 Ces éléments sont modifiés grâces aux méthodes fournies dans IntLattice.
@@ -48,30 +48,30 @@ Ces éléments sont modifiés grâces aux méthodes fournies dans IntLattice.
 
 */
 
-class Base : public BMat {
+class Basis : public BMat {
 public:
 
    /**
     * Constructor. Builds a basis of actual dimension \f$d\f$, maximum dimension
     * `maxDim` and with norm `norm`.
     */
-   Base (int d, int maxDim, NormType norm = SUPNORM);
+   Basis (int d, int maxDim, NormType norm = SUPNORM);
 
 
    /**
     * Copy constructor.
     */
-   Base (const Base &);
+   Basis (const Basis &);
 
    /**
     * Destructor.
     */
-   ~Base ();
+   ~Basis ();
 
    /**
     * Assignment operator.
     */
-   Base & operator= (const Base &);
+   Basis & operator= (const Basis &);
 
    /**
     * Cleans and releases all memory used by the basis.
@@ -81,7 +81,7 @@ public:
    /**
     * Swaps this basis with the basis `b`.
     */
-   void swap (Base & b);
+   void swap (Basis & b);
 
    /**
     * Exchanges vectors \f$i\f$ and \f$j\f$ in the basis.

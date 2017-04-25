@@ -36,6 +36,19 @@ namespace LatCommon {
  * \f$L_{\infty}\f$ norms, `NScal` may be chosen the same as `BScal`.
  *
  */
+
+/* Erwan
+Cette classe représente une base pour un réseau. Elle hérite de BMat (aka
+NTL::matrix<long> ou boost::numeric::ublas::matrix<long>) définit dans Types.h.
+Elle hérite donc d'une structure de matrice : une Base A contient des éléments
+A(i,j) (j-ème composante du i-ème vecteur).
+
+L'initialisation de cette classe peut se faire à l'aide de vecteur (permettant de
+former une base). Checkons donc cette possibilité.
+
+
+*/
+
 class Base : public BMat {
 public:
 
@@ -44,6 +57,12 @@ public:
     * `maxDim` and with norm `norm`.
     */
    Base (int d, int maxDim, NormType norm = SUPNORM);
+
+   /** Erwan
+    * Constructor. Buils a basis with vectors gived in argument.
+    */
+   Base ();
+
 
    /**
     * Copy constructor.

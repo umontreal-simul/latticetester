@@ -22,7 +22,7 @@
 #include <set>
 #include <map>
 #include <iostream>
-#include "LatticeTester/Util.h"
+#include "latticetester/Util.h"
 
 
 namespace LatticeTester {

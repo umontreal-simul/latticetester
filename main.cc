@@ -25,12 +25,9 @@ int main(int argc, const char * argv[]) {
 //    for(NormType k = SUPNORM; k <=  ZAREMBANORM; k++){
 //        cout << k << endl;
 //    }
-    
+
     enum NormType { SUPNORM = 1, L1NORM = 3, L2NORM = 3, ZAREMBANORM = 4 };
-//    NormType norme_test;
-//    NormType norme_test2(L1NORM);
-//    NormType norme_test3;
-//    NormType norme_test4;
+
 //    cout << norme_test << "  " << norme_test2 << "   " << norme_test3 << "   " << norme_test4 << endl;
 //    cout << base_test(1, 0) << endl;
     MScal n = 20;
@@ -40,7 +37,7 @@ int main(int argc, const char * argv[]) {
     a_vector[2] = 1;
     a_vector[1] = 1;
     cout << a_vector[0] << endl;
-    
+
     //cout << a_vector[0] << endl;
     //a = { 1,3,9 };
     //PrimeType tes = nombre.getStatus();
@@ -54,7 +51,7 @@ int main(int argc, const char * argv[]) {
             cout << base_lattice(i, j);
         }
         cout << endl;
-        
+
     }
     //char *mess("hey");
     //reseau.trace(mess);

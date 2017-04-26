@@ -52,9 +52,16 @@ public:
 
    /** Erwan
     * Constructor. The modulus is initialized to \f$modulus\f$, and the primal
-    * vector are initialize to \f$base_vector\f$.
+    * and dual vectors are initialize to \f$base_primal\f$.
     */
-   IntLattice (const Base base_vector, int modulus);
+   IntLattice (const Base base_primal, int modulus);
+
+   /** Erwan
+    * Constructor. The modulus is initialized to \f$modulus\f$, the primal
+    * vectors are initialize to \f$base_primal\f$, the dual vectors are
+    * initialize to \f$base_dual\f$.
+    */
+   IntLattice (const Base base_primal, const Base base_dual, int modulus);
 
    /**
     * Constructor. The modulus is initialized to \f$m\f$, the maximal dimension

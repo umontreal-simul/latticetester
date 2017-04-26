@@ -44,6 +44,7 @@ int main(int argc, const char * argv[]) {
     //cout << nombre.isPrime(s, t) << endl;
     //Rank1Lattice reseau(n, a_vector, 10);
     //reseau.buildBasis(4);
+    
     Base base_lattice(5);
     int s = 0;
     for(int i = 0; i<5; i++){
@@ -53,9 +54,20 @@ int main(int argc, const char * argv[]) {
         }
     }
     
+    
     IntLattice reseau(base_lattice, 10);
     
-    cout << reseau.checkDuality() << endl;
+    //cout << reseau.checkDuality() << endl;
+    
+    int myints[]= {1,2,3,4,5};
+    Coordinates second (myints,myints+5);
+    
+    while (!second.empty()) {
+        std::cout << ' ' << *second.begin();
+        second.erase(second.begin());
+    }
+    
+    reseau.buildProjection(&reseau, second);
     
     
     

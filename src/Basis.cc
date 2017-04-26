@@ -146,6 +146,19 @@ Base & Base::operator= (const Base & base)
 
 /*=========================================================================*/
 
+void Base::swap (Base & b)
+{
+   LatticeTester::swap9 (m_dim, b.m_dim);
+   LatticeTester::swap9 (m_maxDim, b.m_maxDim);
+   LatticeTester::swap9 (m_vecNorm, b.m_vecNorm);
+   LatticeTester::swap9 (*this, b);
+   LatticeTester::swap9 (m_negFlag, b.m_negFlag);
+   LatticeTester::swap9 (m_norm, b.m_norm);
+}
+
+
+/*=========================================================================*/
+
 void Base::permute (int i, int j)
 {
    if (i == j)
@@ -191,19 +204,6 @@ void Base::setVecNorm (NScal & value, int i)
    //   assert (i > 0 && i <= m_maxDim);
    m_vecNorm[i] = value;
    m_negFlag[i] = false;
-}
-
-
-/*=========================================================================*/
-
-void Base::swap (Base & b)
-{
-   LatticeTester::swap9 (m_dim, b.m_dim);
-   LatticeTester::swap9 (m_maxDim, b.m_maxDim);
-   LatticeTester::swap9 (m_vecNorm, b.m_vecNorm);
-   LatticeTester::swap9 (*this, b);
-   LatticeTester::swap9 (m_negFlag, b.m_negFlag);
-   LatticeTester::swap9 (m_norm, b.m_norm);
 }
 
 

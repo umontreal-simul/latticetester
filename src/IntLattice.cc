@@ -82,9 +82,25 @@ IntLattice::IntLattice (const MScal & m0, int k, int maxDim, NormType norm0):
 //=========================================================================
 //Erwan
 
-IntLattice::IntLattice (const Base base_vector, int modulus):
-            m_v (base_vector),
-            m_w (base_vector), //to change
+IntLattice::IntLattice (const Base base_primal, int modulus):
+            m_v (base_primal),
+            m_w (base_primal), //to change
+            m_m (modulus),
+            m_lgVolDual2(0), m_xx(0),
+            m_vTemp(m_v)
+{
+
+   conv (m_m2, m_m);
+   m_m2 = m_m2 * m_m2;
+   init();
+}
+
+//=========================================================================
+//Erwan
+
+IntLattice::IntLattice (const Base base_primal, const Base base_dual, int modulus):
+            m_v (base_primal),
+            m_w (base_dual),
             m_m (modulus),
             m_lgVolDual2(0), m_xx(0),
             m_vTemp(m_v)
@@ -519,36 +535,35 @@ Normalizer * IntLattice::getNormalizer (NormaType norma, int alpha)
 
 //=========================================================================
 
-void IntLattice::buildProjection (IntLattice* lattice, const Coordinates & proj)
+void IntLattice::buildProjection (const Coordinates & proj)
 {
    const int dim = getDim ();
-//  cout << "      ESPION_2\n";  getPrimalBasis ().write();
+   cout << "      ESPION_2\n";  getPrimalBasis ().write();
    int i = 0;
    for (Coordinates::const_iterator iter = proj.begin();
         iter != proj.end(); ++iter) {
       for (int j = 1; j <= dim; j++)
-         lattice->m_w(j,i + 1) = m_v(j, *iter);
+         m_w(j,i + 1) = m_v(j, *iter);
       ++i;
    }
 
-   lattice->setDim (static_cast<int>(proj.size()));
-   lattice->m_order = m_order;
+   setDim (static_cast<int>(proj.size()));
+   m_order = m_order;
 
-   Triangularization<Base> (lattice->m_w, lattice->m_v, dim, static_cast<int>(proj.size()), m_m);
-// lattice->trace("\nESPION_4");
-/* cout << "  ***** build 2\n";
-lattice->getPrimalBasis ().setNegativeNorm (true);
-lattice->getPrimalBasis ().updateScalL2Norm (1,proj.size());
-lattice->getPrimalBasis ().write();*/
-   CalcDual<Base> (lattice->m_v, lattice->m_w, static_cast<int>(proj.size()), m_m);
-/*
-cout << "  ***** build 3\n";
-lattice->getDualBasis ().setNegativeNorm (true);
-lattice->getDualBasis ().updateScalL2Norm (1,proj.size());
-lattice->getDualBasis ().write();
-*/
-   lattice->getPrimalBasis ().setNegativeNorm (true);
-   lattice->getDualBasis ().setNegativeNorm (true);
+   Triangularization<Base> (m_w, m_v, dim, static_cast<int>(proj.size()), m_m);
+   trace("\nESPION_4");
+   cout << "  ***** build 2\n";
+   getPrimalBasis ().setNegativeNorm (true);
+   getPrimalBasis ().updateScalL2Norm (1,proj.size());
+   getPrimalBasis ().write();
+   CalcDual<Base> (m_v, m_w, static_cast<int>(proj.size()), m_m);
+
+   cout << "  ***** build 3\n";
+   getDualBasis ().setNegativeNorm (true);
+   getDualBasis ().updateScalL2Norm (1,proj.size());
+   getDualBasis ().write();
+   getPrimalBasis ().setNegativeNorm (true);
+   getDualBasis ().setNegativeNorm (true);
 }
 
-}
+} //namespace LatticeTester

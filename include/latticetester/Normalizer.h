@@ -92,7 +92,8 @@ public:
    /**
     * Returns the maximal dimension for this object.
     */
-   int getDim () const { return m_maxDim; }
+   int getDim () const 
+   { return m_maxDim; }
 
    /**
     * Returns the bound on the length of the shortest nonzero vector in

@@ -43,7 +43,7 @@ Normalizer::Normalizer (const MScal & m0, int k0, int maxDim, std::string name,
       m_name(name), m_norm(norm), m_m(m0), m_rank(k0), m_maxDim(maxDim),
       m_beta(beta0)
 {
-   m_cst = new double[maxDim + 1];
+   m_cst = new double[maxDim];
 }
 
 
@@ -70,7 +70,7 @@ void Normalizer::init (const MScal &m0, int k0, double beta0)
 #else
    logm = log(m_m);
 #endif
-   for (int j = 1; j <= m_maxDim; j++) { //fred
+   for (int j = 0; j < m_maxDim; j++) {
       if (j > k)
          y = k / j;
       x = log (getGamma(j)) + j * logBeta + y * logm;
@@ -94,7 +94,7 @@ std::string Normalizer::ToString () const
 
    //   os.setf(std::ios::left);
    os << std::setprecision (13);
-   for (int t = 1; t <= m_maxDim; t++) { //fred
+   for (int t = 0; t < m_maxDim; t++) {
       os << " Cst[" << std::setw(2) << std::right << t << "] = "
       << std::setw(14) << std::left << m_cst[t] << "\n";
    }
@@ -115,7 +115,7 @@ double Normalizer::getGamma (int) const
 
 double & Normalizer::getCst (int j)
 {
-   assert (j >= 1 && j <= m_maxDim); //fred
+   assert (j >= 0 && j < m_maxDim); //fred
    return m_cst[j];
 }
 

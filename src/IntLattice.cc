@@ -82,9 +82,9 @@ IntLattice::IntLattice (const MScal & m0, int k, int maxDim, NormType norm0):
 //=========================================================================
 //Erwan
 
-IntLattice::IntLattice (const Base base_primal, int modulus):
-            m_v (base_primal),
-            m_w (base_primal), //to change
+IntLattice::IntLattice (const Basis primal_basis, int modulus):
+            m_v (primal_basis),
+            m_w (primal_basis), //to change
             m_m (modulus),
             m_lgVolDual2(0), m_xx(0),
             m_vTemp(m_v)
@@ -98,9 +98,9 @@ IntLattice::IntLattice (const Base base_primal, int modulus):
 //=========================================================================
 //Erwan
 
-IntLattice::IntLattice (const Base base_primal, const Base base_dual, int modulus):
-            m_v (base_primal),
-            m_w (base_dual),
+IntLattice::IntLattice (const Basis primal_basis, const Basis dual_basis, int modulus):
+            m_v (primal_basis),
+            m_w (dual_basis),
             m_m (modulus),
             m_lgVolDual2(0), m_xx(0),
             m_vTemp(m_v)
@@ -550,13 +550,13 @@ void IntLattice::buildProjection (const Coordinates & proj)
    setDim (static_cast<int>(proj.size()));
    m_order = m_order;
 
-   Triangularization<Base> (m_w, m_v, dim, static_cast<int>(proj.size()), m_m);
+   Triangularization<Basis> (m_w, m_v, dim, static_cast<int>(proj.size()), m_m);
    trace("\nESPION_4");
    cout << "  ***** build 2\n";
    getPrimalBasis ().setNegativeNorm (true);
    getPrimalBasis ().updateScalL2Norm (1,proj.size());
    getPrimalBasis ().write();
-   CalcDual<Base> (m_v, m_w, static_cast<int>(proj.size()), m_m);
+   CalcDual<Basis> (m_v, m_w, static_cast<int>(proj.size()), m_m);
 
    cout << "  ***** build 3\n";
    getDualBasis ().setNegativeNorm (true);

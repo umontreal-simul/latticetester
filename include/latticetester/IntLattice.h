@@ -54,14 +54,14 @@ public:
     * Constructor. The modulus is initialized to \f$modulus\f$, and the primal
     * and dual vectors are initialize to \f$base_primal\f$.
     */
-   IntLattice (const Base base_primal, int modulus);
+   IntLattice (const Basis primal_basis, int modulus);
 
    /** Erwan
     * Constructor. The modulus is initialized to \f$modulus\f$, the primal
     * vectors are initialize to \f$base_primal\f$, the dual vectors are
     * initialize to \f$base_dual\f$.
     */
-   IntLattice (const Base base_primal, const Base base_dual, int modulus);
+   IntLattice (const Basis primal_basis, const Basis dual_basis, int modulus);
 
    /**
     * Constructor. The modulus is initialized to \f$m\f$, the maximal dimension
@@ -232,7 +232,7 @@ public:
     * lattice. The result is placed in the `lattice` lattice. The basis is
     * triangularized to form a proper basis.
     */
-   void buildProjection (IntLattice* lattice, const Coordinates & proj);
+   void buildProjection (const Coordinates & proj);
 
    /**
     * Does nothing is this base class.

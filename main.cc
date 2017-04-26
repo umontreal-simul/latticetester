@@ -9,7 +9,7 @@
 
 #include <iostream>
 #include "latticetester/Util.h"
-#include "latticetester/Base.h"
+#include "latticetester/Basis.h"
 #include "latticetester/Const.h"
 #include "latticetester/Types.h"
 #include "latticetester/IntFactor.h"
@@ -21,7 +21,7 @@ using namespace std;
 using namespace LatticeTester;
 
 int main(int argc, const char * argv[]) {
- //   Base base_test(2,7);
+ //   Basis base_test(2,7);
 //    for(NormType k = SUPNORM; k <=  ZAREMBANORM; k++){
 //        cout << k << endl;
 //    }
@@ -45,7 +45,7 @@ int main(int argc, const char * argv[]) {
     //Rank1Lattice reseau(n, a_vector, 10);
     //reseau.buildBasis(4);
     
-    Base base_lattice(5);
+    Basis base_lattice(5);
     int s = 0;
     for(int i = 0; i<5; i++){
         for(int j = 0; j<5; j++){
@@ -67,7 +67,7 @@ int main(int argc, const char * argv[]) {
         second.erase(second.begin());
     }
     
-    reseau.buildProjection(&reseau, second);
+    reseau.buildProjection(second);
     
     
     

@@ -64,7 +64,8 @@ public:
    /**
     * Destructor.
     */
-   virtual ~Normalizer () { delete [] m_cst; }
+   virtual ~Normalizer ()
+   { delete [] m_cst; }
 
    /**
     * Initializes the bounds on the length of the shortest vector. The
@@ -82,17 +83,19 @@ public:
    /**
     * Returns the norm associated with this object.
     */
-   NormType getNorm () const { return m_norm; }
+   NormType getNorm () const
+   { return m_norm; }
 
    /**
     * Sets the norm associated with this object to `norm`.
     */
-   void setNorm (NormType norm) { m_norm = norm; }
+   void setNorm (NormType norm)
+   { m_norm = norm; }
 
    /**
     * Returns the maximal dimension for this object.
     */
-   int getDim () const 
+   int getDim () const
    { return m_maxDim; }
 
    /**

@@ -45,29 +45,37 @@ int main(int argc, const char * argv[]) {
     //Rank1Lattice reseau(n, a_vector, 10);
     //reseau.buildBasis(4);
     
-    Basis base_lattice(5);
+    Basis base_lattice(2);
     int s = 0;
-    for(int i = 0; i<5; i++){
-        for(int j = 0; j<5; j++){
+    /* 
+     for(int i = 0; i<2; i++){
+        for(int j = 0; j<2; j++){
             base_lattice(i, j) = s;
             ++s;
         }
     }
+     */
+    base_lattice(0,0) = 1;
+    base_lattice(1,0) = 0;
+    base_lattice(0,1) = 0;
+    base_lattice(1,1) = 1;
     
     
-    IntLattice reseau(base_lattice, 10);
+    IntLattice reseau(base_lattice, 2);
     
     //cout << reseau.checkDuality() << endl;
     
-    int myints[]= {1,2,3,4,5};
+    int myints[]= {1};
     Coordinates second (myints,myints+5);
     
-    while (!second.empty()) {
+    /*while (!second.empty()) {
         std::cout << ' ' << *second.begin();
         second.erase(second.begin());
-    }
-    
+    } */
+    cout << second.size() << endl;
     reseau.buildProjection(second);
+    
+    
     
     
     

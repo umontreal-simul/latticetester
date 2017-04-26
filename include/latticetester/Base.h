@@ -44,8 +44,6 @@ Elle hérite donc d'une structure de matrice : une Base A contient des élément
 A(i,j) (j-ème composante du i-ème vecteur).
 
 Ces éléments sont modifiés grâces aux méthodes fournies dans IntLattice.
-
-
 */
 
 class Base : public BMat {
@@ -55,8 +53,14 @@ public:
     * Constructor. Builds a basis of actual dimension \f$d\f$, maximum dimension
     * `maxDim` and with norm `norm`.
     */
-   Base (int d, int maxDim, NormType norm = SUPNORM);
+   Base (int dim, int maxDim, NormType norm = SUPNORM);
 
+
+   /**
+    * Constructor. Builds a basis of actual dimension \f$d\f$,
+    * and with norm `norm`.
+    */
+   Base (int dim, NormType norm = SUPNORM);
 
    /**
     * Copy constructor.

@@ -64,6 +64,28 @@ Base::Base (int d, int maxDim, NormType norm)
    }
 }
 
+//===========================================================================
+// Erwan
+
+Base::Base (int dim, NormType norm)
+{
+   assert (dim > 0);
+
+   m_dim = dim;
+   m_maxDim = dim;
+   m_norm = norm;
+
+   BMat::resize (1 + dim, 1 + dim);
+   m_vecNorm.resize (1 + dim);
+   m_negFlag = new bool[1 + dim];
+   for (int i = 0; i <= dim; i++) {
+      m_negFlag[i] = true;
+      for (int j = 0; j <= dim; j++) {
+         (*this)(i,j) = 0;
+      }
+   }
+}
+
 
 /*=========================================================================*/
 

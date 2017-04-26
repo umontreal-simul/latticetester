@@ -79,6 +79,20 @@ IntLattice::IntLattice (const MScal & m0, int k, int maxDim, NormType norm0):
    init ();
 }
 
+//=========================================================================
+//Erwan
+
+IntLattice::IntLattice (const Base base_vector, int modulus):
+            m_v (base_vector),
+            m_w (base_vector), //to change
+            m_m (modulus),
+            m_lgVolDual2(0), m_xx(0),
+            m_vTemp(m_v)
+{
+   conv (m_m2, m_m);
+   m_m2 = m_m2 * m_m2;
+   init();
+}
 
 //=========================================================================
 

@@ -15,8 +15,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATTICETESTER__BASE_H
-#define LATTICETESTER__BASE_H
+#ifndef LATTICETESTER__BASIS_H
+#define LATTICETESTER__BASIS_H
 
 #include "latticetester/Const.h"
 #include "latticetester/Types.h"
@@ -38,15 +38,18 @@ namespace LatticeTester {
  */
 
 /* Erwan
+<<<<<<< HEAD
 Cette classe représente une base pour un réseau. Elle hérite de BMat (aka 
 boost::numeric::ublas::matrix<long> ou NTL::matrix<long> ou NTL::matrix<ZZ>) 
 définit dans Types.h.
+=======
+Cette classe représente une Basis pour un réseau. Elle hérite de BMat (aka
+NTL::matrix<long> ou boost::numeric::ublas::matrix<long>) définit dans Types.h.
+>>>>>>> 0c2559aad798cd9b34adf3f5913f50e33afd5958
 Elle hérite donc d'une structure de matrice : une Basis A contient des éléments
 A(i,j) (j-ème composante du i-ème vecteur).
 
 Ces éléments sont modifiés grâces aux méthodes fournies dans IntLattice.
-
-
 */
 
 class Basis : public BMat {
@@ -56,8 +59,13 @@ public:
     * Constructor. Builds a basis of actual dimension \f$d\f$, maximum dimension
     * `maxDim` and with norm `norm`.
     */
-   Basis (int d, int maxDim, NormType norm = SUPNORM);
+   Basis (int dim, int maxDim, NormType norm = SUPNORM);
 
+   /** Erwan
+    * Constructor. Builds a basis of actual dimension \f$d\f$,
+    * and with norm `norm`.
+    */
+   Basis (int dim, NormType norm = SUPNORM);
 
    /**
     * Copy constructor.
@@ -70,14 +78,14 @@ public:
    ~Basis ();
 
    /**
-    * Assignment operator.
-    */
-   Basis & operator= (const Basis &);
-
-   /**
     * Cleans and releases all memory used by the basis.
     */
    void kill ();
+
+   /**
+    * Assignment operator.
+    */
+   Basis & operator= (const Basis &);
 
    /**
     * Swaps this basis with the basis `b`.
@@ -90,50 +98,14 @@ public:
    void permute (int i, int j);
 
    /**
-    * Returns the actual dimension of the basis.
-    */
-   int getDim () const { return m_dim; }
-
-   /**
     * Sets the actual dimension of the basis to `d`.
     */
    void setDim (int d);
 
    /**
-    * Returns the maximal dimension of the basis.
-    */
-   int getMaxDim () const { return m_maxDim; }
-
-   /**
-    * Returns the norm used by the basis.
-    */
-   NormType getNorm () const { return m_norm; }
-
-   /**
     * Sets the norm used by the basis.
     */
    void setNorm (NormType norm);
-
-   /**
-    * Returns `true` if the \f$i\f$-th vector’s norm is not updated and
-    * erroneous. Returns `false` otherwise.
-    */
-   bool isNegativeNorm (int i) const { return m_negFlag[i]; }
-
-   /**
-    * Sets the dirty flag of the norms to `flag`.
-    */
-   void setNegativeNorm (bool flag);
-
-   /**
-    * Sets the negative flag for the \f$j\f$-th vector to `flag`.
-    */
-   void setNegativeNorm (bool flag, int j) { m_negFlag[j] = flag; }
-
-   /**
-    * Returns the \f$i\f$-th vector’s norm.
-    */
-   NScal getVecNorm (int i) const { return m_vecNorm[i]; }
 
    /**
     * Sets the \f$i\f$-th vector’s norm to `value`. The negative flag for
@@ -164,6 +136,11 @@ public:
    void updateScalL2Norm (int d1, int d2);
 
    /**
+    * Sets the dirty flag of the norms to `flag`.
+    */
+   void setNegativeNorm (bool flag);
+
+   /**
     * Writes the basis in a string and returns it.
     */
    std::string toString () const;
@@ -182,6 +159,38 @@ public:
     * Writes \f$i\f$-th basis vector on standard output.
     */
    void write (int i) const;
+
+   /**
+    * Returns the actual dimension of the basis.
+    */
+   int getDim () const { return m_dim; }
+
+   /**
+    * Returns the maximal dimension of the basis.
+    */
+   int getMaxDim () const { return m_maxDim; }
+
+   /**
+    * Returns the norm used by the basis.
+    */
+   NormType getNorm () const { return m_norm; }
+
+   /**
+    * Returns `true` if the \f$i\f$-th vector’s norm is not updated and
+    * erroneous. Returns `false` otherwise.
+    */
+   bool isNegativeNorm (int i) const { return m_negFlag[i]; }
+
+   /**
+    * Sets the negative flag for the \f$j\f$-th vector to `flag`.
+    */
+   void setNegativeNorm (bool flag, int j) { m_negFlag[j] = flag; }
+
+   /**
+    * Returns the \f$i\f$-th vector’s norm.
+    */
+   NScal getVecNorm (int i) const { return m_vecNorm[i]; }
+
 protected:
 
    /**

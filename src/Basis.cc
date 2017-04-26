@@ -64,6 +64,28 @@ Basis::Basis (int d, int maxDim, NormType norm)
    }
 }
 
+//===========================================================================
+// Erwan
+
+Basis::Basis (int dim, NormType norm)
+{
+   assert (dim > 0);
+
+   m_dim = dim;
+   m_maxDim = dim;
+   m_norm = norm;
+
+   BMat::resize (1 + dim, 1 + dim);
+   m_vecNorm.resize (1 + dim);
+   m_negFlag = new bool[1 + dim];
+   for (int i = 0; i <= dim; i++) {
+      m_negFlag[i] = true;
+      for (int j = 0; j <= dim; j++) {
+         (*this)(i,j) = 0;
+      }
+   }
+}
+
 
 /*=========================================================================*/
 
@@ -124,6 +146,19 @@ Basis & Basis::operator= (const Basis & base)
 
 /*=========================================================================*/
 
+void Basis::swap (Basis & b)
+{
+   LatticeTester::swap9 (m_dim, b.m_dim);
+   LatticeTester::swap9 (m_maxDim, b.m_maxDim);
+   LatticeTester::swap9 (m_vecNorm, b.m_vecNorm);
+   LatticeTester::swap9 (*this, b);
+   LatticeTester::swap9 (m_negFlag, b.m_negFlag);
+   LatticeTester::swap9 (m_norm, b.m_norm);
+}
+
+
+/*=========================================================================*/
+
 void Basis::permute (int i, int j)
 {
    if (i == j)
@@ -169,19 +204,6 @@ void Basis::setVecNorm (NScal & value, int i)
    //   assert (i > 0 && i <= m_maxDim);
    m_vecNorm[i] = value;
    m_negFlag[i] = false;
-}
-
-
-/*=========================================================================*/
-
-void Basis::swap (Basis & b)
-{
-   LatticeTester::swap9 (m_dim, b.m_dim);
-   LatticeTester::swap9 (m_maxDim, b.m_maxDim);
-   LatticeTester::swap9 (m_vecNorm, b.m_vecNorm);
-   LatticeTester::swap9 (*this, b);
-   LatticeTester::swap9 (m_negFlag, b.m_negFlag);
-   LatticeTester::swap9 (m_norm, b.m_norm);
 }
 
 

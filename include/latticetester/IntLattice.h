@@ -39,8 +39,29 @@ namespace LatticeTester {
  * read \f$V_i\cdot W_j = m\delta_{ij}\f$ for some integer constant \f$m\f$.
  *
  */
+
+/*
+* Cette classe représente une lattice. Une lattice est caractérisée par
+* une base et un modulo (m).
+
+
+
+*/
 class IntLattice {
 public:
+
+   /** Erwan
+    * Constructor. The modulus is initialized to \f$modulus\f$, and the primal
+    * and dual vectors are initialize to \f$base_primal\f$.
+    */
+   IntLattice (const Basis primal_basis, int modulus);
+
+   /** Erwan
+    * Constructor. The modulus is initialized to \f$modulus\f$, the primal
+    * vectors are initialize to \f$base_primal\f$, the dual vectors are
+    * initialize to \f$base_dual\f$.
+    */
+   IntLattice (const Basis primal_basis, const Basis dual_basis, int modulus);
 
    /**
     * Constructor. The modulus is initialized to \f$m\f$, the maximal dimension
@@ -91,7 +112,7 @@ public:
    virtual void incDim();
 
    /**
-    * Builds the basis for the lattice in dimension `d`.
+    * Builds the basis for the lattice in dimension `d` (the basis is m_v)
     */
    virtual void buildBasis (int d);
 
@@ -211,7 +232,7 @@ public:
     * lattice. The result is placed in the `lattice` lattice. The basis is
     * triangularized to form a proper basis.
     */
-   void buildProjection (IntLattice* lattice, const Coordinates & proj);
+   void buildProjection (const Coordinates & proj);
 
    /**
     * Does nothing is this base class.

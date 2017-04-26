@@ -114,10 +114,10 @@ void Rank1Lattice::buildBasis (int d)
 
    // if a[1] != 1, the basis must be triangularized
    if (m_v (1, 1) != 1) {
-      Triangularization < Base > (m_v, m_w, d, d, m_m);
+      Triangularization < Basis > (m_v, m_w, d, d, m_m);
       dualize ();
    }
-   CalcDual < Base > (m_v, m_w, d, m_m);
+   CalcDual < Basis > (m_v, m_w, d, m_m);
    m_v.setNegativeNorm (true);
    m_w.setNegativeNorm (true);
 }

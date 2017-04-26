@@ -290,8 +290,8 @@ bool IntLattice::checkDuality () const
 
    for (int i = 1; i <= dim; i++) {
       for (int j = 1; j <= dim; j++) {
-         matrix_row<const Base> row1(m_v, i);
-         matrix_row<const Base> row2(m_w, j);
+         matrix_row<const Basis> row1(m_v, i);
+         matrix_row<const Basis> row2(m_w, j);
          ProdScal (row1, row2, dim, S);
          if (j != i) {
             if (S != 0) {
@@ -323,16 +323,16 @@ bool IntLattice::baseEquivalence (const IntLattice & lat) const
 
    for (int i = 1; i <= d; i++) {
       for (int j = 1; j <= d; j++) {
-         matrix_row<const Base> row1(m_v, i);
-         matrix_row<const Base> row2(m_w, j);
+         matrix_row<const Basis> row1(m_v, i);
+         matrix_row<const Basis> row2(m_w, j);
          ProdScal (row1, row2, d, R);
          conv (Q, lat.m_m);
          Divide (Q, R, R, Q);
          if (R != 0) {
             return false;
          }
-         matrix_row<const Base> row3(lat.m_v, i);
-         matrix_row<const Base> row4(lat.m_w, j);
+         matrix_row<const Basis> row3(lat.m_v, i);
+         matrix_row<const Basis> row4(lat.m_w, j);
          ProdScal (row3, row4, d, R);
          conv (Q, m_m);
          Divide (Q, R, R, Q);
@@ -564,6 +564,7 @@ void IntLattice::buildProjection (const Coordinates & proj)
    getDualBasis ().write();
    getPrimalBasis ().setNegativeNorm (true);
    getDualBasis ().setNegativeNorm (true);
+
 }
 
 } //namespace LatticeTester

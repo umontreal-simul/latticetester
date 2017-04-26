@@ -55,7 +55,6 @@ public:
     */
    Basis (int dim, int maxDim, NormType norm = SUPNORM);
 
-
    /** Erwan
     * Constructor. Builds a basis of actual dimension \f$d\f$,
     * and with norm `norm`.

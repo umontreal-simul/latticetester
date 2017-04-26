@@ -248,18 +248,18 @@ class AddCoordinate {
  *
  */
 public:
-   typedef BASE Base;
+   typedef BASE Basis;
 
    /**
     * Constructs a sequence of coordinate sets by adding the coordinate \c coord
     * to each element in the base sequence \c base.
     */
-   AddCoordinate (const Base& base, Coordinates::value_type coord):
+   AddCoordinate (const Basis& base, Coordinates::value_type coord):
       m_base(base), m_coord(coord)
    { }
 
 #ifdef BOOST_HAS_RVALUE_REFS
-   AddCoordinate (Base&& base, Coordinates::value_type coord):
+   AddCoordinate (Basis&& base, Coordinates::value_type coord):
       m_base(std::move(base)), m_coord(coord)
    { }
 #endif
@@ -267,7 +267,7 @@ public:
    /**
     * Returns the base sequence.
     */
-   const Base& base() const
+   const Basis& base() const
    { return  m_base; }
 
    /**
@@ -278,7 +278,7 @@ public:
 
 public:
    class const_iterator : public boost::iterators::iterator_adaptor<const_iterator,
-      typename Base::const_iterator>
+      typename Basis::const_iterator>
    {
    public:
       struct end_tag {};
@@ -328,7 +328,7 @@ public:
    { return const_iterator(*this, typename const_iterator::end_tag{}); }
 
 private:
-   Base m_base;
+   Basis m_base;
    Coordinates::value_type m_coord;
 };
 

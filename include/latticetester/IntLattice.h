@@ -19,7 +19,7 @@
 #define LATTICETESTER__INTLATTICE_H
 #include "latticetester/Types.h"
 #include "latticetester/Const.h"
-#include "latticetester/Base.h"
+#include "latticetester/Basis.h"
 #include "latticetester/Normalizer.h"
 #include "latticetester/CoordinateSets.h"
 #include "latticetester/Lacunary.h"
@@ -161,12 +161,12 @@ public:
    /**
     * Returns the primal basis `V`.
     */
-   Base & getPrimalBasis () { return m_v; }
+   Basis & getPrimalBasis () { return m_v; }
 
    /**
     * Returns the dual basis `W`.
     */
-   Base & getDualBasis () { return m_w; }
+   Basis & getDualBasis () { return m_w; }
    double getLgVolDual2 (int i) const { return m_lgVolDual2[i]; }
 
    /**
@@ -284,12 +284,12 @@ protected:
    /**
     * Primal basis of the lattice.
     */
-   Base m_v;
+   Basis m_v;
 
    /**
     * Dual basis of the lattice.
     */
-   Base m_w;
+   Basis m_w;
    double *m_lgVolDual2;
 
    /**
@@ -306,7 +306,7 @@ protected:
    /**
     * Work variables.
     */
-   Base m_vTemp;
+   Basis m_vTemp;
 
    /**
     * Default return value for getCoef() (empty vector).

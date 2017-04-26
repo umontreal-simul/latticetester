@@ -46,7 +46,7 @@ int NormaPalpha::getAlpha () const
 
 double NormaPalpha::calcBound (int alpha, int dim)
 {
-   const double eBase = 2.71828182845904523536;
+   const double eBasis = 2.71828182845904523536;
    double MM;
    conv (MM, m_m);
    MScal mm;
@@ -71,7 +71,7 @@ double NormaPalpha::calcBound (int alpha, int dim)
       return -1;
    }
 
-   Term1 = (2.0 * Term1 + dim) * eBase / dim;
+   Term1 = (2.0 * Term1 + dim) * eBasis / dim;
    int j;
 
    double Res = Term1;

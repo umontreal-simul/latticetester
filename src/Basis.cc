@@ -200,8 +200,8 @@ void Basis::setNorm (NormType norm)
 
 void Basis::setVecNorm (NScal & value, int i)
 {
-   //   assert (value >= 0);
-   //   assert (i > 0 && i <= m_maxDim);
+      assert (value >= 0);
+      assert (i > 0 && i <= m_maxDim);
    m_vecNorm[i] = value;
    m_negFlag[i] = false;
 }

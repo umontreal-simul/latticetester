@@ -6,7 +6,7 @@
 //  Copyright © 2017 DIRO. All rights reserved.
 //
 
-
+#include <NTL/ctools.h>
 #include <iostream>
 #include "latticetester/Util.h"
 #include "latticetester/Basis.h"
@@ -45,7 +45,7 @@ int main(int argc, const char * argv[]) {
     //Rank1Lattice reseau(n, a_vector, 10);
     //reseau.buildBasis(4);
     
-    Basis base_lattice(2);
+    Basis primal_basis(2);
     int s = 0;
     /* 
      for(int i = 0; i<2; i++){
@@ -55,26 +55,36 @@ int main(int argc, const char * argv[]) {
         }
     }
      */
-    base_lattice(0,0) = 1;
-    base_lattice(1,0) = 0;
-    base_lattice(0,1) = 0;
-    base_lattice(1,1) = 1;
+    primal_basis(0,0) = 1;
+    primal_basis(1,0) = 1;
+    primal_basis(0,1) = 0;
+    primal_basis(1,1) = 1;
+    Basis dual_basis(primal_basis);
+
     
-    
-    IntLattice reseau(base_lattice, 2);
+    IntLattice reseau(primal_basis, 2);
     
     //cout << reseau.checkDuality() << endl;
     
-    int myints[]= {1};
-    Coordinates second (myints,myints+5);
+    int myints[]= {0, 1};
+    Coordinates second (myints,myints+2);
     
     /*while (!second.empty()) {
         std::cout << ' ' << *second.begin();
         second.erase(second.begin());
     } */
-    cout << second.size() << endl;
-    reseau.buildProjection(second);
-    
+    /*for(Coordinates::const_iterator iter = second.begin(); iter != second.end(); ++iter)
+    {
+        cout << *iter << endl;
+    }*/
+    //reseau.buildProjection(second);
+    CalcDual<Basis>(primal_basis, dual_basis, 2, 5);
+    cout << dual_basis.toString();
+    cout << endl;
+    cout << dual_basis(0,0) << endl;
+    cout << dual_basis(1,0) << endl;
+    cout << dual_basis(0,1) << endl;
+    cout << dual_basis(1,1) << endl;
     
     
     

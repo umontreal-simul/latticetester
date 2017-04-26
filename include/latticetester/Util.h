@@ -1088,8 +1088,8 @@ void Triangularization (Matr & W, Matr & V, int lin, int col,
 template <typename Matr>
 void CalcDual (const Matr & A, Matr & B, int d, const MScal & m)
 {
-   for (int i = 1; i <= d; i++) {
-      for (int j = i + 1; j <= d; j++)
+   for (int i = 0; i < d; i++) {
+      for (int j = i + 1; j < d; j++)
          clear (B(i,j));
 // Dans l'original, c'est Quotient pour Lac et DivideRound pour non-Lac ??
 //        Quotient(m, A(i,i), B(i,i));

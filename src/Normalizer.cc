@@ -70,12 +70,15 @@ void Normalizer::init (const MScal &m0, int k0, double beta0)
 #else
    logm = log(m_m);
 #endif
+
+   //TODO: check indices and impact on getGamma
+
    for (int j = 0; j < m_maxDim; j++) {
-      if (j > k)
-         y = k / j;
-      x = log (getGamma(j)) + j * logBeta + y * logm;
+      if (j > k-1)
+         y = k / (j+1);
+      x = log (getGamma(j+1)) + (j+1) * logBeta + y * logm;
       if (m_norm == L2NORM)
-         x = x + x;
+         x += x;
       m_cst[j] = exp (x);
    }
 }
@@ -86,13 +89,14 @@ void Normalizer::init (const MScal &m0, int k0, double beta0)
 std::string Normalizer::ToString () const
 {
    std::ostringstream os;
-   os << "-----------------------------\n"
-   << "Content of Normalizer object:\n\n Normalizer = " << m_name;
+   os << "-----------------------------\n";
+   os << "Content of Normalizer object:\n\n Normalizer = " << m_name;
    os << "\n m = " << m_m;
    os << "\n rank = " << m_rank;
    os << "\n beta = " << std::setprecision (4) << m_beta << "\n\n";
 
-   //   os.setf(std::ios::left);
+   //os.setf(std::ios::left);
+
    os << std::setprecision (13);
    for (int t = 0; t < m_maxDim; t++) {
       os << " Cst[" << std::setw(2) << std::right << t << "] = "
@@ -115,7 +119,7 @@ double Normalizer::getGamma (int) const
 
 double & Normalizer::getCst (int j)
 {
-   assert (j >= 0 && j < m_maxDim); //fred
+   assert (j >= 0 && j < m_maxDim);
    return m_cst[j];
 }
 

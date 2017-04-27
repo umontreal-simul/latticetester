@@ -114,7 +114,7 @@ public:
 
    /**
     * Same as above, except that the recalculation begins at dimension `d`
-    * + 1.
+    *
     */
    void updateVecNorm (int d);
 

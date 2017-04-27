@@ -49,6 +49,9 @@ namespace LatticeTester
 
    /*-------------------------------------------------------------------------*/
 
+
+   //PW_TODO : why not including this init method in the constructor ?
+
    void Normalizer::init (const MScal &m0, int k0, double beta0)
    /*
     * Computes the vector Cst that corresponds to G, for a lattice of
@@ -71,14 +74,18 @@ namespace LatticeTester
       logm = log(m_m);
    #endif
 
-      //TODO: check indices and impact on getGamma
+      //PW_TODO: check indices and impact on getGamma that starts at 1
 
       for (int j = 0; j < m_maxDim; j++) {
          if (j > k-1)
             y = k / (j+1);
+
          x = log (getGamma(j+1)) + (j+1) * logBeta + y * logm;
-         if (m_norm == L2NORM)
-            x += x;
+         //log calculation because m can be large
+
+         if (m_norm == L2NORM) //L2NORM always used squarred?
+            x *= 2;
+         
          m_cst[j] = exp (x);
       }
    }

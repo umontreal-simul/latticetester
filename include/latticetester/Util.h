@@ -579,14 +579,14 @@ void Euclide (const MScal & a, const MScal & b, MScal & C, MScal & D,
  */
 
 /**
- * Allocates memory for the vector \f$A\f$ of dimensions \f$d+1\f$ and
+ * Allocates memory for the vector \f$A\f$ of dimensions \f$d\f$ and
  * initializes its elements to 0.
  */
 template <typename Real>
 inline void CreateVect (Real* & A, int d)
 {
-    A = new Real[1 + d];
-    for (int i = 0; i <= d; i++)
+    A = new Real[d];
+    for (int i = 0; i < d; i++)
         A[i] = 0;
 }
 
@@ -621,22 +621,22 @@ inline void DeleteVect (Vect & A)
 }
 
 /**
- * Sets components \f$[0..d]\f$ of \f$A\f$ to 0.
+ * Sets components \f$[0..d-1]\f$ of \f$A\f$ to 0.
  */
 template <typename Real>
 inline void SetZero (Real* A, int d)
 {
-    for (int i = 0; i <= d; i++)
+    for (int i = 0; i < d; i++)
         A[i] = 0;
 }
 
 /**
- * Sets components \f$[0..d]\f$ of \f$A\f$ to 0.
+ * Sets components \f$[0..d-1]\f$ of \f$A\f$ to 0.
  */
 template <typename Vect>
 inline void SetZero (Vect & A, int d)
 {
-    for (int i = 0; i <= d; i++)
+    for (int i = 0; i < d; i++)
         A[i] = 0;
 }
 
@@ -646,7 +646,7 @@ inline void SetZero (Vect & A, int d)
 template <typename Real>
 inline void SetValue (Real* A, int d, const Real & x)
 {
-    for (int i = 0; i <= d; i++)
+    for (int i = 0; i < d; i++)
         A[i] = x;
 }
 
@@ -675,14 +675,14 @@ inline std::string toString (const Vect & A, int c, int d)
 }
 
 /**
- * Prints components \f$[1..d]\f$ of vector \f$A\f$ as a string.
+ * Prints components \f$[0..d-1]\f$ of vector \f$A\f$ as a string.
  */
 template <typename Vect>
 std::string toString (const Vect & A, int d)
 {
    std::ostringstream ostr;
    ostr << "[";
-   for (int i = 1; i <= d; i++) {
+   for (int i = 0; i < d; i++) {
       ostr << std::setprecision(2) << std::setw(3) << A[i] <<
               std::setw(2) << "  ";
    }
@@ -692,14 +692,14 @@ std::string toString (const Vect & A, int d)
 
 /**
  * Computes the scalar product of vectors \f$A\f$ and \f$B\f$, using
- * components \f$[1..n]\f$, and puts the result in \f$D\f$.
+ * components \f$[0..n-1]\f$, and puts the result in \f$D\f$.
  */
 template <typename Vect1, typename Vect2, typename Scal>
 inline void ProdScal (const Vect1 & A, const Vect2 & B, int n, Scal & D)
 {
     // Le produit A[i] * B[i] peut déborder, d'oÃ¹ conv.
     MScal C;   C = 0;
-    for (int i = 1; i <= n; i++)
+    for (int i = 0; i < n; i++)
         C += A[i] * B[i];
     conv (D, C);
 }
@@ -729,7 +729,7 @@ inline void CalcNorm (const Vect & V, int n, Scal & S, NormType norm)
     S = 0;
     switch (norm) {
         case L1NORM:
-            for (int i = 1; i <= n; i++) {
+            for (int i = 0; i < n; i++) {
                 conv (y, V[i]);
 #ifdef WITH_NTL
                 S += abs(y);
@@ -740,7 +740,7 @@ inline void CalcNorm (const Vect & V, int n, Scal & S, NormType norm)
             break;
 
         case L2NORM:
-            for (int i = 1; i <= n; i++) {
+            for (int i = 0; i < n; i++) {
                 conv (y, V[i]);
                 S += y*y;
             }
@@ -748,7 +748,7 @@ inline void CalcNorm (const Vect & V, int n, Scal & S, NormType norm)
             break;
 
         case SUPNORM:
-            for (int i = 1; i <= n; i++) {
+            for (int i = 0; i < n; i++) {
 #ifdef WITH_NTL
                 conv (y, abs(V[i]));
 #else
@@ -761,7 +761,7 @@ inline void CalcNorm (const Vect & V, int n, Scal & S, NormType norm)
 
         case ZAREMBANORM:
             S = 1.0;
-            for (int i = 1; i <= n; i++) {
+            for (int i = 0; i < n; i++) {
 #ifdef WITH_NTL
                 conv (y, abs(V[i]));
 #else
@@ -778,45 +778,45 @@ inline void CalcNorm (const Vect & V, int n, Scal & S, NormType norm)
 }
 
 /**
- * Copies vector \f$A\f$ into vector \f$B\f$ using components \f$[0..n]\f$.
+ * Copies vector \f$A\f$ into vector \f$B\f$ using components \f$[0..n-1]\f$.
  */
 template <typename Vect>
 inline void CopyVect (const Vect & A, Vect & B, int n)
 {
-    for (int k = 0; k <= n; k++)  B[k] = A[k];
+    for (int k = 0; k < n; k++)  B[k] = A[k];
 }
 
 /**
  * Adds vector \f$B\f$ multiplied by \f$x\f$ to vector \f$A\f$ using
- * components \f$[1..n]\f$, and puts the result in \f$A\f$.
+ * components \f$[0..n-1]\f$, and puts the result in \f$A\f$.
  */
 template <typename Vect1, typename Vect2, typename Scal>
 inline void ModifVect (Vect1 & A, const Vect2 & B, Scal x, int n)
 {
     typename Vect2::value_type a;
     conv (a, x);
-    for (int i = 1; i <= n; i++)
+    for (int i = 0; i < n; i++)
         A[i] = A[i] + B[i]*a;
 }
 
 /**
- * Changes the sign of the components \f$[1..n]\f$ of vector \f$A\f$.
+ * Changes the sign of the components \f$[0..n-1]\f$ of vector \f$A\f$.
  */
 template <typename Vect>
 inline void ChangeSign (Vect & A, int n)
 {
-    for (int i = 1; i <= n; i++) A[i] = -A[i];
+    for (int i = 0; i < n; i++) A[i] = -A[i];
 }
 
 /**
- * Computes the greatest common divisor of \f$V[k],…,V[n]\f$.
+ * Computes the greatest common divisor of \f$V[k],…,V[n-1]\f$.
  */
 inline long GCD2vect (std::vector<long> V, int k, int n)
 {
     int i = k + 1;
     long r, d, c;
     d = labs (V[k]);
-    while (d != 1 && i <= n) {
+    while (d != 1 && i < n) {
         c = labs (V[i]);
         while (c) {
             r = d % c;
@@ -845,15 +845,15 @@ inline long GCD2vect (std::vector<long> V, int k, int n)
 template <typename Real>
 inline void CreateMatr (Real** & A, int d)
 {
-    A = new Real *[1 + d];
-    for (int i = 0; i <= d; i++) {
-        A[i] = new Real[1 + d];
-        for (int j = 0; j <= d; j++)
+    A = new Real *[d];
+    for (int i = 0; i < d; i++) {
+        A[i] = new Real[d];
+        for (int j = 0; j < d; j++)
             A[i][j] = 0; }
 }
 
 /**
- * Frees the memory used by the \f$(d+1)\times(d+1)\f$ matrix \f$A\f$.
+ * Frees the memory used by the \f$d\times d\f$ matrix \f$A\f$.
  */
 template <typename Real>
 inline void DeleteMatr (Real** & A, int d)
@@ -865,16 +865,16 @@ inline void DeleteMatr (Real** & A, int d)
 }
 
 /**
- * Allocates memory for the matrix \f$A\f$ of dimensions (<tt>line</tt> + 1)
- * \f$\times\f$ (<tt>col</tt> + 1). Initializes its elements to 0.
+ * Allocates memory for the matrix \f$A\f$ of dimensions (<tt>line</tt>)
+ * \f$\times\f$ (<tt>col</tt>). Initializes its elements to 0.
  */
 template <typename Real>
 inline void CreateMatr (Real** & A, int line, int col)
 {
-    A = new Real *[1+line];
-    for (int i = 0; i <= line; i++) {
-        A[i] = new Real[1+col];
-        for (int j = 0; j <= col; j++)
+    A = new Real *[line];
+    for (int i = 0; i < line; i++) {
+        A[i] = new Real[col];
+        for (int j = 0; j < col; j++)
             A[i][j] = 0;
     }
 }
@@ -893,11 +893,11 @@ inline void DeleteMatr (Real** & A, int line, int col)
 
 /**
  * Creates the square matrix \f$A\f$ of dimensions
- * \f$(d+1)\times(d+1)\f$ and initializes its elements to 0.
+ * \f$d\times d\f$ and initializes its elements to 0.
  */
 inline void CreateMatr (MMat& A, int d)
 {
-    A.resize (1 + d, 1 + d);
+    A.resize (d, d);
     //clear (A);
 }
 
@@ -907,17 +907,17 @@ inline void CreateMatr (MMat& A, int d)
  */
 inline void CreateMatr (MMatP & A, int d)
 {
-    A.SetDims (1 + d, 1 + d);   clear (A);
+    A.SetDims (d, d);   clear (A);
 }
 #endif
 
 /**
- * Creates the matrix \f$A\f$ of dimensions (<tt>line</tt> + 1)
- * \f$\times\f$ (<tt>col</tt> + 1). Initializes its elements to 0.
+ * Creates the matrix \f$A\f$ of dimensions (<tt>line</tt>)
+ * \f$\times\f$ (<tt>col</tt>). Initializes its elements to 0.
  */
 inline void CreateMatr (MMat& A, int line, int col)
 {
-    A.resize(1 + line, 1 + col);
+    A.resize(line, col);
     //clear (A);
 }
 
@@ -927,7 +927,7 @@ inline void CreateMatr (MMat& A, int line, int col)
  */
 inline void CreateMatr (MMatP & A, int line, int col)
 {
-    A.SetDims (1 + line, 1 + col);   clear (A);
+    A.SetDims (line, col);   clear (A);
 }
 #endif
 
@@ -955,8 +955,8 @@ inline void DeleteMatr (MMatP & A)
 template <typename Matr>
 inline void CopyMatr (const Matr & A, Matr & B, int n)
 {
-    for (int i = 1; i <= n; i++)
-        for (int j = 1; j <= n; j++)
+    for (int i = 0; i < n; i++)
+        for (int j = 0; j < n; j++)
             B[i][j] = A[i][j];
 }
 
@@ -966,8 +966,8 @@ inline void CopyMatr (const Matr & A, Matr & B, int n)
 template <typename Matr>
 inline void CopyMatr (const Matr & A, Matr & B, int line, int col)
 {
-    for (int i = 1; i <= line; i++)
-        for (int j = 1; j <= col; j++)
+    for (int i = 0; i < line; i++)
+        for (int j = 0; j < col; j++)
             B[i][j] = A[i][j];
 }
 
@@ -980,9 +980,9 @@ template <typename MatT>
 std::string toStr (const MatT & mat, int d1, int d2)
 {
    std::ostringstream ostr;
-   for (int i = 1; i <= d1; i++) {
+   for (int i = 0; i < d1; i++) {
       ostr << "[";
-      for (int j = 1; j <= d2; j++) {
+      for (int j = 0; j < d2; j++) {
          ostr << std::setprecision (2) << std::setw (6) << mat[i][j] <<
             std::setw (2) << " ";
       }
@@ -998,8 +998,8 @@ std::string toStr (const MatT & mat, int d1, int d2)
 template <typename Matr>
 bool CheckTriangular (const Matr & A, int dim, const MScal & m)
 {
-   for (int i = 2; i <= dim; i++) {
-      for (int j = 1; j < i; j++) {
+   for (int i = 1; i < dim; i++) {
+      for (int j = 0; j < i; j++) {
          if (A(i,j) % m != 0) {
             std::cout << "******  CheckTriangular failed for element A[" << i <<
                  "][" << j << "]" << std::endl;
@@ -1018,27 +1018,33 @@ bool CheckTriangular (const Matr & A, int dim, const MScal & m)
  * of the matrices will be considered (counting indices from 1; line 0 and
  * column 0 must be there but are unused).
  */
+
+/*Erwan
+* Travail sur deshumanize. Changement des indices pour commencer à 0.
+*
+*
+*/
 template <typename Matr>
 void Triangularization (Matr & W, Matr & V, int lin, int col,
                         const MScal & m)
 {
    MScal T1, T2, T3, T4, T5, T6, T7, T8;
 
-   for (int j = 1; j <= col; j++) {
-      for (int i = 1; i <= lin; i++)
+   for (int j = 0; j < col; j++) {
+      for (int i = 0; i < lin; i++)
          Modulo (W(i,j), m, W(i,j));
-      int r = 1;
-      while (r < lin) {
-         while (IsZero (W(r,j)) && r < lin)
+      int r = 0;
+      while (r < lin-1) {
+         while (IsZero (W(r,j)) && r < lin-1)
             ++r;
-         if (r < lin) {
+         if (r < lin-1) {
             int s = r + 1;
-            while (IsZero (W(s,j)) && s < lin)
+            while (IsZero (W(s,j)) && s < lin-1)
                ++s;
             if (!IsZero (W(s,j))) {
-               Euclide (W(r,j), W(s,j), T1, T2, T3, T4, W(s,j));
+               Euclide (W(r,j), W(s,j), T1, T2, T3, T4, W(s,j)); //pivot de gauss
                clear (W(r,j));
-               for (int j1 = j + 1; j1 <= col; j1++) {
+               for (int j1 = j + 1; j1 < col; j1++) {
                   T5 = T1 * W(r,j1);
                   T6 = T2 * W(s,j1);
                   T7 = T3 * W(r,j1);
@@ -1049,32 +1055,32 @@ void Triangularization (Matr & W, Matr & V, int lin, int col,
                   Modulo (W(r,j1), m, W(r,j1));
                }
             } else {
-               for (int j1 = j; j1 <= col; j1++) {
+               for (int j1 = j; j1 < col; j1++) {
                   std::swap (W(r,j1), W(s,j1));
                }
             }
             r = s;
          }
       }
-      if (IsZero (W(lin,j))) {
-         for (int j1 = 1; j1 <= col; j1++) {
+      if (IsZero (W(lin-1,j))) {
+         for (int j1 = 0; j1 < col; j1++) {
             if (j1 != j)
                clear (V(j,j1));
             else
                V(j,j1) = m;
          }
       } else {
-         Euclide (W(lin,j), m, T1, T2, T3, T4, V(j,j));
-         for (int j1 = 1; j1 < j; j1++)
+         Euclide (W(lin-1,j), m, T1, T2, T3, T4, V(j,j));
+         for (int j1 = 0; j1 < j; j1++)
             clear (V(j,j1));
-         for (int j1 = j + 1; j1 <= col; j1++) {
-            T2 = W(lin,j1) * T1;
+         for (int j1 = j + 1; j1 < col; j1++) {
+            T2 = W(lin-1,j1) * T1;
             Modulo (T2, m, V(j,j1));
          }
          Quotient (m, V(j,j), T1);
-         for (int j1 = j + 1; j1 <= col; j1++) {
-            W(lin,j1) *= T1;
-            Modulo (W(lin,j1), m, W(lin,j1));
+         for (int j1 = j + 1; j1 < col; j1++) {
+            W(lin-1,j1) *= T1;
+            Modulo (W(lin-1,j1), m, W(lin-1,j1));
          }
       }
    }
@@ -1088,13 +1094,13 @@ void Triangularization (Matr & W, Matr & V, int lin, int col,
 template <typename Matr>
 void CalcDual (const Matr & A, Matr & B, int d, const MScal & m)
 {
-   for (int i = 1; i <= d; i++) {
-      for (int j = i + 1; j <= d; j++)
+   for (int i = 0; i < d; i++) {
+      for (int j = i + 1; j < d; j++)
          clear (B(i,j));
 // Dans l'original, c'est Quotient pour Lac et DivideRound pour non-Lac ??
 //        Quotient(m, A(i,i), B(i,i));
       DivideRound (m, A(i,i), B(i,i));
-      for (int j = i - 1; j >= 1; j--) {
+      for (int j = i - 1; j >= 0; j--) {
          clear (B(i,j));
          for (int k = j + 1; k <= i; k++) {
             B(i,j) += A(j,k) * B(i,k);

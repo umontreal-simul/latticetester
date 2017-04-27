@@ -56,9 +56,9 @@ Basis::Basis (int d, int maxDim, NormType norm)
    BMat::resize (1 + maxDim, 1 + maxDim);
    m_vecNorm.resize (1 + maxDim);
    m_negFlag = new bool[1 + maxDim];
-   for (int i = 0; i <= maxDim; i++) {
+   for (int i = 0; i < maxDim; i++) {
       m_negFlag[i] = true;
-      for (int j = 0; j <= maxDim; j++) {
+      for (int j = 0; j < maxDim; j++) {
          (*this)(i,j) = 0;
       }
    }
@@ -78,9 +78,9 @@ Basis::Basis (int dim, NormType norm)
    BMat::resize (1 + dim, 1 + dim);
    m_vecNorm.resize (1 + dim);
    m_negFlag = new bool[1 + dim];
-   for (int i = 0; i <= dim; i++) {
+   for (int i = 0; i < dim; i++) {
       m_negFlag[i] = true;
-      for (int j = 0; j <= dim; j++) {
+      for (int j = 0; j < dim; j++) {
          (*this)(i,j) = 0;
       }
    }
@@ -137,7 +137,7 @@ Basis & Basis::operator= (const Basis & base)
    BMat::operator=(base);
    m_vecNorm = base.m_vecNorm;
    m_negFlag = new bool[m_maxDim + 1];
-   for (int i = 0; i <= m_dim; i++)
+   for (int i = 0; i < m_dim; i++)
       m_negFlag[i] = base.m_negFlag[i];
 
    return *this;
@@ -163,7 +163,7 @@ void Basis::permute (int i, int j)
 {
    if (i == j)
       return ;
-   for (int k = 1; k <= m_dim; k++) {
+   for (int k = 0; k < m_dim; k++) {
       LatticeTester::swap9 ((*this)(j,k), (*this)(i,k));
    }
    LatticeTester::swap9 (m_vecNorm[i], m_vecNorm[j]);
@@ -200,8 +200,8 @@ void Basis::setNorm (NormType norm)
 
 void Basis::setVecNorm (NScal & value, int i)
 {
-   //   assert (value >= 0);
-   //   assert (i > 0 && i <= m_maxDim);
+      assert (value >= 0);
+      assert (i >= 0 && i < m_maxDim);
    m_vecNorm[i] = value;
    m_negFlag[i] = false;
 }
@@ -221,7 +221,7 @@ void Basis::updateVecNorm (int d)
 {
    assert (d >= 0);
 
-   for (int i = d + 1; i <= m_dim; i++) {
+   for (int i = d; i < m_dim; i++) {
       if (m_negFlag[i]) {
          matrix_row<BMat> row(*this, i);
          if (m_norm == L2NORM) {
@@ -268,7 +268,7 @@ void Basis::updateScalL2Norm (int i)
 
 void Basis::updateScalL2Norm (int k1, int k2)
 {
-   for (int i = k1; i <= k2; i++) {
+   for (int i = k1; i < k2; i++) {
       if (m_negFlag[i]) {
          matrix_row<BMat> row(*this, i);
          ProdScal (row, row, m_dim, m_vecNorm[i]);
@@ -292,7 +292,7 @@ void Basis::updateScalL2Norm (int k1, int k2)
 
 void Basis::setNegativeNorm (bool flag)
 {
-   for (int i = 1; i <= m_dim; i++) {
+   for (int i = 0; i < m_dim; i++) {
       m_negFlag[i] = flag;
    }
 }
@@ -305,15 +305,15 @@ string Basis::toString() const
    ostringstream os;
    os << "Basis:\n";
    os << "  Dim = " << m_dim << " \n";
-   for (int i = 1; i <= m_dim; i++) {
+   for (int i = 0; i < m_dim; i++) {
       os << "    [";
-      for (int j = 1; j <= m_dim; j++)
+      for (int j = 0; j < m_dim; j++)
          os << " " <<  setprecision (15) << (*this)(i,j);
       os << " ]\n";
    }
 
    os << "  Norm:\n";
-   for (int i = 1; i <= m_dim; i++) {
+   for (int i = 0; i < m_dim; i++) {
       os << "    ";
       if (m_negFlag[i]) {
          os << "-1" << endl;
@@ -335,7 +335,7 @@ string Basis::toString(int i) const
    ostringstream os;
    os << "Dim = " << m_dim << " \n";
    os << "   Basis[" << i << "] =  [";
-   for (int j = 1; j <= m_dim; j++)
+   for (int j = 0; j < m_dim; j++)
       os << "  " << (*this)(i,j);
    os << " ]\n";
 
@@ -364,9 +364,9 @@ string Basis::toString(int i) const
 void Basis::write () const
 {
    cout << "Dim = " << m_dim << " \n";
-   for (int i = 1; i <= m_dim; i++) {
+   for (int i = 0; i < m_dim; i++) {
       cout << "   | ";
-      for (int j = 1; j <= m_dim; j++) {
+      for (int j = 0; j < m_dim; j++) {
          cout << setprecision (15) << (*this)(i,j) << "\t";
       }
       cout << " |" << endl;
@@ -374,7 +374,7 @@ void Basis::write () const
    // return;
    cout << "Norm:\n";
 
-   for (int i = 1; i <= m_dim; i++) {
+   for (int i = 0; i < m_dim; i++) {
       cout << "   ";
       if (m_negFlag[i]) {
          cout << "-1" << endl;
@@ -394,7 +394,7 @@ void Basis::write (int i) const
 {
    cout << "Dim = " << m_dim << " \n";
    cout << "   Basis[" << i << "] =  [ ";
-   for (int j = 1; j <= m_dim; j++) {
+   for (int j = 0; j < m_dim; j++) {
       cout << setprecision (15) << (*this)(i,j) << "  ";
    }
    cout << "]" << endl;

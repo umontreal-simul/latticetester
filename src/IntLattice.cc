@@ -542,13 +542,12 @@ void IntLattice::buildProjection (const Coordinates & proj)
    int i = 0;
    for (Coordinates::const_iterator iter = proj.begin();
         iter != proj.end(); ++iter) {
-      for (int j = 1; j <= dim; j++)
-         m_w(j,i + 1) = m_v(j, *iter);
+      for (int j = 0; j < dim; j++)
+         m_w(j,i) = m_v(j, *iter);
       ++i;
    }
 
    setDim (static_cast<int>(proj.size()));
-   m_order = m_order;
 
    Triangularization<Basis> (m_w, m_v, dim, static_cast<int>(proj.size()), m_m);
    trace("\nESPION_4");

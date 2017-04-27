@@ -44,10 +44,10 @@ int main(int argc, const char * argv[]) {
     //cout << nombre.isPrime(s, t) << endl;
     //Rank1Lattice reseau(n, a_vector, 10);
     //reseau.buildBasis(4);
-    
-    Basis primal_basis(2);
+
+    Basis W(3);
     int s = 0;
-    /* 
+    /*
      for(int i = 0; i<2; i++){
         for(int j = 0; j<2; j++){
             base_lattice(i, j) = s;
@@ -55,20 +55,22 @@ int main(int argc, const char * argv[]) {
         }
     }
      */
-    primal_basis(0,0) = 1;
-    primal_basis(1,0) = 1;
-    primal_basis(0,1) = 0;
-    primal_basis(1,1) = 1;
-    Basis dual_basis(primal_basis);
+    W(1,1) = 1;
+    W(2,1) = 1;
+    W(1,2) = 0;
+    W(2,2) = 3;
+    Basis V(3);
 
-    
-    IntLattice reseau(primal_basis, 2);
-    
+
+
+
+    //IntLattice reseau(primal_basis, 2);
+
     //cout << reseau.checkDuality() << endl;
-    
-    int myints[]= {0, 1};
-    Coordinates second (myints,myints+2);
-    
+
+    //int myints[]= {0, 1};
+    //Coordinates second (myints,myints+2);
+
     /*while (!second.empty()) {
         std::cout << ' ' << *second.begin();
         second.erase(second.begin());
@@ -78,19 +80,80 @@ int main(int argc, const char * argv[]) {
         cout << *iter << endl;
     }*/
     //reseau.buildProjection(second);
-    CalcDual<Basis>(primal_basis, dual_basis, 2, 5);
-    cout << dual_basis.toString();
-    cout << endl;
-    cout << dual_basis(0,0) << endl;
-    cout << dual_basis(1,0) << endl;
-    cout << dual_basis(0,1) << endl;
-    cout << dual_basis(1,1) << endl;
-    
-    
-    
-    
-    
-    
+    Triangularization(W, V, 2, 2, 5);
+    int lin = 2;
+    int col = 2;
+    int m = 5;
+
+    //MScal T1, T2, T3, T4, T5, T6, T7, T8;
+
+   /*for (int j = 0; j < col; j++) {
+      for (int i = 0; i < lin; i++)
+         Modulo (W(i,j), m, W(i,j));
+      int r = j;
+      while (r < lin-1) {
+         while (IsZero (W(r,j)) && r < lin-1)
+            ++r;
+         if (r < lin-1) {
+            int s = r + 1;
+            while (IsZero (W(s,j)) && s < lin-1)
+               ++s;
+            if (!IsZero (W(s,j))) {
+               Euclide (W(r,j), W(s,j), T1, T2, T3, T4, W(s,j)); //pivot de gausse?
+               clear (W(r,j));
+               for (int j1 = j + 1; j1 < col; j1++) {
+                  T5 = T1 * W(r,j1);
+                  T6 = T2 * W(s,j1);
+                  T7 = T3 * W(r,j1);
+                  T8 = T4 * W(s,j1);
+                  W(s,j1) = T5 + T6;
+                  Modulo (W(s,j1), m, W(s,j1));
+                  W(r,j1) = T7 + T8;
+                  Modulo (W(r,j1), m, W(r,j1));
+               }
+            } else {
+               for (int j1 = j; j1 < col; j1++) {
+                  std::swap (W(r,j1), W(s,j1));
+               }
+            }
+            r = s;
+         }
+      }
+      cout << W.toString() << endl;
+      if (IsZero (W(lin-1,j))) {
+         for (int j1 = 0; j1 < col; j1++) {
+            if (j1 != j)
+               clear (V(j,j1));
+            else
+               V(j,j1) = m;
+         }
+      } else {
+         Euclide (W(lin-1,j), m, T1, T2, T3, T4, V(j,j));
+         for (int j1 = 0; j1 < j; j1++)
+            clear (V(j,j1));
+         for (int j1 = j + 1; j1 < col; j1++) {
+            T2 = W(lin-1,j1) * T1;
+            Modulo (T2, m, V(j,j1));
+         }
+          T1 = m/V(j,j);
+         //Quotient (m, V(j,j), T1);
+         for (int j1 = j + 1; j1 < col; j1++) {
+            W(lin-1,j1) *= T1;
+            Modulo (W(lin-1,j1), m, W(lin-1,j1));
+         }
+      }
+   }*/
+
+
+    cout << W.toString() << endl;
+    cout << V.toString() << endl;
+    cout << W(3,1) << endl;
+
+
+
+
+
+
     //char *mess("hey");
     //reseau.trace(mess);
     return 0;

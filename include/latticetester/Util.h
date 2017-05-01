@@ -1026,9 +1026,9 @@ bool CheckTriangular (const Matr & A, int dim, const MScal & m)
 *  [ 1  0  0  a  b ]
 *  [ 0  1  0  c  d ]
 *  [ 0  0  1  e  f ]
-*  [ 0  0  0  1  0 ]
-*  [ 0  0  0  0  1 ]
-* avec a, b, c, d, e, et f des entiers.
+*  [ 0  0  0  m  0 ]
+*  [ 0  0  0  0  m ]
+* avec a, b, c, d, e, et f des entiers et m le modulo.
 */
 template <typename Matr>
 void Triangularization (Matr & W, Matr & V, int lin, int col,

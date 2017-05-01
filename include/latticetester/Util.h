@@ -1015,14 +1015,20 @@ bool CheckTriangular (const Matr & A, int dim, const MScal & m)
  * matrix \f$W\f$ to obtain an upper triangular matrix \f$V\f$, dual to
  * \f$W\f$. However, the matrix \f$W\f$ will be transformed too in order to
  * preserve duality. Only the first `lin` lines and the first `col` columns
- * of the matrices will be considered (counting indices from 1; line 0 and
- * column 0 must be there but are unused).
+ * of the matrices will be considered.
  */
 
 /*Erwan
 * Travail sur deshumanize. Changement des indices pour commencer à 0.
+* Cette fonction prend en argument uniquement pour des matrices triangulaires
+* retournées par latmrg. Ces matrices sont du type :
 *
-*
+*  [ 1  0  0  a  b ]
+*  [ 0  1  0  c  d ]
+*  [ 0  0  1  e  f ]
+*  [ 0  0  0  1  0 ]
+*  [ 0  0  0  0  1 ]
+* avec a, b, c, d, e, et f des entiers.
 */
 template <typename Matr>
 void Triangularization (Matr & W, Matr & V, int lin, int col,
@@ -1042,7 +1048,7 @@ void Triangularization (Matr & W, Matr & V, int lin, int col,
             while (IsZero (W(s,j)) && s < lin-1)
                ++s;
             if (!IsZero (W(s,j))) {
-               Euclide (W(r,j), W(s,j), T1, T2, T3, T4, W(s,j)); //pivot de gauss
+               Euclide (W(r,j), W(s,j), T1, T2, T3, T4, W(s,j));
                clear (W(r,j));
                for (int j1 = j + 1; j1 < col; j1++) {
                   T5 = T1 * W(r,j1);
@@ -1091,6 +1097,18 @@ void Triangularization (Matr & W, Matr & V, int lin, int col,
  * Calculates the \f$m\f$-dual of the matrix `A`. The result is placed in the
  * matrix `B`. Only the first \f$d\f$ lines and columns are considered.
  */
+
+/* Erwan
+* Cette fonction prend en argument uniquement pour des matrices triangulaires
+* retournées par latmrg. Ces matrices sont du type :
+*
+*  [ 1  0  0  a  b ]
+*  [ 0  1  0  c  d ]
+*  [ 0  0  1  e  f ]
+*  [ 0  0  0  1  0 ]
+*  [ 0  0  0  0  1 ]
+* avec a, b, c, d, e, et f des entiers.
+*/
 template <typename Matr>
 void CalcDual (const Matr & A, Matr & B, int d, const MScal & m)
 {

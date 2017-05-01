@@ -20,6 +20,9 @@
 namespace LatticeTester
 {
 
+//PW_TODO
+//These gamma constants are calculated as defined in Conway
+//page 20 chap 1
 
 const double NormaBestLat::m_gamma[] =
    {

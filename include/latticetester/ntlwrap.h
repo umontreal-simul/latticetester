@@ -18,90 +18,68 @@
 #ifndef __NTLWRAP_H__
 #define __NTLWRAP_H__
 
-#include <NTL/vector.h>
-#include <NTL/matrix.h>
-#include <NTL/vec_ZZ.h>
-#include <NTL/mat_ZZ.h>
-#include <NTL/vec_RR.h>
-#include <NTL/mat_RR.h>
+#include "NTL/vector.h"
+#include "NTL/matrix.h"
 
 
 NTL_CLIENT
 
-typedef NTL::Vec<double> vec_double;
-typedef NTL::Mat<double> mat_double;
-typedef NTL::Vec<long>   vec_zz;
-typedef NTL::Mat<long>   mat_zz;
-
-// define a specialization of vector<T> as a wrapper around NTL vec_T
-#define WRAP_NTL_VECTOR(S,T) \
-   template <> \
-   class vector<T> : public vec_##S \
-   { \
-   public: \
-      typedef T value_type; \
-      typedef T* pointer; \
-      typedef T& reference; \
-      typedef const T* const_pointer; \
-      typedef const T& const_reference; \
-      typedef long size_type; \
-    \
-      inline vector<T>() {} \
-      inline vector<T>(size_type size) : vec_##S(INIT_SIZE, size) {} \
-      inline vector<T>(const vec_##S &v) : vec_##S(v) {} \
-    \
-      inline void resize(size_type size) { SetLength(size); } \
-      inline void clear() { kill(); } \
-      /*    inline void swap (vector<T> &v) { NTL::swap(*this, v); } */ \
-      inline size_type size() const { return length(); } \
-      inline size_type max_size() const { return MaxLength(); } \
-      inline bool empty() const { return size() == 0; } \
-    \
-      inline const_reference operator()(size_type i) const { return (*this)[i]; } \
-      inline reference operator()(size_type i) { return (*this)[i]; } \
-   }
-
-// define a specialization of matrix<T> as a wrapper around NTL mat_T
-#define WRAP_NTL_MATRIX(S,T) \
-   template<> \
-   class matrix<T> : public mat_##S \
-   { \
-   public: \
-      typedef T value_type; \
-      typedef T* pointer; \
-      typedef T& reference; \
-      typedef const T* const_pointer; \
-      typedef const T& const_reference; \
-      typedef long size_type; \
-    \
-      inline matrix<T>() {} \
-      inline matrix<T>(const mat_##S& a) : mat_##S(a) {} \
-      inline matrix<T>(size_type size1, size_type size2) : mat_##S(INIT_SIZE, size1, size2) {} \
-    \
-      inline void resize(size_type size1, size_type size2) { SetDims(size1, size2); } \
-      inline void clear() { kill(); } \
-      /*   inline void swap (matrix<T> &m) { NTL::swap(*this, m); }*/   \
-      inline size_type size1() const { return NumRows(); } \
-      inline size_type size2() const { return NumCols(); } \
-    \
-      inline reference operator()(size_type i, size_type j) { return (*this)[i][j]; } \
-      inline const_reference operator()(size_type i, size_type j) const { return (*this)[i][j]; } \
-   }
+/**
+ * The two floowing two classes are copies from NTL::Vec<T> and NTL::Mat<T>, but
+ * they contain additional member functions having same names to the ones 
+ * used in boost library.
+ * This name conversion is meant to have the samee function names in boost and NTL 
+ * and allows us to have LatticeTester work with either boost library or NTL library 
+ * depending on the variable WITH_NTL
+ */
 
 namespace NTL
 {
-   template <typename T> class vector { /* empty generic template: must be specialized */ };
-   template <typename T> class matrix { /* empty generic template: must be specialized */ };
+   template <typename T> class vector : public Vec<T>{
+   	   public:
 
-   // declare specializations
-   WRAP_NTL_VECTOR(ZZ,ZZ);
-   WRAP_NTL_MATRIX(ZZ,ZZ);
-   WRAP_NTL_VECTOR(RR,RR);
-   WRAP_NTL_MATRIX(RR,RR);
-   WRAP_NTL_VECTOR(double,double);
-   WRAP_NTL_MATRIX(double,double);
-   WRAP_NTL_VECTOR(zz,long);
-   WRAP_NTL_MATRIX(zz,long);
+	   typedef long size_type;
+
+	   vector<T>() {};
+	   vector<T>(size_type size) : Vec<T>(INIT_SIZE, size) {};
+	   vector<T>(const Vec<T> &v) : Vec<T>(v) {};
+	   ~vector () {};
+
+	   void resize(size_type size) { this->SetLength(size); }
+	   void clear() { this->kill(); }
+	         /*    inline void swap (vector<T> &v) { NTL::swap(*this, v); } */
+	   size_type size() const { return this->length(); }
+	   size_type max_size() const { return this->MaxLength(); }
+	   bool empty() const { return size() == 0; }
+
+	   const T& operator()(size_type i) const { return (*this)[i]; }
+	   T&  operator()(size_type i) { return (*this)[i]; }
+
+   };
+
+   template <typename T> class matrix : public Mat<T>{
+
+   	   public:
+
+   	   typedef long size_type;
+
+   	   matrix<T>() {}
+   	   matrix<T>(const Mat<T>& a) : Mat<T>(a) {}
+   	   matrix<T>(size_type size1, size_type size2) : Mat<T>(INIT_SIZE, size1, size2) {}
+
+   	   void resize(size_type size1, size_type size2) { this->SetDims(size1, size2); }
+   	   void clear() { this->kill(); } \
+   	      /*   inline void swap (matrix<T> &m) { NTL::swap(*this, m); }*/
+   	   size_type size1() const { return this->NumRows(); }
+   	   size_type size2() const { return this->NumCols(); }
+
+	   T& operator()(size_type i, size_type j) { return (*this)[i][j]; }
+   	   const T& operator()(size_type i, size_type j) const { return (*this)[i][j]; }
+
+      };
+
+   
+
 
    // matrix proxy
    template <class M>

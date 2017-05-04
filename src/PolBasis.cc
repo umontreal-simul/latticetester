@@ -15,6 +15,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#ifdef WITH_NTL
+
 #include <iomanip>
 #include <cassert>
 #include <ostream>
@@ -334,3 +336,5 @@ void PolBasis::write (int i) const
 }
 
 }
+
+#endif

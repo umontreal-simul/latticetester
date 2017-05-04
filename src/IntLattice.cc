@@ -187,7 +187,7 @@ void IntLattice::copy (const IntLattice & lat)
    m_v = lat.m_v;
    m_w = lat.m_w;
    init ();
-   for (int i = 1; i <= lat.getDim (); i++)
+   for (int i = 0; i < lat.getDim (); i++)
       m_xx[i] = lat.getXX(i);
 }
 
@@ -247,7 +247,7 @@ void IntLattice::fixLatticeNormalization(bool dualF)
    // Normalization factor: dual to primal : M^(k/dim) -> 1/M^(k/dim)
    if (( dualF && m_lgVolDual2[1] < 0.0) ||
        (!dualF && m_lgVolDual2[1] > 0.0)) {
-      for (int i = 1; i <= getMaxDim(); i++)
+      for (int i = 0; i < getMaxDim(); i++)
          m_lgVolDual2[i] = -m_lgVolDual2[i];
    }
 //   for (int i = 1; i <= getMaxDim(); i++)
@@ -263,11 +263,11 @@ void IntLattice::calcLgVolDual2 (double lgm2)
    int rmax = min(m_order, maxDim);
 
    m_lgVolDual2[1] = lgm2;
-   for (int r = 2; r <= rmax; r++)
+   for (int r = 1; r < rmax; r++)
       m_lgVolDual2[r] = m_lgVolDual2[r - 1] + lgm2;
    // WARNING [David]: one version had `m_order` instead of `rmax`.
    // I am not sure which is the fix and which is the bug.
-   for (int r = rmax + 1; r <= maxDim; r++)
+   for (int r = rmax; r < maxDim; r++)
       m_lgVolDual2[r] = m_lgVolDual2[r - 1];
 }
 
@@ -288,8 +288,8 @@ bool IntLattice::checkDuality () const
    BScal S;
    int dim = getDim ();
 
-   for (int i = 1; i <= dim; i++) {
-      for (int j = 1; j <= dim; j++) {
+   for (int i = 0; i < dim; i++) {
+      for (int j = 0; j < dim; j++) {
          matrix_row<const Basis> row1(m_v, i);
          matrix_row<const Basis> row2(m_w, j);
          ProdScal (row1, row2, dim, S);
@@ -321,8 +321,8 @@ bool IntLattice::baseEquivalence (const IntLattice & lat) const
    int d = getDim ();
    BScal R, Q;
 
-   for (int i = 1; i <= d; i++) {
-      for (int j = 1; j <= d; j++) {
+   for (int i = 0; i < d; i++) {
+      for (int j = 0; j < d; j++) {
          matrix_row<const Basis> row1(m_v, i);
          matrix_row<const Basis> row2(m_w, j);
          ProdScal (row1, row2, d, R);
@@ -388,13 +388,13 @@ void IntLattice::write (int flag)
    int dim = getDim ();
 
    cout << SEPAR << "\n";
-   for (i = 1; i <= dim; i++) {
-      for (int j = 1; j <= dim; j++) {
+   for (i = 0; i < dim; i++) {
+      for (int j = 0; j < dim; j++) {
          cout << setprecision (2) <<
          setw (6) << m_v(i,j) << "   ";
       }
       cout << "| |";
-      for (int j = 1; j <= dim; j++) {
+      for (int j = 0; j < dim; j++) {
          cout << setprecision (2) <<
          setw (6) << m_w(i,j) << "    ";
       }
@@ -407,7 +407,7 @@ void IntLattice::write (int flag)
       m_w.updateVecNorm ();
    }
 
-   for (i = 1; i <= dim; i++) {
+   for (i = 0; i < dim; i++) {
       if (m_v.isNegativeNorm (i))
          cout << setprecision (15) << " -1";
       else
@@ -450,8 +450,8 @@ void IntLattice::write (const char *fname) const
    out << SEPAR << "IntLattice\n   ";
    out << dim << "                 <-- Dim\n";
    out << setprecision (15) << m_m << "         <-- m\n\n";
-   for (int i = 1; i <= dim; i++) {
-      for (int j = 1; j <= dim; j++) {
+   for (int i = 0; i < dim; i++) {
+      for (int j = 0; j < dim; j++) {
          out << setprecision (15) << m_v(i,j) << "   "
          << setprecision (15) << m_w(i,j)
          << "         <-- V[" << i << "," << j << "],     W["
@@ -471,22 +471,22 @@ void IntLattice::sort (int d)
  * the square Euclidean length in V.vecNorm, W.vecNorm, etc.
  */
 {
-   if (m_v.isNegativeNorm (d + 1))
+   if (m_v.isNegativeNorm (d))
       m_v.updateVecNorm ();
 
    int dim = getDim ();
    if (true) { //Erwan
-      for (int i = 1; i <= dim; i++)
+      for (int i = 0; i < dim; i++)
          if (m_v.getVecNorm(i) < 0) {
             cout << "\n***** ERROR:   Negative norm for i = " << i <<
                ",  dim = " << dim << endl;
          }
    }
 
-   for (int i = d + 1; i < dim; i++)
+   for (int i = d; i < dim; i++)
    {
       int k = i;
-      for (int j = i + 1; j <= dim; j++) {
+      for (int j = i + 1; j < dim; j++) {
          if (m_v.getVecNorm (j) < m_v.getVecNorm (k))
             k = j;
       }

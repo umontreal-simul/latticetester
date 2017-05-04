@@ -23,6 +23,7 @@
  *
  */
 
+
 #ifndef LATTICETESTER__UTIL_H
 #define LATTICETESTER__UTIL_H
 #include <string>
@@ -1018,18 +1019,7 @@ bool CheckTriangular (const Matr & A, int dim, const MScal & m)
  * of the matrices will be considered.
  */
 
-/*Erwan
-* Travail sur deshumanize. Changement des indices pour commencer à 0.
-* Cette fonction prend en argument uniquement pour des matrices triangulaires
-* retournées par latmrg. Ces matrices sont du type :
-*
-*  [ 1  0  0  a  b ]
-*  [ 0  1  0  c  d ]
-*  [ 0  0  1  e  f ]
-*  [ 0  0  0  1  0 ]
-*  [ 0  0  0  0  1 ]
-* avec a, b, c, d, e, et f des entiers.
-*/
+
 template <typename Matr>
 void Triangularization (Matr & W, Matr & V, int lin, int col,
                         const MScal & m)
@@ -1098,17 +1088,6 @@ void Triangularization (Matr & W, Matr & V, int lin, int col,
  * matrix `B`. Only the first \f$d\f$ lines and columns are considered.
  */
 
-/* Erwan
-* Cette fonction prend en argument uniquement pour des matrices triangulaires
-* retournées par latmrg. Ces matrices sont du type :
-*
-*  [ 1  0  0  a  b ]
-*  [ 0  1  0  c  d ]
-*  [ 0  0  1  e  f ]
-*  [ 0  0  0  1  0 ]
-*  [ 0  0  0  0  1 ]
-* avec a, b, c, d, e, et f des entiers.
-*/
 template <typename Matr>
 void CalcDual (const Matr & A, Matr & B, int d, const MScal & m)
 {

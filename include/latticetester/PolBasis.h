@@ -18,11 +18,12 @@
 #ifndef LATTICETESTER__BASIS_H
 #define LATTICETESTER__BASIS_H
 
+#ifdef WITH_NTL
+
 #include "latticetester/PolTypes.h"
 #include "latticetester/Const.h"
 #include "latticetester/Util.h"
 #include <string>
-
 
 
 namespace LatticeTester {
@@ -39,14 +40,8 @@ namespace LatticeTester {
  */
 
 /* Erwan
-<<<<<<< HEAD
-Cette classe représente une base pour un réseau. Elle hérite de BMat (aka 
-boost::numeric::ublas::matrix<long> ou NTL::matrix<long> ou NTL::matrix<ZZ>) 
-définit dans Types.h.
-=======
 Cette classe représente une Basis pour un réseau. Elle hérite de BMat (aka
 NTL::matrix<long> ou boost::numeric::ublas::matrix<long>) définit dans Types.h.
->>>>>>> 0c2559aad798cd9b34adf3f5913f50e33afd5958
 Elle hérite donc d'une structure de matrice : une Basis A contient des éléments
 A(i,j) (j-ème composante du i-ème vecteur).
 
@@ -199,4 +194,6 @@ protected:
 };
 
 }
+
+#endif
 #endif

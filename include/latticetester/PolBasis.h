@@ -18,11 +18,12 @@
 #ifndef LATTICETESTER__BASIS_H
 #define LATTICETESTER__BASIS_H
 
+#ifdef WITH_NTL
+
 #include "latticetester/PolTypes.h"
 #include "latticetester/Const.h"
 #include "latticetester/Util.h"
 #include <string>
-
 
 
 namespace LatticeTester {
@@ -193,4 +194,6 @@ protected:
 };
 
 }
+
+#endif
 #endif

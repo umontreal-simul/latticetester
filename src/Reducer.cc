@@ -213,7 +213,7 @@ inline void Reducer::calculCholeski2Ele (int i, int j)
 // Recalcule l'entree (i,j) de la matrice de Choleski d'ordre 2
 {
    m_cho2(i,j) = m_gramVD(i,j);
-   for (int k = 1; k < i; k++) {
+   for (int k = 0; k < i; k++) {
       m_cho2(i,j) -= m_cho2(k,i) * (m_cho2(k,j) / m_cho2(k,k));
    }
 }
@@ -239,8 +239,8 @@ inline void Reducer::calculGramVD ()
 {
    const int dim = m_lat->getDim ();
 
-   for (int i = 1; i <= dim; i++) {
-      for (int j = i; j <= dim; j++) {
+   for (int i = 0; i < dim; i++) {
+      for (int j = i; j < dim; j++) {
          matrix_row<Basis> row1(m_lat->getPrimalBasis(), i);
          matrix_row<Basis> row2(m_lat->getPrimalBasis(), j);
          ProdScal (row1, row2, dim, m_gramVD(i,j));
@@ -260,7 +260,7 @@ inline void Reducer::miseAJourGramVD (int j)
  */
 {
    const int dim = m_lat->getDim ();
-   for (int i = 1; i <= dim; i++) {
+   for (int i = 0; i < dim; i++) {
       matrix_row<Basis> row1(m_lat->getPrimalBasis(), i);
       matrix_row<Basis> row2(m_lat->getPrimalBasis(), j);
       ProdScal (row1, row2, dim, m_gramVD(i,j));
@@ -287,11 +287,11 @@ bool Reducer::calculCholeski (RVect & DC2, RMat & C0)
    // C2(i,j) = C0(i,j) * C2(i,i) if i != j.
    // C2(i,i) = DC2[i].
    conv (m2r, m_lat->getM2 ());
-   d = dim / 2 + 1;
+   d = dim / 2;
    // Calcul des d premieres lignes de C0 via la base primale.
-   for (i = 1; i <= d; i++) {
+   for (i = 0; i < d; i++) {
       m_lat->getPrimalBasis ().updateScalL2Norm (i);
-      for (j = i; j <= dim; j++) {
+      for (j = i; j < dim; j++) {
          if (j == i)
             conv (m_c2(i,i), m_lat->getPrimalBasis ().getVecNorm (i));
          else {
@@ -299,7 +299,7 @@ bool Reducer::calculCholeski (RVect & DC2, RMat & C0)
             matrix_row<Basis> row2(m_lat->getPrimalBasis(), j);
             ProdScal (row1, row2, dim, m_c2(i,j));
          }
-         for (k = 1; k < i; k++)
+         for (k = 0; k < i; k++)
             m_c2(i,j) -= C0(k,i) * m_c2(k,j);
          if (i == j) {
             DC2[i] = m_c2(i,i);
@@ -313,10 +313,10 @@ bool Reducer::calculCholeski (RVect & DC2, RMat & C0)
    }
 
    // Calcul des m_lat->dim-d dernieres lignes de C0 via la base duale.
-   for (i = dim; i > d; i--)
+   for (i = dim-1; i > d; i--)
    {
       m_lat->getDualBasis ().updateScalL2Norm (i);
-      for (j = i; j >= 1; j--) {
+      for (j = i; j >= 0; j--) {
          if (j == i)
             conv (m_c2(i,i), m_lat->getDualBasis ().getVecNorm (i));
          else {
@@ -604,17 +604,17 @@ void Reducer::redLLL (double fact, long maxcpt, int Max)
    for (k = 1; k <= REDBAS_e; k++)
       limite *= 2.0;
    limite *= dim;
-   m_cho2(1,1) = m_gramVD(1,1);
-   m_cho2(1,2) = m_gramVD(1,2);
-   m_IC[1] = 2;
-   m_cho2(2,2) = m_gramVD(2,2) - m_cho2(1,2) * (m_cho2(1,2) / m_cho2(1,1));
-   m_IC[2] = 2;
-   for (i = 3; i <= dim + 1; i++)
+   m_cho2(0,0) = m_gramVD(0,0);
+   m_cho2(0,1) = m_gramVD(0,1);
+   m_IC[0] = 1;
+   m_cho2(1,1) = m_gramVD(1,1) - m_cho2(0,1) * (m_cho2(0,1) / m_cho2(0,0));
+   m_IC[1] = 1;
+   for (i = 2; i <= dim; i++)
       m_IC[i] = 0;
-   h = 1;
-   while (h < Max && cpt < maxcpt) {
+   h = 0;
+   while (h < Max-1 && cpt < maxcpt) {
       if (m_gramVD(h + 1,h + 1) > limite) {
-         for (i = h; i >= 1; i--)
+         for (i = h; i >= 0; i--)
             reductionFaible (i, h + 1);
       } else
          reductionFaible (h, h + 1);
@@ -629,18 +629,18 @@ void Reducer::redLLL (double fact, long maxcpt, int Max)
          m_lat->permute (h, h + 1);
          permuteGramVD (h, h + 1, dim);
          m_cho2(h,h) = m_gramVD(h,h);
-         for (i = 1; i < h; i++) {
+         for (i = 0; i < h; i++) {
             m_cho2(i,0) = m_cho2(i,h);
             m_cho2(i,h) = m_cho2(i,h + 1);
             m_cho2(i,h + 1) = m_cho2(i,0);
             m_cho2(h,h) -= m_cho2(i,h) * (m_cho2(i,h) / m_cho2(i,i));
          }
-         if (h == 1) {
+         if (h == 0) {
             Cho0ij = m_cho2(1,2) / m_cho2(1,1);
             if (fabs (Cho0ij) > 0.5) {
                m_IC[1] = 2;
                m_IC[2] = 0;
-               h = 1;
+               h = 0;
             } else {
                m_cho2(2,2) = m_gramVD(2,2) -
                   m_cho2(1,2) * m_cho2(1,2) / m_cho2(1,1);
@@ -648,7 +648,7 @@ void Reducer::redLLL (double fact, long maxcpt, int Max)
                m_IC[1] = 3;
                m_IC[2] = 3;
                m_IC[3] = 3;
-               h = 2;
+               h = 1;
             }
          } else {
             m_IC[h] = h + 1;
@@ -657,7 +657,7 @@ void Reducer::redLLL (double fact, long maxcpt, int Max)
          }
 
       } else {
-         for (i = 1; i <= h + 2; i++) {
+         for (i = 0; i <= h + 2; i++) {
             if (h + 2 > m_IC[i]) {
                if (h + 2 <= dim)
                   calculCholeski2Ele (i, h + 2);
@@ -668,8 +668,8 @@ void Reducer::redLLL (double fact, long maxcpt, int Max)
       }
    }
 
-   for (j = 3; j <= Max; j++) {
-      for (i = j - 2; i >= 1; i--)
+   for (j = 2; j < Max; j++) {
+      for (i = j - 2; i >= 0; i--)
          reductionFaible (i, j);
    }
    m_lat->getPrimalBasis ().setNegativeNorm (true);

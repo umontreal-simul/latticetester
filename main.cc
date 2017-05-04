@@ -6,8 +6,7 @@
 //  Copyright © 2017 DIRO. All rights reserved.
 //
 
-#include <NTL/ctools.h>
-#include <iostream>
+
 #include "latticetester/Util.h"
 #include "latticetester/Basis.h"
 #include "latticetester/Const.h"
@@ -15,6 +14,15 @@
 #include "latticetester/IntFactor.h"
 #include "latticetester/IntLattice.h"
 #include "latticetester/Rank1Lattice.h"
+#include <NTL/ctools.h>
+#include <iostream>
+#include <fstream>
+#include <iterator>
+#include <string>
+#include <sstream>
+#include <NTL/mat_ZZ.h>
+#include <NTL/LLL.h>
+#include "latticetester/Reducer.h"
 
 
 using namespace std;
@@ -30,12 +38,12 @@ int main(int argc, const char * argv[]) {
 
 //    cout << norme_test << "  " << norme_test2 << "   " << norme_test3 << "   " << norme_test4 << endl;
 //    cout << base_test(1, 0) << endl;
-    MScal n = 20;
+    //MScal n = 20;
     //long t = 11;
 
-    MVect a_vector(5,2);
-    a_vector[2] = 1;
-    a_vector[1] = 1;
+   // MVect a_vector(5,2);
+   // a_vector[2] = 1;
+   // a_vector[1] = 1;
 
     //cout << a_vector[0] << endl;
     //a = { 1,3,9 };
@@ -45,7 +53,7 @@ int main(int argc, const char * argv[]) {
     //Rank1Lattice reseau(n, a_vector, 10);
     //reseau.buildBasis(4);
 
-    Basis W(3);
+
     int s = 0;
     /*
      for(int i = 0; i<2; i++){
@@ -55,11 +63,88 @@ int main(int argc, const char * argv[]) {
         }
     }
      */
-    W(1,1) = 1;
-    W(2,1) = 1;
-    W(1,2) = 0;
-    W(2,2) = 3;
-    Basis V(3);
+
+    Basis W(4);
+    /*
+
+    W[0][0] = 1;  W[1][2] = 0;  W[1][3] = 10;
+    W[2][1] = 2;  W[2][2] = 1;  W[2][3] = 0;
+    W[3][1] = 2;  W[3][2] = 0;  W[3][3] = 1;
+    */
+    
+    ZZ scal;
+    scal = 0;
+    
+    W[0][0] = 1;  W[0][1] = 0;  W[0][2] = 3;  W[0][3] = 0;
+    W[1][0] = 0;  W[1][1] = 1;  W[1][2] = 1;  W[1][3] = 0;
+    W[2][0] = 3;  W[2][1] = 2;  W[2][2] = 1;  W[2][3] = 0;
+    W[3][0] = 4;  W[3][1] = 2;  W[3][2] = 0;  W[3][3] = 1;
+    
+    Basis W1(W);
+    
+  
+    
+    W.write();
+    
+    
+    
+    Basis V(4);
+
+    V[0][0] = 19; V[0][1] = -40;  V[0][2] = 23;  V[0][3] = 4;
+    V[1][0] = 0;  V[1][1] = -1;  V[1][2] = 2;  V[1][3] = 2;
+    V[2][0] = 0;  V[2][1] = 0;  V[2][2] = 19; V[2][3] = 0;
+    V[3][0] = 0;  V[3][1] = 10;  V[3][2] = -20;  V[3][3] = -1;
+
+    Basis V1(V);
+
+    IntLattice reseau1(W, 19);
+    
+    Reducer teston(reseau1);
+    
+    teston.redLLL(0.99, 1000000, 4);
+    
+    reseau1.getPrimalBasis().write();
+    
+    LLL_FP(W1);
+    W1.write();
+
+    /*
+    reseau1.trace("hey");
+
+    Triangularization(W1, V1, 4, 4, 19);
+    CalcDual(V1, W1, 4, 19);
+
+    V1.write();
+    W1.write();
+    //cout << V1.toString() << endl;
+    //cout << W1.toString() << endl;
+
+    //IntLattice reseau1(V, 11);
+
+    IntLattice reseau2(V1, W1, 19);
+
+    cout << reseau1.baseEquivalence(reseau2) << endl;
+
+    */
+    //cout <<trace << endl;
+
+
+
+
+    //BMat C(3,3);
+
+    //C = prod(V,W);
+    //cout << C << endl;
+
+    //cout << C.toString() << endl;
+
+#ifdef WITH_NTL
+
+    cout << "yeah" << endl;
+
+#endif
+
+
 
 
 
@@ -80,10 +165,10 @@ int main(int argc, const char * argv[]) {
         cout << *iter << endl;
     }*/
     //reseau.buildProjection(second);
-    Triangularization(W, V, 2, 2, 5);
-    int lin = 2;
-    int col = 2;
-    int m = 5;
+
+    //int lin = 2;
+    //int col = 2;
+    //int m = 5;
 
     //MScal T1, T2, T3, T4, T5, T6, T7, T8;
 
@@ -145,9 +230,7 @@ int main(int argc, const char * argv[]) {
    }*/
 
 
-    cout << W.toString() << endl;
-    cout << V.toString() << endl;
-    cout << W(3,1) << endl;
+
 
 
 

@@ -61,7 +61,13 @@ namespace NTL
       */
 	   void clear() { this->kill(); }
 
-	         /*    inline void swap (vector<T> &v) { NTL::swap(*this, v); } */
+	   /** ayman
+      * this function (in this comment) would add nothing since NTL::Vec<T> already implement a member function: void swap(Vec<T>& other);
+      * but I put it in comment because I have found it here (just in case)
+
+      inline void swap (matrix<T> &m) { NTL::swap(*this, m); }
+      
+      */
 
       /**
       * a copy from NTL::Vec<T>::length
@@ -112,7 +118,13 @@ namespace NTL
       */
    	void clear() { this->kill(); } 
 
-   	/*   inline void swap (matrix<T> &m) { NTL::swap(*this, m); }*/
+      /** ayman
+      * this function (in this comment) would add nothing since NTL::Mat<T> already implement a member function: void swap(Mat<T>& other);
+      * but I put it in comment because I have found it here (just in case)
+
+   	inline void swap (matrix<T> &m) { NTL::swap(*this, m); }
+      
+      */
 
       /**
       * return the number of rows

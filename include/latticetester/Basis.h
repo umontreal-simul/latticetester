@@ -59,7 +59,7 @@ public:
     * Constructor. Builds a basis of actual dimension \f$d\f$,
     * and with norm `norm`.
     */
-   Basis (int dim, NormType norm = SUPNORM);
+   Basis (int dim, NormType norm = L2NORM);
 
    /**
     * Copy constructor.

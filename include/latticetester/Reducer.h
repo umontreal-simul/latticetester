@@ -313,7 +313,7 @@ private:
    NScal m_ns;
    NVect m_nv;
 
-   RScal m_rs;
+   //RScal m_rs;
    RVect m_zLR, m_n2, m_dc2;
    RMat m_c0, m_c2, m_cho2, m_gramVD;
    int *m_IC;             // Indices in Cholesky

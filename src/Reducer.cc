@@ -82,10 +82,10 @@ Reducer::Reducer (IntLattice & lat)
    m_lMin = std::numeric_limits <double>::max ();
    m_lMin2 = m_lMin;
    for (int i = 0; i < dim1; i++) {
-      m_zLI[i] = 0;
-      m_zShort[i] = 0;
-      m_BoundL2[i] = 0;
-      m_IC[i] = 0;
+      m_zLI[i] = -1;
+      m_zShort[i] = -1;
+      m_BoundL2[i] = -1;
+      m_IC[i] = -1;
    }
    m_countNodes = 0;
 }
@@ -174,17 +174,21 @@ void Reducer::permuteGramVD (int i, int j, int n)
  */
 {
    int k;
-   for (k = 1; k <= n; k++)
+   for (k = 0; k < n; k++)
    {
-      m_rs = m_gramVD(i,k);
-      m_gramVD(i,k) = m_gramVD(j,k);
-      m_gramVD(j,k) = m_rs;
+      swap(m_gramVD(i,k), m_gramVD(j,k));
+      //Erwan
+      //m_rs = m_gramVD(i,k);
+      //m_gramVD(i,k) = m_gramVD(j,k);
+      //m_gramVD(j,k) = m_rs;
    }
-   for (k = 1; k <= n; k++)
+   for (k = 0; k < n; k++)
    {
-      m_rs = m_gramVD(k,i);
-      m_gramVD(k,i) = m_gramVD(k,j);
-      m_gramVD(k,j) = m_rs;
+      swap(m_gramVD(k,i), m_gramVD(k,j));
+      //Erwan
+      //m_rs = m_gramVD(k,i);
+      //m_gramVD(k,i) = m_gramVD(k,j);
+      //m_gramVD(k,j) = m_rs;
    }
 }
 
@@ -197,10 +201,10 @@ void Reducer::calculCholeski2LLL (int n, int j)
  * Choleski d'ordre 2.   Pour redLLL.
  */
 {
-   m_cho2(1,j) = m_gramVD(1,j);
-   for (int i = 2; i <= n; i++) {
+   m_cho2(0,j) = m_gramVD(0,j);
+   for (int i = 1; i < n; i++) {
       m_cho2(i,j) = m_gramVD(i,j);
-      for (int k = 1; k < i; k++) {
+      for (int k = 0; k < i; k++) {
          m_cho2(i,j) -= (m_cho2(k,j) / m_cho2(k,k)) * m_cho2(k,i);
       }
    }
@@ -234,6 +238,7 @@ inline void Reducer::calculGramVD ()
 /*
   Retourne dans m_gramVD la matrice des produits scalaires m_lat->V[i]*m_lat->V[j].
   Rem.: m_lat->V.vecNorm ne contient que les m_lat->V[i]*m_lat->V[i].
+  Reviens à faire m_lat->V * transpose(m_lat->V).
   Utilise pour redLLL.
  */
 {
@@ -247,7 +252,6 @@ inline void Reducer::calculGramVD ()
          m_gramVD(j,i) = m_gramVD(i,j);
       }
    }
-   // cout << m_gramVD << endl;
 }
 
 
@@ -324,7 +328,7 @@ bool Reducer::calculCholeski (RVect & DC2, RMat & C0)
             matrix_row<Basis> row2(m_lat->getDualBasis(), j);
             ProdScal (row1, row2, dim, m_c2(i,j));
          }
-         for (k = i + 1; k <= dim; k++)
+         for (k = i + 1; k < dim; k++)
             m_c2(i,j) -= C0(k,i) * m_c2(k,j);
          if (i != j)
             C0(i,j) = m_c2(i,j) / m_c2(i,i);
@@ -335,7 +339,7 @@ bool Reducer::calculCholeski (RVect & DC2, RMat & C0)
          negativeCholeski();
          return false;
       }
-      for (j = i + 1; j <= dim; j++) {
+      for (j = i + 1; j < dim; j++) {
          C0(i,j) = -C0(j,i);
          for (k = i + 1; k < j; k++) {
             C0(i,j) -= C0(k,i) * C0(k,j);
@@ -375,7 +379,7 @@ void Reducer::pairwiseRedPrimal (int i, int d)
    m_lat->getPrimalBasis ().updateScalL2Norm (i);
    bool modifFlag;
 
-   for (int j = d + 1; j <= dim; j++) {
+   for (int j = d + 1; j < dim; j++) {
       if (i == j)
          continue;
       modifFlag = false;
@@ -450,7 +454,7 @@ void Reducer::pairwiseRedDual (int i)
    m_lat->getDualBasis ().updateScalL2Norm (i);
    matrix_row<Basis> row9(m_lat->getPrimalBasis(), i);
    m_bv = row9;
-   for (j = 1; j <= dim; j++) {
+   for (j = 0; j < dim; j++) {
       if (i != j) {
          matrix_row<Basis> row1(m_lat->getDualBasis(), i);
          matrix_row<Basis> row2(m_lat->getDualBasis(), j);
@@ -473,12 +477,12 @@ void Reducer::pairwiseRedDual (int i)
       ++m_cpt;
       m_countDieter = 0;
       matrix_row<Basis> row6(m_lat->getPrimalBasis(), i);
-      for (j = 1; j <= dim; j++)
+      for (j = 0; j < dim; j++)
          row6(j) = m_bv[j];
       m_lat->getPrimalBasis ().setNegativeNorm (true, i);
       m_lat->setXX (false, i);
       m_lat->getPrimalBasis ().setVecNorm (m_ns, i);
-      for (j = 1; j <= dim; j++) {
+      for (j = 0; j < dim; j++) {
          if (i != j && m_nv[j] != 0) {
             conv (m_bs, -m_nv[j]);
             matrix_row<Basis> row1(m_lat->getDualBasis(), j);
@@ -609,8 +613,8 @@ void Reducer::redLLL (double fact, long maxcpt, int Max)
    m_IC[0] = 1;
    m_cho2(1,1) = m_gramVD(1,1) - m_cho2(0,1) * (m_cho2(0,1) / m_cho2(0,0));
    m_IC[1] = 1;
-   for (i = 2; i <= dim; i++)
-      m_IC[i] = 0;
+   for (i = 2; i < dim; i++)
+      m_IC[i] = -1;
    h = 0;
    while (h < Max-1 && cpt < maxcpt) {
       if (m_gramVD(h + 1,h + 1) > limite) {
@@ -620,7 +624,7 @@ void Reducer::redLLL (double fact, long maxcpt, int Max)
          reductionFaible (h, h + 1);
 
       calculCholeski2Ele (h + 1, h + 1);
-      if (m_IC[h + 1] == 0)
+      if (m_IC[h + 1] == -1)
          m_IC[h + 1] = h + 1;
 
       if (m_cho2(h + 1,h + 1)/m_cho2(h,h) + (m_cho2(h,h + 1)/m_cho2(h,h))
@@ -630,36 +634,37 @@ void Reducer::redLLL (double fact, long maxcpt, int Max)
          permuteGramVD (h, h + 1, dim);
          m_cho2(h,h) = m_gramVD(h,h);
          for (i = 0; i < h; i++) {
-            m_cho2(i,0) = m_cho2(i,h);
-            m_cho2(i,h) = m_cho2(i,h + 1);
-            m_cho2(i,h + 1) = m_cho2(i,0);
+            swap(m_cho2(i,h), m_cho2(i,h + 1));
+            //m_cho2(i,0) = m_cho2(i,h);
+            //m_cho2(i,h) = m_cho2(i,h + 1);
+            //m_cho2(i,h + 1) = m_cho2(i,0);
             m_cho2(h,h) -= m_cho2(i,h) * (m_cho2(i,h) / m_cho2(i,i));
          }
          if (h == 0) {
-            Cho0ij = m_cho2(1,2) / m_cho2(1,1);
+            Cho0ij = m_cho2(0,1) / m_cho2(0,0);
             if (fabs (Cho0ij) > 0.5) {
-               m_IC[1] = 2;
-               m_IC[2] = 0;
+               m_IC[0] = 1;
+               m_IC[1] = -1;
                h = 0;
             } else {
-               m_cho2(2,2) = m_gramVD(2,2) -
-                  m_cho2(1,2) * m_cho2(1,2) / m_cho2(1,1);
-               calculCholeski2LLL (3, 3);
-               m_IC[1] = 3;
-               m_IC[2] = 3;
-               m_IC[3] = 3;
+               m_cho2(1,1) = m_gramVD(1,1) -
+                  m_cho2(0,1) * m_cho2(0,1) / m_cho2(0,0);
+               calculCholeski2LLL (2, 2);
+               m_IC[0] = 2;
+               m_IC[1] = 2;
+               m_IC[2] = 2;
                h = 1;
             }
          } else {
             m_IC[h] = h + 1;
-            m_IC[h + 1] = 0;
+            m_IC[h + 1] = -1;
             --h;
          }
 
       } else {
-         for (i = 0; i <= h + 2; i++) {
-            if (h + 2 > m_IC[i]) {
-               if (h + 2 <= dim)
+         for (i = 0; i <= h + 1; i++) {
+            if (h + 1 > m_IC[i]) {
+               if (h + 2 < dim)
                   calculCholeski2Ele (i, h + 2);
                m_IC[i] = h + 2;
             }
@@ -750,7 +755,7 @@ bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const Basis & WTemp
    center = 0.0;
    if (j < dim) {
       // Calcul du centre de l'intervalle.
-      for (k = j + 1; k <= dim; k++)
+      for (k = j + 1; k < dim; k++)
          center = center - m_c0(j,k) * m_zLR[k];
 
       // Distance du centre aux extremites de l'intervalle.
@@ -1359,20 +1364,20 @@ bool Reducer::reductMinkowski (int d)
 
    do {
       // The first d vectors should not be modified.
-      for (i = 1; i <= d; i++)
+      for (i = 0; i < d; i++)
          m_lat->setXX (true, i);
-      for (i = d + 1; i <= dim; i++)
+      for (i = d; i < dim; i++)
          m_lat->setXX (false, i);
       do {
-         preRedDieter (d);
+         preRedDieter (d-1);
          m_lat->getPrimalBasis ().updateVecNorm (d);
          m_lat->getDualBasis ().updateVecNorm (d);
          m_lat->sort (d);
          found = false;
-         for (i = 1; i <= dim; i++) {
+         for (i = 0; i < dim; i++) {
             if (!m_lat->getXX (i)) {
                // On essaie de reduire le i-ieme vecteur.
-               if (!redBB (i, d, 2, smaller))
+               if (!redBB (i, d, 1, smaller))
                   return false;
                totalNodes += m_countNodes;
                if (smaller)
@@ -1382,7 +1387,7 @@ bool Reducer::reductMinkowski (int d)
       } while (found);
       // Stage 3
       if (dim > 7) {
-         for (i = d + 1; i <= dim; i++) {
+         for (i = d; i < dim; i++) {
             if (!redBB (i, d, 3, smaller))
                return false;
             totalNodes += m_countNodes;
@@ -1394,7 +1399,7 @@ bool Reducer::reductMinkowski (int d)
 
    if (totalNodes > MINK_LLL)
       PreRedLLLRM = true;
-   m_lat->getPrimalBasis ().updateScalL2Norm (1);
+   m_lat->getPrimalBasis ().updateScalL2Norm (0);
    m_lat->getPrimalBasis ().updateScalL2Norm (dim);
    return true;
 }

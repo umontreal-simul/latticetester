@@ -53,9 +53,9 @@ Basis::Basis (int d, int maxDim, NormType norm)
    m_maxDim = maxDim;
    m_norm = norm;
 
-   BMat::resize (1 + maxDim, 1 + maxDim);
-   m_vecNorm.resize (1 + maxDim);
-   m_negFlag = new bool[1 + maxDim];
+   BMat::resize (maxDim, maxDim);
+   m_vecNorm.resize (maxDim);
+   m_negFlag = new bool[maxDim];
    for (int i = 0; i < maxDim; i++) {
       m_negFlag[i] = true;
       for (int j = 0; j < maxDim; j++) {

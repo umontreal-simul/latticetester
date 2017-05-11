@@ -14,78 +14,204 @@
 #include "latticetester/IntFactor.h"
 #include "latticetester/IntLattice.h"
 #include "latticetester/Rank1Lattice.h"
+#include "latticetester/IntLatticeBasis.h"
 #include <NTL/ctools.h>
 #include <iostream>
 #include <fstream>
 #include <iterator>
 #include <string>
 #include <sstream>
+
+#include "latticetester/Reducer.h"
+#include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/io.hpp>
+#include <time.h>
+#include <boost/progress.hpp>
+
+// for LLL test
 #include <NTL/mat_ZZ.h>
 #include <NTL/LLL.h>
-#include "latticetester/Reducer.h"
+#include <NTL/tools.h>
+#include <NTL/ZZ.h>
+#include <NTL/matrix.h>
+#include "NTL/vec_ZZ.h"
+#include <NTL/vec_vec_ZZ.h>
+#include <NTL/mat_ZZ.h>
+#include <NTL/LLL.h>
+
+
 
 
 using namespace std;
 using namespace LatticeTester;
 
 int main(int argc, const char * argv[]) {
- //   Basis base_test(2,7);
-//    for(NormType k = SUPNORM; k <=  ZAREMBANORM; k++){
-//        cout << k << endl;
-//    }
-
- //   enum NormType { SUPNORM = 1, L1NORM = 3, L2NORM = 3, ZAREMBANORM = 4 };
-
-//    cout << norme_test << "  " << norme_test2 << "   " << norme_test3 << "   " << norme_test4 << endl;
-//    cout << base_test(1, 0) << endl;
-    //MScal n = 20;
-    //long t = 11;
-
-   // MVect a_vector(5,2);
-   // a_vector[2] = 1;
-   // a_vector[1] = 1;
-
-    //cout << a_vector[0] << endl;
-    //a = { 1,3,9 };
-    //PrimeType tes = nombre.getStatus();
-    //nombre.setStatus(tes);
-    //cout << nombre.isPrime(s, t) << endl;
-    //Rank1Lattice reseau(n, a_vector, 10);
-    //reseau.buildBasis(4);
-
-
-    int s = 0;
-    /*
-     for(int i = 0; i<2; i++){
-        for(int j = 0; j<2; j++){
-            base_lattice(i, j) = s;
-            ++s;
-        }
-    }
-     */
-
-    Basis W(4);
-    /*
-
-    W[0][0] = 1;  W[1][2] = 0;  W[1][3] = 10;
-    W[2][1] = 2;  W[2][2] = 1;  W[2][3] = 0;
-    W[3][1] = 2;  W[3][2] = 0;  W[3][3] = 1;
-    */
     
-    ZZ scal;
-    scal = 0;
+    
+
+    // printing matrices
+    bool printMatrices = true;
+    
+    // Loop over dimension
+    const int min_dimension = 74;
+    const int max_dimension = 74;
+    
+    double TimerLLL [max_dimension - min_dimension + 1];
+    double TimerLLLNTL [max_dimension - min_dimension + 1];
+    bool EqualReducedBasis [max_dimension - min_dimension + 1];
+    
+    boost::progress_display show_progress(max_dimension);
+    
+    for (int dimension = min_dimension; dimension <= max_dimension; dimension++){
+        
+        ++show_progress;
+        
+        int modulus = 2;
+        double epsilon = 0.000001;
+        double delta = 1 - epsilon;
+        
+        int min = 1;
+        int max = 500;
+        
+        IntLatticeBasis MyPrimalLattice (dimension, L2NORM);
+        srand (12345);
+        for (int i = 0; i < dimension; i++){
+            for (int j = i; j < dimension; j++)
+                //MyPrimalBasis[i+1][j+1] = power_ZZ(i+1,j);
+                MyPrimalLattice.getBasis()[i][j] = min + (rand() % (int)(max - min + 1));
+        }
+        if (printMatrices){
+            cout << "\nold Basis = " << endl;
+            MyPrimalLattice.updateVecNorm();
+            MyPrimalLattice.write();
+        }
+    }/*
+    
+        Reducer MyReducer (MyLattice);
+        
+        Basis MyPrimalBasisNTL (MyPrimalBasis);
+        IntLattice MyLatticeNTL (MyPrimalBasisNTL,modulus);
+        Reducer MyReducerNTL (MyLatticeNTL);
+        if (printMatrices){
+            cout << "\nold NTLBasis = " << endl;
+            MyPrimalBasis.write();
+        }
+        
+        clock_t begin = clock();
+        
+        MyReducer.redLLL(delta,100000000,dimension);
+        if (printMatrices){
+            cout << "\nnew Basis = " << endl;
+            MyLattice.getPrimalBasis().write();
+        }
+        
+        clock_t end = clock();
+        
+        MyReducerNTL.redLLLNTL(delta);
+        if (printMatrices){
+            cout << "\nnew NTLBasis = " << endl;
+            MyLatticeNTL.getPrimalBasis().write();
+        }
+        
+        clock_t end2 = clock();
+        
+        double elapsed_secs = double(end - begin) / CLOCKS_PER_SEC;
+        double elapsed_secs2 = double(end2 - end) / CLOCKS_PER_SEC;
+        bool test = EqualityTest(MyLatticeNTL.getPrimalBasis(), MyLattice.getPrimalBasis(), dimension);
+        
+        cout << "Egalite reduced basis = " << test << endl;
+        
+        TimerLLL[dimension-1] = elapsed_secs;
+        TimerLLLNTL[dimension-1] = elapsed_secs2;
+        EqualReducedBasis[dimension-1] = test;
+        
+        //cout << "Durée pour LatMRG = " << elapsed_secs << endl;
+        //cout << "Durée NTl = " << elapsed_secs2 << endl;
+        //cout << "Égalité des new Basis = " << test << endl;
+        
+    } // end dimension loop
+    
+    /*
+     cout << "\nTimerLLL = [";
+     for (int j = 0; j < max_dimension; j++)
+     cout << TimerLLL[j] << " ";
+     cout << "]" << endl;
+     
+     cout << "\nTimerLLLNTL = [";
+     for (int j = 0; j < max_dimension; j++)
+     cout << TimerLLLNTL[j] << " ";
+     cout << "]" << endl;
+     
+     cout << "\nEqualReducedBasis = [";
+     for (int j = 0; j < max_dimension; j++)
+     if (EqualReducedBasis[j] == 0)
+     cout << EqualReducedBasis[j] << "_[" << j+1 << "] ";
+     else
+     cout << EqualReducedBasis[j] << " ";
+     cout << "]" << endl;
+     */
+    
+    /*
+     
+     // Printing matrices for specific dimensions
+     
+     int modulus = 2;
+     int dim = 11;
+     double epsilon = 0.000001;
+     double delta = 1 - epsilon;
+     
+     int min = 1;
+     int max = 500;
+     
+     Basis MyPrimalBasis (dim, L2NORM);
+     srand (12345);
+     for (int i = 0; i < dim; i++){
+     for (int j = i; j < dim; j++)
+     //MyPrimalBasis[i+1][j+1] = power_ZZ(i+1,j);
+     MyPrimalBasis[i+1][j+1] = min + (rand() % (int)(max - min + 1));
+     }
+     cout << "old Basis = " << endl;
+     MyPrimalBasis.write();
+     
+     IntLattice MyLattice (MyPrimalBasis, modulus);
+     Reducer MyReducer (MyLattice);
+     
+     Basis MyPrimalBasisNTL (MyPrimalBasis);
+     IntLattice MyLatticeNTL (MyPrimalBasisNTL,modulus);
+     Reducer MyReducerNTL (MyLatticeNTL);
+     cout << "old NTLBasis = " << endl;
+     MyPrimalBasis.write();
+     
+     bool test;
+     //test = MyLatticeNTL.getPrimalBasis() == MyLattice.getPrimalBasis();
+     test = EqualityTest(MyLatticeNTL.getPrimalBasis(), MyLattice.getPrimalBasis(), dim);
+     cout << "*** Equality of input matrices = " << test << " ***" << endl;
+     
+     MyReducer.redLLL(delta,10000,dim);
+     cout << "\nnew Basis = " << endl;
+     MyLattice.getPrimalBasis().write();
+     
+     MyReducerNTL.redLLLNTL(delta);
+     cout << "new NTLBasis = " << endl;
+     MyLatticeNTL.getPrimalBasis().write();
+     
+     test = EqualityTest(MyLatticeNTL.getPrimalBasis(), MyLattice.getPrimalBasis(), dim);
+     cout << "*** Equality of the output matrices = " << test << " ***" << endl;
+     
+     */
+    
+    
+    // Création de la première base.
+    /*
+    Basis W(4);
     
     W[0][0] = 1;  W[0][1] = 0;  W[0][2] = 3;  W[0][3] = 0;
     W[1][0] = 0;  W[1][1] = 1;  W[1][2] = 1;  W[1][3] = 0;
     W[2][0] = 0;  W[2][1] = 0;  W[2][2] = 1;  W[2][3] = 0;
     W[3][0] = 0;  W[3][1] = 0;  W[3][2] = 0;  W[3][3] = 1;
     
+    
     Basis W1(W);
-    
-  
-    
-   // W.write();
-    
     
     
     Basis V(4);
@@ -110,37 +236,30 @@ int main(int argc, const char * argv[]) {
     
     BKZ_FP(W1);
     W1.write();
+     */
     
-
-    /*
-    reseau1.trace("hey");
-
-    Triangularization(W1, V1, 4, 4, 19);
-    CalcDual(V1, W1, 4, 19);
-
-    V1.write();
-    W1.write();
-    //cout << V1.toString() << endl;
-    //cout << W1.toString() << endl;
-
-    //IntLattice reseau1(V, 11);
-
-    IntLattice reseau2(V1, W1, 19);
-
-    cout << reseau1.baseEquivalence(reseau2) << endl;
-
-    */
-    //cout <<trace << endl;
-
-
+    //boost::numeric::ublas::identity_matrix<long> m(3);
+    
+    
+    IntLatticeBasis A(10);
+    
+    A.getBasis()[0][1] = 2;
+    
+    A.updateVecNorm();
+    
+    
+    
+    A.write();
+    
+    
+    
+    //cout << A.getBasis()[1][2] << endl;
+    
+    //BMat hey(boost::numeric::ublas::identity_matrix<long>(10));
+    
+    //cout << hey << endl;
 
 
-    //BMat C(3,3);
-
-    //C = prod(V,W);
-    //cout << C << endl;
-
-    //cout << C.toString() << endl;
 
 #ifdef WITH_NTL
 
@@ -149,99 +268,5 @@ int main(int argc, const char * argv[]) {
 #endif
 
 
-
-
-
-
-    //IntLattice reseau(primal_basis, 2);
-
-    //cout << reseau.checkDuality() << endl;
-
-    //int myints[]= {0, 1};
-    //Coordinates second (myints,myints+2);
-
-    /*while (!second.empty()) {
-        std::cout << ' ' << *second.begin();
-        second.erase(second.begin());
-    } */
-    /*for(Coordinates::const_iterator iter = second.begin(); iter != second.end(); ++iter)
-    {
-        cout << *iter << endl;
-    }*/
-    //reseau.buildProjection(second);
-
-    //int lin = 2;
-    //int col = 2;
-    //int m = 5;
-
-    //MScal T1, T2, T3, T4, T5, T6, T7, T8;
-
-   /*for (int j = 0; j < col; j++) {
-      for (int i = 0; i < lin; i++)
-         Modulo (W(i,j), m, W(i,j));
-      int r = j;
-      while (r < lin-1) {
-         while (IsZero (W(r,j)) && r < lin-1)
-            ++r;
-         if (r < lin-1) {
-            int s = r + 1;
-            while (IsZero (W(s,j)) && s < lin-1)
-               ++s;
-            if (!IsZero (W(s,j))) {
-               Euclide (W(r,j), W(s,j), T1, T2, T3, T4, W(s,j)); //pivot de gausse?
-               clear (W(r,j));
-               for (int j1 = j + 1; j1 < col; j1++) {
-                  T5 = T1 * W(r,j1);
-                  T6 = T2 * W(s,j1);
-                  T7 = T3 * W(r,j1);
-                  T8 = T4 * W(s,j1);
-                  W(s,j1) = T5 + T6;
-                  Modulo (W(s,j1), m, W(s,j1));
-                  W(r,j1) = T7 + T8;
-                  Modulo (W(r,j1), m, W(r,j1));
-               }
-            } else {
-               for (int j1 = j; j1 < col; j1++) {
-                  std::swap (W(r,j1), W(s,j1));
-               }
-            }
-            r = s;
-         }
-      }
-      cout << W.toString() << endl;
-      if (IsZero (W(lin-1,j))) {
-         for (int j1 = 0; j1 < col; j1++) {
-            if (j1 != j)
-               clear (V(j,j1));
-            else
-               V(j,j1) = m;
-         }
-      } else {
-         Euclide (W(lin-1,j), m, T1, T2, T3, T4, V(j,j));
-         for (int j1 = 0; j1 < j; j1++)
-            clear (V(j,j1));
-         for (int j1 = j + 1; j1 < col; j1++) {
-            T2 = W(lin-1,j1) * T1;
-            Modulo (T2, m, V(j,j1));
-         }
-          T1 = m/V(j,j);
-         //Quotient (m, V(j,j), T1);
-         for (int j1 = j + 1; j1 < col; j1++) {
-            W(lin-1,j1) *= T1;
-            Modulo (W(lin-1,j1), m, W(lin-1,j1));
-         }
-      }
-   }*/
-
-
-
-
-
-
-
-
-
-    //char *mess("hey");
-    //reseau.trace(mess);
     return 0;
 }

@@ -77,14 +77,14 @@ int main(int argc, const char * argv[]) {
     
     W[0][0] = 1;  W[0][1] = 0;  W[0][2] = 3;  W[0][3] = 0;
     W[1][0] = 0;  W[1][1] = 1;  W[1][2] = 1;  W[1][3] = 0;
-    W[2][0] = 3;  W[2][1] = 2;  W[2][2] = 1;  W[2][3] = 0;
-    W[3][0] = 4;  W[3][1] = 2;  W[3][2] = 0;  W[3][3] = 1;
+    W[2][0] = 0;  W[2][1] = 0;  W[2][2] = 1;  W[2][3] = 0;
+    W[3][0] = 0;  W[3][1] = 0;  W[3][2] = 0;  W[3][3] = 1;
     
     Basis W1(W);
     
   
     
-    W.write();
+   // W.write();
     
     
     
@@ -98,15 +98,19 @@ int main(int argc, const char * argv[]) {
     Basis V1(V);
 
     IntLattice reseau1(W, 19);
+    reseau1.getPrimalBasis().updateVecNorm();
+    reseau1.getPrimalBasis().write();
+
     
     Reducer teston(reseau1);
     
-    teston.redLLL(0.99, 1000000, 4);
+    teston.redLLL(0.99, 1000000, 2);
     
     reseau1.getPrimalBasis().write();
     
-    LLL_FP(W1);
+    BKZ_FP(W1);
     W1.write();
+    
 
     /*
     reseau1.trace("hey");

@@ -267,6 +267,7 @@ protected:
    int m_order;
 
    /**
+    * TODO: really ?
     * Number of points per unit volume.
     */
    MScal m_m;

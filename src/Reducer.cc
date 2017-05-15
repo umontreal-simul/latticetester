@@ -379,7 +379,7 @@ void Reducer::pairwiseRedPrimal (int i, int d)
    m_lat->getPrimalBasis ().updateScalL2Norm (i);
    bool modifFlag;
 
-   for (int j = d + 1; j < dim; j++) {
+   for (int j = d; j < dim; j++) {
       if (i == j)
          continue;
       modifFlag = false;

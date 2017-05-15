@@ -87,7 +87,12 @@ public:
     NormType getNorm () const { return m_norm; }
 
     /**
-     * Return the norm of each line of lattice
+     * Return the norm of the i-th line of the basis
+     */
+    NScal getVecNorm (const int & i) { return m_vecNorm[i]; }
+
+    /**
+     * Return the norm of each line of the basis
      */
     NVect getVecNorm () const { return m_vecNorm; }
 
@@ -132,6 +137,17 @@ public:
      * the lattice from d to m_dim
      */
     void updateVecNorm (const int & d);
+
+    /**
+     * Updates the norm of vector at dimension `d` using the `L2NORM`.
+     */
+    void updateScalL2Norm (int d);
+
+    /**
+     * Updates the norm of all basis vectors from dimensions `d1` to `d2`
+     * (inclusive) using the `L2NORM`.
+     */
+    void updateScalL2Norm (int d1, int d2);
 
     /**
      * Writes the lattice and the parameters on standard output

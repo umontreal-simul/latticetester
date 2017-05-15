@@ -115,6 +115,26 @@ void IntLatticeBasis::updateVecNorm ()
     updateVecNorm (0);
 }
 
+
+/*=========================================================================*/
+
+void IntLatticeBasis::updateScalL2Norm (int i)
+{
+   if (m_vecNorm[i]<0) {
+      matrix_row<BMat> row(m_basis, i);
+      ProdScal (row, row, m_dim, m_vecNorm[i]);
+   }
+}
+
+/*=========================================================================*/
+
+void IntLatticeBasis::updateScalL2Norm (int k1, int k2)
+{
+   for (int i = k1; i < k2; i++) {
+      updateScalL2Norm(i);
+   }
+}
+
 /*=========================================================================*/
 
 void IntLatticeBasis::updateVecNorm (const int & d)
@@ -130,15 +150,6 @@ void IntLatticeBasis::updateVecNorm (const int & d)
             CalcNorm <BVect, NScal> (row, m_dim, m_vecNorm[i], m_norm);
          }
       }
-
-      if (m_vecNorm[i] < 0) {
-         cout << "\n***** ERROR:   Negative norm for i = " << i <<
-         ",  dim = " << m_dim << endl;
-         cout << "Basis vector:   ";
-         matrix_row<BMat> row2(m_basis, i);
-         cout << LatticeTester::toString (row2, 0, m_dim, "  ") << endl;
-         exit(1);
-      }
    }
 }
 
@@ -150,7 +161,7 @@ void IntLatticeBasis::write () const
         for (int i = 0; i < m_dim; i++) {
         cout << "   | ";
         for (int j = 0; j < m_dim; j++) {
-         cout << setprecision (15) << m_basis[i][j] << "\t";
+         cout << setprecision (15) << m_basis(i,j) << "\t";
         }
         cout << " |" << endl;
     }
@@ -166,6 +177,8 @@ void IntLatticeBasis::write () const
       }
    }
 }
+
+
 
 
 

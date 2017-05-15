@@ -38,6 +38,11 @@
 #include <NTL/vec_vec_ZZ.h>
 #include <NTL/mat_ZZ.h>
 #include <NTL/LLL.h>
+#include "latticetester/ReduceFct.cpp"
+#include <NTL/matrix.h>
+#include <NTL/vec_vec_ZZ_p.h>
+
+
 
 
 
@@ -53,8 +58,8 @@ int main(int argc, const char * argv[]) {
     bool printMatrices = true;
     
     // Loop over dimension
-    const int min_dimension = 74;
-    const int max_dimension = 74;
+    const int min_dimension = 7;
+    const int max_dimension = 7;
     
     double TimerLLL [max_dimension - min_dimension + 1];
     double TimerLLLNTL [max_dimension - min_dimension + 1];
@@ -71,21 +76,56 @@ int main(int argc, const char * argv[]) {
         double delta = 1 - epsilon;
         
         int min = 1;
-        int max = 500;
+        int max = 10;
         
         IntLatticeBasis MyPrimalLattice (dimension, L2NORM);
-        srand (12345);
+        srand (1);
         for (int i = 0; i < dimension; i++){
             for (int j = i; j < dimension; j++)
                 //MyPrimalBasis[i+1][j+1] = power_ZZ(i+1,j);
-                MyPrimalLattice.getBasis()[i][j] = min + (rand() % (int)(max - min + 1));
+                MyPrimalLattice.getBasis()(j,i) = min + (rand() % (int)(max - min + 1));
         }
+        MyPrimalLattice.getBasis()(0,0) = 1;
         if (printMatrices){
             cout << "\nold Basis = " << endl;
             MyPrimalLattice.updateVecNorm();
             MyPrimalLattice.write();
         }
+        RMat gram = calculGram( MyPrimalLattice );
+        RMat cho = calculCholeski(MyPrimalLattice, gram);
+        calculCholeskiuntiln(cho, gram, dimension, 1);
+        
+        RMat D(dimension,dimension);
+        for(int i = 0; i < dimension; i++){
+            for(int j = 0; j < dimension; j++){
+                D(i,j) = 0;
+                for(int k = 0; k < dimension; k++){
+                    D(i,j) += cho(i,k)*cho(j,k);
+                }
+            }
+        }
+        //cho(0,0) = 1;
+        //RMat cho2 = prod(cho, trans(cho));
+        //cout << gram << "\n \n" << endl;
+        //cout << cho  << "\n \n" << endl;
+        //cout << D << "\n \n" << endl;
+        IntLatticeBasis lat = pairwiseRed (MyPrimalLattice, 0, 0);
+        lat.write();
+        bool test(true);
+        for(int i = 0; i < dimension; i++){
+            for(int j = 0; j < dimension; j++){
+                if((D(i,j) - gram(i,j)) > 0.0000001){
+                    test = false;
+                    cout << "D(i,j) = " << D(i,j) << " et gram(i,j) = " << gram(i,j) << endl;
+                }
+            }
+        }
+
+        
+        //cout << test << endl;
     }/*
+      
+      
     
         Reducer MyReducer (MyLattice);
         
@@ -243,13 +283,14 @@ int main(int argc, const char * argv[]) {
     
     IntLatticeBasis A(10);
     
-    A.getBasis()[0][1] = 2;
+    A.getBasis()(0,2) = 2;
     
     A.updateVecNorm();
     
     
     
-    A.write();
+    
+    //A.write();
     
     
     

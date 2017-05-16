@@ -507,10 +507,10 @@ void Reducer::preRedDieter (int d)
    long BoundCount;
    const int dim = m_lat->getDim ();
 
-   m_lat->getPrimalBasis().updateScalL2Norm (d+1, dim);
-   m_lat->getDualBasis ().updateScalL2Norm (d+1, dim);
+   m_lat->getPrimalBasis().updateScalL2Norm (d, dim);
+   m_lat->getDualBasis ().updateScalL2Norm (d, dim);
    m_lat->sort (d);
-   int i = dim;
+   int i = dim-1;
    m_cpt = 0;
    m_countDieter = 0;
    BoundCount = 2 * dim - d;
@@ -518,8 +518,8 @@ void Reducer::preRedDieter (int d)
       pairwiseRedPrimal (i, d);
       if (i > d)
          pairwiseRedDual (i);
-      if (i <= 1)
-         i = dim;
+      if (i < 1)
+         i = dim-1;
       else
          --i;
    } while (!(m_countDieter >= BoundCount || m_cpt > MAX_PRE_RED)); // fred

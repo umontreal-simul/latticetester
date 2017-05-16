@@ -141,13 +141,26 @@ public:
     /**
      * Updates the norm of vector at dimension `d` using the `L2NORM`.
      */
-    void updateScalL2Norm (int d);
+    void updateScalL2Norm (const int i);
 
     /**
      * Updates the norm of all basis vectors from dimensions `d1` to `d2`
      * (inclusive) using the `L2NORM`.
      */
-    void updateScalL2Norm (int d1, int d2);
+    void updateScalL2Norm (const int k1, const int k2);
+
+    /**
+     * Exchanges vectors \f$i\f$ and \f$j\f$ in the basis.
+     */
+    void permute (int i, int j);
+
+    /**
+     * Sorts the basis vectors with indices from \f$d\f$ to the dimension
+     * of the basis by increasing length. The dual vectors are permuted
+     * accordingly. Assumes that the lengths of the corresponding basis
+     * vectors are up to date.
+     */
+    void sort (int d);
 
     /**
      * Writes the lattice and the parameters on standard output

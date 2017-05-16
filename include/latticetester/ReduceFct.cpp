@@ -35,6 +35,14 @@ using namespace std;
 using namespace LatticeTester;
 
 
+/**
+ * Maximum number of transformations in the method `PreRedDieter`.
+ * After <tt>MAX_PRE_RED</tt> successful transformations have been
+ * performed, the prereduction is stopped.
+ */
+static const long MAX_PRE_RED = 1000000;
+
+
 /*=========================================================================*/
 
 /**
@@ -163,27 +171,32 @@ static RMat calculCholeski (IntLatticeBasis & lat, RMat & mat_gram)
  * Euclidean norm.
  */
 
-static IntLatticeBasis pairwiseRed (const IntLatticeBasis & lattice, int i, int d)
+static void pairwiseRed (
+   IntLatticeBasis & lat,
+   const int & i,
+   const int & d,
+   int & countModif,
+   int & countDieter)
 {
  // trace( "AVANT pairwiseRedPrimal");
-   IntLatticeBasis lat(lattice);
    const int dim = lat.getDim ();
-   //++m_countDieter;
+   ++countDieter;
    lat.setNorm(L2NORM);
    lat.updateVecNorm();
 
    bool modifFlag;
 
    NScal ns;
-   NScal bs;
+   BScal bs;
 
    for (int j = d; j < dim; j++) {
       if (i == j)
          continue;
       modifFlag = false;
       {
-         matrix_row<BMat> row1(lat.getBasis(), i);;
-         matrix_row<BMat> row2(lat.getBasis(), j);;
+         matrix_row<BMat> row1(lat.getBasis(), i);
+         matrix_row<BMat> row2(lat.getBasis(), j);
+         //cout << "la ligne : " << row1[2] << endl;
          ProdScal (row1, row2, dim, ns);
       }
       DivideRound <NScal> (ns, lat.getVecNorm (i), ns); // donne le int le plus proche
@@ -220,10 +233,11 @@ static IntLatticeBasis pairwiseRed (const IntLatticeBasis & lattice, int i, int 
          //m_lat->getPrimalBasis ().setNegativeNorm (true, j);
          modifFlag = true;
       }
-      /* modification du dual dans Reducer.h
+      // modification du dual dans Reducer.h
       if (modifFlag) {
-         m_countDieter = 0;
-         ++m_cpt;
+         countDieter = 0;
+         ++countModif;
+      /*
          matrix_row<BMat> row1(lat.getBasis(), i);
          matrix_row<BMat> row2(lat.getBasis(), j);
          ModifVect (row1, row2, bs, dim);
@@ -233,18 +247,117 @@ static IntLatticeBasis pairwiseRed (const IntLatticeBasis & lattice, int i, int 
          m_lat->getDualBasis ().setNegativeNorm (true, i);
          m_lat->setXX (false, i);
          m_lat->setXX (false, j);
+         */
 
-      } */
+      }
 
    }
-   return lat;
  // trace( "APRES pairwiseRedPrimal");
 }
 
+//=========================================================================
+
+/*
+ * Performs pairwise reductions. This method tries to reduce each basis
+ * vector with index larger than \f$d\f$ and distinct from \f$i\f$ by
+ * adding to it a multiple of the \f$i\f$-th vector. Always uses the
+ * Euclidean norm.
+ */
+static IntLatticeBasis preRedDieter (const IntLatticeBasis & lattice, int d)
+{
+    // trace( "AVANT preRedDieter");
+   IntLatticeBasis lat(lattice);
+   long BoundCount;
+   long dim = lat.getDim();
+
+   lat.updateScalL2Norm (d, dim);
+   //m_lat->getDualBasis ().updateScalL2Norm (d+1, dim);
+   lat.sort (d);
+   int i = dim-1;
+   int countModif = 0; //count the nb of modifications
+   int countDieter = 0; //count the nb of the call of the fonction
+   // pairwiseRed with no modification
+   BoundCount = 2 * dim - d;
+   do {
+      pairwiseRed (lat, i, d, countModif, countDieter);
+      //if (i > d)
+      //   pairwiseRedDual (i);
+      if (i < 1)
+         i = dim-1;
+      else
+         --i;
+   } while (!(countDieter >= BoundCount || countModif > MAX_PRE_RED));
+   cout << "Nombre de modif : " << countModif << endl;
+   cout << "Nombre sans modif : " << countDieter << endl;
+   return lat;
+}
 
 
+//=========================================================================
+/*
+static void reductionFaible (
+   IntLatticeBasis & lat,
+   RMat & cho2,
+   RMat & mat_gram,
+   int i,
+   int j)
+/*
+ * Reduit la matrice de Choleski (d'ordre 2) en ajoutant un multiple du
+ * vecteur i au vecteur j, si possible.  Modifie le vecteur dual W_i en
+ * consequence et remet a jour la matrice des produits scalaires.
+ * Utilise par redLLL.
+ {
+   RScal cte;
+   long cteLI;
+   cte = cho2(i,j) / cho2(i,i);
+ // trace( "AVANT reductionFaible");
 
+   const int dim = lat.getDim ();
 
+   if (fabs (cte) < std::numeric_limits<double>::max()) {
+      // On peut representer cte en LONGINT.
+      if (fabs (cte) > 0.5) {
+         conv (cteLI, Round (cte));
+         matrix_row<BMat> row1(lat.getBasis(), j);
+         matrix_row<BMat> row2(lat.getBasis(), i);
+         ModifVect (row1, row2, -cteLI, dim);
+         //  ModifVect (m_lat->getPrimalBasis ()[j], m_lat->getPrimalBasis ()[i],
+         //            -cteLI, dim);
+
+         // DUAL
+         //matrix_row<Basis> row3(m_lat->getDualBasis(), i);
+         //matrix_row<Basis> row4(m_lat->getDualBasis(), j);
+         //ModifVect (row3, row4, cteLI, dim);
+         //  ModifVect (m_lat->getDualBasis ()[i], m_lat->getDualBasis ()[j],
+         //            cteLI, dim);
+      } else
+         return;
+
+   } else {
+      // On represente cte en double.
+      if (fabs (cte) < std::numeric_limits<long double>::max())
+         cte = Round (cte);
+      matrix_row<BMat> row1(lat.getBasis(), j);
+      matrix_row<BMat> row2(lat.getBasis(), i);
+      ModifVect (row1, row2, -cte, dim);
+         //      ModifVect (m_lat->getPrimalBasis ()[j], m_lat->getPrimalBasis ()[i],
+         //          -cte, dim);
+
+      // DUAL
+      //matrix_row<Basis> row3(m_lat->getDualBasis(), i);
+      //matrix_row<Basis> row4(m_lat->getDualBasis(), j);
+      //ModifVect (row3, row4, cte, dim);
+      //  ModifVect (m_lat->getDualBasis ()[i], m_lat->getDualBasis ()[j], cte, dim);
+   }
+   lat.updateVecNorm(j);
+   //m_lat->getPrimalBasis ().setNegativeNorm (true, j);
+   //m_lat->getDualBasis ().setNegativeNorm (true, i);
+
+   miseAJourGramVD (j);
+   calculCholeski2LLL (i, j);
+ // trace( "APRES reductionFaible");
+}
+*/
 
 
 

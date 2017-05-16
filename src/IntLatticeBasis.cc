@@ -50,89 +50,69 @@ namespace LatticeTester
 {
 
 IntLatticeBasis::IntLatticeBasis (const int dim, NormType norm):
-    m_dim (dim),
-    m_norm (norm)
+   m_dim (dim),
+   m_norm (norm)
 {
 #ifdef WITH_NTL
-    ident(m_basis, dim);
+   ident(m_basis, dim);
 #else
-    m_basis = identity_matrix<long>(dim);
+   m_basis = identity_matrix<long>(dim);
 #endif
-    m_vecNorm.resize (dim);
-    initVecNorm();
+   m_vecNorm.resize (dim);
+   initVecNorm();
 }
 
 /*=========================================================================*/
 
 IntLatticeBasis::IntLatticeBasis (const BMat basis, const int dim, NormType norm):
-    m_basis (basis),
-    m_dim (dim),
-    m_norm (norm)
+   m_basis (basis),
+   m_dim (dim),
+   m_norm (norm)
 {
-    m_vecNorm.resize (dim);
-    initVecNorm();
+   m_vecNorm.resize (dim);
+   initVecNorm();
 }
 
 /*=========================================================================*/
 
 IntLatticeBasis::IntLatticeBasis (const IntLatticeBasis & lat):
-    m_dim (lat.getDim ()),
-    m_norm (lat.getNorm ())
+   m_dim (lat.getDim ()),
+   m_norm (lat.getNorm ())
 {
-    copyBasis (lat);
+   copyBasis (lat);
 }
 
 /*=========================================================================*/
 
 IntLatticeBasis::~IntLatticeBasis ()
 {
-    m_basis.clear ();
-    m_vecNorm.clear ();
+   m_basis.clear ();
+   m_vecNorm.clear ();
 }
 
 /*=========================================================================*/
 
 void IntLatticeBasis::copyBasis (const IntLatticeBasis & lat)
 {
-    if(m_dim == lat.m_dim)
-        m_basis = lat.m_basis;
-        m_vecNorm = lat.m_vecNorm;
+   if(m_dim == lat.m_dim)
+      m_basis = lat.m_basis;
+      m_vecNorm = lat.m_vecNorm;
 }
 
 /*=========================================================================*/
 
 void IntLatticeBasis::initVecNorm ()
 {
-    for(int i = 0; i < m_dim; i++){
-        m_vecNorm[i] = -1;
-    }
+   for(int i = 0; i < m_dim; i++){
+      m_vecNorm[i] = -1;
+   }
 }
 
 /*=========================================================================*/
 
 void IntLatticeBasis::updateVecNorm ()
 {
-    updateVecNorm (0);
-}
-
-
-/*=========================================================================*/
-
-void IntLatticeBasis::updateScalL2Norm (int i)
-{
-   if (m_vecNorm[i]<0) {
-      matrix_row<BMat> row(m_basis, i);
-      ProdScal (row, row, m_dim, m_vecNorm[i]);
-   }
-}
-
-/*=========================================================================*/
-
-void IntLatticeBasis::updateScalL2Norm (int k1, int k2)
-{
-   for (int i = k1; i < k2; i++) {
-      updateScalL2Norm(i);
-   }
+   updateVecNorm (0);
 }
 
 /*=========================================================================*/
@@ -155,20 +135,87 @@ void IntLatticeBasis::updateVecNorm (const int & d)
 
 /*=========================================================================*/
 
+void IntLatticeBasis::updateScalL2Norm (const int i)
+{
+   if (m_vecNorm[i]<0) {
+      matrix_row<BMat> row(m_basis, i);
+      ProdScal (row, row, m_dim, m_vecNorm[i]);
+   }
+}
+
+/*=========================================================================*/
+
+void IntLatticeBasis::updateScalL2Norm (const int k1, const int k2)
+{
+   for (int i = k1; i < k2; i++) {
+      updateScalL2Norm(i);
+   }
+}
+
+/*=========================================================================*/
+
+void IntLatticeBasis::permute (int i, int j)
+{
+   if (i == j)
+      return ;
+   for (int k = 0; k < m_dim; k++){
+      swap9 (m_basis(j,k), m_basis(i,k));
+   }
+   swap9 (m_vecNorm[i], m_vecNorm[j]);
+
+   /*
+   bool b = m_xx[j];
+   m_xx[j] = m_xx[i];
+   m_xx[i] = b;
+   */
+}
+
+/*=========================================================================*/
+
+void IntLatticeBasis::sort (int d)
+/*
+ * We assume that the square lengths are already updated.
+ * This gives flexibility to the user to put something else than
+ * the square Euclidean length in V.vecNorm, W.vecNorm, etc.
+ */
+{
+
+   int dim = getDim ();
+   for (int i = 0; i < dim; i++){
+      if (getVecNorm(i) < 0) {
+         cout << "\n***** ERROR:   Negative norm for i = " << i <<
+            ",  dim = " << dim << endl;
+      }
+   }
+
+   for (int i = d; i < dim; i++){
+      int k = i;
+      for (int j = i + 1; j < dim; j++) {
+         if (getVecNorm (j) < getVecNorm (k))
+            k = j;
+      }
+      if (i != k)
+         permute (i, k);
+   }
+}
+
+/*=========================================================================*/
+
+
 void IntLatticeBasis::write () const
 {
-    cout << "Dim = " << m_dim << " \n \n";
-        for (int i = 0; i < m_dim; i++) {
-        cout << "   | ";
-        for (int j = 0; j < m_dim; j++) {
+   cout << "Dim = " << m_dim << " \n \n";
+   for (int i = 0; i < m_dim; i++) {
+      cout << "   | ";
+      for (int j = 0; j < m_dim; j++) {
          cout << setprecision (15) << m_basis(i,j) << "\t";
-        }
-        cout << " |" << endl;
-    }
-    cout << "\n";
-    cout << "Norm used : " << toStringNorm(m_norm) << "\n" << endl;
-    cout << "Norm of each Basis' vector : \n";
-    for (int i = 0; i < m_dim; i++) {
+      }
+      cout << " |" << endl;
+   }
+   cout << "\n";
+   cout << "Norm used : " << toStringNorm(m_norm) << "\n" << endl;
+   cout << "Norm of each Basis' vector : \n";
+   for (int i = 0; i < m_dim; i++) {
       cout << "   ";
       if (m_vecNorm[i] < 0) {
          cout << "NaN OR Not computed" << endl;
@@ -177,6 +224,8 @@ void IntLatticeBasis::write () const
       }
    }
 }
+
+
 
 
 

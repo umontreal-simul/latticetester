@@ -202,7 +202,7 @@ void Reducer::calculCholeski2LLL (int n, int j)
  */
 {
    m_cho2(0,j) = m_gramVD(0,j);
-   for (int i = 1; i < n; i++) {
+   for (int i = 1; i <= n; i++) {
       m_cho2(i,j) = m_gramVD(i,j);
       for (int k = 0; k < i; k++) {
          m_cho2(i,j) -= (m_cho2(k,j) / m_cho2(k,k)) * m_cho2(k,i);

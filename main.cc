@@ -21,6 +21,10 @@
 #include <iterator>
 #include <string>
 #include <sstream>
+#include <RInside.h>
+#include <iomanip>
+
+
 
 #include "latticetester/Reducer.h"
 #include <boost/numeric/ublas/matrix.hpp>
@@ -51,56 +55,108 @@ using namespace std;
 using namespace LatticeTester;
 
 int main(int argc, const char * argv[]) {
-    
-    
+
+
+
+
+    //RInside R(argc, argv);              // create an embedded R instance
+
+    //R["txt"] = "Hello, world!\n";      // assign a char* (string) to 'txt'
+
+    //R.parseEvalQ("cat(txt)");           // eval the init string, ignoring any returns
+
+
+
 
     // printing matrices
     bool printMatrices = true;
-    
+
     // Loop over dimension
-    const int min_dimension = 7;
-    const int max_dimension = 7;
+    const int min_dimension = 40;
+    const int max_dimension = 4;
+
     
-    double TimerLLL [max_dimension - min_dimension + 1];
-    double TimerLLLNTL [max_dimension - min_dimension + 1];
-    bool EqualReducedBasis [max_dimension - min_dimension + 1];
+    int dimension = min_dimension;
+
+    //for (int dimension = min_dimension; dimension <= max_dimension; dimension++){
+
+
+    int modulus = 2;
+    double epsilon = 0.000001;
+    double delta = 1 - epsilon;
+
+    int min = 10;
+    int max = 50;
+
+    IntLatticeBasis MyPrimalLattice (dimension, L2NORM);
     
-    boost::progress_display show_progress(max_dimension);
-    
-    for (int dimension = min_dimension; dimension <= max_dimension; dimension++){
-        
-        ++show_progress;
-        
-        int modulus = 2;
-        double epsilon = 0.000001;
-        double delta = 1 - epsilon;
-        
-        int min = 1;
-        int max = 10;
-        
-        IntLatticeBasis MyPrimalLattice (dimension, L2NORM);
-        srand (1);
-        for (int i = 0; i < dimension; i++){
-            for (int j = i; j < dimension; j++)
-                //MyPrimalBasis[i+1][j+1] = power_ZZ(i+1,j);
-                MyPrimalLattice.getBasis()(j,i) = min + (rand() % (int)(max - min + 1));
-        }
-        MyPrimalLattice.getBasis()(0,0) = 1;
-        if (printMatrices){
-            cout << "\nold Basis = " << endl;
-            MyPrimalLattice.updateVecNorm();
-            MyPrimalLattice.write();
-        }
-        //RMat gram = calculGram( MyPrimalLattice );
-        //RMat cho = calculCholeski(MyPrimalLattice, gram);
-        //calculCholeskiuntiln(cho, gram, dimension, 1);
-        
-        
-        IntLatticeBasis lat = preRedDieter(MyPrimalLattice, 0);
-        lat.write();
-        bool test(true);
+    // Remplissage aléatoire de la lattice
+    srand (2);
+    for (int i = 0; i < dimension; i++){
+        for (int j = 0; j < dimension; j++)
+            //MyPrimalBasis[i+1][j+1] = power_ZZ(i+1,j);
+            MyPrimalLattice.getBasis()(i,j) = min + (rand() % (int)(max - min + 1));
         
     }
-
+    
+    
+    if (printMatrices){
+        cout << "\nold Basis = " << endl;
+        MyPrimalLattice.updateVecNorm();
+        MyPrimalLattice.write();
+    }
+    
+    //RMat gram = calculGram( MyPrimalLattice );
+    //RMat cho = calculCholeski(MyPrimalLattice, gram);
+    //calculCholeskiuntiln(cho, gram, dimension, 1);
+    
+    long maxcpt = 1000000;
+    
+    IntLatticeBasis MySecondLattice(MyPrimalLattice);
+    
+    
+    
+    redLLL(MyPrimalLattice, delta, maxcpt, dimension);
+    
+    LLL_XD(MySecondLattice.getBasis(), delta, 0, 0, 0);
+    MySecondLattice.setNegativeNorm();
+    MySecondLattice.updateVecNorm();
+    
+    cout << "\new Basis with ReduceFonction = " << endl;
+    MyPrimalLattice.write();
+    
+    cout << "\new Basis with NTL = " << endl;
+    MySecondLattice.write();
+    
+    
+    
+    
+    
+    
+/*
+    // UTILISATION DE R
+    RInside R(argc, argv);              // create an embedded R instance
+    
+    R["M"] = lat.toRccpMatrix();                  // eval command, no return
+    std::string str =
+        "cat('Running ls()\n'); print(ls()); "
+        "cat('Showing M\n'); print(M); "
+        "cat('Showing colSums()\n'); Z <- colSums(M); print(Z); "
+        "Z";
+    
+    Rcpp::NumericVector v = R.parseEval(str);
+*/
+    
+    
+/*
+    // Slide Bar of progression
+    boost::progress_display show_progress(max_dimension);
+    ++show_progress;
+ 
+ 
+*/
+    
+    
+    
     return 0;
 }

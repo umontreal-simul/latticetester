@@ -23,6 +23,7 @@
 //#include "latticetester/CoordinateSets.h"
 //#include "latticetester/Lacunary.h"
 #include <string>
+#include <RInside.h>
 
 
 namespace LatticeTester {
@@ -134,7 +135,7 @@ public:
 
     /**
      * Recalculates the norm of each vector in the basis of
-     * the lattice from d to m_dim
+     * the lattice from d to dim
      */
     void updateVecNorm (const int & d);
 
@@ -142,6 +143,16 @@ public:
      * Updates the norm of vector at dimension `d` using the `L2NORM`.
      */
     void updateScalL2Norm (const int i);
+
+    /**
+     * Set the norm of all vectors to -1
+     */
+    void setNegativeNorm ();
+
+    /**
+     * Set the norm of the i-eme vector to -1
+     */
+    void setNegativeNorm (const int & i){ m_vecNorm[i] = -1; }
 
     /**
      * Updates the norm of all basis vectors from dimensions `d1` to `d2`
@@ -166,6 +177,11 @@ public:
      * Writes the lattice and the parameters on standard output
      */
     void write () const;
+
+    /**
+     * Write in R
+     */
+    Rcpp::NumericMatrix toRccpMatrix();
 
 
 

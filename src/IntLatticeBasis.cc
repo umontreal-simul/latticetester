@@ -117,6 +117,15 @@ void IntLatticeBasis::updateVecNorm ()
 
 /*=========================================================================*/
 
+void IntLatticeBasis::setNegativeNorm ()
+{
+   for (int i = 0; i<m_dim; i++){
+      m_vecNorm[i] = -1;
+   }
+}
+
+/*=========================================================================*/
+
 void IntLatticeBasis::updateVecNorm (const int & d)
 {
     assert (d >= 0);
@@ -132,6 +141,7 @@ void IntLatticeBasis::updateVecNorm (const int & d)
       }
    }
 }
+
 
 /*=========================================================================*/
 
@@ -208,7 +218,8 @@ void IntLatticeBasis::write () const
    for (int i = 0; i < m_dim; i++) {
       cout << "   | ";
       for (int j = 0; j < m_dim; j++) {
-         cout << setprecision (15) << m_basis(i,j) << "\t";
+         cout << setprecision (4) <<
+         setw (3) << m_basis(i,j) << "   ";
       }
       cout << " |" << endl;
    }
@@ -224,6 +235,21 @@ void IntLatticeBasis::write () const
       }
    }
 }
+
+/*=========================================================================*/
+
+Rcpp::NumericMatrix IntLatticeBasis::toRccpMatrix()
+{
+   const int n = getDim();
+   Rcpp::NumericMatrix mat(n, n);
+   for (int i = 0; i<n ; i++) {
+      for (int j = 0; j<n; j++) {
+         conv(mat(i,j), getBasis()(i,j));
+      }
+   }
+   return mat;
+}
+
 
 
 

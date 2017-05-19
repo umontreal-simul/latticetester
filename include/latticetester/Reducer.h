@@ -21,8 +21,8 @@
 #include "latticetester/Types.h"
 #include "latticetester/Const.h"
 #include "latticetester/Util.h"
-#include "latticetester/Basis.h"
-#include "latticetester/IntLattice.h"
+//#include "latticetester/Basis.h"
+#include "latticetester/IntLatticeBasis.h"
 
 #include <fstream>
 #include <sstream>
@@ -108,7 +108,7 @@ public:
    /**
     * Constructor. Initializes the reducer to work on lattice `lat`.
     */
-   Reducer (IntLattice & lat);
+   Reducer (IntLatticeBasis & lat);
 
    /**
     * Copy constructor.
@@ -154,7 +154,7 @@ public:
    /**
     * Tries to find shorter vectors in `reductMinkowski`.
     */
-   bool tryZ  (int j, int i, int Stage, bool & smaller, const Basis & WTemp);
+   bool tryZ  (int j, int i, int Stage, bool & smaller, const BMat & WTemp);
 
    /**
     * Tries to find a shorter vector in `shortestVector`.
@@ -269,7 +269,7 @@ private:
    /**
     * Lattice on which the reduction will be performed.
     */
-   IntLattice* m_lat;
+   IntLatticeBasis* m_lat;
 
    /**
     * Permutes the \f$i^{th}\f$ and the \f$j^{th}\f$ line, and the

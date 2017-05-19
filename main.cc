@@ -72,7 +72,7 @@ int main(int argc, const char * argv[]) {
     bool printMatrices = true;
 
     // Loop over dimension
-    const int min_dimension = 40;
+    const int min_dimension = 20;
     const int max_dimension = 4;
 
     
@@ -113,6 +113,8 @@ int main(int argc, const char * argv[]) {
     long maxcpt = 1000000;
     
     IntLatticeBasis MySecondLattice(MyPrimalLattice);
+    IntLatticeBasis MyThirdLattice(MyPrimalLattice);
+    
     
     
     
@@ -127,6 +129,15 @@ int main(int argc, const char * argv[]) {
     
     cout << "\new Basis with NTL = " << endl;
     MySecondLattice.write();
+    
+    
+    Reducer red(MyThirdLattice);
+    
+    
+    red.redLLL(delta, maxcpt, dimension);
+    
+    //cout << "\new Basis with ReduceFonction = " << endl;
+    red.trace("\n New Basis with ReduceFonction = ");
     
     
     

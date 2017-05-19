@@ -78,9 +78,9 @@ public:
     BMat & getBasis () { return m_basis; }
 
     /**
-     * Return the dimension of the lattice, a long type
+     * Return the dimension of the lattice, a int type
      */
-    long getDim () const { return m_dim; }
+    int getDim () const { return m_dim; }
 
     /**
      * Return the Norm type used by the lattice
@@ -132,6 +132,12 @@ public:
      * the lattice
      */
     void updateVecNorm ();
+
+    /**
+     * Get and det m_xx but I don't now what means m_xx
+     */
+    bool getXX (int i) const { return m_xx[i]; } //???
+    void setXX (bool val, int i) { m_xx[i] = val; } //??
 
     /**
      * Recalculates the norm of each vector in the basis of
@@ -203,12 +209,17 @@ private:
     /**
     * The dimension of the space.
     */
-    long m_dim;
+    int m_dim;
 
     /**
      * The norm of each vector in the basis.
      */
     NVect m_vecNorm;
+
+    /**
+     * Implemented in LatCommun but I've no idea what it does
+     */
+    bool *m_xx;
 
 
 };

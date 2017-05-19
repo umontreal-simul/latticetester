@@ -51,7 +51,8 @@ namespace LatticeTester
 
 IntLatticeBasis::IntLatticeBasis (const int dim, NormType norm):
    m_dim (dim),
-   m_norm (norm)
+   m_norm (norm),
+   m_xx(0)
 {
 #ifdef WITH_NTL
    ident(m_basis, dim);
@@ -67,7 +68,8 @@ IntLatticeBasis::IntLatticeBasis (const int dim, NormType norm):
 IntLatticeBasis::IntLatticeBasis (const BMat basis, const int dim, NormType norm):
    m_basis (basis),
    m_dim (dim),
-   m_norm (norm)
+   m_norm (norm),
+   m_xx(0)
 {
    m_vecNorm.resize (dim);
    initVecNorm();
@@ -77,7 +79,8 @@ IntLatticeBasis::IntLatticeBasis (const BMat basis, const int dim, NormType norm
 
 IntLatticeBasis::IntLatticeBasis (const IntLatticeBasis & lat):
    m_dim (lat.getDim ()),
-   m_norm (lat.getNorm ())
+   m_norm (lat.getNorm ()),
+   m_xx(0)
 {
    copyBasis (lat);
 }
@@ -88,6 +91,8 @@ IntLatticeBasis::~IntLatticeBasis ()
 {
    m_basis.clear ();
    m_vecNorm.clear ();
+   delete [] m_xx;
+   m_xx = 0;
 }
 
 /*=========================================================================*/
@@ -97,14 +102,19 @@ void IntLatticeBasis::copyBasis (const IntLatticeBasis & lat)
    if(m_dim == lat.m_dim)
       m_basis = lat.m_basis;
       m_vecNorm = lat.m_vecNorm;
+      m_xx = new bool[m_dim];
+      for (int i = 0; i < m_dim; i++)
+         m_xx[i] = lat.getXX(i);
 }
 
 /*=========================================================================*/
 
 void IntLatticeBasis::initVecNorm ()
 {
+   m_xx = new bool[m_dim];
    for(int i = 0; i < m_dim; i++){
       m_vecNorm[i] = -1;
+      m_xx[i] = true;
    }
 }
 
@@ -147,10 +157,8 @@ void IntLatticeBasis::updateVecNorm (const int & d)
 
 void IntLatticeBasis::updateScalL2Norm (const int i)
 {
-   if (m_vecNorm[i]<0) {
-      matrix_row<BMat> row(m_basis, i);
-      ProdScal (row, row, m_dim, m_vecNorm[i]);
-   }
+   matrix_row<BMat> row(m_basis, i);
+   ProdScal (row, row, m_dim, m_vecNorm[i]);
 }
 
 /*=========================================================================*/
@@ -172,12 +180,9 @@ void IntLatticeBasis::permute (int i, int j)
       swap9 (m_basis(j,k), m_basis(i,k));
    }
    swap9 (m_vecNorm[i], m_vecNorm[j]);
-
-   /*
    bool b = m_xx[j];
    m_xx[j] = m_xx[i];
    m_xx[i] = b;
-   */
 }
 
 /*=========================================================================*/

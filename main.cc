@@ -21,7 +21,6 @@
 #include <iterator>
 #include <string>
 #include <sstream>
-#include <RInside.h>
 #include <iomanip>
 
 

@@ -42,7 +42,6 @@
 #include <NTL/vec_vec_ZZ.h>
 #include <NTL/mat_ZZ.h>
 #include <NTL/LLL.h>
-#include "latticetester/ReduceFct.cpp"
 #include <NTL/matrix.h>
 #include <NTL/vec_vec_ZZ_p.h>
 

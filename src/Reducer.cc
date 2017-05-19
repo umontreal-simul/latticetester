@@ -804,7 +804,7 @@ bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const BMat & WTemp)
          RScal tmps_n2 = m_n2[0] + x * x * m_dc2[0];
          if (tmps_n2 < m_lMin2) {
             // On verifie si on a vraiment trouve un vecteur plus court
-            matrix_row<const BMat> row1(m_lat->getBasis(), dim);
+            matrix_row<const BMat> row1(m_lat->getBasis(), dim-1);
             m_bv = row1;
             //    m_bv = m_lat->getBasis ()[dim];
             for (k = 0; k < dim; k++) {
@@ -814,13 +814,13 @@ bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const BMat & WTemp)
                }
             }
             if (Stage == 3) {
-               matrix_row<const BMat> row1(m_lat->getBasis(), dim);
-               cout << " row1 = " << row1[1] << endl;
+               matrix_row<const BMat> row1(m_lat->getBasis(), dim-1);
+               //cout << " row1 = " << row1 << endl;
                ModifVect (m_bv, row1, m_zLR[dim-1] - 1.0, dim);
             }
 
             ProdScal (m_bv, m_bv, dim, S1);
-            conv (S4, m_lat->getVecNorm (dim));
+            conv (S4, m_lat->getVecNorm (dim-1));
             if (S1 < S4) {
                if (Stage == 2) {
                   smaller = true;
@@ -853,7 +853,7 @@ bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const BMat & WTemp)
                }
                if (smaller) {
                   conv (temp, S1);
-                  m_lat->setVecNorm (temp, dim);
+                  m_lat->setVecNorm (temp, dim-1);
                   return true;
                }
             }
@@ -969,7 +969,7 @@ bool Reducer::redBB (int i, int d, int Stage, bool & smaller)
       /* On a trouve un plus court vecteur.  On ameliore
          m_lat->getBasis()[k].  */
       if (Stage == 2)
-         k = dim;
+         k = dim-1;
       else
          transformStage3 (m_zShort, k);
       matrix_row<BMat> row1(m_lat->getBasis(), k);

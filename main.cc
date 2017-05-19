@@ -102,8 +102,8 @@ int main()
    bool printLists = false;
 
    // main parameters for the test
-   int dimension = 10;
-   int min = 1;
+   int dimension = 50;
+   int min = 30;
    int max = 100;
 
    long a = 999999;
@@ -116,7 +116,7 @@ int main()
    long blocksize = 30; // for BKZ insertions
 
    // iteration loop over matrices of same dimension
-   const int maxIteration = 2;
+   const int maxIteration = 1;
 
    // print important information
    cout << "epsilon = " << epsilon << endl;
@@ -125,7 +125,7 @@ int main()
    cout << endl;
 
    // to display progress bar
-   boost::progress_display show_progress(maxIteration);
+   boost::progress_display show_progress(maxIteration*5);
 
    // arrays to store values
 
@@ -177,9 +177,9 @@ int main()
 
 
    for (int iteration = 0; iteration < maxIteration; iteration++){
-      ++show_progress;
+      
 
-      int seed = (iteration+1) * (iteration+1) * 123456789;
+      int seed = (iteration+1) * (iteration+1) * 123456789 * dimension;
       //int seed = (int) (iteration+1) * 12345 * time(NULL);
 
       // We create copies of the same basis for: LLL,
@@ -263,6 +263,7 @@ int main()
         cout << lattice_PairRedPrimal.getVecNorm(0) << endl;
         lattice_PairRedPrimal.write();
       }
+      ++show_progress;
 
 
       //------------------------------------------------------------------------------------
@@ -302,7 +303,7 @@ int main()
         cout << "Shortest vector = " << lattice_LLL.getVecNorm(0) << endl;
         lattice_LLL.write();
       }
-
+      ++show_progress;
 
       //------------------------------------------------------------------------------------
       // Pairwise reduction (in primal basis only) and then LLL Richard
@@ -360,7 +361,7 @@ int main()
         cout << "Shortest vector = " << lattice_PairRedPrimalRandomized_LLL.getVecNorm(0) << endl;
         lattice_PairRedPrimalRandomized_LLL.write();
       }
-
+      ++show_progress;
 
       //------------------------------------------------------------------------------------
       // LLL NTL reduction (floating point version = proxy)
@@ -496,7 +497,7 @@ int main()
       //NScal intermediateLengthBis = lattice_PairRedPrimal_LLL_NTL.getVecNorm(0);
 
       clock_t begin_PairRedPrimal_BKZNTL2 = clock();
-      reducer_PairRedPrimal_BKZNTL.redLLLNTLProxy(delta);
+      reducer_PairRedPrimal_BKZNTL.redBKZ(delta, blocksize);
       clock_t end_PairRedPrimal_BKZNTL2 = clock();
 
       lattice_PairRedPrimal_BKZNTL.setNegativeNorm(true);
@@ -526,7 +527,7 @@ int main()
       //NScal intermediateShortestVectorLengthBis = lattice_PairRedPrimal_LLL_NTL.getVecNorm(0);
 
       clock_t begin_PairRedPrimalRandomized_BKZNTL2 = clock();
-      reducer_PairRedPrimalRandomized_BKZNTL.redLLLNTLProxy(delta);
+      reducer_PairRedPrimalRandomized_BKZNTL.redBKZ(delta, blocksize);
       clock_t end_PairRedPrimalRandomized_BKZNTL2 = clock();
 
       lattice_PairRedPrimalRandomized_BKZNTL.setNegativeNorm(true);
@@ -538,19 +539,20 @@ int main()
         cout << "Shortest vector = " << lattice_PairRedPrimalRandomized_BKZNTL.getVecNorm(0) << endl;
         lattice_PairRedPrimalRandomized_BKZNTL.write();
       }
-
+      ++show_progress;
       //------------------------------------------------------------------------------------
       // Branch and Bound
       //------------------------------------------------------------------------------------
-
+       reducer_Branch_n_Bound.redBKZ(delta, blocksize);
       clock_t begin_Branch_n_Bound = clock();
-      reducer_Branch_n_Bound.reductMinkowski(0);
+       
+      reducer_Branch_n_Bound.shortestVector(L2NORM);
       clock_t end_Branch_n_Bound = clock();
 
       lattice_Branch_n_Bound.setNegativeNorm(true);
       lattice_Branch_n_Bound.updateVecNorm();
       lattice_Branch_n_Bound.sort(0);
-
+      ++show_progress;
 
 
 
@@ -740,7 +742,7 @@ int main()
    cout << "PairRedRandom+BKZNTL = " << conv<ZZ>(Average(length_BKZNTL_PostPairRedPrimalRandomized)) << endl;
    cout << endl;
 
-   cout << "    Branch And Bound = " << conv<ZZ>(Average(length_Branch_n_Bound)) << endl;
+   cout << "Branch n Bound Post BZK = " << conv<ZZ>(Average(length_Branch_n_Bound)) << endl;
 
    cout << "\n--------------------------------------------" << endl;
 

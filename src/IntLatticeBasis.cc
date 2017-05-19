@@ -89,7 +89,7 @@ IntLatticeBasis::IntLatticeBasis (const IntLatticeBasis & lat):
 
 IntLatticeBasis::~IntLatticeBasis ()
 {
-   m_basis.clear ();
+   m_basis.BMat::clear ();
    m_vecNorm.clear ();
    delete [] m_xx;
    m_xx = 0;

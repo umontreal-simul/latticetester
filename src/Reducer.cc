@@ -45,7 +45,6 @@
 
 using namespace boost::numeric::ublas;
 #endif
-#include <boost/progress.hpp>
 
 
 using namespace std;
@@ -139,7 +138,7 @@ void Reducer::copy (const Reducer & red)
    m_lMin = red.m_lMin;
    m_lMin2 = red.m_lMin2;
    m_BoundL2 = red.m_BoundL2;
-   m_IC = new int[3 + m_lat->getDim ()];
+   m_IC = new int[1 + m_lat->getDim ()];
    for (int i = 0; i < 3 + m_lat->getDim (); i++)
       m_IC[i] = red.m_IC[i];
 }

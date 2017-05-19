@@ -198,6 +198,9 @@ public:
     * the Euclidean norm.
     */
    void preRedDieter (int d);
+   void preRedDieterPrimalOnly (int d);
+   void preRedDieterPrimalOnlyRandomized (int d);
+
 
    /**
     * Finds the shortest non-zero vector using norm `norm`. Returns `true`
@@ -215,6 +218,13 @@ public:
     * Always uses the Euclidean norm.
     */
    void redLLL (double fact, long maxcpt, int dim);
+
+   /**
+    * With NTL
+    */
+   void redLLLNTLProxy(double fact);
+   void redLLLNTLExact(ZZ & det, long a, long b);
+   void redBKZ(double fact, long Blocksize);
 
    /**
     * Reduces the current basis to a Minkowski reduced basis with respect

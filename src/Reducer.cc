@@ -31,12 +31,22 @@
 #include "latticetester/Reducer.h"
 
 #ifdef WITH_NTL
+#include <NTL/tools.h>
+#include <NTL/ZZ.h>
+#include <NTL/matrix.h>
+#include "NTL/vec_ZZ.h"
+#include <NTL/vec_vec_ZZ.h>
+#include <NTL/mat_ZZ.h>
+#include <NTL/LLL.h>
 #else
 #include <boost/numeric/ublas/vector.hpp>
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/matrix_proxy.hpp>
+
 using namespace boost::numeric::ublas;
 #endif
+#include <boost/progress.hpp>
+
 
 using namespace std;
 
@@ -360,6 +370,7 @@ void Reducer::trace (char *mess)
    m_lat->setNegativeNorm();
    //m_lat->getDualBasis ().setNegativeNorm(true);
    m_lat->updateVecNorm ();
+   m_lat->sort(0);
    //m_lat->getDualBasis ().updateVecNorm ();
    m_lat->write();
    //m_lat->getDualBasis ().write();
@@ -505,7 +516,8 @@ void Reducer::pairwiseRedDual (int i)
 */
 //=========================================================================
 
-void Reducer::preRedDieter (int d)
+
+void Reducer::preRedDieter(int d)
 {
     // trace( "AVANT preRedDieter");
    long BoundCount;
@@ -530,6 +542,64 @@ void Reducer::preRedDieter (int d)
 
     // trace( "APRES preRedDieter");
 }
+
+
+
+void Reducer::preRedDieterPrimalOnlyRandomized (int d)
+{
+    // trace( "AVANT preRedDieter");
+   long BoundCount;
+   const int dim = m_lat->getDim ();
+
+   m_lat->updateScalL2Norm (d, dim);
+   //m_lat->getDualBasis ().updateScalL2Norm (d, dim);
+   m_lat->sort (d);
+   int i = dim-1;
+   m_cpt = 0;
+   m_countDieter = 0;
+   BoundCount = 2 * dim - d;
+   do {
+      pairwiseRedPrimal (rand() % dim, d);
+      //if (i > d)
+      //   pairwiseRedDual (i);
+      if (i < 1)
+         i = dim-1;
+      else
+         --i;
+   } while (!(m_countDieter >= BoundCount || m_cpt > MAX_PRE_RED)); // fred
+
+    // trace( "APRES preRedDieter");
+}
+
+//=========================================================================
+
+void Reducer::preRedDieterPrimalOnly (int d)
+{
+    // trace( "AVANT preRedDieter");
+   long BoundCount;
+   const int dim = m_lat->getDim ();
+
+   m_lat->updateScalL2Norm (d, dim);
+   //m_lat->getDualBasis ().updateScalL2Norm (d, dim);
+   m_lat->sort (d);
+   int i = dim-1;
+   m_cpt = 0;
+   m_countDieter = 0;
+   BoundCount = 2 * dim - d;
+   do {
+      pairwiseRedPrimal (i, d);
+      //if (i > d)
+      //   pairwiseRedDual (i);
+      if (i < 1)
+         i = dim-1;
+      else
+         --i;
+   } while (!(m_countDieter >= BoundCount || m_cpt > MAX_PRE_RED)); // fred
+
+    // trace( "APRES preRedDieter");
+}
+
+
 
 
 //=========================================================================
@@ -594,6 +664,22 @@ void Reducer::reductionFaible (int i, int j)
    calculCholeski2LLL (i, j);
  // trace( "APRES reductionFaible");
 }
+
+
+void Reducer::redLLLNTLProxy(double fact){
+   LLL_XD( m_lat->getBasis(), fact, 0, 0);
+}
+
+void Reducer::redLLLNTLExact(ZZ & det, long a, long b){
+   LLL (det, m_lat->getBasis(), a, b, 0);
+}
+
+void Reducer::redBKZ(double fact, long Blocksize){
+   BKZ_XD(m_lat->getBasis(), fact, Blocksize);
+}
+
+
+
 
 
 //=========================================================================
@@ -700,7 +786,7 @@ void Reducer::transformStage3 (std::vector<long> & z, int & k)
    long q;
    const int dim = m_lat->getDim ();
 
-   j = dim;
+   j = dim-1;
    while (z[j] == 0)
       --j;
    while (labs (z[j]) > 1) {
@@ -1072,6 +1158,7 @@ bool Reducer::tryZ0 (int j, bool & smaller)
       center -= m_c0(j,k) * m_zLR[k];
 
    // Distance du centre aux extremites de l'intervalle.
+
    dc = sqrt ((m_lMin2 - m_n2[j]) / m_dc2[j]);
 
    /* Calcul de deux entiers ayant la propriete qu'un entier */
@@ -1169,7 +1256,8 @@ bool Reducer::tryZ0 (int j, bool & smaller)
          }
       } else if (m_lMin2 > m_n2[j] + x * x * m_dc2[j]) {
          // Encore de l'espoir: recursion.
-         if (!tryZ0 (j - 1, smaller))
+         m_n2[j-1] = m_n2[j] + x * x * m_dc2[j];
+         if (!tryZ0 (j-1, smaller))
             return false;
       } else
          m_n2[j-1] = m_n2[j] + x * x * m_dc2[j];
@@ -1248,7 +1336,7 @@ bool Reducer::redBB0 (NormType norm)
    m_countNodes = 0;
    smaller = false;
    m_foundZero = false;
-   if (!tryZ0 (dim, smaller))
+   if (!tryZ0 (dim-1, smaller))
       return false;
 
    if (smaller) {

@@ -23,8 +23,6 @@
 //#include "latticetester/CoordinateSets.h"
 //#include "latticetester/Lacunary.h"
 #include <string>
-#include <RInside.h>
-
 
 namespace LatticeTester {
 
@@ -183,15 +181,6 @@ public:
      * Writes the lattice and the parameters on standard output
      */
     void write () const;
-
-    /**
-     * Write in R
-     */
-    Rcpp::NumericMatrix toRccpMatrix();
-
-
-
-
 
 private:
 

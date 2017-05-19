@@ -243,28 +243,6 @@ void IntLatticeBasis::write () const
 
 /*=========================================================================*/
 
-Rcpp::NumericMatrix IntLatticeBasis::toRccpMatrix()
-{
-   const int n = getDim();
-   Rcpp::NumericMatrix mat(n, n);
-   for (int i = 0; i<n ; i++) {
-      for (int j = 0; j<n; j++) {
-         conv(mat(i,j), getBasis()(i,j));
-      }
-   }
-   return mat;
-}
-
-
-
-
-
-
-
-
-
-
-
 
 } //namespace LatticeTester
 

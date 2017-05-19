@@ -103,7 +103,7 @@ int main()
    bool printLists = false;
 
    // main parameters for the test
-   int dimension = 30;
+   int dimension = 10;
    int min = 1;
    int max = 100;
 
@@ -117,7 +117,7 @@ int main()
    long blocksize = 30; // for BKZ insertions
 
    // iteration loop over matrices of same dimension
-   const int maxIteration = 10;
+   const int maxIteration = 2;
 
    // print important information
    cout << "epsilon = " << epsilon << endl;
@@ -243,7 +243,7 @@ int main()
       Reducer reducer_BKZNTL (lattice_BKZNTL);
       Reducer reducer_PairRedPrimal_BKZNTL (lattice_PairRedPrimal_BKZNTL);
       Reducer reducer_PairRedPrimalRandomized_BKZNTL (lattice_PairRedPrimalRandomized_BKZNTL);
-      Reducer reducer_Branch_n_Bound (lattice_PairRedPrimalRandomized_BKZNTL);
+      Reducer reducer_Branch_n_Bound (lattice_Branch_n_Bound);
 
 
       //------------------------------------------------------------------------------------
@@ -545,7 +545,7 @@ int main()
       //------------------------------------------------------------------------------------
 
       clock_t begin_Branch_n_Bound = clock();
-      reducer_Branch_n_Bound.shortestVector(L2NORM);
+      reducer_Branch_n_Bound.reductMinkowski(0);
       clock_t end_Branch_n_Bound = clock();
 
       lattice_Branch_n_Bound.setNegativeNorm(true);

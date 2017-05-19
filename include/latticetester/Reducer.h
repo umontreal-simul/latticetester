@@ -96,7 +96,6 @@ public:
     * depending on the thresholds `MinkLLL, ShortDiet, ShortLLL` as explained
     * above.
     */
-
    static bool PreRedDieterSV;
    static bool PreRedLLLSV;
    static bool PreRedLLLRM;
@@ -301,6 +300,11 @@ private:
    void calculCholeski2Ele (int i, int j);
    void miseAJourGramVD (int j);
    void calculGramVD ();
+
+   /**
+    * Reduce the Choleski matrix with adding a multiple of the i-th vector
+    * to the j-th vector. It updates the Gram Schmidt matrix
+    */
    void reductionFaible (int i, int j);
 
    /**

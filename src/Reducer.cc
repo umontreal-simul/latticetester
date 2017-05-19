@@ -55,7 +55,7 @@ namespace LatticeTester
 {
 
 // Initialization of non-const static members
-bool Reducer::PreRedDieterSV = true;
+bool Reducer::PreRedDieterSV = false;
 bool Reducer::PreRedLLLSV = false;
 bool Reducer::PreRedLLLRM = false;
 long Reducer::maxNodesBB = 10000000;

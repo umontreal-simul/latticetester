@@ -286,11 +286,12 @@ bool Reducer::calculCholeski (RVect & DC2, RMat & C0)
 {
    const int dim = m_lat->getDim ();
 
-   int d, k, j, i;
+   int k, j, i;
    // RScal m2r;
    // C2(i,j) = C0(i,j) * C2(i,i) if i != j.
    // C2(i,i) = DC2[i].
    //conv (m2r, m_lat->getM2 ());
+   //int d;
    //d = dim / 2;
    // Calcul des d premieres lignes de C0 via la base primale.
    for (i = 0; i < dim; i++) {
@@ -1202,12 +1203,15 @@ bool Reducer::redBB0 (NormType norm)
    }
 
    if (m_lMin2 <= m_BoundL2[dim-1]) {
+
       /* If there is in this lattice a vector that are shorter than the shortest
-       * of the current lattice, we don't need to find the shortest vector in this
-       * lattice. /*
-      /* S'il existe dans ce réseau un vecteur de longueur plus courte que celle
+         of the current lattice, we don't need to find the shortest vector in this
+         lattice.
+
+         S'il existe dans ce réseau un vecteur de longueur plus courte que celle
          du meilleur réseau trouvé à date, il n'est pas nécessaire de trouver le
          plus court vecteur de ce réseau: on peut l'éliminer immédiatement. */
+      
       return false;
    }
 

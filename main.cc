@@ -58,6 +58,7 @@ const int MinDimension = 5;
 
 const int Interval_dim = MaxDimension - MinDimension;
 
+
 template <typename type>
 Rcpp::NumericMatrix toRcppMatrix(const type scal[][Interval_dim], const int & maxIteration)
 {
@@ -70,7 +71,6 @@ Rcpp::NumericMatrix toRcppMatrix(const type scal[][Interval_dim], const int & ma
    }
    return mat;
 }
-
 
 
 void RandomMatrix (mat_ZZ& A, ZZ& det, int min, int max, int seed){
@@ -120,18 +120,18 @@ int main (int argc, char *argv[])
 {
 
    // main parameters for the test
-   int min = 30;
-   int max = 100;
+   const int min = 30;
+   const int max = 100;
 
 
-   long a = 999999;
-   long b = 1000000;
-   double delta = (double) a/b;
-   double epsilon = 1.0 - delta;
+   const long a = 999999;
+   const long b = 1000000;
+   const double delta = (double) a/b;
+   const double epsilon = 1.0 - delta;
 
-   int maxcpt = 1000000;
-   int d = 0;
-   long blocksize = 20; // for BKZ insertions
+   const int maxcpt = 1000000;
+   const int d = 0;
+   const long blocksize = 20; // for BKZ insertions
 
    // iteration loop over matrices of same dimension
    const int maxIteration = 10;
@@ -178,8 +178,6 @@ int main (int argc, char *argv[])
    double timing_BKZNTL_PostPairRedPrimal [maxIteration][Interval_dim];
    double timing_BKZNTL_PairRedPrimalRandomized [maxIteration][Interval_dim];
    double timing_BKZNTL_PostPairRedPrimalRandomized [maxIteration][Interval_dim];
-
-
 
    NScal length_Initial [maxIteration][Interval_dim];
    NScal length_PairRedPrimal [maxIteration][Interval_dim];

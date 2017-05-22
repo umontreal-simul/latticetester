@@ -46,10 +46,6 @@ using namespace std;
 using namespace LatticeTester;
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 4bb9b70a6a5ef84e09a32a731da6692e523cb300
 void RandomMatrix (mat_ZZ& A, ZZ& det, int min, int max, int seed){
 
    int dim = (int) A.NumRows() ;
@@ -171,7 +167,7 @@ int main()
    NScal length_Branch_n_Bound [maxIteration];
 
 
-   // test compteur 
+   // test compteur
    int compteur = 0;
 
 
@@ -720,7 +716,7 @@ int main()
 
    cout << "BranchnBound postBZK = " << conv<ZZ>(Average(length_Branch_n_Bound)) << endl;
 
-   // à changer 
+   // à changer
    cout << "compteur = " << compteur << endl;
 
    cout << "\n--------------------------------------------" << endl;

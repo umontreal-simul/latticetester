@@ -83,9 +83,9 @@ IntLattice::IntLattice (const MScal & m0, int k, int maxDim, NormType norm0):
 //Erwan
 
 IntLattice::IntLattice (const Basis primal_basis, int modulus):
+            m_m (modulus),
             m_v (primal_basis),
             m_w (primal_basis), //to change
-            m_m (modulus),
             m_lgVolDual2(0), m_xx(0),
             m_vTemp(m_v)
 {
@@ -99,9 +99,9 @@ IntLattice::IntLattice (const Basis primal_basis, int modulus):
 //Erwan
 
 IntLattice::IntLattice (const Basis primal_basis, const Basis dual_basis, int modulus):
+            m_m (modulus),
             m_v (primal_basis),
             m_w (dual_basis),
-            m_m (modulus),
             m_lgVolDual2(0), m_xx(0),
             m_vTemp(m_v)
 {

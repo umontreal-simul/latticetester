@@ -191,14 +191,14 @@ private:
     BMat m_basis;
 
     /**
-    * The norm used in the reduction and for this lattice
-    */
-    NormType m_norm;
-
-    /**
     * The dimension of the space.
     */
     int m_dim;
+
+    /**
+    * The norm used in the reduction and for this lattice
+    */
+    NormType m_norm;
 
     /**
      * The norm of each vector in the basis.

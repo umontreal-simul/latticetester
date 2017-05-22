@@ -48,7 +48,7 @@ using namespace std;
 using namespace LatticeTester;
 
 const int MinDimension = 5;
-const int MaxDimension = 25;
+const int MaxDimension = 20;
 const int Interval_dim = MaxDimension - MinDimension;
 
 template <typename type>
@@ -116,6 +116,7 @@ int main (int argc, char *argv[])
    int min = 30;
    int max = 100;
 
+
    long a = 999999;
    long b = 1000000;
    double delta = (double) a/b;
@@ -123,10 +124,11 @@ int main (int argc, char *argv[])
 
    int maxcpt = 1000000;
    int d = 0;
-   long blocksize = 2; // for BKZ insertions
+   long blocksize = 20; // for BKZ insertions
 
    // iteration loop over matrices of same dimension
    const int maxIteration = 10;
+
 
    // print important information
    bool printMatricesDetails = false;
@@ -142,72 +144,74 @@ int main (int argc, char *argv[])
 
    // arrays to store values
 
-    double timing_PairRedPrimal [maxIteration][Interval_dim];
-    double timing_PairRedPrimalRandomized [maxIteration][Interval_dim];
+   double timing_PairRedPrimal [maxIteration][Interval_dim];
+   double timing_PairRedPrimalRandomized [maxIteration][Interval_dim];
 
-    double timing_LLL [maxIteration][Interval_dim];
-    double timing_LLL_PairRedPrimal [maxIteration][Interval_dim];
-    double timing_LLL_PostPairRedPrimal [maxIteration][Interval_dim];
-    double timing_LLL_PairRedPrimalRandomized [maxIteration][Interval_dim];
-    double timing_LLL_PostPairRedPrimalRandomized [maxIteration][Interval_dim];
+   double timing_LLL [maxIteration][Interval_dim];
+   double timing_LLL_PairRedPrimal [maxIteration][Interval_dim];
+   double timing_LLL_PostPairRedPrimal [maxIteration][Interval_dim];
+   double timing_LLL_PairRedPrimalRandomized [maxIteration][Interval_dim];
+   double timing_LLL_PostPairRedPrimalRandomized [maxIteration][Interval_dim];
 
-    double timing_LLLNTL [maxIteration][Interval_dim];
-    double timing_LLLNTL_PairRedPrimal [maxIteration][Interval_dim];
-    double timing_LLLNTL_PostPairRedPrimal [maxIteration][Interval_dim];
-    double timing_LLLNTL_PairRedPrimalRandomized [maxIteration][Interval_dim];
-    double timing_LLLNTL_PostPairRedPrimalRandomized [maxIteration][Interval_dim];
+   double timing_LLLNTL [maxIteration][Interval_dim];
+   double timing_LLLNTL_PairRedPrimal [maxIteration][Interval_dim];
+   double timing_LLLNTL_PostPairRedPrimal [maxIteration][Interval_dim];
+   double timing_LLLNTL_PairRedPrimalRandomized [maxIteration][Interval_dim];
+   double timing_LLLNTL_PostPairRedPrimalRandomized [maxIteration][Interval_dim];
 
-    //double timing_LLL_NTL_Exact [maxIteration][Interval_dim];
+   //double timing_LLL_NTL_Exact [maxIteration][Interval_dim];
+   double timing_BB_Only [maxIteration][Interval_dim];
+   double timing_BB_Classic1 [maxIteration][Interval_dim];
+   double timing_BB_Classic2 [maxIteration][Interval_dim];
+   double timing_BB_BKZ1 [maxIteration][Interval_dim];
+   double timing_BB_BKZ2 [maxIteration][Interval_dim];
 
-    double timing_BKZNTL [maxIteration][Interval_dim];
-    double timing_BKZNTL_PairRedPrimal [maxIteration][Interval_dim];
-    double timing_BKZNTL_PostPairRedPrimal [maxIteration][Interval_dim];
-    double timing_BKZNTL_PairRedPrimalRandomized [maxIteration][Interval_dim];
-    double timing_BKZNTL_PostPairRedPrimalRandomized [maxIteration][Interval_dim];
+   double timing_BKZNTL [maxIteration][Interval_dim];
+   double timing_BKZNTL_PairRedPrimal [maxIteration][Interval_dim];
+   double timing_BKZNTL_PostPairRedPrimal [maxIteration][Interval_dim];
+   double timing_BKZNTL_PairRedPrimalRandomized [maxIteration][Interval_dim];
+   double timing_BKZNTL_PostPairRedPrimalRandomized [maxIteration][Interval_dim];
 
-    double timing_Branch_n_Bound [maxIteration][Interval_dim];
-
-
-    NScal length_Initial [maxIteration][Interval_dim];
-    NScal length_PairRedPrimal [maxIteration][Interval_dim];
-    NScal length_PairRedPrimalRandomized [maxIteration][Interval_dim];
-
-    NScal length_LLL [maxIteration][Interval_dim];
-    NScal length_LLL_PostPairRedPrimal [maxIteration][Interval_dim];
-    NScal length_LLL_PostPairRedPrimalRandomized [maxIteration][Interval_dim];
-
-    NScal length_LLLNTL [maxIteration][Interval_dim];
-    NScal length_LLLNTL_PostPairRedPrimal [maxIteration][Interval_dim];
-    NScal length_LLLNTL_PostPairRedPrimalRandomized [maxIteration][Interval_dim];
-
-    //NScal length_LLL_NTL_Exact [maxIteration][Interval_dim];
-
-    NScal length_BKZNTL [maxIteration][Interval_dim];
-    NScal length_BKZNTL_PostPairRedPrimal [maxIteration][Interval_dim];
-    NScal length_BKZNTL_PostPairRedPrimalRandomized [maxIteration][Interval_dim];
-
-    NScal length_Branch_n_Bound [maxIteration][Interval_dim];
+   double timing_Branch_n_Bound [maxIteration][Interval_dim];
 
 
+   NScal length_Initial [maxIteration][Interval_dim];
+   NScal length_PairRedPrimal [maxIteration][Interval_dim];
+   NScal length_PairRedPrimalRandomized [maxIteration][Interval_dim];
 
+   NScal length_LLL [maxIteration][Interval_dim];
+   NScal length_LLL_PostPairRedPrimal [maxIteration][Interval_dim];
+   NScal length_LLL_PostPairRedPrimalRandomized [maxIteration][Interval_dim];
 
-   // test compteur
-   int compteur = 0;
+   NScal length_LLLNTL [maxIteration][Interval_dim];
+   NScal length_LLLNTL_PostPairRedPrimal [maxIteration][Interval_dim];
+   NScal length_LLLNTL_PostPairRedPrimalRandomized [maxIteration][Interval_dim];
+
+   NScal length_BB_Only [maxIteration][Interval_dim];
+   NScal length_BB_Classic [maxIteration][Interval_dim];
+   NScal length_BB_BKZ [maxIteration][Interval_dim];
+
+   //NScal length_LLL_NTL_Exact [maxIteration][Interval_dim];
+
+   NScal length_BKZNTL [maxIteration][Interval_dim];
+   NScal length_BKZNTL_PostPairRedPrimal [maxIteration][Interval_dim];
+   NScal length_BKZNTL_PostPairRedPrimalRandomized [maxIteration][Interval_dim];
+
    for (int dimension = MinDimension; dimension < MaxDimension; dimension++){
 
-      int idx = dimension - MinDimension; // Stock the indices for table
-
-
       for (int iteration = 0; iteration < maxIteration; iteration++){
+
 
          int seed = (iteration+1) * (iteration+1) * 123456789 * dimension;
          int seed_dieter = (iteration+1) * dimension * 12342;
          //int seed = (int) (iteration+1) * 12345 * time(NULL);
 
+         int idx = dimension - MinDimension; // Stock the indices for table
+
          // We create copies of the same basis
          BMat basis_PairRedPrimal (dimension, dimension);
          ZZ det;
-         RandomMatrix(basis_PairRedPrimal, det, min, max,seed);
+         RandomMatrix(basis_PairRedPrimal, det, min, max, seed);
 
 
          BMat basis_PairRedPrimalRandomized (basis_PairRedPrimal);
@@ -221,7 +225,9 @@ int main (int argc, char *argv[])
          BMat basis_BKZNTL (basis_PairRedPrimal);
          BMat basis_PairRedPrimal_BKZNTL (basis_PairRedPrimal);
          BMat basis_PairRedPrimalRandomized_BKZNTL (basis_PairRedPrimal);
-         BMat basis_Branch_n_Bound (basis_PairRedPrimal);
+         BMat basis_BB_Only (basis_PairRedPrimal);
+         BMat basis_BB_Classic (basis_PairRedPrimal);
+         BMat basis_BB_BKZ (basis_PairRedPrimal);
 
          IntLatticeBasis lattice_PairRedPrimal (basis_PairRedPrimal,dimension);
          IntLatticeBasis lattice_PairRedPrimalRandomized (basis_PairRedPrimalRandomized,dimension);
@@ -235,13 +241,16 @@ int main (int argc, char *argv[])
          IntLatticeBasis lattice_BKZNTL (basis_BKZNTL,dimension);
          IntLatticeBasis lattice_PairRedPrimal_BKZNTL (basis_PairRedPrimal_BKZNTL,dimension);
          IntLatticeBasis lattice_PairRedPrimalRandomized_BKZNTL (basis_PairRedPrimalRandomized_BKZNTL,dimension);
-         IntLatticeBasis lattice_Branch_n_Bound (basis_Branch_n_Bound,dimension);
+         IntLatticeBasis lattice_BB_Only (basis_BB_Only,dimension);
+         IntLatticeBasis lattice_BB_Classic (basis_BB_Classic,dimension);
+         IntLatticeBasis lattice_BB_BKZ (basis_BB_BKZ, dimension);
+
 
          lattice_PairRedPrimal.setNegativeNorm(true);
          lattice_PairRedPrimal.updateVecNorm();
          lattice_PairRedPrimal.sort(0);
          NScal initialShortestVectorLength = lattice_PairRedPrimal.getVecNorm(0);
-         //length_Initial [iteration][dimension] = initialShortestVectorLength;
+         length_Initial [iteration][idx] = initialShortestVectorLength;
 
          if (printMatricesDetails) {
            cout << "\n*** Initial basis ***" << endl;
@@ -262,7 +271,9 @@ int main (int argc, char *argv[])
          Reducer reducer_BKZNTL (lattice_BKZNTL);
          Reducer reducer_PairRedPrimal_BKZNTL (lattice_PairRedPrimal_BKZNTL);
          Reducer reducer_PairRedPrimalRandomized_BKZNTL (lattice_PairRedPrimalRandomized_BKZNTL);
-         Reducer reducer_Branch_n_Bound (lattice_Branch_n_Bound);
+         Reducer reducer_BB_Only (lattice_BB_Only);
+         Reducer reducer_BB_Classic (lattice_BB_Classic);
+         Reducer reducer_BB_BKZ (lattice_BB_BKZ);
 
 
          //------------------------------------------------------------------------------------
@@ -305,7 +316,6 @@ int main (int argc, char *argv[])
            lattice_PairRedPrimalRandomized.write();
          }
 
-
          //------------------------------------------------------------------------------------
          // LLL Richard
          //------------------------------------------------------------------------------------
@@ -323,6 +333,7 @@ int main (int argc, char *argv[])
            cout << "Shortest vector = " << lattice_LLL.getVecNorm(0) << endl;
            lattice_LLL.write();
          }
+
          ++show_progress;
 
          //------------------------------------------------------------------------------------
@@ -336,8 +347,6 @@ int main (int argc, char *argv[])
          lattice_PairRedPrimal_LLL.setNegativeNorm(true);
          lattice_PairRedPrimal_LLL.updateVecNorm();
          lattice_PairRedPrimal_LLL.sort(0);
-
-         NScal intermediateLength = lattice_PairRedPrimal_LLL.getVecNorm(0);
 
          clock_t begin_PairRedPrimal_LLL2 = clock();
          reducer_PairRedPrimal_LLL.redLLL(delta, maxcpt, dimension);
@@ -366,7 +375,7 @@ int main (int argc, char *argv[])
          lattice_PairRedPrimalRandomized_LLL.updateVecNorm();
          lattice_PairRedPrimalRandomized_LLL.sort(0);
 
-         NScal intermediateLengthRandomized_LLL = lattice_PairRedPrimalRandomized_LLL.getVecNorm(0);
+         ++show_progress;
 
          clock_t begin_PairRedPrimalRandomized_LLL2 = clock();
          reducer_PairRedPrimalRandomized_LLL.redLLL(delta, maxcpt, dimension);
@@ -376,15 +385,12 @@ int main (int argc, char *argv[])
          lattice_PairRedPrimalRandomized_LLL.updateVecNorm();
          lattice_PairRedPrimalRandomized_LLL.sort(0);
 
-         if (intermediateLengthRandomized_LLL < lattice_PairRedPrimalRandomized_LLL.getVecNorm(0))
-           compteur++;
 
          if (printMatricesDetails){
            cout << "*** Randomized pairwise reduction in primal and LLL ***" << endl;
            cout << "Shortest vector = " << lattice_PairRedPrimalRandomized_LLL.getVecNorm(0) << endl;
            lattice_PairRedPrimalRandomized_LLL.write();
          }
-         ++show_progress;
 
          //------------------------------------------------------------------------------------
          // LLL NTL reduction (floating point version = proxy)
@@ -443,11 +449,10 @@ int main (int argc, char *argv[])
          reducer_PairRedPrimalRandomized_LLLNTL.preRedDieterPrimalOnlyRandomized(d, seed_dieter);
          clock_t end_PairRedPrimalRandomized_LLLNTL1 = clock();
 
+
          lattice_PairRedPrimalRandomized_LLLNTL.setNegativeNorm(true);
          lattice_PairRedPrimalRandomized_LLLNTL.updateVecNorm();
          lattice_PairRedPrimalRandomized_LLLNTL.sort(0);
-
-         NScal intermediateLengthRandomized_LLLNTL = lattice_PairRedPrimalRandomized_LLLNTL.getVecNorm(0);
 
          clock_t begin_PairRedPrimalRandomized_LLLNTL2 = clock();
          reducer_PairRedPrimalRandomized_LLLNTL.redLLLNTLProxy(delta);
@@ -457,14 +462,14 @@ int main (int argc, char *argv[])
          lattice_PairRedPrimalRandomized_LLLNTL.updateVecNorm();
          lattice_PairRedPrimalRandomized_LLLNTL.sort(0);
 
-         if (intermediateLengthRandomized_LLLNTL < lattice_PairRedPrimalRandomized_LLLNTL.getVecNorm(0))
-           compteur++;
-
          if (printMatricesDetails){
-           cout << "*** Randomized pairwise reduction in primal and LLL NTL ***" << endl;
-           cout << "Shortest vector = " << lattice_PairRedPrimalRandomized_LLLNTL.getVecNorm(0) << endl;
-           lattice_PairRedPrimalRandomized_LLLNTL.write();
+            cout << "*** Randomized pairwise reduction in primal and LLL NTL ***" << endl;
+            cout << "Shortest vector = " << lattice_PairRedPrimalRandomized_LLLNTL.getVecNorm(0) << endl;
+            lattice_PairRedPrimalRandomized_LLLNTL.write();
          }
+
+         ++show_progress;
+
 
 
          //------------------------------------------------------------------------------------
@@ -505,7 +510,6 @@ int main (int argc, char *argv[])
            lattice_BKZNTL.write();
          }
 
-
          //------------------------------------------------------------------------------------
          // Pairwise reduction (in primal basis only) and then BKZ NTL proxy
          //------------------------------------------------------------------------------------
@@ -535,6 +539,10 @@ int main (int argc, char *argv[])
            lattice_PairRedPrimal_BKZNTL.write();
          }
 
+         lattice_PairRedPrimal_BKZNTL.setNegativeNorm(true);
+         lattice_PairRedPrimal_BKZNTL.updateVecNorm();
+         lattice_PairRedPrimal_BKZNTL.sort(0);
+
 
          //------------------------------------------------------------------------------------
          // Randomized pairwise reduction (in primal basis only) and then BKZ NTL proxy
@@ -553,35 +561,64 @@ int main (int argc, char *argv[])
          clock_t begin_PairRedPrimalRandomized_BKZNTL2 = clock();
          reducer_PairRedPrimalRandomized_BKZNTL.redBKZ(delta, blocksize);
          clock_t end_PairRedPrimalRandomized_BKZNTL2 = clock();
+         if (printMatricesDetails){
+            cout << "*** Randomized pairwise reduction in primal and BKZ NTL ***" << endl;
+            cout << "Shortest vector = " << lattice_PairRedPrimalRandomized_BKZNTL.getVecNorm(0) << endl;
+            lattice_PairRedPrimalRandomized_BKZNTL.write();
+         }
+
 
          lattice_PairRedPrimalRandomized_BKZNTL.setNegativeNorm(true);
          lattice_PairRedPrimalRandomized_BKZNTL.updateVecNorm();
          lattice_PairRedPrimalRandomized_BKZNTL.sort(0);
 
-         if (intermediateLengthRandomized_BKZNTL < lattice_PairRedPrimalRandomized_BKZNTL.getVecNorm(0))
-           compteur++;
+         //------------------------------------------------------------------------------------
+         // Branch and Bound Only
+         //------------------------------------------------------------------------------------
+         clock_t begin_BB_Only = clock();
+         reducer_BB_Only.shortestVector(L2NORM);
+         clock_t end_BB_Only = clock();
 
-         if (printMatricesDetails){
-           cout << "*** Randomized pairwise reduction in primal and BKZ NTL ***" << endl;
-           cout << "Shortest vector = " << lattice_PairRedPrimalRandomized_BKZNTL.getVecNorm(0) << endl;
-           lattice_PairRedPrimalRandomized_BKZNTL.write();
-         }
+         lattice_BB_Only.setNegativeNorm(true);
+         lattice_BB_Only.updateVecNorm();
+         lattice_BB_Only.sort(0);
+
          ++show_progress;
+
+         //------------------------------------------------------------------------------------
+         // Branch and Bound classic
+         //------------------------------------------------------------------------------------
+
+         // usual pre reduction heuristics
+         clock_t begin_BB_Classic1 = clock();
+         reducer_BB_Classic.preRedDieterPrimalOnly(d);
+         reducer_BB_Classic.redLLL(delta, maxcpt, dimension);
+         clock_t end_BB_Classic1 = clock();
+
+         clock_t begin_BB_Classic2 = clock();
+         reducer_BB_Classic.shortestVector(L2NORM);
+         clock_t end_BB_Classic2 = clock();
+
+         lattice_BB_Classic.setNegativeNorm(true);
+         lattice_BB_Classic.updateVecNorm();
+         lattice_BB_Classic.sort(0);
 
 
          //------------------------------------------------------------------------------------
          // Branch and Bound post BKZ
          //------------------------------------------------------------------------------------
-         reducer_Branch_n_Bound.redBKZ(delta, blocksize);
 
-         clock_t begin_Branch_n_Bound = clock();
-         reducer_Branch_n_Bound.shortestVector(L2NORM);
-         clock_t end_Branch_n_Bound = clock();
+         clock_t begin_BB_BKZ1 = clock();
+         reducer_BB_BKZ.redBKZ(delta, blocksize);
+         clock_t end_BB_BKZ1 = clock();
 
-         lattice_Branch_n_Bound.setNegativeNorm(true);
-         lattice_Branch_n_Bound.updateVecNorm();
-         lattice_Branch_n_Bound.sort(0);
-         ++show_progress;
+         clock_t begin_BB_BKZ2 = clock();
+         reducer_BB_BKZ.shortestVector(L2NORM);
+         clock_t end_BB_BKZ2 = clock();
+
+         lattice_BB_BKZ.setNegativeNorm(true);
+         lattice_BB_BKZ.updateVecNorm();
+         lattice_BB_BKZ.sort(0);
 
 
          //------------------------------------------------------------------------------------
@@ -604,12 +641,18 @@ int main (int argc, char *argv[])
          double runningTime_LLLNTL_PairRedPrimalRandomized = double(end_PairRedPrimalRandomized_LLLNTL1 - begin_PairRedPrimalRandomized_LLLNTL1) / CLOCKS_PER_SEC;
          double runningTime_LLLNTL_PostPairRedPrimalRandomized = double (end_PairRedPrimalRandomized_LLLNTL2 - begin_PairRedPrimalRandomized_LLLNTL2) / CLOCKS_PER_SEC;
          //double runningTime_LLLNTL_Exact = double(end_LLLNTL_Exact - begin_LLLNTL_Exact) / CLOCKS_PER_SEC;
+
          double runningTime_BKZNTL = double (end_BKZNTL - begin_BKZNTL) / CLOCKS_PER_SEC;
          double runningTime_BKZNTL_PairRedPrimal = double(end_PairRedPrimal_BKZNTL1 - begin_PairRedPrimal_BKZNTL1) / CLOCKS_PER_SEC;
          double runningTime_BKZNTL_PostPairRedPrimal = double (end_PairRedPrimal_BKZNTL2 - begin_PairRedPrimal_BKZNTL2) / CLOCKS_PER_SEC;
          double runningTime_BKZNTL_PairRedPrimalRandomized = double(end_PairRedPrimalRandomized_BKZNTL1 - begin_PairRedPrimalRandomized_BKZNTL1) / CLOCKS_PER_SEC;
          double runningTime_BKZNTL_PostPairRedPrimalRandomized = double (end_PairRedPrimalRandomized_BKZNTL2 - begin_PairRedPrimalRandomized_BKZNTL2) / CLOCKS_PER_SEC;
-         double runningTime_Branch_n_Bound = double (end_Branch_n_Bound - begin_Branch_n_Bound) / CLOCKS_PER_SEC;
+
+         double runningTime_BB_Only = double (end_BB_Only - begin_BB_Only) / CLOCKS_PER_SEC;
+         double runningTime_BB_Classic1 = double (end_BB_Classic1 - begin_BB_Classic1) / CLOCKS_PER_SEC;
+         double runningTime_BB_Classic2 = double (end_BB_Classic2 - begin_BB_Classic2) / CLOCKS_PER_SEC;
+         double runningTime_BB_BKZ1 = double (end_BB_BKZ1 - begin_BB_BKZ1) / CLOCKS_PER_SEC;
+         double runningTime_BB_BKZ2 = double (end_BB_BKZ2 - begin_BB_BKZ2) / CLOCKS_PER_SEC;
 
          //------------------------------------------------------------------------------------
          // timing and length arrays updating
@@ -637,7 +680,11 @@ int main (int argc, char *argv[])
          timing_BKZNTL_PairRedPrimalRandomized [iteration][idx] = runningTime_BKZNTL_PairRedPrimalRandomized;
          timing_BKZNTL_PostPairRedPrimalRandomized [iteration][idx] = runningTime_BKZNTL_PostPairRedPrimalRandomized;
 
-         timing_Branch_n_Bound [iteration][idx] = runningTime_Branch_n_Bound;
+         timing_BB_Only [iteration][idx] = runningTime_BB_Only;
+         timing_BB_Classic1 [iteration][idx] = runningTime_BB_Classic1;
+         timing_BB_Classic2 [iteration][idx] = runningTime_BB_Classic2;
+         timing_BB_BKZ1 [iteration][idx] = runningTime_BB_BKZ1;
+         timing_BB_BKZ2 [iteration][idx] = runningTime_BB_BKZ2;
 
 
          length_PairRedPrimal [iteration][idx] = lattice_PairRedPrimal.getVecNorm(0);
@@ -657,19 +704,21 @@ int main (int argc, char *argv[])
          length_BKZNTL_PostPairRedPrimal [iteration][idx] = lattice_PairRedPrimal_BKZNTL.getVecNorm(0);
          length_BKZNTL_PostPairRedPrimalRandomized [iteration][idx] = lattice_PairRedPrimalRandomized_BKZNTL.getVecNorm(0);
 
-         length_Branch_n_Bound [iteration][idx] = lattice_Branch_n_Bound.getVecNorm(0);
 
+         length_BB_Only [iteration][idx] = lattice_BB_Only.getVecNorm(0);
+         length_BB_Classic [iteration][idx] = lattice_BB_Classic.getVecNorm(0);
+         length_BB_BKZ [iteration][idx] = lattice_BB_BKZ.getVecNorm(0);
 
       }
    } // end iteration loop over matrices of same dimension
 
+#ifdef PRINT_CONSOLE
 
    //------------------------------------------------------------------------------------
    // Results printing in console
    //------------------------------------------------------------------------------------
 
    // print parameters used
-    /*
    cout << "\n" << endl;
    cout << "epsilon = " << epsilon << endl;
    cout << "dimension = " << dimension << endl;
@@ -708,7 +757,11 @@ int main (int argc, char *argv[])
    cout << " (" << Average(timing_BKZNTL_PostPairRedPrimalRandomized) << ")" << endl;
    cout << endl;
 
-   cout << "    Branch And Bound = " << Average(timing_Branch_n_Bound) << endl;
+   cout << "             BB Only = " << Average(timing_BB_Only) << endl;
+   cout << "          BB Classic = " << Average(timing_BB_Classic1) + Average(timing_BB_Classic2);
+   cout << " (" << Average(timing_BB_Classic2) << ")" << endl,
+   cout << "              BB BKZ = " << Average(timing_BB_BKZ1) + Average(timing_BB_BKZ2);
+   cout << " (" << Average(timing_BB_BKZ2) << ")" << endl;
 
    cout << "\n--------------------------------------------" << endl;
 
@@ -739,20 +792,21 @@ int main (int argc, char *argv[])
    cout << "PairRedRandom+BKZNTL = " << conv<ZZ>(Average(length_BKZNTL_PostPairRedPrimalRandomized)) << endl;
    cout << endl;
 
-   cout << "BranchnBound postBZK = " << conv<ZZ>(Average(length_Branch_n_Bound)) << endl;
+   cout << "             BB Only = " << conv<ZZ>(Average(length_BB_Only)) << endl;
+   cout << "          BB Classic = " << conv<ZZ>(Average(length_BB_Classic)) << endl;
+   cout << "              BB BKZ = " << conv<ZZ>(Average(length_BB_BKZ)) << endl;
 
-   // à changer
-   cout << "compteur = " << compteur << endl;
 
    cout << "\n--------------------------------------------" << endl;
-     */
+
+#endif
 
 
    // UTILISATION DE R
    RInside R(argc, argv);              // create an embedded R instance
 
-    R["Mindimension"] = MinDimension;
-    R["Maxdimension"] = MaxDimension;
+   R["Mindimension"] = MinDimension;
+   R["Maxdimension"] = MaxDimension;
    R["dimension"] = Interval_dim;
    //R["timing_Initial"] = toRcppMatrix(timing_Initial, maxIteration);
    R["timing_PairRedPrimal"] = toRcppMatrix<double>(timing_PairRedPrimal, maxIteration);
@@ -766,7 +820,7 @@ int main (int argc, char *argv[])
    R["timing_BKZNTL"] = toRcppMatrix<double>(timing_BKZNTL, maxIteration);
    R["timing_BKZNTL_PostPairRedPrimal"] = toRcppMatrix<double>(timing_BKZNTL_PostPairRedPrimal, maxIteration);
    R["timing_BKZNTL_PostPairRedPrimalRandomized"] = toRcppMatrix<double>(timing_BKZNTL_PostPairRedPrimalRandomized, maxIteration);
-   R["timing_Branch_n_Bound"] = toRcppMatrix<double>(timing_Branch_n_Bound, maxIteration);
+   R["timing_BB_Only"] = toRcppMatrix<double>(timing_BB_Only, maxIteration);
     //R["timing_LLLNTL"] = 4;
 
    /*std::string str =
@@ -782,40 +836,39 @@ int main (int argc, char *argv[])
    R["outPath"] = outPath;
    R["outFile"] = outFile;
 
-    cout << "\n \n" << endl;
-
    // alternatively, by forcing a display we can plot to screen
-    string library = "library(ggplot2); ";
-    string build_data_frame =
-     "df <- data.frame(indice = seq(1:dimension),"
-        "PairRedPrimal=colMeans(timing_PairRedPrimal), "
-        "PairRedPrimalRandomized = colMeans(timing_PairRedPrimalRandomized),"
-        "LLL = colMeans(timing_LLL),"
-        "LLL_PostPairRedPrimal = colMeans(timing_LLL_PostPairRedPrimal),"
-        "LLL_PostPairRedPrimalRandomized = colMeans(timing_LLL_PostPairRedPrimalRandomized),"
-        "LLLNTL = colMeans(timing_LLLNTL),"
-        "LLLNTL_PostPairRedPrimal = colMeans(timing_LLLNTL_PostPairRedPrimal),"
-        "LLLNTL_PostPairRedPrimalRandomized = colMeans(timing_LLLNTL_PostPairRedPrimalRandomized),"
-        "BKZNTL = colMeans(timing_BKZNTL),"
-        "BKZNTL_PostPairRedPrimal = colMeans(timing_BKZNTL_PostPairRedPrimal),"
-        "BKZNTL_PostPairRedPrimalRandomized = colMeans(timing_BKZNTL_PostPairRedPrimalRandomized),"
-        "Branch_n_Bound = colMeans(timing_Branch_n_Bound));";
+   string library = "library(ggplot2); ";
+   string build_data_frame =
+   "df <- data.frame(indice = seq(1:dimension),"
+     "PairRedPrimal=colMeans(timing_PairRedPrimal), "
+     "PairRedPrimalRandomized = colMeans(timing_PairRedPrimalRandomized),"
+     "LLL = colMeans(timing_LLL),"
+     "LLL_PostPairRedPrimal = colMeans(timing_LLL_PostPairRedPrimal),"
+     "LLL_PostPairRedPrimalRandomized = colMeans(timing_LLL_PostPairRedPrimalRandomized),"
+     "LLLNTL = colMeans(timing_LLLNTL),"
+     "LLLNTL_PostPairRedPrimal = colMeans(timing_LLLNTL_PostPairRedPrimal),"
+     "LLLNTL_PostPairRedPrimalRandomized = colMeans(timing_LLLNTL_PostPairRedPrimalRandomized),"
+     "BKZNTL = colMeans(timing_BKZNTL),"
+     "BKZNTL_PostPairRedPrimal = colMeans(timing_BKZNTL_PostPairRedPrimal),"
+     "BKZNTL_PostPairRedPrimalRandomized = colMeans(timing_BKZNTL_PostPairRedPrimalRandomized),"
+     "BB_Only = colMeans(timing_BB_Only)"
+     ");";
 
-      string build_plot =
-     "myPlot <- ggplot() + "
-        "geom_line(data=df, aes(x=indice, y=PairRedPrimal, color ='PairRedPrimal')) + "
-        "geom_line(data=df, aes(x=indice, y=PairRedPrimalRandomized, color ='PairRedPrimalRandomized')) +"
-        "geom_line(data=df, aes(x=indice, y=LLL, color ='LLL')) +"
-        "geom_line(data=df, aes(x=indice, y=LLL_PostPairRedPrimal, color ='LLL_PostPairRedPrimal')) +"
-        "geom_line(data=df, aes(x=indice, y=LLL_PostPairRedPrimalRandomized, color ='LLL_PostPairRedPrimalRandomized')) +"
-        "geom_line(data=df, aes(x=indice, y=LLLNTL, color ='LLLNTL')) +"
-        "geom_line(data=df, aes(x=indice, y=LLLNTL_PostPairRedPrimal, color ='LLLNTL_PostPairRedPrimal')) +"
-        "geom_line(data=df, aes(x=indice, y=LLLNTL_PostPairRedPrimalRandomized, color ='LLLNTL_PostPairRedPrimalRandomized')) +"
-        "geom_line(data=df, aes(x=indice, y=BKZNTL, color ='BKZNTL')) +"
-        "geom_line(data=df, aes(x=indice, y=BKZNTL_PostPairRedPrimal, color ='BKZNTL_PostPairRedPrimal')) +"
-        "geom_line(data=df, aes(x=indice, y=BKZNTL_PostPairRedPrimalRandomized, color ='BKZNTL_PostPairRedPrimalRandomized')) +"
-        "geom_line(data=df, aes(x=indice, y=Branch_n_Bound, color ='Branch_n_Bound')) +"
-        "labs(color='Legend text'); ";
+   string build_plot =
+   "myPlot <- ggplot() + "
+     "geom_line(data=df, aes(x=indice, y=PairRedPrimal, color ='PairRedPrimal')) + "
+     "geom_line(data=df, aes(x=indice, y=PairRedPrimalRandomized, color ='PairRedPrimalRandomized')) +"
+     "geom_line(data=df, aes(x=indice, y=LLL, color ='LLL')) +"
+     "geom_line(data=df, aes(x=indice, y=LLL_PostPairRedPrimal, color ='LLL_PostPairRedPrimal')) +"
+     "geom_line(data=df, aes(x=indice, y=LLL_PostPairRedPrimalRandomized, color ='LLL_PostPairRedPrimalRandomized')) +"
+     "geom_line(data=df, aes(x=indice, y=LLLNTL, color ='LLLNTL')) +"
+     "geom_line(data=df, aes(x=indice, y=LLLNTL_PostPairRedPrimal, color ='LLLNTL_PostPairRedPrimal')) +"
+     "geom_line(data=df, aes(x=indice, y=LLLNTL_PostPairRedPrimalRandomized, color ='LLLNTL_PostPairRedPrimalRandomized')) +"
+     "geom_line(data=df, aes(x=indice, y=BKZNTL, color ='BKZNTL')) +"
+     "geom_line(data=df, aes(x=indice, y=BKZNTL_PostPairRedPrimal, color ='BKZNTL_PostPairRedPrimal')) +"
+     "geom_line(data=df, aes(x=indice, y=BKZNTL_PostPairRedPrimalRandomized, color ='BKZNTL_PostPairRedPrimalRandomized')) +"
+     "geom_line(data=df, aes(x=indice, y=BB_Only, color ='BB_Only')) +"
+     "labs(color='Legend text'); ";
 
 
    string print_plot =

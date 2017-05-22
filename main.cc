@@ -36,6 +36,7 @@
 #include <NTL/LLL.h>
 #include <NTL/matrix.h>
 #include <NTL/vec_vec_ZZ_p.h>
+//#include <RInside.h>
 
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/io.hpp>
@@ -166,9 +167,18 @@ int main()
    NScal length_BKZNTL_PostPairRedPrimal [maxIteration];
    NScal length_BKZNTL_PostPairRedPrimalRandomized [maxIteration];
 
+<<<<<<< HEAD
    NScal length_BB_Only [maxIteration];
    NScal length_BB_Classic [maxIteration];
    NScal length_BB_BKZ [maxIteration];
+=======
+   NScal length_Branch_n_Bound [maxIteration];
+
+
+   // test compteur
+   int compteur = 0;
+
+>>>>>>> cc50254ffafdf9ace6f856583ec37ce15bbc3a76
 
    for (int iteration = 0; iteration < maxIteration; iteration++){
 
@@ -772,18 +782,25 @@ int main()
    cout << "PairRedRandom+BKZNTL = " << conv<ZZ>(Average(length_BKZNTL_PostPairRedPrimalRandomized)) << endl;
    cout << endl;
 
+<<<<<<< HEAD
    cout << "             BB Only = " << conv<ZZ>(Average(length_BB_Only)) << endl;
    cout << "          BB Classic = " << conv<ZZ>(Average(length_BB_Classic)) << endl;
    cout << "              BB BKZ = " << conv<ZZ>(Average(length_BB_BKZ)) << endl;
+=======
+   cout << "BranchnBound postBZK = " << conv<ZZ>(Average(length_Branch_n_Bound)) << endl;
+
+   // à changer
+   cout << "compteur = " << compteur << endl;
+>>>>>>> cc50254ffafdf9ace6f856583ec37ce15bbc3a76
 
    cout << "\n--------------------------------------------" << endl;
 
 
-/*
+   /*
     // UTILISATION DE R
     RInside R(argc, argv);              // create an embedded R instance
 
-    R["M"] = lat.toRccpMatrix();                  // eval command, no return
+    R["M"] = toRcppMatrix();                  // eval command, no return
     std::string str =
         "cat('Running ls()\n'); print(ls()); "
         "cat('Showing M\n'); print(M); "
@@ -791,7 +808,7 @@ int main()
         "Z";
 
     Rcpp::NumericVector v = R.parseEval(str);
-*/
+  */
 
     return 0;
 }

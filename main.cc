@@ -6,6 +6,13 @@
 //  Copyright © 2017 DIRO. All rights reserved.
 //
 
+#include <iostream>
+#include <fstream>
+#include <iterator>
+#include <string>
+#include <sstream>
+#include <iomanip>
+#include <time.h>
 
 #include "latticetester/Util.h"
 #include "latticetester/Basis.h"
@@ -15,23 +22,9 @@
 #include "latticetester/IntLattice.h"
 #include "latticetester/Rank1Lattice.h"
 #include "latticetester/IntLatticeBasis.h"
-#include <NTL/ctools.h>
-#include <iostream>
-#include <fstream>
-#include <iterator>
-#include <string>
-#include <sstream>
-#include <iomanip>
-
-
-
 #include "latticetester/Reducer.h"
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/io.hpp>
-#include <time.h>
-#include <boost/progress.hpp>
 
-// for LLL test
+#include <NTL/ctools.h>
 #include <NTL/mat_ZZ.h>
 #include <NTL/LLL.h>
 #include <NTL/tools.h>
@@ -45,16 +38,18 @@
 #include <NTL/vec_vec_ZZ_p.h>
 //#include <RInside.h>
 
-
-
-
-
+#include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/io.hpp>
+#include <boost/progress.hpp>
 
 using namespace std;
 using namespace LatticeTester;
 
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 4bb9b70a6a5ef84e09a32a731da6692e523cb300
 void RandomMatrix (mat_ZZ& A, ZZ& det, int min, int max, int seed){
 
    int dim = (int) A.NumRows() ;
@@ -84,6 +79,7 @@ void print(string name, Type const(& array)[Size], bool isIntegerOutput) {
    //cout << endl;
 }
 
+
 template<typename Type, long Size>
 Type Average(Type const(& array)[Size]) {
    Type sum (0);
@@ -93,19 +89,14 @@ Type Average(Type const(& array)[Size]) {
 }
 
 
-
-
 //****************************************************************************************************
 //****************************************************************************************************
 //****************************************************************************************************
 
 int main()
 {
-   bool printMatricesDetails = false;
-   bool printLists = false;
-
    // main parameters for the test
-   int dimension = 40;
+   int dimension = 20;
    int min = 30;
    int max = 100;
 
@@ -122,13 +113,14 @@ int main()
    const int maxIteration = 50;
 
    // print important information
+   bool printMatricesDetails = false;
    cout << "epsilon = " << epsilon << endl;
    cout << "dimension = " << dimension << endl;
    cout << "nombre de matrices testées = " << maxIteration << endl;
    cout << endl;
 
    // to display progress bar
-   boost::progress_display show_progress(maxIteration*5);
+   boost::progress_display show_progress(5*maxIteration);
 
    // arrays to store values
 
@@ -179,6 +171,10 @@ int main()
    NScal length_Branch_n_Bound [maxIteration];
 
 
+   // test compteur 
+   int compteur = 0;
+
+
    for (int iteration = 0; iteration < maxIteration; iteration++){
 
 
@@ -186,9 +182,7 @@ int main()
       int seed_dieter = (iteration+1) * dimension * 12342;
       //int seed = (int) (iteration+1) * 12345 * time(NULL);
 
-      // We create copies of the same basis for: LLL,
-      // pairwisePrimalRed + LLL, LLL NTL floating point,
-      // LLL NTL exact version, pairwiseRed + LLL, BKZ NTL,
+      // We create copies of the same basis
       BMat basis_PairRedPrimal (dimension, dimension);
       ZZ det;
       RandomMatrix(basis_PairRedPrimal, det, min, max,seed);
@@ -350,7 +344,7 @@ int main()
       lattice_PairRedPrimalRandomized_LLL.updateVecNorm();
       lattice_PairRedPrimalRandomized_LLL.sort(0);
 
-      NScal intermediateLengthRandomized = lattice_PairRedPrimalRandomized_LLL.getVecNorm(0);
+      NScal intermediateLengthRandomized_LLL = lattice_PairRedPrimalRandomized_LLL.getVecNorm(0);
 
       clock_t begin_PairRedPrimalRandomized_LLL2 = clock();
       reducer_PairRedPrimalRandomized_LLL.redLLL(delta, maxcpt, dimension);
@@ -359,6 +353,9 @@ int main()
       lattice_PairRedPrimalRandomized_LLL.setNegativeNorm(true);
       lattice_PairRedPrimalRandomized_LLL.updateVecNorm();
       lattice_PairRedPrimalRandomized_LLL.sort(0);
+
+      if (intermediateLengthRandomized_LLL < lattice_PairRedPrimalRandomized_LLL.getVecNorm(0))
+        compteur++;
 
       if (printMatricesDetails){
         cout << "*** Randomized pairwise reduction in primal and LLL ***" << endl;
@@ -428,8 +425,7 @@ int main()
       lattice_PairRedPrimalRandomized_LLLNTL.updateVecNorm();
       lattice_PairRedPrimalRandomized_LLLNTL.sort(0);
 
-      // usefull ?
-      //NScal intermediateShortestVectorLengthBis = lattice_PairRedPrimal_LLL_NTL.getVecNorm(0);
+      NScal intermediateLengthRandomized_LLLNTL = lattice_PairRedPrimalRandomized_LLLNTL.getVecNorm(0);
 
       clock_t begin_PairRedPrimalRandomized_LLLNTL2 = clock();
       reducer_PairRedPrimalRandomized_LLLNTL.redLLLNTLProxy(delta);
@@ -438,6 +434,9 @@ int main()
       lattice_PairRedPrimalRandomized_LLLNTL.setNegativeNorm(true);
       lattice_PairRedPrimalRandomized_LLLNTL.updateVecNorm();
       lattice_PairRedPrimalRandomized_LLLNTL.sort(0);
+
+      if (intermediateLengthRandomized_LLLNTL < lattice_PairRedPrimalRandomized_LLLNTL.getVecNorm(0))
+        compteur++;
 
       if (printMatricesDetails){
         cout << "*** Randomized pairwise reduction in primal and LLL NTL ***" << endl;
@@ -527,8 +526,7 @@ int main()
       lattice_PairRedPrimalRandomized_BKZNTL.updateVecNorm();
       lattice_PairRedPrimalRandomized_BKZNTL.sort(0);
 
-      // usefull ?
-      //NScal intermediateShortestVectorLengthBis = lattice_PairRedPrimal_LLL_NTL.getVecNorm(0);
+      NScal intermediateLengthRandomized_BKZNTL = lattice_PairRedPrimalRandomized_BKZNTL.getVecNorm(0);
 
       clock_t begin_PairRedPrimalRandomized_BKZNTL2 = clock();
       reducer_PairRedPrimalRandomized_BKZNTL.redBKZ(delta, blocksize);
@@ -538,18 +536,23 @@ int main()
       lattice_PairRedPrimalRandomized_BKZNTL.updateVecNorm();
       lattice_PairRedPrimalRandomized_BKZNTL.sort(0);
 
+      if (intermediateLengthRandomized_BKZNTL < lattice_PairRedPrimalRandomized_BKZNTL.getVecNorm(0))
+        compteur++;
+
       if (printMatricesDetails){
         cout << "*** Randomized pairwise reduction in primal and BKZ NTL ***" << endl;
         cout << "Shortest vector = " << lattice_PairRedPrimalRandomized_BKZNTL.getVecNorm(0) << endl;
         lattice_PairRedPrimalRandomized_BKZNTL.write();
       }
       ++show_progress;
-      //------------------------------------------------------------------------------------
-      // Branch and Bound
-      //------------------------------------------------------------------------------------
-       reducer_Branch_n_Bound.redBKZ(delta, blocksize);
-      clock_t begin_Branch_n_Bound = clock();
 
+
+      //------------------------------------------------------------------------------------
+      // Branch and Bound post BKZ
+      //------------------------------------------------------------------------------------
+      reducer_Branch_n_Bound.redBKZ(delta, blocksize);
+
+      clock_t begin_Branch_n_Bound = clock();
       reducer_Branch_n_Bound.shortestVector(L2NORM);
       clock_t end_Branch_n_Bound = clock();
 
@@ -614,7 +617,10 @@ int main()
       timing_BKZNTL_PostPairRedPrimal [iteration] = runningTime_BKZNTL_PostPairRedPrimal;
       timing_BKZNTL_PairRedPrimalRandomized [iteration] = runningTime_BKZNTL_PairRedPrimalRandomized;
       timing_BKZNTL_PostPairRedPrimalRandomized [iteration] = runningTime_BKZNTL_PostPairRedPrimalRandomized;
+
       timing_Branch_n_Bound [iteration] = runningTime_Branch_n_Bound;
+
+
 
       length_PairRedPrimal [iteration] = lattice_PairRedPrimal.getVecNorm(0);
       length_PairRedPrimalRandomized [iteration] = lattice_PairRedPrimalRandomized.getVecNorm(0);
@@ -632,44 +638,10 @@ int main()
       length_BKZNTL [iteration] = lattice_BKZNTL.getVecNorm(0);
       length_BKZNTL_PostPairRedPrimal [iteration] = lattice_PairRedPrimal_BKZNTL.getVecNorm(0);
       length_BKZNTL_PostPairRedPrimalRandomized [iteration] = lattice_PairRedPrimalRandomized_BKZNTL.getVecNorm(0);
+
       length_Branch_n_Bound [iteration] = lattice_Branch_n_Bound.getVecNorm(0);
 
    } // end iteration loop over matrices of same dimension
-
-
-
-   // print arrays
-
-   // mettre à jour
-
-   /*
-   if (printLists) {
-
-       cout << "\nTIMING LIST ---------" << endl;
-       print("          PairRedPrimal", timing_PairRedPrimal, false);
-       print("PairRedPrimalRandomized", timing_PairRedPrimalRandomized, false);
-       print("                    LLL", timing_LLL, false);
-       print("          PairRedPrimal", timing_PairRedPrimal, false);
-       print("      PostPairRedPrimal", timing_LLL_PostPairRedPrimal, false);
-       print("          LLL_NTL_Proxy", timing_LLL_NTL_Proxy, false);
-       print("      PairRedPrimal_NTL", timing_PairRedPrimal_NTL, false);
-       print("  PostPairRedPrimal_NTL", timing_LLL_NTL_PostPairRedPrimal, false);
-       //print("          LLL_NTL_Exact", timing_LLL_NTL_Exact, false);
-       print("                BKZ_NTL", timing_BKZ_NTL, false);
-
-       cout << "\nLENGTH LIST ---------" << endl;
-       print("Initial",length_Initial,true);
-       print("PairRedPrimalRandomized", length_PairRedPrimalRandomized, true);
-       print("                    LLL", length_LLL, true);
-       print("          PairRedPrimal", length_PairRedPrimal, true);
-       print("      PostPairRedPrimal", length_LLL_PostPairRedPrimal, true);
-       print("          LLL_NTL_Proxy", length_LLL_NTL_Proxy, true);
-       print("      PairRedPrimal_NTL", length_PairRedPrimal_NTL, true);
-       print("  PostPairRedPrimal_NTL", length_LLL_NTL_PostPairRedPrimal, true);
-       //print("          LLL_NTL_Exact", length_LLL_NTL_Exact, true);
-       print("                BKZ_NTL", length_BKZ_NTL, true);
-   }
-   */
 
 
    //------------------------------------------------------------------------------------
@@ -746,7 +718,10 @@ int main()
    cout << "PairRedRandom+BKZNTL = " << conv<ZZ>(Average(length_BKZNTL_PostPairRedPrimalRandomized)) << endl;
    cout << endl;
 
-   cout << "Branch n Bound Post BZK = " << conv<ZZ>(Average(length_Branch_n_Bound)) << endl;
+   cout << "BranchnBound postBZK = " << conv<ZZ>(Average(length_Branch_n_Bound)) << endl;
+
+   // à changer 
+   cout << "compteur = " << compteur << endl;
 
    cout << "\n--------------------------------------------" << endl;
 
@@ -764,17 +739,6 @@ int main()
 
     Rcpp::NumericVector v = R.parseEval(str);
   */
-
-
-/*
-    // Slide Bar of progression
-    boost::progress_display show_progress(max_dimension);
-    ++show_progress;
-
-
-*/
-
-
 
     return 0;
 }

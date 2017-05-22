@@ -91,7 +91,11 @@ Type Average(Type const(& array)[Size]) {
 int main()
 {
    // main parameters for the test
+<<<<<<< HEAD
    int dimension = 20;
+=======
+   int dimension = 40;
+>>>>>>> 56e6f21b524b41509c5a959045a19b5094cb5303
    int min = 30;
    int max = 100;
 
@@ -102,7 +106,7 @@ int main()
 
    int maxcpt = 1000000;
    int d = 0;
-   long blocksize = 30; // for BKZ insertions
+   long blocksize = 2; // for BKZ insertions
 
    // iteration loop over matrices of same dimension
    const int maxIteration = 50;
@@ -172,9 +176,10 @@ int main()
 
 
    for (int iteration = 0; iteration < maxIteration; iteration++){
-      
+
 
       int seed = (iteration+1) * (iteration+1) * 123456789 * dimension;
+      int seed_dieter = (iteration+1) * dimension * 12342;
       //int seed = (int) (iteration+1) * 12345 * time(NULL);
 
       // We create copies of the same basis
@@ -264,7 +269,7 @@ int main()
       //------------------------------------------------------------------------------------
 
       clock_t begin_PairRedPrimalRandomized = clock();
-      reducer_PairRedPrimalRandomized.preRedDieterPrimalOnlyRandomized(d);
+      reducer_PairRedPrimalRandomized.preRedDieterPrimalOnlyRandomized(d, seed_dieter);
       clock_t end_PairRedPrimalRandomized = clock();
 
       lattice_PairRedPrimalRandomized.setNegativeNorm(true);
@@ -332,7 +337,7 @@ int main()
       //------------------------------------------------------------------------------------
 
       clock_t begin_PairRedPrimalRandomized_LLL1 = clock();
-      reducer_PairRedPrimalRandomized_LLL.preRedDieterPrimalOnlyRandomized(d);
+      reducer_PairRedPrimalRandomized_LLL.preRedDieterPrimalOnlyRandomized(d, seed_dieter);
       clock_t end_PairRedPrimalRandomized_LLL1 = clock();
 
       lattice_PairRedPrimalRandomized_LLL.setNegativeNorm(true);
@@ -413,7 +418,11 @@ int main()
       //------------------------------------------------------------------------------------
 
       clock_t begin_PairRedPrimalRandomized_LLLNTL1 = clock();
+<<<<<<< HEAD
       reducer_PairRedPrimalRandomized_LLLNTL.preRedDieterPrimalOnlyRandomized(d);
+=======
+      reducer_PairRedPrimalRandomized_LLLNTL.preRedDieterPrimalOnly(d, seed_dieter);
+>>>>>>> 56e6f21b524b41509c5a959045a19b5094cb5303
       clock_t end_PairRedPrimalRandomized_LLLNTL1 = clock();
 
       lattice_PairRedPrimalRandomized_LLLNTL.setNegativeNorm(true);
@@ -514,7 +523,11 @@ int main()
       //------------------------------------------------------------------------------------
 
       clock_t begin_PairRedPrimalRandomized_BKZNTL1 = clock();
+<<<<<<< HEAD
       reducer_PairRedPrimalRandomized_BKZNTL.preRedDieterPrimalOnlyRandomized(d);
+=======
+      reducer_PairRedPrimalRandomized_BKZNTL.preRedDieterPrimalOnlyRandomized(d, seed_dieter);
+>>>>>>> 56e6f21b524b41509c5a959045a19b5094cb5303
       clock_t end_PairRedPrimalRandomized_BKZNTL1 = clock();
 
       lattice_PairRedPrimalRandomized_BKZNTL.setNegativeNorm(true);
@@ -548,6 +561,10 @@ int main()
       reducer_Branch_n_Bound.redBKZ(delta, blocksize);
 
       clock_t begin_Branch_n_Bound = clock();
+<<<<<<< HEAD
+=======
+
+>>>>>>> 56e6f21b524b41509c5a959045a19b5094cb5303
       reducer_Branch_n_Bound.shortestVector(L2NORM);
       clock_t end_Branch_n_Bound = clock();
 

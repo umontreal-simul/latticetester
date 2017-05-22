@@ -454,7 +454,7 @@ void Reducer::preRedDieter(int d)
 
 
 
-void Reducer::preRedDieterPrimalOnlyRandomized (int d)
+void Reducer::preRedDieterPrimalOnlyRandomized (int d, int seed)
 {
    long BoundCount;
    const int dim = m_lat->getDim ();
@@ -466,6 +466,7 @@ void Reducer::preRedDieterPrimalOnlyRandomized (int d)
    m_cpt = 0;
    m_countDieter = 0;
    BoundCount = 2 * dim - d;
+   srand(seed);
    do {
       pairwiseRedPrimal (rand() % dim, d);
       //if (i > d)

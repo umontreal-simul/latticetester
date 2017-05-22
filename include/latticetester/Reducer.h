@@ -198,7 +198,7 @@ public:
     */
    void preRedDieter (int d);
    void preRedDieterPrimalOnly (int d);
-   void preRedDieterPrimalOnlyRandomized (int d);
+   void preRedDieterPrimalOnlyRandomized (int d, int seed);
 
 
    /**

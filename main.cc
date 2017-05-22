@@ -42,13 +42,20 @@
 #include <boost/numeric/ublas/io.hpp>
 #include <boost/progress.hpp>
 
-#define WITH_R
+#define PRINT_CONSOLE
 
 using namespace std;
 using namespace LatticeTester;
 
+const int MaxDimension = 15;
+
+#ifdef PRINT_CONSOLE
+const int MinDimension = MaxDimension - 1;
+#else
 const int MinDimension = 5;
-const int MaxDimension = 20;
+#endif
+
+
 const int Interval_dim = MaxDimension - MinDimension;
 
 template <typename type>
@@ -97,10 +104,10 @@ void print(string name, Type const(& array)[Size], bool isIntegerOutput) {
 
 
 template<typename Type, long Size>
-Type Average(Type const(& array)[Size]) {
+Type Average(Type const(& array)[Size][Interval_dim]) {
    Type sum (0);
    for(int i=0; i<Size; i++)
-       sum += array[i];
+       sum += array[i][0];
    return sum / Size;
 }
 
@@ -172,7 +179,6 @@ int main (int argc, char *argv[])
    double timing_BKZNTL_PairRedPrimalRandomized [maxIteration][Interval_dim];
    double timing_BKZNTL_PostPairRedPrimalRandomized [maxIteration][Interval_dim];
 
-   double timing_Branch_n_Bound [maxIteration][Interval_dim];
 
 
    NScal length_Initial [maxIteration][Interval_dim];
@@ -710,99 +716,105 @@ int main (int argc, char *argv[])
          length_BB_BKZ [iteration][idx] = lattice_BB_BKZ.getVecNorm(0);
 
       }
+
    } // end iteration loop over matrices of same dimension
+
+
 
 #ifdef PRINT_CONSOLE
 
-   //------------------------------------------------------------------------------------
-   // Results printing in console
-   //------------------------------------------------------------------------------------
+      //------------------------------------------------------------------------------------
+      // Results printing in console
+      //------------------------------------------------------------------------------------
 
-   // print parameters used
-   cout << "\n" << endl;
-   cout << "epsilon = " << epsilon << endl;
-   cout << "dimension = " << dimension << endl;
-   cout << "nombre de matrices testées = " << maxIteration << endl;
+      // print parameters used
+      cout << "\n" << endl;
+      cout << "epsilon = " << epsilon << endl;
+      cout << "dimension = " << MinDimension << endl;
+      cout << "nombre de matrices testées = " << maxIteration << endl;
 
-   // print statistics
+      // print statistics
+      cout << "\n---------------- TIMING AVG ----------------\n" << endl;
 
+      cout << "       PairRedPrimal = " << Average(timing_PairRedPrimal) << endl;
+      cout << " PairRedPrimalRandom = " << Average(timing_PairRedPrimalRandomized) << endl;
+      cout << endl;
 
-   cout << "\n---------------- TIMING AVG ----------------\n" << endl;
+      cout << "                 LLL = " << Average(timing_LLL) << endl;
+      cout << "         PairRed+LLL = " << Average(timing_LLL_PairRedPrimal) + Average(timing_LLL_PostPairRedPrimal);
+      cout << " (" << Average(timing_LLL_PostPairRedPrimal) << ")" << endl;
+      cout << "   PairRedRandom+LLL = " << Average(timing_LLL_PairRedPrimalRandomized) + Average(timing_LLL_PostPairRedPrimalRandomized);
+      cout << " (" << Average(timing_LLL_PostPairRedPrimalRandomized) << ")" << endl;
+      cout << endl;
 
-   cout << "       PairRedPrimal = " << Average(timing_PairRedPrimal) << endl;
-   cout << " PairRedPrimalRandom = " << Average(timing_PairRedPrimalRandomized) << endl;
-   cout << endl;
+      cout << "              LLLNTL = " << Average(timing_LLLNTL) << endl;
+      cout << "      PairRed+LLLNTL = " << Average(timing_LLLNTL_PairRedPrimal) + Average(timing_LLLNTL_PostPairRedPrimal);
+      cout << " (" << Average(timing_LLLNTL_PostPairRedPrimal) << ")" << endl;
+      cout << "PairRedRandom+LLLNTL = " << Average(timing_LLLNTL_PairRedPrimalRandomized) + Average(timing_LLLNTL_PostPairRedPrimalRandomized);
+      cout << " (" << Average(timing_LLLNTL_PostPairRedPrimalRandomized) << ")" << endl;
+      cout << endl;
 
-   cout << "                 LLL = " << Average(timing_LLL) << endl;
-   cout << "         PairRed+LLL = " << Average(timing_LLL_PairRedPrimal) + Average(timing_LLL_PostPairRedPrimal);
-   cout << " (" << Average(timing_LLL_PostPairRedPrimal) << ")" << endl;
-   cout << "   PairRedRandom+LLL = " << Average(timing_LLL_PairRedPrimalRandomized) + Average(timing_LLL_PostPairRedPrimalRandomized);
-   cout << " (" << Average(timing_LLL_PostPairRedPrimalRandomized) << ")" << endl;
-   cout << endl;
+      //cout << "        LLLNTL_Exact = " << Average(timing_LLL_NTL_Exact) << endl;
+      cout << endl;
 
-   cout << "              LLLNTL = " << Average(timing_LLLNTL) << endl;
-   cout << "      PairRed+LLLNTL = " << Average(timing_LLLNTL_PairRedPrimal) + Average(timing_LLLNTL_PostPairRedPrimal);
-   cout << " (" << Average(timing_LLLNTL_PostPairRedPrimal) << ")" << endl;
-   cout << "PairRedRandom+LLLNTL = " << Average(timing_LLLNTL_PairRedPrimalRandomized) + Average(timing_LLLNTL_PostPairRedPrimalRandomized);
-   cout << " (" << Average(timing_LLLNTL_PostPairRedPrimalRandomized) << ")" << endl;
-   cout << endl;
+      cout << "              BKZNTL = " << Average(timing_BKZNTL) << endl;
+      cout << "      PairRed+BKZNTL = " << Average(timing_BKZNTL_PairRedPrimal) + Average(timing_BKZNTL_PostPairRedPrimal);
+      cout << " (" << Average(timing_BKZNTL_PostPairRedPrimal) << ")" << endl;
+      cout << "PairRedRandom+BKZNTL = " << Average(timing_BKZNTL_PairRedPrimalRandomized) + Average(timing_BKZNTL_PostPairRedPrimalRandomized);
+      cout << " (" << Average(timing_BKZNTL_PostPairRedPrimalRandomized) << ")" << endl;
+      cout << endl;
 
-   //cout << "        LLLNTL_Exact = " << Average(timing_LLL_NTL_Exact) << endl;
-   cout << endl;
+      cout << "             BB Only = " << Average(timing_BB_Only) << endl;
+      cout << "          BB Classic = " << Average(timing_BB_Classic1) + Average(timing_BB_Classic2);
+      cout << " (" << Average(timing_BB_Classic2) << ")" << endl,
+      cout << "              BB BKZ = " << Average(timing_BB_BKZ1) + Average(timing_BB_BKZ2);
+      cout << " (" << Average(timing_BB_BKZ2) << ")" << endl;
 
-   cout << "              BKZNTL = " << Average(timing_BKZNTL) << endl;
-   cout << "      PairRed+BKZNTL = " << Average(timing_BKZNTL_PairRedPrimal) + Average(timing_BKZNTL_PostPairRedPrimal);
-   cout << " (" << Average(timing_BKZNTL_PostPairRedPrimal) << ")" << endl;
-   cout << "PairRedRandom+BKZNTL = " << Average(timing_BKZNTL_PairRedPrimalRandomized) + Average(timing_BKZNTL_PostPairRedPrimalRandomized);
-   cout << " (" << Average(timing_BKZNTL_PostPairRedPrimalRandomized) << ")" << endl;
-   cout << endl;
-
-   cout << "             BB Only = " << Average(timing_BB_Only) << endl;
-   cout << "          BB Classic = " << Average(timing_BB_Classic1) + Average(timing_BB_Classic2);
-   cout << " (" << Average(timing_BB_Classic2) << ")" << endl,
-   cout << "              BB BKZ = " << Average(timing_BB_BKZ1) + Average(timing_BB_BKZ2);
-   cout << " (" << Average(timing_BB_BKZ2) << ")" << endl;
-
-   cout << "\n--------------------------------------------" << endl;
+      cout << "\n--------------------------------------------" << endl;
 
 
 
-   cout << "\n---------------- LENGTH AVG ----------------\n" << endl;
+      cout << "\n---------------- LENGTH AVG ----------------\n" << endl;
 
-   cout << "             Initial = " << conv<ZZ>(Average(length_Initial)) << endl;
-   cout << "       PairRedPrimal = " << conv<ZZ>(Average(length_PairRedPrimal)) << endl;
-   cout << " PairRedPrimalRandom = " << conv<ZZ>(Average(length_PairRedPrimalRandomized)) << endl;
-   cout << endl;
+      cout << "             Initial = " << conv<ZZ>(Average(length_Initial)) << endl;
+      cout << "       PairRedPrimal = " << conv<ZZ>(Average(length_PairRedPrimal)) << endl;
+      cout << " PairRedPrimalRandom = " << conv<ZZ>(Average(length_PairRedPrimalRandomized)) << endl;
+      cout << endl;
 
-   cout << "                 LLL = " << conv<ZZ>(Average(length_LLL)) << endl;
-   cout << "         PairRed+LLL = " << conv<ZZ>(Average(length_LLL_PostPairRedPrimal)) << endl;
-   cout << "   PairRedRandom+LLL = " << conv<ZZ>(Average(length_LLL_PostPairRedPrimalRandomized)) << endl;
-   cout << endl;
+      cout << "                 LLL = " << conv<ZZ>(Average(length_LLL)) << endl;
+      cout << "         PairRed+LLL = " << conv<ZZ>(Average(length_LLL_PostPairRedPrimal)) << endl;
+      cout << "   PairRedRandom+LLL = " << conv<ZZ>(Average(length_LLL_PostPairRedPrimalRandomized)) << endl;
+      cout << endl;
 
-   cout << "              LLLNTL = " << conv<ZZ>(Average(length_LLLNTL)) << endl;
-   cout << "      PairRed+LLLNTL = " << conv<ZZ>(Average(length_LLLNTL_PostPairRedPrimal)) << endl;
-   cout << "PairRedRandom+LLLNTL = " << conv<ZZ>(Average(length_LLLNTL_PostPairRedPrimalRandomized)) << endl;
-   cout << endl;
+      cout << "              LLLNTL = " << conv<ZZ>(Average(length_LLLNTL)) << endl;
+      cout << "      PairRed+LLLNTL = " << conv<ZZ>(Average(length_LLLNTL_PostPairRedPrimal)) << endl;
+      cout << "PairRedRandom+LLLNTL = " << conv<ZZ>(Average(length_LLLNTL_PostPairRedPrimalRandomized)) << endl;
+      cout << endl;
 
-   //cout << "       LLL_NTL_Exact = " << conv<ZZ>(Average(length_LLL_NTL_Exact)) << endl;
-   cout << endl;
+      //cout << "       LLL_NTL_Exact = " << conv<ZZ>(Average(length_LLL_NTL_Exact)) << endl;
+      cout << endl;
 
-   cout << "              BKZNTL = " << conv<ZZ>(Average(length_BKZNTL)) << endl;
-   cout << "      PairRed+BKZNTL = " << conv<ZZ>(Average(length_BKZNTL_PostPairRedPrimal)) << endl;
-   cout << "PairRedRandom+BKZNTL = " << conv<ZZ>(Average(length_BKZNTL_PostPairRedPrimalRandomized)) << endl;
-   cout << endl;
+      cout << "              BKZNTL = " << conv<ZZ>(Average(length_BKZNTL)) << endl;
+      cout << "      PairRed+BKZNTL = " << conv<ZZ>(Average(length_BKZNTL_PostPairRedPrimal)) << endl;
+      cout << "PairRedRandom+BKZNTL = " << conv<ZZ>(Average(length_BKZNTL_PostPairRedPrimalRandomized)) << endl;
+      cout << endl;
 
-   cout << "             BB Only = " << conv<ZZ>(Average(length_BB_Only)) << endl;
-   cout << "          BB Classic = " << conv<ZZ>(Average(length_BB_Classic)) << endl;
-   cout << "              BB BKZ = " << conv<ZZ>(Average(length_BB_BKZ)) << endl;
+      cout << "             BB Only = " << conv<ZZ>(Average(length_BB_Only)) << endl;
+      cout << "          BB Classic = " << conv<ZZ>(Average(length_BB_Classic)) << endl;
+      cout << "              BB BKZ = " << conv<ZZ>(Average(length_BB_BKZ)) << endl;
 
 
-   cout << "\n--------------------------------------------" << endl;
+      cout << "\n--------------------------------------------" << endl;
 
 #endif
 
 
+#ifdef WITH_R
+   /*----------------------------------------------*/
    // UTILISATION DE R
+   /*----------------------------------------------*/
+
+
    RInside R(argc, argv);              // create an embedded R instance
 
    R["Mindimension"] = MinDimension;
@@ -882,10 +894,7 @@ int main (int argc, char *argv[])
    R.parseEvalQ(build_plot);
    R.parseEvalQ(print_plot);
 
-
-    //std::cin.get();
-
-   //Rcpp::NumericVector v = R.parseEval(str);
+#endif
 
 
     return 0;

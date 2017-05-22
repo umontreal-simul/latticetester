@@ -50,7 +50,7 @@
 using namespace std;
 using namespace LatticeTester;
 
-const int MaxDimension = 40;
+const int MaxDimension = 15;
 
 #ifdef PRINT_CONSOLE
 const int MinDimension = MaxDimension - 1;
@@ -61,7 +61,7 @@ const int MinDimension = 5;
 
 const int Interval_dim = MaxDimension - MinDimension;
 
-
+#ifdef WITH_R
 template <typename type>
 Rcpp::NumericMatrix toRcppMatrix(const type scal[][Interval_dim], const int & maxIteration)
 {
@@ -74,6 +74,7 @@ Rcpp::NumericMatrix toRcppMatrix(const type scal[][Interval_dim], const int & ma
    }
    return mat;
 }
+#endif
 
 
 void RandomMatrix (mat_ZZ& A, ZZ& det, int min, int max, int seed){

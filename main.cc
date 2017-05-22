@@ -43,6 +43,7 @@
 #include <NTL/LLL.h>
 #include <NTL/matrix.h>
 #include <NTL/vec_vec_ZZ_p.h>
+//#include <RInside.h>
 
 
 
@@ -51,6 +52,8 @@
 
 using namespace std;
 using namespace LatticeTester;
+
+
 
 void RandomMatrix (mat_ZZ& A, ZZ& det, int min, int max, int seed){
 
@@ -418,7 +421,7 @@ int main()
       //------------------------------------------------------------------------------------
 
       clock_t begin_PairRedPrimalRandomized_LLLNTL1 = clock();
-      reducer_PairRedPrimalRandomized_LLLNTL.preRedDieterPrimalOnly(d, seed_dieter);
+      reducer_PairRedPrimalRandomized_LLLNTL.preRedDieterPrimalOnlyRandomized(d, seed_dieter);
       clock_t end_PairRedPrimalRandomized_LLLNTL1 = clock();
 
       lattice_PairRedPrimalRandomized_LLLNTL.setNegativeNorm(true);
@@ -748,11 +751,11 @@ int main()
    cout << "\n--------------------------------------------" << endl;
 
 
-/*
+   /*
     // UTILISATION DE R
     RInside R(argc, argv);              // create an embedded R instance
 
-    R["M"] = lat.toRccpMatrix();                  // eval command, no return
+    R["M"] = toRcppMatrix();                  // eval command, no return
     std::string str =
         "cat('Running ls()\n'); print(ls()); "
         "cat('Showing M\n'); print(M); "
@@ -760,7 +763,7 @@ int main()
         "Z";
 
     Rcpp::NumericVector v = R.parseEval(str);
-*/
+  */
 
 
 /*

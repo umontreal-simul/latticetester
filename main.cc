@@ -127,7 +127,7 @@ vec_ZZ canonicVector (int dimension, int i)
 	return e;
 }
 
-vec_ZZ randomVector (int dimension, ZZ modulus, ZZ seed) 
+vec_ZZ randomVector (int dimension, ZZ modulus, ZZ seed)
 {
 	vec_ZZ vector;
 	vector.SetLength(dimension);
@@ -193,6 +193,161 @@ mat_ZZ Dualize (const mat_ZZ V, const ZZ modulus, const int k)
 	return W;
 }
 
+void reduce(Reducer & red, const string & name, const int & d){
+
+}
+
+void reduce(Reducer & red, const string & name, const int & d, int & seed_dieter, const int & blocksize, const double & delta, const int maxcpt, int dimension){
+
+   //------------------------------------------------------------------------------------
+   // Pairwise reduction in primal basis only
+   //------------------------------------------------------------------------------------
+   if(name == "PairRedPrimal" )
+      red.preRedDieterPrimalOnly(d);
+
+   //------------------------------------------------------------------------------------
+   // Randomized pairwise reduction in primal basis only
+   //------------------------------------------------------------------------------------
+   if(name == "PairRedPrimalRandomized")
+      red.preRedDieterPrimalOnlyRandomized(d, seed_dieter);
+
+   //------------------------------------------------------------------------------------
+   // LLL Richard
+   //------------------------------------------------------------------------------------
+   if(name == "LLL")
+      red.redLLL(delta, maxcpt, dimension);
+
+   //------------------------------------------------------------------------------------
+   // Pairwise reduction (in primal basis only) and then LLL Richard
+   //------------------------------------------------------------------------------------
+   if(name == "PairRedPrimal_LLL")
+      red.preRedDieterPrimalOnly(d);
+
+
+   //------------------------------------------------------------------------------------
+   // Randomized pairwise reduction (in primal basis only) and then LLL Richard
+   //------------------------------------------------------------------------------------
+   if(name == "PairRedPrimalRandomized_LLL")
+      red.preRedDieterPrimalOnlyRandomized(d, seed_dieter);
+
+   //------------------------------------------------------------------------------------
+   // LLL NTL reduction (floating point version = proxy)
+   //------------------------------------------------------------------------------------
+   if(name == "LLLNTL")
+      red.redLLLNTLProxy(delta);
+
+   //------------------------------------------------------------------------------------
+   // Pairwise reduction (in primal basis only) and then LLL NTL proxy
+   //------------------------------------------------------------------------------------
+   if(name == "PairRedPrimal_LLLNTL")
+      red.preRedDieterPrimalOnly(d);
+
+   //------------------------------------------------------------------------------------
+   // Randomized pairwise reduction (in primal basis only) and then LLL NTL proxy
+   //------------------------------------------------------------------------------------
+   if(name == "PairRedPrimalRandomized_LLLNTL")
+      red.preRedDieterPrimalOnlyRandomized(d, seed_dieter);
+
+
+   //------------------------------------------------------------------------------------
+   // LLL NTL Exact reduction only
+   //------------------------------------------------------------------------------------
+   //if(name == "LLLNTL_Exact")
+   //   red.redLLLNTLExact(det2,a,b);
+
+
+   //------------------------------------------------------------------------------------
+   // BKZ NTL reduction
+   //------------------------------------------------------------------------------------
+   if(name=="BKZNTL")
+      red.redBKZ(delta, blocksize);
+
+   //------------------------------------------------------------------------------------
+   // Pairwise reduction (in primal basis only) and then BKZ NTL proxy
+   //------------------------------------------------------------------------------------
+   if(name =="PairRedPrimal_BKZNTL")
+      red.preRedDieterPrimalOnly(d);
+
+   //------------------------------------------------------------------------------------
+   // Randomized pairwise reduction (in primal basis only) and then BKZ NTL proxy
+   //------------------------------------------------------------------------------------
+   if(name =="PairRedPrimalRandomized_BKZNTL")
+      red.preRedDieterPrimalOnlyRandomized(d, seed_dieter);
+
+   //------------------------------------------------------------------------------------
+   // Branch and Bound classic
+   //------------------------------------------------------------------------------------
+   if(name =="BB_Classic"){
+      red.preRedDieterPrimalOnly(d);
+      red.redLLL(delta, maxcpt, dimension);
+   }
+
+
+   //------------------------------------------------------------------------------------
+   // Branch and Bound post BKZ
+   //------------------------------------------------------------------------------------
+   if(name =="BB_BKZ")
+      red.redBKZ(delta, blocksize);
+}
+
+
+void reduce2(Reducer & red, const string & name, const int & d, int & seed_dieter, const int & blocksize, const double & delta, const int maxcpt, int dimension){
+
+
+   //------------------------------------------------------------------------------------
+   // Pairwise reduction (in primal basis only) and then LLL Richard
+   //------------------------------------------------------------------------------------
+   if(name == "PairRedPrimal_LLL")
+      red.redLLL(delta, maxcpt, dimension);
+
+
+   //------------------------------------------------------------------------------------
+   // Randomized pairwise reduction (in primal basis only) and then LLL Richard
+   //------------------------------------------------------------------------------------
+   if(name == "PairRedPrimalRandomized_LLL")
+      red.redLLL(delta, maxcpt, dimension);
+
+   //------------------------------------------------------------------------------------
+   // Pairwise reduction (in primal basis only) and then LLL NTL proxy
+   //------------------------------------------------------------------------------------
+   if(name == "PairRedPrimal_LLLNTL")
+      red.redLLLNTLProxy(delta);
+
+   //------------------------------------------------------------------------------------
+   // Randomized pairwise reduction (in primal basis only) and then LLL NTL proxy
+   //------------------------------------------------------------------------------------
+   if(name == "PairRedPrimalRandomized_LLLNTL")
+      red.redLLLNTLProxy(delta);
+
+
+   //------------------------------------------------------------------------------------
+   // Pairwise reduction (in primal basis only) and then BKZ NTL proxy
+   //------------------------------------------------------------------------------------
+   if(name =="PairRedPrimal_BKZNTL")
+      red.redBKZ(delta, blocksize);
+
+   //------------------------------------------------------------------------------------
+   // Randomized pairwise reduction (in primal basis only) and then BKZ NTL proxy
+   //------------------------------------------------------------------------------------
+   if(name =="PairRedPrimalRandomized_BKZNTL")
+      red.redBKZ(delta, blocksize);
+
+   //------------------------------------------------------------------------------------
+   // Branch and Bound classic
+   //------------------------------------------------------------------------------------
+   if(name =="BB_Classic"){
+      red.shortestVector(L2NORM);
+   }
+
+
+   //------------------------------------------------------------------------------------
+   // Branch and Bound post BKZ
+   //------------------------------------------------------------------------------------
+   if(name =="BB_BKZ")
+      red.shortestVector(L2NORM);
+}
+
+
 
 /* example new CreateRNGBasis
 
@@ -203,7 +358,7 @@ mat_ZZ Dualize (const mat_ZZ V, const ZZ modulus, const int k)
       power(modulus, 2, 6);
       modulus-=1;
 
-      int k = 3; 
+      int k = 3;
       int dimension = 10;
       ZZ seed = conv<ZZ>(123456);
 
@@ -219,7 +374,7 @@ mat_ZZ Dualize (const mat_ZZ V, const ZZ modulus, const int k)
 
       return 0;
     }
-    
+
 */
 
 
@@ -244,6 +399,37 @@ int main (int argc, char *argv[])
    const int maxcpt = 1000000;
    const int d = 0;
    const long blocksize = 20; // for BKZ insertions
+
+   ZZ modulus;
+   power(modulus, 2, 31);
+   modulus--;
+   int k = 3;
+
+   string names[] = {
+      "PairRedPrimal",
+      "PairRedPrimalRandomized",
+      "LLL",
+      "PairRedPrimal_LLL",
+      "PairRedPrimalRandomized_LLL",
+      "LLLNTL",
+      "PairRedPrimal_LLLNTL",
+      "PairRedPrimalRandomized_LLLNTL",
+      "BKZNTL",
+      "PairRedPrimal_BKZNTL",
+      "PairRedPrimalRandomized_BKZNTL",
+      //"BB_Only",
+      "BB_Classic",
+      "BB_BKZ"};
+   
+   string names2[] = {
+      "PairRedPrimal_LLL",
+      "PairRedPrimalRandomized_LLL",
+      "PairRedPrimal_LLLNTL",
+      "PairRedPrimalRandomized_LLLNTL",
+      "PairRedPrimal_BKZNTL",
+      "PairRedPrimalRandomized_BKZNTL",
+      "BB_Classic",
+      "BB_BKZ"};
 
    // iteration loop over matrices of same dimension
    const int maxIteration = 10;
@@ -321,8 +507,8 @@ int main (int argc, char *argv[])
 
       for (int iteration = 0; iteration < maxIteration; iteration++){
 
-
-         int seed = (iteration+1) * (iteration+1) * 123456789 * dimension;
+         ZZ seed = conv<ZZ>((iteration+1) * (iteration+1) * 123456789 * dimension);
+         //int seed = (iteration+1) * (iteration+1) * 123456789 * dimension;
          int seed_dieter = (iteration+1) * dimension * 12342;
          //int seed = (int) (iteration+1) * 12345 * time(NULL);
 
@@ -331,39 +517,34 @@ int main (int argc, char *argv[])
          // We create copies of the same basis
          BMat basis_PairRedPrimal (dimension, dimension);
          ZZ det;
-         RandomMatrix(basis_PairRedPrimal, det, min, max, seed);
-          
-          string names[] = {
-              "PairRedPrimal",
-              "PairRedPrimalRandomized",
-              "LLL",
-              "PairRedPrimal_LLL",
-              "PairRedPrimalRandomized_LLL",
-              "LLLNTL",
-              "PairRedPrimal_LLLNTL",
-              "PairRedPrimalRandomized_LLLNTL",
-              "BKZNTL",
-              "PairRedPrimal_BKZNTL",
-              "PairRedPrimalRandomized_BKZNTL",
-              "BB_Only",
-              "BB_Classic",
-              "BB_BKZ"};
-          
-         
-          map < string, BMat* > basis;
-          map < string, IntLatticeBasis* > lattices;
-          map < string, Reducer* > reducers;
-          
-          for(const string &name : names){
-              basis[name] = new BMat(basis_PairRedPrimal);
-              lattices[name] = new IntLatticeBasis(*basis[name], dimension);
-              reducers[name] = new Reducer(*lattices[name]);
-          }
-          
-          
-          
-          
-          
+         //RandomMatrix(basis_PairRedPrimal, det, min, max, seed);
+
+
+         mat_ZZ V;
+         V = CreateRNGBasis (modulus, k, dimension, seed);
+
+         mat_ZZ W;
+         W = Dualize (V, modulus, k);
+
+         map < string, BMat* > basis;
+         map < string, BMat* > dualbasis;
+         map < string, IntLatticeBasis* > lattices;
+         map < string, Reducer* > reducers;
+
+         for(const string &name : names){
+            basis[name] = new BMat(V);
+            dualbasis[name] = new BMat(W);
+            lattices[name] = new IntLatticeBasis(*basis[name], dimension);
+            reducers[name] = new Reducer(*lattices[name]);
+         }
+
+         map < string, clock_t > timing;
+
+
+
+
+
+
          BMat basis_PairRedPrimalRandomized (basis_PairRedPrimal);
          BMat basis_LLL (basis_PairRedPrimal);
          BMat basis_PairRedPrimal_LLL (basis_PairRedPrimal);
@@ -396,11 +577,7 @@ int main (int argc, char *argv[])
          IntLatticeBasis lattice_BB_BKZ (basis_BB_BKZ, dimension);
 
 
-         lattice_PairRedPrimal.setNegativeNorm(true);
-         lattice_PairRedPrimal.updateVecNorm();
-         lattice_PairRedPrimal.sort(0);
-         NScal initialShortestVectorLength = lattice_PairRedPrimal.getVecNorm(0);
-         length_Initial [iteration][idx] = initialShortestVectorLength;
+
 
 
          Reducer reducer_PairRedPrimal (lattice_PairRedPrimal);
@@ -418,364 +595,56 @@ int main (int argc, char *argv[])
          Reducer reducer_BB_Only (lattice_BB_Only);
          Reducer reducer_BB_Classic (lattice_BB_Classic);
          Reducer reducer_BB_BKZ (lattice_BB_BKZ);
-          
-          
-
-
-         //------------------------------------------------------------------------------------
-         // Pairwise reduction in primal basis only
-         //------------------------------------------------------------------------------------
-
-         clock_t begin_PairRedPrimal = clock();
-         reducer_PairRedPrimal.preRedDieterPrimalOnly(d);
-         clock_t end_PairRedPrimal = clock();
 
          lattice_PairRedPrimal.setNegativeNorm(true);
          lattice_PairRedPrimal.updateVecNorm();
          lattice_PairRedPrimal.sort(0);
-          
-         ++show_progress;
-
-         //------------------------------------------------------------------------------------
-         // Randomized pairwise reduction in primal basis only
-         //------------------------------------------------------------------------------------
-
-         clock_t begin_PairRedPrimalRandomized = clock();
-         reducer_PairRedPrimalRandomized.preRedDieterPrimalOnlyRandomized(d, seed_dieter);
-         clock_t end_PairRedPrimalRandomized = clock();
-
-         lattice_PairRedPrimalRandomized.setNegativeNorm(true);
-         lattice_PairRedPrimalRandomized.updateVecNorm();
-         lattice_PairRedPrimalRandomized.sort(0);
-
-         //------------------------------------------------------------------------------------
-         // LLL Richard
-         //------------------------------------------------------------------------------------
-
-         clock_t begin_LLL = clock();
-         reducer_LLL.redLLL(delta, maxcpt, dimension);
-         clock_t end_LLL = clock();
-
-         lattice_LLL.setNegativeNorm(true);
-         lattice_LLL.updateVecNorm();
-         lattice_LLL.sort(0);
-          
-         ++show_progress;
-
-         //------------------------------------------------------------------------------------
-         // Pairwise reduction (in primal basis only) and then LLL Richard
-         //------------------------------------------------------------------------------------
-
-         clock_t begin_PairRedPrimal_LLL1 = clock();
-         reducer_PairRedPrimal_LLL.preRedDieterPrimalOnly(d);
-         clock_t end_PairRedPrimal_LLL1 = clock();
-
-         lattice_PairRedPrimal_LLL.setNegativeNorm(true);
-         lattice_PairRedPrimal_LLL.updateVecNorm();
-         lattice_PairRedPrimal_LLL.sort(0);
-
-         clock_t begin_PairRedPrimal_LLL2 = clock();
-         reducer_PairRedPrimal_LLL.redLLL(delta, maxcpt, dimension);
-         clock_t end_PairRedPrimal_LLL2 = clock();
-
-         lattice_PairRedPrimal_LLL.setNegativeNorm(true);
-         lattice_PairRedPrimal_LLL.updateVecNorm();
-         lattice_PairRedPrimal_LLL.sort(0);
-
-         //------------------------------------------------------------------------------------
-         // Randomized pairwise reduction (in primal basis only) and then LLL Richard
-         //------------------------------------------------------------------------------------
-
-         clock_t begin_PairRedPrimalRandomized_LLL1 = clock();
-         reducer_PairRedPrimalRandomized_LLL.preRedDieterPrimalOnlyRandomized(d, seed_dieter);
-         clock_t end_PairRedPrimalRandomized_LLL1 = clock();
-
-         lattice_PairRedPrimalRandomized_LLL.setNegativeNorm(true);
-         lattice_PairRedPrimalRandomized_LLL.updateVecNorm();
-         lattice_PairRedPrimalRandomized_LLL.sort(0);
-
-         clock_t begin_PairRedPrimalRandomized_LLL2 = clock();
-         reducer_PairRedPrimalRandomized_LLL.redLLL(delta, maxcpt, dimension);
-         clock_t end_PairRedPrimalRandomized_LLL2 = clock();
-
-         lattice_PairRedPrimalRandomized_LLL.setNegativeNorm(true);
-         lattice_PairRedPrimalRandomized_LLL.updateVecNorm();
-         lattice_PairRedPrimalRandomized_LLL.sort(0);
-          
-         ++show_progress;
-
-
-         //------------------------------------------------------------------------------------
-         // LLL NTL reduction (floating point version = proxy)
-         //------------------------------------------------------------------------------------
-
-         clock_t begin_LLLNTL = clock();
-         reducer_LLLNTL.redLLLNTLProxy(delta);
-         clock_t end_LLLNTL = clock();
-
-         lattice_LLLNTL.setNegativeNorm(true);
-         lattice_LLLNTL.updateVecNorm();
-         lattice_LLLNTL.sort(0);
-
-         //------------------------------------------------------------------------------------
-         // Pairwise reduction (in primal basis only) and then LLL NTL proxy
-         //------------------------------------------------------------------------------------
-
-         clock_t begin_PairRedPrimal_LLLNTL1 = clock();
-         reducer_PairRedPrimal_LLLNTL.preRedDieterPrimalOnly(d);
-         clock_t end_PairRedPrimal_LLLNTL1 = clock();
-
-         lattice_PairRedPrimal_LLLNTL.setNegativeNorm(true);
-         lattice_PairRedPrimal_LLLNTL.updateVecNorm();
-         lattice_PairRedPrimal_LLLNTL.sort(0);
-
-         clock_t begin_PairRedPrimal_LLLNTL2 = clock();
-         reducer_PairRedPrimal_LLLNTL.redLLLNTLProxy(delta);
-         clock_t end_PairRedPrimal_LLLNTL2 = clock();
-
-         lattice_PairRedPrimal_LLLNTL.setNegativeNorm(true);
-         lattice_PairRedPrimal_LLLNTL.updateVecNorm();
-         lattice_PairRedPrimal_LLLNTL.sort(0);
-
-         //------------------------------------------------------------------------------------
-         // Randomized pairwise reduction (in primal basis only) and then LLL NTL proxy
-         //------------------------------------------------------------------------------------
-
-         clock_t begin_PairRedPrimalRandomized_LLLNTL1 = clock();
-         reducer_PairRedPrimalRandomized_LLLNTL.preRedDieterPrimalOnlyRandomized(d, seed_dieter);
-         clock_t end_PairRedPrimalRandomized_LLLNTL1 = clock();
-
-
-         lattice_PairRedPrimalRandomized_LLLNTL.setNegativeNorm(true);
-         lattice_PairRedPrimalRandomized_LLLNTL.updateVecNorm();
-         lattice_PairRedPrimalRandomized_LLLNTL.sort(0);
-
-         clock_t begin_PairRedPrimalRandomized_LLLNTL2 = clock();
-         reducer_PairRedPrimalRandomized_LLLNTL.redLLLNTLProxy(delta);
-         clock_t end_PairRedPrimalRandomized_LLLNTL2 = clock();
-
-         lattice_PairRedPrimalRandomized_LLLNTL.setNegativeNorm(true);
-         lattice_PairRedPrimalRandomized_LLLNTL.updateVecNorm();
-         lattice_PairRedPrimalRandomized_LLLNTL.sort(0);
-
-         ++show_progress;
-
-
-
-         //------------------------------------------------------------------------------------
-         // LLL NTL Exact reduction only
-         //------------------------------------------------------------------------------------
-
-         /*ZZ det2;
-         clock_t begin_LLLNTL_Exact = clock();
-         reducer_LLLNTL_Exact.redLLLNTLExact(det2, a, b);
-         clock_t end_LLLNTL_Exact = clock();
-
-         lattice_LLLNTL_Exact.setNegativeNorm(true);
-         lattice_LLLNTL_Exact.updateVecNorm();
-         lattice_LLLNTL_Exact.sort(0);
-          
-          */
-
-
-         //------------------------------------------------------------------------------------
-         // BKZ NTL reduction
-         //------------------------------------------------------------------------------------
-
-         clock_t begin_BKZNTL = clock();
-         reducer_BKZNTL.redBKZ(delta, blocksize);
-         clock_t end_BKZNTL = clock();
-
-         lattice_BKZNTL.setNegativeNorm(true);
-         lattice_BKZNTL.updateVecNorm();
-         lattice_BKZNTL.sort(0);
-
-         //------------------------------------------------------------------------------------
-         // Pairwise reduction (in primal basis only) and then BKZ NTL proxy
-         //------------------------------------------------------------------------------------
-
-         clock_t begin_PairRedPrimal_BKZNTL1 = clock();
-         reducer_PairRedPrimal_BKZNTL.preRedDieterPrimalOnly(d);
-         clock_t end_PairRedPrimal_BKZNTL1 = clock();
-
-         lattice_PairRedPrimal_BKZNTL.setNegativeNorm(true);
-         lattice_PairRedPrimal_BKZNTL.updateVecNorm();
-         lattice_PairRedPrimal_BKZNTL.sort(0);
-
-         // useful ?
-         //NScal intermediateLengthBis = lattice_PairRedPrimal_LLL_NTL.getVecNorm(0);
-
-         clock_t begin_PairRedPrimal_BKZNTL2 = clock();
-         reducer_PairRedPrimal_BKZNTL.redBKZ(delta, blocksize);
-         clock_t end_PairRedPrimal_BKZNTL2 = clock();
-
-         lattice_PairRedPrimal_BKZNTL.setNegativeNorm(true);
-         lattice_PairRedPrimal_BKZNTL.updateVecNorm();
-         lattice_PairRedPrimal_BKZNTL.sort(0);
-
-         //------------------------------------------------------------------------------------
-         // Randomized pairwise reduction (in primal basis only) and then BKZ NTL proxy
-         //------------------------------------------------------------------------------------
-
-         clock_t begin_PairRedPrimalRandomized_BKZNTL1 = clock();
-         reducer_PairRedPrimalRandomized_BKZNTL.preRedDieterPrimalOnlyRandomized(d, seed_dieter);
-         clock_t end_PairRedPrimalRandomized_BKZNTL1 = clock();
-
-         lattice_PairRedPrimalRandomized_BKZNTL.setNegativeNorm(true);
-         lattice_PairRedPrimalRandomized_BKZNTL.updateVecNorm();
-         lattice_PairRedPrimalRandomized_BKZNTL.sort(0);
-
-         NScal intermediateLengthRandomized_BKZNTL = lattice_PairRedPrimalRandomized_BKZNTL.getVecNorm(0);
-
-         clock_t begin_PairRedPrimalRandomized_BKZNTL2 = clock();
-         reducer_PairRedPrimalRandomized_BKZNTL.redBKZ(delta, blocksize);
-         clock_t end_PairRedPrimalRandomized_BKZNTL2 = clock();
-
-         lattice_PairRedPrimalRandomized_BKZNTL.setNegativeNorm(true);
-         lattice_PairRedPrimalRandomized_BKZNTL.updateVecNorm();
-         lattice_PairRedPrimalRandomized_BKZNTL.sort(0);
-
-         //------------------------------------------------------------------------------------
-         // Branch and Bound Only
-         //------------------------------------------------------------------------------------
-         clock_t begin_BB_Only = clock();
-         reducer_BB_Only.shortestVector(L2NORM);
-         clock_t end_BB_Only = clock();
-
-         lattice_BB_Only.setNegativeNorm(true);
-         lattice_BB_Only.updateVecNorm();
-         lattice_BB_Only.sort(0);
-
-         ++show_progress;
-
-         //------------------------------------------------------------------------------------
-         // Branch and Bound classic
-         //------------------------------------------------------------------------------------
-
-         // usual pre reduction heuristics
-         clock_t begin_BB_Classic1 = clock();
-         reducer_BB_Classic.preRedDieterPrimalOnly(d);
-         reducer_BB_Classic.redLLL(delta, maxcpt, dimension);
-         clock_t end_BB_Classic1 = clock();
-
-         clock_t begin_BB_Classic2 = clock();
-         reducer_BB_Classic.shortestVector(L2NORM);
-         clock_t end_BB_Classic2 = clock();
-
-         lattice_BB_Classic.setNegativeNorm(true);
-         lattice_BB_Classic.updateVecNorm();
-         lattice_BB_Classic.sort(0);
-
-
-         //------------------------------------------------------------------------------------
-         // Branch and Bound post BKZ
-         //------------------------------------------------------------------------------------
-
-         clock_t begin_BB_BKZ1 = clock();
-         reducer_BB_BKZ.redBKZ(delta, blocksize);
-         clock_t end_BB_BKZ1 = clock();
-
-         clock_t begin_BB_BKZ2 = clock();
-         reducer_BB_BKZ.shortestVector(L2NORM);
-         clock_t end_BB_BKZ2 = clock();
-
-         lattice_BB_BKZ.setNegativeNorm(true);
-         lattice_BB_BKZ.updateVecNorm();
-         lattice_BB_BKZ.sort(0);
-
-
-         //------------------------------------------------------------------------------------
-         // timing updating
-         //------------------------------------------------------------------------------------
-          
-         timing_results["PairRedPrimal"][dimension][iteration] = double (end_PairRedPrimal - begin_PairRedPrimal) / CLOCKS_PER_SEC;
-
-         double runningTime_PairRedPrimal = double (end_PairRedPrimal - begin_PairRedPrimal) / CLOCKS_PER_SEC;
-         double runningTime_PairRedPrimalRandomized = double (end_PairRedPrimalRandomized - begin_PairRedPrimalRandomized) / CLOCKS_PER_SEC;
-
-         double runningTime_LLL = double(end_LLL - begin_LLL) / CLOCKS_PER_SEC;
-         double runningTime_LLL_PairRedPrimal = double(end_PairRedPrimal_LLL1 - begin_PairRedPrimal_LLL1) / CLOCKS_PER_SEC;
-         double runningTime_LLL_PostPairRedPrimal = double(end_PairRedPrimal_LLL2 - begin_PairRedPrimal_LLL2) / CLOCKS_PER_SEC;
-         double runningTime_LLL_PairRedPrimalRandomized = double(end_PairRedPrimalRandomized_LLL1 - begin_PairRedPrimalRandomized_LLL1) / CLOCKS_PER_SEC;
-         double runningTime_LLL_PostPairRedPrimalRandomized = double (end_PairRedPrimalRandomized_LLL2 - begin_PairRedPrimalRandomized_LLL2) / CLOCKS_PER_SEC;
-
-         double runningTime_LLLNTL = double(end_LLLNTL - begin_LLLNTL) / CLOCKS_PER_SEC;
-         double runningTime_LLLNTL_PairRedPrimal = double(end_PairRedPrimal_LLLNTL1 - begin_PairRedPrimal_LLLNTL1) / CLOCKS_PER_SEC;
-         double runningTime_LLLNTL_PostPairRedPrimal = double (end_PairRedPrimal_LLLNTL2 - begin_PairRedPrimal_LLLNTL2) / CLOCKS_PER_SEC;
-         double runningTime_LLLNTL_PairRedPrimalRandomized = double(end_PairRedPrimalRandomized_LLLNTL1 - begin_PairRedPrimalRandomized_LLLNTL1) / CLOCKS_PER_SEC;
-         double runningTime_LLLNTL_PostPairRedPrimalRandomized = double (end_PairRedPrimalRandomized_LLLNTL2 - begin_PairRedPrimalRandomized_LLLNTL2) / CLOCKS_PER_SEC;
-         //double runningTime_LLLNTL_Exact = double(end_LLLNTL_Exact - begin_LLLNTL_Exact) / CLOCKS_PER_SEC;
-
-         double runningTime_BKZNTL = double (end_BKZNTL - begin_BKZNTL) / CLOCKS_PER_SEC;
-         double runningTime_BKZNTL_PairRedPrimal = double(end_PairRedPrimal_BKZNTL1 - begin_PairRedPrimal_BKZNTL1) / CLOCKS_PER_SEC;
-         double runningTime_BKZNTL_PostPairRedPrimal = double (end_PairRedPrimal_BKZNTL2 - begin_PairRedPrimal_BKZNTL2) / CLOCKS_PER_SEC;
-         double runningTime_BKZNTL_PairRedPrimalRandomized = double(end_PairRedPrimalRandomized_BKZNTL1 - begin_PairRedPrimalRandomized_BKZNTL1) / CLOCKS_PER_SEC;
-         double runningTime_BKZNTL_PostPairRedPrimalRandomized = double (end_PairRedPrimalRandomized_BKZNTL2 - begin_PairRedPrimalRandomized_BKZNTL2) / CLOCKS_PER_SEC;
-
-         double runningTime_BB_Only = double (end_BB_Only - begin_BB_Only) / CLOCKS_PER_SEC;
-         double runningTime_BB_Classic1 = double (end_BB_Classic1 - begin_BB_Classic1) / CLOCKS_PER_SEC;
-         double runningTime_BB_Classic2 = double (end_BB_Classic2 - begin_BB_Classic2) / CLOCKS_PER_SEC;
-         double runningTime_BB_BKZ1 = double (end_BB_BKZ1 - begin_BB_BKZ1) / CLOCKS_PER_SEC;
-         double runningTime_BB_BKZ2 = double (end_BB_BKZ2 - begin_BB_BKZ2) / CLOCKS_PER_SEC;
-
-         //------------------------------------------------------------------------------------
-         // timing and length arrays updating
-         //------------------------------------------------------------------------------------
-         timing_PairRedPrimal [iteration][idx] = runningTime_PairRedPrimal;
-         timing_PairRedPrimalRandomized [iteration][idx] = runningTime_PairRedPrimalRandomized;
-
-         timing_LLL [iteration][idx] = runningTime_LLL;
-         timing_LLL_PairRedPrimal [iteration][idx] = runningTime_LLL_PairRedPrimal;
-         timing_LLL_PostPairRedPrimal [iteration][idx] = runningTime_LLL_PostPairRedPrimal;
-         timing_LLL_PairRedPrimalRandomized [iteration][idx] = runningTime_LLL_PairRedPrimalRandomized;
-         timing_LLL_PostPairRedPrimalRandomized [iteration][idx] = runningTime_LLL_PostPairRedPrimalRandomized;
-
-         timing_LLLNTL [iteration][idx] = runningTime_LLLNTL;
-         timing_LLLNTL_PairRedPrimal [iteration][idx] = runningTime_LLLNTL_PairRedPrimal;
-         timing_LLLNTL_PostPairRedPrimal [iteration][idx] = runningTime_LLLNTL_PostPairRedPrimal;
-         timing_LLLNTL_PairRedPrimalRandomized [iteration][idx] = runningTime_LLLNTL_PairRedPrimalRandomized;
-         timing_LLLNTL_PostPairRedPrimalRandomized [iteration][idx] = runningTime_LLLNTL_PostPairRedPrimalRandomized;
-
-         //timing_LLLNTL_Exact [iteration][idx] = runningTime_LLLNTL_Exact;
-
-         timing_BKZNTL [iteration][idx] = runningTime_BKZNTL;
-         timing_BKZNTL_PairRedPrimal [iteration][idx] = runningTime_BKZNTL_PairRedPrimal;
-         timing_BKZNTL_PostPairRedPrimal [iteration][idx] = runningTime_BKZNTL_PostPairRedPrimal;
-         timing_BKZNTL_PairRedPrimalRandomized [iteration][idx] = runningTime_BKZNTL_PairRedPrimalRandomized;
-         timing_BKZNTL_PostPairRedPrimalRandomized [iteration][idx] = runningTime_BKZNTL_PostPairRedPrimalRandomized;
-
-         timing_BB_Only [iteration][idx] = runningTime_BB_Only;
-         timing_BB_Classic1 [iteration][idx] = runningTime_BB_Classic1;
-         timing_BB_Classic2 [iteration][idx] = runningTime_BB_Classic2;
-         timing_BB_BKZ1 [iteration][idx] = runningTime_BB_BKZ1;
-         timing_BB_BKZ2 [iteration][idx] = runningTime_BB_BKZ2;
-
-
-         length_PairRedPrimal [iteration][idx] = lattice_PairRedPrimal.getVecNorm(0);
-         length_PairRedPrimalRandomized [iteration][idx] = lattice_PairRedPrimalRandomized.getVecNorm(0);
-
-         length_LLL [iteration][idx] = lattice_LLL.getVecNorm(0);
-         length_LLL_PostPairRedPrimal [iteration][idx] = lattice_PairRedPrimal_LLL.getVecNorm(0);
-         length_LLL_PostPairRedPrimalRandomized [iteration][idx] = lattice_PairRedPrimalRandomized_LLL.getVecNorm(0);
-
-         length_LLLNTL [iteration][idx] = lattice_LLLNTL.getVecNorm(0);
-         length_LLLNTL_PostPairRedPrimal [iteration][idx] = lattice_PairRedPrimal_LLLNTL.getVecNorm(0);
-         length_LLLNTL_PostPairRedPrimalRandomized [iteration][idx] = lattice_PairRedPrimalRandomized_LLLNTL.getVecNorm(0);
-
-         //length_LLLNTL_Exact [iteration][idx] = lattice_LLLNTL_Exact.getVecNorm(0);
-
-         length_BKZNTL [iteration][idx] = lattice_BKZNTL.getVecNorm(0);
-         length_BKZNTL_PostPairRedPrimal [iteration][idx] = lattice_PairRedPrimal_BKZNTL.getVecNorm(0);
-         length_BKZNTL_PostPairRedPrimalRandomized [iteration][idx] = lattice_PairRedPrimalRandomized_BKZNTL.getVecNorm(0);
-
-
-         length_BB_Only [iteration][idx] = lattice_BB_Only.getVecNorm(0);
-         length_BB_Classic [iteration][idx] = lattice_BB_Classic.getVecNorm(0);
-         length_BB_BKZ [iteration][idx] = lattice_BB_BKZ.getVecNorm(0);
+         NScal initialShortestVectorLength = lattice_PairRedPrimal.getVecNorm(0);
+         length_Initial [iteration][idx] = initialShortestVectorLength;
+
+
+         clock_t begin = clock();
+         clock_t end = clock();
+         for(const string &name : names){
+            begin = clock();
+            reduce(*reducers[name], name, d, seed_dieter, blocksize, delta, maxcpt, dimension);
+            end = clock();
+            timing_results[name][dimension][iteration] = double (end - begin) / CLOCKS_PER_SEC;
+            
+            lattices[name]->setNegativeNorm();
+            lattices[name]->updateVecNorm();
+            lattices[name]->sort(0);
+            ++show_progress;
+         }
+
+         for(const string &name : names2){
+            begin = clock();
+            reduce2(*reducers[name], name, d, seed_dieter, blocksize, delta, maxcpt, dimension);
+            end = clock();
+            timing_results[name+"2"][dimension][iteration] = double (end - begin) / CLOCKS_PER_SEC;
+            lattices[name]->setNegativeNorm();
+            lattices[name]->updateVecNorm();
+            lattices[name]->sort(0);
+            ++show_progress;
+         }
+         
+         for(const string &name : names){
+            length_results[name][dimension][iteration] = lattices[name]->getVecNorm(0);
+         }
+         
+
+
+         for(const string &name : names){
+            basis[name]->kill();
+            dualbasis[name]->kill();
+            delete lattices[name];
+            delete reducers[name];
+         }
 
       }
 
    } // end iteration loop over matrices of same dimension
+   
 
 
 

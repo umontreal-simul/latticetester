@@ -1455,7 +1455,7 @@ bool Reducer::shortestVector (NormType norm)
 
 
    // no prereduction required
-
+   /*
    if (PreRedDieterSV) {
       preRedDieter (0);
    }
@@ -1466,7 +1466,7 @@ bool Reducer::shortestVector (NormType norm)
       m_lat->setNegativeNorm ();
       m_lat->setDualNegativeNorm ();
    }
-
+   */
    /* Find the shortest vector for the selected norm.  */
    /* The L2 norm is used for the Choleski decomposition and BB bounds. */
    bool ok;

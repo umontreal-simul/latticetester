@@ -6,7 +6,6 @@
 //  Copyright © 2017 DIRO. All rights reserved.
 //
 
-
 #define PRINT_CONSOLE
 
 #include <iostream>
@@ -140,7 +139,7 @@ int main (int argc, char *argv[])
    const long blocksize = 20; // for BKZ insertions
 
    // iteration loop over matrices of same dimension
-   const int maxIteration = 50;
+   const int maxIteration = 10;
 
 
    // print important information

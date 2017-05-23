@@ -68,7 +68,7 @@ Reducer::Reducer (IntLatticeBasis & lat)
    m_lat = &lat;
    const int dim1 = m_lat->getDim ();
    int dim2 = dim1;
-   if (dim2 <= 3)
+   if (dim2 <= 2)
       dim2++;
 
    m_c0.resize (dim1, dim1);
@@ -287,14 +287,18 @@ bool Reducer::calculCholeski (RVect & DC2, RMat & C0)
    const int dim = m_lat->getDim ();
 
    int k, j, i;
-   // RScal m2r;
+   RScal m2;
    // C2(i,j) = C0(i,j) * C2(i,i) if i != j.
    // C2(i,i) = DC2[i].
-   //conv (m2r, m_lat->getM2 ());
-   //int d;
-   //d = dim / 2;
-   // Calcul des d premieres lignes de C0 via la base primale.
-   for (i = 0; i < dim; i++) {
+   conv (m2, m_lat->getModulo ());
+   m2 = m2*m2;
+   int d = dim;
+   if(m_lat->withDual())
+      d = dim / 2; // If we use the Dual, we compute Choleski
+                   // with the Dual
+
+   // Compute the d first lines of C0 with the primal Basis.
+   for (i = 0; i < d; i++) {
       m_lat->updateScalL2Norm (i);
       for (j = i; j < dim; j++) {
          if (j == i)
@@ -316,38 +320,39 @@ bool Reducer::calculCholeski (RVect & DC2, RMat & C0)
             C0(i,j) = m_c2(i,j) / DC2[i];
       }
    }
-   /*
-   // Calcul des m_lat->dim-d dernieres lignes de C0 via la base duale.
-   for (i = dim-1; i > d; i--)
-   {
-      m_lat->updateScalL2Norm (i);
-      for (j = i; j >= 0; j--) {
-         if (j == i)
-            conv (m_c2(i,i), m_lat->getDualBasis ().getVecNorm (i));
-         else {
-            matrix_row<BMat> row1(m_lat->getDualBasis(), i);
-            matrix_row<BMat> row2(m_lat->getDualBasis(), j);
-            ProdScal (row1, row2, dim, m_c2(i,j));
-         }
-         for (k = i + 1; k < dim; k++)
-            m_c2(i,j) -= C0(k,i) * m_c2(k,j);
-         if (i != j)
-            C0(i,j) = m_c2(i,j) / m_c2(i,i);
-      }
 
-      DC2[i] = m2r / m_c2(i,i);
-      if (DC2[i] < 0.0) {
-         negativeCholeski();
-         return false;
-      }
-      for (j = i + 1; j < dim; j++) {
-         C0(i,j) = -C0(j,i);
-         for (k = i + 1; k < j; k++) {
-            C0(i,j) -= C0(k,i) * C0(k,j);
+   // Compute the d last lines of C0 with the dual Basis.
+   if(m_lat->withDual()){
+      for (i = dim-1; i > d; i--)
+      {
+         m_lat->updateDualScalL2Norm (i);
+         for (j = i; j >= 0; j--) {
+            if (j == i)
+               conv (m_c2(i,i), m_lat->getDualVecNorm (i));
+            else {
+               matrix_row<BMat> row1(m_lat->getDualBasis(), i);
+               matrix_row<BMat> row2(m_lat->getDualBasis(), j);
+               ProdScal (row1, row2, dim, m_c2(i,j));
+            }
+            for (k = i + 1; k < dim; k++)
+               m_c2(i,j) -= C0(k,i) * m_c2(k,j);
+            if (i != j)
+               C0(i,j) = m_c2(i,j) / m_c2(i,i);
+         }
+
+         DC2[i] = m2 / m_c2(i,i);
+         if (DC2[i] < 0.0) {
+            negativeCholeski();
+            return false;
+         }
+         for (j = i + 1; j < dim; j++) {
+            C0(i,j) = -C0(j,i);
+            for (k = i + 1; k < j; k++) {
+               C0(i,j) -= C0(k,i) * C0(k,j);
+            }
          }
       }
    }
-   */
    return true;
 }
 
@@ -359,10 +364,10 @@ void Reducer::trace (char *mess)
    cout << endl << "================================= " << mess << endl;
    cout << "dim = " << m_lat->getDim () << endl;
    m_lat->setNegativeNorm();
-   //m_lat->getDualBasis ().setNegativeNorm(true);
+   m_lat->setDualNegativeNorm();
    m_lat->updateVecNorm ();
+   m_lat->updateDualVecNorm();
    m_lat->sort(0);
-   //m_lat->getDualBasis ().updateVecNorm ();
    m_lat->write();
 }
 
@@ -424,6 +429,66 @@ void Reducer::pairwiseRedPrimal (int i, int d)
          ++m_cpt;
          m_lat->setXX (false, i);
          m_lat->setXX (false, j);
+         if(m_lat->withDual()){
+            matrix_row<BMat> row1(m_lat->getDualBasis(), i);
+            matrix_row<BMat> row2(m_lat->getDualBasis(), j);
+            ModifVect (row1, row2, m_bs, dim);
+         }
+      }
+   }
+}
+
+//=========================================================================
+
+void Reducer::pairwiseRedDual (int i)
+{
+   int j;
+ // trace( "AVANT pairwiseRedDual");
+   const int dim = m_lat->getDim ();
+
+   ++m_countDieter;
+   m_lat->updateDualScalL2Norm (i);
+   matrix_row<BMat> row9(m_lat->getBasis(), i);
+   m_bv = row9;
+   for (j = 0; j < dim; j++) {
+      if (i != j) {
+         matrix_row<BMat> row1(m_lat->getDualBasis(), i);
+         matrix_row<BMat> row2(m_lat->getDualBasis(), j);
+         ProdScal (row1, row2, dim, m_ns);
+         // ProdScal (m_lat->getDualBasis ()[i], m_lat->getDualBasis ()[j],
+         //           dim, m_ns);
+         DivideRound <NScal> (m_ns, m_lat->getDualVecNorm (i),
+                              m_nv[j]);
+         if (m_nv[j] != 0) {
+            conv (m_bs, m_nv[j]);
+            matrix_row<BMat> row7(m_lat->getBasis(), j);
+            ModifVect (m_bv, row7, m_bs, dim);
+         }
+      }
+   }
+
+   m_lat->updateScalL2Norm (i);
+   ProdScal (m_bv, m_bv, dim, m_ns);
+   if (m_ns < m_lat->getVecNorm (i)) {
+      ++m_cpt;
+      m_countDieter = 0;
+      matrix_row<BMat> row6(m_lat->getBasis(), i);
+      for (j = 0; j < dim; j++)
+         row6(j) = m_bv[j];
+      m_lat->setNegativeNorm (i);
+      m_lat->setXX (false, i);
+      m_lat->setVecNorm (m_ns, i);
+      for (j = 0; j < dim; j++) {
+         if (i != j && m_nv[j] != 0) {
+            conv (m_bs, -m_nv[j]);
+            matrix_row<BMat> row1(m_lat->getDualBasis(), j);
+            matrix_row<BMat> row2(m_lat->getDualBasis(), i);
+            ModifVect (row1, row2, m_bs, dim);
+            //  ModifVect (m_lat->getDualBasis ()[j], m_lat->getDualBasis ()[i],
+            //            m_bs, dim);
+            m_lat->setDualNegativeNorm (j);
+            m_lat->setXX (false, j);
+         }
       }
    }
 }
@@ -437,6 +502,7 @@ void Reducer::preRedDieter(int d)
 {
    long BoundCount;
    const int dim = m_lat->getDim ();
+   bool withDual = m_lat->withDual();
 
    m_lat->updateScalL2Norm (d, dim);
    m_lat->sort (d);
@@ -446,6 +512,8 @@ void Reducer::preRedDieter(int d)
    BoundCount = 2 * dim - d;
    do {
       pairwiseRedPrimal (i, d);
+      if (i > d && withDual)
+         pairwiseRedDual (i);
       if (i < 1)
          i = dim-1;
       else
@@ -459,6 +527,7 @@ void Reducer::preRedDieterPrimalOnlyRandomized (int d, int seed)
 {
    long BoundCount;
    const int dim = m_lat->getDim ();
+   bool withDual = m_lat->withDual();
 
    m_lat->updateScalL2Norm (d, dim);
    //m_lat->getDualBasis ().updateScalL2Norm (d, dim);
@@ -470,8 +539,8 @@ void Reducer::preRedDieterPrimalOnlyRandomized (int d, int seed)
    srand(seed);
    do {
       pairwiseRedPrimal (rand() % dim, d);
-      //if (i > d)
-      //   pairwiseRedDual (i);
+      if (i > d && withDual)
+         pairwiseRedDual (i);
       if (i < 1)
          i = dim-1;
       else
@@ -485,6 +554,7 @@ void Reducer::preRedDieterPrimalOnly (int d)
 {
    long BoundCount;
    const int dim = m_lat->getDim ();
+   bool withDual = m_lat->withDual ();
 
    m_lat->updateScalL2Norm (d, dim);
    //m_lat->getDualBasis ().updateScalL2Norm (d, dim);
@@ -495,8 +565,8 @@ void Reducer::preRedDieterPrimalOnly (int d)
    BoundCount = 2 * dim - d;
    do {
       pairwiseRedPrimal (i, d);
-      //if (i > d)
-      //   pairwiseRedDual (i);
+      if (i > d && withDual)
+         pairwiseRedDual (i);
       if (i < 1)
          i = dim-1;
       else
@@ -523,6 +593,7 @@ void Reducer::reductionFaible (int i, int j)
 {
    RScal cte;
    long cteLI;
+   bool withDual = m_lat->withDual();
    cte = m_cho2(i,j) / m_cho2(i,i);
 
    const int dim = m_lat->getDim ();
@@ -534,6 +605,12 @@ void Reducer::reductionFaible (int i, int j)
          matrix_row<BMat> row1(m_lat->getBasis(), j);
          matrix_row<BMat> row2(m_lat->getBasis(), i);
          ModifVect (row1, row2, -cteLI, dim);
+         if(withDual){
+            matrix_row<BMat> row3(m_lat->getDualBasis(), i);
+            matrix_row<BMat> row4(m_lat->getDualBasis(), j);
+            ModifVect (row3, row4, -cteLI, dim);
+         }
+
       } else
          return;
 
@@ -544,9 +621,18 @@ void Reducer::reductionFaible (int i, int j)
       matrix_row<BMat> row1(m_lat->getBasis(), j);
       matrix_row<BMat> row2(m_lat->getBasis(), i);
       ModifVect (row1, row2, -cte, dim);
+      if(withDual){
+         matrix_row<BMat> row3(m_lat->getDualBasis(), i);
+         matrix_row<BMat> row4(m_lat->getDualBasis(), j);
+         ModifVect (row3, row4, cte, dim);
+      }
    }
    m_lat->setNegativeNorm (j);
    m_lat->updateVecNorm(j);
+   if(withDual){
+      m_lat->setDualNegativeNorm (j);
+      m_lat->updateDualVecNorm(j);
+   }
 
    miseAJourGramVD (j);
    calculCholeski2LLL (i, j);
@@ -577,6 +663,7 @@ void Reducer::redLLL (double fact, long maxcpt, int Max)
  * pas les vecteurs m_lat->getBasis().vecNorm, Wm_lat->getDualBasis().
  */
 {
+   bool withDual = m_lat->withDual();
    const int REDBAS_e = 40;
    int i, j, k, h;
    RScal Cho0ij;
@@ -657,8 +744,10 @@ void Reducer::redLLL (double fact, long maxcpt, int Max)
       for (i = j - 2; i >= 0; i--)
          reductionFaible (i, j);
    }
-   m_lat->setNegativeNorm (true);
-   //m_lat->getDualBasis ().setNegativeNorm (true);
+   m_lat->setNegativeNorm ();
+   if(withDual){
+      m_lat->setDualNegativeNorm ();
+   }
 }
 
 
@@ -669,6 +758,7 @@ void Reducer::transformStage3 (std::vector<long> & z, int & k)
    int j, i;
    long q;
    const int dim = m_lat->getDim ();
+   bool withDual = m_lat->withDual();
 
    j = dim-1;
    while (z[j] == 0)
@@ -689,14 +779,16 @@ void Reducer::transformStage3 (std::vector<long> & z, int & k)
             //    ModifVect (m_lat->getBasis ()[j], m_lat->getBasis ()[i],
             //            q, dim);
             ModifVect (row1, row2, q, dim);
-
-            // matrix_row<BMat> row3(m_lat->getDualBasis(), i);
-            // matrix_row<BMat> row4(m_lat->getDualBasis(), j);
-            //    ModifVect (m_lat->getDualBasis ()[i], m_lat->getDualBasis ()[j],
-            //             -q, dim);
-            // ModifVect (row3, row4, -q, dim);
             m_lat->setNegativeNorm (j);
-            // m_lat->getDualBasis ().setNegativeNorm (true, i);
+
+            if(withDual){
+               matrix_row<BMat> row3(m_lat->getDualBasis(), i);
+               matrix_row<BMat> row4(m_lat->getDualBasis(), j);
+               //    ModifVect (m_lat->getDualBasis ()[i], m_lat->getDualBasis ()[j],
+               //             -q, dim);
+               ModifVect (row3, row4, -q, dim);
+               m_lat->setDualNegativeNorm (i);
+            }
          }
          // Permutation.
          swap <long>(z[i], z[j]);
@@ -899,6 +991,7 @@ bool Reducer::redBB (int i, int d, int Stage, bool & smaller)
  * Assumes that the norm is Euclidean.
  */
 {
+   bool withDual = m_lat->withDual();
    const int dim = m_lat->getDim ();
    const int maxDim = m_lat->getDim ();
    BMat VTemp (dim, maxDim), WTemp (dim, maxDim);
@@ -916,22 +1009,26 @@ bool Reducer::redBB (int i, int d, int Stage, bool & smaller)
       m_lat->setVecNorm (tmp, i);
    }
    conv (m_lMin2, m_lat->getVecNorm (i));
-/*
-   if (Stage == 3)
+
+   if (Stage == 3 && withDual)
    {
-      if (m_lat->getDualBasis ().isNegativeNorm (i)) {
+      if (m_lat->getDualVecNorm (i) < 0) {
          matrix_row<BMat> row1(m_lat->getDualBasis(), i);
          ProdScal (row1, row1, dim, tmp);
          //   ProdScal (m_lat->getDualBasis()[i], m_lat->getDualBasis()[i],
          //            dim, tmp);
-         m_lat->getDualBasis ().setVecNorm (tmp, i);
+         m_lat->setDualVecNorm (tmp, i);
       }
-      if (m_lMin2 * m_lat->getDualBasis ().getVecNorm (i) < 4 * m_lat->getM2 ())
+      NScal m2;
+      conv(m2, m_lat->getModulo());
+      m2 = m2*m2;
+      if (m_lMin2 * m_lat->getDualVecNorm (i) < 4*m2)
          return true;
    }
- */
+   if(withDual){
+      m_lat->updateDualVecNorm ();
+   }
    m_lat->updateVecNorm ();
-   //m_lat->getDualBasis ().updateVecNorm ();
    m_lat->permute (i, dim-1);
 
    int k, h;
@@ -940,12 +1037,16 @@ bool Reducer::redBB (int i, int d, int Stage, bool & smaller)
    {
       // On memorise la base courante.
       VTemp = m_lat->getBasis ();
-      //WTemp = m_lat->getDualBasis ();
+      if(withDual){
+         WTemp = m_lat->getDualBasis ();
+      }
       for (h = 0; h < dim; h++)
          XXTemp[h] = true;
       redLLL (1.0, 1000000, dim - 1);
       m_lat->updateVecNorm ();
-      //m_lat->getDualBasis ().updateVecNorm ();
+      if(withDual){
+         m_lat->updateDualVecNorm ();
+      }
    }
    if (!calculCholeski (m_dc2, m_c0))
       return false;
@@ -959,9 +1060,11 @@ bool Reducer::redBB (int i, int d, int Stage, bool & smaller)
       /* On remet l'anciennne base, celle d'avant LLL, avant de considerer
          la prochaine m_lat->dimension.  */
       m_lat->getBasis () = VTemp;
-      //m_lat->getDualBasis () = WTemp;
       m_lat->updateVecNorm ();
-      //m_lat->getDualBasis ().updateVecNorm ();
+      if(withDual){
+         m_lat->getDualBasis () = WTemp;
+         m_lat->updateDualVecNorm ();
+      }
       for (h = 0; h < dim; h++)
          m_lat->setXX (XXTemp[h], h);
    }
@@ -979,18 +1082,20 @@ bool Reducer::redBB (int i, int d, int Stage, bool & smaller)
          row1(h) = m_bv[h];
       //  m_lat->getBasis ()[k] = m_bv;
       m_lat->setNegativeNorm (k);
-      //if (m_zShort[k] < 0) {
-      //   matrix_row<BMat> row2(m_lat->getDualBasis(), k);
-      //   ChangeSign (row2, dim);
-      //}
+      if (m_zShort[k] < 0 && withDual) {
+         matrix_row<BMat> row2(m_lat->getDualBasis(), k);
+         ChangeSign (row2, dim);
+      }
       /* Mise a jour des vecteurs de la base duale selon le nouveau
          m_lat->getBasis()[k] */
       for (h = 0; h < dim; h++) {
          if ((m_zShort[h] != 0) && (h != k)) {
-            /* matrix_row<BMat> row1(m_lat->getDualBasis(), h);
-            matrix_row<BMat> row2(m_lat->getDualBasis(), k);
-            ModifVect (row1, row2, -m_zShort[h], dim);
-            m_lat->getDualBasis ().setNegativeNorm (true, h); */
+            if(withDual){
+               matrix_row<BMat> row1(m_lat->getDualBasis(), h);
+               matrix_row<BMat> row2(m_lat->getDualBasis(), k);
+               ModifVect (row1, row2, -m_zShort[h], dim);
+               m_lat->setDualNegativeNorm (h);
+            }
             if (Stage == 2) {
                if (h > d)
                   m_lat->setXX (false, h);
@@ -1171,6 +1276,7 @@ bool Reducer::redBB0 (NormType norm)
  * vector square length will be in m_lMin2.
  */
 {
+   bool withDual = m_lat->withDual();
    bool smaller = false;
    int k, h;
    const int dim = m_lat->getDim ();
@@ -1182,6 +1288,9 @@ bool Reducer::redBB0 (NormType norm)
       the case of the L2 Norm. */
 
    m_lat->updateScalL2Norm (0, dim);
+   if(withDual){
+      m_lat->updateDualScalL2Norm (0, dim);
+   }
    if (m_countNodes < SHORT_LLL)
       m_lat->sort (0);
 
@@ -1211,7 +1320,7 @@ bool Reducer::redBB0 (NormType norm)
          S'il existe dans ce réseau un vecteur de longueur plus courte que celle
          du meilleur réseau trouvé à date, il n'est pas nécessaire de trouver le
          plus court vecteur de ce réseau: on peut l'éliminer immédiatement. */
-      
+
       return false;
    }
 
@@ -1236,21 +1345,22 @@ bool Reducer::redBB0 (NormType norm)
       m_lat->setNegativeNorm (k);
 
       /* The new shorter vector is now in m_lat->getBasis()[k].  */
-      /* We update the vectors of the dual basis.
-      if (m_zShort[k] < 0) {
-         matrix_row<BMat> row2(m_lat->getDualBasis(), k);
-         ChangeSign (row2, dim);
-      } */
-       /*
-      for (h = 1; h <= dim; h++) {
-         if (m_zShort[h] && h != k) {
-            matrix_row<BMat> row3(m_lat->getDualBasis(), h);
-            matrix_row<BMat> row4(m_lat->getDualBasis(), k);
-            ModifVect (row3, row4, -m_zShort[h], dim);
-            m_lat->getDualBasis ().setNegativeNorm (true, h);
+      /*  We update the vectors of the dual basis. */
+      if (withDual){
+         if (m_zShort[k] < 0) {
+            matrix_row<BMat> row2(m_lat->getDualBasis(), k);
+            ChangeSign (row2, dim);
+         }
+         for (h = 0; h < dim; h++) {
+            if (m_zShort[h] && h != k) {
+               matrix_row<BMat> row3(m_lat->getDualBasis(), h);
+               matrix_row<BMat> row4(m_lat->getDualBasis(), k);
+               ModifVect (row3, row4, -m_zShort[h], dim);
+               m_lat->setDualNegativeNorm (h);
+            }
          }
       }
-        */
+
 
       /* The new candidate for a shortest vector will be in
          m_lat->getBasis()[1]. */
@@ -1277,6 +1387,7 @@ bool Reducer::redBB0 (NormType norm)
 
 bool Reducer::reductMinkowski (int d)
 {
+   bool withDual = m_lat->withDual();
    const int dim = m_lat->getDim ();
    int i;
    long totalNodes = 0;
@@ -1293,7 +1404,10 @@ bool Reducer::reductMinkowski (int d)
          preRedDieter (d);
          m_lat->setNegativeNorm(d);
          m_lat->updateVecNorm (d);
-         //m_lat->getDualBasis ().updateVecNorm (d);
+         if(withDual){
+            m_lat->setDualNegativeNorm(d);
+            m_lat->updateDualVecNorm (d);
+         }
          m_lat->sort (d);
          found = false;
          for (i = 0; i < dim; i++) {
@@ -1322,8 +1436,11 @@ bool Reducer::reductMinkowski (int d)
    if (totalNodes > MINK_LLL)
       PreRedLLLRM = true;
    m_lat->setNegativeNorm();
-   m_lat->updateScalL2Norm (0);
-   //m_lat->getBasis ().updateScalL2Norm (dim);
+   m_lat->updateScalL2Norm (0, dim);
+   if(withDual){
+      m_lat->setDualNegativeNorm();
+      m_lat->updateDualScalL2Norm (0, dim);
+   }
    return true;
 }
 
@@ -1339,7 +1456,7 @@ bool Reducer::shortestVector (NormType norm)
 
 
    // no prereduction required
-   /*
+
    if (PreRedDieterSV) {
       preRedDieter (0);
    }
@@ -1347,14 +1464,9 @@ bool Reducer::shortestVector (NormType norm)
       redLLL (0.999999, 1000000, m_lat->getDim ());
 
    if (norm != L2NORM) {
-      m_lat->setNegativeNorm (true);
-      //m_lat->getDualBasis ().setNegativeNorm (true);
+      m_lat->setNegativeNorm ();
+      m_lat->setDualNegativeNorm ();
    }
-   */
-
-
-
-
 
    /* Find the shortest vector for the selected norm.  */
    /* The L2 norm is used for the Choleski decomposition and BB bounds. */
@@ -1382,7 +1494,6 @@ bool Reducer::shortestVector (NormType norm)
 
 
 
-#if 0
 
 // We need the Dual to run RedDieter
 //=========================================================================
@@ -1396,18 +1507,24 @@ bool Reducer::redDieter (NormType norm)
  * Uses the algorithm of Dieter (1975), given in Knuth (1981).
  */
 {
+   if(!m_lat->withDual()){
+      cout << "***************************************************\n";
+      cout << "Dieter Reduction needs the Dual. Evaluation Aborted\n";
+      cout << "***************************************************\n" << endl;
+      return false;
+   }
    const int dim = m_lat->getDim ();
    int k;
    RScal x;
    NVect supz, z;
 
-   supz.resize (m_lat->getDim ());
-   z.resize (m_lat->getDim ());
+   supz.resize (dim);
+   z.resize (dim);
 
    /* Compute the bounds in eq.(7) of Dieter (1975). */
    /* For this, VV and WW temporarily hold the vector norms. */
    m_lat->updateVecNorm ();
-   //m_lat->getDualBasis ().updateVecNorm ();
+   m_lat->updateDualVecNorm ();
    m_lat->sort (0);
 
    // Basis is now sorted according to the desired norm.
@@ -1417,15 +1534,15 @@ bool Reducer::redDieter (NormType norm)
    for (k = 0; k < dim; k++)
    {
       conv (temp1, m_lMin);
-      conv (temp2, m_lat->getM ());
+      conv (temp2, m_lat->getModulo ());
       supz[k] =
-         1.0E-9 + m_lat->getDualBasis ().getVecNorm (k) * temp1 / temp2;
+         1.0E-9 + m_lat->getDualVecNorm (k) * temp1 / temp2;
       z[k] = 0;
    }
 
    // Algorithm given in Knuth (1981).  Memoire de F. Blouin, p. 25.
    m_countNodes = 0;
-   for (k = 1; k <= dim; k++)
+   for (k = 0; k < dim; k++)
       m_bv[k] = 0;
 
    k = dim;
@@ -1451,8 +1568,8 @@ bool Reducer::redDieter (NormType norm)
    if (norm == L2NORM)
       m_lMin2 = m_lMin * m_lMin;
 
-   m_lat->getBasis ().setNegativeNorm (true);
-   m_lat->getDualBasis ().setNegativeNorm (true);
+   m_lat->setNegativeNorm ();
+   m_lat->setDualNegativeNorm ();
 
    supz.clear ();
    z.clear ();
@@ -1483,7 +1600,6 @@ bool Reducer::shortestVectorDieter (NormType norm)
    return ok;
 }
 
-#endif
 
 //=========================================================================
 

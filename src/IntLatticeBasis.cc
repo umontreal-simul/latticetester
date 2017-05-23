@@ -52,7 +52,10 @@ namespace LatticeTester
 IntLatticeBasis::IntLatticeBasis (const int dim, NormType norm):
    m_dim (dim),
    m_norm (norm),
+   m_modulo(0),
+   m_withDual(false),
    m_xx(0)
+
 {
 #ifdef WITH_NTL
    ident(m_basis, dim);
@@ -69,10 +72,29 @@ IntLatticeBasis::IntLatticeBasis (const BMat basis, const int dim, NormType norm
    m_basis (basis),
    m_dim (dim),
    m_norm (norm),
+   m_modulo(0),
+   m_withDual(false),
    m_xx(0)
 {
    m_vecNorm.resize (dim);
    initVecNorm();
+}
+
+/*=========================================================================*/
+
+IntLatticeBasis::IntLatticeBasis (
+   const BMat primalbasis,
+   const BMat dualbasis,
+   const MScal modulo,
+   const int dim,
+   NormType norm):
+   IntLatticeBasis(primalbasis, dim, norm)
+{
+   m_dualbasis = dualbasis;
+   m_withDual = true;
+   m_dualvecNorm.resize (dim);
+   setDualNegativeNorm();
+   m_modulo = modulo;
 }
 
 /*=========================================================================*/
@@ -90,7 +112,9 @@ IntLatticeBasis::IntLatticeBasis (const IntLatticeBasis & lat):
 IntLatticeBasis::~IntLatticeBasis ()
 {
    m_basis.BMat::clear ();
+   m_dualbasis.BMat::clear ();
    m_vecNorm.clear ();
+   m_dualvecNorm.clear ();
    delete [] m_xx;
    m_xx = 0;
 }
@@ -102,6 +126,9 @@ void IntLatticeBasis::copyBasis (const IntLatticeBasis & lat)
    if(m_dim == lat.m_dim)
       m_basis = lat.m_basis;
       m_vecNorm = lat.m_vecNorm;
+      m_dualbasis = lat.m_dualbasis;
+      m_withDual = lat.m_withDual;
+      m_modulo = lat.m_modulo;
       m_xx = new bool[m_dim];
       for (int i = 0; i < m_dim; i++)
          m_xx[i] = lat.getXX(i);
@@ -118,12 +145,6 @@ void IntLatticeBasis::initVecNorm ()
    }
 }
 
-/*=========================================================================*/
-
-void IntLatticeBasis::updateVecNorm ()
-{
-   updateVecNorm (0);
-}
 
 /*=========================================================================*/
 
@@ -132,6 +153,22 @@ void IntLatticeBasis::setNegativeNorm ()
    for (int i = 0; i<m_dim; i++){
       m_vecNorm[i] = -1;
    }
+}
+
+/*=========================================================================*/
+
+void IntLatticeBasis::setDualNegativeNorm ()
+{
+   for(int i = 0; i < m_dim; i++){
+      m_dualvecNorm[i] = -1;
+   }
+}
+
+/*=========================================================================*/
+
+void IntLatticeBasis::updateVecNorm ()
+{
+   updateVecNorm (0);
 }
 
 /*=========================================================================*/
@@ -152,6 +189,30 @@ void IntLatticeBasis::updateVecNorm (const int & d)
    }
 }
 
+/*=========================================================================*/
+
+void IntLatticeBasis::updateDualVecNorm ()
+{
+   updateDualVecNorm (0);
+}
+
+/*=========================================================================*/
+
+void IntLatticeBasis::updateDualVecNorm (const int & d)
+{
+    assert (d >= 0);
+
+   for (int i = d; i < m_dim; i++) {
+      if (m_dualvecNorm[i] < 0) {
+         matrix_row<BMat> row(m_dualbasis, i);
+         if (m_norm == L2NORM) {
+            ProdScal (row, row, m_dim, m_dualvecNorm[i]);
+         } else {
+            CalcNorm <BVect, NScal> (row, m_dim, m_dualvecNorm[i], m_norm);
+         }
+      }
+   }
+}
 
 /*=========================================================================*/
 
@@ -172,14 +233,38 @@ void IntLatticeBasis::updateScalL2Norm (const int k1, const int k2)
 
 /*=========================================================================*/
 
+void IntLatticeBasis::updateDualScalL2Norm (const int i)
+{
+   matrix_row<BMat> row(m_dualbasis, i);
+   ProdScal (row, row, m_dim, m_dualvecNorm[i]);
+}
+
+/*=========================================================================*/
+
+void IntLatticeBasis::updateDualScalL2Norm (const int k1, const int k2)
+{
+   for (int i = k1; i < k2; i++) {
+      updateDualScalL2Norm(i);
+   }
+}
+
+
+/*=========================================================================*/
+
 void IntLatticeBasis::permute (int i, int j)
 {
    if (i == j)
       return ;
    for (int k = 0; k < m_dim; k++){
       swap9 (m_basis(j,k), m_basis(i,k));
+      if(m_withDual){
+          swap9(m_dualbasis(j,k), m_dualbasis(i,k));
+      }
    }
    swap9 (m_vecNorm[i], m_vecNorm[j]);
+   if(m_withDual){
+      swap9 (m_dualvecNorm[i], m_dualvecNorm[j]);
+   }
    bool b = m_xx[j];
    m_xx[j] = m_xx[i];
    m_xx[i] = b;
@@ -226,7 +311,14 @@ void IntLatticeBasis::write () const
          cout << setprecision (4) <<
          setw (3) << m_basis(i,j) << "   ";
       }
-      cout << " |" << endl;
+      if(m_withDual){
+         cout << " |  |  ";
+         for (int j = 0; j < m_dim; j++) {
+            cout << setprecision (4) <<
+            setw (3) << m_dualbasis(i,j) << "   ";
+         }
+      }
+      cout << " |  " << endl;
    }
    cout << "\n";
    cout << "Norm used : " << toStringNorm(m_norm) << "\n" << endl;

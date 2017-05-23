@@ -550,7 +550,6 @@ void IntLattice::buildProjection (const Coordinates & proj)
    setDim (static_cast<int>(proj.size()));
 
    Triangularization<Basis> (m_w, m_v, dim, static_cast<int>(proj.size()), m_m);
-   trace("\nESPION_4");
    cout << "  ***** build 2\n";
    getPrimalBasis ().setNegativeNorm (true);
    getPrimalBasis ().updateScalL2Norm (1,proj.size());

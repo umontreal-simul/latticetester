@@ -6,7 +6,6 @@
 //  Copyright © 2017 DIRO. All rights reserved.
 //
 
-
 #define PRINT_CONSOLE
 
 #include <iostream>

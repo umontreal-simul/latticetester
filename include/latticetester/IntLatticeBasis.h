@@ -55,6 +55,19 @@ public:
     IntLatticeBasis (const BMat basis, const int dim, NormType norm = L2NORM);
 
     /**
+     * Constructor. The primal basis is initialize with \f$primalbasis\f$,
+     * the dual basis is initualize with \f$dualbasis\f$, the
+     * dimension of the lattice with \f$dim\f$ and the Norm used for
+     * reduction with norm.
+     */
+    IntLatticeBasis (
+        const BMat primalbasis,
+        const BMat dualbasis,
+        const int dim,
+        NormType norm = L2NORM);
+
+
+    /**
      * Copy constructor. The maximal dimension of the created basis is set
      * equal to <tt>Lat</tt>’s current dimension.
      */
@@ -71,9 +84,19 @@ public:
     void copyBasis (const IntLatticeBasis & lat);
 
     /**
+     * Set all the norm of the matrix to -1
+     */
+    void initVecNorm ();
+
+    /**
      * Return the basis, a BMat-type matrix
      */
     BMat & getBasis () { return m_basis; }
+
+    /**
+     * Return the dual basis, a BMat-type Matrix
+     */
+    BMat & getDualBasis () { return m_dualbasis; }
 
     /**
      * Return the dimension of the lattice, a int type
@@ -96,6 +119,16 @@ public:
     NVect getVecNorm () const { return m_vecNorm; }
 
     /**
+     * Return the norm of the i-th line of the basis
+     */
+    NScal getDualVecNorm (const int & i) { return m_dualvecNorm[i]; }
+
+    /**
+     * Return the norm of each line of the basis
+     */
+    NVect getDualVecNorm () const { return m_dualvecNorm; }
+
+    /**
      * Set the dimension of the basis
      */
     void setDim (const int & d) { if(d>0) m_dim = d;}
@@ -107,16 +140,14 @@ public:
 
     /**
      * Set the basis of the lattice
+     * Erwan : I think it is not needed
      */
     void setBasis (const BMat & basis) { m_basis = basis; }
 
-    /**
-     * Set all the norm of the matrix to -1
-     */
-    void initVecNorm ();
 
     /**
      * Set all the norm egal to the value of NScal
+     * Erwan : I think it is not needed
      */
     void setVecNorm ( const NVect & vecnorm ){ m_vecNorm = vecnorm; }
 
@@ -126,10 +157,9 @@ public:
     void setVecNorm ( const NScal & value, const int & i){ m_vecNorm[i] = value; }
 
     /**
-     * Recalculates the norm of each vector in the basis of
-     * the lattice
+     * Set the dual norm i egal to the value of NScal
      */
-    void updateVecNorm ();
+    void setVecNorm ( const NScal & value, const int & i){ m_dualvecNorm[i] = value; }
 
     /**
      * Get and det m_xx but I don't now what means m_xx
@@ -137,18 +167,7 @@ public:
     bool getXX (int i) const { return m_xx[i]; } //???
     void setXX (bool val, int i) { m_xx[i] = val; } //??
 
-    /**
-     * Recalculates the norm of each vector in the basis of
-     * the lattice from d to dim
-     */
-    void updateVecNorm (const int & d);
-
-    /**
-     * Updates the norm of vector at dimension `d` using the `L2NORM`.
-     */
-    void updateScalL2Norm (const int i);
-
-    /**
+     /**
      * Set the norm of all vectors to -1
      */
     void setNegativeNorm ();
@@ -159,10 +178,61 @@ public:
     void setNegativeNorm (const int & i){ m_vecNorm[i] = -1; }
 
     /**
+     * Set the norm of all vectors of the dual basis to -1
+     */
+    void setDualNegativeNorm ();
+
+    /**
+     * Set the norm of the i-eme vector in the dual Basis to -1
+     */
+    void setDualNegativeNorm (const int & i){ m_dualvecNorm[i] = -1; }
+
+    /**
+     * Recalculates the norm of each vector in the basis of
+     * the lattice
+     */
+    void updateVecNorm ();
+
+    /**
+     * Recalculates the norm of each vector in the basis of
+     * the lattice from d to dim
+     */
+    void updateVecNorm (const int & d);
+
+    /**
+     * Recalculates the norm of each vector in the basis of
+     * the lattice
+     */
+    void updateDualVecNorm ();
+
+    /**
+     * Recalculates the norm of each vector in the dual basis of
+     * the lattice from d to dim
+     */
+    void updateDualVecNorm (const int & d);
+
+    /**
+     * Updates the norm of vector at dimension `d` using the `L2NORM`.
+     */
+    void updateScalL2Norm (const int i);
+
+    /**
      * Updates the norm of all basis vectors from dimensions `d1` to `d2`
      * (inclusive) using the `L2NORM`.
      */
     void updateScalL2Norm (const int k1, const int k2);
+
+    /**
+     * Updates the norm of vector in the Dual Basis at dimension `d`
+     * using the `L2NORM`.
+     */
+    void updateDualScalL2Norm (const int i);
+
+    /**
+     * Updates the norm of all dual basis vectors from dimensions `d1`
+     * to `d2` (inclusive) using the `L2NORM`.
+     */
+    void updateDualScalL2Norm (const int k1, const int k2);
 
     /**
      * Exchanges vectors \f$i\f$ and \f$j\f$ in the basis.
@@ -191,6 +261,13 @@ private:
     BMat m_basis;
 
     /**
+    * Represent the dual basis of the lattice. BMat is defined in Types.h
+    * This is a matrix where the type of the number can change.
+    */
+    BMat m_dualbasis;
+
+
+    /**
     * The dimension of the space.
     */
     int m_dim;
@@ -204,6 +281,16 @@ private:
      * The norm of each vector in the basis.
      */
     NVect m_vecNorm;
+
+    /**
+     * The norm of each vector in the dual basis.
+     */
+    NVect m_dualvecNorm;
+
+    /**
+     * If m_withDual is true, we can use Dual Basis.
+     */
+    bool m_withDual
 
     /**
      * Implemented in LatCommun but I've no idea what it does

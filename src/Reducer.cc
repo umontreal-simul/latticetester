@@ -657,7 +657,7 @@ void Reducer::redLLL (double fact, long maxcpt, int Max)
       for (i = j - 2; i >= 0; i--)
          reductionFaible (i, j);
    }
-   m_lat->setNegativeNorm (true);
+   m_lat->setNegativeNorm ();
    //m_lat->getDualBasis ().setNegativeNorm (true);
 }
 
@@ -1211,7 +1211,7 @@ bool Reducer::redBB0 (NormType norm)
          S'il existe dans ce réseau un vecteur de longueur plus courte que celle
          du meilleur réseau trouvé à date, il n'est pas nécessaire de trouver le
          plus court vecteur de ce réseau: on peut l'éliminer immédiatement. */
-      
+
       return false;
    }
 

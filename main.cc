@@ -52,7 +52,7 @@ using namespace std;
 using namespace NTL;
 using namespace LatticeTester;
 
-const int MaxDimension = 25;
+const int MaxDimension = 20;
 
 #ifdef PRINT_CONSOLE
 const int MinDimension = MaxDimension - 1;
@@ -388,8 +388,8 @@ int main (int argc, char *argv[])
    clock_t begin = clock();
 
    // main parameters for the test
-   const int min = 30;
-   const int max = 100;
+   const int min = 40;
+   const int max = 1000;
 
    const long a = 999999;
    const long b = 1000000;
@@ -398,7 +398,7 @@ int main (int argc, char *argv[])
 
    const int maxcpt = 1000000;
    const int d = 0;
-   const long blocksize = 20; // for BKZ insertions
+   const long blocksize = 10; // for BKZ insertions
 
    ZZ modulus;
    power(modulus, 2, 31);
@@ -432,7 +432,7 @@ int main (int argc, char *argv[])
       "BB_BKZ"};
 
    // iteration loop over matrices of same dimension
-   const int maxIteration = 2;
+   const int maxIteration = 30;
 
 
    map<string, map<int, NScal[maxIteration]> > length_results;
@@ -457,8 +457,8 @@ int main (int argc, char *argv[])
 
       for (int iteration = 0; iteration < maxIteration; iteration++){
 
-         ZZ seed = conv<ZZ>((iteration+1) * (iteration+1) * 123456789 * dimension);
-         //int seed = (iteration+1) * (iteration+1) * 123456789 * dimension;
+         //ZZ seed = conv<ZZ>((iteration+1) * (iteration+1) * 123456789 * dimension);
+         int seed = (iteration+1) * (iteration+1) * 123456789 * dimension;
          int seed_dieter = (iteration+1) * dimension * 12342;
          //int seed = (int) (iteration+1) * 12345 * time(NULL);
 
@@ -467,14 +467,14 @@ int main (int argc, char *argv[])
          // We create copies of the same basis
          BMat basis_PairRedPrimal (dimension, dimension);
          ZZ det;
-         //RandomMatrix(basis_PairRedPrimal, det, min, max, seed);
+         RandomMatrix(basis_PairRedPrimal, det, min, max, seed);
 
 
-         mat_ZZ V;
-         V = CreateRNGBasis (modulus, k, dimension, seed);
+         //mat_ZZ V;
+         //V = CreateRNGBasis (modulus, k, dimension, seed);
 
-         mat_ZZ W;
-         W = Dualize (V, modulus, k);
+         //mat_ZZ W;
+         //W = Dualize (V, modulus, k);
 
          
          
@@ -484,15 +484,15 @@ int main (int argc, char *argv[])
          map < string, Reducer* > reducers;
 
          for(const string &name : names){
-            basis[name] = new BMat(V);
-            dualbasis[name] = new BMat(W);
+            basis[name] = new BMat(basis_PairRedPrimal);
+            //dualbasis[name] = new BMat(W);
             lattices[name] = new IntLatticeBasis(*basis[name], dimension);
             reducers[name] = new Reducer(*lattices[name]);
          }
 
          map < string, clock_t > timing;
 
-         lattices["initial"] = new IntLatticeBasis(V, dimension);
+         lattices["initial"] = new IntLatticeBasis(basis_PairRedPrimal, dimension);
 
 
 
@@ -533,7 +533,7 @@ int main (int argc, char *argv[])
 
          for(const string &name : names){
             basis[name]->kill();
-            dualbasis[name]->kill();
+            //dualbasis[name]->kill();
             delete lattices[name];
             delete reducers[name];
          }

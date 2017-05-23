@@ -26,18 +26,17 @@
 #include "latticetester/IntLatticeBasis.h"
 #include "latticetester/Reducer.h"
 
-#include <NTL/ctools.h>
-#include <NTL/mat_ZZ.h>
-#include <NTL/LLL.h>
 #include <NTL/tools.h>
+#include <NTL/ctools.h>
 #include <NTL/ZZ.h>
-#include <NTL/matrix.h>
+#include <NTL/ZZ_p.h>
 #include "NTL/vec_ZZ.h"
+#include "NTL/vec_ZZ_p.h"
 #include <NTL/vec_vec_ZZ.h>
-#include <NTL/mat_ZZ.h>
-#include <NTL/LLL.h>
-#include <NTL/matrix.h>
 #include <NTL/vec_vec_ZZ_p.h>
+#include <NTL/mat_ZZ.h>
+#include <NTL/matrix.h>
+#include <NTL/LLL.h>
 #ifdef WITH_R
 #include <RInside.h>
 #endif
@@ -45,8 +44,11 @@
 #include <boost/numeric/ublas/io.hpp>
 #include <boost/progress.hpp>
 
+#include "SimpleMRG.h"
+
 
 using namespace std;
+using namespace NTL;
 using namespace LatticeTester;
 
 const int MaxDimension = 15;
@@ -113,6 +115,111 @@ Type Average(Type const(& array)[Size][Interval_dim]) {
        sum += array[i][0];
    return sum / Size;
 }
+
+
+vec_ZZ canonicVector (int dimension, int i)
+{
+	vec_ZZ e;
+	e.SetLength(dimension);
+	e[i] = 1;
+
+	return e;
+}
+
+vec_ZZ randomVector (int dimension, ZZ modulus, ZZ seed) 
+{
+	vec_ZZ vector;
+	vector.SetLength(dimension);
+	SetSeed(seed);
+	for (int i = 0; i < dimension; i++)
+		vector[i] = RandomBnd(modulus);
+
+	return vector;
+}
+
+
+mat_ZZ CreateRNGBasis (const ZZ modulus, const int k, const int dimension, ZZ seed)
+{
+	mat_ZZ basis;
+	basis.SetDims(dimension,dimension);
+
+	if (dimension < k+1) {
+		// degenerate case: identity matrix only
+		for (int i = 0; i < dimension; i++)
+			basis[i][i] = 1;
+
+	} else { //usual case
+
+		// (a_i) coefficients
+		vec_ZZ a;
+		a = randomVector(k, modulus, seed);
+
+		for (int i = 0; i < k; i++) {
+			// left upper block
+			basis[i][i] = 1;
+
+			//right upper block
+			vec_ZZ initialState;
+			initialState = canonicVector(k, i);
+			SimpleMRG myMRG (modulus, k, a, initialState);
+
+			for (int l = k; l < dimension; l++)
+				basis[i][l] = conv<ZZ>(myMRG.getNextValue());
+		}
+
+		// right lower block
+		for (int i = k; i < dimension; i++)
+			basis[i][i] = modulus;
+
+	} // end if
+
+	return basis;
+}
+
+
+mat_ZZ Dualize (const mat_ZZ V, const ZZ modulus, const int k)
+{
+	mat_ZZ W;
+	W.SetDims(V.NumRows(), V.NumRows());
+
+	transpose(W,-V);
+
+	for (int i = 0; i < k; i++)
+		W[i][i] = modulus;
+	for (int i = k; i < V.NumRows(); i++)
+		W[i][i] = 1;
+
+	return W;
+}
+
+
+/* example new CreateRNGBasis
+
+   int main ()
+   {
+      //ZZ modulus = conv<ZZ>("678956454545356865342357689098765324686546576787568");
+      ZZ modulus;
+      power(modulus, 2, 6);
+      modulus-=1;
+
+      int k = 3; 
+      int dimension = 10;
+      ZZ seed = conv<ZZ>(123456);
+
+      mat_ZZ V;
+      V = CreateRNGBasis (modulus, k, dimension, seed);
+
+      mat_ZZ W;
+      W = Dualize (V, modulus, k);
+
+      cout << "Test V*transpose(W) = m*ID : ";
+      cout << IsIdent( V*transpose(W) - diag(dimension, modulus-1), dimension);
+      cout << endl;
+
+      return 0;
+    }
+    
+*/
 
 
 //****************************************************************************************************

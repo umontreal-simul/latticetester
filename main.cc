@@ -121,6 +121,8 @@ Type Average(Type const(& array)[Size][Interval_dim]) {
 
 int main (int argc, char *argv[])
 {
+   // printing total running time
+   clock_t begin = clock();
 
    // main parameters for the test
    const int min = 30;
@@ -912,6 +914,9 @@ int main (int argc, char *argv[])
 
 #endif
 
-
-    return 0;
+   // printing total running time
+   clock_t end = clock();
+   cout << "\nTotal running time = " << (double) (end - begin) / CLOCKS_PER_SEC << endl;
+   
+   return 0;
 }

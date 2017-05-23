@@ -159,7 +159,7 @@ public:
     /**
      * Set the dual norm i egal to the value of NScal
      */
-    void setVecNorm ( const NScal & value, const int & i){ m_dualvecNorm[i] = value; }
+    void setDualVecNorm ( const NScal & value, const int & i){ m_dualvecNorm[i] = value; }
 
     /**
      * Get and det m_xx but I don't now what means m_xx
@@ -290,7 +290,7 @@ private:
     /**
      * If m_withDual is true, we can use Dual Basis.
      */
-    bool m_withDual
+    bool m_withDual;
 
     /**
      * Implemented in LatCommun but I've no idea what it does

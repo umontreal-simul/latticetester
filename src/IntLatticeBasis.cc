@@ -84,10 +84,10 @@ IntLatticeBasis::IntLatticeBasis (
    const BMat dualbasis,
    const int dim,
    NormType norm):
-   IntLatticeBasis(primalbasis, dim, norm),
-   m_withDual (dualbasis),
-   m_dualbasis(true)
+   IntLatticeBasis(primalbasis, dim, norm)
 {
+   m_dualbasis = dualbasis;
+   m_withDual = true;
    m_dualvecNorm.resize (dim);
    setDualNegativeNorm();
 }
@@ -110,7 +110,6 @@ IntLatticeBasis::~IntLatticeBasis ()
    m_dualbasis.BMat::clear ();
    m_vecNorm.clear ();
    m_dualvecNorm.clear ();
-   m_withDual.clear ();
    delete [] m_xx;
    m_xx = 0;
 }
@@ -186,14 +185,14 @@ void IntLatticeBasis::updateVecNorm (const int & d)
 
 /*=========================================================================*/
 
-void IntLatticeBasis::updatedualVecNorm ()
+void IntLatticeBasis::updateDualVecNorm ()
 {
-   updatedualVecNorm (0);
+   updateDualVecNorm (0);
 }
 
 /*=========================================================================*/
 
-void IntLatticeBasis::updatedualVecNorm (const int & d)
+void IntLatticeBasis::updateDualVecNorm (const int & d)
 {
     assert (d >= 0);
 
@@ -253,7 +252,7 @@ void IntLatticeBasis::permute (int i, int j)
    for (int k = 0; k < m_dim; k++){
       swap9 (m_basis(j,k), m_basis(i,k));
       if(m_withDual){
-         swap9(m_dualbasis(j,k), m_dualbasis(i,k))
+          swap9(m_dualbasis(j,k), m_dualbasis(i,k));
       }
    }
    swap9 (m_vecNorm[i], m_vecNorm[j]);

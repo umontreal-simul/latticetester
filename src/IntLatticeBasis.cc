@@ -52,8 +52,10 @@ namespace LatticeTester
 IntLatticeBasis::IntLatticeBasis (const int dim, NormType norm):
    m_dim (dim),
    m_norm (norm),
+   m_modulo(0),
    m_withDual(false),
    m_xx(0)
+
 {
 #ifdef WITH_NTL
    ident(m_basis, dim);
@@ -70,6 +72,7 @@ IntLatticeBasis::IntLatticeBasis (const BMat basis, const int dim, NormType norm
    m_basis (basis),
    m_dim (dim),
    m_norm (norm),
+   m_modulo(0),
    m_withDual(false),
    m_xx(0)
 {
@@ -82,6 +85,7 @@ IntLatticeBasis::IntLatticeBasis (const BMat basis, const int dim, NormType norm
 IntLatticeBasis::IntLatticeBasis (
    const BMat primalbasis,
    const BMat dualbasis,
+   const MScal modulo,
    const int dim,
    NormType norm):
    IntLatticeBasis(primalbasis, dim, norm)
@@ -90,6 +94,7 @@ IntLatticeBasis::IntLatticeBasis (
    m_withDual = true;
    m_dualvecNorm.resize (dim);
    setDualNegativeNorm();
+   m_modulo = modulo;
 }
 
 /*=========================================================================*/
@@ -123,6 +128,7 @@ void IntLatticeBasis::copyBasis (const IntLatticeBasis & lat)
       m_vecNorm = lat.m_vecNorm;
       m_dualbasis = lat.m_dualbasis;
       m_withDual = lat.m_withDual;
+      m_modulo = lat.m_modulo;
       m_xx = new bool[m_dim];
       for (int i = 0; i < m_dim; i++)
          m_xx[i] = lat.getXX(i);

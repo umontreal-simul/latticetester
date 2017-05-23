@@ -63,6 +63,7 @@ public:
     IntLatticeBasis (
         const BMat primalbasis,
         const BMat dualbasis,
+        const MScal modulo,
         const int dim,
         NormType norm = L2NORM);
 
@@ -129,6 +130,11 @@ public:
     NVect getDualVecNorm () const { return m_dualvecNorm; }
 
     /**
+     * Return the modulo used for the Dual
+     */
+    MScal getModulo () const { return m_modulo; }
+
+    /**
      * Set the dimension of the basis
      */
     void setDim (const int & d) { if(d>0) m_dim = d;}
@@ -160,6 +166,11 @@ public:
      * Set the dual norm i egal to the value of NScal
      */
     void setDualVecNorm ( const NScal & value, const int & i){ m_dualvecNorm[i] = value; }
+
+    /**
+     * Return True if we use Dual.
+     */
+    bool withDual() { return m_withDual; }
 
     /**
      * Get and det m_xx but I don't now what means m_xx
@@ -286,6 +297,11 @@ private:
      * The norm of each vector in the dual basis.
      */
     NVect m_dualvecNorm;
+
+    /**
+     * The modulo linked to the m-dual.
+     */
+    MScal m_modulo;
 
     /**
      * If m_withDual is true, we can use Dual Basis.

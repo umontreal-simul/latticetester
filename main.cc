@@ -917,7 +917,7 @@ int main (int argc, char *argv[])
 
    // printing total running time
    clock_t end = clock();
-   cout << "\nTotal running time = " << (double) (end - begin) / CLOCK_PER_SEC << endl;
+   cout << "\nTotal running time = " << (double) (end - begin) / CLOCKS_PER_SEC << endl;
    
    return 0;
 }

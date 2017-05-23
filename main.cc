@@ -25,6 +25,7 @@
 #include "latticetester/Rank1Lattice.h"
 #include "latticetester/IntLatticeBasis.h"
 #include "latticetester/Reducer.h"
+#include "latticetester/Types.h"
 
 #include <NTL/ctools.h>
 #include <NTL/mat_ZZ.h>
@@ -128,7 +129,6 @@ int main (int argc, char *argv[])
    const int min = 30;
    const int max = 100;
 
-
    const long a = 999999;
    const long b = 1000000;
    const double delta = (double) a/b;
@@ -140,6 +140,10 @@ int main (int argc, char *argv[])
 
    // iteration loop over matrices of same dimension
    const int maxIteration = 10;
+
+
+   map<string, map<int, NScal[maxIteration]> > length_results;
+   map<string, map<int, double[maxIteration]> > timing_results;
 
 
    // print important information
@@ -221,8 +225,38 @@ int main (int argc, char *argv[])
          BMat basis_PairRedPrimal (dimension, dimension);
          ZZ det;
          RandomMatrix(basis_PairRedPrimal, det, min, max, seed);
-
-
+          
+          string names[] = {
+              "PairRedPrimal",
+              "PairRedPrimalRandomized",
+              "LLL",
+              "PairRedPrimal_LLL",
+              "PairRedPrimalRandomized_LLL",
+              "LLLNTL",
+              "PairRedPrimal_LLLNTL",
+              "PairRedPrimalRandomized_LLLNTL",
+              "BKZNTL",
+              "PairRedPrimal_BKZNTL",
+              "PairRedPrimalRandomized_BKZNTL",
+              "BB_Only",
+              "BB_Classic",
+              "BB_BKZ"};
+          
+         
+          map < string, BMat* > basis;
+          map < string, IntLatticeBasis* > lattices;
+          map < string, Reducer* > reducers;
+          
+          for(const string &name : names){
+              basis[name] = new BMat(basis_PairRedPrimal);
+              lattices[name] = new IntLatticeBasis(*basis[name], dimension);
+              reducers[name] = new Reducer(*lattices[name]);
+          }
+          
+          
+          
+          
+          
          BMat basis_PairRedPrimalRandomized (basis_PairRedPrimal);
          BMat basis_LLL (basis_PairRedPrimal);
          BMat basis_PairRedPrimal_LLL (basis_PairRedPrimal);
@@ -261,12 +295,6 @@ int main (int argc, char *argv[])
          NScal initialShortestVectorLength = lattice_PairRedPrimal.getVecNorm(0);
          length_Initial [iteration][idx] = initialShortestVectorLength;
 
-         if (printMatricesDetails) {
-           cout << "\n*** Initial basis ***" << endl;
-           cout << "det = " << det << endl;
-           cout << "Shortest vector = " << initialShortestVectorLength << endl;
-           lattice_PairRedPrimal.write();
-         }
 
          Reducer reducer_PairRedPrimal (lattice_PairRedPrimal);
          Reducer reducer_PairRedPrimalRandomized (lattice_PairRedPrimalRandomized);
@@ -283,6 +311,8 @@ int main (int argc, char *argv[])
          Reducer reducer_BB_Only (lattice_BB_Only);
          Reducer reducer_BB_Classic (lattice_BB_Classic);
          Reducer reducer_BB_BKZ (lattice_BB_BKZ);
+          
+          
 
 
          //------------------------------------------------------------------------------------
@@ -296,15 +326,8 @@ int main (int argc, char *argv[])
          lattice_PairRedPrimal.setNegativeNorm(true);
          lattice_PairRedPrimal.updateVecNorm();
          lattice_PairRedPrimal.sort(0);
-
-         if (printMatricesDetails) {
-           cout << "*** Pairwise reduction in primal basis only ***" << endl;
-           cout << "Shortest vector = ";
-           cout << lattice_PairRedPrimal.getVecNorm(0) << endl;
-           lattice_PairRedPrimal.write();
-         }
+          
          ++show_progress;
-
 
          //------------------------------------------------------------------------------------
          // Randomized pairwise reduction in primal basis only
@@ -318,13 +341,6 @@ int main (int argc, char *argv[])
          lattice_PairRedPrimalRandomized.updateVecNorm();
          lattice_PairRedPrimalRandomized.sort(0);
 
-         if (printMatricesDetails) {
-           cout << "*** Randomized pairwise reduction in primal basis only ***" << endl;
-           cout << "Shortest vector = ";
-           cout << lattice_PairRedPrimalRandomized.getVecNorm(0) << endl;
-           lattice_PairRedPrimalRandomized.write();
-         }
-
          //------------------------------------------------------------------------------------
          // LLL Richard
          //------------------------------------------------------------------------------------
@@ -336,13 +352,7 @@ int main (int argc, char *argv[])
          lattice_LLL.setNegativeNorm(true);
          lattice_LLL.updateVecNorm();
          lattice_LLL.sort(0);
-
-         if (printMatricesDetails) {
-           cout << "*** LLL only ***" << endl;
-           cout << "Shortest vector = " << lattice_LLL.getVecNorm(0) << endl;
-           lattice_LLL.write();
-         }
-
+          
          ++show_progress;
 
          //------------------------------------------------------------------------------------
@@ -365,13 +375,6 @@ int main (int argc, char *argv[])
          lattice_PairRedPrimal_LLL.updateVecNorm();
          lattice_PairRedPrimal_LLL.sort(0);
 
-         if (printMatricesDetails){
-           cout << "*** Pairwise reduction in primal and LLL ***" << endl;
-           cout << "Shortest vector = " << lattice_PairRedPrimal_LLL.getVecNorm(0) << endl;
-           lattice_PairRedPrimal_LLL.write();
-         }
-
-
          //------------------------------------------------------------------------------------
          // Randomized pairwise reduction (in primal basis only) and then LLL Richard
          //------------------------------------------------------------------------------------
@@ -384,8 +387,6 @@ int main (int argc, char *argv[])
          lattice_PairRedPrimalRandomized_LLL.updateVecNorm();
          lattice_PairRedPrimalRandomized_LLL.sort(0);
 
-         ++show_progress;
-
          clock_t begin_PairRedPrimalRandomized_LLL2 = clock();
          reducer_PairRedPrimalRandomized_LLL.redLLL(delta, maxcpt, dimension);
          clock_t end_PairRedPrimalRandomized_LLL2 = clock();
@@ -393,13 +394,9 @@ int main (int argc, char *argv[])
          lattice_PairRedPrimalRandomized_LLL.setNegativeNorm(true);
          lattice_PairRedPrimalRandomized_LLL.updateVecNorm();
          lattice_PairRedPrimalRandomized_LLL.sort(0);
+          
+         ++show_progress;
 
-
-         if (printMatricesDetails){
-           cout << "*** Randomized pairwise reduction in primal and LLL ***" << endl;
-           cout << "Shortest vector = " << lattice_PairRedPrimalRandomized_LLL.getVecNorm(0) << endl;
-           lattice_PairRedPrimalRandomized_LLL.write();
-         }
 
          //------------------------------------------------------------------------------------
          // LLL NTL reduction (floating point version = proxy)
@@ -413,13 +410,6 @@ int main (int argc, char *argv[])
          lattice_LLLNTL.updateVecNorm();
          lattice_LLLNTL.sort(0);
 
-         if (printMatricesDetails) {
-           cout << "*** LLL NTL Proxy only ***" << endl;
-           cout << "Shortest vector = " << lattice_LLLNTL.getVecNorm(0) << endl;
-           lattice_LLLNTL.write();
-         }
-
-
          //------------------------------------------------------------------------------------
          // Pairwise reduction (in primal basis only) and then LLL NTL proxy
          //------------------------------------------------------------------------------------
@@ -432,9 +422,6 @@ int main (int argc, char *argv[])
          lattice_PairRedPrimal_LLLNTL.updateVecNorm();
          lattice_PairRedPrimal_LLLNTL.sort(0);
 
-         // useful ?
-         //NScal intermediateLengthBis = lattice_PairRedPrimal_LLL_NTL.getVecNorm(0);
-
          clock_t begin_PairRedPrimal_LLLNTL2 = clock();
          reducer_PairRedPrimal_LLLNTL.redLLLNTLProxy(delta);
          clock_t end_PairRedPrimal_LLLNTL2 = clock();
@@ -442,13 +429,6 @@ int main (int argc, char *argv[])
          lattice_PairRedPrimal_LLLNTL.setNegativeNorm(true);
          lattice_PairRedPrimal_LLLNTL.updateVecNorm();
          lattice_PairRedPrimal_LLLNTL.sort(0);
-
-         if (printMatricesDetails){
-           cout << "*** Pairwise reduction in primal and LLL NTL ***" << endl;
-           cout << "Shortest vector = " << lattice_PairRedPrimal_LLLNTL.getVecNorm(0) << endl;
-           lattice_PairRedPrimal_LLLNTL.write();
-         }
-
 
          //------------------------------------------------------------------------------------
          // Randomized pairwise reduction (in primal basis only) and then LLL NTL proxy
@@ -471,12 +451,6 @@ int main (int argc, char *argv[])
          lattice_PairRedPrimalRandomized_LLLNTL.updateVecNorm();
          lattice_PairRedPrimalRandomized_LLLNTL.sort(0);
 
-         if (printMatricesDetails){
-            cout << "*** Randomized pairwise reduction in primal and LLL NTL ***" << endl;
-            cout << "Shortest vector = " << lattice_PairRedPrimalRandomized_LLLNTL.getVecNorm(0) << endl;
-            lattice_PairRedPrimalRandomized_LLLNTL.write();
-         }
-
          ++show_progress;
 
 
@@ -493,12 +467,8 @@ int main (int argc, char *argv[])
          lattice_LLLNTL_Exact.setNegativeNorm(true);
          lattice_LLLNTL_Exact.updateVecNorm();
          lattice_LLLNTL_Exact.sort(0);
-
-         if (printMatricesDetails) {
-           cout << "*** LLL NTL Exact only ***" << endl;
-           cout << "Shortest vector = " << lattice_LLLNTL_Exact.getVecNorm(0) << endl;
-           lattice_LLLNTL_Exact.write();
-         }*/
+          
+          */
 
 
          //------------------------------------------------------------------------------------
@@ -512,12 +482,6 @@ int main (int argc, char *argv[])
          lattice_BKZNTL.setNegativeNorm(true);
          lattice_BKZNTL.updateVecNorm();
          lattice_BKZNTL.sort(0);
-
-         if (printMatricesDetails) {
-           cout << "*** BKZ NTL only ***" << endl;
-           cout << "Shortest vector = " << lattice_BKZNTL.getVecNorm(0) << endl;
-           lattice_BKZNTL.write();
-         }
 
          //------------------------------------------------------------------------------------
          // Pairwise reduction (in primal basis only) and then BKZ NTL proxy
@@ -542,17 +506,6 @@ int main (int argc, char *argv[])
          lattice_PairRedPrimal_BKZNTL.updateVecNorm();
          lattice_PairRedPrimal_BKZNTL.sort(0);
 
-         if (printMatricesDetails){
-           cout << "*** Pairwise reduction in primal and BKZ NTL ***" << endl;
-           cout << "Shortest vector = " << lattice_PairRedPrimal_BKZNTL.getVecNorm(0) << endl;
-           lattice_PairRedPrimal_BKZNTL.write();
-         }
-
-         lattice_PairRedPrimal_BKZNTL.setNegativeNorm(true);
-         lattice_PairRedPrimal_BKZNTL.updateVecNorm();
-         lattice_PairRedPrimal_BKZNTL.sort(0);
-
-
          //------------------------------------------------------------------------------------
          // Randomized pairwise reduction (in primal basis only) and then BKZ NTL proxy
          //------------------------------------------------------------------------------------
@@ -570,12 +523,6 @@ int main (int argc, char *argv[])
          clock_t begin_PairRedPrimalRandomized_BKZNTL2 = clock();
          reducer_PairRedPrimalRandomized_BKZNTL.redBKZ(delta, blocksize);
          clock_t end_PairRedPrimalRandomized_BKZNTL2 = clock();
-         if (printMatricesDetails){
-            cout << "*** Randomized pairwise reduction in primal and BKZ NTL ***" << endl;
-            cout << "Shortest vector = " << lattice_PairRedPrimalRandomized_BKZNTL.getVecNorm(0) << endl;
-            lattice_PairRedPrimalRandomized_BKZNTL.write();
-         }
-
 
          lattice_PairRedPrimalRandomized_BKZNTL.setNegativeNorm(true);
          lattice_PairRedPrimalRandomized_BKZNTL.updateVecNorm();
@@ -633,7 +580,8 @@ int main (int argc, char *argv[])
          //------------------------------------------------------------------------------------
          // timing updating
          //------------------------------------------------------------------------------------
-
+          
+         timing_results["PairRedPrimal"][dimension][iteration] = double (end_PairRedPrimal - begin_PairRedPrimal) / CLOCKS_PER_SEC;
 
          double runningTime_PairRedPrimal = double (end_PairRedPrimal - begin_PairRedPrimal) / CLOCKS_PER_SEC;
          double runningTime_PairRedPrimalRandomized = double (end_PairRedPrimalRandomized - begin_PairRedPrimalRandomized) / CLOCKS_PER_SEC;
@@ -815,7 +763,8 @@ int main (int argc, char *argv[])
 
 
 
-   map<string, map<int, NScal> > results;
+   map<string, map<int, NScal[iteration]> > length_results;
+   map<string, map<int, double[iteration]> > timing_results;
 
 
 
@@ -917,6 +866,6 @@ int main (int argc, char *argv[])
    // printing total running time
    clock_t end = clock();
    cout << "\nTotal running time = " << (double) (end - begin) / CLOCKS_PER_SEC << endl;
-   
+
    return 0;
 }

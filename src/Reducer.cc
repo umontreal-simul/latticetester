@@ -1361,7 +1361,6 @@ bool Reducer::redBB0 (NormType norm)
          }
       }
 
-
       /* The new candidate for a shortest vector will be in
          m_lat->getBasis()[1]. */
       /* In the case of L1NORM or others, check that it is really smaller.  */

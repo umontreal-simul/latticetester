@@ -53,7 +53,7 @@ using namespace std;
 using namespace NTL;
 using namespace LatticeTester;
 
-const int MaxDimension = 20;
+const int MaxDimension = 30;
 
 #ifdef PRINT_CONSOLE
 const int MinDimension = MaxDimension - 1;
@@ -199,6 +199,7 @@ void reduce(Reducer & red, const string & name, const int & d){
 }
 
 void reduce(Reducer & red, const string & name, const int & d, int & seed_dieter, const int & blocksize, const double & delta, const int maxcpt, int dimension){
+   //cout << name << endl;
 
    //------------------------------------------------------------------------------------
    // Pairwise reduction in primal basis only
@@ -294,6 +295,7 @@ void reduce(Reducer & red, const string & name, const int & d, int & seed_dieter
 
 
 void reduce2(Reducer & red, const string & name, const int & d, int & seed_dieter, const int & blocksize, const double & delta, const int maxcpt, int dimension){
+   //cout << name << endl;
 
 
    //------------------------------------------------------------------------------------
@@ -502,10 +504,12 @@ int main (int argc, char *argv[])
             lattices[name]->setNegativeNorm();
             lattices[name]->updateVecNorm();
             lattices[name]->sort(0);
+            //cout << "Norm of " << name << " : " << lattices[name]->getVecNorm(0) << endl;
 
          }
 
          for(const string &name : names2){
+            //cout << "Norm of " << name << " : " << lattices[name]->getVecNorm(0) << endl;
             begin = clock();
             reduce2(*reducers[name], name, d, seed_dieter, blocksize, delta, maxcpt, dimension);
             end = clock();
@@ -513,6 +517,7 @@ int main (int argc, char *argv[])
             lattices[name]->setNegativeNorm();
             lattices[name]->updateVecNorm();
             lattices[name]->sort(0);
+            //cout << "Norm of " << name << " : " << lattices[name]->getVecNorm(0) << endl;
          }
 
          for(const string &name : names){

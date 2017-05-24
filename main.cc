@@ -9,6 +9,7 @@
 #define PRINT_CONSOLE
 
 #include <iostream>
+#include <map>
 #include <fstream>
 #include <iterator>
 #include <string>
@@ -57,7 +58,7 @@ const int MaxDimension = 20;
 #ifdef PRINT_CONSOLE
 const int MinDimension = MaxDimension - 1;
 #else
-const int MinDimension = 5;
+const int MinDimension = 10;
 #endif
 
 
@@ -217,6 +218,7 @@ void reduce(Reducer & red, const string & name, const int & d, int & seed_dieter
    if(name == "LLL")
       red.redLLL(delta, maxcpt, dimension);
 
+
    //------------------------------------------------------------------------------------
    // Pairwise reduction (in primal basis only) and then LLL Richard
    //------------------------------------------------------------------------------------
@@ -339,15 +341,12 @@ void reduce2(Reducer & red, const string & name, const int & d, int & seed_diete
       red.shortestVector(L2NORM);
    }
 
-
    //------------------------------------------------------------------------------------
    // Branch and Bound post BKZ
    //------------------------------------------------------------------------------------
    if(name =="BB_BKZ")
       red.shortestVector(L2NORM);
 }
-
-
 
 /* example new CreateRNGBasis
 
@@ -374,9 +373,7 @@ void reduce2(Reducer & red, const string & name, const int & d, int & seed_diete
 
       return 0;
     }
-
 */
-
 
 //****************************************************************************************************
 //****************************************************************************************************
@@ -399,6 +396,17 @@ int main (int argc, char *argv[])
    const int maxcpt = 1000000;
    const int d = 0;
    const long blocksize = 10; // for BKZ insertions
+
+   // iteration loop over matrices of same dimension
+   const int maxIteration = 1;
+
+    // Print parameters
+   cout << "epsilon = " << epsilon << endl;
+   //cout << "dimension = " << dimension << endl;
+   cout << "nombre de matrices testées = " << maxIteration << endl;
+   cout << "dimension minimale : " << MinDimension << endl;
+   cout << "dimension maximale : " << MaxDimension << endl;
+   cout << endl;
 
    ZZ modulus;
    power(modulus, 2, 31);
@@ -431,22 +439,9 @@ int main (int argc, char *argv[])
       "BB_Classic",
       "BB_BKZ"};
 
-   // iteration loop over matrices of same dimension
-   const int maxIteration = 30;
-
-
+   // Stock Results
    map<string, map<int, NScal[maxIteration]> > length_results;
    map<string, map<int, double[maxIteration]> > timing_results;
-
-
-   // print important information
-   bool printMatricesDetails = false;
-   cout << "epsilon = " << epsilon << endl;
-   //cout << "dimension = " << dimension << endl;
-   cout << "nombre de matrices testées = " << maxIteration << endl;
-   cout << "dimension minimale : " << MinDimension << endl;
-   cout << "dimension maximale : " << MaxDimension << endl;
-   cout << endl;
 
    // to display progress bar
    boost::progress_display show_progress(maxIteration*Interval_dim);
@@ -476,8 +471,6 @@ int main (int argc, char *argv[])
          //mat_ZZ W;
          //W = Dualize (V, modulus, k);
 
-         
-         
          map < string, BMat* > basis;
          map < string, BMat* > dualbasis;
          map < string, IntLatticeBasis* > lattices;
@@ -493,9 +486,6 @@ int main (int argc, char *argv[])
          map < string, clock_t > timing;
 
          lattices["initial"] = new IntLatticeBasis(basis_PairRedPrimal, dimension);
-
-
-
          lattices["initial"]->setNegativeNorm(true);
          lattices["initial"]->updateVecNorm();
          lattices["initial"]->sort(0);
@@ -509,11 +499,10 @@ int main (int argc, char *argv[])
             reduce(*reducers[name], name, d, seed_dieter, blocksize, delta, maxcpt, dimension);
             end = clock();
             timing_results[name][dimension][iteration] = double (end - begin) / CLOCKS_PER_SEC;
-
             lattices[name]->setNegativeNorm();
             lattices[name]->updateVecNorm();
             lattices[name]->sort(0);
-            
+
          }
 
          for(const string &name : names2){
@@ -524,7 +513,6 @@ int main (int argc, char *argv[])
             lattices[name]->setNegativeNorm();
             lattices[name]->updateVecNorm();
             lattices[name]->sort(0);
-            
          }
 
          for(const string &name : names){
@@ -532,12 +520,14 @@ int main (int argc, char *argv[])
          }
 
          for(const string &name : names){
-            basis[name]->kill();
+            basis[name]->BMat::clear();
             //dualbasis[name]->kill();
             delete lattices[name];
             delete reducers[name];
+            
          }
          
+         delete lattices["inital"];
          ++show_progress;
       }
 
@@ -613,8 +603,6 @@ int main (int argc, char *argv[])
    cout << "      PairRed+LLLNTL = " << conv<ZZ>(Average(length_results["PairRedPrimal_LLLNTL"][MinDimension])) << endl;
    cout << "PairRedRandom+LLLNTL = " << conv<ZZ>(Average(length_results["PairRedPrimalRandomized_LLLNTL"][MinDimension])) << endl;
    cout << endl;
-
-   //cout << "        LLLNTL_Exact = " << conv<ZZ>Average(timing_LLL_NTL_Exact) << endl;
    cout << endl;
 
    cout << "              BKZNTL = " << conv<ZZ>(Average(length_results["BKZNTL"][MinDimension])) << endl;
@@ -631,21 +619,6 @@ int main (int argc, char *argv[])
 
 #endif
 
-#ifdef RESULTAT_BRUT
-
-
-
-   map<string, map<int, NScal[iteration]> > length_results;
-   map<string, map<int, double[iteration]> > timing_results;
-
-
-
-
-
-
-
-
-#endif
 
 
 #ifdef WITH_R

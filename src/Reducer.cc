@@ -641,6 +641,7 @@ void Reducer::reductionFaible (int i, int j)
 
 void Reducer::redLLLNTLProxy(double fact){
    LLL_XD( m_lat->getBasis(), fact, 0, 0);
+   cout << "UTILISATION DE LLLNTLPROXY" << endl;
 }
 
 void Reducer::redLLLNTLExact(ZZ & det, long a, long b){
@@ -748,6 +749,7 @@ void Reducer::redLLL (double fact, long maxcpt, int Max)
    if(withDual){
       m_lat->setDualNegativeNorm ();
    }
+   cout << "UTILISATION DE LLL RICHARD" << endl;
 }
 
 

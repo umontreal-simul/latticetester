@@ -53,7 +53,7 @@ using namespace std;
 using namespace NTL;
 using namespace LatticeTester;
 
-const int MaxDimension = 10;
+const int MaxDimension = 25;
 
 #ifdef PRINT_CONSOLE
 const int MinDimension = MaxDimension - 1;
@@ -411,9 +411,9 @@ int main (int argc, char *argv[])
    cout << endl;
 
    ZZ modulus;
-   power(modulus, 2, 31);
+   power(modulus, 2, 30);
    modulus--;
-   int k = 4;
+   int k = 9;
 
    string names[] = {
       "PairRedPrimal",
@@ -480,14 +480,16 @@ int main (int argc, char *argv[])
 
          for(const string &name : names){
             basis[name] = new BMat(V);
-            dualbasis[name] = new BMat(W);
-            lattices[name] = new IntLatticeBasis(*basis[name], *dualbasis[name], modulus, dimension);
+            //dualbasis[name] = new BMat(W);
+            //lattices[name] = new IntLatticeBasis(*basis[name], *dualbasis[name], modulus, dimension);
+            //basis[name] = new BMat(basis_PairRedPrimal);
+            lattices[name] = new IntLatticeBasis(*basis[name], dimension);
             reducers[name] = new Reducer(*lattices[name]);
          }
 
          map < string, clock_t > timing;
 
-         lattices["initial"] = new IntLatticeBasis(basis_PairRedPrimal, dimension);
+         lattices["initial"] = new IntLatticeBasis(V, dimension);
          lattices["initial"]->setNegativeNorm(true);
          lattices["initial"]->updateVecNorm();
          lattices["initial"]->sort(0);
@@ -594,7 +596,8 @@ int main (int argc, char *argv[])
 
 
    cout << "\n---------------- LENGTH AVG ----------------\n" << endl;
-
+   
+   cout << "             Initial = " << conv<ZZ>(Average(length_results["initial"][MinDimension])) << endl;
 
    cout << "       PairRedPrimal = " << conv<ZZ>(Average(length_results["PairRedPrimal"][MinDimension])) << endl;
    cout << " PairRedPrimalRandom = " << conv<ZZ>(Average(length_results["PairRedPrimalRandomized"][MinDimension])) << endl;
@@ -707,7 +710,6 @@ int main (int argc, char *argv[])
    // parseEvalQ evluates without assignment
     //R.parseEvalQ(cmd);
    R.parseEvalQ(library);
-
    R.parseEvalQ(build_data_frame);
    R.parseEvalQ(build_plot);
    R.parseEvalQ(print_plot);

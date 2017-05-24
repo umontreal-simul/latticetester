@@ -527,7 +527,8 @@ int main (int argc, char *argv[])
             
          }
          
-         delete lattices["inital"];
+         delete lattices["initial"];
+         
          ++show_progress;
       }
 

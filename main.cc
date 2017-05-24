@@ -60,7 +60,6 @@ using namespace std;
 using namespace NTL;
 using namespace LatticeTester;
 
-
 // projection parameters definition
 //----------------------------------------------------------------------------------------
 
@@ -230,6 +229,7 @@ void reduce(Reducer & red, const string & name, const int & d){
 
 
 void reduce(Reducer & red, const string & name, const int & d, int & seed_dieter, const int & blocksize, const double & delta, const int maxcpt, int dimension){
+   //cout << name << endl;
 
    //------------------------------------------------------------------------------------
    // Pairwise reduction in primal basis only
@@ -325,6 +325,7 @@ void reduce(Reducer & red, const string & name, const int & d, int & seed_dieter
 
 
 void reduce2(Reducer & red, const string & name, const int & d, int & seed_dieter, const int & blocksize, const double & delta, const int maxcpt, int dimension){
+   //cout << name << endl;
 
 
    //------------------------------------------------------------------------------------
@@ -442,7 +443,7 @@ int main (int argc, char *argv[])
 
       for (int iteration = 0; iteration < maxIteration; iteration++){
 
-         //ZZ seed = conv<ZZ>((iteration+1) * (iteration+1) * 123456789 * dimension);
+         ZZ seedZZ = conv<ZZ>((iteration+1) * (iteration+1) * 123456789 * dimension);
          int seed = (iteration+1) * (iteration+1) * 123456789 * dimension;
          int seed_dieter = (iteration+1) * dimension * 12342;
          //int seed = (int) (iteration+1) * 12345 * time(NULL);
@@ -454,12 +455,11 @@ int main (int argc, char *argv[])
          ZZ det;
          RandomMatrix(basis_PairRedPrimal, det, minCoeff, maxCoeff, seed);
 
+         mat_ZZ V;
+         V = CreateRNGBasis (modulusRNG, k, dimension, seed);
 
-         //mat_ZZ V;
-         //V = CreateRNGBasis (modulusRNG, k, dimension, seed);
-
-         //mat_ZZ W;
-         //W = Dualize (V, modulusRNG, k);
+         mat_ZZ W;
+         W = Dualize (V, modulusRNG, k);
 
          map < string, BMat* > basis;
          map < string, BMat* > dualbasis;
@@ -467,9 +467,9 @@ int main (int argc, char *argv[])
          map < string, Reducer* > reducers;
 
          for(const string &name : names){
-            basis[name] = new BMat(basis_PairRedPrimal);
-            //dualbasis[name] = new BMat(W);
-            lattices[name] = new IntLatticeBasis(*basis[name], dimension);
+            basis[name] = new BMat(V);
+            dualbasis[name] = new BMat(W);
+            lattices[name] = new IntLatticeBasis(*basis[name], *dualbasis[name], modulus, dimension);
             reducers[name] = new Reducer(*lattices[name]);
          }
 
@@ -492,10 +492,12 @@ int main (int argc, char *argv[])
             lattices[name]->setNegativeNorm();
             lattices[name]->updateVecNorm();
             lattices[name]->sort(0);
+            //cout << "Norm of " << name << " : " << lattices[name]->getVecNorm(0) << endl;
 
          }
 
          for(const string &name : names2){
+            //cout << "Norm of " << name << " : " << lattices[name]->getVecNorm(0) << endl;
             begin = clock();
             reduce2(*reducers[name], name, d, seed_dieter, blocksize, delta, maxcpt, dimension);
             end = clock();
@@ -503,6 +505,7 @@ int main (int argc, char *argv[])
             lattices[name]->setNegativeNorm();
             lattices[name]->updateVecNorm();
             lattices[name]->sort(0);
+            //cout << "Norm of " << name << " : " << lattices[name]->getVecNorm(0) << endl;
          }
 
          for(const string &name : names){

@@ -323,7 +323,7 @@ bool Reducer::calculCholeski (RVect & DC2, RMat & C0)
 
    // Compute the d last lines of C0 with the dual Basis.
    if(m_lat->withDual()){
-      for (i = dim-1; i > d; i--)
+      for (i = dim-1; i >= d; i--)
       {
          m_lat->updateDualScalL2Norm (i);
          for (j = i; j >= 0; j--) {

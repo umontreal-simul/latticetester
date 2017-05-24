@@ -6,7 +6,13 @@
 //  Copyright © 2017 DIRO. All rights reserved.
 //
 
+
+// select pre compiling options
+//----------------------------------------------------------------------------------------
+
 #define PRINT_CONSOLE
+
+//----------------------------------------------------------------------------------------
 
 #include <iostream>
 #include <map>
@@ -39,30 +45,61 @@
 #include <NTL/mat_ZZ.h>
 #include <NTL/matrix.h>
 #include <NTL/LLL.h>
-#ifdef WITH_R
-#include <RInside.h>
-#endif
+
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/io.hpp>
 #include <boost/progress.hpp>
 
-#include "SimpleMRG.h"
+#ifdef WITH_R
+#include <RInside.h>
+#endif
 
+#include "SimpleMRG.h"
 
 using namespace std;
 using namespace NTL;
 using namespace LatticeTester;
 
-const int MaxDimension = 20;
 
+// projection parameters definition
+//----------------------------------------------------------------------------------------
+
+const long a = 999999;
+const long b = 1000000;
+const double delta = (double) a/b;
+const double epsilon = 1.0 - delta;
+
+const int maxcpt = 1000000; // for redLLL
+const int d = 0; // for preRedDieter
+const long blocksize = 10; // for BKZ insertions
+
+// modulus
+const ZZ modulusRNG = power_ZZ(2, 31) - 1;
+
+// order 
+const int k = 10;
+
+// iteration loop over matrices of same dimension
+const int maxIteration = 1;
+
+// ireration loop over the dimension of lattices
+
+const int MaxDimension = 20;
 #ifdef PRINT_CONSOLE
 const int MinDimension = MaxDimension - 1;
 #else
 const int MinDimension = 10;
 #endif
 
-
 const int Interval_dim = MaxDimension - MinDimension;
+
+// still usefull ?
+const int minCoeff = 40;
+const int maxCoeff = 1000;
+
+
+// functions used in main program
+//----------------------------------------------------------------------------------------
 
 #ifdef WITH_R
 template <typename type>
@@ -79,7 +116,6 @@ Rcpp::NumericMatrix toRcppMatrix(const type scal[][Interval_dim], const int & ma
 }
 #endif
 
-
 void RandomMatrix (mat_ZZ& A, ZZ& det, int min, int max, int seed){
 
    int dim = (int) A.NumRows() ;
@@ -93,9 +129,7 @@ void RandomMatrix (mat_ZZ& A, ZZ& det, int min, int max, int seed){
        det = determinant(A);
 
    } while ( det == 0 );
-
 }
-
 
 template<typename Type, long Size>
 void print(string name, Type const(& array)[Size], bool isIntegerOutput) {
@@ -109,15 +143,13 @@ void print(string name, Type const(& array)[Size], bool isIntegerOutput) {
    //cout << endl;
 }
 
-
-template<typename Type, long Size>
-Type Average(Type const(& array)[Size]) {
+template<typename Type, unsigned long Size>
+Type Average(const array <Type, Size> array) {
    Type sum (0);
    for(int i = 0; i<Size; i++)
        sum += array[i];
    return sum / Size;
 }
-
 
 vec_ZZ canonicVector (int dimension, int i)
 {
@@ -138,7 +170,6 @@ vec_ZZ randomVector (int dimension, ZZ modulus, ZZ seed)
 
 	return vector;
 }
-
 
 mat_ZZ CreateRNGBasis (const ZZ modulus, const int k, const int dimension, ZZ seed)
 {
@@ -178,7 +209,6 @@ mat_ZZ CreateRNGBasis (const ZZ modulus, const int k, const int dimension, ZZ se
 	return basis;
 }
 
-
 mat_ZZ Dualize (const mat_ZZ V, const ZZ modulus, const int k)
 {
 	mat_ZZ W;
@@ -197,6 +227,7 @@ mat_ZZ Dualize (const mat_ZZ V, const ZZ modulus, const int k)
 void reduce(Reducer & red, const string & name, const int & d){
 
 }
+
 
 void reduce(Reducer & red, const string & name, const int & d, int & seed_dieter, const int & blocksize, const double & delta, const int maxcpt, int dimension){
 
@@ -348,70 +379,26 @@ void reduce2(Reducer & red, const string & name, const int & d, int & seed_diete
       red.shortestVector(L2NORM);
 }
 
-/* example new CreateRNGBasis
 
-   int main ()
-   {
-      //ZZ modulus = conv<ZZ>("678956454545356865342357689098765324686546576787568");
-      ZZ modulus;
-      power(modulus, 2, 6);
-      modulus-=1;
-
-      int k = 3;
-      int dimension = 10;
-      ZZ seed = conv<ZZ>(123456);
-
-      mat_ZZ V;
-      V = CreateRNGBasis (modulus, k, dimension, seed);
-
-      mat_ZZ W;
-      W = Dualize (V, modulus, k);
-
-      cout << "Test V*transpose(W) = m*ID : ";
-      cout << IsIdent( V*transpose(W) - diag(dimension, modulus-1), dimension);
-      cout << endl;
-
-      return 0;
-    }
-*/
 
 //****************************************************************************************************
 //****************************************************************************************************
 //****************************************************************************************************
 
 int main (int argc, char *argv[])
-{
+
+
+{ 
    // printing total running time
    clock_t begin = clock();
 
-   // main parameters for the test
-   const int min = 40;
-   const int max = 1000;
-
-   const long a = 999999;
-   const long b = 1000000;
-   const double delta = (double) a/b;
-   const double epsilon = 1.0 - delta;
-
-   const int maxcpt = 1000000;
-   const int d = 0;
-   const long blocksize = 10; // for BKZ insertions
-
-   // iteration loop over matrices of same dimension
-   const int maxIteration = 1;
-
-    // Print parameters
+   // Print parameters
    cout << "epsilon = " << epsilon << endl;
    //cout << "dimension = " << dimension << endl;
    cout << "nombre de matrices testées = " << maxIteration << endl;
    cout << "dimension minimale : " << MinDimension << endl;
    cout << "dimension maximale : " << MaxDimension << endl;
    cout << endl;
-
-   ZZ modulus;
-   power(modulus, 2, 31);
-   modulus--;
-   int k = 10;
 
    string names[] = {
       "PairRedPrimal",
@@ -440,8 +427,11 @@ int main (int argc, char *argv[])
       "BB_BKZ"};
 
    // Stock Results
-   map<string, map<int, NScal[maxIteration]> > length_results;
-   map<string, map<int, double[maxIteration]> > timing_results;
+   map<string, map<int, array<NScal, maxIteration> > > length_results;
+   map<string, map<int, array<double, maxIteration> > > timing_results;
+   // old declaration using C-style arrays not accepted by some compilators 
+   //map<string, map<int, NScal[maxIteration]> > length_results;
+   //map<string, map<int, double[maxIteration]> > timing_results;
 
    // to display progress bar
    boost::progress_display show_progress(maxIteration*Interval_dim);
@@ -462,14 +452,14 @@ int main (int argc, char *argv[])
          // We create copies of the same basis
          BMat basis_PairRedPrimal (dimension, dimension);
          ZZ det;
-         RandomMatrix(basis_PairRedPrimal, det, min, max, seed);
+         RandomMatrix(basis_PairRedPrimal, det, minCoeff, maxCoeff, seed);
 
 
          //mat_ZZ V;
-         //V = CreateRNGBasis (modulus, k, dimension, seed);
+         //V = CreateRNGBasis (modulusRNG, k, dimension, seed);
 
          //mat_ZZ W;
-         //W = Dualize (V, modulus, k);
+         //W = Dualize (V, modulusRNG, k);
 
          map < string, BMat* > basis;
          map < string, BMat* > dualbasis;
@@ -528,7 +518,7 @@ int main (int argc, char *argv[])
          }
          
          delete lattices["initial"];
-         
+
          ++show_progress;
       }
 
@@ -715,3 +705,31 @@ int main (int argc, char *argv[])
 
    return 0;
 }
+
+
+/* example new CreateRNGBasis
+
+   int main ()
+   {
+      //ZZ modulus = conv<ZZ>("678956454545356865342357689098765324686546576787568");
+      ZZ modulus;
+      power(modulus, 2, 6);
+      modulus-=1;
+
+      int k = 3;
+      int dimension = 10;
+      ZZ seed = conv<ZZ>(123456);
+
+      mat_ZZ V;
+      V = CreateRNGBasis (modulus, k, dimension, seed);
+
+      mat_ZZ W;
+      W = Dualize (V, modulus, k);
+
+      cout << "Test V*transpose(W) = m*ID : ";
+      cout << IsIdent( V*transpose(W) - diag(dimension, modulus-1), dimension);
+      cout << endl;
+
+      return 0;
+    }
+*/

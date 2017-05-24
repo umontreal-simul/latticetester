@@ -97,6 +97,34 @@ const int minCoeff = 40;
 const int maxCoeff = 1000;
 
 
+string names[] = {
+   "PairRedPrimal",
+   "PairRedPrimalRandomized",
+   "LLL",
+   "PairRedPrimal_LLL",
+   "PairRedPrimalRandomized_LLL",
+   "LLLNTL",
+   "PairRedPrimal_LLLNTL",
+   "PairRedPrimalRandomized_LLLNTL",
+   "BKZNTL",
+   "PairRedPrimal_BKZNTL",
+   "PairRedPrimalRandomized_BKZNTL",
+   //"BB_Only",
+   "BB_Classic",
+   "BB_BKZ"};
+
+string names2[] = {
+   "PairRedPrimal_LLL",
+   "PairRedPrimalRandomized_LLL",
+   "PairRedPrimal_LLLNTL",
+   "PairRedPrimalRandomized_LLLNTL",
+   "PairRedPrimal_BKZNTL",
+   "PairRedPrimalRandomized_BKZNTL",
+   "BB_Classic",
+   "BB_BKZ"};
+
+
+
 // functions used in main program
 //----------------------------------------------------------------------------------------
 
@@ -401,32 +429,6 @@ int main (int argc, char *argv[])
    cout << "dimension maximale : " << MaxDimension << endl;
    cout << endl;
 
-   string names[] = {
-      "PairRedPrimal",
-      "PairRedPrimalRandomized",
-      "LLL",
-      "PairRedPrimal_LLL",
-      "PairRedPrimalRandomized_LLL",
-      "LLLNTL",
-      "PairRedPrimal_LLLNTL",
-      "PairRedPrimalRandomized_LLLNTL",
-      "BKZNTL",
-      "PairRedPrimal_BKZNTL",
-      "PairRedPrimalRandomized_BKZNTL",
-      //"BB_Only",
-      "BB_Classic",
-      "BB_BKZ"};
-
-   string names2[] = {
-      "PairRedPrimal_LLL",
-      "PairRedPrimalRandomized_LLL",
-      "PairRedPrimal_LLLNTL",
-      "PairRedPrimalRandomized_LLLNTL",
-      "PairRedPrimal_BKZNTL",
-      "PairRedPrimalRandomized_BKZNTL",
-      "BB_Classic",
-      "BB_BKZ"};
-
    // Stock Results
    map<string, map<int, array<NScal, maxIteration> > > length_results;
    map<string, map<int, array<double, maxIteration> > > timing_results;
@@ -456,7 +458,7 @@ int main (int argc, char *argv[])
          RandomMatrix(basis_PairRedPrimal, det, minCoeff, maxCoeff, seed);
 
          mat_ZZ V;
-         V = CreateRNGBasis (modulusRNG, k, dimension, seed);
+         V = CreateRNGBasis (modulusRNG, k, dimension, seedZZ);
 
          mat_ZZ W;
          W = Dualize (V, modulusRNG, k);

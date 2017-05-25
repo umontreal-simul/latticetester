@@ -68,7 +68,7 @@ bool WITH_DUAL = false;
 
 
 // ireration loop over the dimension of lattices
-const int MinDimension = 10;
+const int MinDimension = 16;
 #ifdef PRINT_CONSOLE
 const int MaxDimension = MinDimension + 1;
 #else
@@ -179,7 +179,7 @@ void print(string name, Type const(& array)[Size], bool isIntegerOutput) {
 template<typename Type, unsigned long Size>
 Type mean(const array <Type, Size> array) {
    Type sum (0);
-   for(int i = 0; i<Size; i++)
+   for(unsigned int i = 0; i<Size; i++)
        sum += array[i];
    return sum / Size;
 }
@@ -188,7 +188,7 @@ template<typename Type, unsigned long Size>
 Type variance(const array <Type, Size> array) {
    Type sum (0);
    Type mean_tmp(mean(array));
-   for(int i = 0; i<Size; i++)
+   for(unsigned int i = 0; i<Size; i++)
        sum += (array[i] - mean_tmp) * (array[i] - mean_tmp);
    return sum / Size;
 }
@@ -463,6 +463,7 @@ int main (int argc, char *argv[])
    // Stock Results
    map<string, map<int, array<NScal, maxIteration> > > length_results;
    map<string, map<int, array<double, maxIteration> > > timing_results;
+   map<string, int> nb_diff;
    // old declaration using C-style arrays not accepted by some compilators
    //map<string, map<int, NScal[maxIteration]> > length_results;
    //map<string, map<int, double[maxIteration]> > timing_results;
@@ -547,11 +548,16 @@ int main (int argc, char *argv[])
             //cout << "Norm of " << name << " : " << lattices[name]->getVecNorm(0) << endl;
          }
 
+
+
          for(const string &name : names){
+            if((lattices[name]->getVecNorm(0) - lattices["BB_Classic"]->getVecNorm(0)) > 0.1)
+               nb_diff[name]++;
             length_results[name][dimension][iteration] = lattices[name]->getVecNorm(0);
          }
 
-
+         if((lattices["initial"]->getVecNorm(0) - lattices["BB_Classic"]->getVecNorm(0)) > 0.1)
+               nb_diff["initial"]++;
 
          for(const string &name : names){
             basis[name]->BMat::clear();
@@ -639,35 +645,35 @@ int main (int argc, char *argv[])
 
    cout << "\n---------------- LENGTH AVG ----------------\n" << endl;
 
-   cout << "             Initial = " << conv<ZZ>(mean(length_results["initial"][MinDimension])) << endl;
+   cout << "             Initial = " << conv<ZZ>(mean(length_results["initial"][MinDimension])) << " Error Rate : " << (double) nb_diff["initial"]/maxIteration << endl;
 
-   cout << "       PairRedPrimal = " << conv<ZZ>(mean(length_results["PairRedPrimal"][MinDimension])) << endl;
-   cout << " PairRedPrimalRandom = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized"][MinDimension])) << endl;
+   cout << "       PairRedPrimal = " << conv<ZZ>(mean(length_results["PairRedPrimal"][MinDimension])) << " Error Rate : " << (double) nb_diff["PairRedPrimal"]/maxIteration << endl;
+   cout << " PairRedPrimalRandom = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized"][MinDimension])) << " Error Rate : " << (double) nb_diff["PairRedPrimalRandomized"]/maxIteration << endl;
    cout << endl;
 
-   cout << "                 LLL = " << conv<ZZ>(mean(length_results["LLL"][MinDimension])) << endl;
-   cout << "         PairRed+LLL = " << conv<ZZ>(mean(length_results["PairRedPrimal_LLL"][MinDimension])) << endl;
-   cout << "   PairRedRandom+LLL = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized_LLL"][MinDimension])) << endl;
+   cout << "                 LLL = " << conv<ZZ>(mean(length_results["LLL"][MinDimension])) << " Error Rate : " << (double) nb_diff["LLL"]/maxIteration << endl;
+   cout << "         PairRed+LLL = " << conv<ZZ>(mean(length_results["PairRedPrimal_LLL"][MinDimension])) << " Error Rate : " << (double) nb_diff["PairRedPrimal_LLL"]/maxIteration << endl;
+   cout << "   PairRedRandom+LLL = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized_LLL"][MinDimension])) << " Error Rate : " << (double) nb_diff["PairRedPrimalRandomized_LLL"]/maxIteration << endl;
    cout << endl;
 
-   cout << "              LLLNTL = " << conv<ZZ>(mean(length_results["LLLNTL"][MinDimension])) << endl;
-   cout << "      PairRed+LLLNTL = " << conv<ZZ>(mean(length_results["PairRedPrimal_LLLNTL"][MinDimension])) << endl;
-   cout << "PairRedRandom+LLLNTL = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized_LLLNTL"][MinDimension])) << endl;
+   cout << "              LLLNTL = " << conv<ZZ>(mean(length_results["LLLNTL"][MinDimension])) << " Error Rate : " << (double) nb_diff["LLLNTL"]/maxIteration << endl;
+   cout << "      PairRed+LLLNTL = " << conv<ZZ>(mean(length_results["PairRedPrimal_LLLNTL"][MinDimension])) << " Error Rate : " << (double) nb_diff["PairRedPrimal_LLLNTL"]/maxIteration << endl;
+   cout << "PairRedRandom+LLLNTL = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized_LLLNTL"][MinDimension])) << " Error Rate : " << (double) nb_diff["PairRedPrimalRandomized_LLLNTL"]/maxIteration << endl;
    cout << endl;
    cout << endl;
 
-   cout << "              BKZNTL = " << conv<ZZ>(mean(length_results["BKZNTL"][MinDimension])) << endl;
-   cout << "      PairRed+BKZNTL = " << conv<ZZ>(mean(length_results["PairRedPrimal_BKZNTL"][MinDimension])) << endl;
-   cout << "PairRedRandom+BKZNTL = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized_BKZNTL"][MinDimension])) << endl;
+   cout << "              BKZNTL = " << conv<ZZ>(mean(length_results["BKZNTL"][MinDimension])) << " Error Rate : " << (double) nb_diff["BKZNTL"]/maxIteration << endl;
+   cout << "      PairRed+BKZNTL = " << conv<ZZ>(mean(length_results["PairRedPrimal_BKZNTL"][MinDimension])) << " Error Rate : " << (double) nb_diff["PairRedPrimal_BKZNTL"]/maxIteration << endl;
+   cout << "PairRedRandom+BKZNTL = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized_BKZNTL"][MinDimension])) << " Error Rate : " << (double) nb_diff["PairRedPrimalRandomized_BKZNTL"]/maxIteration << endl;
    cout << endl;
 
-   //cout << "             BB Only = " << conv<ZZ>(mean(length_results["PairRedPrimal_BKZNTL"][MinDimension])) << endl;
-   cout << "          BB Classic = " << conv<ZZ>(mean(length_results["BB_Classic"][MinDimension])) << endl,
-   cout << "              BB BKZ = " << conv<ZZ>(mean(length_results["BB_BKZ"][MinDimension])) << endl;
+   //cout << "             BB Only = " << conv<ZZ>(mean(length_results["PairRedPrimal_BKZNTL"][MinDimension])) << " Error Rate : " << (double) nb_diff[name]/maxIteration << endl;
+   cout << "          BB Classic = " << conv<ZZ>(mean(length_results["BB_Classic"][MinDimension])) << " Error Rate : " << (double) nb_diff["BB_Classic"]/maxIteration << endl,
+   cout << "              BB BKZ = " << conv<ZZ>(mean(length_results["BB_BKZ"][MinDimension])) << " Error Rate : " << (double) nb_diff["BB_BKZ"]/maxIteration << endl;
    cout << endl;
 
-   //cout << "    Dieter Reduction = " << conv<ZZ>(mean(length_results["DIETER"][MinDimension])) << endl,
-   cout << " Minkowski Reduction = " << conv<ZZ>(mean(length_results["MINKOWSKI"][MinDimension])) << endl;
+   //cout << "    Dieter Reduction = " << conv<ZZ>(mean(length_results["DIETER"][MinDimension])) << " Error Rate : " << (double) nb_diff[name]/maxIteration << endl,
+   cout << " Minkowski Reduction = " << conv<ZZ>(mean(length_results["MINKOWSKI"][MinDimension])) << " Error Rate : " << (double) nb_diff["MINKOWSKI"]/maxIteration << endl;
 
    cout << "\n--------------------------------------------" << endl;
 

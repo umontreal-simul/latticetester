@@ -68,7 +68,7 @@ bool WITH_DUAL = true;
 
 
 // ireration loop over the dimension of lattices
-const int MinDimension = 10;
+const int MinDimension = 6;
 #ifdef PRINT_CONSOLE
 const int MaxDimension = MinDimension + 1;
 #else
@@ -92,7 +92,7 @@ const int d = 0; // for preRedDieter
 const long blocksize = 10; // for BKZ insertions
 
 // modulus
-const ZZ modulusRNG = power_ZZ(2, 31) - 1;
+const ZZ modulusRNG = power_ZZ(2, 3) - 1;
 
 const int Interval_dim = MaxDimension - MinDimension;
 
@@ -115,7 +115,9 @@ string names[] = {
    "PairRedPrimalRandomized_BKZNTL",
    //"BB_Only",
    "BB_Classic",
-   "BB_BKZ"};
+   "BB_BKZ",
+   //"DIETER", //WARNING USE DIETER ONLY FOR DIM < 6
+   "MINKOWSKI"};
 
 string names2[] = {
    "PairRedPrimal_LLL",
@@ -347,12 +349,23 @@ void reduce(Reducer & red, const string & name, const int & d, int & seed_dieter
       red.redLLL(delta, maxcpt, dimension);
    }
 
-
    //------------------------------------------------------------------------------------
    // Branch and Bound post BKZ
    //------------------------------------------------------------------------------------
    if(name =="BB_BKZ")
       red.redBKZ(delta, blocksize);
+   
+   //------------------------------------------------------------------------------------
+   // Dieter Method
+   //------------------------------------------------------------------------------------
+   if(name == "DIETER" && WITH_DUAL)
+      red.shortestVectorDieter(L2NORM);
+   
+   //------------------------------------------------------------------------------------
+   // Minkowski reduction
+   //------------------------------------------------------------------------------------
+   if(name == "MINKOWSKI")
+      red.reductMinkowski(d);
 }
 
 
@@ -595,9 +608,19 @@ int main (int argc, char *argv[])
    cout << " (" << Average(timing_results["BB_Classic2"][MinDimension]) << ")" << endl,
    cout << "              BB BKZ = " << Average(timing_results["BB_BKZ"][MinDimension]) + Average(timing_results["BB_BKZ2"][MinDimension]);
    cout << " (" << Average(timing_results["BB_BKZ2"][MinDimension]) << ")";
-   if (WITH_DUAL){
+   if (WITH_DUAL)
       cout << " BB NON EFFECTUER CAR UTILISATION DU DUAL" << endl;
-   }
+   else
+      cout << endl;
+   
+   cout << endl;
+   
+   //cout << "    Dieter Reduction = " << Average(timing_results["DIETER"][MinDimension]);
+   //if (!WITH_DUAL)
+   //   cout << " DIETER NON EFFECTUER CAR DUAL NECESSAIRE" << endl;
+   //else
+   //   cout << endl;
+   cout << " Minkowski Reduction = " << Average(timing_results["MINKOWSKI"][MinDimension]) << endl;
 
    cout << "\n--------------------------------------------" << endl;
 
@@ -630,8 +653,11 @@ int main (int argc, char *argv[])
    //cout << "             BB Only = " << conv<ZZ>(Average(length_results["PairRedPrimal_BKZNTL"][MinDimension])) << endl;
    cout << "          BB Classic = " << conv<ZZ>(Average(length_results["BB_Classic"][MinDimension])) << endl,
    cout << "              BB BKZ = " << conv<ZZ>(Average(length_results["BB_BKZ"][MinDimension])) << endl;
-
-
+   cout << endl;
+   
+   //cout << "    Dieter Reduction = " << conv<ZZ>(Average(length_results["DIETER"][MinDimension])) << endl,
+   cout << " Minkowski Reduction = " << conv<ZZ>(Average(length_results["MINKOWSKI"][MinDimension])) << endl;
+   
    cout << "\n--------------------------------------------" << endl;
 
 #endif

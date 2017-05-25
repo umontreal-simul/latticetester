@@ -231,8 +231,8 @@ public:
     * already reduced and sorted. If `MaxNodesBB` is exceeded during one
     * of the branch-and-bound step, the method aborts and returns `false`.
     * Otherwise it returns `true`, the basis is reduced and sorted by
-    * vector lengths (the shortest vector is `V[1]` and the longest is
-    * <tt>V[Dim]</tt>).
+    * vector lengths (the shortest vector is `V[0]` and the longest is
+    * <tt>V[Dim-1]</tt>).
     */
    bool reductMinkowski (int d);
 

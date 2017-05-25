@@ -1493,10 +1493,6 @@ bool Reducer::shortestVector (NormType norm)
 }
 
 
-
-
-
-// We need the Dual to run RedDieter
 //=========================================================================
 
 bool Reducer::redDieter (NormType norm)
@@ -1524,6 +1520,8 @@ bool Reducer::redDieter (NormType norm)
 
    /* Compute the bounds in eq.(7) of Dieter (1975). */
    /* For this, VV and WW temporarily hold the vector norms. */
+   m_lat->setNegativeNorm();
+   m_lat->setDualNegativeNorm();
    m_lat->updateVecNorm ();
    m_lat->updateDualVecNorm ();
    m_lat->sort (0);
@@ -1546,23 +1544,28 @@ bool Reducer::redDieter (NormType norm)
    for (k = 0; k < dim; k++)
       m_bv[k] = 0;
 
-   k = dim;
-   while (k >= 1)
+   k = dim-1;
+   while (k >= 0)
    {
+      //cout << "ESPION1 " << supz[k] << endl;
+      //cout << "ESPION2 " << z[k] << endl;
       if (z[k] < supz[k]) {
          ++z[k];
          matrix_row<BMat> row1(m_lat->getBasis(), k);
          ModifVect (m_bv, row1, 1, dim);
-         while (k < dim) {
+         while (k < dim-1) {
             ++k;
             z[k] = -supz[k];
             matrix_row<BMat> row2(m_lat->getBasis(), k);
             ModifVect (m_bv, row2, 2 * z[k], dim);
+            //cout << "ESPION3 " << k << endl;
          }
          CalcNorm <BVect, RScal> (m_bv, dim, x, norm);
          if (x < m_lMin) {
             conv (m_lMin, x);
+            //cout << "ESPION3 " << k << endl;
          }
+         //cout << "valeur de k : " << k << endl;
       } else
          --k;
    }
@@ -1578,7 +1581,6 @@ bool Reducer::redDieter (NormType norm)
    return true;
 }
 
-// We need the dual in order to run RedDieter
 //=========================================================================
 
 bool Reducer::shortestVectorDieter (NormType norm)

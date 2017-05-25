@@ -477,6 +477,7 @@ int main (int argc, char *argv[])
    // arrays to store values
    int id_dimension = 0;
    bool all_BB_over = true;
+   int increm_seed = 1;
 
    for (int dimension = MinDimension; dimension < MaxDimension; dimension++){
 
@@ -488,9 +489,10 @@ int main (int argc, char *argv[])
             if(!all_BB_over){
                cout << "/";
             }
-            ZZ seedZZ = conv<ZZ>((iteration+1) * (iteration+1) * 123456789 * dimension);
-            int seed = (iteration+1) * (iteration+1) * 123456789 * dimension;
-            int seed_dieter = (iteration+1) * dimension * 12342;
+            increm_seed++; // Pour la boucle
+            ZZ seedZZ = conv<ZZ>((iteration+1) * (iteration+1) * 123456789 * dimension * increm_seed);
+            int seed = (iteration+1) * (iteration+1) * 123456789 * dimension *increm_seed;
+            int seed_dieter = (iteration+1) * dimension * 12342 * increm_seed ;
             //int seed = (int) (iteration+1) * 12345 * time(NULL);
 
             // We create copies of the same basis

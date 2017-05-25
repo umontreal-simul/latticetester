@@ -68,7 +68,7 @@ bool WITH_DUAL = true;
 
 
 // ireration loop over the dimension of lattices
-const int MinDimension = 6;
+const int MinDimension = 10;
 #ifdef PRINT_CONSOLE
 const int MaxDimension = MinDimension + 1;
 #else
@@ -76,10 +76,10 @@ const int MaxDimension = 20;
 #endif
 
 // order
-const int order = 3;
+const int order = 5;
 
 // iteration loop over matrices of same dimension
-const int maxIteration = 1;
+const int maxIteration = 10;
 
 // Epsilon
 const long a = 999999;
@@ -92,7 +92,7 @@ const int d = 0; // for preRedDieter
 const long blocksize = 10; // for BKZ insertions
 
 // modulus
-const ZZ modulusRNG = power_ZZ(2, 3) - 1;
+const ZZ modulusRNG = power_ZZ(2, 31) - 1;
 
 const int Interval_dim = MaxDimension - MinDimension;
 

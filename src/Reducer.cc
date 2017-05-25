@@ -822,7 +822,7 @@ bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const BMat & WTemp)
 
    ++m_countNodes;
    if (m_countNodes > maxNodesBB) {
-      cout << "*****  m_countNodes > maxNodesBB = " << maxNodesBB << endl;
+      //cout << "*****  m_countNodes > maxNodesBB = " << maxNodesBB << endl;
       return false;
    }
    // Calcul d'un intervalle contenant les valeurs admissibles de zj.
@@ -1140,7 +1140,7 @@ bool Reducer::tryZ0 (int j, bool & smaller)
    ++m_countNodes;
    if (m_countNodes > maxNodesBB) {
       // ++ExceedBBCo;
-      cout << "*****   m_countNodes > maxNodesBB = " << maxNodesBB << endl;
+      //cout << "*****   m_countNodes > maxNodesBB = " << maxNodesBB << endl;
       return false;
    }
    /* Calcul d'un intervalle contenant les valeurs admissibles de zj. */
@@ -1397,6 +1397,7 @@ bool Reducer::reductMinkowski (int d)
 
    do {
       // The first d vectors should not be modified.
+      //cout << "ESPION1" << endl;
       for (i = 0; i < d; i++)
          m_lat->setXX (true, i);
       for (i = d; i < dim; i++)

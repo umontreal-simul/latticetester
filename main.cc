@@ -10,7 +10,7 @@
 // select pre compiling options
 //----------------------------------------------------------------------------------------
 
-#define WITH_R
+#define PRINT_CONSOLE
 
 //----------------------------------------------------------------------------------------
 
@@ -68,7 +68,7 @@ bool WITH_DUAL = false;
 
 
 // ireration loop over the dimension of lattices
-const int MinDimension = 5;
+const int MinDimension = 20;
 #ifdef PRINT_CONSOLE
 const int MaxDimension = MinDimension + 1;
 #else
@@ -275,8 +275,9 @@ void reduce(Reducer & red, const string & name, const int & d){
 }
 
 
-void reduce(Reducer & red, const string & name, const int & d, int & seed_dieter, const int & blocksize, const double & delta, const int maxcpt, int dimension){
+bool reduce(Reducer & red, const string & name, const int & d, int & seed_dieter, const int & blocksize, const double & delta, const int maxcpt, int dimension){
 
+   bool ok(true);
    //------------------------------------------------------------------------------------
    // Pairwise reduction in primal basis only
    //------------------------------------------------------------------------------------
@@ -370,21 +371,23 @@ void reduce(Reducer & red, const string & name, const int & d, int & seed_dieter
    //------------------------------------------------------------------------------------
    // Dieter Method
    //------------------------------------------------------------------------------------
-   if(name == "DIETER" && WITH_DUAL)
-      red.shortestVectorDieter(L2NORM);
+   //if(name == "DIETER" && WITH_DUAL)
+      //red.shortestVectorDieter(L2NORM);
 
    //------------------------------------------------------------------------------------
    // Minkowski reduction
    //------------------------------------------------------------------------------------
    if(name == "MINKOWSKI")
-      red.reductMinkowski(d);
+      ok = red.reductMinkowski(d);
+
+   return ok;
 }
 
 
-void reduce2(Reducer & red, const string & name, const int & d, int & seed_dieter, const int & blocksize, const double & delta, const int maxcpt, int dimension){
+bool reduce2(Reducer & red, const string & name, const int & d, int & seed_dieter, const int & blocksize, const double & delta, const int maxcpt, int dimension){
    //cout << name << endl;
 
-
+   bool ok(true);
    //------------------------------------------------------------------------------------
    // Pairwise reduction (in primal basis only) and then LLL Richard
    //------------------------------------------------------------------------------------
@@ -427,15 +430,16 @@ void reduce2(Reducer & red, const string & name, const int & d, int & seed_diete
    // Branch and Bound classic
    //------------------------------------------------------------------------------------
    if(name =="BB_Classic"){
-      red.shortestVector(L2NORM);
+      ok = red.shortestVector(L2NORM);
    }
 
    //------------------------------------------------------------------------------------
    // Branch and Bound post BKZ
    //------------------------------------------------------------------------------------
    if(name =="BB_BKZ" && !WITH_DUAL){
-      red.shortestVector(L2NORM);
+      ok = red.shortestVector(L2NORM);
    }
+   return ok;
 }
 
 
@@ -472,104 +476,115 @@ int main (int argc, char *argv[])
 
    // arrays to store values
    int id_dimension = 0;
-   
+   bool all_BB_over = true;
+
    for (int dimension = MinDimension; dimension < MaxDimension; dimension++){
 
       id_dimension = dimension - MinDimension;
 
       for (int iteration = 0; iteration < maxIteration; iteration++){
-
-         ZZ seedZZ = conv<ZZ>((iteration+1) * (iteration+1) * 123456789 * dimension);
-         int seed = (iteration+1) * (iteration+1) * 123456789 * dimension;
-         int seed_dieter = (iteration+1) * dimension * 12342;
-         //int seed = (int) (iteration+1) * 12345 * time(NULL);
-
-         // We create copies of the same basis
-         BMat basis_PairRedPrimal (dimension, dimension);
-         ZZ det;
-         RandomMatrix(basis_PairRedPrimal, det, minCoeff, maxCoeff, seed);
-
-         mat_ZZ V;
-         V = CreateRNGBasis (modulusRNG, order, dimension, seedZZ);
-
-         mat_ZZ W;
-         W = Dualize (V, modulusRNG, order);
-
-         map < string, BMat* > basis;
-         map < string, BMat* > dualbasis;
-         map < string, IntLatticeBasis* > lattices;
-         map < string, Reducer* > reducers;
-
-         for(const string &name : names){
-            basis[name] = new BMat(V);
-            if(WITH_DUAL){
-               dualbasis[name] = new BMat(W);
-               lattices[name] = new IntLatticeBasis(*basis[name], *dualbasis[name], modulusRNG, dimension);
+         all_BB_over = true;
+         do{
+            if(!all_BB_over){
+               cout << "/" << endl;
             }
-            else{
-               lattices[name] = new IntLatticeBasis(*basis[name], dimension);
+            ZZ seedZZ = conv<ZZ>((iteration+1) * (iteration+1) * 123456789 * dimension);
+            int seed = (iteration+1) * (iteration+1) * 123456789 * dimension;
+            int seed_dieter = (iteration+1) * dimension * 12342;
+            //int seed = (int) (iteration+1) * 12345 * time(NULL);
+
+            // We create copies of the same basis
+            BMat basis_PairRedPrimal (dimension, dimension);
+            ZZ det;
+            RandomMatrix(basis_PairRedPrimal, det, minCoeff, maxCoeff, seed);
+
+            mat_ZZ V;
+            V = CreateRNGBasis (modulusRNG, order, dimension, seedZZ);
+
+            mat_ZZ W;
+            W = Dualize (V, modulusRNG, order);
+
+            map < string, BMat* > basis;
+            map < string, BMat* > dualbasis;
+            map < string, IntLatticeBasis* > lattices;
+            map < string, Reducer* > reducers;
+
+            for(const string &name : names){
+               basis[name] = new BMat(V);
+               if(WITH_DUAL){
+                  dualbasis[name] = new BMat(W);
+                  lattices[name] = new IntLatticeBasis(*basis[name], *dualbasis[name], modulusRNG, dimension);
+               }
+               else{
+                  lattices[name] = new IntLatticeBasis(*basis[name], dimension);
+               }
+               // IF WE WANT FULL RANDOM MATRIX
+               //basis[name] = new BMat(basis_PairRedPrimal);
+
+               reducers[name] = new Reducer(*lattices[name]);
             }
-            // IF WE WANT FULL RANDOM MATRIX
-            //basis[name] = new BMat(basis_PairRedPrimal);
 
-            reducers[name] = new Reducer(*lattices[name]);
-         }
+            map < string, clock_t > timing;
 
-         map < string, clock_t > timing;
-
-         lattices["initial"] = new IntLatticeBasis(V, dimension);
-         lattices["initial"]->setNegativeNorm(true);
-         lattices["initial"]->updateVecNorm();
-         lattices["initial"]->sort(0);
-         length_results["initial"][id_dimension][iteration] = lattices["initial"]->getVecNorm(0);
+            lattices["initial"] = new IntLatticeBasis(V, dimension);
+            lattices["initial"]->setNegativeNorm(true);
+            lattices["initial"]->updateVecNorm();
+            lattices["initial"]->sort(0);
+            length_results["initial"][id_dimension][iteration] = lattices["initial"]->getVecNorm(0);
 
 
-         clock_t begin = clock();
-         clock_t end = clock();
-         for(const string &name : names){
-            begin = clock();
-            reduce(*reducers[name], name, d, seed_dieter, blocksize, delta, maxcpt, dimension);
-            end = clock();
-            timing_results[name][id_dimension][iteration] = double (end - begin) / CLOCKS_PER_SEC;
-            lattices[name]->setNegativeNorm();
-            lattices[name]->updateVecNorm();
-            lattices[name]->sort(0);
-            //cout << "Norm of " << name << " : " << lattices[name]->getVecNorm(0) << endl;
+            clock_t begin = clock();
+            clock_t end = clock();
 
-         }
+            bool ok = true;
+            for(const string &name : names){
+               begin = clock();
+               ok = reduce(*reducers[name], name, d, seed_dieter, blocksize, delta, maxcpt, dimension);
+               end = clock();
+               all_BB_over = all_BB_over && ok;
+               timing_results[name][id_dimension][iteration] = double (end - begin) / CLOCKS_PER_SEC;
+               lattices[name]->setNegativeNorm();
+               lattices[name]->updateVecNorm();
+               lattices[name]->sort(0);
+               //cout << "Norm of " << name << " : " << lattices[name]->getVecNorm(0) << endl;
 
-         for(const string &name : names2){
-            //cout << "Norm of " << name << " : " << lattices[name]->getVecNorm(0) << endl;
-            begin = clock();
-            reduce2(*reducers[name], name, d, seed_dieter, blocksize, delta, maxcpt, dimension);
-            end = clock();
-            timing_results[name+"2"][id_dimension][iteration] = double (end - begin) / CLOCKS_PER_SEC;
-            lattices[name]->setNegativeNorm();
-            lattices[name]->updateVecNorm();
-            lattices[name]->sort(0);
-            //cout << "Norm of " << name << " : " << lattices[name]->getVecNorm(0) << endl;
-         }
+            }
+
+            for(const string &name : names2){
+               //cout << "Norm of " << name << " : " << lattices[name]->getVecNorm(0) << endl;
+               begin = clock();
+               ok = reduce2(*reducers[name], name, d, seed_dieter, blocksize, delta, maxcpt, dimension);
+               end = clock();
+               all_BB_over = all_BB_over && ok;
+               timing_results[name+"2"][id_dimension][iteration] = double (end - begin) / CLOCKS_PER_SEC;
+               lattices[name]->setNegativeNorm();
+               lattices[name]->updateVecNorm();
+               lattices[name]->sort(0);
+               //cout << "Norm of " << name << " : " << lattices[name]->getVecNorm(0) << endl;
+            }
 
 
 
-         for(const string &name : names){
-            if((lattices[name]->getVecNorm(0) - lattices["BB_Classic"]->getVecNorm(0)) > 0.1)
-               nb_diff[name]++;
-            length_results[name][id_dimension][iteration] = lattices[name]->getVecNorm(0);
-         }
+            for(const string &name : names){
+               if((lattices[name]->getVecNorm(0) - lattices["BB_Classic"]->getVecNorm(0)) > 0.1)
+                  nb_diff[name]++;
+               length_results[name][id_dimension][iteration] = lattices[name]->getVecNorm(0);
+            }
 
-         if((lattices["initial"]->getVecNorm(0) - lattices["BB_Classic"]->getVecNorm(0)) > 0.1)
-               nb_diff["initial"]++;
+            if((lattices["initial"]->getVecNorm(0) - lattices["BB_Classic"]->getVecNorm(0)) > 0.1)
+                  nb_diff["initial"]++;
 
-         for(const string &name : names){
-            basis[name]->BMat::clear();
-            //dualbasis[name]->kill();
-            delete lattices[name];
-            delete reducers[name];
-         }
+            for(const string &name : names){
+               basis[name]->BMat::clear();
+               //dualbasis[name]->kill();
+               delete lattices[name];
+               delete reducers[name];
+            }
 
-         delete lattices["initial"];
+            delete lattices["initial"];
 
+            ++show_progress;
+         } while(!all_BB_over);
          ++show_progress;
       }
 

@@ -10,7 +10,7 @@
 // select pre compiling options
 //----------------------------------------------------------------------------------------
 
-#define PRINT_CONSOLE
+#define WITH_R
 
 //----------------------------------------------------------------------------------------
 
@@ -68,15 +68,16 @@ bool WITH_DUAL = false;
 
 
 // ireration loop over the dimension of lattices
-const int MinDimension = 16;
+const int MinDimension = 5;
 #ifdef PRINT_CONSOLE
 const int MaxDimension = MinDimension + 1;
 #else
-const int MaxDimension = 20;
+const int MaxDimension = 12;
 #endif
 
+
 // order
-const int order = 5;
+const int order = 4;
 
 // iteration loop over matrices of same dimension
 const int maxIteration = 10;
@@ -135,14 +136,14 @@ string names2[] = {
 //----------------------------------------------------------------------------------------
 
 #ifdef WITH_R
-template <typename type>
-Rcpp::NumericMatrix toRcppMatrix(const type scal[][Interval_dim], const int & maxIteration)
+template <typename Type, unsigned long Size, unsigned long Size2>
+Rcpp::NumericMatrix toRcppMatrix( const array<array<Type, Size>, Size2> array)
 {
 
    Rcpp::NumericMatrix mat(maxIteration, Interval_dim);
-   for (int i = 0; i<maxIteration ; i++) {
-      for (int j = 0; j<Interval_dim; j++) {
-         conv(mat(i,j), scal[i][j]);
+   for (int i = 0; i<Size ; i++) {
+      for (int j = 0; j<Size2; j++) {
+         conv(mat(i,j), array[j][i]);
       }
    }
    return mat;
@@ -275,7 +276,6 @@ void reduce(Reducer & red, const string & name, const int & d){
 
 
 void reduce(Reducer & red, const string & name, const int & d, int & seed_dieter, const int & blocksize, const double & delta, const int maxcpt, int dimension){
-   //cout << name << endl;
 
    //------------------------------------------------------------------------------------
    // Pairwise reduction in primal basis only
@@ -445,8 +445,6 @@ void reduce2(Reducer & red, const string & name, const int & d, int & seed_diete
 //****************************************************************************************************
 
 int main (int argc, char *argv[])
-
-
 {
    // printing total running time
    clock_t begin = clock();
@@ -461,9 +459,10 @@ int main (int argc, char *argv[])
    cout << endl;
 
    // Stock Results
-   map<string, map<int, array<NScal, maxIteration> > > length_results;
-   map<string, map<int, array<double, maxIteration> > > timing_results;
+   map<string, array< array<NScal, maxIteration>, Interval_dim > > length_results;
+   map<string, array< array<double, maxIteration>, Interval_dim > > timing_results;
    map<string, int> nb_diff;
+
    // old declaration using C-style arrays not accepted by some compilators
    //map<string, map<int, NScal[maxIteration]> > length_results;
    //map<string, map<int, double[maxIteration]> > timing_results;
@@ -472,8 +471,11 @@ int main (int argc, char *argv[])
    boost::progress_display show_progress(maxIteration*Interval_dim);
 
    // arrays to store values
-
+   int id_dimension = 0;
+   
    for (int dimension = MinDimension; dimension < MaxDimension; dimension++){
+
+      id_dimension = dimension - MinDimension;
 
       for (int iteration = 0; iteration < maxIteration; iteration++){
 
@@ -519,7 +521,7 @@ int main (int argc, char *argv[])
          lattices["initial"]->setNegativeNorm(true);
          lattices["initial"]->updateVecNorm();
          lattices["initial"]->sort(0);
-         length_results["initial"][dimension][iteration] = lattices["initial"]->getVecNorm(0);
+         length_results["initial"][id_dimension][iteration] = lattices["initial"]->getVecNorm(0);
 
 
          clock_t begin = clock();
@@ -528,7 +530,7 @@ int main (int argc, char *argv[])
             begin = clock();
             reduce(*reducers[name], name, d, seed_dieter, blocksize, delta, maxcpt, dimension);
             end = clock();
-            timing_results[name][dimension][iteration] = double (end - begin) / CLOCKS_PER_SEC;
+            timing_results[name][id_dimension][iteration] = double (end - begin) / CLOCKS_PER_SEC;
             lattices[name]->setNegativeNorm();
             lattices[name]->updateVecNorm();
             lattices[name]->sort(0);
@@ -541,7 +543,7 @@ int main (int argc, char *argv[])
             begin = clock();
             reduce2(*reducers[name], name, d, seed_dieter, blocksize, delta, maxcpt, dimension);
             end = clock();
-            timing_results[name+"2"][dimension][iteration] = double (end - begin) / CLOCKS_PER_SEC;
+            timing_results[name+"2"][id_dimension][iteration] = double (end - begin) / CLOCKS_PER_SEC;
             lattices[name]->setNegativeNorm();
             lattices[name]->updateVecNorm();
             lattices[name]->sort(0);
@@ -553,7 +555,7 @@ int main (int argc, char *argv[])
          for(const string &name : names){
             if((lattices[name]->getVecNorm(0) - lattices["BB_Classic"]->getVecNorm(0)) > 0.1)
                nb_diff[name]++;
-            length_results[name][dimension][iteration] = lattices[name]->getVecNorm(0);
+            length_results[name][id_dimension][iteration] = lattices[name]->getVecNorm(0);
          }
 
          if((lattices["initial"]->getVecNorm(0) - lattices["BB_Classic"]->getVecNorm(0)) > 0.1)
@@ -593,38 +595,38 @@ int main (int argc, char *argv[])
    // print statistics
    cout << "\n---------------- TIMING AVG ----------------\n" << endl;
 
-   cout << "       PairRedPrimal = " << mean(timing_results["PairRedPrimal"][MinDimension]) << "( +/- " << variance(timing_results["PairRedPrimal"][MinDimension]) << ")" << endl;
-   cout << " PairRedPrimalRandom = " << mean(timing_results["PairRedPrimalRandomized"][MinDimension]) << "( +/- " << variance(timing_results["PairRedPrimalRandomized"][MinDimension]) << ")" << endl;
+   cout << "       PairRedPrimal = " << mean(timing_results["PairRedPrimal"][0]) << "( +/- " << variance(timing_results["PairRedPrimal"][0]) << ")" << endl;
+   cout << " PairRedPrimalRandom = " << mean(timing_results["PairRedPrimalRandomized"][0]) << "( +/- " << variance(timing_results["PairRedPrimalRandomized"][0]) << ")" << endl;
    cout << endl;
 
-   cout << "                 LLL = " << mean(timing_results["LLL"][MinDimension]) << "( +/- " << variance(timing_results["LLL"][MinDimension]) << ")" << endl;
-   cout << "         PairRed+LLL = " << mean(timing_results["PairRedPrimal_LLL"][MinDimension]) + mean(timing_results["PairRedPrimal_LLL2"][MinDimension]);
-   cout << " (" << mean(timing_results["PairRedPrimal_LLL2"][MinDimension]) << ") ( +/- " << variance(timing_results["PairRedPrimal_LLL2"][MinDimension]) << ")" << endl;
-   cout << "   PairRedRandom+LLL = " << mean(timing_results["PairRedPrimalRandomized_LLL"][MinDimension]) + mean(timing_results["PairRedPrimalRandomized_LLL2"][MinDimension]);
-   cout << " (" << mean(timing_results["PairRedPrimalRandomized_LLL2"][MinDimension]) << ") ( +/- " << variance(timing_results["PairRedPrimalRandomized_LLL2"][MinDimension]) << ")" << endl;
+   cout << "                 LLL = " << mean(timing_results["LLL"][0]) << "( +/- " << variance(timing_results["LLL"][0]) << ")" << endl;
+   cout << "         PairRed+LLL = " << mean(timing_results["PairRedPrimal_LLL"][0]) + mean(timing_results["PairRedPrimal_LLL2"][0]);
+   cout << " (" << mean(timing_results["PairRedPrimal_LLL2"][0]) << ") ( +/- " << variance(timing_results["PairRedPrimal_LLL2"][0]) << ")" << endl;
+   cout << "   PairRedRandom+LLL = " << mean(timing_results["PairRedPrimalRandomized_LLL"][0]) + mean(timing_results["PairRedPrimalRandomized_LLL2"][0]);
+   cout << " (" << mean(timing_results["PairRedPrimalRandomized_LLL2"][0]) << ") ( +/- " << variance(timing_results["PairRedPrimalRandomized_LLL2"][0]) << ")" << endl;
    cout << endl;
 
-   cout << "              LLLNTL = " << mean(timing_results["LLLNTL"][MinDimension]) << "( +/- " << variance(timing_results["LLLNTL"][MinDimension]) << ")" << endl;
-   cout << "      PairRed+LLLNTL = " << mean(timing_results["PairRedPrimal_LLLNTL"][MinDimension]) + mean(timing_results["PairRedPrimal_LLLNTL2"][MinDimension]);
-   cout << " (" << mean(timing_results["PairRedPrimal_LLLNTL2"][MinDimension]) << ") ( +/- " << variance(timing_results["PairRedPrimal_LLLNTL"][MinDimension]) << ")" << endl;
-   cout << "PairRedRandom+LLLNTL = " << mean(timing_results["PairRedPrimalRandomized_LLLNTL"][MinDimension]) + mean(timing_results["PairRedPrimalRandomized_LLLNTL2"][MinDimension]);
-   cout << " (" << mean(timing_results["PairRedPrimalRandomized_LLLNTL2"][MinDimension]) << ") ( +/- " << variance(timing_results["PairRedPrimalRandomized_LLLNTL2"][MinDimension]) << ")" << endl;
+   cout << "              LLLNTL = " << mean(timing_results["LLLNTL"][0]) << "( +/- " << variance(timing_results["LLLNTL"][0]) << ")" << endl;
+   cout << "      PairRed+LLLNTL = " << mean(timing_results["PairRedPrimal_LLLNTL"][0]) + mean(timing_results["PairRedPrimal_LLLNTL2"][0]);
+   cout << " (" << mean(timing_results["PairRedPrimal_LLLNTL2"][0]) << ") ( +/- " << variance(timing_results["PairRedPrimal_LLLNTL"][0]) << ")" << endl;
+   cout << "PairRedRandom+LLLNTL = " << mean(timing_results["PairRedPrimalRandomized_LLLNTL"][0]) + mean(timing_results["PairRedPrimalRandomized_LLLNTL2"][0]);
+   cout << " (" << mean(timing_results["PairRedPrimalRandomized_LLLNTL2"][0]) << ") ( +/- " << variance(timing_results["PairRedPrimalRandomized_LLLNTL2"][0]) << ")" << endl;
    cout << endl;
 
    //cout << "        LLLNTL_Exact = " << mean(timing_LLL_NTL_Exact) << endl;
    cout << endl;
 
-   cout << "              BKZNTL = " << mean(timing_results["BKZNTL"][MinDimension]) << ") ( +/- " << variance(timing_results["BKZNTL"][MinDimension]) << ")" << endl;
-   cout << "      PairRed+BKZNTL = " << mean(timing_results["PairRedPrimal_BKZNTL"][MinDimension]) + mean(timing_results["PairRedPrimal_BKZNTL2"][MinDimension]);
-   cout << " (" << mean(timing_results["PairRedPrimal_BKZNTL2"][MinDimension]) << ") ( +/- " << variance(timing_results["PairRedPrimal_BKZNTL2"][MinDimension]) << ")" << endl;
-   cout << "PairRedRandom+BKZNTL = " << mean(timing_results["PairRedPrimalRandomized_BKZNTL"][MinDimension]) + mean(timing_results["PairRedPrimalRandomized_BKZNTL2"][MinDimension]);
-   cout << " (" << mean(timing_results["PairRedPrimalRandomized_BKZNTL2"][MinDimension]) << ") ( +/- " << variance(timing_results["PairRedPrimalRandomized_BKZNTL2"][MinDimension]) << ")" << endl;
+   cout << "              BKZNTL = " << mean(timing_results["BKZNTL"][0]) << ") ( +/- " << variance(timing_results["BKZNTL"][0]) << ")" << endl;
+   cout << "      PairRed+BKZNTL = " << mean(timing_results["PairRedPrimal_BKZNTL"][0]) + mean(timing_results["PairRedPrimal_BKZNTL2"][0]);
+   cout << " (" << mean(timing_results["PairRedPrimal_BKZNTL2"][0]) << ") ( +/- " << variance(timing_results["PairRedPrimal_BKZNTL2"][0]) << ")" << endl;
+   cout << "PairRedRandom+BKZNTL = " << mean(timing_results["PairRedPrimalRandomized_BKZNTL"][0]) + mean(timing_results["PairRedPrimalRandomized_BKZNTL2"][0]);
+   cout << " (" << mean(timing_results["PairRedPrimalRandomized_BKZNTL2"][0]) << ") ( +/- " << variance(timing_results["PairRedPrimalRandomized_BKZNTL2"][0]) << ")" << endl;
    cout << endl;
 
-   cout << "          BB Classic = " << mean(timing_results["BB_Classic"][MinDimension]) + mean(timing_results["BB_Classic2"][MinDimension]);
-   cout << " (" << mean(timing_results["BB_Classic2"][MinDimension]) << ") ( +/- " << variance(timing_results["BB_Classic2"][MinDimension]) << ")" ")" << endl,
-   cout << "              BB BKZ = " << mean(timing_results["BB_BKZ"][MinDimension]) + mean(timing_results["BB_BKZ2"][MinDimension]);
-   cout << " (" << mean(timing_results["BB_BKZ2"][MinDimension]) << ") ( +/- " << variance(timing_results["BB_BKZ2"][MinDimension]) << ")";
+   cout << "          BB Classic = " << mean(timing_results["BB_Classic"][0]) + mean(timing_results["BB_Classic2"][0]);
+   cout << " (" << mean(timing_results["BB_Classic2"][0]) << ") ( +/- " << variance(timing_results["BB_Classic2"][0]) << ")" ")" << endl,
+   cout << "              BB BKZ = " << mean(timing_results["BB_BKZ"][0]) + mean(timing_results["BB_BKZ2"][0]);
+   cout << " (" << mean(timing_results["BB_BKZ2"][0]) << ") ( +/- " << variance(timing_results["BB_BKZ2"][0]) << ")";
    if (WITH_DUAL)
       cout << " BB NON EFFECTUER CAR UTILISATION DU DUAL" << endl;
    else
@@ -632,12 +634,12 @@ int main (int argc, char *argv[])
 
    cout << endl;
 
-   //cout << "    Dieter Reduction = " << mean(timing_results["DIETER"][MinDimension]);
+   //cout << "    Dieter Reduction = " << mean(timing_results["DIETER"][0]);
    //if (!WITH_DUAL)
    //   cout << " DIETER NON EFFECTUER CAR DUAL NECESSAIRE" << endl;
    //else
    //   cout << endl;
-   cout << " Minkowski Reduction = " << mean(timing_results["MINKOWSKI"][MinDimension]) << endl;
+   cout << " Minkowski Reduction = " << mean(timing_results["MINKOWSKI"][0]) << endl;
 
    cout << "\n--------------------------------------------" << endl;
 
@@ -645,35 +647,35 @@ int main (int argc, char *argv[])
 
    cout << "\n---------------- LENGTH AVG ----------------\n" << endl;
 
-   cout << "             Initial = " << conv<ZZ>(mean(length_results["initial"][MinDimension])) << " Error Rate : " << (double) nb_diff["initial"]/maxIteration << endl;
+   cout << "             Initial = " << conv<ZZ>(mean(length_results["initial"][0])) << " Error Rate : " << (double) nb_diff["initial"]/maxIteration << endl;
 
-   cout << "       PairRedPrimal = " << conv<ZZ>(mean(length_results["PairRedPrimal"][MinDimension])) << " Error Rate : " << (double) nb_diff["PairRedPrimal"]/maxIteration << endl;
-   cout << " PairRedPrimalRandom = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized"][MinDimension])) << " Error Rate : " << (double) nb_diff["PairRedPrimalRandomized"]/maxIteration << endl;
+   cout << "       PairRedPrimal = " << conv<ZZ>(mean(length_results["PairRedPrimal"][0])) << " Error Rate : " << (double) nb_diff["PairRedPrimal"]/maxIteration << endl;
+   cout << " PairRedPrimalRandom = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized"][0])) << " Error Rate : " << (double) nb_diff["PairRedPrimalRandomized"]/maxIteration << endl;
    cout << endl;
 
-   cout << "                 LLL = " << conv<ZZ>(mean(length_results["LLL"][MinDimension])) << " Error Rate : " << (double) nb_diff["LLL"]/maxIteration << endl;
-   cout << "         PairRed+LLL = " << conv<ZZ>(mean(length_results["PairRedPrimal_LLL"][MinDimension])) << " Error Rate : " << (double) nb_diff["PairRedPrimal_LLL"]/maxIteration << endl;
-   cout << "   PairRedRandom+LLL = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized_LLL"][MinDimension])) << " Error Rate : " << (double) nb_diff["PairRedPrimalRandomized_LLL"]/maxIteration << endl;
+   cout << "                 LLL = " << conv<ZZ>(mean(length_results["LLL"][0])) << " Error Rate : " << (double) nb_diff["LLL"]/maxIteration << endl;
+   cout << "         PairRed+LLL = " << conv<ZZ>(mean(length_results["PairRedPrimal_LLL"][0])) << " Error Rate : " << (double) nb_diff["PairRedPrimal_LLL"]/maxIteration << endl;
+   cout << "   PairRedRandom+LLL = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized_LLL"][0])) << " Error Rate : " << (double) nb_diff["PairRedPrimalRandomized_LLL"]/maxIteration << endl;
    cout << endl;
 
-   cout << "              LLLNTL = " << conv<ZZ>(mean(length_results["LLLNTL"][MinDimension])) << " Error Rate : " << (double) nb_diff["LLLNTL"]/maxIteration << endl;
-   cout << "      PairRed+LLLNTL = " << conv<ZZ>(mean(length_results["PairRedPrimal_LLLNTL"][MinDimension])) << " Error Rate : " << (double) nb_diff["PairRedPrimal_LLLNTL"]/maxIteration << endl;
-   cout << "PairRedRandom+LLLNTL = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized_LLLNTL"][MinDimension])) << " Error Rate : " << (double) nb_diff["PairRedPrimalRandomized_LLLNTL"]/maxIteration << endl;
+   cout << "              LLLNTL = " << conv<ZZ>(mean(length_results["LLLNTL"][0])) << " Error Rate : " << (double) nb_diff["LLLNTL"]/maxIteration << endl;
+   cout << "      PairRed+LLLNTL = " << conv<ZZ>(mean(length_results["PairRedPrimal_LLLNTL"][0])) << " Error Rate : " << (double) nb_diff["PairRedPrimal_LLLNTL"]/maxIteration << endl;
+   cout << "PairRedRandom+LLLNTL = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized_LLLNTL"][0])) << " Error Rate : " << (double) nb_diff["PairRedPrimalRandomized_LLLNTL"]/maxIteration << endl;
    cout << endl;
    cout << endl;
 
-   cout << "              BKZNTL = " << conv<ZZ>(mean(length_results["BKZNTL"][MinDimension])) << " Error Rate : " << (double) nb_diff["BKZNTL"]/maxIteration << endl;
-   cout << "      PairRed+BKZNTL = " << conv<ZZ>(mean(length_results["PairRedPrimal_BKZNTL"][MinDimension])) << " Error Rate : " << (double) nb_diff["PairRedPrimal_BKZNTL"]/maxIteration << endl;
-   cout << "PairRedRandom+BKZNTL = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized_BKZNTL"][MinDimension])) << " Error Rate : " << (double) nb_diff["PairRedPrimalRandomized_BKZNTL"]/maxIteration << endl;
+   cout << "              BKZNTL = " << conv<ZZ>(mean(length_results["BKZNTL"][0])) << " Error Rate : " << (double) nb_diff["BKZNTL"]/maxIteration << endl;
+   cout << "      PairRed+BKZNTL = " << conv<ZZ>(mean(length_results["PairRedPrimal_BKZNTL"][0])) << " Error Rate : " << (double) nb_diff["PairRedPrimal_BKZNTL"]/maxIteration << endl;
+   cout << "PairRedRandom+BKZNTL = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized_BKZNTL"][0])) << " Error Rate : " << (double) nb_diff["PairRedPrimalRandomized_BKZNTL"]/maxIteration << endl;
    cout << endl;
 
-   //cout << "             BB Only = " << conv<ZZ>(mean(length_results["PairRedPrimal_BKZNTL"][MinDimension])) << " Error Rate : " << (double) nb_diff[name]/maxIteration << endl;
-   cout << "          BB Classic = " << conv<ZZ>(mean(length_results["BB_Classic"][MinDimension])) << " Error Rate : " << (double) nb_diff["BB_Classic"]/maxIteration << endl,
-   cout << "              BB BKZ = " << conv<ZZ>(mean(length_results["BB_BKZ"][MinDimension])) << " Error Rate : " << (double) nb_diff["BB_BKZ"]/maxIteration << endl;
+   //cout << "             BB Only = " << conv<ZZ>(mean(length_results["PairRedPrimal_BKZNTL"][0])) << " Error Rate : " << (double) nb_diff[name]/maxIteration << endl;
+   cout << "          BB Classic = " << conv<ZZ>(mean(length_results["BB_Classic"][0])) << " Error Rate : " << (double) nb_diff["BB_Classic"]/maxIteration << endl,
+   cout << "              BB BKZ = " << conv<ZZ>(mean(length_results["BB_BKZ"][0])) << " Error Rate : " << (double) nb_diff["BB_BKZ"]/maxIteration << endl;
    cout << endl;
 
-   //cout << "    Dieter Reduction = " << conv<ZZ>(mean(length_results["DIETER"][MinDimension])) << " Error Rate : " << (double) nb_diff[name]/maxIteration << endl,
-   cout << " Minkowski Reduction = " << conv<ZZ>(mean(length_results["MINKOWSKI"][MinDimension])) << " Error Rate : " << (double) nb_diff["MINKOWSKI"]/maxIteration << endl;
+   //cout << "    Dieter Reduction = " << conv<ZZ>(mean(length_results["DIETER"][0])) << " Error Rate : " << (double) nb_diff[name]/maxIteration << endl,
+   cout << " Minkowski Reduction = " << conv<ZZ>(mean(length_results["MINKOWSKI"][0])) << " Error Rate : " << (double) nb_diff["MINKOWSKI"]/maxIteration << endl;
 
    cout << "\n--------------------------------------------" << endl;
 
@@ -693,6 +695,10 @@ int main (int argc, char *argv[])
    R["Maxdimension"] = MaxDimension;
    R["dimension"] = Interval_dim;
    //R["timing_Initial"] = toRcppMatrix(timing_Initial, maxIteration);
+   for(const string &name : names){
+      R[name] = toRcppMatrix(timing_results[name]);
+   }
+   /*
    R["timing_PairRedPrimal"] = toRcppMatrix<double>(timing_PairRedPrimal, maxIteration);
    R["timing_PairRedPrimalRandomized"] = toRcppMatrix<double>(timing_PairRedPrimalRandomized, maxIteration);
    R["timing_LLL"] = toRcppMatrix<double>(timing_LLL, maxIteration);
@@ -704,7 +710,7 @@ int main (int argc, char *argv[])
    R["timing_BKZNTL"] = toRcppMatrix<double>(timing_BKZNTL, maxIteration);
    R["timing_BKZNTL_PostPairRedPrimal"] = toRcppMatrix<double>(timing_BKZNTL_PostPairRedPrimal, maxIteration);
    R["timing_BKZNTL_PostPairRedPrimalRandomized"] = toRcppMatrix<double>(timing_BKZNTL_PostPairRedPrimalRandomized, maxIteration);
-   R["timing_BB_Only"] = toRcppMatrix<double>(timing_BB_Only, maxIteration);
+   R["timing_BB_Only"] = toRcppMatrix<double>(timing_BB_Only, maxIteration);*/
     //R["timing_LLLNTL"] = 4;
 
    /*std::string str =
@@ -722,7 +728,12 @@ int main (int argc, char *argv[])
 
    // alternatively, by forcing a display we can plot to screen
    string library = "library(ggplot2); ";
-   string build_data_frame =
+   string build_data_frame = "df <- data.frame(indice = seq(1:dimension)";
+   for(const string &name : names){
+      build_data_frame += ", col_" + name + " =colMeans(" + name + ")";
+   }
+   build_data_frame += ");";
+   /*
    "df <- data.frame(indice = seq(1:dimension),"
      "PairRedPrimal=colMeans(timing_PairRedPrimal), "
      "PairRedPrimalRandomized = colMeans(timing_PairRedPrimalRandomized),"
@@ -736,9 +747,14 @@ int main (int argc, char *argv[])
      "BKZNTL_PostPairRedPrimal = colMeans(timing_BKZNTL_PostPairRedPrimal),"
      "BKZNTL_PostPairRedPrimalRandomized = colMeans(timing_BKZNTL_PostPairRedPrimalRandomized),"
      "BB_Only = colMeans(timing_BB_Only)"
-     ");";
+     ");"; */
 
-   string build_plot =
+   string build_plot = "myPlot <- ggplot() + ";
+   for(const string &name : names){
+      build_plot += "geom_line(data=df, aes(x=indice, y=col_" + name + ", color ='col_" + name + "')) + ";
+   }
+   build_plot += "labs(color='Legend text'); ";
+   /*
    "myPlot <- ggplot() + "
      "geom_line(data=df, aes(x=indice, y=PairRedPrimal, color ='PairRedPrimal')) + "
      "geom_line(data=df, aes(x=indice, y=PairRedPrimalRandomized, color ='PairRedPrimalRandomized')) +"
@@ -752,7 +768,7 @@ int main (int argc, char *argv[])
      "geom_line(data=df, aes(x=indice, y=BKZNTL_PostPairRedPrimal, color ='BKZNTL_PostPairRedPrimal')) +"
      "geom_line(data=df, aes(x=indice, y=BKZNTL_PostPairRedPrimalRandomized, color ='BKZNTL_PostPairRedPrimalRandomized')) +"
      "geom_line(data=df, aes(x=indice, y=BB_Only, color ='BB_Only')) +"
-     "labs(color='Legend text'); ";
+     "labs(color='Legend text'); "; */
 
 
    string print_plot =

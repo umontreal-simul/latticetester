@@ -63,6 +63,25 @@ using namespace LatticeTester;
 // projection parameters definition
 //----------------------------------------------------------------------------------------
 
+// Use of the Dual
+bool WITH_DUAL = true;
+
+
+// ireration loop over the dimension of lattices
+const int MinDimension = 10;
+#ifdef PRINT_CONSOLE
+const int MaxDimension = MinDimension + 1;
+#else
+const int MaxDimension = 20;
+#endif
+
+// order
+const int order = 3;
+
+// iteration loop over matrices of same dimension
+const int maxIteration = 1;
+
+// Epsilon
 const long a = 999999;
 const long b = 1000000;
 const double delta = (double) a/b;
@@ -74,21 +93,6 @@ const long blocksize = 10; // for BKZ insertions
 
 // modulus
 const ZZ modulusRNG = power_ZZ(2, 31) - 1;
-
-// order
-const int k = 10;
-
-// iteration loop over matrices of same dimension
-const int maxIteration = 1;
-
-// ireration loop over the dimension of lattices
-
-const int MaxDimension = 20;
-#ifdef PRINT_CONSOLE
-const int MinDimension = MaxDimension - 1;
-#else
-const int MinDimension = 10;
-#endif
 
 const int Interval_dim = MaxDimension - MinDimension;
 
@@ -198,12 +202,12 @@ vec_ZZ randomVector (int dimension, ZZ modulus, ZZ seed)
 	return vector;
 }
 
-mat_ZZ CreateRNGBasis (const ZZ modulus, const int k, const int dimension, ZZ seed)
+mat_ZZ CreateRNGBasis (const ZZ modulus, const int order, const int dimension, ZZ seed)
 {
 	mat_ZZ basis;
 	basis.SetDims(dimension,dimension);
 
-	if (dimension < k+1) {
+	if (dimension < order+1) {
 		// degenerate case: identity matrix only
 		for (int i = 0; i < dimension; i++)
 			basis[i][i] = 1;
@@ -212,23 +216,23 @@ mat_ZZ CreateRNGBasis (const ZZ modulus, const int k, const int dimension, ZZ se
 
 		// (a_i) coefficients
 		vec_ZZ a;
-		a = randomVector(k, modulus, seed);
+		a = randomVector(order, modulus, seed);
 
-		for (int i = 0; i < k; i++) {
+		for (int i = 0; i < order; i++) {
 			// left upper block
 			basis[i][i] = 1;
 
 			//right upper block
 			vec_ZZ initialState;
-			initialState = canonicVector(k, i);
-			SimpleMRG myMRG (modulus, k, a, initialState);
+			initialState = canonicVector(order, i);
+			SimpleMRG myMRG (modulus, order, a, initialState);
 
-			for (int l = k; l < dimension; l++)
+			for (int l = order; l < dimension; l++)
 				basis[i][l] = conv<ZZ>(myMRG.getNextValue());
 		}
 
 		// right lower block
-		for (int i = k; i < dimension; i++)
+		for (int i = order; i < dimension; i++)
 			basis[i][i] = modulus;
 
 	} // end if
@@ -404,8 +408,9 @@ void reduce2(Reducer & red, const string & name, const int & d, int & seed_diete
    //------------------------------------------------------------------------------------
    // Branch and Bound post BKZ
    //------------------------------------------------------------------------------------
-   if(name =="BB_BKZ")
+   if(name =="BB_BKZ" && !WITH_DUAL){
       red.shortestVector(L2NORM);
+   }
 }
 
 
@@ -423,10 +428,11 @@ int main (int argc, char *argv[])
 
    // Print parameters
    cout << "epsilon = " << epsilon << endl;
-   //cout << "dimension = " << dimension << endl;
+   cout << "dimension = " << MinDimension << endl;
    cout << "nombre de matrices testées = " << maxIteration << endl;
-   cout << "dimension minimale : " << MinDimension << endl;
-   cout << "dimension maximale : " << MaxDimension << endl;
+   //cout << "dimension minimale : " << MinDimension << endl;
+   //cout << "dimension maximale : " << MaxDimension << endl;
+   cout << "ordre de la matrice : " << order << endl;
    cout << endl;
 
    // Stock Results
@@ -450,18 +456,16 @@ int main (int argc, char *argv[])
          int seed_dieter = (iteration+1) * dimension * 12342;
          //int seed = (int) (iteration+1) * 12345 * time(NULL);
 
-         int idx = dimension - MinDimension; // Stock the indices for table
-
          // We create copies of the same basis
          BMat basis_PairRedPrimal (dimension, dimension);
          ZZ det;
          RandomMatrix(basis_PairRedPrimal, det, minCoeff, maxCoeff, seed);
 
          mat_ZZ V;
-         V = CreateRNGBasis (modulusRNG, k, dimension, seedZZ);
-
+         V = CreateRNGBasis (modulusRNG, order, dimension, seedZZ);
+         
          mat_ZZ W;
-         W = Dualize (V, modulusRNG, k);
+         W = Dualize (V, modulusRNG, order);
 
          map < string, BMat* > basis;
          map < string, BMat* > dualbasis;
@@ -470,10 +474,16 @@ int main (int argc, char *argv[])
 
          for(const string &name : names){
             basis[name] = new BMat(V);
-            //dualbasis[name] = new BMat(W);
-            //lattices[name] = new IntLatticeBasis(*basis[name], *dualbasis[name], modulus, dimension);
+            if(WITH_DUAL){
+               dualbasis[name] = new BMat(W);
+               lattices[name] = new IntLatticeBasis(*basis[name], *dualbasis[name], modulusRNG, dimension);
+            }
+            else{
+               lattices[name] = new IntLatticeBasis(*basis[name], dimension);
+            }
+            // IF WE WANT FULL RANDOM MATRIX
             //basis[name] = new BMat(basis_PairRedPrimal);
-            lattices[name] = new IntLatticeBasis(*basis[name], dimension);
+            
             reducers[name] = new Reducer(*lattices[name]);
          }
 
@@ -515,13 +525,14 @@ int main (int argc, char *argv[])
          for(const string &name : names){
             length_results[name][dimension][iteration] = lattices[name]->getVecNorm(0);
          }
+         
+         
 
          for(const string &name : names){
             basis[name]->BMat::clear();
             //dualbasis[name]->kill();
             delete lattices[name];
             delete reducers[name];
-
          }
 
          delete lattices["initial"];
@@ -543,6 +554,10 @@ int main (int argc, char *argv[])
    cout << "epsilon = " << epsilon << endl;
    cout << "dimension = " << MinDimension << endl;
    cout << "nombre de matrices testées = " << maxIteration << endl;
+   if(WITH_DUAL)
+      cout << "Dual utilisé" << endl;
+   else
+      cout << "Dual non utilisé" << endl;
 
    // print statistics
    cout << "\n---------------- TIMING AVG ----------------\n" << endl;
@@ -579,7 +594,10 @@ int main (int argc, char *argv[])
    cout << "          BB Classic = " << Average(timing_results["BB_Classic"][MinDimension]) + Average(timing_results["BB_Classic2"][MinDimension]);
    cout << " (" << Average(timing_results["BB_Classic2"][MinDimension]) << ")" << endl,
    cout << "              BB BKZ = " << Average(timing_results["BB_BKZ"][MinDimension]) + Average(timing_results["BB_BKZ2"][MinDimension]);
-   cout << " (" << Average(timing_results["BB_BKZ2"][MinDimension]) << ")" << endl;
+   cout << " (" << Average(timing_results["BB_BKZ2"][MinDimension]) << ")";
+   if (WITH_DUAL){
+      cout << " BB NON EFFECTUER CAR UTILISATION DU DUAL" << endl;
+   }
 
    cout << "\n--------------------------------------------" << endl;
 
@@ -609,7 +627,7 @@ int main (int argc, char *argv[])
    cout << "PairRedRandom+BKZNTL = " << conv<ZZ>(Average(length_results["PairRedPrimalRandomized_BKZNTL"][MinDimension])) << endl;
    cout << endl;
 
-   cout << "             BB Only = " << conv<ZZ>(Average(length_results["PairRedPrimal_BKZNTL"][MinDimension])) << endl;
+   //cout << "             BB Only = " << conv<ZZ>(Average(length_results["PairRedPrimal_BKZNTL"][MinDimension])) << endl;
    cout << "          BB Classic = " << conv<ZZ>(Average(length_results["BB_Classic"][MinDimension])) << endl,
    cout << "              BB BKZ = " << conv<ZZ>(Average(length_results["BB_BKZ"][MinDimension])) << endl;
 

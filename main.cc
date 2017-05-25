@@ -486,7 +486,7 @@ int main (int argc, char *argv[])
          all_BB_over = true;
          do{
             if(!all_BB_over){
-               cout << "/" << endl;
+               cout << "/";
             }
             ZZ seedZZ = conv<ZZ>((iteration+1) * (iteration+1) * 123456789 * dimension);
             int seed = (iteration+1) * (iteration+1) * 123456789 * dimension;

@@ -902,7 +902,7 @@ bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const BMat & WTemp)
             // On verifie si on a vraiment trouve un vecteur plus court
             matrix_row<const BMat> row1(m_lat->getBasis(), dim-1);
             m_bv = row1;
-            //    m_bv = m_lat->getBasis ()[dim];
+            //    m_bv = m_lat->getBasis ()[dim-1];
             for (k = 0; k < dim; k++) {
                if (m_zLI[k] != 0) {
                   matrix_row<const BMat> row1(m_lat->getBasis(), k);
@@ -959,8 +959,8 @@ bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const BMat & WTemp)
          if (m_lMin2 >= m_n2[j - 1]) {
             if (!tryZ (j - 1, i, Stage, smaller, WTemp))
                return false;
-         // Des qu'on a trouve quelque chose, on sort de la recursion */
-         // et on retourne dans reductMinkowski.  */
+         // Des qu'on a trouve quelque chose, on sort de la recursion
+         // et on retourne dans reductMinkowski.
             if (smaller)
                return true;
          }

@@ -64,7 +64,7 @@ using namespace LatticeTester;
 //----------------------------------------------------------------------------------------
 
 // Use of the Dual
-bool WITH_DUAL = true;
+bool WITH_DUAL = false;
 
 
 // ireration loop over the dimension of lattices
@@ -177,12 +177,24 @@ void print(string name, Type const(& array)[Size], bool isIntegerOutput) {
 }
 
 template<typename Type, unsigned long Size>
-Type Average(const array <Type, Size> array) {
+Type mean(const array <Type, Size> array) {
    Type sum (0);
    for(int i = 0; i<Size; i++)
        sum += array[i];
    return sum / Size;
 }
+
+template<typename Type, unsigned long Size>
+Type variance(const array <Type, Size> array) {
+   Type sum (0);
+   Type mean_tmp(mean(array));
+   for(int i = 0; i<Size; i++)
+       sum += (array[i] - mean_tmp) * (array[i] - mean_tmp);
+   return sum / Size;
+}
+
+
+
 
 vec_ZZ canonicVector (int dimension, int i)
 {
@@ -354,13 +366,13 @@ void reduce(Reducer & red, const string & name, const int & d, int & seed_dieter
    //------------------------------------------------------------------------------------
    if(name =="BB_BKZ")
       red.redBKZ(delta, blocksize);
-   
+
    //------------------------------------------------------------------------------------
    // Dieter Method
    //------------------------------------------------------------------------------------
    if(name == "DIETER" && WITH_DUAL)
       red.shortestVectorDieter(L2NORM);
-   
+
    //------------------------------------------------------------------------------------
    // Minkowski reduction
    //------------------------------------------------------------------------------------
@@ -476,7 +488,7 @@ int main (int argc, char *argv[])
 
          mat_ZZ V;
          V = CreateRNGBasis (modulusRNG, order, dimension, seedZZ);
-         
+
          mat_ZZ W;
          W = Dualize (V, modulusRNG, order);
 
@@ -496,7 +508,7 @@ int main (int argc, char *argv[])
             }
             // IF WE WANT FULL RANDOM MATRIX
             //basis[name] = new BMat(basis_PairRedPrimal);
-            
+
             reducers[name] = new Reducer(*lattices[name]);
          }
 
@@ -538,8 +550,8 @@ int main (int argc, char *argv[])
          for(const string &name : names){
             length_results[name][dimension][iteration] = lattices[name]->getVecNorm(0);
          }
-         
-         
+
+
 
          for(const string &name : names){
             basis[name]->BMat::clear();
@@ -575,52 +587,51 @@ int main (int argc, char *argv[])
    // print statistics
    cout << "\n---------------- TIMING AVG ----------------\n" << endl;
 
-   cout << "       PairRedPrimal = " << Average(timing_results["PairRedPrimal"][MinDimension]) << endl;
-   cout << " PairRedPrimalRandom = " << Average(timing_results["PairRedPrimalRandomized"][MinDimension]) << endl;
+   cout << "       PairRedPrimal = " << mean(timing_results["PairRedPrimal"][MinDimension]) << "( +/- " << variance(timing_results["PairRedPrimal"][MinDimension]) << ")" << endl;
+   cout << " PairRedPrimalRandom = " << mean(timing_results["PairRedPrimalRandomized"][MinDimension]) << "( +/- " << variance(timing_results["PairRedPrimalRandomized"][MinDimension]) << ")" << endl;
    cout << endl;
 
-   cout << "                 LLL = " << Average(timing_results["LLL"][MinDimension]) << endl;
-   cout << "         PairRed+LLL = " << Average(timing_results["PairRedPrimal_LLL"][MinDimension]) + Average(timing_results["PairRedPrimal_LLL2"][MinDimension]);
-   cout << " (" << Average(timing_results["PairRedPrimal_LLL2"][MinDimension]) << ")" << endl;
-   cout << "   PairRedRandom+LLL = " << Average(timing_results["PairRedPrimalRandomized_LLL"][MinDimension]) + Average(timing_results["PairRedPrimalRandomized_LLL2"][MinDimension]);
-   cout << " (" << Average(timing_results["PairRedPrimalRandomized_LLL2"][MinDimension]) << ")" << endl;
+   cout << "                 LLL = " << mean(timing_results["LLL"][MinDimension]) << "( +/- " << variance(timing_results["LLL"][MinDimension]) << ")" << endl;
+   cout << "         PairRed+LLL = " << mean(timing_results["PairRedPrimal_LLL"][MinDimension]) + mean(timing_results["PairRedPrimal_LLL2"][MinDimension]);
+   cout << " (" << mean(timing_results["PairRedPrimal_LLL2"][MinDimension]) << ") ( +/- " << variance(timing_results["PairRedPrimal_LLL2"][MinDimension]) << ")" << endl;
+   cout << "   PairRedRandom+LLL = " << mean(timing_results["PairRedPrimalRandomized_LLL"][MinDimension]) + mean(timing_results["PairRedPrimalRandomized_LLL2"][MinDimension]);
+   cout << " (" << mean(timing_results["PairRedPrimalRandomized_LLL2"][MinDimension]) << ") ( +/- " << variance(timing_results["PairRedPrimalRandomized_LLL2"][MinDimension]) << ")" << endl;
    cout << endl;
 
-   cout << "              LLLNTL = " << Average(timing_results["LLLNTL"][MinDimension]) << endl;
-   cout << "      PairRed+LLLNTL = " << Average(timing_results["PairRedPrimal_LLLNTL"][MinDimension]) + Average(timing_results["PairRedPrimal_LLLNTL2"][MinDimension]);
-   cout << " (" << Average(timing_results["PairRedPrimal_LLLNTL"][MinDimension]) << ")" << endl;
-   cout << "PairRedRandom+LLLNTL = " << Average(timing_results["PairRedPrimalRandomized_LLLNTL"][MinDimension]) + Average(timing_results["PairRedPrimalRandomized_LLLNTL2"][MinDimension]);
-   cout << " (" << Average(timing_results["PairRedPrimalRandomized_LLLNTL2"][MinDimension]) << ")" << endl;
+   cout << "              LLLNTL = " << mean(timing_results["LLLNTL"][MinDimension]) << "( +/- " << variance(timing_results["LLLNTL"][MinDimension]) << ")" << endl;
+   cout << "      PairRed+LLLNTL = " << mean(timing_results["PairRedPrimal_LLLNTL"][MinDimension]) + mean(timing_results["PairRedPrimal_LLLNTL2"][MinDimension]);
+   cout << " (" << mean(timing_results["PairRedPrimal_LLLNTL2"][MinDimension]) << ") ( +/- " << variance(timing_results["PairRedPrimal_LLLNTL"][MinDimension]) << ")" << endl;
+   cout << "PairRedRandom+LLLNTL = " << mean(timing_results["PairRedPrimalRandomized_LLLNTL"][MinDimension]) + mean(timing_results["PairRedPrimalRandomized_LLLNTL2"][MinDimension]);
+   cout << " (" << mean(timing_results["PairRedPrimalRandomized_LLLNTL2"][MinDimension]) << ") ( +/- " << variance(timing_results["PairRedPrimalRandomized_LLLNTL2"][MinDimension]) << ")" << endl;
    cout << endl;
 
-   //cout << "        LLLNTL_Exact = " << Average(timing_LLL_NTL_Exact) << endl;
+   //cout << "        LLLNTL_Exact = " << mean(timing_LLL_NTL_Exact) << endl;
    cout << endl;
 
-   cout << "              BKZNTL = " << Average(timing_results["BKZNTL"][MinDimension]) << endl;
-   cout << "      PairRed+BKZNTL = " << Average(timing_results["PairRedPrimal_BKZNTL"][MinDimension]) + Average(timing_results["PairRedPrimal_BKZNTL2"][MinDimension]);
-   cout << " (" << Average(timing_results["PairRedPrimal_BKZNTL2"][MinDimension]) << ")" << endl;
-   cout << "PairRedRandom+BKZNTL = " << Average(timing_results["PairRedPrimalRandomized_BKZNTL"][MinDimension]) + Average(timing_results["PairRedPrimalRandomized_BKZNTL2"][MinDimension]);
-   cout << " (" << Average(timing_results["PairRedPrimalRandomized_BKZNTL2"][MinDimension]) << ")" << endl;
+   cout << "              BKZNTL = " << mean(timing_results["BKZNTL"][MinDimension]) << ") ( +/- " << variance(timing_results["BKZNTL"][MinDimension]) << ")" << endl;
+   cout << "      PairRed+BKZNTL = " << mean(timing_results["PairRedPrimal_BKZNTL"][MinDimension]) + mean(timing_results["PairRedPrimal_BKZNTL2"][MinDimension]);
+   cout << " (" << mean(timing_results["PairRedPrimal_BKZNTL2"][MinDimension]) << ") ( +/- " << variance(timing_results["PairRedPrimal_BKZNTL2"][MinDimension]) << ")" << endl;
+   cout << "PairRedRandom+BKZNTL = " << mean(timing_results["PairRedPrimalRandomized_BKZNTL"][MinDimension]) + mean(timing_results["PairRedPrimalRandomized_BKZNTL2"][MinDimension]);
+   cout << " (" << mean(timing_results["PairRedPrimalRandomized_BKZNTL2"][MinDimension]) << ") ( +/- " << variance(timing_results["PairRedPrimalRandomized_BKZNTL2"][MinDimension]) << ")" << endl;
    cout << endl;
 
-   cout << "             BB Only = " << Average(timing_results["PairRedPrimal_BKZNTL"][MinDimension]) << endl;
-   cout << "          BB Classic = " << Average(timing_results["BB_Classic"][MinDimension]) + Average(timing_results["BB_Classic2"][MinDimension]);
-   cout << " (" << Average(timing_results["BB_Classic2"][MinDimension]) << ")" << endl,
-   cout << "              BB BKZ = " << Average(timing_results["BB_BKZ"][MinDimension]) + Average(timing_results["BB_BKZ2"][MinDimension]);
-   cout << " (" << Average(timing_results["BB_BKZ2"][MinDimension]) << ")";
+   cout << "          BB Classic = " << mean(timing_results["BB_Classic"][MinDimension]) + mean(timing_results["BB_Classic2"][MinDimension]);
+   cout << " (" << mean(timing_results["BB_Classic2"][MinDimension]) << ") ( +/- " << variance(timing_results["BB_Classic2"][MinDimension]) << ")" ")" << endl,
+   cout << "              BB BKZ = " << mean(timing_results["BB_BKZ"][MinDimension]) + mean(timing_results["BB_BKZ2"][MinDimension]);
+   cout << " (" << mean(timing_results["BB_BKZ2"][MinDimension]) << ") ( +/- " << variance(timing_results["BB_BKZ2"][MinDimension]) << ")";
    if (WITH_DUAL)
       cout << " BB NON EFFECTUER CAR UTILISATION DU DUAL" << endl;
    else
       cout << endl;
-   
+
    cout << endl;
-   
-   //cout << "    Dieter Reduction = " << Average(timing_results["DIETER"][MinDimension]);
+
+   //cout << "    Dieter Reduction = " << mean(timing_results["DIETER"][MinDimension]);
    //if (!WITH_DUAL)
    //   cout << " DIETER NON EFFECTUER CAR DUAL NECESSAIRE" << endl;
    //else
    //   cout << endl;
-   cout << " Minkowski Reduction = " << Average(timing_results["MINKOWSKI"][MinDimension]) << endl;
+   cout << " Minkowski Reduction = " << mean(timing_results["MINKOWSKI"][MinDimension]) << endl;
 
    cout << "\n--------------------------------------------" << endl;
 
@@ -628,36 +639,36 @@ int main (int argc, char *argv[])
 
    cout << "\n---------------- LENGTH AVG ----------------\n" << endl;
 
-   cout << "             Initial = " << conv<ZZ>(Average(length_results["initial"][MinDimension])) << endl;
+   cout << "             Initial = " << conv<ZZ>(mean(length_results["initial"][MinDimension])) << endl;
 
-   cout << "       PairRedPrimal = " << conv<ZZ>(Average(length_results["PairRedPrimal"][MinDimension])) << endl;
-   cout << " PairRedPrimalRandom = " << conv<ZZ>(Average(length_results["PairRedPrimalRandomized"][MinDimension])) << endl;
-   cout << endl;
-
-   cout << "                 LLL = " << conv<ZZ>(Average(length_results["LLL"][MinDimension])) << endl;
-   cout << "         PairRed+LLL = " << conv<ZZ>(Average(length_results["PairRedPrimal_LLL"][MinDimension])) << endl;
-   cout << "   PairRedRandom+LLL = " << conv<ZZ>(Average(length_results["PairRedPrimalRandomized_LLL"][MinDimension])) << endl;
+   cout << "       PairRedPrimal = " << conv<ZZ>(mean(length_results["PairRedPrimal"][MinDimension])) << endl;
+   cout << " PairRedPrimalRandom = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized"][MinDimension])) << endl;
    cout << endl;
 
-   cout << "              LLLNTL = " << conv<ZZ>(Average(length_results["LLLNTL"][MinDimension])) << endl;
-   cout << "      PairRed+LLLNTL = " << conv<ZZ>(Average(length_results["PairRedPrimal_LLLNTL"][MinDimension])) << endl;
-   cout << "PairRedRandom+LLLNTL = " << conv<ZZ>(Average(length_results["PairRedPrimalRandomized_LLLNTL"][MinDimension])) << endl;
+   cout << "                 LLL = " << conv<ZZ>(mean(length_results["LLL"][MinDimension])) << endl;
+   cout << "         PairRed+LLL = " << conv<ZZ>(mean(length_results["PairRedPrimal_LLL"][MinDimension])) << endl;
+   cout << "   PairRedRandom+LLL = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized_LLL"][MinDimension])) << endl;
+   cout << endl;
+
+   cout << "              LLLNTL = " << conv<ZZ>(mean(length_results["LLLNTL"][MinDimension])) << endl;
+   cout << "      PairRed+LLLNTL = " << conv<ZZ>(mean(length_results["PairRedPrimal_LLLNTL"][MinDimension])) << endl;
+   cout << "PairRedRandom+LLLNTL = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized_LLLNTL"][MinDimension])) << endl;
    cout << endl;
    cout << endl;
 
-   cout << "              BKZNTL = " << conv<ZZ>(Average(length_results["BKZNTL"][MinDimension])) << endl;
-   cout << "      PairRed+BKZNTL = " << conv<ZZ>(Average(length_results["PairRedPrimal_BKZNTL"][MinDimension])) << endl;
-   cout << "PairRedRandom+BKZNTL = " << conv<ZZ>(Average(length_results["PairRedPrimalRandomized_BKZNTL"][MinDimension])) << endl;
+   cout << "              BKZNTL = " << conv<ZZ>(mean(length_results["BKZNTL"][MinDimension])) << endl;
+   cout << "      PairRed+BKZNTL = " << conv<ZZ>(mean(length_results["PairRedPrimal_BKZNTL"][MinDimension])) << endl;
+   cout << "PairRedRandom+BKZNTL = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized_BKZNTL"][MinDimension])) << endl;
    cout << endl;
 
-   //cout << "             BB Only = " << conv<ZZ>(Average(length_results["PairRedPrimal_BKZNTL"][MinDimension])) << endl;
-   cout << "          BB Classic = " << conv<ZZ>(Average(length_results["BB_Classic"][MinDimension])) << endl,
-   cout << "              BB BKZ = " << conv<ZZ>(Average(length_results["BB_BKZ"][MinDimension])) << endl;
+   //cout << "             BB Only = " << conv<ZZ>(mean(length_results["PairRedPrimal_BKZNTL"][MinDimension])) << endl;
+   cout << "          BB Classic = " << conv<ZZ>(mean(length_results["BB_Classic"][MinDimension])) << endl,
+   cout << "              BB BKZ = " << conv<ZZ>(mean(length_results["BB_BKZ"][MinDimension])) << endl;
    cout << endl;
-   
-   //cout << "    Dieter Reduction = " << conv<ZZ>(Average(length_results["DIETER"][MinDimension])) << endl,
-   cout << " Minkowski Reduction = " << conv<ZZ>(Average(length_results["MINKOWSKI"][MinDimension])) << endl;
-   
+
+   //cout << "    Dieter Reduction = " << conv<ZZ>(mean(length_results["DIETER"][MinDimension])) << endl,
+   cout << " Minkowski Reduction = " << conv<ZZ>(mean(length_results["MINKOWSKI"][MinDimension])) << endl;
+
    cout << "\n--------------------------------------------" << endl;
 
 #endif
@@ -672,7 +683,7 @@ int main (int argc, char *argv[])
 
    RInside R(argc, argv);              // create an embedded R instance
 
-   R["Mindimension"] = MinDimension;
+   R["MinDimension"] = MinDimension;
    R["Maxdimension"] = MaxDimension;
    R["dimension"] = Interval_dim;
    //R["timing_Initial"] = toRcppMatrix(timing_Initial, maxIteration);

@@ -484,11 +484,11 @@ int main (int argc, char *argv[])
       id_dimension = dimension - MinDimension;
 
       for (int iteration = 0; iteration < maxIteration; iteration++){
+         if(!all_BB_over){
+            cout << "/";
+         }
          all_BB_over = true;
          do{
-            if(!all_BB_over){
-               cout << "/";
-            }
             increm_seed++; // Pour la boucle
             ZZ seedZZ = conv<ZZ>((iteration+1) * (iteration+1) * 123456789 * dimension * increm_seed);
             int seed = (iteration+1) * (iteration+1) * 123456789 * dimension *increm_seed;
@@ -585,7 +585,6 @@ int main (int argc, char *argv[])
 
             delete lattices["initial"];
 
-            ++show_progress;
          } while(!all_BB_over);
          ++show_progress;
       }

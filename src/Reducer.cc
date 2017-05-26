@@ -806,6 +806,7 @@ void Reducer::transformStage3 (std::vector<long> & z, int & k)
 
 bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const BMat & WTemp)
 // Si m_countNodes > MaxNodes retourne false, sinon retourne true.
+// Use in Minkowski
 {
    long max0, min0;
    RScal x, dc;

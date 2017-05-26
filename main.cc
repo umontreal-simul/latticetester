@@ -66,7 +66,7 @@ using namespace LatticeTester;
 // if true the output is written in a .txt file
 // if false the ouput is printed in the console
 // via the std::outFile command
-bool outFileRequested = true;
+bool outFileRequested = false;
 ofstream realOutFile;
 ostream & outFile = outFileRequested ? realOutFile.open("results.txt", std::ios::out), realOutFile : std::cout;
 
@@ -76,7 +76,7 @@ bool WITH_DUAL = false;
 
 
 // ireration loop over the dimension of lattices
-const int MinDimension = 5;
+const int MinDimension = 25;
 #ifdef PRINT_CONSOLE
 const int MaxDimension = MinDimension + 1;
 #else
@@ -85,10 +85,10 @@ const int MaxDimension = 12;
 
 
 // order
-const int order = 4;
+const int order = 5;
 
 // iteration loop over matrices of same dimension
-const int maxIteration = 100;
+const int maxIteration = 5;
 
 // Epsilon
 const long a = 999999;
@@ -124,9 +124,10 @@ string names[] = {
    "PairRedPrimalRandomized_BKZNTL",
    //"BB_Only",
    "BB_Classic",
-   "BB_BKZ",
+   "BB_BKZ"
    //"DIETER", //WARNING USE DIETER ONLY FOR DIM < 6
-   "MINKOWSKI"};
+   //"MINKOWSKI"
+   };
 
 string names2[] = {
    "PairRedPrimal_LLL",
@@ -659,7 +660,7 @@ int main (int argc, char *argv[])
    //   outFile << " DIETER NON EFFECTUER CAR DUAL NECESSAIRE" << endl;
    //else
    //   outFile << endl;
-   outFile << " Minkowski Reduction = " << mean(timing_results["MINKOWSKI"][0]) << endl;
+   //outFile << " Minkowski Reduction = " << mean(timing_results["MINKOWSKI"][0]) << endl;
 
    outFile << "\n--------------------------------------------" << endl;
 
@@ -695,10 +696,10 @@ int main (int argc, char *argv[])
    outFile << endl;
 
    //outFile << "    Dieter Reduction = " << conv<ZZ>(mean(length_results["DIETER"][0])) << " Error Rate : " << (double) nb_diff[name]/maxIteration << endl,
-   outFile << " Minkowski Reduction = " << conv<ZZ>(mean(length_results["MINKOWSKI"][0])) << " Error Rate : " << (double) nb_diff["MINKOWSKI"]/maxIteration << endl;
+   //outFile << " Minkowski Reduction = " << conv<ZZ>(mean(length_results["MINKOWSKI"][0])) << " Error Rate : " << (double) nb_diff["MINKOWSKI"]/maxIteration << endl;
 
    outFile << "\n--------------------------------------------\n" << endl;
-   
+
 
 #endif
 
@@ -734,7 +735,7 @@ int main (int argc, char *argv[])
       build_data_frame += ", col_" + name + " =colMeans(" + name + ")";
    }
    build_data_frame += ");";
-   
+
 
    string build_plot = "myPlot <- ggplot() + ";
    for(const string &name : names){

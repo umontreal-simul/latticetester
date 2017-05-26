@@ -80,7 +80,7 @@ const int MaxDimension = 12;
 const int order = 4;
 
 // iteration loop over matrices of same dimension
-const int maxIteration = 1;
+const int maxIteration = 10;
 
 // Epsilon
 const long a = 999999;
@@ -453,13 +453,6 @@ int main (int argc, char *argv[])
    // printing total running time
    clock_t begin = clock();
 
-   // Print parameters
-   cout << "epsilon = " << epsilon << endl;
-   cout << "dimension = " << MinDimension << endl;
-   cout << "nombre de matrices testées = " << maxIteration << endl;
-   //cout << "dimension minimale : " << MinDimension << endl;
-   //cout << "dimension maximale : " << MaxDimension << endl;
-   cout << "ordre de la matrice : " << order << endl;
    cout << endl;
 
    // Stock Results
@@ -477,7 +470,7 @@ int main (int argc, char *argv[])
    // arrays to store values
    int id_dimension = 0;
    bool all_BB_over = true;
-   int increm_seed = 1;
+   int nb_error = 0;
 
    for (int dimension = MinDimension; dimension < MaxDimension; dimension++){
 
@@ -487,12 +480,12 @@ int main (int argc, char *argv[])
          do{
             if(!all_BB_over){
                cout << "/";
-               increm_seed++; // Pour la boucle
+               nb_error++; // Pour la boucle
             }
             all_BB_over = true;
-            ZZ seedZZ = conv<ZZ>((iteration+1) * (iteration+1) * 123456789 * dimension * increm_seed);
-            int seed = (iteration+1) * (iteration+1) * 123456789 * dimension *increm_seed;
-            int seed_dieter = (iteration+1) * dimension * 12342 * increm_seed ;
+            ZZ seedZZ = conv<ZZ>((iteration+1) * (iteration+1) * 123456789 * dimension * (nb_error+1));
+            int seed = (iteration+1) * (iteration+1) * 123456789 * dimension * (nb_error+1);
+            int seed_dieter = (iteration+1) * dimension * 12342 * (nb_error+1) ;
             //int seed = (int) (iteration+1) * 12345 * time(NULL);
 
             // We create copies of the same basis
@@ -603,6 +596,8 @@ int main (int argc, char *argv[])
    cout << "epsilon = " << epsilon << endl;
    cout << "dimension = " << MinDimension << endl;
    cout << "nombre de matrices testées = " << maxIteration << endl;
+   cout << "ordre de la matrice : " << order << endl;
+   cout << "Nombre de Branch and Bound non terminés : " << nb_error << endl;
    if(WITH_DUAL)
       cout << "Dual utilisé" << endl;
    else
@@ -693,7 +688,8 @@ int main (int argc, char *argv[])
    //cout << "    Dieter Reduction = " << conv<ZZ>(mean(length_results["DIETER"][0])) << " Error Rate : " << (double) nb_diff[name]/maxIteration << endl,
    cout << " Minkowski Reduction = " << conv<ZZ>(mean(length_results["MINKOWSKI"][0])) << " Error Rate : " << (double) nb_diff["MINKOWSKI"]/maxIteration << endl;
 
-   cout << "\n--------------------------------------------" << endl;
+   cout << "\n--------------------------------------------\n" << endl;
+   
 
 #endif
 

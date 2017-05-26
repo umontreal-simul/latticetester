@@ -67,13 +67,9 @@ using namespace LatticeTester;
 // if false the ouput is printed in the console
 // via the std::outFile command
 bool outFileRequested = true;
-ofstream realOutFile;
-ostream & outFile = outFileRequested ? realOutFile.open("results.txt", std::ios::out), realOutFile : std::cout;
-
 
 // Use of the Dual
 bool WITH_DUAL = false;
-
 
 // ireration loop over the dimension of lattices
 const int MinDimension = 5;
@@ -124,9 +120,10 @@ string names[] = {
    "PairRedPrimalRandomized_BKZNTL",
    //"BB_Only",
    "BB_Classic",
-   "BB_BKZ",
+   "BB_BKZ"
    //"DIETER", //WARNING USE DIETER ONLY FOR DIM < 6
-   "MINKOWSKI"};
+   //"MINKOWSKI"
+   };
 
 string names2[] = {
    "PairRedPrimal_LLL",
@@ -136,7 +133,8 @@ string names2[] = {
    "PairRedPrimal_BKZNTL",
    "PairRedPrimalRandomized_BKZNTL",
    "BB_Classic",
-   "BB_BKZ"};
+   "BB_BKZ"
+   };
 
 
 
@@ -171,18 +169,6 @@ void RandomMatrix (mat_ZZ& A, ZZ& det, int min, int max, int seed){
        det = determinant(A);
 
    } while ( det == 0 );
-}
-
-template<typename Type, long Size>
-void print(string name, Type const(& array)[Size], bool isIntegerOutput) {
-   outFile << name << " = ";
-   for(int i=0; i<Size; i++){
-       if (isIntegerOutput)
-           outFile << conv<ZZ>(array[i]) << " ";
-       else
-           outFile << array[i] << " ";
-   }
-   //outFile << endl;
 }
 
 template<typename Type, unsigned long Size>
@@ -459,6 +445,17 @@ bool reduce2(Reducer & red, const string & name, const int & d, int & seed_diete
 int main (int argc, char *argv[])
 {
 
+   ofstream realOutFile;
+   string fileName;
+   if (outFileRequested) {
+      cout << "Enter file name (without .txt extension): ";
+      cin >> fileName;
+   }
+   ostream & outFile = outFileRequested ? realOutFile.open(fileName+".txt", std::ios::out), realOutFile : std::cout;
+
+   //ofstream realOutFile;
+   //ostream & outFile = outFileRequested ? realOutFile.open("nik.txt", std::ios::out), realOutFile : std::cout;
+    
    // printing total running time
    clock_t begin = clock();
 
@@ -659,7 +656,7 @@ int main (int argc, char *argv[])
    //   outFile << " DIETER NON EFFECTUER CAR DUAL NECESSAIRE" << endl;
    //else
    //   outFile << endl;
-   outFile << " Minkowski Reduction = " << mean(timing_results["MINKOWSKI"][0]) << endl;
+   //outFile << " Minkowski Reduction = " << mean(timing_results["MINKOWSKI"][0]) << endl;
 
    outFile << "\n--------------------------------------------" << endl;
 
@@ -695,7 +692,7 @@ int main (int argc, char *argv[])
    outFile << endl;
 
    //outFile << "    Dieter Reduction = " << conv<ZZ>(mean(length_results["DIETER"][0])) << " Error Rate : " << (double) nb_diff[name]/maxIteration << endl,
-   outFile << " Minkowski Reduction = " << conv<ZZ>(mean(length_results["MINKOWSKI"][0])) << " Error Rate : " << (double) nb_diff["MINKOWSKI"]/maxIteration << endl;
+   //outFile << " Minkowski Reduction = " << conv<ZZ>(mean(length_results["MINKOWSKI"][0])) << " Error Rate : " << (double) nb_diff["MINKOWSKI"]/maxIteration << endl;
 
    outFile << "\n--------------------------------------------\n" << endl;
    

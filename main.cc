@@ -80,7 +80,7 @@ const int MaxDimension = 12;
 const int order = 4;
 
 // iteration loop over matrices of same dimension
-const int maxIteration = 10;
+const int maxIteration = 1;
 
 // Epsilon
 const long a = 999999;
@@ -484,12 +484,12 @@ int main (int argc, char *argv[])
       id_dimension = dimension - MinDimension;
 
       for (int iteration = 0; iteration < maxIteration; iteration++){
-         if(!all_BB_over){
-            cout << "/";
-         }
-         all_BB_over = true;
          do{
-            increm_seed++; // Pour la boucle
+            if(!all_BB_over){
+               cout << "/";
+               increm_seed++; // Pour la boucle
+            }
+            all_BB_over = true;
             ZZ seedZZ = conv<ZZ>((iteration+1) * (iteration+1) * 123456789 * dimension * increm_seed);
             int seed = (iteration+1) * (iteration+1) * 123456789 * dimension *increm_seed;
             int seed_dieter = (iteration+1) * dimension * 12342 * increm_seed ;
@@ -714,26 +714,6 @@ int main (int argc, char *argv[])
    for(const string &name : names){
       R[name] = toRcppMatrix(timing_results[name]);
    }
-   /*
-   R["timing_PairRedPrimal"] = toRcppMatrix<double>(timing_PairRedPrimal, maxIteration);
-   R["timing_PairRedPrimalRandomized"] = toRcppMatrix<double>(timing_PairRedPrimalRandomized, maxIteration);
-   R["timing_LLL"] = toRcppMatrix<double>(timing_LLL, maxIteration);
-   R["timing_LLL_PostPairRedPrimal"] = toRcppMatrix<double>(timing_LLL_PostPairRedPrimal, maxIteration);
-   R["timing_LLL_PostPairRedPrimalRandomized"] = toRcppMatrix<double>(timing_LLL_PostPairRedPrimalRandomized, maxIteration);
-   R["timing_LLLNTL"] = toRcppMatrix<double>(timing_LLLNTL, maxIteration);
-   R["timing_LLLNTL_PostPairRedPrimal"] = toRcppMatrix<double>(timing_LLLNTL_PostPairRedPrimal, maxIteration);
-   R["timing_LLLNTL_PostPairRedPrimalRandomized"] = toRcppMatrix<double>(timing_LLLNTL_PostPairRedPrimalRandomized, maxIteration);
-   R["timing_BKZNTL"] = toRcppMatrix<double>(timing_BKZNTL, maxIteration);
-   R["timing_BKZNTL_PostPairRedPrimal"] = toRcppMatrix<double>(timing_BKZNTL_PostPairRedPrimal, maxIteration);
-   R["timing_BKZNTL_PostPairRedPrimalRandomized"] = toRcppMatrix<double>(timing_BKZNTL_PostPairRedPrimalRandomized, maxIteration);
-   R["timing_BB_Only"] = toRcppMatrix<double>(timing_BB_Only, maxIteration);*/
-    //R["timing_LLLNTL"] = 4;
-
-   /*std::string str =
-      "cat('Running ls()\n'); print(ls()); "
-      "cat('Showing M\n'); print(M); "
-      "cat('Showing colSums()\n'); Z <- colSums(M); print(Z); "
-      "Z";  */
 
     // by running parseEval, we get the last assignment back, here the filename
 
@@ -749,49 +729,18 @@ int main (int argc, char *argv[])
       build_data_frame += ", col_" + name + " =colMeans(" + name + ")";
    }
    build_data_frame += ");";
-   /*
-   "df <- data.frame(indice = seq(1:dimension),"
-     "PairRedPrimal=colMeans(timing_PairRedPrimal), "
-     "PairRedPrimalRandomized = colMeans(timing_PairRedPrimalRandomized),"
-     "LLL = colMeans(timing_LLL),"
-     "LLL_PostPairRedPrimal = colMeans(timing_LLL_PostPairRedPrimal),"
-     "LLL_PostPairRedPrimalRandomized = colMeans(timing_LLL_PostPairRedPrimalRandomized),"
-     "LLLNTL = colMeans(timing_LLLNTL),"
-     "LLLNTL_PostPairRedPrimal = colMeans(timing_LLLNTL_PostPairRedPrimal),"
-     "LLLNTL_PostPairRedPrimalRandomized = colMeans(timing_LLLNTL_PostPairRedPrimalRandomized),"
-     "BKZNTL = colMeans(timing_BKZNTL),"
-     "BKZNTL_PostPairRedPrimal = colMeans(timing_BKZNTL_PostPairRedPrimal),"
-     "BKZNTL_PostPairRedPrimalRandomized = colMeans(timing_BKZNTL_PostPairRedPrimalRandomized),"
-     "BB_Only = colMeans(timing_BB_Only)"
-     ");"; */
+   
 
    string build_plot = "myPlot <- ggplot() + ";
    for(const string &name : names){
       build_plot += "geom_line(data=df, aes(x=indice, y=col_" + name + ", color ='col_" + name + "')) + ";
    }
    build_plot += "labs(color='Legend text'); ";
-   /*
-   "myPlot <- ggplot() + "
-     "geom_line(data=df, aes(x=indice, y=PairRedPrimal, color ='PairRedPrimal')) + "
-     "geom_line(data=df, aes(x=indice, y=PairRedPrimalRandomized, color ='PairRedPrimalRandomized')) +"
-     "geom_line(data=df, aes(x=indice, y=LLL, color ='LLL')) +"
-     "geom_line(data=df, aes(x=indice, y=LLL_PostPairRedPrimal, color ='LLL_PostPairRedPrimal')) +"
-     "geom_line(data=df, aes(x=indice, y=LLL_PostPairRedPrimalRandomized, color ='LLL_PostPairRedPrimalRandomized')) +"
-     "geom_line(data=df, aes(x=indice, y=LLLNTL, color ='LLLNTL')) +"
-     "geom_line(data=df, aes(x=indice, y=LLLNTL_PostPairRedPrimal, color ='LLLNTL_PostPairRedPrimal')) +"
-     "geom_line(data=df, aes(x=indice, y=LLLNTL_PostPairRedPrimalRandomized, color ='LLLNTL_PostPairRedPrimalRandomized')) +"
-     "geom_line(data=df, aes(x=indice, y=BKZNTL, color ='BKZNTL')) +"
-     "geom_line(data=df, aes(x=indice, y=BKZNTL_PostPairRedPrimal, color ='BKZNTL_PostPairRedPrimal')) +"
-     "geom_line(data=df, aes(x=indice, y=BKZNTL_PostPairRedPrimalRandomized, color ='BKZNTL_PostPairRedPrimalRandomized')) +"
-     "geom_line(data=df, aes(x=indice, y=BB_Only, color ='BB_Only')) +"
-     "labs(color='Legend text'); "; */
-
 
    string print_plot =
     "print(myPlot); "
      "ggsave(filename=outFile, path=outPath, plot=myPlot); ";
    // parseEvalQ evluates without assignment
-    //R.parseEvalQ(cmd);
    R.parseEvalQ(library);
    R.parseEvalQ(build_data_frame);
    R.parseEvalQ(build_plot);
@@ -806,30 +755,3 @@ int main (int argc, char *argv[])
    return 0;
 }
 
-
-/* example new CreateRNGBasis
-
-   int main ()
-   {
-      //ZZ modulus = conv<ZZ>("678956454545356865342357689098765324686546576787568");
-      ZZ modulus;
-      power(modulus, 2, 6);
-      modulus-=1;
-
-      int k = 3;
-      int dimension = 10;
-      ZZ seed = conv<ZZ>(123456);
-
-      mat_ZZ V;
-      V = CreateRNGBasis (modulus, k, dimension, seed);
-
-      mat_ZZ W;
-      W = Dualize (V, modulus, k);
-
-      cout << "Test V*transpose(W) = m*ID : ";
-      cout << IsIdent( V*transpose(W) - diag(dimension, modulus-1), dimension);
-      cout << endl;
-
-      return 0;
-    }
-*/

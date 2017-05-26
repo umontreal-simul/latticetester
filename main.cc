@@ -72,7 +72,7 @@ bool outFileRequested = true;
 bool WITH_DUAL = false;
 
 // ireration loop over the dimension of lattices
-const int MinDimension = 5;
+const int MinDimension = 25;
 #ifdef PRINT_CONSOLE
 const int MaxDimension = MinDimension + 1;
 #else
@@ -81,10 +81,10 @@ const int MaxDimension = 12;
 
 
 // order
-const int order = 4;
+const int order = 5;
 
 // iteration loop over matrices of same dimension
-const int maxIteration = 100;
+const int maxIteration = 5;
 
 // Epsilon
 const long a = 999999;
@@ -695,7 +695,7 @@ int main (int argc, char *argv[])
    //outFile << " Minkowski Reduction = " << conv<ZZ>(mean(length_results["MINKOWSKI"][0])) << " Error Rate : " << (double) nb_diff["MINKOWSKI"]/maxIteration << endl;
 
    outFile << "\n--------------------------------------------\n" << endl;
-   
+
 
 #endif
 
@@ -731,7 +731,7 @@ int main (int argc, char *argv[])
       build_data_frame += ", col_" + name + " =colMeans(" + name + ")";
    }
    build_data_frame += ");";
-   
+
 
    string build_plot = "myPlot <- ggplot() + ";
    for(const string &name : names){

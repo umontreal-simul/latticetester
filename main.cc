@@ -66,13 +66,13 @@ using namespace LatticeTester;
 // if true the output is written in a .txt file
 // if false the ouput is printed in the console
 // via the std::outFile command
-bool outFileRequested = true;
+bool outFileRequested = false;
 
 // Use of the Dual
-bool WITH_DUAL = true;
+bool WITH_DUAL = false;
 
 // ireration loop over the dimension of lattices
-const int MinDimension = 20;
+const int MinDimension = 30;
 #ifdef PRINT_CONSOLE
 const int MaxDimension = MinDimension + 1;
 #else
@@ -84,7 +84,7 @@ const int MaxDimension = 12;
 const int order = 5;
 
 // iteration loop over matrices of same dimension
-const int maxIteration = 1;
+const int maxIteration = 10;
 
 // Epsilon
 const long a = 999999;
@@ -265,6 +265,7 @@ mat_ZZ Dualize (const mat_ZZ V, const ZZ modulus, const int k)
 }
 
 bool reduce(Reducer & red, const string & name, const int & d, int & seed_dieter, const int & blocksize, const double & delta, const int maxcpt, int dimension){
+   //cout << "Test sur " << name << endl;
 
    bool ok(true);
    //------------------------------------------------------------------------------------
@@ -437,6 +438,7 @@ bool reduce2(Reducer & red, const string & name, const int & d, int & seed_diete
 
 int main (int argc, char *argv[])
 {
+   /*
    BMat dualbasis(4,4);
    BMat basis;
    basis.resize(4, 4);
@@ -459,11 +461,11 @@ int main (int argc, char *argv[])
    
    cout << " Base Primal \n" << basis << endl;
    cout << " Base Dual \n" << dualbasis << endl;
+   */
    
    
    
-   
-#if 0
+#if 1
    ofstream realOutFile;
    string fileName;
    if (outFileRequested) {

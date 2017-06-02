@@ -272,6 +272,40 @@ void IntLatticeBasis::permute (int i, int j)
 
 /*=========================================================================*/
 
+bool IntLatticeBasis::checkDuality ()
+{
+   if(!m_withDual) {
+      cout << "DO NOT USE checkDuality without dual" << endl;
+      return false;
+   }
+   BScal S;
+   int dim = getDim ();
+
+   for (int i = 0; i < dim; i++) {
+      for (int j = 0; j < dim; j++) {
+         matrix_row<const BMat> row1(m_basis, i);
+         matrix_row<const BMat> row2(m_dualbasis, j);
+         ProdScal (row1, row2, dim, S);
+         if (j != i) {
+            if (S != 0) {
+               cout << "******  checkDuality failed for V[" << i <<
+                    "] and W[" << j << "]" << endl;
+               return false;
+            }
+         } else if (S != m_modulo) {
+            cout << "******  checkDuality failed for i, j = " << i << " , " <<
+                     j << endl;
+            return false;
+         }
+      }
+   }
+   return true;
+
+
+}
+
+/*=========================================================================*/
+
 void IntLatticeBasis::sort (int d)
 /*
  * We assume that the square lengths are already updated.

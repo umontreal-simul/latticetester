@@ -332,9 +332,8 @@ bool Reducer::calculCholeski (RVect & DC2, RMat & C0)
       {
          m_lat->updateDualScalL2Norm (i);
          for (j = i; j >= 0; j--) {
-            if (j == i){
+            if (j == i)
                conv (m_c2(i,i), m_lat->getDualVecNorm (i));
-            }
             else {
                matrix_row<BMat> row1(m_lat->getDualBasis(), i);
                matrix_row<BMat> row2(m_lat->getDualBasis(), j);
@@ -433,13 +432,15 @@ void Reducer::pairwiseRedPrimal (int i, int d)
       if (modifFlag) {
          m_countDieter = 0;
          ++m_cpt;
-         m_lat->setXX (false, i);
-         m_lat->setXX (false, j);
          if(m_lat->withDual()){
             matrix_row<BMat> row1(m_lat->getDualBasis(), i);
             matrix_row<BMat> row2(m_lat->getDualBasis(), j);
             ModifVect (row1, row2, m_bs, dim);
+            m_lat->setDualNegativeNorm(i);
+
          }
+         m_lat->setXX (false, i);
+         m_lat->setXX (false, j);
       }
    }
 }
@@ -614,7 +615,7 @@ void Reducer::reductionFaible (int i, int j)
          if(withDual){
             matrix_row<BMat> row3(m_lat->getDualBasis(), i);
             matrix_row<BMat> row4(m_lat->getDualBasis(), j);
-            ModifVect (row3, row4, -cteLI, dim);
+            ModifVect (row3, row4, cteLI, dim);
          }
 
       } else
@@ -632,13 +633,15 @@ void Reducer::reductionFaible (int i, int j)
          matrix_row<BMat> row4(m_lat->getDualBasis(), j);
          ModifVect (row3, row4, cte, dim);
       }
+
    }
    m_lat->setNegativeNorm (j);
    m_lat->updateVecNorm(j);
    if(withDual){
-      m_lat->setDualNegativeNorm (j);
-      m_lat->updateDualVecNorm(j);
+      m_lat->setDualNegativeNorm (i);
+      m_lat->updateDualVecNorm(i);
    }
+
 
    miseAJourGramVD (j);
    calculCholeski2LLL (i, j);
@@ -693,6 +696,7 @@ void Reducer::redLLL (double fact, long maxcpt, int Max)
    for (i = 2; i < dim; i++)
       m_IC[i] = -1;
    h = 0;
+
    while (h < Max-1 && cpt < maxcpt) {
       if (m_gramVD(h + 1,h + 1) > limite) {
          for (i = h; i >= 0; i--)
@@ -707,6 +711,7 @@ void Reducer::redLLL (double fact, long maxcpt, int Max)
       if (m_cho2(h + 1,h + 1)/m_cho2(h,h) + (m_cho2(h,h + 1)/m_cho2(h,h))
             * (m_cho2(h,h + 1) / m_cho2(h,h)) < fact) {
          ++cpt;
+
          m_lat->permute (h, h + 1);
          permuteGramVD (h, h + 1, dim);
          m_cho2(h,h) = m_gramVD(h,h);
@@ -917,7 +922,6 @@ bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const BMat & WTemp)
             }
             if (Stage == 3) {
                matrix_row<const BMat> row1(m_lat->getBasis(), dim-1);
-               //cout << " row1 = " << row1 << endl;
                ModifVect (m_bv, row1, m_zLR[dim-1] - 1.0, dim);
             }
 
@@ -1305,7 +1309,6 @@ bool Reducer::redBB0 (NormType norm)
    /* Approximation de la norme du plus court vecteur. */
    if (norm == L2NORM) {
       conv (m_lMin2, m_lat->getVecNorm (0));
-
    } else {
       // Looking for the min of of the vecteur according to the considered norm
       matrix_row<BMat> row1(m_lat->getBasis(), 0);
@@ -1403,7 +1406,6 @@ bool Reducer::reductMinkowski (int d)
 
    do {
       // The first d vectors should not be modified.
-      //cout << "ESPION1" << endl;
       for (i = 0; i < d; i++)
          m_lat->setXX (true, i);
       for (i = d; i < dim; i++)
@@ -1554,8 +1556,6 @@ bool Reducer::redDieter (NormType norm)
    k = dim-1;
    while (k >= 0)
    {
-      //cout << "ESPION1 " << supz[k] << endl;
-      //cout << "ESPION2 " << z[k] << endl;
       if (z[k] < supz[k]) {
          ++z[k];
          matrix_row<BMat> row1(m_lat->getBasis(), k);
@@ -1565,14 +1565,11 @@ bool Reducer::redDieter (NormType norm)
             z[k] = -supz[k];
             matrix_row<BMat> row2(m_lat->getBasis(), k);
             ModifVect (m_bv, row2, 2 * z[k], dim);
-            //cout << "ESPION3 " << k << endl;
          }
          CalcNorm <BVect, RScal> (m_bv, dim, x, norm);
          if (x < m_lMin) {
             conv (m_lMin, x);
-            //cout << "ESPION3 " << k << endl;
          }
-         //cout << "valeur de k : " << k << endl;
       } else
          --k;
    }

@@ -251,6 +251,11 @@ public:
     void permute (int i, int j);
 
     /**
+     * Check duality
+     */
+    bool checkDuality();
+
+    /**
      * Sorts the basis vectors with indices from \f$d\f$ to the dimension
      * of the basis by increasing length. The dual vectors are permuted
      * accordingly. Assumes that the lengths of the corresponding basis

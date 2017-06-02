@@ -65,7 +65,6 @@ Basis::Basis (int d, int maxDim, NormType norm)
 }
 
 //===========================================================================
-// Erwan
 
 Basis::Basis (int dim, NormType norm)
 {

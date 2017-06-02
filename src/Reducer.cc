@@ -332,19 +332,20 @@ bool Reducer::calculCholeski (RVect & DC2, RMat & C0)
       {
          m_lat->updateDualScalL2Norm (i);
          for (j = i; j >= 0; j--) {
-            if (j == i)
+            if (j == i){
                conv (m_c2(i,i), m_lat->getDualVecNorm (i));
+            }
             else {
                matrix_row<BMat> row1(m_lat->getDualBasis(), i);
                matrix_row<BMat> row2(m_lat->getDualBasis(), j);
                ProdScal (row1, row2, dim, m_c2(i,j));
             }
-            for (k = i + 1; k < dim; k++)
+            for (k = i + 1; k < dim; k++){
                m_c2(i,j) -= C0(k,i) * m_c2(k,j);
+            }
             if (i != j)
                C0(i,j) = m_c2(i,j) / m_c2(i,i);
          }
-
          DC2[i] = m2 / m_c2(i,i);
          if (DC2[i] < 0.0) {
             negativeCholeski();

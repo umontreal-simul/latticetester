@@ -69,10 +69,10 @@ using namespace LatticeTester;
 bool outFileRequested = true;
 
 // Use of the Dual
-bool WITH_DUAL = false;
+bool WITH_DUAL = true;
 
 // ireration loop over the dimension of lattices
-const int MinDimension = 25;
+const int MinDimension = 20;
 #ifdef PRINT_CONSOLE
 const int MaxDimension = MinDimension + 1;
 #else
@@ -84,7 +84,7 @@ const int MaxDimension = 12;
 const int order = 5;
 
 // iteration loop over matrices of same dimension
-const int maxIteration = 5;
+const int maxIteration = 1;
 
 // Epsilon
 const long a = 999999;
@@ -264,11 +264,6 @@ mat_ZZ Dualize (const mat_ZZ V, const ZZ modulus, const int k)
 	return W;
 }
 
-void reduce(Reducer & red, const string & name, const int & d){
-
-}
-
-
 bool reduce(Reducer & red, const string & name, const int & d, int & seed_dieter, const int & blocksize, const double & delta, const int maxcpt, int dimension){
 
    bool ok(true);
@@ -322,13 +317,11 @@ bool reduce(Reducer & red, const string & name, const int & d, int & seed_dieter
    if(name == "PairRedPrimalRandomized_LLLNTL")
       red.preRedDieterPrimalOnlyRandomized(d, seed_dieter);
 
-
    //------------------------------------------------------------------------------------
    // LLL NTL Exact reduction only
    //------------------------------------------------------------------------------------
    //if(name == "LLLNTL_Exact")
    //   red.redLLLNTLExact(det2,a,b);
-
 
    //------------------------------------------------------------------------------------
    // BKZ NTL reduction
@@ -444,7 +437,33 @@ bool reduce2(Reducer & red, const string & name, const int & d, int & seed_diete
 
 int main (int argc, char *argv[])
 {
-
+   BMat dualbasis(4,4);
+   BMat basis;
+   basis.resize(4, 4);
+   basis(0,0) = 2;
+   basis(0,1) = 3;
+   basis(0,2) = 4;
+   basis(0,3) = 5;
+   for (int i = 1; i < 4; i++) {
+      for (int j = 0; j < 4; j++) {
+         if (i == j) {
+            basis (i, j) = 10;
+         } else {
+            basis (i, j) = 0;
+         }
+      }
+   }
+   MScal m(10);
+   Triangularization < BMat > (basis, dualbasis, 4, 4, m);
+   CalcDual < BMat > (dualbasis, basis, 4, m);
+   
+   cout << " Base Primal \n" << basis << endl;
+   cout << " Base Dual \n" << dualbasis << endl;
+   
+   
+   
+   
+#if 0
    ofstream realOutFile;
    string fileName;
    if (outFileRequested) {
@@ -455,7 +474,7 @@ int main (int argc, char *argv[])
 
    //ofstream realOutFile;
    //ostream & outFile = outFileRequested ? realOutFile.open("nik.txt", std::ios::out), realOutFile : std::cout;
-    
+
    // printing total running time
    clock_t begin = clock();
 
@@ -502,8 +521,13 @@ int main (int argc, char *argv[])
             mat_ZZ V;
             V = CreateRNGBasis (modulusRNG, order, dimension, seedZZ);
 
+            
+
             mat_ZZ W;
             W = Dualize (V, modulusRNG, order);
+            
+            mat_ZZ Wtmp;
+            transpose(Wtmp, W);
 
             map < string, BMat* > basis;
             map < string, BMat* > dualbasis;
@@ -757,6 +781,8 @@ int main (int argc, char *argv[])
 
    if (outFileRequested)
       realOutFile.close();
+   
+#endif
 
    return 0;
 }

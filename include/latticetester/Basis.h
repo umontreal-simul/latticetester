@@ -27,7 +27,8 @@
 namespace LatticeTester {
 
 /**
- * This class represents a basis for a lattice. To compute the length of
+ * This class represents a basis for a lattice. It inherites from BMat
+ * (see Types.h) which represents a matrix. To compute the length of
  * vectors, one may use either the \f$L_1\f$, the \f$L_2\f$ or the
  * \f$L_{\infty}\f$ norms. If one uses the \f$L_2\f$ norm and if `BScal` and
  * `NScal` are of type `double`, then the norm could overflow if the
@@ -36,15 +37,6 @@ namespace LatticeTester {
  * \f$L_{\infty}\f$ norms, `NScal` may be chosen the same as `BScal`.
  *
  */
-
-/* Erwan
-Cette classe représente une Basis pour un réseau. Elle hérite de BMat (aka
-NTL::matrix<long> ou boost::numeric::ublas::matrix<long>) définit dans Types.h.
-Elle hérite donc d'une structure de matrice : une Basis A contient des éléments
-A(i,j) (j-ème composante du i-ème vecteur).
-
-Ces éléments sont modifiés grâces aux méthodes fournies dans IntLattice.
-*/
 
 class Basis : public BMat {
 public:

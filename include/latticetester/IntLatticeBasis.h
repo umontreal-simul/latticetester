@@ -263,7 +263,7 @@ public:
      */
     void write () const;
 
-private:
+protected:
 
     /**
     * Represent the basis of the lattice. BMat is defined in Types.h

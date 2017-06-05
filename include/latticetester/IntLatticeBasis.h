@@ -78,6 +78,11 @@ public:
      * Destructor
      */
     ~IntLatticeBasis ();
+   
+    /**
+     * Cleans and releases all the memory allocated for this lattice.
+     */
+    void kill ();
 
     /**
      * Copy the lattice

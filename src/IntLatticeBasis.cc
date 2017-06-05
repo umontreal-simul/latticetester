@@ -109,12 +109,21 @@ IntLatticeBasis::IntLatticeBasis (const IntLatticeBasis & lat):
 
 /*=========================================================================*/
 
+   
 IntLatticeBasis::~IntLatticeBasis ()
 {
+   kill();
    m_basis.BMat::clear ();
    m_dualbasis.BMat::clear ();
    m_vecNorm.clear ();
    m_dualvecNorm.clear ();
+}
+   
+/*=========================================================================*/
+
+   
+void IntLatticeBasis::kill ()
+{
    delete [] m_xx;
    m_xx = 0;
 }
@@ -141,7 +150,6 @@ void IntLatticeBasis::initVecNorm ()
    m_xx = new bool[m_dim];
    for(int i = 0; i < m_dim; i++){
       m_vecNorm[i] = -1;
-      m_dualvecNorm[i] = -1;
       m_xx[i] = true;
    }
 }

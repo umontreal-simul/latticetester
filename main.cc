@@ -72,7 +72,7 @@ bool outFileRequested = false;
 bool WITH_DUAL = true;
 
 // ireration loop over the dimension of lattices
-const int MinDimension = 10;
+const int MinDimension = 9;
 #ifdef PRINT_CONSOLE
 const int MaxDimension = MinDimension + 1;
 #else
@@ -84,7 +84,7 @@ const int MaxDimension = 12;
 const int order = 3;
 
 // iteration loop over matrices of same dimension
-const int maxIteration = 10;
+const int maxIteration = 100;
 
 // Epsilon
 const long a = 999999;

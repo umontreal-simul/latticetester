@@ -19,59 +19,55 @@
 
 using namespace std;
 
-namespace LatticeTester
-{
-
-bool Coordinates::humanize = true;
+namespace LatticeTester {
 
 ostream& operator<< (ostream& os, const Coordinates& coords)
 {
-   os << "{";
-   Coordinates::const_iterator it = coords.begin();
-   if (it != coords.end()) {
-      os << Coordinates::asOutput(*it);
-      while (++it != coords.end())
-         os << "," << Coordinates::asOutput(*it);
-   }
-   os << "}";
-   return os;
+	os << "{";
+	Coordinates::const_iterator it = coords.begin();
+	if (it != coords.end()) {
+		os << *it;
+		while (++it != coords.end())
+	    	os << "," << *it;
+	}
+	os << "}";
+	return os;
 }
 
 istream& operator>> (istream& is, Coordinates& coords)
 {
-   coords.clear();
+	coords.clear();
 
-   string digits = "0123456789";
-   string sep = " \t,";
+	string digits = "0123456789";
+	string sep = " \t,";
 
-   // check if coordinate set is enclosed in braces
-   bool with_braces = false;
-   if (is.peek() == '{') {
+	// check if coordinate set is enclosed in braces
+	bool with_braces = false;
+	if (is.peek() == '{') {
 	  is.get();
 	  with_braces = true;
-   }
+	}
 
-   while (true) {
-	  if (with_braces && is.peek() == '}') {
-		 is.get();
-		 break;
-	  }
-	  if (digits.find(is.peek()) != string::npos) {
-		 // digit found
-		 Coordinates::value_type val;
-		 is >> val;
-		 coords.insert(Coordinates::asInput(val));
-		 continue;
-	  }
-	  if (sep.find(is.peek()) != string::npos) {
-		 // discard separator character
-		 is.get();
-		 continue;
-	  }
-	  break;
-   }
-
+	while (true) {
+		if (with_braces && is.peek() == '}') {
+			is.get();
+			break;
+		}
+		if (digits.find(is.peek()) != string::npos) {
+			// digit found
+			Coordinates::value_type val;
+			is >> val;
+			coords.insert(val);
+			continue;
+		}
+		if (sep.find(is.peek()) != string::npos) {
+			// discard separator character
+			is.get();
+			continue;
+		}
+		break;
+	}
    return is;
 }
 
-}
+} // end namespace

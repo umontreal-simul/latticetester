@@ -29,64 +29,32 @@ namespace LatticeTester {
 
 /**
  * Set of coordinates.
- *
- * \remark Coordinates indices start at 0.  To make the input/output
- * representation of coordinates start at 1 instead of 0, see #humanize.  For
- * code written with coordinate indices starting at 1, set #humanize to \c false.
  */
+
 class Coordinates : public std::set<size_t> {
-public:
-   /**
-    * &ldquo;Humanize&rdquo; the formatting of coordinate values.
-    *
-    * If set to \c true, the external representation of coordinate values if
-    * shifted by one with respect to its internal representation.  More
-    * precisely, an internal coordinate value \f$j\f$ is mapped to the external
-    * representation \f$j+1\f$ during output, and an external coordinate value
-    * \f$j+1\f$ is mapped to internal representation \f$j\f$ during input.
-    *
-    * Defaults to \c true;
-    *
-    * \sa #asOutput() #asInput()
-    */
-   static bool humanize;
+    public:
+        /**
+         * Constructs an empty coordinate set.
+         */
+        Coordinates():
+        std::set<value_type>()
+        { }
 
-   /**
-    * Maps the internal representation of a coordinate value to its external
-    * representation.
-    */
-   inline static value_type asOutput(value_type i)
-   { return i + (humanize ? 1 : 0); }
-
-   /**
-    * Maps the external representation of a coordinate value to its internal
-    * representation.
-    */
-   inline static value_type asInput(value_type i)
-   { return i - (humanize ? 1 : 0); }
-
-   /**
-    * Constructs an empty coordinate set.
-    */
-   Coordinates():
-      std::set<value_type>()
-   { }
-
-   /**
-    * Copy-constructor.
-    */
-   Coordinates(const Coordinates& other):
+        /**
+         * Copy-constructor.
+         */
+        Coordinates(const Coordinates& other):
         std::set<value_type>(other)
-   { }
+        { }
 
-   /**
-    * Constructs a coordinate set populated with the values from \c first
-    * (inclusively) to \c last (exclusively).
-    */
-   template<typename InputIterator>
-     Coordinates(InputIterator first, InputIterator last):
+        /**
+         * Constructs a coordinate set populated with the values from \c first
+         * (inclusively) to \c last (exclusively).
+         */
+        template<typename InputIterator>
+        Coordinates(InputIterator first, InputIterator last):
         std::set<value_type>(first, last)
-   { }
+        { }
 };
 
 
@@ -94,6 +62,7 @@ public:
  * \relates Coordinates
  * Formats the coordinate set \c coords and outputs it to \c os.
  */
+
 std::ostream& operator<< (std::ostream& os, const Coordinates& coords);
 
 /**
@@ -115,5 +84,6 @@ std::ostream& operator<< (std::ostream& os, const Coordinates& coords);
  */
 std::istream& operator>> (std::istream& is, Coordinates& coords);
 
-}
+} //end namespace
+
 #endif

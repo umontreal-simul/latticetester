@@ -273,6 +273,10 @@ public:
     * Debug function that print the primal and dual bases.
     */
    void trace (char *mess);
+
+   IntLatticeBasis getIntLatticeBasis () 
+   { return *m_lat; }
+
 private:
 
    /**

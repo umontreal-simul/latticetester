@@ -69,10 +69,10 @@ using namespace LatticeTester;
 bool outFileRequested = false;
 
 // Use of the Dual
-bool WITH_DUAL = false;
+bool WITH_DUAL = true;
 
 // ireration loop over the dimension of lattices
-const int MinDimension = 30;
+const int MinDimension = 10;
 #ifdef PRINT_CONSOLE
 const int MaxDimension = MinDimension + 1;
 #else
@@ -81,7 +81,7 @@ const int MaxDimension = 12;
 
 
 // order
-const int order = 5;
+const int order = 3;
 
 // iteration loop over matrices of same dimension
 const int maxIteration = 10;
@@ -94,10 +94,10 @@ const double epsilon = 1.0 - delta;
 
 const int maxcpt = 1000000; // for redLLL
 const int d = 0; // for preRedDieter
-const long blocksize = 10; // for BKZ insertions
+const long blocksize = 20; // for BKZ insertions
 
 // modulus
-const ZZ modulusRNG = power_ZZ(2, 31) - 1;
+const ZZ modulusRNG = power_ZZ(2, 17) - 1;
 
 const int Interval_dim = MaxDimension - MinDimension;
 
@@ -355,7 +355,7 @@ bool reduce(Reducer & red, const string & name, const int & d, int & seed_dieter
    //------------------------------------------------------------------------------------
    if(name =="BB_BKZ")
       red.redBKZ(delta, blocksize);
-
+   
    //------------------------------------------------------------------------------------
    // Dieter Method
    //------------------------------------------------------------------------------------
@@ -417,16 +417,15 @@ bool reduce2(Reducer & red, const string & name, const int & d, int & seed_diete
    //------------------------------------------------------------------------------------
    // Branch and Bound classic
    //------------------------------------------------------------------------------------
-   if(name =="BB_Classic"){
+   if(name =="BB_Classic")
       ok = red.shortestVector(L2NORM);
-   }
 
    //------------------------------------------------------------------------------------
    // Branch and Bound post BKZ
    //------------------------------------------------------------------------------------
-   if(name =="BB_BKZ" && !WITH_DUAL){
+   if(name =="BB_BKZ")
       ok = red.shortestVector(L2NORM);
-   }
+   
    return ok;
 }
 
@@ -638,43 +637,38 @@ int main (int argc, char *argv[])
    // print statistics
    outFile << "\n---------------- TIMING AVG ----------------\n" << endl;
 
-   outFile << "       PairRedPrimal = " << mean(timing_results["PairRedPrimal"][0]) << "( +/- " << variance(timing_results["PairRedPrimal"][0]) << ")" << endl;
-   outFile << " PairRedPrimalRandom = " << mean(timing_results["PairRedPrimalRandomized"][0]) << "( +/- " << variance(timing_results["PairRedPrimalRandomized"][0]) << ")" << endl;
+   outFile << "       PairRedPrimal = " << mean(timing_results["PairRedPrimal"][0]) << " (+/- " << variance(timing_results["PairRedPrimal"][0]) << ")" << endl;
+   outFile << " PairRedPrimalRandom = " << mean(timing_results["PairRedPrimalRandomized"][0]) << " (+/- " << variance(timing_results["PairRedPrimalRandomized"][0]) << ")" << endl;
    outFile << endl;
 
-   outFile << "                 LLL = " << mean(timing_results["LLL"][0]) << "( +/- " << variance(timing_results["LLL"][0]) << ")" << endl;
+   outFile << "                 LLL = " << mean(timing_results["LLL"][0]) << " (+/- " << variance(timing_results["LLL"][0]) << ")" << endl;
    outFile << "         PairRed+LLL = " << mean(timing_results["PairRedPrimal_LLL"][0]) + mean(timing_results["PairRedPrimal_LLL2"][0]);
-   outFile << " (" << mean(timing_results["PairRedPrimal_LLL2"][0]) << ") ( +/- " << variance(timing_results["PairRedPrimal_LLL2"][0]) << ")" << endl;
+   outFile << " (" << mean(timing_results["PairRedPrimal_LLL2"][0]) << ") (+/- " << variance(timing_results["PairRedPrimal_LLL2"][0]) << ")" << endl;
    outFile << "   PairRedRandom+LLL = " << mean(timing_results["PairRedPrimalRandomized_LLL"][0]) + mean(timing_results["PairRedPrimalRandomized_LLL2"][0]);
-   outFile << " (" << mean(timing_results["PairRedPrimalRandomized_LLL2"][0]) << ") ( +/- " << variance(timing_results["PairRedPrimalRandomized_LLL2"][0]) << ")" << endl;
+   outFile << " (" << mean(timing_results["PairRedPrimalRandomized_LLL2"][0]) << ") (+/- " << variance(timing_results["PairRedPrimalRandomized_LLL2"][0]) << ")" << endl;
    outFile << endl;
 
-   outFile << "              LLLNTL = " << mean(timing_results["LLLNTL"][0]) << "( +/- " << variance(timing_results["LLLNTL"][0]) << ")" << endl;
+   outFile << "              LLLNTL = " << mean(timing_results["LLLNTL"][0]) << " (+/- " << variance(timing_results["LLLNTL"][0]) << ")" << endl;
    outFile << "      PairRed+LLLNTL = " << mean(timing_results["PairRedPrimal_LLLNTL"][0]) + mean(timing_results["PairRedPrimal_LLLNTL2"][0]);
-   outFile << " (" << mean(timing_results["PairRedPrimal_LLLNTL2"][0]) << ") ( +/- " << variance(timing_results["PairRedPrimal_LLLNTL"][0]) << ")" << endl;
+   outFile << " (" << mean(timing_results["PairRedPrimal_LLLNTL2"][0]) << ") (+/- " << variance(timing_results["PairRedPrimal_LLLNTL"][0]) << ")" << endl;
    outFile << "PairRedRandom+LLLNTL = " << mean(timing_results["PairRedPrimalRandomized_LLLNTL"][0]) + mean(timing_results["PairRedPrimalRandomized_LLLNTL2"][0]);
-   outFile << " (" << mean(timing_results["PairRedPrimalRandomized_LLLNTL2"][0]) << ") ( +/- " << variance(timing_results["PairRedPrimalRandomized_LLLNTL2"][0]) << ")" << endl;
+   outFile << " (" << mean(timing_results["PairRedPrimalRandomized_LLLNTL2"][0]) << ") (+/- " << variance(timing_results["PairRedPrimalRandomized_LLLNTL2"][0]) << ")" << endl;
    outFile << endl;
 
    //outFile << "        LLLNTL_Exact = " << mean(timing_LLL_NTL_Exact) << endl;
    outFile << endl;
 
-   outFile << "              BKZNTL = " << mean(timing_results["BKZNTL"][0]) << ") ( +/- " << variance(timing_results["BKZNTL"][0]) << ")" << endl;
+   outFile << "              BKZNTL = " << mean(timing_results["BKZNTL"][0]) << ") (+/- " << variance(timing_results["BKZNTL"][0]) << ")" << endl;
    outFile << "      PairRed+BKZNTL = " << mean(timing_results["PairRedPrimal_BKZNTL"][0]) + mean(timing_results["PairRedPrimal_BKZNTL2"][0]);
-   outFile << " (" << mean(timing_results["PairRedPrimal_BKZNTL2"][0]) << ") ( +/- " << variance(timing_results["PairRedPrimal_BKZNTL2"][0]) << ")" << endl;
+   outFile << " (" << mean(timing_results["PairRedPrimal_BKZNTL2"][0]) << ") (+/- " << variance(timing_results["PairRedPrimal_BKZNTL2"][0]) << ")" << endl;
    outFile << "PairRedRandom+BKZNTL = " << mean(timing_results["PairRedPrimalRandomized_BKZNTL"][0]) + mean(timing_results["PairRedPrimalRandomized_BKZNTL2"][0]);
-   outFile << " (" << mean(timing_results["PairRedPrimalRandomized_BKZNTL2"][0]) << ") ( +/- " << variance(timing_results["PairRedPrimalRandomized_BKZNTL2"][0]) << ")" << endl;
+   outFile << " (" << mean(timing_results["PairRedPrimalRandomized_BKZNTL2"][0]) << ") (+/- " << variance(timing_results["PairRedPrimalRandomized_BKZNTL2"][0]) << ")" << endl;
    outFile << endl;
 
    outFile << "          BB Classic = " << mean(timing_results["BB_Classic"][0]) + mean(timing_results["BB_Classic2"][0]);
-   outFile << " (" << mean(timing_results["BB_Classic2"][0]) << ") ( +/- " << variance(timing_results["BB_Classic2"][0]) << ")" ")" << endl,
+   outFile << " (" << mean(timing_results["BB_Classic2"][0]) << ") (+/- " << variance(timing_results["BB_Classic2"][0]) << ")" ")" << endl,
    outFile << "              BB BKZ = " << mean(timing_results["BB_BKZ"][0]) + mean(timing_results["BB_BKZ2"][0]);
-   outFile << " (" << mean(timing_results["BB_BKZ2"][0]) << ") ( +/- " << variance(timing_results["BB_BKZ2"][0]) << ")";
-   if (WITH_DUAL)
-      outFile << " BB NON EFFECTUER CAR UTILISATION DU DUAL" << endl;
-   else
-      outFile << endl;
-
+   outFile << " (" << mean(timing_results["BB_BKZ2"][0]) << ") (+/- " << variance(timing_results["BB_BKZ2"][0]) << ")";
    outFile << endl;
 
    //outFile << "    Dieter Reduction = " << mean(timing_results["DIETER"][0]);
@@ -690,35 +684,35 @@ int main (int argc, char *argv[])
 
    outFile << "\n---------------- LENGTH AVG ----------------\n" << endl;
 
-   outFile << "             Initial = " << conv<ZZ>(mean(length_results["initial"][0])) << " Error Rate : " << (double) nb_diff["initial"]/maxIteration << endl;
+   outFile << "             Initial = " << conv<ZZ>(mean(length_results["initial"][0])) << "   Error Rate : " << (double) nb_diff["initial"]/maxIteration << endl;
 
-   outFile << "       PairRedPrimal = " << conv<ZZ>(mean(length_results["PairRedPrimal"][0])) << " Error Rate : " << (double) nb_diff["PairRedPrimal"]/maxIteration << endl;
-   outFile << " PairRedPrimalRandom = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized"][0])) << " Error Rate : " << (double) nb_diff["PairRedPrimalRandomized"]/maxIteration << endl;
+   outFile << "       PairRedPrimal = " << conv<ZZ>(mean(length_results["PairRedPrimal"][0])) << "   Error Rate : " << (double) nb_diff["PairRedPrimal"]/maxIteration << endl;
+   outFile << " PairRedPrimalRandom = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized"][0])) << "   Error Rate : " << (double) nb_diff["PairRedPrimalRandomized"]/maxIteration << endl;
    outFile << endl;
 
-   outFile << "                 LLL = " << conv<ZZ>(mean(length_results["LLL"][0])) << " Error Rate : " << (double) nb_diff["LLL"]/maxIteration << endl;
-   outFile << "         PairRed+LLL = " << conv<ZZ>(mean(length_results["PairRedPrimal_LLL"][0])) << " Error Rate : " << (double) nb_diff["PairRedPrimal_LLL"]/maxIteration << endl;
-   outFile << "   PairRedRandom+LLL = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized_LLL"][0])) << " Error Rate : " << (double) nb_diff["PairRedPrimalRandomized_LLL"]/maxIteration << endl;
+   outFile << "                 LLL = " << conv<ZZ>(mean(length_results["LLL"][0])) << "   Error Rate : " << (double) nb_diff["LLL"]/maxIteration << endl;
+   outFile << "         PairRed+LLL = " << conv<ZZ>(mean(length_results["PairRedPrimal_LLL"][0])) << "   Error Rate : " << (double) nb_diff["PairRedPrimal_LLL"]/maxIteration << endl;
+   outFile << "   PairRedRandom+LLL = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized_LLL"][0])) << "   Error Rate : " << (double) nb_diff["PairRedPrimalRandomized_LLL"]/maxIteration << endl;
    outFile << endl;
 
-   outFile << "              LLLNTL = " << conv<ZZ>(mean(length_results["LLLNTL"][0])) << " Error Rate : " << (double) nb_diff["LLLNTL"]/maxIteration << endl;
-   outFile << "      PairRed+LLLNTL = " << conv<ZZ>(mean(length_results["PairRedPrimal_LLLNTL"][0])) << " Error Rate : " << (double) nb_diff["PairRedPrimal_LLLNTL"]/maxIteration << endl;
-   outFile << "PairRedRandom+LLLNTL = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized_LLLNTL"][0])) << " Error Rate : " << (double) nb_diff["PairRedPrimalRandomized_LLLNTL"]/maxIteration << endl;
+   outFile << "              LLLNTL = " << conv<ZZ>(mean(length_results["LLLNTL"][0])) << "   Error Rate : " << (double) nb_diff["LLLNTL"]/maxIteration << endl;
+   outFile << "      PairRed+LLLNTL = " << conv<ZZ>(mean(length_results["PairRedPrimal_LLLNTL"][0])) << "   Error Rate : " << (double) nb_diff["PairRedPrimal_LLLNTL"]/maxIteration << endl;
+   outFile << "PairRedRandom+LLLNTL = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized_LLLNTL"][0])) << "   Error Rate : " << (double) nb_diff["PairRedPrimalRandomized_LLLNTL"]/maxIteration << endl;
    outFile << endl;
    outFile << endl;
 
-   outFile << "              BKZNTL = " << conv<ZZ>(mean(length_results["BKZNTL"][0])) << " Error Rate : " << (double) nb_diff["BKZNTL"]/maxIteration << endl;
-   outFile << "      PairRed+BKZNTL = " << conv<ZZ>(mean(length_results["PairRedPrimal_BKZNTL"][0])) << " Error Rate : " << (double) nb_diff["PairRedPrimal_BKZNTL"]/maxIteration << endl;
-   outFile << "PairRedRandom+BKZNTL = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized_BKZNTL"][0])) << " Error Rate : " << (double) nb_diff["PairRedPrimalRandomized_BKZNTL"]/maxIteration << endl;
+   outFile << "              BKZNTL = " << conv<ZZ>(mean(length_results["BKZNTL"][0])) << "   Error Rate : " << (double) nb_diff["BKZNTL"]/maxIteration << endl;
+   outFile << "      PairRed+BKZNTL = " << conv<ZZ>(mean(length_results["PairRedPrimal_BKZNTL"][0])) << "   Error Rate : " << (double) nb_diff["PairRedPrimal_BKZNTL"]/maxIteration << endl;
+   outFile << "PairRedRandom+BKZNTL = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized_BKZNTL"][0])) << "   Error Rate : " << (double) nb_diff["PairRedPrimalRandomized_BKZNTL"]/maxIteration << endl;
    outFile << endl;
 
-   //outFile << "             BB Only = " << conv<ZZ>(mean(length_results["PairRedPrimal_BKZNTL"][0])) << " Error Rate : " << (double) nb_diff[name]/maxIteration << endl;
-   outFile << "          BB Classic = " << conv<ZZ>(mean(length_results["BB_Classic"][0])) << " Error Rate : " << (double) nb_diff["BB_Classic"]/maxIteration << endl,
-   outFile << "              BB BKZ = " << conv<ZZ>(mean(length_results["BB_BKZ"][0])) << " Error Rate : " << (double) nb_diff["BB_BKZ"]/maxIteration << endl;
+   //outFile << "             BB Only = " << conv<ZZ>(mean(length_results["PairRedPrimal_BKZNTL"][0])) << "   Error Rate : " << (double) nb_diff[name]/maxIteration << endl;
+   outFile << "          BB Classic = " << conv<ZZ>(mean(length_results["BB_Classic"][0])) << "   Error Rate : " << (double) nb_diff["BB_Classic"]/maxIteration << endl,
+   outFile << "              BB BKZ = " << conv<ZZ>(mean(length_results["BB_BKZ"][0])) << "   Error Rate : " << (double) nb_diff["BB_BKZ"]/maxIteration << endl;
    outFile << endl;
 
-   //outFile << "    Dieter Reduction = " << conv<ZZ>(mean(length_results["DIETER"][0])) << " Error Rate : " << (double) nb_diff[name]/maxIteration << endl,
-   //outFile << " Minkowski Reduction = " << conv<ZZ>(mean(length_results["MINKOWSKI"][0])) << " Error Rate : " << (double) nb_diff["MINKOWSKI"]/maxIteration << endl;
+   //outFile << "    Dieter Reduction = " << conv<ZZ>(mean(length_results["DIETER"][0])) << "   Error Rate : " << (double) nb_diff[name]/maxIteration << endl,
+   //outFile << " Minkowski Reduction = " << conv<ZZ>(mean(length_results["MINKOWSKI"][0])) << "   Error Rate : " << (double) nb_diff["MINKOWSKI"]/maxIteration << endl;
 
    outFile << "\n--------------------------------------------\n" << endl;
 

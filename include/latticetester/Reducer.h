@@ -224,6 +224,7 @@ public:
    void redLLLNTLProxy(double fact);
    void redLLLNTLExact(ZZ & det, long a, long b);
    void redBKZ(double fact, long Blocksize);
+   void redBKZ(double fact, long Blocksize, mat_ZZ& U);
 
    /**
     * Reduces the current basis to a Minkowski reduced basis with respect
@@ -273,6 +274,10 @@ public:
     * Debug function that print the primal and dual bases.
     */
    void trace (char *mess);
+
+   IntLatticeBasis getIntLatticeBasis () 
+   { return *m_lat; }
+
 private:
 
    /**

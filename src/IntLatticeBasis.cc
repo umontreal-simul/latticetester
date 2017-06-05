@@ -141,6 +141,7 @@ void IntLatticeBasis::initVecNorm ()
    m_xx = new bool[m_dim];
    for(int i = 0; i < m_dim; i++){
       m_vecNorm[i] = -1;
+      m_dualvecNorm[i] = -1;
       m_xx[i] = true;
    }
 }

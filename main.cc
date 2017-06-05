@@ -353,7 +353,16 @@ bool reduce(Reducer & red, const string & name, const int & d, int & seed_dieter
    //------------------------------------------------------------------------------------
    // Branch and Bound post BKZ
    //------------------------------------------------------------------------------------
-   if(name =="BB_BKZ")
+   if(name =="BB_BKZ" && WITH_DUAL) {
+
+      mat_ZZ U;
+      U.SetDims(dimension, dimension);
+      red.redBKZ(delta, blocksize, U);
+      red.getIntLatticeBasis().getDualBasis() = transpose(inv(U)) * red.getIntLatticeBasis().getDualBasis();
+
+      cout << "check duality" << red.getIntLatticeBasis().checkDuality();
+
+   } else if (name =="BB_BKZ")
       red.redBKZ(delta, blocksize);
 
    //------------------------------------------------------------------------------------
@@ -417,16 +426,15 @@ bool reduce2(Reducer & red, const string & name, const int & d, int & seed_diete
    //------------------------------------------------------------------------------------
    // Branch and Bound classic
    //------------------------------------------------------------------------------------
-   if(name =="BB_Classic"){
+   if(name =="BB_Classic")
       ok = red.shortestVector(L2NORM);
-   }
 
    //------------------------------------------------------------------------------------
    // Branch and Bound post BKZ
    //------------------------------------------------------------------------------------
-   if(name =="BB_BKZ" && !WITH_DUAL){
+   if(name =="BB_BKZ")
       ok = red.shortestVector(L2NORM);
-   }
+   
    return ok;
 }
 

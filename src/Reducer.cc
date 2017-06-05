@@ -661,6 +661,10 @@ void Reducer::redBKZ(double fact, long Blocksize){
    BKZ_XD(m_lat->getBasis(), fact, Blocksize);
 }
 
+void Reducer::redBKZ(double fact, long Blocksize, mat_ZZ& U){
+   BKZ_XD(m_lat->getBasis(), U, fact, Blocksize);
+}
+
 
 
 

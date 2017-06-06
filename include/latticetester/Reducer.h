@@ -21,7 +21,6 @@
 #include "latticetester/Types.h"
 #include "latticetester/Const.h"
 #include "latticetester/Util.h"
-//#include "latticetester/Basis.h"
 #include "latticetester/IntLatticeBasis.h"
 
 #include <fstream>

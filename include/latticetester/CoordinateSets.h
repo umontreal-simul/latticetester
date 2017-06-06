@@ -21,11 +21,12 @@
 #include <set>
 #include <map>
 #include <iostream>
-#include "latticetester/Util.h"
-#include "latticetester/Coordinates.h"
 #include <boost/iterator/iterator_facade.hpp>
 #include <boost/iterator/iterator_adaptor.hpp>
 #include <boost/config.hpp>
+#include "latticetester/Util.h"
+#include "latticetester/Coordinates.h"
+#include "latticetester/Types.h"
 
 namespace LatticeTester {
 
@@ -248,18 +249,18 @@ class AddCoordinate {
  * Warning: do not use a temporary object as <tt>baseSets</tt>.
  */
 public:
-    typedef BASE Basis;
+    typedef BASE BMat;
 
     /**
      * Constructs a sequence of coordinate sets by adding the coordinate \c coord
      * to each element in the base sequence \c base.
      */
-    AddCoordinate (const Basis& base, Coordinates::value_type coord):
+    AddCoordinate (const BMat& base, Coordinates::value_type coord):
     m_base(base), m_coord(coord)
     { }
 
     #ifdef BOOST_HAS_RVALUE_REFS
-    AddCoordinate (Basis&& base, Coordinates::value_type coord):
+    AddCoordinate (BMat&& base, Coordinates::value_type coord):
     m_base(std::move(base)), m_coord(coord)
     { }
     #endif
@@ -267,7 +268,7 @@ public:
     /**
      * Returns the base sequence.
      */
-    const Basis& base() const
+    const BMat& base() const
     { return  m_base; }
 
     /**
@@ -278,7 +279,7 @@ public:
 
 public:
     class const_iterator : public boost::iterators::iterator_adaptor<const_iterator,
-    typename Basis::const_iterator>
+    typename BMat::const_iterator>
     {
         public:
             struct end_tag {};
@@ -328,7 +329,7 @@ public:
     { return const_iterator(*this, typename const_iterator::end_tag{}); }
 
 private:
-    Basis m_base;
+    BMat m_base;
     Coordinates::value_type m_coord;
 
 }; // end AddCoordinate class

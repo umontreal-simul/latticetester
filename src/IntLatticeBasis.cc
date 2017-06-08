@@ -109,7 +109,7 @@ IntLatticeBasis::IntLatticeBasis (const IntLatticeBasis & lat):
 
 /*=========================================================================*/
 
-   
+
 IntLatticeBasis::~IntLatticeBasis ()
 {
    kill();
@@ -118,10 +118,10 @@ IntLatticeBasis::~IntLatticeBasis ()
    m_vecNorm.clear ();
    m_dualvecNorm.clear ();
 }
-   
+
 /*=========================================================================*/
 
-   
+
 void IntLatticeBasis::kill ()
 {
    delete [] m_xx;
@@ -377,6 +377,58 @@ void IntLatticeBasis::write () const
 }
 
 /*=========================================================================*/
+
+string IntLatticeBasis::toStringBasis () const
+{
+   ostringstream os;
+   os << "Primal Basis:\n";
+   os << "  Dim = " << m_dim << " \n";
+   for (int i = 0; i < m_dim; i++) {
+      os << "    [";
+      for (int j = 0; j < m_dim; j++)
+         os << " " <<  setprecision (15) << m_basis(i,j);
+      os << " ]\n";
+   }
+
+   os << "  Norm:\n";
+   for (int i = 0; i < m_dim; i++) {
+      os << "    ";
+      if (m_vecNorm[i] < 0) {
+         os << "-1" << endl;
+      } else {
+         os << m_vecNorm[i] << endl;
+      }
+   }
+   os << endl;
+   return os.str ();
+}
+
+/*=========================================================================*/
+
+string IntLatticeBasis::toStringDualBasis () const
+{
+   ostringstream os;
+   os << "Dual Basis:\n";
+   os << "  Dim = " << m_dim << " \n";
+   for (int i = 0; i < m_dim; i++) {
+      os << "    [";
+      for (int j = 0; j < m_dim; j++)
+         os << " " <<  setprecision (15) << m_dualbasis(i,j);
+      os << " ]\n";
+   }
+
+   os << "  Norm:\n";
+   for (int i = 0; i < m_dim; i++) {
+      os << "    ";
+      if (m_dualvecNorm[i] < 0) {
+         os << "-1" << endl;
+      } else {
+         os << m_dualvecNorm[i] << endl;
+      }
+   }
+   os << endl;
+   return os.str ();
+}
 
 
 } //namespace LatticeTester

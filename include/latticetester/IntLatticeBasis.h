@@ -78,7 +78,7 @@ public:
      * Destructor
      */
     ~IntLatticeBasis ();
-   
+
     /**
      * Cleans and releases all the memory allocated for this lattice.
      */
@@ -267,6 +267,16 @@ public:
      * vectors are up to date.
      */
     void sort (int d);
+
+    /**
+     * Return a string with the primal basis and is norms
+     */
+    string toStringBasis() const;
+
+    /**
+     * Return a string with the dual basis and is norms
+     */
+    string toStringDualBasis() const;
 
     /**
      * Writes the lattice and the parameters on standard output

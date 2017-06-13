@@ -21,7 +21,6 @@
 #include "latticetester/Const.h"
 //#include "latticetester/Normalizer.h"
 //#include "latticetester/CoordinateSets.h"
-//#include "latticetester/Lacunary.h"
 #include <string>
 
 namespace LatticeTester {

@@ -26,7 +26,7 @@ namespace LatticeTester
 
 const double NormaBestLat::m_gamma[] =
    {
-      /* GamBestLat[0] = */   0.0,
+      /* GamBestLat[0] = */   //0.0,
       /* GamBestLat[1] = */   1.0,
       /* GamBestLat[2] = */   1.1547005383793,
       /* GamBestLat[3] = */   1.2599210498949,

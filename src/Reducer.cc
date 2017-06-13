@@ -110,7 +110,7 @@ Reducer::Reducer (const Reducer & red)
 
 //=========================================================================
 
-inline Reducer & Reducer::operator= (const Reducer & red)
+Reducer & Reducer::operator= (const Reducer & red)
 {
    if (this != &red)
       copy (red);
@@ -169,7 +169,8 @@ Reducer::~Reducer ()
 
 void Reducer::setBoundL2 (const NVect & V, int dim1, int dim2)
 {
-   for (int i = dim1; i <= dim2; i++)
+   m_BoundL2.resize(dim2);
+   for (int i = dim1; i < dim2; i++)
       m_BoundL2[i] = V[i];
 }
 
@@ -1467,13 +1468,11 @@ bool Reducer::reductMinkowski (int d)
 bool Reducer::shortestVector (NormType norm)
 // Square length of shortest vector can be recovered in m_lMin2
 {
-   //   trace( "AVANT shortestVector");
-
    // Perform pre-reductions using L2 norm temporarily.
-
-
    // no prereduction required
-   /*
+
+   //trace( "AVANT shortestVector");
+
    if (PreRedDieterSV) {
       preRedDieter (0);
    }
@@ -1484,7 +1483,7 @@ bool Reducer::shortestVector (NormType norm)
       m_lat->setNegativeNorm ();
       m_lat->setDualNegativeNorm ();
    }
-   */
+
    /* Find the shortest vector for the selected norm.  */
    /* The L2 norm is used for the Choleski decomposition and BB bounds. */
    bool ok;
@@ -1499,11 +1498,10 @@ bool Reducer::shortestVector (NormType norm)
       PreRedDieterSV = true;
    if (m_countNodes > SHORT_LLL)
       PreRedLLLSV = true;
-//   m_lat->getBasis ().updateVecNorm ();
-//   m_lat->sort (0);
+   m_lat->updateVecNorm();
+   m_lat->sort(0);
 
-
-  // trace( "APRES shortestVector");
+   //trace( "APRES shortestVector");
 
    return ok;
 }

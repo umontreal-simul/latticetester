@@ -268,12 +268,12 @@ public:
     void sort (int d);
 
     /**
-     * Return a string with the primal basis and is norms
+     * Return a string with the primal basis and its norms
      */
     string toStringBasis() const;
 
     /**
-     * Return a string with the dual basis and is norms
+     * Return a string with the dual basis and its norms
      */
     string toStringDualBasis() const;
 

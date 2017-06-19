@@ -814,7 +814,7 @@ inline void ChangeSign (Vect & A, int n)
  */
 inline long GCD2vect (std::vector<long> V, int k, int n)
 {
-    int i = k + 1;
+    int i = k;
     long r, d, c;
     d = labs (V[k]);
     while (d != 1 && i < n) {

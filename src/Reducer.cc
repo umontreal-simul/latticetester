@@ -832,18 +832,19 @@ bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const BMat & WTemp)
    long zhigh, zlow, h;
    bool high;
    int k;
-   RScal S1, S2, S3, S4, mR(10);
+   RScal S1, S2, S3, S4, mR;
 // trace( "AVANT tryZ");
-//  cout << j << "  " << i << "  " << Stage << "  " << smaller << endl;
 
    const int dim = m_lat->getDim ();
    //conv (mR, m_lat->getM ());
 
    ++m_countNodes;
    if (m_countNodes > maxNodesBB) {
-      //cout << "*****  m_countNodes > maxNodesBB = " << maxNodesBB << endl;
+      cout << "*****  m_countNodes > maxNodesBB = " << maxNodesBB << endl;
       return false;
    }
+
+
    // Calcul d'un intervalle contenant les valeurs admissibles de zj.
    center = 0.0;
    if (j < dim-1) {
@@ -868,8 +869,9 @@ bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const BMat & WTemp)
          --max0;
 
       // En vue du choix initial de zj. On determine zlow et zhigh.
-      if (min0 > max0)
+      if (min0 > max0){
          return true;
+      }
       if (min0 == max0) {
          zlow = min0;
          zhigh = max0 + 1;
@@ -887,6 +889,7 @@ bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const BMat & WTemp)
       }
 
    } else {  // j = dim-1
+
       zlow = 0;
       high = true;
       if (Stage == 2) {
@@ -899,6 +902,18 @@ bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const BMat & WTemp)
          conv (max0, trunc (sqrt ((m_lMin2 - m_n2[j]) / m_dc2[j])));
       }
    }
+   /*
+   cout << "." ;
+   if(dim == 5 && i == 3){
+      cout << "min0 = " << min0 << endl;
+   }
+   else if(i==3){
+      cout << "dim = " << dim << endl;
+   }
+   else if(dim==5){
+      cout << "i = " << i << endl;
+   }*/
+
 
    NScal temp;
    /* On essaie maintenant chacun des z[j] dans l'intervalle, en */
@@ -922,7 +937,8 @@ bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const BMat & WTemp)
             matrix_row<const BMat> row1(m_lat->getBasis(), dim-1);
             m_bv = row1;
             //    m_bv = m_lat->getBasis ()[dim-1];
-            for (k = 0; k < dim; k++) {
+            cout << "AVANT m_bv = " << m_bv << endl;
+            for (k = 0; k < dim-1; k++) {
                if (m_zLI[k] != 0) {
                   matrix_row<const BMat> row1(m_lat->getBasis(), k);
                   ModifVect (m_bv, row1, m_zLI[k], dim);
@@ -1004,6 +1020,7 @@ bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const BMat & WTemp)
 bool Reducer::redBB (int i, int d, int Stage, bool & smaller)
 /*
  * Tries to shorten m_lat->getBasis()[i] using branch-and-bound.
+ * Used in Minkowski Reduction.
  * Stage is 2 or 3.
  * z[i] = 1 if Stage = 2, z[i] >= 2 if Stage = 3.
  * Stops and returns false if not finished after examining MaxNodes
@@ -1013,9 +1030,8 @@ bool Reducer::redBB (int i, int d, int Stage, bool & smaller)
 {
    bool withDual = m_lat->withDual();
    const int dim = m_lat->getDim ();
-   const int maxDim = m_lat->getDim ();
-   BMat VTemp (dim, maxDim), WTemp (dim, maxDim);
-   bool XXTemp[maxDim];
+   BMat VTemp (dim, dim), WTemp (dim, dim);
+   bool XXTemp[dim];
    NScal tmp;
 // trace( "AVANT redBB");
    smaller = false;
@@ -1043,7 +1059,8 @@ bool Reducer::redBB (int i, int d, int Stage, bool & smaller)
       conv(m2, m_lat->getModulo());
       m2 = m2*m2;
       if (m_lMin2 * m_lat->getDualVecNorm (i) < 4*m2)
-         return true;
+         return true; // if the angle between the basis vector i and the dual
+                      // basis vector i is between -Pi/3 and Pi/3
    }
    if(withDual){
       m_lat->updateDualVecNorm ();
@@ -1088,7 +1105,6 @@ bool Reducer::redBB (int i, int d, int Stage, bool & smaller)
       for (h = 0; h < dim; h++)
          m_lat->setXX (XXTemp[h], h);
    }
-
    if (smaller)
    {
       /* On a trouve un plus court vecteur.  On ameliore
@@ -1117,7 +1133,7 @@ bool Reducer::redBB (int i, int d, int Stage, bool & smaller)
                m_lat->setDualNegativeNorm (h);
             }
             if (Stage == 2) {
-               if (h > d)
+               if (h >= d)
                   m_lat->setXX (false, h);
             }
          }
@@ -1244,7 +1260,6 @@ bool Reducer::tryZ0 (int j, bool & smaller)
                   x = x * x;
                }
                if (x < m_lMin2) {
-#if 0
     /* La condition suivante ralentit le programme; je l'ai mise donc en
        commentaire. Il est très rare qu'elle soit effective et permette de sortir
        prématurément, et seulement pour de grandes dimensions dans le cas L2NORM.
@@ -1252,10 +1267,12 @@ bool Reducer::tryZ0 (int j, bool & smaller)
        plus courts diminue lentement.
        Il se pourrait que ce soit parfois plus rapide dans le cas L1NORM,
        dépendant de la dimension. Mais L2NORM est primordial. */
+                  /*
                   if (x <= m_BoundL2[dim]) {
                      return false;
                   }
-#endif
+                  */
+
                   // Il est plus court!
                   smaller = true;
                   conv (m_lMin2, x);
@@ -1413,6 +1430,7 @@ bool Reducer::reductMinkowski (int d)
    bool smaller;               // A smaller vector has been found
 
    do {
+      cout << "ON COMMENCE" << endl;
       // The first d vectors should not be modified.
       for (i = 0; i < d; i++)
          m_lat->setXX (true, i);
@@ -1434,8 +1452,10 @@ bool Reducer::reductMinkowski (int d)
                if (!redBB (i, d, 2, smaller))
                   return false;
                totalNodes += m_countNodes;
-               if (smaller)
+               if (smaller){
                   found = true;
+                  cout << "SMALLER TRUE AND i = " << i << endl;
+               }
             }
          }
       } while (found);

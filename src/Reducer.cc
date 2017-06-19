@@ -54,9 +54,10 @@ namespace LatticeTester
 {
 
 // Initialization of non-const static members
-bool Reducer::PreRedDieterSV = false;
+bool Reducer::PreRedDieterSV = true;
 bool Reducer::PreRedLLLSV = false;
 bool Reducer::PreRedLLLRM = false;
+bool Reducer::PreRedBKZ = false;
 long Reducer::maxNodesBB = 1000000;
 
 
@@ -503,9 +504,6 @@ void Reducer::pairwiseRedDual (int i)
 
 //=========================================================================
 
-/**
- * We have removed the step "pairwise Reduction in the Dual".
- */
 void Reducer::preRedDieter(int d)
 {
    long BoundCount;
@@ -529,7 +527,7 @@ void Reducer::preRedDieter(int d)
    } while (!(m_countDieter >= BoundCount || m_cpt > MAX_PRE_RED)); // fred
 }
 
-
+//=========================================================================
 
 void Reducer::preRedDieterPrimalOnlyRandomized (int d, int seed)
 {
@@ -937,7 +935,7 @@ bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const BMat & WTemp)
             matrix_row<const BMat> row1(m_lat->getBasis(), dim-1);
             m_bv = row1;
             //    m_bv = m_lat->getBasis ()[dim-1];
-            cout << "AVANT m_bv = " << m_bv << endl;
+            //cout << "AVANT m_bv = " << m_bv << endl;
             for (k = 0; k < dim-1; k++) {
                if (m_zLI[k] != 0) {
                   matrix_row<const BMat> row1(m_lat->getBasis(), k);
@@ -1429,8 +1427,8 @@ bool Reducer::reductMinkowski (int d)
    bool found;
    bool smaller;               // A smaller vector has been found
 
+   //redBKZ(0.999999, 10);
    do {
-      cout << "ON COMMENCE" << endl;
       // The first d vectors should not be modified.
       for (i = 0; i < d; i++)
          m_lat->setXX (true, i);
@@ -1454,7 +1452,6 @@ bool Reducer::reductMinkowski (int d)
                totalNodes += m_countNodes;
                if (smaller){
                   found = true;
-                  cout << "SMALLER TRUE AND i = " << i << endl;
                }
             }
          }
@@ -1492,7 +1489,9 @@ bool Reducer::shortestVector (NormType norm)
    // no prereduction required
 
    //trace( "AVANT shortestVector");
-
+   if(PreRedBKZ){
+      redBKZ(0.9999999, 10);
+   }
    if (PreRedDieterSV) {
       preRedDieter (0);
    }

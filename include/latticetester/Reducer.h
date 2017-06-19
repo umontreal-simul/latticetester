@@ -98,6 +98,7 @@ public:
    static bool PreRedDieterSV;
    static bool PreRedLLLSV;
    static bool PreRedLLLRM;
+   static bool PreRedBKZ;
 
    /**
     * @}

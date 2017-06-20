@@ -20,6 +20,8 @@
 namespace LatticeTester
 {
 
+//PW_TODO ça colle pas entre : decription Doxy, Lg(i!) et les résultats affichés
+
 const double NormaMinkL1::m_gamma[] =
 {         //  GamMinkL1[i] = Lg(i!)
    /* GamMinkL1[0] = */    0.00000000000000,

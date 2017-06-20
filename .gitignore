@@ -1,6 +1,8 @@
 main.cc
 main.cpp
 latticetester.xcodeproj/
+latticetester.xcodeproj
+DerivedData/
 Results/
 results.txt
 doxygen/

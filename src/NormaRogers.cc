@@ -22,6 +22,12 @@
 namespace LatticeTester
 {
 
+/**
+ * These laminated gamma constants are calculated as defined in 
+ * Conway and Sloane book (Sphere packing, Lattices and groups) : 
+ *    - equation (47) page 20 of chapter 1
+ *    - table 1.2 page 15 of chapter 1
+ */
 
 const double NormaRogers::m_gamma0[ ] =
    {
@@ -91,6 +97,7 @@ double NormaRogers::calcGamma (int dim)
 
    r = 0.5 * dimr * log2 (dimr / s) + 1.5 * log2 (dimr) - t + 5.25 / (dimr + 2.5);
    r = 4 * exp2(2 * r / dimr);
+   // PW_TODO : pourquoi *4 et pas *2 ? Ça colle pas avec le cours de Pierre page 289
    return r;
 }
 

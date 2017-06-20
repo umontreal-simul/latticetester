@@ -54,11 +54,10 @@ public:
     * figure of merit by \f$(1/\beta)^t\f$, thus weakening the requirements for
     * large \f$t\f$ in a worst-case figure of merit. One normally uses
     * \f$\beta= 1\f$.
-
-    //PW_TODO : à voir
     * \remark **Richard:** Je crois que ce facteur `beta` devrait
     * disparaître car des poids beaucoup plus généraux sont maintenant
     * implantés dans les classes `*Weights`.
+    * PW_TODO : a voir
     */
    Normalizer (const MScal & m, int k, int t, std::string Name,
                   NormType norm = L2NORM, double beta = 1);

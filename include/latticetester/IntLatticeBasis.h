@@ -27,7 +27,8 @@ namespace LatticeTester {
 
 /**
  * This class offers tools to manipulate lattice bases. Each lattice is
- * represented by a basis \f$V\f$ and a Norm.
+ * represented by a basis \f$V\f$ and a Norm. We can beside precise the
+ * lattice by adding the dual lattice \f$W\f$ and the modulo.
  */
 
 /* Erwan
@@ -328,7 +329,7 @@ protected:
     bool m_withDual;
 
     /**
-     * Implemented in LatCommun but I've no idea what it does
+     * This table is used in the Minkowski reduction.
      */
     bool *m_xx;
 

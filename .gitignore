@@ -3,3 +3,4 @@ main.cpp
 latticetester.xcodeproj/
 Results/
 results.txt
+doxygen/

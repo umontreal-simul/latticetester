@@ -269,13 +269,13 @@ bool reduce(Reducer & red, const string & name, const int & d, int & seed_dieter
    // Pairwise reduction in primal basis only
    //------------------------------------------------------------------------------------
    if(name == "PairRedPrimal" )
-      red.preRedDieterPrimalOnly(d);
+      red.preRedDieter(d);
 
    //------------------------------------------------------------------------------------
    // Randomized pairwise reduction in primal basis only
    //------------------------------------------------------------------------------------
    if(name == "PairRedPrimalRandomized")
-      red.preRedDieterPrimalOnlyRandomized(d, seed_dieter);
+      red.preRedDieterRandomized(d, seed_dieter);
 
    //------------------------------------------------------------------------------------
    // LLL Richard
@@ -288,14 +288,14 @@ bool reduce(Reducer & red, const string & name, const int & d, int & seed_dieter
    // Pairwise reduction (in primal basis only) and then LLL Richard
    //------------------------------------------------------------------------------------
    if(name == "PairRedPrimal_LLL")
-      red.preRedDieterPrimalOnly(d);
+      red.preRedDieter(d);
 
 
    //------------------------------------------------------------------------------------
    // Randomized pairwise reduction (in primal basis only) and then LLL Richard
    //------------------------------------------------------------------------------------
    if(name == "PairRedPrimalRandomized_LLL")
-      red.preRedDieterPrimalOnlyRandomized(d, seed_dieter);
+      red.preRedDieterRandomized(d, seed_dieter);
 
    //------------------------------------------------------------------------------------
    // LLL NTL reduction (floating point version = proxy)
@@ -307,13 +307,13 @@ bool reduce(Reducer & red, const string & name, const int & d, int & seed_dieter
    // Pairwise reduction (in primal basis only) and then LLL NTL proxy
    //------------------------------------------------------------------------------------
    if(name == "PairRedPrimal_LLLNTL")
-      red.preRedDieterPrimalOnly(d);
+      red.preRedDieter(d);
 
    //------------------------------------------------------------------------------------
    // Randomized pairwise reduction (in primal basis only) and then LLL NTL proxy
    //------------------------------------------------------------------------------------
    if(name == "PairRedPrimalRandomized_LLLNTL")
-      red.preRedDieterPrimalOnlyRandomized(d, seed_dieter);
+      red.preRedDieterRandomized(d, seed_dieter);
 
    //------------------------------------------------------------------------------------
    // LLL NTL Exact reduction only
@@ -331,19 +331,19 @@ bool reduce(Reducer & red, const string & name, const int & d, int & seed_dieter
    // Pairwise reduction (in primal basis only) and then BKZ NTL proxy
    //------------------------------------------------------------------------------------
    if(name =="PairRedPrimal_BKZNTL")
-      red.preRedDieterPrimalOnly(d);
+      red.preRedDieter(d);
 
    //------------------------------------------------------------------------------------
    // Randomized pairwise reduction (in primal basis only) and then BKZ NTL proxy
    //------------------------------------------------------------------------------------
    if(name =="PairRedPrimalRandomized_BKZNTL")
-      red.preRedDieterPrimalOnlyRandomized(d, seed_dieter);
+      red.preRedDieterRandomized(d, seed_dieter);
 
    //------------------------------------------------------------------------------------
    // Branch and Bound classic
    //------------------------------------------------------------------------------------
    if(name =="BB_Classic"){
-      red.preRedDieterPrimalOnly(d);
+      red.preRedDieter(d);
       red.redLLL(delta, maxcpt, dimension);
    }
 

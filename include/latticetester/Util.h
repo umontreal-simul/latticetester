@@ -496,7 +496,8 @@ inline void DivideRound (const Real & a, const Real & b, Real & q)
 }
 
 /**
- * \copydoc DivideRound(const Real&, const Real&, Real&)
+ * Computes \f$a/b\f$, rounds the result to the nearest integer and returns
+ * the result in \f$q\f$.
  */
 inline void DivideRound (const long & a, const long & b, long & q)
 {
@@ -524,7 +525,7 @@ inline void DivideRound (const long & a, const long & b, long & q)
 
 #ifdef WITH_NTL
 /**
- * \copydoc DivideRound(const Real&, const Real&, Real&)
+ * \copydoc DivideRound(const long&, const long&, long&)
  */
 inline void DivideRound (const NTL::ZZ & a, const NTL::ZZ & b, NTL::ZZ & q)
 {

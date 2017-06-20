@@ -26,10 +26,10 @@ NTL_CLIENT
 
 /**
  * The two floowing two classes are copies from NTL::Vec<T> and NTL::Mat<T>, but
- * they contain additional member functions having same names to the ones 
+ * they contain additional member functions having same names to the ones
  * used in boost library.
- * This name conversion is meant to have the samee function names in boost and NTL 
- * and allows us to have LatticeTester work with either boost library or NTL library 
+ * This name conversion is meant to have the samee function names in boost and NTL
+ * and allows us to have LatticeTester work with either boost library or NTL library
  * depending on WITH_NTL
  */
 
@@ -61,12 +61,13 @@ namespace NTL
       */
 	   void clear() { this->kill(); }
 
-	   /** ayman
+	   /*
+      * ayman
       * this function (in this comment) would add nothing since NTL::Vec<T> already implement a member function: void swap(Vec<T>& other);
       * but I put it in comment because I have found it here (just in case)
 
       inline void swap (matrix<T> &m) { NTL::swap(*this, m); }
-      
+
       */
 
       /**
@@ -86,7 +87,7 @@ namespace NTL
 
       /**
       * change the indexation reference for () operator to start from 0
-      * in NTL::Vec<T> the () operator starts from 1 wich is not compatible with boost 
+      * in NTL::Vec<T> the () operator starts from 1 wich is not compatible with boost
       */
 	   const T& operator()(size_type i) const { return (*this)[i]; }
 	   T&  operator()(size_type i) { return (*this)[i]; }
@@ -116,14 +117,14 @@ namespace NTL
       * release space and set to length 0
       * a copy from NTL::Mat<T>::kill
       */
-   	void clear() { this->kill(); } 
+   	void clear() { this->kill(); }
 
       /** ayman
       * this function (in this comment) would add nothing since NTL::Mat<T> already implement a member function: void swap(Mat<T>& other);
       * but I put it in comment because I have found it here (just in case)
 
    	inline void swap (matrix<T> &m) { NTL::swap(*this, m); }
-      
+
       */
 
       /**
@@ -138,14 +139,14 @@ namespace NTL
 
       /**
       * change the indexation reference for ()() operator to start from 0
-      * in NTL::Vec<T> the ()() operator starts from 1 wich is not compatible with boost 
+      * in NTL::Vec<T> the ()() operator starts from 1 wich is not compatible with boost
       */
 	   T& operator()(size_type i, size_type j) { return (*this)[i][j]; }
    	   const T& operator()(size_type i, size_type j) const { return (*this)[i][j]; }
 
    };
 
-   
+
 
 
    // matrix proxy

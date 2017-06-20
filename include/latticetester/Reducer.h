@@ -34,12 +34,14 @@ namespace LatticeTester {
  * For a given lattice, this class implements methods to reduce its basis in
  * the sense of Minkowski and to find the shortest non-zero vector of the
  * lattice using pre-reductions and a branch-and-bound (BB) algorithm
- * \cite rLEC97c&thinsp;. It also implements the method of Lenstra, Lenstra
+ * \cite rLEC97c&thinsp; . It also implements the method of Lenstra, Lenstra
  * and Lovasz (LLL) \cite mLEN82a&thinsp; as well as the method of Dieter
- * \cite rDIE75a&thinsp; to reduce a lattice basis. The reduction algorithms
- * in this class use both the primal and the dual lattices, so both lattices
- * must be defined.
- *
+ * \cite rDIE75a&thinsp; to reduce a lattice basis.
+ * The Minkowski, LLL and Branch-and-bound Reduction do not need the dual
+ * lattice. Nonetheless, if a IntLatticeBasis object with a true with-dual
+ * flag is given to a Reducer, the duality will be preserve during reduction.
+ * Beside, the alogorithm BKZ implemented in the NTL Library can be used
+ * as a prereduction befor the Branch-and-Bound.
  */
 class Reducer {
 public:
@@ -98,6 +100,7 @@ public:
    static bool PreRedDieterSV;
    static bool PreRedLLLSV;
    static bool PreRedLLLRM;
+   static bool PreRedBKZ;
 
    /**
     * @}
@@ -196,8 +199,13 @@ public:
     * the Euclidean norm.
     */
    void preRedDieter (int d);
-   void preRedDieterPrimalOnly (int d);
-   void preRedDieterPrimalOnlyRandomized (int d, int seed);
+
+
+   /**
+    * \copydoc preRedDieter(int)
+    * The choice of i is randomized.
+   */
+   void preRedDieterRandomized (int d, int seed);
 
 
    /**
@@ -218,10 +226,24 @@ public:
    void redLLL (double fact, long maxcpt, int dim);
 
    /**
-    * With NTL
+    * \copydoc redLLL(double, long, int)
+    * This version is implemented in the NTL Library
     */
    void redLLLNTLProxy(double fact);
+
+   /**
+    * \copydoc redLLL(double, long, int)
+    * This version is implemented in the NTL Library
+    * Here fact can be replace by the exact value a/b
+    */
    void redLLLNTLExact(ZZ & det, long a, long b);
+
+
+   /**
+    * Perform the BKZ (Block-Korkine-Zolotarev) basis reduction with the
+    * the coefficient `fact` and a block size `Blocksize`. It use the
+    * algorithm implemented in the NTL Library.
+    */
    void redBKZ(double fact, long Blocksize);
 
    /**
@@ -273,7 +295,7 @@ public:
     */
    void trace (char *mess);
 
-   IntLatticeBasis getIntLatticeBasis () 
+   IntLatticeBasis getIntLatticeBasis ()
    { return *m_lat; }
 
 private:
@@ -326,7 +348,10 @@ private:
    BVect m_bv;            // Saves shorter vector in primal basis
    BVect m_bw;            // Saves shorter vector in dual basis
 
-   NScal m_lMin, m_lMin2;
+   NScal m_lMin;          // The norm of the shorter vector in the primal basis
+                          // according to the norm considered
+   NScal m_lMin2;         // The norm of the shorter vector in the primal basis
+                          // according to the norm L2
    NScal m_ns;
    NVect m_nv;
 

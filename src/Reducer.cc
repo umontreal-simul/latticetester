@@ -57,7 +57,7 @@ namespace LatticeTester
 bool Reducer::PreRedDieterSV = true;
 bool Reducer::PreRedLLLSV = false;
 bool Reducer::PreRedLLLRM = false;
-bool Reducer::PreRedBKZ = false;
+bool Reducer::PreRedBKZ = true;
 long Reducer::maxNodesBB = 1000000;
 
 
@@ -529,7 +529,7 @@ void Reducer::preRedDieter(int d)
 
 //=========================================================================
 
-void Reducer::preRedDieterPrimalOnlyRandomized (int d, int seed)
+void Reducer::preRedDieterRandomized (int d, int seed)
 {
    long BoundCount;
    const int dim = m_lat->getDim ();
@@ -553,33 +553,6 @@ void Reducer::preRedDieterPrimalOnlyRandomized (int d, int seed)
          --i;
    } while (!(m_countDieter >= BoundCount || m_cpt > MAX_PRE_RED)); // fred
 }
-
-//=========================================================================
-
-void Reducer::preRedDieterPrimalOnly (int d)
-{
-   long BoundCount;
-   const int dim = m_lat->getDim ();
-   bool withDual = m_lat->withDual ();
-
-   m_lat->updateScalL2Norm (d, dim);
-   //m_lat->getDualBasis ().updateScalL2Norm (d, dim);
-   m_lat->sort (d);
-   int i = dim-1;
-   m_cpt = 0;
-   m_countDieter = 0;
-   BoundCount = 2 * dim - d;
-   do {
-      pairwiseRedPrimal (i, d);
-      if (i > d && withDual)
-         pairwiseRedDual (i);
-      if (i < 1)
-         i = dim-1;
-      else
-         --i;
-   } while (!(m_countDieter >= BoundCount || m_cpt > MAX_PRE_RED)); // fred
-}
-
 
 
 
@@ -649,7 +622,6 @@ void Reducer::reductionFaible (int i, int j)
 
 void Reducer::redLLLNTLProxy(double fact){
    LLL_XD( m_lat->getBasis(), fact, 0, 0);
-   //cout << "UTILISATION DE LLLNTLPROXY" << endl;
 }
 
 void Reducer::redLLLNTLExact(ZZ & det, long a, long b){

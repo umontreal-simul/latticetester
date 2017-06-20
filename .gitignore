@@ -1,6 +1,7 @@
 main.cc
 main.cpp
-*.xcodeproj/
+latticetester.xcodeproj/
+latticetester.xcodeproj
 DerivedData/
 Results/
 results.txt

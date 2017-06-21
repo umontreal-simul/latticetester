@@ -54,10 +54,10 @@ namespace LatticeTester
 {
 
 // Initialization of non-const static members
-bool Reducer::PreRedDieterSV = true;
+bool Reducer::PreRedDieterSV = false;
 bool Reducer::PreRedLLLSV = false;
 bool Reducer::PreRedLLLRM = false;
-bool Reducer::PreRedBKZ = true;
+bool Reducer::PreRedBKZ = false;
 long Reducer::maxNodesBB = 1000000;
 
 
@@ -619,13 +619,16 @@ void Reducer::reductionFaible (int i, int j)
    calculCholeski2LLL (i, j);
 }
 
-
+#ifdef WITH_NTL
 void Reducer::redLLLNTLProxy(double fact){
-   LLL_XD( m_lat->getBasis(), fact, 0, 0);
-}
-
-void Reducer::redLLLNTLExact(ZZ & det, long a, long b){
-   LLL (det, m_lat->getBasis(), a, b, 0);
+   bool withDual = m_lat->withDual();
+   if (withDual) {
+      mat_ZZ U;
+      U.SetDims(m_lat->getBasis().NumRows(), m_lat->getBasis().NumCols());
+      LLL_XD(m_lat->getBasis(), U, fact, 0, 0);
+      m_lat->getDualBasis() = transpose(inv(U)) * m_lat->getDualBasis();
+   } else
+      LLL_XD(m_lat->getBasis(), fact, 0, 0);
 }
 
 void Reducer::redBKZ(double fact, long Blocksize) {
@@ -638,9 +641,8 @@ void Reducer::redBKZ(double fact, long Blocksize) {
       m_lat->getDualBasis() = transpose(inv(U)) * m_lat->getDualBasis();
    } else
       BKZ_XD(m_lat->getBasis(), fact, Blocksize);
-
-   //cout << "check duality = " << m_lat->checkDuality() << endl;
 }
+#endif
 
 
 //=========================================================================

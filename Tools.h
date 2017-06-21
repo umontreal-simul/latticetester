@@ -43,12 +43,69 @@ enum ReduceType {
                                // Branch-and-Bound Algorithm.
 };
 
+string toStringReduce (ReduceType reduce)
+{
+   switch(reduce) {
+   case PairRed :
+         return "PairRed";
+
+   case PairRedRandomized :
+         return "PairRedRandomized";
+
+   case RedLLL :
+         return "RedLLL";
+
+   case PairRed_LLL :
+         return "PairRed_LLL";
+
+   case PairRedRandomized_LLL :
+         return "PairRedRandomized_LLL";
+
+   case LLLNTL :
+         return "LLLNTL";
+
+   case PairRed_LLLNTL :
+         return "PairRed_LLLNTL";
+
+   case PairRedRandomized_LLLNTL :
+         return "PairRedRandomized_LLLNTL";
+
+   case BKZNTL :
+         return "BKZNTL";
+
+   case PairRed_BKZNTL :
+         return "PairRed_BKZNTL";
+
+   case PairRedRandomized_BKZNTL :
+         return "PairRedRandomized_BKZNTL";
+
+   case BB_Classic :
+         return "BB_Classic";
+
+   case BB_BKZ :
+         return "BB_BKZ";
+
+   case RedDieter :
+         return "RedDieter";
+
+   case RedMinkowski :
+         return "RedMinkowski";
+
+   case Initial :
+         return "Initial";
+
+   default :
+         return "NOVALUE";
+   }
+}
 
 
-mat_ZZ RandomMatrix (int dim, ZZ& det, int min, int max, int seed)
+
+mat_ZZ RandomMatrix (int dim, int min, int max, int seed)
 {
    mat_ZZ basis;
    basis.SetDims(dim,dim);
+   ZZ det;
 
    srand(seed);
 
@@ -158,7 +215,6 @@ mat_ZZ Dualize (const mat_ZZ V, const ZZ modulus, const int k)
 
    return W;
 }
-
 
 
 #endif /* Tools_h */

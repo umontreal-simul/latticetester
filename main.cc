@@ -5,15 +5,25 @@
 //  Created by Erwan Bourceret on 18/04/2017.
 //  Copyright © 2017 DIRO. All rights reserved.
 //
+/*
+ * The purpose of this example is to compare the time and
+ * the accuracy of each reduction method. We compute several
+ * random matrix and apply algorithms. The parameters of this
+ * analysis are defined at the beginning of this file,
+ * after include part. It is possible to analyse the computing
+ * time on a graph with the R distribution.
+ */
 
 
-// select pre compiling options
-//----------------------------------------------------------------------------------------
+/*
+ * Select the output option among
+ * [PRINT_CONSOLE, WITH_R].
+ *
+ */
 
 #define PRINT_CONSOLE
 
-//----------------------------------------------------------------------------------------
-
+// Include Header
 #include <iostream>
 #include <map>
 #include <fstream>
@@ -23,6 +33,7 @@
 #include <iomanip>
 #include <time.h>
 
+// Include LatticeTester Header
 #include "latticetester/Util.h"
 #include "latticetester/Const.h"
 #include "latticetester/Types.h"
@@ -31,6 +42,7 @@
 #include "latticetester/Reducer.h"
 #include "latticetester/Types.h"
 
+// Include NTL Header
 #include <NTL/tools.h>
 #include <NTL/ctools.h>
 #include <NTL/ZZ.h>
@@ -43,95 +55,162 @@
 #include <NTL/matrix.h>
 #include <NTL/LLL.h>
 
+// Include Boost Header
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/io.hpp>
 #include <boost/progress.hpp>
 
+// Include R Header for graphs
 #ifdef WITH_R
 #include <RInside.h>
 #endif
 
+// Include Random Generator of MRG Matrix
 #include "SimpleMRG.h"
+#include "Tools.h"
+
 
 using namespace std;
 using namespace NTL;
 using namespace LatticeTester;
 
+
 // projection parameters definition
 //----------------------------------------------------------------------------------------
 
-// if true the output is written in a .txt file
-// if false the ouput is printed in the console
-// via the std::outFile command
+/*
+ * if true the output is written in a .txt file
+ * if false the ouput is printed in the console
+ * via the std::outFile command
+ */
 bool outFileRequested = false;
 
-// Use of the Dual
-bool WITH_DUAL = true;
 
-// ireration loop over the dimension of lattices
-const int MinDimension = 9;
+/*
+ * Type of the basis input.
+ * If true, all entry of the basis will be random. In that case,
+ * the Dual can't be compute.
+ * If false, the basis will be genereated from a MRG with random
+ * parameters a = (a1, a2, ..., ak) and a modulus configurable below
+ * and according to L'Ecuyer's publications.
+ */
+bool FullRandomMatrix = false;
+
+/*
+ * Select the interval of value for the full random basis.
+ * The value will be chosen between minCoeff and maxCoeff.
+ * FullRandomMatrix flag must be true.
+ */
+const int minCoeff = 40;
+const int maxCoeff = 1000;
+
+/*
+ * All Reducer method, except redDieter, can be used
+ * without the computation of the Dual. In that case,
+ * we save memory and time on average, and the result is
+ * the same. But, for a high period (about 2^40), the
+ * Cholesky decomposition computation needs very large number.
+ * Thus, the calcul without Dual can drive sometimes to a
+ * longer commputing timing.
+ * FullRandomMatrix flag must be false.
+ */
+bool WITH_DUAL = false;
+
+/*
+ * Order of the Basis according to L'Écuyer's paper.
+ * FullRandomMatrix flag must be false.
+ */
+const int order = 3;
+
+/*
+ * Modulo of the Basis according to L'Écuyer's paper.
+ * FullRandomMatrix flag must be false.
+ */
+const ZZ modulusRNG = power_ZZ(2, 20) - 1;
+
+/*
+ * The Dimensional interval to be analysed.
+ * Must be int value.
+ */
+const int MinDimension = 12;
+//const int MaxDimension = 12;
+
+
+
+
 #ifdef PRINT_CONSOLE
 const int MaxDimension = MinDimension + 1;
 #else
 const int MaxDimension = 12;
 #endif
-
-
-// order
-const int order = 3;
-
-// iteration loop over matrices of same dimension
-const int maxIteration = 100;
-
-// Epsilon
-const long a = 999999;
-const long b = 1000000;
-const double delta = (double) a/b;
-const double epsilon = 1.0 - delta;
-
-const int maxcpt = 1000000; // for redLLL
-const int d = 0; // for preRedDieter
-const long blocksize = 20; // for BKZ insertions
-
-// modulus
-const ZZ modulusRNG = power_ZZ(2, 17) - 1;
-
 const int Interval_dim = MaxDimension - MinDimension;
 
-// still usefull ?
-const int minCoeff = 40;
-const int maxCoeff = 1000;
 
 
-string names[] = {
-   "PairRedPrimal",
-   "PairRedPrimalRandomized",
-   "LLL",
-   "PairRedPrimal_LLL",
-   "PairRedPrimalRandomized_LLL",
-   "LLLNTL",
-   "PairRedPrimal_LLLNTL",
-   "PairRedPrimalRandomized_LLLNTL",
-   "BKZNTL",
-   "PairRedPrimal_BKZNTL",
-   "PairRedPrimalRandomized_BKZNTL",
-   //"BB_Only",
-   "BB_Classic",
-   "BB_BKZ"
-   //"DIETER", //WARNING USE DIETER ONLY FOR DIM < 6
-   //"MINKOWSKI"
-   };
+/*
+ * Iteration loop over basis of same dimension.
+ * Each random basis is computed with a different seed.
+ */
+const int maxIteration = 30;
 
-string names2[] = {
-   "PairRedPrimal_LLL",
-   "PairRedPrimalRandomized_LLL",
-   "PairRedPrimal_LLLNTL",
-   "PairRedPrimalRandomized_LLLNTL",
-   "PairRedPrimal_BKZNTL",
-   "PairRedPrimalRandomized_BKZNTL",
-   "BB_Classic",
-   "BB_BKZ"
-   };
+/*
+ * a/b is the value of the delta in the LLL and BKZ
+ * Reduction. NTL offers the possibility to compute
+ * a LLL Reduction with the exact delta. We have noticed
+ * only minor differences with this option.
+ */
+const double delta = 0.99999;
+const double epsilon = 1.0 - delta;
+
+/*
+ * Reduction bound in the RedLLL algorithm.
+ */
+const int maxcpt = 10000000;
+
+/*
+ * Block Size in the BKZ algorithm. See NTL documention
+ * for further information.
+ */
+const long blocksize = 20;
+
+/*
+ * Maximum number of Nodes in the Branch-and-Bound.
+ */
+const int maxNodesBB = 1000000;
+
+/*
+ * Selecting method of reducing.
+ */
+ReduceType Reduce_type[] ={
+   Initial,                   // Calibration
+   PairRed,                   // Performs Pairwise Reduction
+   PairRedRandomized,         // Performs stochastic Pairwise Reduction
+   RedLLL,                       // Performs LLL Reduction
+   PairRed_LLL,               // Performs Pairwise Reduction
+   PairRedRandomized_LLL,     // Perform Pairwise Reduction and then
+                              // LLL Reduction
+   LLLNTL,                    // Performs LLL Reduction with NTL Library
+   PairRed_LLLNTL,            // Perform Pairwise Reduction and then
+                              // LLL Reduction with NTL Library
+   PairRedRandomized_LLLNTL,  // Perform stocastic Pairwise Reduction and
+                              // then LLL Reduction with NTL Library
+   BKZNTL,                    // Performs BKZ Reduction with NTL Library
+   PairRed_BKZNTL,            // Perform Pairwise Reduction and then
+                              // BKZ Reduction with NTL Library
+   PairRedRandomized_BKZNTL,  // Perform stocastic Pairwise Reduction and
+                              // then BKZ Reduction with NTL Library
+   //BB_Only,                   // Performs Branch-and-Bound Reduction
+   BB_Classic,                // Perform Pairwise Reduction and then
+                              // Branch-and-Bound Reduction
+   BB_BKZ                     // Performs BKZ Reduction with NTL Library
+                              // and then Branch-and-Bound Reduction
+   //RedDieter,                    // Performs Dieter Reduction
+                              //WARNING USE DIETER ONLY FOR DIM < 6
+   //RedMinkowski                  // Perform Minkowski Reduction with
+                              // Branch-and-Bound Algorithm.
+};
+
+//----------------------------------------------------------------------------------------
 
 
 
@@ -153,315 +232,184 @@ Rcpp::NumericMatrix toRcppMatrix( const array<array<Type, Size>, Size2> array)
 }
 #endif
 
-void RandomMatrix (mat_ZZ& A, ZZ& det, int min, int max, int seed){
 
-   int dim = (int) A.NumRows() ;
-   srand(seed);
-
-   do{
-       for (int i = 0; i < dim; i++){
-           for (int j = 0; j < dim; j++)
-               A[i][j] = min + (rand() % (int)(max - min + 1));
-       }
-       det = determinant(A);
-
-   } while ( det == 0 );
-}
-
-template<typename Type, unsigned long Size>
-Type mean(const array <Type, Size> array) {
-   Type sum (0);
-   for(unsigned int i = 0; i<Size; i++)
-       sum += array[i];
-   return sum / Size;
-}
-
-template<typename Type, unsigned long Size>
-Type variance(const array <Type, Size> array) {
-   Type sum (0);
-   Type mean_tmp(mean(array));
-   for(unsigned int i = 0; i<Size; i++)
-       sum += (array[i] - mean_tmp) * (array[i] - mean_tmp);
-   return sum / Size;
-}
-
-
-
-
-vec_ZZ canonicVector (int dimension, int i)
+bool reduce(
+   Reducer & red,
+   const ReduceType & name,
+   int & seed_dieter,
+   const int & blocksize,
+   const double & delta,
+   const int maxcpt,
+   int dimension,
+   ZZ det)
 {
-	vec_ZZ e;
-	e.SetLength(dimension);
-	e[i] = 1;
-
-	return e;
-}
-
-vec_ZZ randomVector (int dimension, ZZ modulus, ZZ seed)
-{
-	vec_ZZ vector;
-	vector.SetLength(dimension);
-	SetSeed(seed);
-	for (int i = 0; i < dimension; i++)
-		vector[i] = RandomBnd(modulus);
-
-	return vector;
-}
-
-mat_ZZ CreateRNGBasis (const ZZ modulus, const int order, const int dimension, ZZ seed)
-{
-	mat_ZZ basis;
-	basis.SetDims(dimension,dimension);
-
-	if (dimension < order+1) {
-		// degenerate case: identity matrix only
-		for (int i = 0; i < dimension; i++)
-			basis[i][i] = 1;
-
-	} else { //usual case
-
-		// (a_i) coefficients
-		vec_ZZ a;
-		a = randomVector(order, modulus, seed);
-
-		for (int i = 0; i < order; i++) {
-			// left upper block
-			basis[i][i] = 1;
-
-			//right upper block
-			vec_ZZ initialState;
-			initialState = canonicVector(order, i);
-			SimpleMRG myMRG (modulus, order, a, initialState);
-
-			for (int l = order; l < dimension; l++)
-				basis[i][l] = conv<ZZ>(myMRG.getNextValue());
-		}
-
-		// right lower block
-		for (int i = order; i < dimension; i++)
-			basis[i][i] = modulus;
-
-	} // end if
-
-	return basis;
-}
-
-mat_ZZ Dualize (const mat_ZZ V, const ZZ modulus, const int k)
-{
-	mat_ZZ W;
-	W.SetDims(V.NumRows(), V.NumRows());
-
-	transpose(W,-V);
-
-	for (int i = 0; i < k; i++)
-		W[i][i] = modulus;
-	for (int i = k; i < V.NumRows(); i++)
-		W[i][i] = 1;
-
-	return W;
-}
-
-bool reduce(Reducer & red, const string & name, const int & d, int & seed_dieter, const int & blocksize, const double & delta, const int maxcpt, int dimension){
-   //cout << "Test sur " << name << endl;
 
    bool ok(true);
-   //------------------------------------------------------------------------------------
-   // Pairwise reduction in primal basis only
-   //------------------------------------------------------------------------------------
-   if(name == "PairRedPrimal" )
-      red.preRedDieter(d);
 
-   //------------------------------------------------------------------------------------
-   // Randomized pairwise reduction in primal basis only
-   //------------------------------------------------------------------------------------
-   if(name == "PairRedPrimalRandomized")
-      red.preRedDieterRandomized(d, seed_dieter);
+   switch(name) {
+   case PairRed : {
+         // Pairwise reduction in primal basis only
+         red.preRedDieter(0);
+      }
+      break;
 
-   //------------------------------------------------------------------------------------
-   // LLL Richard
-   //------------------------------------------------------------------------------------
-   if(name == "LLL")
-      red.redLLL(delta, maxcpt, dimension);
+   case PairRedRandomized : {
+         // Randomized pairwise reduction in primal basis only
+         red.preRedDieterRandomized(0, seed_dieter);
+      }
+      break;
 
+   case RedLLL : {
+         // LLL Reduction
+         red.redLLL(delta, maxcpt, dimension);
+      }
+      break;
 
-   //------------------------------------------------------------------------------------
-   // Pairwise reduction (in primal basis only) and then LLL Richard
-   //------------------------------------------------------------------------------------
-   if(name == "PairRedPrimal_LLL")
-      red.preRedDieter(d);
+   case PairRed_LLL : {
+         // Pairwise reduction (in primal basis only) and then LLL
+         red.preRedDieter(0);
+      }
+      break;
 
+   case PairRedRandomized_LLL : {
+         // Randomized pairwise reduction (in primal basis only) and then LLL
+         red.preRedDieterRandomized(0, seed_dieter);
+      }
+      break;
 
-   //------------------------------------------------------------------------------------
-   // Randomized pairwise reduction (in primal basis only) and then LLL Richard
-   //------------------------------------------------------------------------------------
-   if(name == "PairRedPrimalRandomized_LLL")
-      red.preRedDieterRandomized(d, seed_dieter);
+   case LLLNTL : {
+         // LLL NTL reduction (floating point version = proxy)
+         red.redLLLNTLProxy(delta);
+      }
+      break;
 
-   //------------------------------------------------------------------------------------
-   // LLL NTL reduction (floating point version = proxy)
-   //------------------------------------------------------------------------------------
-   if(name == "LLLNTL")
-      red.redLLLNTLProxy(delta);
+   case PairRed_LLLNTL : {
+         // Pairwise reduction (in primal basis only) and then LLL NTL proxy
+         red.preRedDieter(0);
+      }
+      break;
 
-   //------------------------------------------------------------------------------------
-   // Pairwise reduction (in primal basis only) and then LLL NTL proxy
-   //------------------------------------------------------------------------------------
-   if(name == "PairRedPrimal_LLLNTL")
-      red.preRedDieter(d);
+   case PairRedRandomized_LLLNTL : {
+         // Randomized pairwise reduction (in primal basis only) and then LLL NTL proxy
+         red.preRedDieterRandomized(0, seed_dieter);
+      }
+      break;
 
-   //------------------------------------------------------------------------------------
-   // Randomized pairwise reduction (in primal basis only) and then LLL NTL proxy
-   //------------------------------------------------------------------------------------
-   if(name == "PairRedPrimalRandomized_LLLNTL")
-      red.preRedDieterRandomized(d, seed_dieter);
+   case BKZNTL : {
+         // BKZ NTL reduction
+         red.redBKZ(delta, blocksize);
+      }
+      break;
 
-   //------------------------------------------------------------------------------------
-   // LLL NTL Exact reduction only
-   //------------------------------------------------------------------------------------
-   //if(name == "LLLNTL_Exact")
-   //   red.redLLLNTLExact(det2,a,b);
+   case PairRed_BKZNTL : {
+         // Pairwise reduction (in primal basis only) and then BKZ NTL proxy
+         red.preRedDieter(0);
+      }
+      break;
 
-   //------------------------------------------------------------------------------------
-   // BKZ NTL reduction
-   //------------------------------------------------------------------------------------
-   if(name=="BKZNTL")
-      red.redBKZ(delta, blocksize);
+   case PairRedRandomized_BKZNTL : {
+         // Randomized pairwise reduction (in primal basis only) and then BKZ NTL proxy
+         red.preRedDieterRandomized(0, seed_dieter);
+      }
+      break;
 
-   //------------------------------------------------------------------------------------
-   // Pairwise reduction (in primal basis only) and then BKZ NTL proxy
-   //------------------------------------------------------------------------------------
-   if(name =="PairRedPrimal_BKZNTL")
-      red.preRedDieter(d);
+   case BB_Classic : {
+         // Branch and Bound classic
+         red.preRedDieter(0);
+         red.redLLL(delta, maxcpt, dimension);
+      }
+      break;
 
-   //------------------------------------------------------------------------------------
-   // Randomized pairwise reduction (in primal basis only) and then BKZ NTL proxy
-   //------------------------------------------------------------------------------------
-   if(name =="PairRedPrimalRandomized_BKZNTL")
-      red.preRedDieterRandomized(d, seed_dieter);
+   case BB_BKZ : {
+         // Branch and Bound post BKZ
+         red.redBKZ(delta, blocksize);
+      }
+      break;
 
-   //------------------------------------------------------------------------------------
-   // Branch and Bound classic
-   //------------------------------------------------------------------------------------
-   if(name =="BB_Classic"){
-      red.preRedDieter(d);
-      red.redLLL(delta, maxcpt, dimension);
+   case RedDieter : {
+         cout << "name : " << name << endl;
+         // Dieter Method
+         red.shortestVectorDieter(L2NORM);
+      }
+      break;
+
+   case RedMinkowski : {
+         // Minkowski reduction
+         ok = red.reductMinkowski(0);
+      }
+      break;
+
+   default : break;
    }
-
-   //------------------------------------------------------------------------------------
-   // Branch and Bound post BKZ
-   //------------------------------------------------------------------------------------
-   if(name =="BB_BKZ")
-      red.redBKZ(delta, blocksize);
-   
-   //------------------------------------------------------------------------------------
-   // Dieter Method
-   //------------------------------------------------------------------------------------
-   //if(name == "DIETER" && WITH_DUAL)
-      //red.shortestVectorDieter(L2NORM);
-
-   //------------------------------------------------------------------------------------
-   // Minkowski reduction
-   //------------------------------------------------------------------------------------
-   if(name == "MINKOWSKI")
-      ok = red.reductMinkowski(d);
-
    return ok;
 }
 
 
-bool reduce2(Reducer & red, const string & name, const int & d, int & seed_dieter, const int & blocksize, const double & delta, const int maxcpt, int dimension){
+bool reduce2(Reducer & red, const ReduceType & name, int & seed_dieter, const int & blocksize, const double & delta, const int maxcpt, int dimension){
    //outFile << name << endl;
 
    bool ok(true);
-   //------------------------------------------------------------------------------------
-   // Pairwise reduction (in primal basis only) and then LLL Richard
-   //------------------------------------------------------------------------------------
-   if(name == "PairRedPrimal_LLL")
-      red.redLLL(delta, maxcpt, dimension);
 
+   switch(name) {
+   case PairRed_LLL : {
+         // Pairwise reduction (in primal basis only) and then LLL
+         red.redLLL(delta, maxcpt, dimension);
+      }
+      break;
 
-   //------------------------------------------------------------------------------------
-   // Randomized pairwise reduction (in primal basis only) and then LLL Richard
-   //------------------------------------------------------------------------------------
-   if(name == "PairRedPrimalRandomized_LLL")
-      red.redLLL(delta, maxcpt, dimension);
+   case PairRedRandomized_LLL : {
+         // Randomized pairwise reduction (in primal basis only) and then LLL
+         red.redLLL(delta, maxcpt, dimension);
+      }
+      break;
 
-   //------------------------------------------------------------------------------------
-   // Pairwise reduction (in primal basis only) and then LLL NTL proxy
-   //------------------------------------------------------------------------------------
-   if(name == "PairRedPrimal_LLLNTL")
-      red.redLLLNTLProxy(delta);
+   case PairRed_LLLNTL : {
+         // Pairwise reduction (in primal basis only) and then LLL NTL proxy
+         red.redLLLNTLProxy(delta);
+      }
+      break;
 
-   //------------------------------------------------------------------------------------
-   // Randomized pairwise reduction (in primal basis only) and then LLL NTL proxy
-   //------------------------------------------------------------------------------------
-   if(name == "PairRedPrimalRandomized_LLLNTL")
-      red.redLLLNTLProxy(delta);
+   case PairRedRandomized_LLLNTL : {
+         // Randomized pairwise reduction (in primal basis only) and then LLL NTL proxy
+         red.redLLLNTLProxy(delta);
+      }
+      break;
 
+   case PairRed_BKZNTL : {
+         // Pairwise reduction (in primal basis only) and then BKZ NTL proxy
+         red.redBKZ(delta, blocksize);
+      }
+      break;
 
-   //------------------------------------------------------------------------------------
-   // Pairwise reduction (in primal basis only) and then BKZ NTL proxy
-   //------------------------------------------------------------------------------------
-   if(name =="PairRedPrimal_BKZNTL")
-      red.redBKZ(delta, blocksize);
+   case PairRedRandomized_BKZNTL : {
+         // Randomized pairwise reduction (in primal basis only) and then BKZ NTL proxy
+         red.redBKZ(delta, blocksize);
+      }
+      break;
 
-   //------------------------------------------------------------------------------------
-   // Randomized pairwise reduction (in primal basis only) and then BKZ NTL proxy
-   //------------------------------------------------------------------------------------
-   if(name =="PairRedPrimalRandomized_BKZNTL")
-      red.redBKZ(delta, blocksize);
+   case BB_Classic : {
+         // Branch and Bound classic
+         ok = red.shortestVector(L2NORM);
+      }
+      break;
 
-   //------------------------------------------------------------------------------------
-   // Branch and Bound classic
-   //------------------------------------------------------------------------------------
-   if(name =="BB_Classic")
-      ok = red.shortestVector(L2NORM);
-
-   //------------------------------------------------------------------------------------
-   // Branch and Bound post BKZ
-   //------------------------------------------------------------------------------------
-   if(name =="BB_BKZ")
-      ok = red.shortestVector(L2NORM);
-   
+   case BB_BKZ : {
+         // Branch and Bound post BKZ
+         ok = red.shortestVector(L2NORM);
+      }
+      break;
+   default : break;
+   }
    return ok;
 }
 
 
 
-//****************************************************************************************************
 //****************************************************************************************************
 //****************************************************************************************************
 
 int main (int argc, char *argv[])
 {
-   /*
-   BMat dualbasis(4,4);
-   BMat basis;
-   basis.resize(4, 4);
-   basis(0,0) = 2;
-   basis(0,1) = 3;
-   basis(0,2) = 4;
-   basis(0,3) = 5;
-   for (int i = 1; i < 4; i++) {
-      for (int j = 0; j < 4; j++) {
-         if (i == j) {
-            basis (i, j) = 10;
-         } else {
-            basis (i, j) = 0;
-         }
-      }
-   }
-   MScal m(10);
-   Triangularization < BMat > (basis, dualbasis, 4, 4, m);
-   CalcDual < BMat > (dualbasis, basis, 4, m);
-   
-   cout << " Base Primal \n" << basis << endl;
-   cout << " Base Dual \n" << dualbasis << endl;
-   */
-   
-   
-   
-#if 1
    ofstream realOutFile;
    string fileName;
    if (outFileRequested) {
@@ -479,9 +427,10 @@ int main (int argc, char *argv[])
    outFile << endl;
 
    // Stock Results
-   map<string, array< array<NScal, maxIteration>, Interval_dim > > length_results;
-   map<string, array< array<double, maxIteration>, Interval_dim > > timing_results;
-   map<string, int> nb_diff;
+   map<ReduceType, array< array<NScal, maxIteration>, Interval_dim > > length_results;
+   map<ReduceType, array< array<double, maxIteration>, Interval_dim > > timing_results;
+   map<ReduceType, array< array<double, maxIteration>, Interval_dim > > timing_results2; // 2nd Stage
+   map<ReduceType, int> nb_diff;
 
    // old declaration using C-style arrays not accepted by some compilators
    //map<string, map<int, NScal[maxIteration]> > length_results;
@@ -512,27 +461,28 @@ int main (int argc, char *argv[])
             //int seed = (int) (iteration+1) * 12345 * time(NULL);
 
             // We create copies of the same basis
-            BMat basis_PairRedPrimal (dimension, dimension);
+            BMat basis_PairRed (dimension, dimension);
             ZZ det;
-            RandomMatrix(basis_PairRedPrimal, det, minCoeff, maxCoeff, seed);
+            BMat V;
+            BMat W;
+            if(FullRandomMatrix){
+               V = RandomMatrix(dimension, det, minCoeff, maxCoeff, seed);
+               WITH_DUAL = false;
+            }
+            else{
+               V = CreateRNGBasis (modulusRNG, order, dimension, seedZZ);
+               if(WITH_DUAL){
+                  W = Dualize (V, modulusRNG, order);
+               }
+            }
 
-            mat_ZZ V;
-            V = CreateRNGBasis (modulusRNG, order, dimension, seedZZ);
+            map < ReduceType, BMat* > basis;
+            map < ReduceType, BMat* > dualbasis;
+            map < ReduceType, IntLatticeBasis* > lattices;
+            map < ReduceType, Reducer* > reducers;
+            map < ReduceType, clock_t > timing;
 
-            
-
-            mat_ZZ W;
-            W = Dualize (V, modulusRNG, order);
-            
-            mat_ZZ Wtmp;
-            transpose(Wtmp, W);
-
-            map < string, BMat* > basis;
-            map < string, BMat* > dualbasis;
-            map < string, IntLatticeBasis* > lattices;
-            map < string, Reducer* > reducers;
-
-            for(const string &name : names){
+            for(const ReduceType name : Reduce_type){
                basis[name] = new BMat(V);
                if(WITH_DUAL){
                   dualbasis[name] = new BMat(W);
@@ -542,27 +492,17 @@ int main (int argc, char *argv[])
                   lattices[name] = new IntLatticeBasis(*basis[name], dimension);
                }
                // IF WE WANT FULL RANDOM MATRIX
-               //basis[name] = new BMat(basis_PairRedPrimal);
+               //basis[name] = new BMat(basis_PairRed);
 
                reducers[name] = new Reducer(*lattices[name]);
             }
-
-            map < string, clock_t > timing;
-
-            lattices["initial"] = new IntLatticeBasis(V, dimension);
-            lattices["initial"]->setNegativeNorm(true);
-            lattices["initial"]->updateVecNorm();
-            lattices["initial"]->sort(0);
-            length_results["initial"][id_dimension][iteration] = lattices["initial"]->getVecNorm(0);
-
-
             clock_t begin = clock();
             clock_t end = clock();
 
             bool ok = true;
-            for(const string &name : names){
+            for(const ReduceType &name : Reduce_type){
                begin = clock();
-               ok = reduce(*reducers[name], name, d, seed_dieter, blocksize, delta, maxcpt, dimension);
+               ok = reduce(*reducers[name], name, seed_dieter, blocksize, delta, maxcpt, dimension, det);
                end = clock();
                all_BB_over = all_BB_over && ok;
                timing_results[name][id_dimension][iteration] = double (end - begin) / CLOCKS_PER_SEC;
@@ -573,13 +513,13 @@ int main (int argc, char *argv[])
 
             }
 
-            for(const string &name : names2){
+            for(const ReduceType &name : Reduce_type){
                //outFile << "Norm of " << name << " : " << lattices[name]->getVecNorm(0) << endl;
                begin = clock();
-               ok = reduce2(*reducers[name], name, d, seed_dieter, blocksize, delta, maxcpt, dimension);
+               ok = reduce2(*reducers[name], name, seed_dieter, blocksize, delta, maxcpt, dimension);
                end = clock();
                all_BB_over = all_BB_over && ok;
-               timing_results[name+"2"][id_dimension][iteration] = double (end - begin) / CLOCKS_PER_SEC;
+               timing_results2[name][id_dimension][iteration] = double (end - begin) / CLOCKS_PER_SEC;
                lattices[name]->setNegativeNorm();
                lattices[name]->updateVecNorm();
                lattices[name]->sort(0);
@@ -588,23 +528,21 @@ int main (int argc, char *argv[])
 
 
 
-            for(const string &name : names){
-               if((lattices[name]->getVecNorm(0) - lattices["BB_Classic"]->getVecNorm(0)) > 0.1)
+            for(const ReduceType &name : Reduce_type){
+               if((lattices[name]->getVecNorm(0) - lattices[BB_Classic]->getVecNorm(0)) > 0.1)
                   nb_diff[name]++;
                length_results[name][id_dimension][iteration] = lattices[name]->getVecNorm(0);
             }
 
-            if((lattices["initial"]->getVecNorm(0) - lattices["BB_Classic"]->getVecNorm(0)) > 0.1)
-                  nb_diff["initial"]++;
 
-            for(const string &name : names){
+            for(const ReduceType &name : Reduce_type){
                basis[name]->BMat::clear();
-               //dualbasis[name]->kill();
+               if(WITH_DUAL)
+                  dualbasis[name]->BMat::clear();
+               //-dualbasis[name]->kill();
                delete lattices[name];
                delete reducers[name];
             }
-
-            delete lattices["initial"];
 
          } while(!all_BB_over);
          ++show_progress;
@@ -632,86 +570,86 @@ int main (int argc, char *argv[])
       outFile << "Dual non utilisé" << endl;
 
    // print statistics
-   outFile << "\n---------------- TIMING AVG ----------------\n" << endl;
+   outFile << "\n     ---------------- TIMING AVG ----------------\n" << endl;
 
-   outFile << "       PairRedPrimal = " << mean(timing_results["PairRedPrimal"][0]) << " (+/- " << variance(timing_results["PairRedPrimal"][0]) << ")" << endl;
-   outFile << " PairRedPrimalRandom = " << mean(timing_results["PairRedPrimalRandomized"][0]) << " (+/- " << variance(timing_results["PairRedPrimalRandomized"][0]) << ")" << endl;
+   outFile << "             PairRed = " << mean(timing_results[PairRed][0]) << " (+/- " << variance(timing_results[PairRed][0]) << ")" << endl;
+   outFile << "       PairRedRandom = " << mean(timing_results[PairRedRandomized][0]) << " (+/- " << variance(timing_results[PairRedRandomized][0]) << ")" << endl;
    outFile << endl;
 
-   outFile << "                 LLL = " << mean(timing_results["LLL"][0]) << " (+/- " << variance(timing_results["LLL"][0]) << ")" << endl;
-   outFile << "         PairRed+LLL = " << mean(timing_results["PairRedPrimal_LLL"][0]) + mean(timing_results["PairRedPrimal_LLL2"][0]);
-   outFile << " (" << mean(timing_results["PairRedPrimal_LLL2"][0]) << ") (+/- " << variance(timing_results["PairRedPrimal_LLL2"][0]) << ")" << endl;
-   outFile << "   PairRedRandom+LLL = " << mean(timing_results["PairRedPrimalRandomized_LLL"][0]) + mean(timing_results["PairRedPrimalRandomized_LLL2"][0]);
-   outFile << " (" << mean(timing_results["PairRedPrimalRandomized_LLL2"][0]) << ") (+/- " << variance(timing_results["PairRedPrimalRandomized_LLL2"][0]) << ")" << endl;
+   outFile << "                 LLL = " << mean(timing_results[RedLLL][0]) << " (+/- " << variance(timing_results[RedLLL][0]) << ")" << endl;
+   outFile << "         PairRed+LLL = " << mean(timing_results[PairRed_LLL][0]) + mean(timing_results2[PairRed_LLL][0]);
+   outFile << " (" << mean(timing_results2[PairRed_LLL][0]) << ") (+/- " << variance(timing_results2[PairRed_LLL][0]) << ")" << endl;
+   outFile << "   PairRedRandom+LLL = " << mean(timing_results[PairRedRandomized_LLL][0]) + mean(timing_results2[PairRedRandomized_LLL][0]);
+   outFile << " (" << mean(timing_results2[PairRedRandomized_LLL][0]) << ") (+/- " << variance(timing_results2[PairRedRandomized_LLL][0]) << ")" << endl;
    outFile << endl;
 
-   outFile << "              LLLNTL = " << mean(timing_results["LLLNTL"][0]) << " (+/- " << variance(timing_results["LLLNTL"][0]) << ")" << endl;
-   outFile << "      PairRed+LLLNTL = " << mean(timing_results["PairRedPrimal_LLLNTL"][0]) + mean(timing_results["PairRedPrimal_LLLNTL2"][0]);
-   outFile << " (" << mean(timing_results["PairRedPrimal_LLLNTL2"][0]) << ") (+/- " << variance(timing_results["PairRedPrimal_LLLNTL"][0]) << ")" << endl;
-   outFile << "PairRedRandom+LLLNTL = " << mean(timing_results["PairRedPrimalRandomized_LLLNTL"][0]) + mean(timing_results["PairRedPrimalRandomized_LLLNTL2"][0]);
-   outFile << " (" << mean(timing_results["PairRedPrimalRandomized_LLLNTL2"][0]) << ") (+/- " << variance(timing_results["PairRedPrimalRandomized_LLLNTL2"][0]) << ")" << endl;
+   outFile << "              LLLNTL = " << mean(timing_results[LLLNTL][0]) << " (+/- " << variance(timing_results[LLLNTL][0]) << ")" << endl;
+   outFile << "      PairRed+LLLNTL = " << mean(timing_results[PairRed_LLLNTL][0]) + mean(timing_results2[PairRed_LLLNTL][0]);
+   outFile << " (" << mean(timing_results2[PairRed_LLLNTL][0]) << ") (+/- " << variance(timing_results[PairRed_LLLNTL][0]) << ")" << endl;
+   outFile << "PairRedRandom+LLLNTL = " << mean(timing_results[PairRedRandomized_LLLNTL][0]) + mean(timing_results2[PairRedRandomized_LLLNTL][0]);
+   outFile << " (" << mean(timing_results2[PairRedRandomized_LLLNTL][0]) << ") (+/- " << variance(timing_results2[PairRedRandomized_LLLNTL][0]) << ")" << endl;
    outFile << endl;
 
    //outFile << "        LLLNTL_Exact = " << mean(timing_LLL_NTL_Exact) << endl;
    outFile << endl;
 
-   outFile << "              BKZNTL = " << mean(timing_results["BKZNTL"][0]) << ") (+/- " << variance(timing_results["BKZNTL"][0]) << ")" << endl;
-   outFile << "      PairRed+BKZNTL = " << mean(timing_results["PairRedPrimal_BKZNTL"][0]) + mean(timing_results["PairRedPrimal_BKZNTL2"][0]);
-   outFile << " (" << mean(timing_results["PairRedPrimal_BKZNTL2"][0]) << ") (+/- " << variance(timing_results["PairRedPrimal_BKZNTL2"][0]) << ")" << endl;
-   outFile << "PairRedRandom+BKZNTL = " << mean(timing_results["PairRedPrimalRandomized_BKZNTL"][0]) + mean(timing_results["PairRedPrimalRandomized_BKZNTL2"][0]);
-   outFile << " (" << mean(timing_results["PairRedPrimalRandomized_BKZNTL2"][0]) << ") (+/- " << variance(timing_results["PairRedPrimalRandomized_BKZNTL2"][0]) << ")" << endl;
+   outFile << "              BKZNTL = " << mean(timing_results[BKZNTL][0]) << ") (+/- " << variance(timing_results[BKZNTL][0]) << ")" << endl;
+   outFile << "      PairRed+BKZNTL = " << mean(timing_results[PairRed_BKZNTL][0]) + mean(timing_results2[PairRed_BKZNTL][0]);
+   outFile << " (" << mean(timing_results2[PairRed_BKZNTL][0]) << ") (+/- " << variance(timing_results2[PairRed_BKZNTL][0]) << ")" << endl;
+   outFile << "PairRedRandom+BKZNTL = " << mean(timing_results[PairRedRandomized_BKZNTL][0]) + mean(timing_results2[PairRedRandomized_BKZNTL][0]);
+   outFile << " (" << mean(timing_results2[PairRedRandomized_BKZNTL][0]) << ") (+/- " << variance(timing_results2[PairRedRandomized_BKZNTL][0]) << ")" << endl;
    outFile << endl;
 
-   outFile << "          BB Classic = " << mean(timing_results["BB_Classic"][0]) + mean(timing_results["BB_Classic2"][0]);
-   outFile << " (" << mean(timing_results["BB_Classic2"][0]) << ") (+/- " << variance(timing_results["BB_Classic2"][0]) << ")" ")" << endl,
-   outFile << "              BB BKZ = " << mean(timing_results["BB_BKZ"][0]) + mean(timing_results["BB_BKZ2"][0]);
-   outFile << " (" << mean(timing_results["BB_BKZ2"][0]) << ") (+/- " << variance(timing_results["BB_BKZ2"][0]) << ")";
+   outFile << "          BB Classic = " << mean(timing_results[BB_Classic][0]) + mean(timing_results2[BB_Classic][0]);
+   outFile << " (" << mean(timing_results2[BB_Classic][0]) << ") (+/- " << variance(timing_results2[BB_Classic][0]) << ")" ")" << endl,
+   outFile << "              BB BKZ = " << mean(timing_results[BB_BKZ][0]) + mean(timing_results2[BB_BKZ][0]);
+   outFile << " (" << mean(timing_results2[BB_BKZ][0]) << ") (+/- " << variance(timing_results2[BB_BKZ][0]) << ")";
    outFile << endl;
 
-   //outFile << "    Dieter Reduction = " << mean(timing_results["DIETER"][0]);
+   //outFile << "    Dieter Reduction = " << mean(timing_results[RedDieter][0]);
    //if (!WITH_DUAL)
    //   outFile << " DIETER NON EFFECTUER CAR DUAL NECESSAIRE" << endl;
    //else
    //   outFile << endl;
-   //outFile << " Minkowski Reduction = " << mean(timing_results["MINKOWSKI"][0]) << endl;
+   //outFile << " Minkowski Reduction = " << mean(timing_results[RedMinkowski][0]) << endl;
 
-   outFile << "\n--------------------------------------------" << endl;
+   outFile << "\n     --------------------------------------------" << endl;
 
 
 
-   outFile << "\n---------------- LENGTH AVG ----------------\n" << endl;
+   outFile << "\n     ---------------- LENGTH AVG ----------------\n" << endl;
 
-   outFile << "             Initial = " << conv<ZZ>(mean(length_results["initial"][0])) << "   Error Rate : " << (double) nb_diff["initial"]/maxIteration << endl;
+   outFile << "             Initial = " << conv<ZZ>(mean(length_results[Initial][0])) << "   Error Rate : " << (double) nb_diff[Initial]/maxIteration << endl;
 
-   outFile << "       PairRedPrimal = " << conv<ZZ>(mean(length_results["PairRedPrimal"][0])) << "   Error Rate : " << (double) nb_diff["PairRedPrimal"]/maxIteration << endl;
-   outFile << " PairRedPrimalRandom = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized"][0])) << "   Error Rate : " << (double) nb_diff["PairRedPrimalRandomized"]/maxIteration << endl;
+   outFile << "             PairRed = " << conv<ZZ>(mean(length_results[PairRed][0])) << "   Error Rate : " << (double) nb_diff[PairRed]/maxIteration << endl;
+   outFile << "       PairRedRandom = " << conv<ZZ>(mean(length_results[PairRedRandomized][0])) << "   Error Rate : " << (double) nb_diff[PairRedRandomized]/maxIteration << endl;
    outFile << endl;
 
-   outFile << "                 LLL = " << conv<ZZ>(mean(length_results["LLL"][0])) << "   Error Rate : " << (double) nb_diff["LLL"]/maxIteration << endl;
-   outFile << "         PairRed+LLL = " << conv<ZZ>(mean(length_results["PairRedPrimal_LLL"][0])) << "   Error Rate : " << (double) nb_diff["PairRedPrimal_LLL"]/maxIteration << endl;
-   outFile << "   PairRedRandom+LLL = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized_LLL"][0])) << "   Error Rate : " << (double) nb_diff["PairRedPrimalRandomized_LLL"]/maxIteration << endl;
+   outFile << "                 LLL = " << conv<ZZ>(mean(length_results[RedLLL][0])) << "   Error Rate : " << (double) nb_diff[RedLLL]/maxIteration << endl;
+   outFile << "         PairRed+LLL = " << conv<ZZ>(mean(length_results[PairRed_LLL][0])) << "   Error Rate : " << (double) nb_diff[PairRed_LLL]/maxIteration << endl;
+   outFile << "   PairRedRandom+LLL = " << conv<ZZ>(mean(length_results[PairRedRandomized_LLL][0])) << "   Error Rate : " << (double) nb_diff[PairRedRandomized_LLL]/maxIteration << endl;
    outFile << endl;
 
-   outFile << "              LLLNTL = " << conv<ZZ>(mean(length_results["LLLNTL"][0])) << "   Error Rate : " << (double) nb_diff["LLLNTL"]/maxIteration << endl;
-   outFile << "      PairRed+LLLNTL = " << conv<ZZ>(mean(length_results["PairRedPrimal_LLLNTL"][0])) << "   Error Rate : " << (double) nb_diff["PairRedPrimal_LLLNTL"]/maxIteration << endl;
-   outFile << "PairRedRandom+LLLNTL = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized_LLLNTL"][0])) << "   Error Rate : " << (double) nb_diff["PairRedPrimalRandomized_LLLNTL"]/maxIteration << endl;
+   outFile << "              LLLNTL = " << conv<ZZ>(mean(length_results[LLLNTL][0])) << "   Error Rate : " << (double) nb_diff[LLLNTL]/maxIteration << endl;
+   outFile << "      PairRed+LLLNTL = " << conv<ZZ>(mean(length_results[PairRed_LLLNTL][0])) << "   Error Rate : " << (double) nb_diff[PairRed_LLLNTL]/maxIteration << endl;
+   outFile << "PairRedRandom+LLLNTL = " << conv<ZZ>(mean(length_results[PairRedRandomized_LLLNTL][0])) << "   Error Rate : " << (double) nb_diff[PairRedRandomized_LLLNTL]/maxIteration << endl;
    outFile << endl;
    outFile << endl;
 
-   outFile << "              BKZNTL = " << conv<ZZ>(mean(length_results["BKZNTL"][0])) << "   Error Rate : " << (double) nb_diff["BKZNTL"]/maxIteration << endl;
-   outFile << "      PairRed+BKZNTL = " << conv<ZZ>(mean(length_results["PairRedPrimal_BKZNTL"][0])) << "   Error Rate : " << (double) nb_diff["PairRedPrimal_BKZNTL"]/maxIteration << endl;
-   outFile << "PairRedRandom+BKZNTL = " << conv<ZZ>(mean(length_results["PairRedPrimalRandomized_BKZNTL"][0])) << "   Error Rate : " << (double) nb_diff["PairRedPrimalRandomized_BKZNTL"]/maxIteration << endl;
+   outFile << "              BKZNTL = " << conv<ZZ>(mean(length_results[BKZNTL][0])) << "   Error Rate : " << (double) nb_diff[BKZNTL]/maxIteration << endl;
+   outFile << "      PairRed+BKZNTL = " << conv<ZZ>(mean(length_results[PairRed_BKZNTL][0])) << "   Error Rate : " << (double) nb_diff[PairRed_BKZNTL]/maxIteration << endl;
+   outFile << "PairRedRandom+BKZNTL = " << conv<ZZ>(mean(length_results[PairRedRandomized_BKZNTL][0])) << "   Error Rate : " << (double) nb_diff[PairRedRandomized_BKZNTL]/maxIteration << endl;
    outFile << endl;
 
-   //outFile << "             BB Only = " << conv<ZZ>(mean(length_results["PairRedPrimal_BKZNTL"][0])) << "   Error Rate : " << (double) nb_diff[name]/maxIteration << endl;
-   outFile << "          BB Classic = " << conv<ZZ>(mean(length_results["BB_Classic"][0])) << "   Error Rate : " << (double) nb_diff["BB_Classic"]/maxIteration << endl,
-   outFile << "              BB BKZ = " << conv<ZZ>(mean(length_results["BB_BKZ"][0])) << "   Error Rate : " << (double) nb_diff["BB_BKZ"]/maxIteration << endl;
+   //outFile << "             BB Only = " << conv<ZZ>(mean(length_results[PairRed_BKZNTL][0])) << "   Error Rate : " << (double) nb_diff[am]/maxIteration << endl;
+   outFile << "          BB Classic = " << conv<ZZ>(mean(length_results[BB_Classic][0])) << "   Error Rate : " << (double) nb_diff[BB_Classic]/maxIteration << endl,
+   outFile << "              BB BKZ = " << conv<ZZ>(mean(length_results[BB_BKZ][0])) << "   Error Rate : " << (double) nb_diff[BB_BKZ]/maxIteration << endl;
    outFile << endl;
 
-   //outFile << "    Dieter Reduction = " << conv<ZZ>(mean(length_results["DIETER"][0])) << "   Error Rate : " << (double) nb_diff[name]/maxIteration << endl,
-   //outFile << " Minkowski Reduction = " << conv<ZZ>(mean(length_results["MINKOWSKI"][0])) << "   Error Rate : " << (double) nb_diff["MINKOWSKI"]/maxIteration << endl;
+   //outFile << "    Dieter Reduction = " << conv<ZZ>(mean(length_results[RedDieter][0])) << "   Error Rate : " << (double) nb_diff[RedDieter]/maxIteration << endl,
+   //outFile << " Minkowski Reduction = " << conv<ZZ>(mean(length_results[RedMinkowski][0])) << "   Error Rate : " << (double) nb_diff[RedMinkowski]/maxIteration << endl;
 
-   outFile << "\n--------------------------------------------\n" << endl;
+   outFile << "\n     --------------------------------------------\n" << endl;
 
 
 #endif
@@ -730,7 +668,7 @@ int main (int argc, char *argv[])
    R["Maxdimension"] = MaxDimension;
    R["dimension"] = Interval_dim;
    //R["timing_Initial"] = toRcppMatrix(timing_Initial, maxIteration);
-   for(const string &name : names){
+   for(const ReduceType &name : Reduce_type){
       R[name] = toRcppMatrix(timing_results[name]);
    }
 
@@ -774,7 +712,7 @@ int main (int argc, char *argv[])
 
    if (outFileRequested)
       realOutFile.close();
-   
+
 #endif
 
    return 0;

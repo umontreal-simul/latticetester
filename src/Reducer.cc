@@ -1491,7 +1491,8 @@ bool Reducer::shortestVector (NormType norm)
       PreRedLLLSV = true;
    m_lat->updateVecNorm();
    m_lat->sort(0);
-   m_lat->updateDualVecNorm();
+   if(m_lat->withDual())
+      m_lat->updateDualVecNorm();
 
    //trace( "APRES shortestVector");
 

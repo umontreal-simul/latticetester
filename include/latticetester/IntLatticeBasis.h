@@ -19,8 +19,6 @@
 #define LATTICETESTER__INTLATTICEBASIS_H
 #include "latticetester/Types.h"
 #include "latticetester/Const.h"
-//#include "latticetester/Normalizer.h"
-//#include "latticetester/CoordinateSets.h"
 #include <string>
 
 namespace LatticeTester {

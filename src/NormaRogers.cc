@@ -23,7 +23,7 @@ namespace LatticeTester
 {
 
 /**
- * These laminated gamma constants are calculated as defined in 
+ * These Rogers gamma constants are calculated as defined in 
  * Conway and Sloane book (Sphere packing, Lattices and groups) : 
  *    - equation (47) page 20 of chapter 1
  *    - table 1.2 page 15 of chapter 1

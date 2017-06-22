@@ -27,7 +27,6 @@
 #include <sstream>
 #include <vector>
 
-
 namespace LatticeTester {
 
 /**
@@ -230,13 +229,6 @@ public:
     * This version is implemented in the NTL Library
     */
    void redLLLNTLProxy(double fact);
-
-   /**
-    * \copydoc redLLL(double, long, int)
-    * This version is implemented in the NTL Library
-    * Here fact can be replace by the exact value a/b
-    */
-   void redLLLNTLExact(ZZ & det, long a, long b);
 
 
    /**

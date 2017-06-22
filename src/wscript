@@ -2,7 +2,7 @@
 # coding: utf-8
 
 def build(ctx):
-    src_dir = ctx.path.find_dir('.')
+    src_dir = ctx.path.find_dir('../src')
     inc_dir = ctx.path.find_dir('../include')
 
     ctx(features='cxx cxxstlib',

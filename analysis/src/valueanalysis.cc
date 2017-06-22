@@ -23,6 +23,8 @@
 #include <sstream>
 #include <iomanip>
 #include <time.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 // Include LatticeTester Header
 #include "latticetester/Util.h"
@@ -71,6 +73,19 @@ using namespace LatticeTester;
  */
 bool outFileRequested = false;
 
+
+/*
+ * Enter output directory name
+ * Let empty for current directory
+ * outFileRequested flag must be true
+ */
+string output = " ";
+
+/*
+ * Enter file name (without .txt extension)
+ * outFileRequested flag must be true
+ */
+string fileName = "test";
 
 /*
  * Type of the basis input.
@@ -153,35 +168,48 @@ const long blocksize = 20;
 const int maxNodesBB = 1000000;
 
 /*
- * Selecting method of reducing.
+ * Selecting method of reducing among :
+   Initial,                  * Calibration
+   PairRed,                  * Performs Pairwise Reduction
+   PairRedRandomized,        * Performs stochastic Pairwise Reduction
+   RedLLL,                   * Performs LLL Reduction
+   PairRed_LLL,              * Performs Pairwise Reduction
+   PairRedRandomized_LLL,    * Perform Pairwise Reduction and then LLL Reduction
+   LLLNTL,                   * Performs LLL Reduction with NTL Library
+   PairRed_LLLNTL,           * Perform Pairwise Reduction and then LLL Reduction
+                             * with NTL Library
+   PairRedRandomized_LLLNTL, * Perform stocastic Pairwise Reduction and then LLL
+                             * Reduction with NTL Library
+   BKZNTL,                   * Performs BKZ Reduction with NTL Library
+   PairRed_BKZNTL,           * Perform Pairwise Reduction and then
+                             * BKZ Reduction with NTL Library
+   PairRedRandomized_BKZNTL, * Perform stocastic Pairwise Reduction and
+                             * then BKZ Reduction with NTL Library
+   BB_Only,                  * Performs Branch-and-Bound Reduction
+   BB_Classic,               * Perform Pairwise Reduction and then
+                             * Branch-and-Bound Reduction
+   BB_BKZ                    * Performs BKZ Reduction with NTL Library
+                             * and then Branch-and-Bound Reduction
+   RedDieter,                * Performs Dieter Reduction
+                             * WARNING DO NOT USE DIETER FOR DIM > 6
+   RedMinkowski              * Perform Minkowski Reduction with
+                             * Branch-and-Bound Algorithm.
  */
 ReduceType Reduce_type[] ={
-   Initial,                   // Calibration
-   PairRed,                   // Performs Pairwise Reduction
-   PairRedRandomized,         // Performs stochastic Pairwise Reduction
-   RedLLL,                       // Performs LLL Reduction
-   PairRed_LLL,               // Performs Pairwise Reduction
-   PairRedRandomized_LLL,     // Perform Pairwise Reduction and then
-                              // LLL Reduction
-   LLLNTL,                    // Performs LLL Reduction with NTL Library
-   PairRed_LLLNTL,            // Perform Pairwise Reduction and then
-                              // LLL Reduction with NTL Library
-   PairRedRandomized_LLLNTL,  // Perform stocastic Pairwise Reduction and
-                              // then LLL Reduction with NTL Library
-   BKZNTL,                    // Performs BKZ Reduction with NTL Library
-   PairRed_BKZNTL,            // Perform Pairwise Reduction and then
-                              // BKZ Reduction with NTL Library
-   PairRedRandomized_BKZNTL,  // Perform stocastic Pairwise Reduction and
-                              // then BKZ Reduction with NTL Library
-   //BB_Only,                   // Performs Branch-and-Bound Reduction
-   BB_Classic,                // Perform Pairwise Reduction and then
-                              // Branch-and-Bound Reduction
-   BB_BKZ                     // Performs BKZ Reduction with NTL Library
-                              // and then Branch-and-Bound Reduction
-   //RedDieter,                    // Performs Dieter Reduction
-                              //WARNING USE DIETER ONLY FOR DIM < 6
-   //RedMinkowski                  // Perform Minkowski Reduction with
-                              // Branch-and-Bound Algorithm.
+   Initial,
+   PairRed,
+   PairRedRandomized,
+   RedLLL,
+   PairRed_LLL,
+   PairRedRandomized_LLL,
+   LLLNTL,
+   PairRed_LLLNTL,
+   PairRedRandomized_LLLNTL,
+   BKZNTL,
+   PairRed_BKZNTL,
+   PairRedRandomized_BKZNTL,
+   BB_Classic,
+   BB_BKZ
 };
 
 //----------------------------------------------------------------------------------------
@@ -383,12 +411,31 @@ bool reduce2(
  */
 int main (int argc, char *argv[])
 {
-   ofstream realOutFile;
-   string fileName;
-   if (outFileRequested) {
-      cout << "Enter file name (without .txt extension): ";
-      cin >> fileName;
+
+   /*
+   if (argc < 2) {
+      cerr << "\n*** Usage:\n   "
+           << argv[0] << " data_file1" << endl;
+      return -1;
    }
+
+   struct stat buf;
+   stat(argv[1], &buf);
+   string dataname(argv[1]);
+   dataname.append(".dat");
+   stat(dataname.c_str(), &buf);
+
+   ifstream inFile(argv[1].c_str());
+   if (inFile.fail()) {
+      cerr << "An error occurred. Unable to read input file:" <<
+               argv[1] << endl;
+      exit(1);
+   }
+
+*/
+
+
+   ofstream realOutFile;
    ostream & outFile = outFileRequested ? realOutFile.open(fileName+".txt", std::ios::out), realOutFile : std::cout;
 
    // printing total running time

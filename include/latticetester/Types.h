@@ -25,9 +25,6 @@
  *
  */
 
-#define WITH_NTL
-#define NTL_TYPES_CODE 2
-
 #ifndef LATTICETESTER__TYPES_H
 #define LATTICETESTER__TYPES_H
 

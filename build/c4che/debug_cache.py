@@ -16,7 +16,7 @@ COMPILER_CC = 'clang'
 COMPILER_CXX = 'clang++'
 CPPPATH_ST = '-I%s'
 CXX = ['/usr/bin/clang++']
-CXXFLAGS = ['-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-O2']
+CXXFLAGS = ['-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-g']
 CXXFLAGS_MACBUNDLE = ['-fPIC']
 CXXFLAGS_cxxshlib = ['-fPIC']
 CXXLNK_SRC_F = []
@@ -26,9 +26,9 @@ CXX_SRC_F = []
 CXX_TGT_F = ['-c', '-o']
 DATADIR = '/usr/local/share'
 DATAROOTDIR = '/usr/local/share'
-DEFINES = ['WITH_NTL=1', 'NTL_TYPES_CODE=2', 'HAVE_NTL_VECTOR_H=1', 'LATTICETESTER_VERSION=1.1', 'HAVE_GMP_H=1', 'HAVE_ULCG_H=1', 'HAVE_NUM_H=1', 'NDEBUG=1']
+DEFINES = ['WITH_NTL=1', 'NTL_TYPES_CODE=2', 'HAVE_NTL_VECTOR_H=1', 'LATTICETESTER_VERSION=1.1', 'HAVE_GMP_H=1', 'HAVE_ULCG_H=1', 'HAVE_NUM_H=1', 'DEBUG=1']
 DEFINES_ST = '-D%s'
-DEFINE_COMMENTS = {'HAVE_NTL_VECTOR_H': '', 'LATTICETESTER_VERSION': '', 'HAVE_GMP_H': '', 'NDEBUG': '', 'HAVE_ULCG_H': '', 'HAVE_NUM_H': '', 'NTL_TYPES_CODE': '', 'WITH_NTL': ''}
+DEFINE_COMMENTS = {'HAVE_NTL_VECTOR_H': '', 'LATTICETESTER_VERSION': '', 'HAVE_GMP_H': '', 'HAVE_ULCG_H': '', 'HAVE_NUM_H': '', 'NTL_TYPES_CODE': '', 'DEBUG': '', 'WITH_NTL': ''}
 DEST_BINFMT = 'mac-o'
 DEST_CPU = 'x86_64'
 DEST_OS = 'darwin'
@@ -84,5 +84,5 @@ cstlib_PATTERN = 'lib%s.a'
 cxxprogram_PATTERN = '%s'
 cxxshlib_PATTERN = 'lib%s.dylib'
 cxxstlib_PATTERN = 'lib%s.a'
-define_key = ['WITH_NTL', 'NTL_TYPES_CODE', 'HAVE_NTL_VECTOR_H', 'LATTICETESTER_VERSION', 'HAVE_GMP_H', 'HAVE_ULCG_H', 'HAVE_NUM_H', 'NDEBUG']
+define_key = ['WITH_NTL', 'NTL_TYPES_CODE', 'HAVE_NTL_VECTOR_H', 'LATTICETESTER_VERSION', 'HAVE_GMP_H', 'HAVE_ULCG_H', 'HAVE_NUM_H', 'DEBUG']
 macbundle_PATTERN = '%s.bundle'

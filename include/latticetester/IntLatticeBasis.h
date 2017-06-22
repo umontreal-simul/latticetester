@@ -269,12 +269,12 @@ public:
     /**
      * Return a string with the primal basis and its norms
      */
-    string toStringBasis() const;
+    std::string toStringBasis() const;
 
     /**
      * Return a string with the dual basis and its norms
      */
-    string toStringDualBasis() const;
+    std::string toStringDualBasis() const;
 
     /**
      * Writes the lattice and the parameters on standard output

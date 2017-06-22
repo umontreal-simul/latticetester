@@ -1,0 +1,16 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+def build(ctx):
+    inc_dir = ctx.path.find_dir('analysis/include')
+    lat_inc_dir = ctx.path.find_dir('include')
+
+    for src, tgt in [('timeanalysis.cc', 'timeanalysis'), ('valueanalysis.cc', 'valueanalysis')]:
+        ctx(features='cxx cxxprogram',
+                source=ctx.path.find_node(src),
+                includes=[inc_dir, lat_inc_dir],
+                lib=ctx.env.LIB_NTL + ctx.env.LIB_TESTU01 + ctx.env.LIB_GMP + ctx.env.LIB_MYLIB,
+                stlib=ctx.env.STLIB_NTL + ctx.env.STLIB_TESTU01 + ctx.env.STLIB_GMP + ctx.env.STLIB_MYLIB,
+                target=(tgt + ctx.env.LATTICETESTER_SUFFIX),
+                use=['latmrg' + ctx.env.LATTICETESTER_SUFFIX, 'latticetester' + ctx.env.LATTICETESTER_SUFFIX],
+                install_path='${BINDIR}')

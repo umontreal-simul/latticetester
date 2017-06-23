@@ -23,8 +23,8 @@
 namespace LatticeTester
 {
 
-NormaPalpha::NormaPalpha (const MScal & m, int alp, int s, NormType norm)
-      : Normalizer (m, 1, s, "Palpha", norm, 1.0)
+NormaPalpha::NormaPalpha (const MScal & n, int alp, int s, NormType norm)
+      : Normalizer (n, s, "Palpha", norm, 1.0)
 {
    if (s > MAX_DIM)
       throw std::invalid_argument("NormaPalpha:   dimension > MAX_DIM");
@@ -48,9 +48,9 @@ double NormaPalpha::calcBound (int alpha, int dim)
 {
    const double eBasis = 2.71828182845904523536;
    double MM;
-   conv (MM, m_m);
+   conv (MM, m_n);
    MScal mm;
-   conv (mm, m_m);
+   conv (mm, m_n);
    if (dim <= 1) {
       std::cout << "calcBound:  dim < 2.   Returns -1" << std:: endl;
       return -1;

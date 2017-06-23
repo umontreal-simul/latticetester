@@ -80,12 +80,12 @@ const double NormaMinkowski::m_gamma[ ] =
 /*=========================================================================*/
 
 
-NormaMinkowski::NormaMinkowski (const MScal & m, int k, int t, double beta)
-      : Normalizer (m, k, t, "Minkowski", L2NORM, beta)
+NormaMinkowski::NormaMinkowski (const MScal & n, int t, double beta)
+      : Normalizer (n, t, "Minkowski", L2NORM, beta)
 {
    if (t > MAX_DIM)
       throw std::invalid_argument("NormaMinkowski:   dimension > MAX_DIM");
-   Normalizer::init (m, k, beta);
+   Normalizer::init (n, beta);
 }
 
 

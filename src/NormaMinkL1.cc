@@ -80,14 +80,14 @@ const double NormaMinkL1::m_gamma[] =
 /*=========================================================================*/
 
 
-NormaMinkL1::NormaMinkL1 (const MScal & m, int k, int t,
+NormaMinkL1::NormaMinkL1 (const MScal & n, int t,
                           double beta)
-      : Normalizer (m, k, t, "MinkL1", L1NORM, beta)
+      : Normalizer (n, t, "MinkL1", L1NORM, beta)
 {
    if (t > MAX_DIM) //fred
       throw std::invalid_argument("NormaMinkL1:   dimension > MAX_DIM"); //fred
 
-   Normalizer::init (m, k, beta);
+   Normalizer::init (n, beta);
 }
 
 

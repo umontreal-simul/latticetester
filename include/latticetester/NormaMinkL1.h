@@ -34,24 +34,24 @@ namespace LatticeTester {
  * \cite rMAR68a&thinsp; by applying the general convex body theorem of
  * Minkowski:
  * \f[
- * \ell_t^* = (t! m^k)^{1/t} = \gamma_t m^{k/t},
+ * \ell_t^* = (t! n)^{1/t} = \gamma_t^{1/2} n^{-1/t}, 
  * \f]
- * for lattices of rank \f$k\f$, containing \f$m\f$ points per unit volume,
- * in dimension \f$t\f$. The lattice constants are thus \f$\gamma_t =
- * (t!)^{1/t}\f$.
- *
+ * for lattices containing \f$n\f$ points per unit volume, in dimension \f$t\f$. 
+ * The lattice constants are thus \f$\gamma_t = (t!)^{1/t}\f$.
  */
+
+//PW_TODO verif puissances gamma et n : ici n est traité comme la densité du primal alors que ce test ne s'applique que directement dans le dual
+
 class NormaMinkL1 : public Normalizer {
 public:
 
    /**
     * Constructor for the Marsaglia’s bounds with the
-    * \f${\mathcal{L}}_1\f$ norm. The lattices are those of rank \f$k\f$, with
-    * \f$m\f$ points per unit volume, in all dimensions \f$\le t\f$. The bias
+    * \f${\mathcal{L}}_1\f$ norm. The lattices have \f$n\f$ points per unit volume, in all dimensions \f$\le t\f$. The bias
     * factor `beta` \f$= \beta\f$ gives more weight to some of the dimensions.
     * Restriction: \f$t \le48\f$.
     */
-   NormaMinkL1 (const MScal & m, int k, int t, double beta = 1);
+   NormaMinkL1 (const MScal & n, int t, double beta = 1);
 
    /**
     * Returns the value of the lattice constant \f$\gamma_j\f$ in

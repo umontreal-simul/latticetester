@@ -47,8 +47,8 @@ public:
    static const int MAX_DIM = 48;
 
    /**
-    * Constructor for the bounds. Deals with lattices of rank \f$k\f$, having
-    * \f$m\f$ points per unit volume, in all dimensions \f$\le t\f$. `Name` is
+    * Constructor for the bounds. Deals with lattices having
+    * \f$n\f$ points per unit volume, in all dimensions \f$\le t\f$. `Name` is
     * the name of the Normalizer. The bias factor `beta` \f$= \beta\f$ gives
     * more weight to some of the dimensions: taking \f$\beta< 1\f$ inflates the
     * figure of merit by \f$(1/\beta)^t\f$, thus weakening the requirements for
@@ -59,7 +59,7 @@ public:
     * implantés dans les classes `*Weights`.
     * PW_TODO : a voir
     */
-   Normalizer (const MScal & m, int k, int t, std::string Name,
+   Normalizer (const MScal & n, int t, std::string Name,
                   NormType norm = L2NORM, double beta = 1);
 
    /**
@@ -70,11 +70,10 @@ public:
 
    /**
     * Initializes the bounds on the length of the shortest vector. The
-    * lattices have \f$m\f$ points per unit volume, are of rank \f$k\f$,
-    * and the bias factor is `beta` for all dimensions \f$j
-    * \le\f$ `maxDim`.
+    * lattices have \f$n\f$ points per unit volume and the bias factor 
+    * is `beta` for all dimensions \f$j\le\f$ `maxDim`.
     */
-   void init (const MScal & m, int k, double beta);
+   void init (const MScal & n, double beta);
 
    /**
     * Returns this object as a string.
@@ -123,14 +122,10 @@ protected:
    NormType m_norm;
 
    /**
-    * Number of points of the lattice per unit volume.
+    * Number of points of the lattice per unit volume (density).
     */
-   MScal m_m;
-
-   /**
-    * Rank of the lattice.
-    */
-   int m_rank;
+   //PW_TODO: really a MSCal for a density?
+   MScal m_n;
 
    /**
     * Only elements 1 to <tt>m_maxDim</tt> (inclusive) of arrays are

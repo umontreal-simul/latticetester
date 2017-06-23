@@ -85,12 +85,12 @@ const double NormaLaminated::m_gamma[] =
 /*=========================================================================*/
 
 
-NormaLaminated::NormaLaminated (const MScal & m, int k, int t, double beta)
-      : Normalizer (m, k, t, "Laminated", L2NORM, beta)
+NormaLaminated::NormaLaminated (const MScal & n, int t, double beta)
+      : Normalizer (n, t, "Laminated", L2NORM, beta)
 {
    if (t > MAX_DIM)
       throw std::invalid_argument("NormaLaminated:   dimension > MAX_DIM");
-   Normalizer::init (m, k, beta);
+   Normalizer::init (n, beta);
 }
 
 

@@ -38,9 +38,9 @@ const int Normalizer::MAX_DIM;
 
 /*-------------------------------------------------------------------------*/
 
-Normalizer::Normalizer (const MScal & m0, int k0, int maxDim, std::string name,
+Normalizer::Normalizer (const MScal & n0, int maxDim, std::string name,
                         NormType norm, double beta0) :
-      m_name(name), m_norm(norm), m_m(m0), m_rank(k0), m_maxDim(maxDim),
+      m_name(name), m_norm(norm), m_n(n0), m_maxDim(maxDim),
       m_beta(beta0)
 {
    m_cst = new double[maxDim + 1];
@@ -50,40 +50,31 @@ Normalizer::Normalizer (const MScal & m0, int k0, int maxDim, std::string name,
 /*-------------------------------------------------------------------------*/
 
 
-//PW_TODO : why not including this init method in the constructor ?
-
-
-void Normalizer::init (const MScal &m0, int k0, double beta0)
+void Normalizer::init (const MScal &n0, double beta0)
 /*
  * Computes the vector Cst that corresponds to G, for a lattice of
- * density m^k for t >= k, and m^t for t < k.
+ * density n.
  */
 {
    double x, y;
    double logBeta;
-   double logm;
-   double k = k0;
-   m_rank = k0;
-   m_m = m0;
+   double logn;
+   m_n = n0;
    m_beta = beta0;
 
    y = 1.0;
    logBeta = log (m_beta);
 #ifdef WITH_NTL
-   logm = log(NTL::to_ZZ(m_m));
+   logn = log(NTL::to_ZZ(m_n));
 #else
-   logm = log(m_m);
+   logn = log(m_n);
 #endif
 
-   //PW_TODO: check indices and impact on getGamma that starts at 1
-
+   //PW_TODO: check this
    for (int j = 1; j <= m_maxDim; j++) { //fred
-      if (j > k)
-         y = k / j;
-
-      x = log (getGamma(j)) + j * logBeta + y * logm;
-      //log calculation because m can be large
-
+      y =  1. / j;
+      x = 0.5 * log (getGamma(j)) + j * logBeta - y * logn; //log calculation to handle large values of n
+   
       if (m_norm == L2NORM) // is L2NORM always used squarred?
          x = x + x;
       m_cst[j] = exp (x);
@@ -98,8 +89,7 @@ std::string Normalizer::ToString () const
    std::ostringstream os;
    os << "-----------------------------\n"
    << "Content of Normalizer object:\n\n Normalizer = " << m_name;
-   os << "\n m = " << m_m;
-   os << "\n rank = " << m_rank;
+   os << "\n n = " << m_n;
    os << "\n beta = " << std::setprecision (4) << m_beta << "\n\n";
 
    //   os.setf(std::ios::left);

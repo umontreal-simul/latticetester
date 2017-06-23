@@ -9,6 +9,6 @@ doxygen/
 
 # waf #
 #######
-build/
-waflib/
-waftools/
+/build/
+/waflib/
+/waftools/

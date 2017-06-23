@@ -182,6 +182,13 @@ inline void power2 (long & z, long i)
 {
    z = NTL::power_long (2, i);
 }
+/**
+ * Sets \f$z = 2^i\f$.
+ */
+inline void power2 (ZZ& z, long i)
+{
+   z = NTL::power_ZZ (2, i);
+}
 #else
 /**
  * Sets \f$z = 2^i\f$.

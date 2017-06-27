@@ -38,21 +38,21 @@ const int Normalizer::MAX_DIM;
 
 /*-------------------------------------------------------------------------*/
 
-Normalizer::Normalizer (const MScal & n0, int maxDim, std::string name,
+Normalizer::Normalizer (const RScal & n0, int maxDim, std::string name,
                         NormType norm, double beta0) :
       m_name(name), m_norm(norm), m_n(n0), m_maxDim(maxDim),
       m_beta(beta0)
 {
-   m_cst = new double[maxDim + 1];
+   m_bounds = new double[maxDim + 1];
 }
 
 
 /*-------------------------------------------------------------------------*/
 
 
-void Normalizer::init (const MScal &n0, double beta0)
+void Normalizer::init (const RScal &n0, double beta0)
 /*
- * Computes the vector Cst that corresponds to G, for a lattice of
+ * Computes the vector m_bounds that corresponds to the upper bound for a lattice of
  * density n.
  */
 {
@@ -64,20 +64,16 @@ void Normalizer::init (const MScal &n0, double beta0)
 
    y = 1.0;
    logBeta = log (m_beta);
-#ifdef WITH_NTL
-   logn = log(NTL::to_ZZ(m_n));
-#else
    logn = log(m_n);
-#endif
 
-   //PW_TODO: check this
-   for (int j = 1; j <= m_maxDim; j++) { //fred
+   //PW_TODO: check 1/2 gamma
+   for (int j = 1; j <= m_maxDim; j++) {
       y =  1. / j;
-      x = 0.5 * log (getGamma(j)) + j * logBeta - y * logn; //log calculation to handle large values of n
-   
+      //log calculation to handle large values of n
+      x = 0.5 * log (getGamma(j)) + j * logBeta - y * logn;
       if (m_norm == L2NORM) // is L2NORM always used squarred?
-         x = x + x;
-      m_cst[j] = exp (x);
+         x *= 2;
+      m_bounds[j] = exp (x);
    }
 }
 
@@ -94,9 +90,9 @@ std::string Normalizer::ToString () const
 
    //   os.setf(std::ios::left);
    os << std::setprecision (13);
-   for (int t = 1; t <= m_maxDim; t++) { //fred
-      os << " Cst[" << std::setw(2) << std::right << t << "] = "
-      << std::setw(14) << std::left << m_cst[t] << "\n";
+   for (int t = 1; t <= m_maxDim; t++) {
+      os << " Bound[" << std::setw(2) << std::right << t << "] = "
+      << std::setw(14) << std::left << m_bounds[t] << "\n";
    }
    os << "\n";
    return os.str ();
@@ -113,10 +109,10 @@ double Normalizer::getGamma (int) const
 
 /*-------------------------------------------------------------------------*/
 
-double & Normalizer::getCst (int j)
+double & Normalizer::getBound (int j)
 {
-   assert (j >= 1 && j <= m_maxDim); //fred
-   return m_cst[j];
+   assert (j >= 1 && j <= m_maxDim);
+   return m_bounds[j];
 }
 
-}
+} // end namespace LatticeTester

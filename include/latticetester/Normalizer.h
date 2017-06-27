@@ -42,8 +42,8 @@ namespace LatticeTester {
  *
  */
 class Normalizer {
-public:
 
+public:
    static const int MAX_DIM = 48;
 
    /**
@@ -59,21 +59,21 @@ public:
     * implantés dans les classes `*Weights`.
     * PW_TODO : a voir
     */
-   Normalizer (const MScal & n, int t, std::string Name,
+   Normalizer (const RScal & n, int t, std::string Name,
                   NormType norm = L2NORM, double beta = 1);
 
    /**
     * Destructor.
     */
    virtual ~Normalizer ()
-   { delete [] m_cst; }
+   { delete [] m_bounds; }
 
    /**
     * Initializes the bounds on the length of the shortest vector. The
     * lattices have \f$n\f$ points per unit volume and the bias factor 
     * is `beta` for all dimensions \f$j\le\f$ `maxDim`.
     */
-   void init (const MScal & n, double beta);
+   void init (const RScal & n, double beta);
 
    /**
     * Returns this object as a string.
@@ -102,15 +102,15 @@ public:
     * Returns the bound on the length of the shortest nonzero vector in
     * dimension \f$j\f$.
     */
-   double & getCst (int j);
+   double & getBound (int j);
 
    /**
     * Returns the value of the lattice constant \f$\gamma_j\f$ in
     * dimension \f$j\f$. For this base class, always returns 1.
     */
    virtual double getGamma (int j) const;
-protected:
 
+protected:
    /**
     * Name of the normalizer.
     */
@@ -124,8 +124,7 @@ protected:
    /**
     * Number of points of the lattice per unit volume (density).
     */
-   //PW_TODO: really a MSCal for a density?
-   MScal m_n;
+   RScal m_n;
 
    /**
     * Only elements 1 to <tt>m_maxDim</tt> (inclusive) of arrays are
@@ -142,9 +141,9 @@ protected:
     * Contains the bounds on the length of the shortest nonzero vector in
     * the lattice in each dimension.
     */
-   double *m_cst;
-private:
+   double *m_bounds;
 
+private:
    /**
     * Use of the copy-constructor is forbidden.
     */
@@ -154,7 +153,9 @@ private:
     * Use of assigment is forbidden.
     */
    Normalizer & operator= (const Normalizer &);
+
 };
 
-}
+} // end namespace LatticeTester
+
 #endif

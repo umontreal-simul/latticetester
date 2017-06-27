@@ -80,7 +80,7 @@ const double NormaMinkowski::m_gamma[ ] =
 /*=========================================================================*/
 
 
-NormaMinkowski::NormaMinkowski (const MScal & n, int t, double beta)
+NormaMinkowski::NormaMinkowski (const RScal & n, int t, double beta)
       : Normalizer (n, t, "Minkowski", L2NORM, beta)
 {
    if (t > MAX_DIM)

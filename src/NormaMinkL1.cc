@@ -80,7 +80,7 @@ const double NormaMinkL1::m_gamma[] =
 /*=========================================================================*/
 
 
-NormaMinkL1::NormaMinkL1 (const MScal & n, int t,
+NormaMinkL1::NormaMinkL1 (const RScal & n, int t,
                           double beta)
       : Normalizer (n, t, "MinkL1", L1NORM, beta)
 {

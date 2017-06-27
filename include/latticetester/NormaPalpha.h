@@ -37,7 +37,7 @@ public:
     * lattices have rank \f$1\f$, with \f$n\f$ points per unit volume.
     * Restriction: \f$2 \le s \le48\f$, \f$\alpha\ge2\f$, and \f$m\f$ prime.
     */
-   NormaPalpha (const MScal & n, int alpha, int s, NormType norm = L2NORM);
+   NormaPalpha (const RScal & n, int alpha, int s, NormType norm = L2NORM);
 
    /**
     * Computes and returns the bound \f$B_{\alpha}(s)\f$ given in

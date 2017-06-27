@@ -85,7 +85,7 @@ const double NormaLaminated::m_gamma[] =
 /*=========================================================================*/
 
 
-NormaLaminated::NormaLaminated (const MScal & n, int t, double beta)
+NormaLaminated::NormaLaminated (const RScal & n, int t, double beta)
       : Normalizer (n, t, "Laminated", L2NORM, beta)
 {
    if (t > MAX_DIM)

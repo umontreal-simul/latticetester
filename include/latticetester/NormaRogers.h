@@ -41,7 +41,7 @@ public:
     * \f$= \beta\f$ gives more weight to some of the dimensions.
     * There is no restriction on the dimension \f$t\f$ which can be larger than 48.
     */
-   NormaRogers (const MScal & n, int t, double beta = 1);
+   NormaRogers (const RScal & n, int t, double beta = 1);
 
    /**
     * Destructor.

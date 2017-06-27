@@ -51,7 +51,7 @@ public:
     * factor `beta` \f$= \beta\f$ gives more weight to some of the dimensions.
     * Restriction: \f$t \le48\f$.
     */
-   NormaMinkL1 (const MScal & n, int t, double beta = 1);
+   NormaMinkL1 (const RScal & n, int t, double beta = 1);
 
    /**
     * Returns the value of the lattice constant \f$\gamma_j\f$ in

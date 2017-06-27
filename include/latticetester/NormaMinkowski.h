@@ -42,7 +42,7 @@ public:
     * dimensions. 
     * Restriction: \f$t \le48\f$.
     */
-   NormaMinkowski (const MScal & n, int t, double beta = 1);
+   NormaMinkowski (const RScal & n, int t, double beta = 1);
 
    /**
     * Returns the value of the lattice constant \f$\gamma_j\f$ in

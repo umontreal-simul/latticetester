@@ -102,7 +102,9 @@ public:
     * Returns the bound on the length of the shortest nonzero vector in
     * dimension \f$j\f$.
     */
-   double & getBound (int j);
+   double & getPreComputedBound (int j);
+
+   double getBound (int j) const;
 
    /**
     * Returns the value of the lattice constant \f$\gamma_j\f$ in

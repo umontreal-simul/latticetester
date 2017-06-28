@@ -46,6 +46,7 @@ Normalizer::Normalizer (const RScal & n0, int maxDim, std::string name,
    m_bounds = new double[maxDim + 1];
 }
 
+// PW_TODO : plutot stocker le log de la densité log(n) = k*log(m) ?
 
 /*-------------------------------------------------------------------------*/
 
@@ -109,10 +110,34 @@ double Normalizer::getGamma (int) const
 
 /*-------------------------------------------------------------------------*/
 
-double & Normalizer::getBound (int j)
+double & Normalizer::getPreComputedBound (int j)
 {
    assert (j >= 1 && j <= m_maxDim);
    return m_bounds[j];
+}
+
+/*-------------------------------------------------------------------------*/
+
+double Normalizer::getBound (int j) const
+{
+   assert (j >= 1 && j <= m_maxDim);
+
+   double x, y;
+   double logBeta;
+   double logn;
+ 
+   logBeta = log(m_beta);
+   logn = log(m_n);
+   y =  1. / j;
+   //log calculation to handle large values of n
+   x = 0.5 * log(getGamma(j)) + j * logBeta - y * logn;
+
+   // PW_TODO
+   //if (m_norm == L2NORM) // is L2NORM always used squarred?
+      //x *= 2;
+
+   return exp(x);
+
 }
 
 } // end namespace LatticeTester

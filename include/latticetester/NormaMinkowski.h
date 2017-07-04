@@ -40,9 +40,10 @@ public:
     * have \f$n\f$ points per unit volume, in all dimensions \f$\le t\f$. 
     * The bias factor `beta` \f$= \beta\f$ gives more weight to some of the 
     * dimensions. 
+    * Note this class stores the log value of the density to handle larger values.
     * Restriction: \f$t \le48\f$.
     */
-   NormaMinkowski (const RScal & n, int t, double beta = 1);
+   NormaMinkowski (const RScal & logDensity, int t, double beta = 1);
 
    /**
     * Returns the value of the lattice constant \f$\gamma_j\f$ in

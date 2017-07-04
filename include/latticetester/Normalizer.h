@@ -54,12 +54,18 @@ public:
     * figure of merit by \f$(1/\beta)^t\f$, thus weakening the requirements for
     * large \f$t\f$ in a worst-case figure of merit. One normally uses
     * \f$\beta= 1\f$.
+    * Note that the log value of the density is stored (instead of the density 
+    * itself) so it is easier to manipulate really large values of density.
+    *
+    */
+
+   /* PW_TODO : a voir
     * \remark **Richard:** Je crois que ce facteur `beta` devrait
     * disparaître car des poids beaucoup plus généraux sont maintenant
     * implantés dans les classes `*Weights`.
-    * PW_TODO : a voir
     */
-   Normalizer (const RScal & n, int t, std::string Name,
+
+   Normalizer (const RScal & logDensity, int t, std::string Name,
                   NormType norm = L2NORM, double beta = 1);
 
    /**
@@ -70,10 +76,10 @@ public:
 
    /**
     * Initializes the bounds on the length of the shortest vector. The
-    * lattices have \f$n\f$ points per unit volume and the bias factor 
+    * lattices have \f$Density\f$ points per unit volume and the bias factor 
     * is `beta` for all dimensions \f$j\le\f$ `maxDim`.
     */
-   void init (const RScal & n, double beta);
+   void init (const RScal & logDensity, double beta);
 
    /**
     * Returns this object as a string.
@@ -100,10 +106,14 @@ public:
 
    /**
     * Returns the bound on the length of the shortest nonzero vector in
-    * dimension \f$j\f$.
+    * dimension \f$j\f$ as computed in Normalizer::init.
     */
    double & getPreComputedBound (int j);
 
+  /**
+    * Calculates and returns the bound on the length of the shortest nonzero vector in
+    * dimension \f$j\f$.
+    */
    double getBound (int j) const;
 
    /**
@@ -124,9 +134,10 @@ protected:
    NormType m_norm;
 
    /**
-    * Number of points of the lattice per unit volume (density).
+    * log of the density, ie log of the number of points of the lattice 
+    * per unit of volume.
     */
-   RScal m_n;
+   RScal m_logDensity;
 
    /**
     * Only elements 1 to <tt>m_maxDim</tt> (inclusive) of arrays are

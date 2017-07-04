@@ -32,17 +32,18 @@ namespace LatticeTester {
  * \f$n\f$ points per unit volume in dimension \f$t\f$, are given by 
  * \f$\ell_t^* = \gamma_t^{1/2} m^{-1/t}\f$ for, where the \f$\gamma_t\f$ are
  * the lattice constants for the best *laminated* lattices \cite mCON99a&thinsp;.
+ * Note this class stores the log value of the density to handle larger values.
  */
 class NormaLaminated : public Normalizer {
 public:
 
    /**
     * Constructor for the bounds obtained for laminated lattices. The lattices
-    * have \f$n\f$ points per unit volume, in all dimensions \f$\le t\f$. The bias
+    * have \f$Density\f$ points per unit volume, in all dimensions \f$\le t\f$. The bias
     * factor `beta` \f$= \beta\f$ gives more weight to some of the dimensions. 
     * Restriction: \f$t \le48\f$.
     */
-   NormaLaminated (const RScal & n, int t, double beta = 1);
+   NormaLaminated (const RScal & logDensity, int t, double beta = 1);
 
    /**
     * Returns the value of the lattice constant \f$\gamma_j\f$ in

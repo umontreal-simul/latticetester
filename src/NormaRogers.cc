@@ -104,8 +104,8 @@ double NormaRogers::calcGamma (int dim)
 
 /*=========================================================================*/
 
-NormaRogers::NormaRogers (const RScal & n, int t, double beta)
-      : Normalizer (n, t, "Rogers", L2NORM, beta)
+NormaRogers::NormaRogers (const RScal & logDensity, int t, double beta)
+      : Normalizer (logDensity, t, "Rogers", L2NORM, beta)
 {
    m_gamma = new double[t + 1];
    int t0 = t;
@@ -117,7 +117,7 @@ NormaRogers::NormaRogers (const RScal & n, int t, double beta)
    for (i = t0 + 1; i <= t; i++)
       m_gamma[i] = calcGamma(i);
 
-   Normalizer::init (n, beta);
+   Normalizer::init (logDensity, beta);
 }
 
 /*=========================================================================*/

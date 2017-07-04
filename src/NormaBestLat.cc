@@ -85,12 +85,12 @@ const double NormaBestLat::m_gamma[] =
 /*=========================================================================*/
 
 
-NormaBestLat::NormaBestLat (const RScal & n, int t, double beta)
-      : Normalizer (n, t, "BestLat", L2NORM, beta)
+NormaBestLat::NormaBestLat (const RScal & logDensity, int t, double beta)
+      : Normalizer (logDensity, t, "BestLat", L2NORM, beta)
 {
    if (t > MAX_DIM)
       throw std::invalid_argument("NormaBestLat:   dimension > MAXDIM");
-   Normalizer::init (n, beta);
+   Normalizer::init (logDensity, beta);
 }
 
 

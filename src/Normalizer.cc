@@ -38,42 +38,40 @@ const int Normalizer::MAX_DIM;
 
 /*-------------------------------------------------------------------------*/
 
-Normalizer::Normalizer (const RScal & n0, int maxDim, std::string name,
+Normalizer::Normalizer (const RScal & logDensity0, int maxDim, std::string name,
                         NormType norm, double beta0) :
-      m_name(name), m_norm(norm), m_n(n0), m_maxDim(maxDim),
+      m_name(name), m_norm(norm), m_logDensity(logDensity0), m_maxDim(maxDim),
       m_beta(beta0)
 {
    m_bounds = new double[maxDim + 1];
 }
 
-// PW_TODO : plutot stocker le log de la densité log(n) = k*log(m) ?
-
 /*-------------------------------------------------------------------------*/
 
 
-void Normalizer::init (const RScal &n0, double beta0)
+void Normalizer::init (const RScal &logDensity0, double beta0)
 /*
  * Computes the vector m_bounds that corresponds to the upper bound for a lattice of
- * density n.
+ * density \f$Density_0\f$.
  */
 {
    double x, y;
    double logBeta;
-   double logn;
-   m_n = n0;
+   m_logDensity = logDensity0;
    m_beta = beta0;
 
    y = 1.0;
    logBeta = log (m_beta);
-   logn = log(m_n);
 
    //PW_TODO: check 1/2 gamma
    for (int j = 1; j <= m_maxDim; j++) {
       y =  1. / j;
+      x = 0.5 * log (getGamma(j)) + j * logBeta - y * logDensity0;
       //log calculation to handle large values of n
-      x = 0.5 * log (getGamma(j)) + j * logBeta - y * logn;
-      if (m_norm == L2NORM) // is L2NORM always used squarred?
-         x *= 2;
+
+      if (m_norm == L2NORM)
+         x *= 2; // L2norm is always used squared
+
       m_bounds[j] = exp (x);
    }
 }
@@ -86,7 +84,8 @@ std::string Normalizer::ToString () const
    std::ostringstream os;
    os << "-----------------------------\n"
    << "Content of Normalizer object:\n\n Normalizer = " << m_name;
-   os << "\n n = " << m_n;
+   os << "\n n = " << exp(m_logDensity);
+   os << "(log(n) = " << m_logDensity << ")";
    os << "\n beta = " << std::setprecision (4) << m_beta << "\n\n";
 
    //   os.setf(std::ios::left);
@@ -122,19 +121,16 @@ double Normalizer::getBound (int j) const
 {
    assert (j >= 1 && j <= m_maxDim);
 
-   double x, y;
+   double x,y;
    double logBeta;
-   double logn;
- 
+   y = 1./j;
    logBeta = log(m_beta);
-   logn = log(m_n);
-   y =  1. / j;
-   //log calculation to handle large values of n
-   x = 0.5 * log(getGamma(j)) + j * logBeta - y * logn;
 
-   // PW_TODO
-   //if (m_norm == L2NORM) // is L2NORM always used squarred?
-      //x *= 2;
+   x = 0.5 * log(getGamma(j)) + j * logBeta - y * m_logDensity;
+   //log calculation to handle large values of n
+
+   if (m_norm == L2NORM)
+      x *= 2; // L2norm is always used squared
 
    return exp(x);
 

@@ -163,7 +163,7 @@ vec_ZZ randomVector (int dimension, ZZ modulus, ZZ seed)
    return vector;
 }
 
-mat_ZZ CreateRNGBasis (const ZZ modulus, const int order, const int dimension, ZZ seed)
+mat_ZZ CreateRNGBasis (const ZZ modulus, const int order, const int dimension, vec_ZZ& a, ZZ seed)
 {
    mat_ZZ basis;
    basis.SetDims(dimension,dimension);
@@ -176,8 +176,8 @@ mat_ZZ CreateRNGBasis (const ZZ modulus, const int order, const int dimension, Z
    } else { //usual case
 
       // (a_i) coefficients
-      vec_ZZ a;
-      a = randomVector(order, modulus, seed);
+      //vec_ZZ a;
+      //a = randomVector(order, modulus, seed);
 
       for (int i = 0; i < order; i++) {
          // left upper block

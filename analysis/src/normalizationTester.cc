@@ -87,7 +87,7 @@ const int order = 3;
  * The Dimension to be analysed.
  * Must be int value.
  */
-const int dimension = 7;
+const int dimension = 8;
 
 /*
  * a/b is the value of the delta in the LLL and BKZ
@@ -178,7 +178,7 @@ int main ()
    
     NormaBestLat normalizer (logDensity, 48);
    
-    double shortestLength = red.getMinLength();
+    double shortestLength = conv<double>(red.getMinLength());
     shortestLength *= shortestLength; // squared
 
     // Results printing : a comparer table 7

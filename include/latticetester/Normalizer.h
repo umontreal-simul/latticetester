@@ -42,39 +42,44 @@ namespace LatticeTester {
  *
  */
 class Normalizer {
-public:
 
+public:
    static const int MAX_DIM = 48;
 
    /**
-    * Constructor for the bounds. Deals with lattices of rank \f$k\f$, having
-    * \f$m\f$ points per unit volume, in all dimensions \f$\le t\f$. `Name` is
+    * Constructor for the bounds. Deals with lattices having
+    * \f$n\f$ points per unit volume, in all dimensions \f$\le t\f$. `Name` is
     * the name of the Normalizer. The bias factor `beta` \f$= \beta\f$ gives
     * more weight to some of the dimensions: taking \f$\beta< 1\f$ inflates the
     * figure of merit by \f$(1/\beta)^t\f$, thus weakening the requirements for
     * large \f$t\f$ in a worst-case figure of merit. One normally uses
     * \f$\beta= 1\f$.
+    * Note that the log value of the density is stored (instead of the density 
+    * itself) so it is easier to manipulate really large values of density.
+    *
+    */
+
+   /* PW_TODO : a voir
     * \remark **Richard:** Je crois que ce facteur `beta` devrait
     * disparaître car des poids beaucoup plus généraux sont maintenant
     * implantés dans les classes `*Weights`.
-    * PW_TODO : a voir
     */
-   Normalizer (const MScal & m, int k, int t, std::string Name,
+
+   Normalizer (const RScal & logDensity, int t, std::string Name,
                   NormType norm = L2NORM, double beta = 1);
 
    /**
     * Destructor.
     */
    virtual ~Normalizer ()
-   { delete [] m_cst; }
+   { delete [] m_bounds; }
 
    /**
     * Initializes the bounds on the length of the shortest vector. The
-    * lattices have \f$m\f$ points per unit volume, are of rank \f$k\f$,
-    * and the bias factor is `beta` for all dimensions \f$j
-    * \le\f$ `maxDim`.
+    * lattices have \f$Density\f$ points per unit volume and the bias factor 
+    * is `beta` for all dimensions \f$j\le\f$ `maxDim`.
     */
-   void init (const MScal & m, int k, double beta);
+   void init (const RScal & logDensity, double beta);
 
    /**
     * Returns this object as a string.
@@ -101,17 +106,23 @@ public:
 
    /**
     * Returns the bound on the length of the shortest nonzero vector in
+    * dimension \f$j\f$ as computed in Normalizer::init.
+    */
+   double & getPreComputedBound (int j);
+
+  /**
+    * Calculates and returns the bound on the length of the shortest nonzero vector in
     * dimension \f$j\f$.
     */
-   double & getCst (int j);
+   double getBound (int j) const;
 
    /**
     * Returns the value of the lattice constant \f$\gamma_j\f$ in
     * dimension \f$j\f$. For this base class, always returns 1.
     */
    virtual double getGamma (int j) const;
-protected:
 
+protected:
    /**
     * Name of the normalizer.
     */
@@ -123,14 +134,10 @@ protected:
    NormType m_norm;
 
    /**
-    * Number of points of the lattice per unit volume.
+    * log of the density, ie log of the number of points of the lattice 
+    * per unit of volume.
     */
-   MScal m_m;
-
-   /**
-    * Rank of the lattice.
-    */
-   int m_rank;
+   RScal m_logDensity;
 
    /**
     * Only elements 1 to <tt>m_maxDim</tt> (inclusive) of arrays are
@@ -147,9 +154,9 @@ protected:
     * Contains the bounds on the length of the shortest nonzero vector in
     * the lattice in each dimension.
     */
-   double *m_cst;
-private:
+   double *m_bounds;
 
+private:
    /**
     * Use of the copy-constructor is forbidden.
     */
@@ -159,7 +166,9 @@ private:
     * Use of assigment is forbidden.
     */
    Normalizer & operator= (const Normalizer &);
+
 };
 
-}
+} // end namespace LatticeTester
+
 #endif

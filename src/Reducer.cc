@@ -57,7 +57,7 @@ namespace LatticeTester
 bool Reducer::PreRedDieterSV = false;
 bool Reducer::PreRedLLLSV = false;
 bool Reducer::PreRedLLLRM = false;
-bool Reducer::PreRedBKZ = false;
+bool Reducer::PreRedBKZ = true;
 long Reducer::maxNodesBB = 1000000;
 
 
@@ -1463,14 +1463,16 @@ bool Reducer::shortestVector (NormType norm)
    // no prereduction required
 
    //trace( "AVANT shortestVector");
-   if(PreRedBKZ){
-      redBKZ(0.9999999, 10);
-   }
-   if (PreRedDieterSV) {
+   if(PreRedBKZ)
+      redBKZ(0.999999, 20);
+
+   // put in comment to prevent use of PreRedDieter and LLL
+   /*
+   if (PreRedDieterSV)
       preRedDieter (0);
-   }
    if (PreRedLLLSV)
       redLLL (0.999999, 1000000, m_lat->getDim ());
+   */
 
    if (norm != L2NORM) {
       m_lat->setNegativeNorm ();
@@ -1487,10 +1489,15 @@ bool Reducer::shortestVector (NormType norm)
       cerr << "RedLattice::shortestVector:   wrong norm";
       exit (3);
    }
+
+   // put in comment to prevent use of PreRedDieter and LLL
+   /*
    if (m_countNodes > SHORT_DIET)
       PreRedDieterSV = true;
    if (m_countNodes > SHORT_LLL)
       PreRedLLLSV = true;
+   */
+
    m_lat->updateVecNorm();
    m_lat->sort(0);
    if(m_lat->withDual())

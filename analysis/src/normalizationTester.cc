@@ -87,7 +87,7 @@ const int order = 3;
  * The Dimension to be analysed.
  * Must be int value.
  */
-const int dimension = 6;
+const int dimension = 7;
 
 /*
  * a/b is the value of the delta in the LLL and BKZ
@@ -97,11 +97,6 @@ const int dimension = 6;
  */
 const double delta = 0.99999;
 const double epsilon = 1.0 - delta;
-
-/*
- * Reduction bound in the RedLLL algorithm.
- */
-const int maxcpt = 10000000;
 
 /*
  * Block Size in the BKZ algorithm. See NTL documention
@@ -120,7 +115,6 @@ const int maxNodesBB = 1000000;
 
 int main ()
 {
-
     // Seed initialization
     ZZ seedZZ = conv<ZZ>(123456789 * dimension);
     int seed = (123456789 * dimension);
@@ -176,20 +170,24 @@ int main ()
     cout << "reduced bis =\n" << basis.getBasis() << endl;
 
     // normalizer
-    RScal density;
-    // attention
-    density = 1. / conv<RScal>(power(modulusRNG,order));
-    cout << "density = " << density << endl;
-
-    NormaBestLat normalizer (density, 48);
-
-    double shortestLength = red.getMinLength(); // / conv<double>(modulusRNG);
+    RScal logDensity;
+   
+    logDensity = - log(determinant(W));
+    //LogDensity = log( conv<double>(determinant(V)) / conv<double>(power(modulusRNG,dimension)) );
+    cout << "Density = " << exp(logDensity) << endl;
+   
+    NormaBestLat normalizer (logDensity, 48);
+   
+    double shortestLength = red.getMinLength();
+    shortestLength *= shortestLength; // squared
 
     // Results printing : a comparer table 7
-    cout << "\nShortest Length = " << shortestLength << endl;
-    cout << "Bound on Length = " << normalizer.getBound(dimension) << endl;
-    cout << "FoM = " << shortestLength / normalizer.getBound(dimension) << endl;
-  
+    cout << "\nShortest Length real = " << shortestLength << endl;
+    cout << "Bound on Length = " << normalizer.getBound(dimension) << "(" << normalizer.getPreComputedBound(dimension) << ")" << endl;
+
+    cout << "FoM = " << sqrt( shortestLength / normalizer.getBound(dimension) ) << endl;
+    // sqrt because L2 norm
+   
     return 0;
 }
 

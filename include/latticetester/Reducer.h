@@ -226,10 +226,16 @@ public:
 
    /**
     * \copydoc redLLL(double, long, int)
-    * This version is implemented in the NTL Library
+    * This version is implemented in the NTL Library with exact number
     */
    void redLLLNTLProxy(double fact);
 
+   /**
+    * \copydoc redLLL(double, long, int)
+    * This version is implemented in the NTL Library with approximate number
+    * (arbitrary precision RR)
+    */
+   void redLLLNTLExact(double fact);
 
    /**
     * Perform the BKZ (Block-Korkine-Zolotarev) basis reduction with the
@@ -328,7 +334,7 @@ private:
     * Lower bound on the length squared of the shortest vector in each
     * dimension. If any vector of the lattice is shorter than this bound,
     * we stop the reduction immediately and reject this lattice since its
-    * shortest vector will be even smaller.
+    * shortest vector will be even smaller. Used only in Seek
     */
    NVect m_BoundL2;
 

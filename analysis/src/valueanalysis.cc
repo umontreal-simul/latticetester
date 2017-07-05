@@ -115,32 +115,32 @@ const int maxCoeff = 1000;
  * longer commputing timing.
  * FullRandomMatrix flag must be false.
  */
-bool WITH_DUAL = false;
+bool WITH_DUAL = true;
 
 /*
  * Order of the Basis according to L'Écuyer's paper.
  * FullRandomMatrix flag must be false.
  */
-const int order = 3;
+const int order = 10;
 
 /*
  * Modulo of the Basis according to L'Écuyer's paper.
  * FullRandomMatrix flag must be false.
  */
-const ZZ modulusRNG = power_ZZ(2, 19) - 1;
+const ZZ modulusRNG = power_ZZ(2, 31) - 1;
 
 /*
  * The Dimension to be analysed.
  * Must be int value.
  */
-const int dimension = 22;
+const int dimension = 29;
 
 
 /*
  * Iteration loop over basis of same dimension.
  * Each random basis is computed with a different seed.
  */
-const int maxIteration = 10;
+const int maxIteration = 5;
 
 /*
  * a/b is the value of the delta in the LLL and BKZ
@@ -160,7 +160,7 @@ const int maxcpt = 10000000;
  * Block Size in the BKZ algorithm. See NTL documention
  * for further information.
  */
-const long blocksize = 20;
+const long blocksize = 10;
 
 /*
  * Maximum number of Nodes in the Branch-and-Bound.
@@ -197,19 +197,19 @@ const int maxNodesBB = 1000000;
  */
 ReduceType Reduce_type[] ={
    Initial,
-   PairRed,
-   PairRedRandomized,
+   //PairRed,
+   //PairRedRandomized,
    RedLLL,
    PairRed_LLL,
-   PairRedRandomized_LLL,
+   //PairRedRandomized_LLL,
    LLLNTL,
-   PairRed_LLLNTL,
-   PairRedRandomized_LLLNTL,
-   BKZNTL,
-   PairRed_BKZNTL,
-   PairRedRandomized_BKZNTL,
-   BB_Classic,
-   BB_BKZ
+   //PairRed_LLLNTL,
+   //PairRedRandomized_LLLNTL,
+   BKZNTL
+   //PairRed_BKZNTL,
+   //PairRedRandomized_BKZNTL,
+   //BB_Classic
+   //BB_BKZ
 };
 
 //----------------------------------------------------------------------------------------
@@ -304,7 +304,7 @@ bool reduce(
    case BB_Classic : {
          // Branch and Bound classic
          red.preRedDieter(0);
-         red.redLLL(delta, maxcpt, dimension);
+         //red.redLLL(delta, maxcpt, dimension);
       }
       break;
 
@@ -411,8 +411,7 @@ bool reduce2(
  */
 int main (int argc, char *argv[])
 {
-
-   /*
+/*
    if (argc < 2) {
       cerr << "\n*** Usage:\n   "
            << argv[0] << " data_file1" << endl;
@@ -425,18 +424,19 @@ int main (int argc, char *argv[])
    dataname.append(".dat");
    stat(dataname.c_str(), &buf);
 
-   ifstream inFile(argv[1].c_str());
+   ifstream inFile(argv[1]);
    if (inFile.fail()) {
       cerr << "An error occurred. Unable to read input file:" <<
                argv[1] << endl;
-      exit(1);
+      return -1;
    }
-
 */
 
 
+
+
    ofstream realOutFile;
-   ostream & outFile = outFileRequested ? realOutFile.open(fileName+".txt", std::ios::out), realOutFile : std::cout;
+   ostream & outFile = outFileRequested ? realOutFile.open(output + fileName+".txt", std::ios::out), realOutFile : std::cout;
 
    // printing total running time
    clock_t begin_running = clock();
@@ -470,9 +470,10 @@ int main (int argc, char *argv[])
          all_BB_over = true;
 
          // Seed initialization
-         ZZ seedZZ = conv<ZZ>((iteration+1) * (iteration+1) * 123456789 * dimension * (nb_error+1));
+         ZZ seedZZ = conv<ZZ>((iteration+1) * (iteration+1) * 1234567 * dimension * (nb_error+1));
          int seed = (iteration+1) * (iteration+1) * 123456789 * dimension * (nb_error+1);
-         int seed_dieter = (iteration+1) * dimension * 12342 * (nb_error+1) ;
+         int seed_dieter = (iteration+1) * dimension * 12345 * (nb_error+1) ;
+
 
          // We create copies of the same basis
          BMat basis_PairRed (dimension, dimension);
@@ -542,8 +543,10 @@ int main (int argc, char *argv[])
 
 
          for(const ReduceType &name : Reduce_type){
-            if((lattices[name]->getVecNorm(0) - lattices[BB_Classic]->getVecNorm(0)) > 0.1)
-               nb_diff[name]++;
+            //if((lattices[name]->getVecNorm(0) - lattices[BB_Classic]->getVecNorm(0)) > 0.001)
+            //   nb_diff[name]++;
+            //if((lattices[name]->getVecNorm(0) - lattices[BB_Classic]->getVecNorm(0)) < -0.001)
+            //   cout << "ALERTE" << endl;
             length_results[name][iteration] = lattices[name]->getVecNorm(0);
          }
 
@@ -565,6 +568,7 @@ int main (int argc, char *argv[])
    // Results printing
    //------------------------------------------------------------------------------------
 
+#if 1
    // print parameters used
    outFile << "\n" << endl;
    outFile << "epsilon = " << epsilon << endl;
@@ -663,6 +667,7 @@ int main (int argc, char *argv[])
    clock_t end = clock();
    outFile << "\nTotal running time = " << (double) (end - begin_running) / CLOCKS_PER_SEC << endl;
 
+#endif
 
    if (outFileRequested)
       realOutFile.close();

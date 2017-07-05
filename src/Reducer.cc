@@ -54,11 +54,11 @@ namespace LatticeTester
 {
 
 // Initialization of non-const static members
-bool Reducer::PreRedDieterSV = false;
+bool Reducer::PreRedDieterSV = true;
 bool Reducer::PreRedLLLSV = false;
 bool Reducer::PreRedLLLRM = false;
 bool Reducer::PreRedBKZ = false;
-long Reducer::maxNodesBB = 1000000;
+long Reducer::maxNodesBB = 100000000;
 
 
 //=========================================================================
@@ -625,10 +625,24 @@ void Reducer::redLLLNTLProxy(double fact){
    if (withDual) {
       mat_ZZ U;
       U.SetDims(m_lat->getBasis().NumRows(), m_lat->getBasis().NumCols());
-      LLL_XD(m_lat->getBasis(), U, fact, 0, 0);
+      LLL_FP(m_lat->getBasis(), U, fact, 0, 0);
       m_lat->getDualBasis() = transpose(inv(U)) * m_lat->getDualBasis();
    } else
-      LLL_XD(m_lat->getBasis(), fact, 0, 0);
+      LLL_FP(m_lat->getBasis(), fact, 0, 0);
+}
+
+void Reducer::redLLLNTLExact(double fact){
+   bool withDual = m_lat->withDual();
+   if (withDual) {
+      mat_ZZ U;
+      U.SetDims(m_lat->getBasis().NumRows(), m_lat->getBasis().NumCols());
+      ZZ det(0);
+      LLL(det, m_lat->getBasis(), U, 99999, 100000);
+      m_lat->getDualBasis() = transpose(inv(U)) * m_lat->getDualBasis();
+   } else{
+      ZZ det(0);
+      LLL(det, m_lat->getBasis(), 99999, 100000);
+   }
 }
 
 void Reducer::redBKZ(double fact, long Blocksize) {
@@ -730,6 +744,10 @@ void Reducer::redLLL (double fact, long maxcpt, int Max)
          }
          ++h;
       }
+   }
+
+   if(cpt == maxcpt){
+      cout << "***** in redLLL cpt > maxcpt = " << maxcpt << endl;
    }
 
    for (j = 2; j < Max; j++) {
@@ -874,17 +892,6 @@ bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const BMat & WTemp)
          conv (max0, trunc (sqrt ((m_lMin2 - m_n2[j]) / m_dc2[j])));
       }
    }
-   /*
-   cout << "." ;
-   if(dim == 5 && i == 3){
-      cout << "min0 = " << min0 << endl;
-   }
-   else if(i==3){
-      cout << "dim = " << dim << endl;
-   }
-   else if(dim==5){
-      cout << "i = " << i << endl;
-   }*/
 
 
    NScal temp;
@@ -908,8 +915,6 @@ bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const BMat & WTemp)
             // On verifie si on a vraiment trouve un vecteur plus court
             matrix_row<const BMat> row1(m_lat->getBasis(), dim-1);
             m_bv = row1;
-            //    m_bv = m_lat->getBasis ()[dim-1];
-            //cout << "AVANT m_bv = " << m_bv << endl;
             for (k = 0; k < dim-1; k++) {
                if (m_zLI[k] != 0) {
                   matrix_row<const BMat> row1(m_lat->getBasis(), k);
@@ -1145,8 +1150,7 @@ bool Reducer::tryZ0 (int j, bool & smaller)
 
    ++m_countNodes;
    if (m_countNodes > maxNodesBB) {
-      // ++ExceedBBCo;
-      //cout << "*****   m_countNodes > maxNodesBB = " << maxNodesBB << endl;
+      cout << "*****   m_countNodes > maxNodesBB = " << maxNodesBB << endl;
       return false;
    }
    /* Calcul d'un intervalle contenant les valeurs admissibles de zj. */
@@ -1323,7 +1327,7 @@ bool Reducer::redBB0 (NormType norm)
 
       /* If there is in this lattice a vector that are shorter than the shortest
          of the current lattice, we don't need to find the shortest vector in this
-         lattice.
+         lattice. Use only in seek function
 
          S'il existe dans ce réseau un vecteur de longueur plus courte que celle
          du meilleur réseau trouvé à date, il n'est pas nécessaire de trouver le

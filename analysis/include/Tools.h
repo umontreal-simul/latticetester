@@ -22,7 +22,8 @@ enum ReduceType {
    PairRed_LLL,                // Performs Pairwise Reduction
    PairRedRandomized_LLL,      // Perform Pairwise Reduction and then
                                // LLL Reduction
-   LLLNTL,                     // Performs LLL Reduction with NTL Library
+   LLLNTLProxy,                // Performs proxy LLL Reduction with NTL Library
+   LLLNTLExact,                // Performs exact LLL Reduction with NTL Library
    PairRed_LLLNTL,             // Perform Pairwise Reduction and then
                                // LLL Reduction with NTL Library
    PairRedRandomized_LLLNTL,   // Perform stocastic Pairwise Reduction and
@@ -33,9 +34,13 @@ enum ReduceType {
    PairRedRandomized_BKZNTL,   // Perform stocastic Pairwise Reduction and
                                // then BKZ Reduction with NTL Library
    BB_Only,                    // Performs Branch-and-Bound Reduction
-   BB_Classic,                 // Perform Pairwise Reduction and then
+   LLL_BB,                     // Perform LLL Reduction and then
                                // Branch-and-Bound Reduction
-   BB_BKZ,                      // Performs BKZ Reduction with NTL Library
+   PreRedDieter_BB,            // Perform Prereddieter Reduction and then
+                               // Branch-and-Bound Reduction
+   PreRedDieter_LLL_BB,        // Perform Dieter pre-Reduction, LLL reduction
+                               // and then Branch-and-Bound Reduction
+   BKZ_BB,                     // Performs BKZ Reduction with NTL Library
                                // and then Branch-and-Bound Reduction
    RedDieter,                     // Performs Dieter Reduction
                                //WARNING USE DIETER ONLY FOR DIM < 6
@@ -61,8 +66,11 @@ string toStringReduce (ReduceType reduce)
    case PairRedRandomized_LLL :
          return "PairRedRandomized_LLL";
 
-   case LLLNTL :
-         return "LLLNTL";
+   case LLLNTLProxy :
+         return "LLLNTLProxy";
+
+   case LLLNTLExact :
+         return "LLLNTLExact";
 
    case PairRed_LLLNTL :
          return "PairRed_LLLNTL";
@@ -79,11 +87,20 @@ string toStringReduce (ReduceType reduce)
    case PairRedRandomized_BKZNTL :
          return "PairRedRandomized_BKZNTL";
 
-   case BB_Classic :
-         return "BB_Classic";
+   case LLL_BB :
+         return "LLL_BB";
 
-   case BB_BKZ :
-         return "BB_BKZ";
+   case PreRedDieter_BB :
+         return "PreRedDieter_BB";
+
+   case PreRedDieter_LLL_BB :
+         return "PreRedDieter_LLL_BB";
+
+   case BB_Only :
+         return "BB_Only";
+
+   case BKZ_BB :
+         return "BKZ_BB";
 
    case RedDieter :
          return "RedDieter";
@@ -101,7 +118,7 @@ string toStringReduce (ReduceType reduce)
 
 
 
-mat_ZZ RandomMatrix (int dim, int min, int max, int seed)
+mat_ZZ RandomMatrix (int dim, long min, long max, int seed)
 {
    mat_ZZ basis;
    basis.SetDims(dim,dim);
@@ -112,7 +129,7 @@ mat_ZZ RandomMatrix (int dim, int min, int max, int seed)
    do{
        for (int i = 0; i < dim; i++){
            for (int j = 0; j < dim; j++)
-               basis[i][j] = min + (rand() % (int)(max - min + 1));
+               basis[i][j] = min + (rand() % (max - min + 1));
        }
        det = determinant(basis);
 
@@ -207,8 +224,9 @@ mat_ZZ Dualize (const mat_ZZ V, const ZZ modulus, const int k)
    W.SetDims(V.NumRows(), V.NumRows());
 
    transpose(W,-V);
-
-   for (int i = 0; i < k; i++)
+   long rmax = k;
+   if(k>V.NumRows()){ rmax = V.NumRows(); }
+   for (int i = 0; i < rmax; i++)
       W[i][i] = modulus;
    for (int i = k; i < V.NumRows(); i++)
       W[i][i] = 1;

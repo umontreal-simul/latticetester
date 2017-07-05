@@ -93,8 +93,8 @@ bool FullRandomMatrix = false;
  * The value will be chosen between minCoeff and maxCoeff.
  * FullRandomMatrix flag must be true.
  */
-const int minCoeff = 40;
-const int maxCoeff = 1000;
+const long minCoeff = 10;
+const long maxCoeff = exp2(31) - 1;
 
 /*
  * All Reducer method, except redDieter, can be used
@@ -106,33 +106,33 @@ const int maxCoeff = 1000;
  * longer commputing timing.
  * FullRandomMatrix flag must be false.
  */
-bool WITH_DUAL = false;
+bool WITH_DUAL = true;
 
 /*
  * Order of the Basis according to L'Écuyer's paper.
  * FullRandomMatrix flag must be false.
  */
-const int order = 3;
+//const int order = 10;
 
 /*
  * Modulo of the Basis according to L'Écuyer's paper.
  * FullRandomMatrix flag must be false.
  */
-const ZZ modulusRNG = power_ZZ(2, 19) - 1;
+const ZZ modulusRNG = power_ZZ(2, 31) - 1;
 
 /*
  * The Dimensional interval to be analysed.
  * Must be int value.
  */
-const int MinDimension = 6;
-const int MaxDimension = 10;
-const int Interval_dim = MaxDimension - MinDimension;
+const int MinDimension = 5;
+const int MaxDimension = 20;
+const int Interval_dim = MaxDimension - MinDimension+1;
 
 /*
  * Iteration loop over basis of same dimension.
  * Each random basis is computed with a different seed.
  */
-const int maxIteration = 10;
+const int maxIteration = 100;
 
 /*
  * a/b is the value of the delta in the LLL and BKZ
@@ -152,7 +152,7 @@ const int maxcpt = 10000000;
  * Block Size in the BKZ algorithm. See NTL documention
  * for further information.
  */
-const long blocksize = 20;
+//const long blocksize = 10;
 
 /*
  * Maximum number of Nodes in the Branch-and-Bound.
@@ -160,36 +160,59 @@ const long blocksize = 20;
 const int maxNodesBB = 1000000;
 
 /*
- * Selecting method of reducing.
+ * Selecting method of reducing among :
+   Initial,                  * Calibration
+   PairRed,                  * Performs Pairwise Reduction
+   PairRedRandomized,        * Performs stochastic Pairwise Reduction
+   RedLLL,                   * Performs LLL Reduction
+   PairRed_LLL,              * Performs Pairwise Reduction
+   PairRedRandomized_LLL,    * Perform Pairwise Reduction and then LLL Reduction
+   LLLNTL,                   * Performs LLL Reduction with NTL Library
+   PairRed_LLLNTL,           * Perform Pairwise Reduction and then LLL Reduction
+                             * with NTL Library
+   PairRedRandomized_LLLNTL, * Perform stocastic Pairwise Reduction and then LLL
+                             * Reduction with NTL Library
+   BKZNTL,                   * Performs BKZ Reduction with NTL Library
+   PairRed_BKZNTL,           * Perform Pairwise Reduction and then
+                             * BKZ Reduction with NTL Library
+   PairRedRandomized_BKZNTL, * Perform stocastic Pairwise Reduction and
+                             * then BKZ Reduction with NTL Library
+   BB_Only,                  * Performs Branch-and-Bound Reduction
+   PreRedDieter_BB,          * Perform Pairwise Reduction and then
+                             * Branch-and-Bound Reduction
+   PreRedDieter_LLL_BB,      * Perform Pairwise Reduction, LLL reduction
+                             * and then Branch-and-Bound Reduction
+   LLL_BB,                   * Perform LLL Reduction and then
+                             * Branch-and-Bound Reduction
+   BKZ_BB                    * Performs BKZ Reduction with NTL Library
+                             * and then Branch-and-Bound Reduction
+   RedDieter,                * Performs Dieter Reduction
+                             * WARNING DO NOT USE DIETER FOR DIM > 6
+   RedMinkowski              * Perform Minkowski Reduction with
+                             * Branch-and-Bound Algorithm.
  */
 ReduceType Reduce_type[] ={
-   Initial,                   // Calibration
-   PairRed,                   // Performs Pairwise Reduction
-   PairRedRandomized,         // Performs stochastic Pairwise Reduction
-   RedLLL,                       // Performs LLL Reduction
-   PairRed_LLL,               // Performs Pairwise Reduction
-   PairRedRandomized_LLL,     // Perform Pairwise Reduction and then
-                              // LLL Reduction
-   LLLNTL,                    // Performs LLL Reduction with NTL Library
-   PairRed_LLLNTL,            // Perform Pairwise Reduction and then
-                              // LLL Reduction with NTL Library
-   PairRedRandomized_LLLNTL,  // Perform stocastic Pairwise Reduction and
-                              // then LLL Reduction with NTL Library
-   BKZNTL,                    // Performs BKZ Reduction with NTL Library
-   //PairRed_BKZNTL,            // Perform Pairwise Reduction and then
-                              // BKZ Reduction with NTL Library
-   //PairRedRandomized_BKZNTL,  // Perform stocastic Pairwise Reduction and
-                              // then BKZ Reduction with NTL Library
-   //BB_Only,                   // Performs Branch-and-Bound Reduction
-   BB_Classic,                // Perform Pairwise Reduction and then
-                              // Branch-and-Bound Reduction
-   BB_BKZ                     // Performs BKZ Reduction with NTL Library
-                              // and then Branch-and-Bound Reduction
-   //RedDieter,                    // Performs Dieter Reduction
-                              //WARNING USE DIETER ONLY FOR DIM < 6
-   //RedMinkowski                  // Perform Minkowski Reduction with
-                              // Branch-and-Bound Algorithm.
+   //Initial,
+   //PairRed,
+   //PairRedRandomized,
+   //RedLLL,
+   //PairRed_LLL,
+   //PairRedRandomized_LLL,
+   //LLLNTLProxy,
+   //LLLNTLExact
+   //PairRed_LLLNTL,
+   //PairRedRandomized_LLLNTL,
+   //BKZNTL,
+   //PairRed_BKZNTL,
+   //PairRedRandomized_BKZNTL,
+   //PreRedDieter_LLL_BB,
+   PreRedDieter_BB,
+   LLL_BB,
+   //RedDieter,
+   //RedMinkowski,
+   BKZ_BB
 };
+
 
 //----------------------------------------------------------------------------------------
 
@@ -257,11 +280,17 @@ bool reduce(
       }
       break;
 
-   case LLLNTL : {
+   case LLLNTLProxy : {
          // LLL NTL reduction (floating point version = proxy)
          red.redLLLNTLProxy(delta);
       }
       break;
+
+   case LLLNTLExact : {
+         // LLL NTL reduction (floating point version = proxy)
+         red.redLLLNTLExact(delta);
+      }
+         break;
 
    case PairRed_LLLNTL : {
          // Pairwise reduction (in primal basis only) and then LLL NTL proxy
@@ -293,14 +322,26 @@ bool reduce(
       }
       break;
 
-   case BB_Classic : {
-         // Branch and Bound classic
+   case PreRedDieter_LLL_BB : {
+         // PreRed, LLL and then Branch and Bound
          red.preRedDieter(0);
-         red.redLLL(delta, maxcpt, dimension);
+         red.redLLLNTLProxy(delta);
       }
       break;
 
-   case BB_BKZ : {
+   case PreRedDieter_BB : {
+         // PreRed and then Branch and Bound
+         red.preRedDieter(0);
+      }
+      break;
+
+   case LLL_BB : {
+         // LLL and then Branch and Bound
+         red.redLLLNTLProxy(delta);
+      }
+      break;
+
+   case BKZ_BB : {
          // Branch and Bound post BKZ
          red.redBKZ(delta, blocksize);
       }
@@ -376,13 +417,19 @@ bool reduce2(
       }
       break;
 
-   case BB_Classic : {
-         // Branch and Bound classic
+   case PreRedDieter_BB : case LLL_BB : {
+         // PreRed and then Branch and Bound
          ok = red.redBB0(L2NORM);
       }
       break;
 
-   case BB_BKZ : {
+   case PreRedDieter_LLL_BB : {
+         // Branch and Bound post BKZ
+         ok = red.redBB0(L2NORM);
+      }
+      break;
+
+   case BKZ_BB : {
          // Branch and Bound post BKZ
          ok = red.redBB0(L2NORM);
       }
@@ -410,24 +457,26 @@ int main (int argc, char *argv[])
    // All Data are stocked in maps, for each iteration
    // Stock length of the shortest vector
    //map<ReduceType, array< array<NScal, maxIteration>, Interval_dim > > length_results;
-   // Stock computing time for stage 1
+   // Stock computing time
    map<ReduceType, array< array<double, maxIteration>, Interval_dim > > timing_results;
-   // Stock computing time for stage 2
-   map<ReduceType, array< array<double, maxIteration>, Interval_dim > > timing_results2; // 2nd Stage
    // Stock the number of difference between the shortest vector founded
    // by the current reducer and the shortest vecter founded by the Branch-and-bound
    map<ReduceType, int> nb_diff;
 
    // to display progress bar
    boost::progress_display show_progress(maxIteration*Interval_dim);
-
+   cout << "maxcoef " << maxCoeff << endl;
    // Working variables
    int id_dimension = 0;
    bool all_BB_over = true;
    int nb_error = 0;
+   int nb_error_preredLLLetprered = 0;
+   int nb_error_preredLLLetBKZ = 0;
+   int nb_error_preredLLLetLLL = 0;
 
-   for (int dimension = MinDimension; dimension < MaxDimension; dimension++){
-
+   for (int dimension = MinDimension; dimension <= MaxDimension; dimension++){
+      int order = dimension/2;
+      int blocksize = dimension/2;
       id_dimension = dimension - MinDimension;
       for (int iteration = 0; iteration < maxIteration; iteration++){
          do{
@@ -482,10 +531,11 @@ int main (int argc, char *argv[])
                ok = reduce(*reducers[name], name, seed_dieter, blocksize, delta, maxcpt, dimension);
                end = clock();
                all_BB_over = all_BB_over && ok;
-               timing_results[name][id_dimension][iteration] = double (end - begin) / CLOCKS_PER_SEC;
+               //timing_results[name][id_dimension][iteration] = double (end - begin) / CLOCKS_PER_SEC;
                lattices[name]->setNegativeNorm();
                lattices[name]->updateVecNorm();
                lattices[name]->sort(0);
+
             }
 
             for(const ReduceType &name : Reduce_type){
@@ -493,10 +543,17 @@ int main (int argc, char *argv[])
                ok = reduce2(*reducers[name], name, seed_dieter, blocksize, delta, maxcpt, dimension);
                end = clock();
                all_BB_over = all_BB_over && ok;
-               timing_results2[name][id_dimension][iteration] = double (end - begin) / CLOCKS_PER_SEC;
+               timing_results[name][id_dimension][iteration] = double (end - begin) / CLOCKS_PER_SEC;
+               //timing_results[name][id_dimension][iteration] = log(timing_results[name][id_dimension][iteration]);
                lattices[name]->setNegativeNorm();
                lattices[name]->updateVecNorm();
                lattices[name]->sort(0);
+            }
+
+            if(lattices[LLL_BB]->getVecNorm(0) != lattices[BKZ_BB]->getVecNorm(0)){
+               cout << "Error : BKZ_BB : " << lattices[BKZ_BB]->getVecNorm(0) << endl;
+               cout << "Error : LLL_BB : " << lattices[LLL_BB]->getVecNorm(0) << endl;
+               nb_error_preredLLLetprered++;
             }
 
             for(const ReduceType &name : Reduce_type){
@@ -514,11 +571,15 @@ int main (int argc, char *argv[])
       } // end iteration loop over matrices of the same dimention
    }
 
-
    /*
     * Now, we create a R inteface in order to represent the data
     * with graphics.
     */
+
+   cout << "Nombre de différences preredLLL et Prered: " << nb_error_preredLLLetprered << endl;
+   cout << "Nombre de différences preredLLL et BKZ : " << nb_error_preredLLLetBKZ << endl;
+   cout << "Nombre de différences preredLLLL et LLL : " << nb_error_preredLLLetLLL << endl;
+
 
    RInside R(argc, argv);    // create an embedded R instance
 
@@ -537,26 +598,28 @@ int main (int argc, char *argv[])
    // Load Library
    string library = "library(ggplot2); library(reshape2);";
    // Create DataFrame
-   string build_data_frame = "df <- data.frame(indice = seq(MinDimension:Maxdimension)";
+   string build_data_frame = "df <- data.frame(indice = seq(MinDimension:(Maxdimension+1)) + MinDimension - 1";
    // Fill the dataframe with values
    for(const ReduceType &name : Reduce_type){
-      build_data_frame += ", col_" + toStringReduce(name) + " =colMeans(" + toStringReduce(name) + ")";
+      build_data_frame += ", " + toStringReduce(name) + " =colMeans(" + toStringReduce(name) + ")";
    }
    build_data_frame += ");";
 
    string melt_data_frame = "df1 <- melt(df, id=1); ";
+   //string melt_data_frame += "df1[indice] = df1[indice] + MinDimension";
+
 
    // Plot the DataFrame
    string build_plot = "myPlot <- ggplot(df1, aes(x=indice, y=value, group=variable))";
    build_plot += " + geom_line(aes(color=variable), size=1.2)";
    build_plot += " + geom_point(aes(shape=variable, color=variable), fill='white', size=3) ";
-   build_plot += " + labs(y = 'Time', x = 'Dimension'); ";
+   build_plot += " + labs(y = 'Time (Logarithm Scaled)', x = 'Dimension') + scale_y_log10(); ";
 
 
 
    string print_plot =
-    "print(myPlot); "
-     "ggsave(filename=outFile, path=outPath, plot=myPlot); ";
+     "ggsave(filename=outFile, path=outPath, plot=myPlot, width = 25, height = 15, units = 'cm'); "
+      "print(myPlot); ";
    // parseEvalQ evluates without assignment
    R.parseEvalQ(library);
    R.parseEvalQ(build_data_frame);

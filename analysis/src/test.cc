@@ -63,6 +63,7 @@ using namespace LatticeTester;
 int main (int argc, char *argv[])
 {
 
+
    cout << "Test Library" << endl;
 
 

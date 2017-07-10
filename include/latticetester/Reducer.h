@@ -169,6 +169,8 @@ public:
     * branch-and-bounds, the method aborts and returns `false`. Otherwise,
     * it returns `true`. Uses the pre-reduction algorithms of Dieter and
     * of Lenstra-Lenstra-Lovasz.
+    * Advice: must perform pre-reduction before using this Branch-and-Bound
+    * method on high dimension basis.
     */
    bool shortestVector (NormType norm);
 
@@ -255,7 +257,7 @@ public:
     * the coefficient `fact` and a block size `Blocksize`. It use the
     * algorithm implemented in the NTL Library.
     */
-   void redBKZ(double fact, long Blocksize);
+   void redBKZ(double fact, long blocksize);
 
    /**
     * Reduces the current basis to a Minkowski reduced basis with respect

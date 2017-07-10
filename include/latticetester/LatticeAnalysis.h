@@ -46,7 +46,7 @@ public:
     * Constructor. The test will be applied on `lattice`, with the selected
     * `normalizer`.
     */
-   LatticeAnalysis (Reducer* reducer, NormType norm,
+   LatticeAnalysis (Reducer & reducer, NormType norm,
       NormaType normaType, int alpha = 0);
 
    /**
@@ -102,7 +102,7 @@ public:
 
 private:
 
-  Reducer* reducer;
+  Reducer* m_reducer;
   int m_dim;
   NormType m_norm;
   NormaType m_normalizerType;

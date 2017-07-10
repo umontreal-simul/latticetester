@@ -32,7 +32,7 @@
 #include "latticetester/LatticeAnalysis.h"
 
 #include "latticetester/LatticeTesterConfig.h"
-#include "latticetester/ParamReaderLat.h"
+#include "latticetester/ParamReader.h"
 
 using namespace std;
 using namespace NTL;
@@ -94,11 +94,11 @@ void LatticeAnalysis::initNormalizer (NormaType norma, int alpha)
          m_normalizer = new Normalizer (logDensity, m_dim, "Norma_generic");
          break;
       case PALPHA_N:
-         m_normalizer = new NormaPalpha (m_reducer->getIntLatticeBasis().getModulo(), alpha, dim);
+         m_normalizer = new NormaPalpha (m_reducer->getIntLatticeBasis().getModulo(), alpha, m_dim);
          //PW_TODO : c'est bien ça ?
          break;
       default:
-         cout << "normalizer:   no such case";
+         cout << "LatticeAnalysis::initNormalizer:   no such case";
          exit (2);
    }
 }
@@ -122,7 +122,7 @@ bool LatticeAnalysis::performTest (PreReductionType PreRed, double fact, long bl
          m_reducer->preRedDieter(0);
          break;
       default:
-         cout << "normalizer:   no such case";
+         cout << "LatticeAnalysis::performTest:   no such case";
          exit (2);
    }
 
@@ -147,10 +147,12 @@ bool LatticeAnalysis::performTest (PreReductionType PreRed, double fact, long bl
  */
 int LatticeAnalysis::doTestFromInputFile (const char *infile)
 {
+
+   /*
    // parameters reading
    string fname (infile);
    fname += ".dat";
-   ParamReaderLat paramRdr (fname.c_str ());
+   ParamReader paramRdr (fname.c_str ());
    fname.clear ();
 
    LatConfig config;
@@ -172,25 +174,53 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
 
    double fact = 1.0 - config.epsilon;
 
-   // performing the test
-   performTest(config.prered, fact, )
+   // performing pre-reduction
+   switch (config.prered) {
+      case BKZ:
+         m_reducer->redBKZ(fact, config.blockSize);
+         break;
+      case LenstraLL:
+         m_reducer->redLLLNTLProxyFP(fact);
+         break;
+      case PreRedDieter:
+         m_reducer->preRedDieter(0);
+         break;
+      default:
+         cout << "LatticeLatticeAnalysis::doTestFromInputFile:   no such case";
+         exit (2);
+   }
+
+   // performing the Branch-and-Bound procedure to find the shortest non-zero vector
+   m_reducer->shortestVector(config.norm);
+
+   // calculating the Figure of Merit
+   m_merit = conv<double>(m_reducer->getMinLength()) 
+            / m_normalizer->getPreComputedBound(config.dim);
 
 
-   ReportHeaderLat header (rw, &config, lattice);
-   ReportFooterLat footer (rw);
-   ReportLat report (rw, &config, &header, &footer);
+
+
+
+   ReportHeader header (rw, &config, lattice);
+   ReportFooter footer (rw);
+   Report report (rw, &config, &header, &footer);
 
    double minVal[1 + toDim];
    SetZero (minVal, toDim);
 
 
    report.printHeader ();
-   footer.setLatticeTest (&spectralTest);
+   //footer.setLatticeTest (&spectralTest);
    report.printTable ();
    report.printFooter ();
 
    delete rw;
+
+   */
+
+   
    return 0;
+
 }
 
 
@@ -207,7 +237,7 @@ int LatticeAnalysis::doTestFromDirectory (const char *dirname)
 
    int flag = 0;
    for (unsigned int i = 0; i < files.size (); i++)
-      flag |= doTest (files[i].c_str());
+      flag |= doTestFromInputFile (files[i].c_str());
 
    return flag;
 }

@@ -125,8 +125,8 @@ string toStringPreRed (PreReductionType prered)
       return "BKZ";
    case PreRedDieter:
       return "PreRedDieter";
-   case LLL:
-      return "LLL";
+   case LenstraLL:
+      return "LenstraLL";
    default:
       return "***** PreReductionType: IMPOSSIBLE CASE ";
    }

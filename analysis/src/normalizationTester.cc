@@ -30,6 +30,7 @@
 #include "latticetester/Reducer.h"
 #include "latticetester/Types.h"
 #include "latticetester/NormaBestLat.h"
+#include "latticetester/LatticeTest.h"
 
 // include NTL headers
 #include <NTL/tools.h>
@@ -87,7 +88,7 @@ const int order = 3;
  * The Dimension to be analysed.
  * Must be int value.
  */
-const int dimension = 8;
+const int dimension = 6;
 
 /*
  * a/b is the value of the delta in the LLL and BKZ
@@ -155,6 +156,12 @@ int main ()
     IntLatticeBasis basis (W, V, modulusRNG, dimension);
     Reducer red (basis);
 
+
+
+    // Ancienne façon de faire ---------------------------
+    // ---------------------------------------------------
+
+    /*
     // BKZ NTL
     red.redBKZ(delta, blocksize);
     basis.setNegativeNorm();
@@ -187,7 +194,19 @@ int main ()
 
     cout << "FoM = " << sqrt( shortestLength / normalizer.getBound(dimension) ) << endl;
     // sqrt because L2 norm
-   
+    */
+
+
+
+    // Nouvelle façon de faire ---------------------------
+    // ---------------------------------------------------
+
+    NormaType normaType = BESTLAT;
+    LatticeTest latTest (red, normaType);
+    latTest.performTest();
+
+    cout << "FoM = " << latTest.getMerit() << endl;
+
     return 0;
 }
 

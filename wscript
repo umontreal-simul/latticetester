@@ -28,7 +28,6 @@ def options(ctx):
 
 
 def configure(ctx):
-    print("configure ERWAN")
     build_platform = Utils.unversioned_sys_platform()
     ctx.msg("Build platform", build_platform)
 

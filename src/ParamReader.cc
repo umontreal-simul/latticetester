@@ -18,6 +18,7 @@ authors: Hicham Wahbi
 #include "latticetester/Types.h"
 #include "latticetester/Util.h"
 #include "latticetester/ParamReader.h"
+#include "latticetester/LatticeTesterConfig.h"
 
 using namespace std;
 using namespace LatticeTester;
@@ -343,25 +344,6 @@ void ParamReader::readInterval (MVect & B, MVect & C, unsigned int & ln, int k)
    }
 }
 
-
-//===========================================================================
-
-void ParamReader::readCriterionType(CriterionType& field, unsigned int ln, unsigned int pos)
-{
-   string val;
-   getToken(val, ln, pos);
-
-   if (0 == strcasecmp(val.c_str(), "SPECTRAL"))
-      field = SPECTRAL;
-   else if (0 == strcasecmp(val.c_str(), "BEYER"))
-      field = BEYER;
-   else if (0 == strcasecmp(val.c_str(), "PALPHA"))
-      field = PALPHA;
-   else
-      MyExit(1, "readCriterionType:   NO SUCH CASE");
-}
-
-
 //===========================================================================
 
 void ParamReader::readNormType (NormType & field, unsigned int ln, unsigned int pos)
@@ -379,47 +361,6 @@ void ParamReader::readNormType (NormType & field, unsigned int ln, unsigned int 
       field = ZAREMBANORM;
     else
       MyExit(1, "readNormType:   NO SUCH CASE");
-}
-
-
-//===========================================================================
-
-void ParamReader::readCalcType (CalcType & field, unsigned int ln, unsigned int pos)
-{
-   string val;
-   getToken(val, ln, pos);
-
-   if (0 == strcasecmp(val.c_str(), "PAL"))
-      field = PAL;
-   else if (0 == strcasecmp(val.c_str(), "NORMPAL"))
-      field = NORMPAL;
-   else if (0 == strcasecmp(val.c_str(), "BAL"))
-      field = BAL;
-   else if (0 == strcasecmp(val.c_str(), "SEEKPAL"))
-      field = SEEKPAL;
-   else
-      MyExit(1, "readCalcType:   NO SUCH CASE");
-}
-
-
-//===========================================================================
-
-void ParamReader::readDecompType (DecompType & field, unsigned int line,
-        unsigned int pos)
-{
-   string val;
-   getToken(val, line, pos);
-
-   if (0 == strcasecmp(val.c_str(), "decomp"))
-      field = DECOMP;
-   else if (0 == strcasecmp(val.c_str(), "write"))
-      field = DECOMP_WRITE;
-   else if (0 == strcasecmp(val.c_str(), "read"))
-      field = DECOMP_READ;
-   else if (0 == strcasecmp(val.c_str(), "prime"))
-      field = DECOMP_PRIME;
-   else
-      MyExit(1, "readDecompType:   NO SUCH CASE");
 }
 
 
@@ -449,18 +390,6 @@ void ParamReader::readNormaType(NormaType& field, unsigned int ln, unsigned int 
 
 //===========================================================================
 
-void ParamReader::readOrbit (int J, MRGComponent **comp, unsigned int & ln)
-{
-   for (int j = 0; j < J; j++) {
-      unsigned int k = comp[j]->k;
-      readMVect (comp[j]->orbitSeed, ln, 1U, k, 1);
-      ln++;
-   }
-}
-
-
-//===========================================================================
-
 void ParamReader::readOutputType(OutputType & field, unsigned int ln, unsigned int pos)
 {
    string val;
@@ -480,26 +409,6 @@ void ParamReader::readOutputType(OutputType & field, unsigned int ln, unsigned i
       MyExit(1, "readOutputType:   NO SUCH CASE");
 }
 
-//===========================================================================
-
-void ParamReader::readImplemCond(ImplemCond& field, unsigned int ln, unsigned int pos)
-{
-   string val;
-   getToken(val, ln, pos);
-
-   if (0 == strcasecmp(val.c_str(), "NoCond"))
-      field = NO_COND;
-   else if (0 == strcasecmp(val.c_str(), "AppFact"))
-      field = APP_FACT;
-   else if (0 == strcasecmp(val.c_str(), "NonZero")) {
-      field = ZERO_COEF;
-   } else if (0 == strcasecmp(val.c_str(), "Equal"))
-      field = EQUAL_COEF;
-   else if (0 == strcasecmp(val.c_str(), "PowerTwo"))
-      field = POWER_TWO;
-   else
-      MyExit(1, "readImplemCond:   NO SUCH CASE");
-}
 
 //===========================================================================
 
@@ -511,74 +420,13 @@ void ParamReader::readPreRed(PreReductionType& field, unsigned int ln, unsigned 
    if (0 == strcasecmp(val.c_str(), "BKZ"))
       field = BKZ;
    else if (0 == strcasecmp(val.c_str(), "PreRedDieter"))
-      field = APP_FACT;
+      field = PreRedDieter;
    else if (0 == strcasecmp(val.c_str(), "LLL"))
-      field = ZERO_COEF;
+      field = LLL;
    else
       MyExit(1, "readPreRed:   NO SUCH CASE");
 }
 
-//===========================================================================
-
-void ParamReader::readSearchMethod(SearchMethod& field, unsigned int ln, unsigned int pos)
-{
-   string val;
-   getToken(val, ln, pos);
-
-   if (0 == strcasecmp(val.c_str(), "Exhaust"))
-      field = EXHAUST;
-   else if (0 == strcasecmp(val.c_str(), "Random"))
-      field = RANDOM;
-   else
-      MyExit(1, "readSearchMethod:   NO SUCH CASE");
-}
-
-//===========================================================================
-
-void ParamReader::readLacunary(int ordre, int fromDim, int toDim,
-   unsigned int & ln, bool & lacunary, int & lacGroupSize, NTL::ZZ & lacSpacing,
-   BVect & Lac, GenType genType)
-{
-   readInt (lacGroupSize, ++ln, 0);
-   const int t = lacGroupSize;
-   if (t > 0)
-      readZZ(lacSpacing, ln, 1);
-
-   if (((t == 1) && (lacSpacing == 1)) || (t > toDim)) {
-      lacunary = false;
-      if (RANK1 == genType)
-         return;
-      if (toDim <= ordre)
-         MyExit(2, "ParamReader::ReadLacunary:   toDim <= k");
-      return;
-   }
-
-   lacunary = true;
-   CreateVect (Lac, toDim);
-   int i;
-   if (t < 0) {
-      for (i = 0; i < toDim; i++)
-         readBScal (Lac[i], ++ln, 0);
-      return;
-   }
-
-   NTL::ZZ Q1, Q;
-   if (t > 0)
-      Q1 = lacSpacing;
-
-   Q = 0;
-   i = 1;
-   while (true) {
-      for (int j = 0; j < t; j++) {
-         if (i < toDim) {
-            conv (Lac[i], Q + j);
-            i++;
-         } else
-            return;
-      }
-      Q += Q1;
-   }
-}
 
 
 //===========================================================================
@@ -593,19 +441,33 @@ bool ParamReader::checkBound (const MScal & m, const MVect & A, int k)
 }
 
 
-//===========================================================================
-
-bool ParamReader::checkPrimePower(LatticeType lat, long m2, long m3, int k)
+void ParamReader::read (LatticeTesterConfig & config)
 {
-   if (lat != PRIMEPOWER)
-      return true;
-   if (m2 <= 0)
-      MyExit(1, "LatticeType = PRIMEPOWER:   e <= 0");
-   if (m3 != 0)
-      MyExit(1, "LatticeType = PRIMEPOWER:   c != 0");
-   if (k > 1)
-      MyExit(1, "LatticeType = PRIMEPOWER:   k > 1");
-   return true;
+   getLines ();
+   unsigned int ln = 1;
+
+   readNormType (config.norm, ++ln, 0);
+   readNormaType (config.normalizer, ++ln, 0);
+   readPreRed (config.prereduction, ++ln, 0);
+
+   if(config.prereduction == BKZ){
+      readDouble (config.fact, ++ln, 0);
+      readInt (config.blocksize, ++ln, 0);
+   }
+   else if(config.prereduction == PreRedDieter){
+
+   else if(config.prereduction == LLL){
+      readDouble (config.fact, ++ln, 0);
+   }
+
+   readInt (config.dimension, ++ln, 0);
+
+   readBMat(config.basis, ++ln, 0, config.dimension);
+
+   readLong (config.maxNodesBB, ++ln, 1);
+
+   readOutputType(config.outputType, ++ln, 0);
+
 }
 
 

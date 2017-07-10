@@ -112,7 +112,7 @@ enum CalcType { PAL, NORMPAL, BAL, SEEKPAL };
 /**
  * Indicates the Prereduction Type. BKZ, etc...
  */
-enum PreReductionType {BKZ, PreRedDieter, LLL};
+enum PreReductionType {BKZ, PreRedDieter, LenstraLL};
 
 /**
  * \name toString functions

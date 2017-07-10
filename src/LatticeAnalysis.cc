@@ -29,20 +29,10 @@
 #include "latticetester/NormaMinkL1.h"
 #include "latticetester/NormaPalpha.h"
 #include "latticetester/NormaRogers.h"
-#include "latticetester/LatticeTest.h"
-
+#include "latticetester/LatticeAnalysis.h"
 
 #include "latticetester/LatticeTesterConfig.h"
-#include "latmrg/ParamReader.h"
-#include "latmrg/ParamReaderLat.h"
-
-
-#include "latmrg/Formatter.h"
-#include "latmrg/WriterRes.h"
-#include "latmrg/ReportHeaderLat.h"
-#include "latmrg/ReportFooterLat.h"
-#include "latmrg/ReportLat.h"
-
+#include "latticetester/ParamReaderLat.h"
 
 using namespace std;
 using namespace NTL;
@@ -54,7 +44,7 @@ namespace LatticeTester
 
 //===========================================================================
 
-LatticeAnalysis::LatticeAnalysis (Reducer* reducer, NormType norm, 
+LatticeAnalysis::LatticeAnalysis (Reducer & reducer, NormType norm, 
       NormaType normaType, int alpha) 
 {
    m_reducer = &reducer;
@@ -77,7 +67,7 @@ LatticeAnalysis::~LatticeAnalysis ()
 void LatticeAnalysis::initNormalizer (NormaType norma, int alpha)
 {
    // PW_TODO
-   // ok si la matrice est directement construite comme m-dual mais probleme si 
+   // ok si la matrice est directement construite comme m-dual mais probleme si
    // travail direct sur primale re-scaled ?
    // version avec logDensity en parametre (pou m^k sans besoin de calcul det)
 
@@ -167,10 +157,6 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
    // creating the Reducer object
    IntLatticeBasis basis (config.matrix, config.dim, config.norm);
    Reducer red (basis);
-
-
-
-
 
    // finding shortest non-zero vector in the lattice
    // PW_TODO : disjonction de cas selon la pre-reduction choisie

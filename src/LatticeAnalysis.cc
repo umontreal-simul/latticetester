@@ -159,15 +159,19 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
 
    Writer* rw = createWriter (infile, config.outputType);
 
-
-
-   // creating the Reducer object
+   // creating the Reducer object from input
    IntLatticeBasis basis (config.matrix, config.dim, config.norm);
    Reducer red (basis);
 
-   // finding shortest non-zero vector in the lattice
-   // PW_TODO : disjonction de cas selon la pre-reduction choisie
+   // update parameters
+   setReducer(red);
+   setDim(config.dim);
+   setNorm(config.norm);
+   etNormalizerType(config.normalizer);
    double fact = 1.0 - config.epsilon;
+
+
+   
    red.shortestVectorWithBKZ(config.norm, fact, config.blockSize);
 
    // calculating the density
@@ -218,11 +222,6 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
 
    // Calculating the Figure of Merit using the selected normalization
    m_merit = conv<double>(red.getMinLength()) / normalizer->getPreComputedBound(dim);
-
-   // deleting the normalizer pointer
-   delete normalizer;
-
-
 
 
    ReportHeaderLat header (rw, &config, lattice);

@@ -532,6 +532,23 @@ void ParamReader::readImplemCond(ImplemCond& field, unsigned int ln, unsigned in
 
 //===========================================================================
 
+void ParamReader::readPreRed(PreReductionType& field, unsigned int ln, unsigned int pos)
+{
+   string val;
+   getToken(val, ln, pos);
+
+   if (0 == strcasecmp(val.c_str(), "BKZ"))
+      field = BKZ;
+   else if (0 == strcasecmp(val.c_str(), "PreRedDieter"))
+      field = APP_FACT;
+   else if (0 == strcasecmp(val.c_str(), "LLL"))
+      field = ZERO_COEF;
+   else
+      MyExit(1, "readPreRed:   NO SUCH CASE");
+}
+
+//===========================================================================
+
 void ParamReader::readSearchMethod(SearchMethod& field, unsigned int ln, unsigned int pos)
 {
    string val;

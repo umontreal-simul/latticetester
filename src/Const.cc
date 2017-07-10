@@ -118,4 +118,20 @@ string toStringCalc (CalcType calc)
 
 //===========================================================================
 
+string toStringPreRed (PreReductionType prered)
+{
+   switch (prered) {
+   case BKZ:
+      return "BKZ";
+   case PreRedDieter:
+      return "PreRedDieter";
+   case LLL:
+      return "LLL";
+   default:
+      return "***** PreReductionType: IMPOSSIBLE CASE ";
+   }
+}
+
+//===========================================================================
+
 }

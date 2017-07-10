@@ -95,6 +95,12 @@ enum NormaType { BESTLAT, LAMINATED, ROGERS, MINKOWSKI, MINKL1,
  */
 enum CalcType { PAL, NORMPAL, BAL, SEEKPAL };
 
+
+/**
+ * Indicates the Prereduction Type. BKZ, etc...
+ */
+enum PreReductionType {BKZ, PreRedDieter, LLL}
+
 /**
  * \name toString functions
  *

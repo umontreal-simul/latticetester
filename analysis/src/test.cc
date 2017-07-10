@@ -87,7 +87,7 @@ int main (int argc, char *argv[])
       LatticeTesterConfig config;
       paramRdr.read (config);
 
-      config.write()
+      config.write();
    }
 
 

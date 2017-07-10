@@ -78,11 +78,14 @@ int main (int argc, char *argv[])
       stat(argv[j], &buf);
       //if (0 != S_ISDIR(buf.st_mode))         // directory
       //   status |= testall.doTestDir (argv[j]);
-      string dataname(argv[j]);
-      dataname.append(".dat");
-      stat(dataname.c_str(), &buf);
-      if (0 != S_ISREG(buf.st_mode))    // data file
-         status |= testall.doTest (argv[j]);
+      string fname (argv[j]);
+      fname += ".dat";
+      ParamReaderLat paramRdr (fname.c_str ());
+      fname.clear ();
+      LatticeTesterConfig config;
+      paramRdr.read (config);
+
+      config.write()
    }
 
 

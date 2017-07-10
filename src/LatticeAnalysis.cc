@@ -29,7 +29,7 @@
 #include "latticetester/NormaMinkL1.h"
 #include "latticetester/NormaPalpha.h"
 #include "latticetester/NormaRogers.h"
-#include "latticetester/LatticeTest.h"
+#include "latticetester/LatticeAnalysis.h"
 
 
 #include "latmrg/LatConfig.h"
@@ -108,7 +108,7 @@ namespace LatticeTester
 
 //===========================================================================
 
-LatticeAnalysis::LatticeAnalysis (Reducer & reducer, NormaType normaType, int alpha) 
+LatticeAnalysis::LatticeAnalysis (Reducer & reducer, NormaType normaType, int alpha)
 {
    m_reducer = &reducer;
    m_normaType = normaType;
@@ -145,21 +145,21 @@ bool LatticeAnalysis::performTest (double fact, long blockSize)
 
    if (norm == L2NORM)
       m_merit = sqrt(length / maxLength);
-   else 
+   else
       m_merit = length / maxLength;
 
    return result;
-  
+
 }
 
 //===========================================================================
 
 void LatticeAnalysis::initNormalizer (NormaType norma, int alpha)
 {
-   int dim = m_reducer->getIntLatticeBasis().getDim(); 
+   int dim = m_reducer->getIntLatticeBasis().getDim();
 
    // PW_TODO
-   // ok si la matrice est directement construite comme m-dual mais probleme si 
+   // ok si la matrice est directement construite comme m-dual mais probleme si
    // travail direct sur primale re-scaled ?
    // version avec logDensity en parametre (pou m^k sans besoin de calcul det)
 
@@ -258,7 +258,7 @@ int LatticeAnalysis::doTest (const char *infile)
    //// mettre ici le code qui est dans le main
 
 
-   
+
    // Lecture des paramètres
    string fname (infile);
    fname += ".dat";

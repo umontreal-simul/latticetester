@@ -44,7 +44,7 @@ ParamReaderLatticeTester::~ParamReaderLatticeTester ()
 
 //===========================================================================
 
-void ParamReaderLatticeTester::read (LatConfig & config)
+void ParamReaderLatticeTester::read (LatticeTesterConfig & config)
 {
    getLines ();
    unsigned int ln = 1;
@@ -74,7 +74,7 @@ void ParamReaderLatticeTester::read (LatConfig & config)
 
 
 
-   config.write();
+   //config.write();
 
 
 }

@@ -1,9 +1,7 @@
-#ifndef LATCONFIG_H
-#define LATCONFIG_H
+#ifndef LATTICETESTERCONFIG_H
+#define LATTICETESTERCONFIG_H
 #include "latticetester/Types.h"
 #include "latticetester/Const.h"
-#include "latmrg/Const.h"
-#include "latmrg/MRGComponent.h"
 
 
 namespace LatMRG {
@@ -14,19 +12,19 @@ namespace LatMRG {
  * methods for the spectral, Beyer or \f$P_{\alpha}\f$ tests.
  *
  */
-class LatConfig {
+class LatticeTesterConfig {
 public:
    static const int MAX_WORD_SIZE = 64;
 
    /**
     * Constructor.
     */
-   LatConfig();
+   LatticeTesterConfig();
 
    /**
     * Destructor.
     */
-   ~LatConfig();
+   ~LatticeTesterConfig();
 
    /**
     * Frees the memory used by this object.

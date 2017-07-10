@@ -1,4 +1,4 @@
-#include "latmrg/LatConfig.h"
+#include "latticetester/LatticeTesterConfig.h"
 #include "latticetester/Util.h"
 
 using namespace std;
@@ -7,7 +7,7 @@ using namespace LatticeTester;
 namespace LatMRG
 {
 
-LatConfig::LatConfig()
+LatticeTesterConfig::LatticeTesterConfig()
 {
    fileName.reserve(MAX_WORD_SIZE);
    //a.SetLength(1+maxDim);
@@ -18,13 +18,13 @@ LatConfig::LatConfig()
    detailF = 0;
 }
 
-LatConfig::~LatConfig()
+LatticeTesterConfig::~LatticeTesterConfig()
 {
    kill();
 }
 
 
-void LatConfig::kill()
+void LatticeTesterConfig::kill()
 {
    if (comp != 0) {
       for (int i = 0; i < J; i++) {
@@ -38,7 +38,7 @@ void LatConfig::kill()
    delete[] td;
 }
 
-void LatConfig::write()
+void LatticeTesterConfig::write()
 {
    cout << "readGenFile: " << boolalpha << readGenFile << endl;
    if (readGenFile)

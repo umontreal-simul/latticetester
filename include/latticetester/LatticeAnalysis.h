@@ -93,7 +93,7 @@ public:
     */
    double & getMerit () { return m_merit; }
 
-   void setReducer (Reducer* red) {m_reducer = red; }
+   void setReducer (Reducer & red) {m_reducer = &red; }
    void setDim (int dim) { m_dim = dim; }
    void setNorm (NormType norm) { m_norm = norm; }
    void setNormalizerType (NormaType normalizerType) { m_normalizerType = normalizerType; }

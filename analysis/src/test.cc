@@ -33,11 +33,8 @@
 #include "latticetester/IntLatticeBasis.h"
 #include "latticetester/Reducer.h"
 #include "latticetester/Types.h"
-<<<<<<< HEAD
-=======
 #include "latticetester/ParamReader.h"
 #include "latticetester/LatticeTesterConfig.h"
->>>>>>> new_class_LatticeTest
 
 // Include NTL Header
 #include <NTL/tools.h>
@@ -80,7 +77,6 @@ int main (int argc, char *argv[])
 
    for (int j = 1; j < argc; j++) {
       // Do the test for each data file or directory on the command line
-      stat(argv[j], &buf);
 
       //if (0 != S_ISDIR(buf.st_mode))         // directory
       //   status |= testall.doTestDir (argv[j]);

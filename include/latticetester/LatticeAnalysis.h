@@ -1,5 +1,9 @@
-#ifndef LATTICETEST_H
-#define LATTICETEST_H
+#ifndef LATTICEANALYSIS_H
+#define LATTICEANALYSIS_H
+
+#include <string>
+#include <list>
+
 #include "latticetester/Types.h"
 #include "latticetester/Util.h"
 #include "latticetester/Const.h"
@@ -7,9 +11,9 @@
 #include "latticetester/Normalizer.h"
 #include "latticetester/Weights.h"
 #include "latticetester/Reducer.h"
-#include <string>
-#include <list>
 
+#include "latticetester/Writer.h"
+#include "latticetester/LatConfig.h"
 
 namespace LatticeTester {
 
@@ -35,21 +39,19 @@ namespace LatticeTester {
 
  // PW_TODO update description
 
-
-class LatticeTest {
+class LatticeAnalysis {
 
 public:
-
-   /**
+  /**
     * Constructor. The test will be applied on `lattice`, with the selected 
     * `normalizer`.
     */
-   LatticeTest (Reducer & reducer, NormaType normaType, int alpha = 0);
+   LatticeAnalysis (Reducer & reducer, NormaType normaType, int alpha = 0);
 
    /**
     * Destructor.
     */
-   ~LatticeTest ();
+   ~LatticeAnalysis ();
 
    /**
     * Gets the results of the applied test.
@@ -70,6 +72,27 @@ public:
     * `alpha` = \f$\alpha\f$. In all other cases, it is unused.
     */
    void initNormalizer (NormaType norma, int alpha);
+
+
+
+//==========================================================================
+   /**
+    * Reads the parameters of the test in input text file `datafile`; then do
+    * the test. The data file must always have the extension `".dat"`, but must 
+    * be given as argument here *without extension*. For example, if the data 
+    * file is named `myLattice.dat`, then the method must be called as 
+    * `doTest("myLattice")`. Returns 0 if the test completed successfully; returns 
+    * a negative integer if there was an error.
+    */
+   int doTest (const char *datafile);
+
+   /**
+    * Applies the method `doTest` to all the files with extension `".dat"`
+    * in directory named `dirname`. Returns 0 if all the tests completed
+    * successfully; returns a non-zero integer if there was an error.
+    */
+   int doTestDir (const char *dirname);
+//==========================================================================
 
 private:
 
@@ -94,8 +117,18 @@ private:
     */
    double m_merit;
 
+
+//==========================================================================
+   /**
+    * Returns a `Writer` created from the input file `infile` and the given
+    * `OutputType`.
+    */
+   Writer* createWriter (const char *infile, OutputType ot);
+
+//==========================================================================
+
 };
 
-} // namespace LatticeTester
+} // end namespace
 
 #endif

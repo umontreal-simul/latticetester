@@ -1,4 +1,4 @@
-#include "latmrg/LatConfig.h"
+#include "latticetester/LatConfig.h"
 #include "latticetester/LatticeTesterConfig.h"
 #include "latticetester/Util.h"
 

@@ -108,7 +108,7 @@ public:
     * Returns the bound on the length of the shortest nonzero vector in
     * dimension \f$j\f$ as computed in Normalizer::init.
     */
-   double & getPreComputedBound (int j);
+   double getPreComputedBound (int j) const;
 
   /**
     * Calculates and returns the bound on the length of the shortest nonzero vector in

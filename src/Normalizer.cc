@@ -55,15 +55,14 @@ void Normalizer::init (const RScal &logDensity0, double beta0)
  * density \f$Density_0\f$.
  */
 {
-   RScal x, y;
-   RScal logBeta;
+   double x, y;
+   double logBeta;
    m_logDensity = logDensity0;
    m_beta = beta0;
 
    y = 1.0;
    logBeta = log (m_beta);
 
-   //PW_TODO: check 1/2 gamma
    for (int j = 1; j <= m_maxDim; j++) {
       y =  1. / j;
 
@@ -71,13 +70,13 @@ void Normalizer::init (const RScal &logDensity0, double beta0)
          x = 0.5 * log (getGamma(j)) + j * logBeta - y * conv<double>(logDensity0);
       #else 
          x = 0.5 * log (getGamma(j)) + j * logBeta - y * logDensity0;
-      #endif 
+      #endif
       //log calculation to handle large values of n
 
       if (m_norm == L2NORM)
          x *= 2; // L2norm is always used squared
 
-      m_bounds[j] = conv<double>(exp (x));
+      m_bounds[j] = exp(x); 
    }
 }
 
@@ -114,7 +113,7 @@ double Normalizer::getGamma (int) const
 
 /*-------------------------------------------------------------------------*/
 
-double & Normalizer::getPreComputedBound (int j)
+double Normalizer::getPreComputedBound (int j) const
 {
    assert (j >= 1 && j <= m_maxDim);
    return m_bounds[j];
@@ -142,7 +141,6 @@ double Normalizer::getBound (int j) const
       x *= 2; // L2norm is always used squared
 
    return exp(x);
-
 }
 
 } // end namespace LatticeTester

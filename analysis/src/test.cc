@@ -24,6 +24,9 @@
 #include <sstream>
 #include <iomanip>
 #include <time.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <iostream>
 
 // Include LatticeTester Header
 #include "latticetester/Util.h"

@@ -301,8 +301,8 @@ void ParamReader::readMVect(MVect & fields, unsigned int & ln, unsigned int pos,
 void ParamReader::readBMat(BMat & fields, unsigned int & ln, unsigned int pos,
    unsigned int numPos)
 {
-   for (unsigned int j = pos; j < numPos; j++){
-      for (unsigned int i = pos; i < numPos; i++) {
+   for (unsigned int j = pos; j <= numPos; j++){
+      for (unsigned int i = pos; i <= numPos; i++) {
          readBScal(fields[j][i], ln, i);
       }
       ++ln;
@@ -350,7 +350,7 @@ void ParamReader::readNormType (NormType & field, unsigned int ln, unsigned int 
 {
    string val;
    getToken(val, ln, pos);
-
+   cout << "valeur : " << val.c_str() << endl;
    if (0 == strcasecmp(val.c_str(), "SUPNORM"))
       field = SUPNORM;
    else if (0 == strcasecmp(val.c_str(), "L1NORM"))
@@ -437,28 +437,28 @@ void ParamReader::read (LatticeTesterConfig & config)
    getLines ();
    unsigned int ln = 1;
 
-   readNormType (config.norm, ++ln, 0);
-   readNormaType (config.normalizer, ++ln, 0);
-   readPreRed (config.prereduction, ++ln, 0);
+   readNormType (config.norm, ln, 1);
+   readNormaType (config.normalizer, ++ln, 1);
+   readPreRed (config.prereduction, ++ln, 1);
 
    if(config.prereduction == BKZ){
-      readDouble (config.fact, ++ln, 0);
-      readInt (config.blocksize, ++ln, 0);
+      readDouble (config.fact, ++ln, 1);
+      readInt (config.blocksize, ++ln, 1);
    }
    else if(config.prereduction == PreRedDieter){
    }
 
    else if(config.prereduction == LenstraLL){
-      readDouble (config.fact, ++ln, 0);
+      readDouble (config.fact, ++ln, 1);
    }
 
-   readInt (config.dimension, ++ln, 0);
+   readInt (config.dimension, ++ln, 1);
 
-   readBMat(config.basis, ++ln, 0, config.dimension);
+   readBMat(config.basis, ++ln, 1, config.dimension);
 
    readLong (config.maxNodesBB, ++ln, 1);
 
-   readOutputType(config.outputType, ++ln, 0);
+   readOutputType(config.outputType, ++ln, 1);
 }
 
 

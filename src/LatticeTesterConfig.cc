@@ -30,8 +30,8 @@ void LatticeTesterConfig::write()
    cout << "Prereduction: " << toStringPreRed (prereduction) << endl;
    cout << "Lattice Basis" << basis << endl;
    cout << "maxNodesBB: " << maxNodesBB << endl;
-   cout << "outputType: " << toStringOutput (outputType) << endl;
+   //cout << "outputType: " << toStringOutput (outputType) << endl;
 
 }
 
-} // namespace
+} // namespace LatticeTester

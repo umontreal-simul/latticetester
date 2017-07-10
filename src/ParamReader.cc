@@ -447,7 +447,7 @@ void ParamReader::read (LatticeTesterConfig & config)
    }
    else if(config.prereduction == PreRedDieter){
 
-   else if(config.prereduction == LLL){
+   else if(config.prereduction == LenstraLL){
       readDouble (config.fact, ++ln, 0);
    }
 

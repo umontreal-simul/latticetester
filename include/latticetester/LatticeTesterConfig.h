@@ -145,6 +145,20 @@ public:
    BMat basis;
 
    /**
+    * Used in LLL and BKZ. See Reducer. It must be smaller than
+    * 1. If `fact` is closer to 1, the basis will be (typically) "more
+    * reduced", but that will require more work.
+    */
+   double fact;
+
+   /**
+    * Used in BKZ. It stocks the number of blocks used for the BKZ reduction.
+    * The more it is large, the more the basis will be reduced.
+    */
+   int blocksize;
+
+
+   /**
     * File format used to store the results. See `Const` for a definition
     * of the possible output types.
     */

@@ -118,7 +118,7 @@ private:
     * Returns a `Writer` created from the input file `infile` and the given
     * `OutputType`.
     */
-   Writer* createWriter (const char *infile, OutputType ot);
+   //Writer* createWriter (const char *infile, OutputType ot);
 
 };
 

@@ -39,6 +39,65 @@ using namespace NTL;
 //using namespace NTL;
 
 
+
+namespace
+{
+
+//==========================================================================
+
+int getDir (string dir, std::vector <string> & files)
+{
+   DIR *dp;
+   struct dirent *dirp;
+   if ((dp = opendir (dir.c_str())) == NULL) {
+      cerr << "Directory: " << dir << endl;
+      perror ("Couldn't open the directory");
+      return errno;
+   }
+
+   // Does directory name ends with /
+   size_t j = dir.rfind('/');
+   string SEP("");
+   // if not, add one /
+   if (dir.size() != (1 + j))
+      SEP += "/";
+
+   while ((dirp = readdir (dp)) != NULL) {
+      if (0 == fnmatch("*.dat", dirp->d_name, 0))
+         // keeps full name including directory name
+         files.push_back (string (dir + SEP + dirp->d_name));
+   }
+   closedir (dp);
+   return 0;
+}
+
+//==========================================================================
+
+void eraseExtension (std::vector <string> & files)
+{
+   for (unsigned int i = 0; i < files.size (); i++) {
+      size_t j = files[i].rfind(".dat");
+      if (j != string::npos)
+         files[i].erase(j);
+   }
+}
+
+//==========================================================================
+
+void printFileNames (std::vector <string> & files)
+{
+   cout << "----------------------------------------------" << endl;
+   for (unsigned int i = 0; i < files.size (); i++) {
+      cout << files[i] << endl;
+   }
+}
+
+//==========================================================================
+
+} // end namespace
+
+
+
 namespace LatticeTester
 {
 
@@ -113,7 +172,7 @@ bool LatticeAnalysis::performTest (PreReductionType PreRed, double fact, long bl
    // PW_TODO : gérer le paramètre FP, QP, XD, RR pour les fonctions NTL
    switch (PreRed) {
       case BKZ:
-         m_reducer->redBKZ(fact, blocksize);
+         m_reducer->redBKZ(fact, blockSize);
          break;
       case LenstraLL:
          m_reducer->redLLLNTLProxyFP(fact);
@@ -148,6 +207,7 @@ bool LatticeAnalysis::performTest (PreReductionType PreRed, double fact, long bl
 int LatticeAnalysis::doTestFromInputFile (const char *infile)
 {
 
+   // VERSION DEGUEUE AVEC WRITER
    /*
    // parameters reading
    string fname (infile);
@@ -215,10 +275,65 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
    report.printFooter ();
 
    delete rw;
-
+   return 0;
    */
 
-   
+
+
+   // VERSION SANS WRITER
+   // parameters reading
+   string fname (infile);
+   fname += ".dat";
+   ParamReader paramRdr (fname.c_str ());
+   fname.clear ();
+
+   LatticeTesterConfig config;
+   paramRdr.read (config);
+   //config.write();
+
+   // creating the Reducer object from input
+   IntLatticeBasis basis (config.matrix, config.dim, config.norm);
+   Reducer red (basis);
+
+   // update parameters
+   setReducer(red);
+   setDim(config.dim);
+   setNorm(config.norm);
+   setNormalizerType(config.normalizer);
+   initNormalizer (config.normalizer);
+
+   double fact = 1.0 - config.epsilon;
+
+   // performing pre-reduction
+   switch (config.prered) {
+      case BKZ:
+         m_reducer->redBKZ(fact, config.blockSize);
+         break;
+      case LenstraLL:
+         m_reducer->redLLLNTLProxyFP(fact);
+         break;
+      case PreRedDieter:
+         m_reducer->preRedDieter(0);
+         break;
+      default:
+         cout << "LatticeLatticeAnalysis::doTestFromInputFile:   no such case";
+         exit (2);
+   }
+
+   // performing the Branch-and-Bound procedure to find the shortest non-zero vector
+   m_reducer->shortestVector(config.norm);
+
+   // calculating the Figure of Merit
+   m_merit = conv<double>(m_reducer->getMinLength()) 
+            / m_normalizer->getPreComputedBound(config.dim);
+
+   cout << "\n-----------------------------------------------------" << endl;
+   cout << "Length of shortest non-zero vector = " << conv<double>(m_reducer->getMinLength());
+   cout << " (" << toStringNorm(config.norm) << ")" << endl;
+   cout << "Figure of Merit = " << m_merit;
+   cout << " (" << toStringNorma(config.normalizer) << " normalization)" << endl;
+   cout << "-----------------------------------------------------" << endl;
+
    return 0;
 
 }
@@ -244,6 +359,7 @@ int LatticeAnalysis::doTestFromDirectory (const char *dirname)
 
 //==========================================================================
 
+/*
 Writer* LatticeAnalysis::createWriter (const char *infile, OutputType ot)
 {
    Writer *rw = 0;
@@ -272,66 +388,9 @@ Writer* LatticeAnalysis::createWriter (const char *infile, OutputType ot)
    }
    return rw;
 }
+*/
 
 //==========================================================================
 
 } // end namespace LatticeTester
 
-
-
-
-namespace
-{
-
-//==========================================================================
-
-int getDir (string dir, std::vector <string> & files)
-{
-   DIR *dp;
-   struct dirent *dirp;
-   if ((dp = opendir (dir.c_str())) == NULL) {
-      cerr << "Directory: " << dir << endl;
-      perror ("Couldn't open the directory");
-      return errno;
-   }
-
-   // Does directory name ends with /
-   size_t j = dir.rfind('/');
-   string SEP("");
-   // if not, add one /
-   if (dir.size() != (1 + j))
-      SEP += "/";
-
-   while ((dirp = readdir (dp)) != NULL) {
-      if (0 == fnmatch("*.dat", dirp->d_name, 0))
-         // keeps full name including directory name
-         files.push_back (string (dir + SEP + dirp->d_name));
-   }
-   closedir (dp);
-   return 0;
-}
-
-//==========================================================================
-
-void eraseExtension (std::vector <string> & files)
-{
-   for (unsigned int i = 0; i < files.size (); i++) {
-      size_t j = files[i].rfind(".dat");
-      if (j != string::npos)
-         files[i].erase(j);
-   }
-}
-
-//==========================================================================
-
-void printFileNames (std::vector <string> & files)
-{
-   cout << "----------------------------------------------" << endl;
-   for (unsigned int i = 0; i < files.size (); i++) {
-      cout << files[i] << endl;
-   }
-}
-
-//==========================================================================
-
-} // end namespace

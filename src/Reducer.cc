@@ -1516,6 +1516,40 @@ bool Reducer::shortestVector (NormType norm)
 
 //=========================================================================
 
+bool Reducer::shortestVectorWithBKZ (NormType norm, double fact, long blockSize)
+// Square length of shortest vector can be recovered in m_lMin2
+{
+   // Perform BKZ pre-reduction using L2 norm temporarily.
+   if(PreRedBKZ)
+      redBKZ(fact, blockSize);
+
+   if (norm != L2NORM) {
+      m_lat->setNegativeNorm ();
+      m_lat->setDualNegativeNorm ();
+   }
+
+   /* Find the shortest vector for the selected norm. */
+   /* The L2 norm is used for the Choleski decomposition and BB bounds. */
+   bool ok;
+   if (norm == L1NORM || norm == L2NORM || norm == ZAREMBANORM) {
+      ok = redBB0 (norm);
+   } else {
+      ok = false;
+      cerr << "Reducer::shortestVector:   wrong norm";
+      exit (3);
+   }
+
+   m_lat->updateVecNorm();
+   m_lat->sort(0);
+   if(m_lat->withDual())
+      m_lat->updateDualVecNorm();
+   
+   return ok;
+}
+
+
+//=========================================================================
+
 bool Reducer::redDieter (NormType norm)
 /*
  * Finds shortest non-zero vector with specified norm.

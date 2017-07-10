@@ -54,12 +54,11 @@ bool LatticeTest::performTest (double fact, long blockSize)
    int dim = m_reducer->getIntLatticeBasis().getDim();
 
    // finding shortest non-zero vector in the lattice
-   m_reducer->shortestVector(norm);
+   m_reducer->shortestVectorWithBKZ(norm, fact, blockSize);
    //m_reducer.redBKZ(fact,blockSize); // BKZ reduction is performed
    //result = m_reducer.redBB0(norm) // Then Brand-and-Bpund procedure is performed
 
    // calculating the Figure of Merit
-
    double length = conv<double>(m_reducer->getMinLength());
    if (norm == L2NORM)
       length *= length;
@@ -82,9 +81,10 @@ void LatticeTest::initNormalizer (NormaType norma, int alpha)
    int dim = m_reducer->getIntLatticeBasis().getDim(); 
 
    // PW_TODO
-   // calcul de la densité à faire mieux. Avec les det ?
-   // on travaille dans le dual à chaque fois ?
-   // ok si la matrice est directement construite comme m-dual mais probleme si travail direct sur primale re-scaled
+   // ok si la matrice est directement construite comme m-dual mais probleme si 
+   // travail direct sur primale re-scaled ?
+   // version avec logDensity en parametre (pou m^k sans besoin de calcul det)
+
    RScal logDensity;
    logDensity = - log( determinant(m_reducer->getIntLatticeBasis().getBasis()) );
 

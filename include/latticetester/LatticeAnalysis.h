@@ -54,21 +54,12 @@ public:
     */
    ~LatticeAnalysis ();
 
-<<<<<<< HEAD
-   /**
-    * Gets the results of the applied test.
-    */
-   double & getMerit () { return m_merit; }
-
    /**
     * Performs the test in dimension `dim`.
     * The method returns `false` if the test was interrupted for any reason
     * before completion, and it returns `true` upon success. The result of
     * the test is kept in <tt>m_merit</tt>.
-=======
-   /** 
     * PW_TODO : add comment
->>>>>>> 7791334d6af45d5dfd30c4f82a94e8c071300aa6
     */
    bool performTest ();
 

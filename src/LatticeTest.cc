@@ -10,104 +10,119 @@
 #include "NTL/vec_ZZ.h"
 #include "NTL/mat_ZZ.h"
 
+#include "latticetester/LatticeTest.h"
 #include "latticetester/Util.h"
 #include "latticetester/IntLatticeBasis.h"
-#include "latticetester/Reducer.h"
-
+#include "latticetester/Normalizer.h"
+#include "latticetester/NormaBestLat.h"
+#include "latticetester/NormaLaminated.h"
+#include "latticetester/NormaMinkowski.h"
+#include "latticetester/NormaMinkL1.h"
+#include "latticetester/NormaPalpha.h"
+#include "latticetester/NormaRogers.h"
 
 using namespace std;
 using namespace NTL;
 
-///**************************************************************************
-
 namespace LatticeTester
 {
 
-LatticeTest::LatticeTest (LatMRG::IntLattice * lat): m_merit(lat->getDim())
-{
-   m_lat = lat;
-   m_dualF = true;
-   m_invertF = false;
-   m_maxAllDimFlag = true;
-   m_detailF = 0;
-   Reducer::maxNodesBB = m_maxNodesBB = 10000000;
-   timer.init ();
-}
 
+//===========================================================================
+
+LatticeTest::LatticeTest (Reducer & reducer, NormaType normaType, int alpha) 
+{
+   m_reducer = &reducer;
+   m_normaType = normaType;
+   initNormalizer(normaType, alpha);
+
+}
 
 //===========================================================================
 
 LatticeTest::~LatticeTest ()
 {
-};
-
-
-//===========================================================================
-
-bool LatticeTest::test (int minDim, int maxDim, double minVal[],
-                        const double* weights)
-{
-   throw "Not implemented with weights";
-   // compiler warnings
-   minDim = maxDim = -1;
-   minVal[0] =  weights[0];
+   delete m_normalizer;
 }
 
+//===========================================================================
+
+bool LatticeTest::performTest (double fact, long blockSize)
+{
+   bool result;
+   NormType norm = m_reducer->getIntLatticeBasis().getNorm();
+   int dim = m_reducer->getIntLatticeBasis().getDim();
+
+   // finding shortest non-zero vector in the lattice
+   m_reducer->shortestVector(norm);
+   //m_reducer.redBKZ(fact,blockSize); // BKZ reduction is performed
+   //result = m_reducer.redBB0(norm) // Then Brand-and-Bpund procedure is performed
+
+   // calculating the Figure of Merit
+
+   double length = conv<double>(m_reducer->getMinLength());
+   if (norm == L2NORM)
+      length *= length;
+
+   double maxLength = m_normalizer->getPreComputedBound(dim);
+
+   if (norm == L2NORM)
+      m_merit = sqrt(length / maxLength);
+   else 
+      m_merit = length / maxLength;
+
+   return result;
+  
+}
 
 //===========================================================================
 
-void LatticeTest::resetFromDim(int order, int & fromDim)
+void LatticeTest::initNormalizer (NormaType norma, int alpha)
 {
-   if (fromDim <= order) {
-      // fromDim = order + 1;
-     // cout << "********* WARNING LatticeTest:  fromDim is <= order.\n";
-      //  cout << " It is now reset to: fromDim = order + 1\n" << endl;
+   int dim = m_reducer->getIntLatticeBasis().getDim(); 
+
+   // PW_TODO
+   // calcul de la densité à faire mieux. Avec les det ?
+   // on travaille dans le dual à chaque fois ?
+   // ok si la matrice est directement construite comme m-dual mais probleme si travail direct sur primale re-scaled
+   RScal logDensity;
+   logDensity = - log( determinant(m_reducer->getIntLatticeBasis().getBasis()) );
+
+   switch (norma) {
+      case BESTLAT:
+         m_normalizer = new NormaBestLat (logDensity, dim);
+         break;
+      case LAMINATED:
+         m_normalizer = new NormaLaminated (logDensity, dim);
+         break;
+      case ROGERS:
+         m_normalizer = new NormaRogers (logDensity, dim);
+         break;
+      case MINKL1:
+         m_normalizer = new NormaMinkL1 (logDensity, dim);
+         break;
+      case MINKOWSKI:
+         m_normalizer = new NormaMinkowski (logDensity, dim);
+         break;
+      case NORMA_GENERIC:
+         m_normalizer = new Normalizer (logDensity, dim, "Norma_generic");
+         break;
+      case PALPHA_N:
+         m_normalizer = new NormaPalpha (m_reducer->getIntLatticeBasis().getModulo(), alpha, dim);
+         //PW_TODO : c'est bien ça ?
+         break;
+      default:
+         cout << "normalizer:   no such case";
+         exit (2);
    }
 }
 
-
-//===========================================================================
-
-void LatticeTest::setDualFlag (bool dualF)
-{
-   m_dualF = dualF;
-   m_lat->fixLatticeNormalization (dualF);
-}
+//=========================================================================
 
 
-//===========================================================================
-
-void LatticeTest::setMaxAllDimFlag (bool maxAllDimF)
-{
-   m_maxAllDimFlag = maxAllDimF;
-}
 
 
-//===========================================================================
 
-void LatticeTest::setInvertFlag (bool invertF)
-{
-   m_invertF = invertF;
-}
-
-
-//===========================================================================
-
-void LatticeTest::setDetailFlag (int d)
-{
-   m_detailF = d;
-}
-
-
-//===========================================================================
-
-void LatticeTest::setMaxNodesBB (long maxNodesBB)
-{
-   Reducer::maxNodesBB = m_maxNodesBB = maxNodesBB;
-}
-
-
-//===========================================================================
 
 
 } // end namespace LatticeTester

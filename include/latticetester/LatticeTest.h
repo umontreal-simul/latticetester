@@ -4,7 +4,9 @@
 #include "latticetester/Util.h"
 #include "latticetester/Const.h"
 #include "latticetester/IntLatticeBasis.h"
+#include "latticetester/Normalizer.h"
 #include "latticetester/Weights.h"
+#include "latticetester/Reducer.h"
 #include <string>
 #include <list>
 
@@ -42,7 +44,7 @@ public:
     * Constructor. The test will be applied on `lattice`, with the selected 
     * `normalizer`.
     */
-   LatticeTest (IntLatticeBasis * lattice, NormaType normaType);
+   LatticeTest (Reducer & reducer, NormaType normaType, int alpha = 0);
 
    /**
     * Destructor.
@@ -55,31 +57,37 @@ public:
    double & getMerit () { return m_merit; }
 
    /**
-    * Starts the test in dimension `dim`.
-    * Whenever the normalized value of the merit is smaller than `minVal`
-    * for any dimension, the method returns `false` immediately. The
-    * method returns `false` if the test was interrupted for any reason
-    * before completion, and it returns `true` upon success. The results
-    * of the test are kept in <tt>m_merit</tt>.
+    * Performs the test in dimension `dim`.
+    * The method returns `false` if the test was interrupted for any reason
+    * before completion, and it returns `true` upon success. The result of 
+    * the test is kept in <tt>m_merit</tt>.
     */
-   virtual bool test (int dim, double minVal[]) = 0;
+   bool performTest (double fact = 0.999999, long blockSize = 20);
 
    /**
-    * Similar to `test` above, but with the weights `weights`.
+    * Creates and returns the normalizer corresponding to criterion
+    * `norma`. In the case of the \f$P_{\alpha}\f$ test, the argument
+    * `alpha` = \f$\alpha\f$. In all other cases, it is unused.
     */
-   virtual bool test (int dim, double minVal[], const double* weights);
+   void initNormalizer (NormaType norma, int alpha);
 
 private:
 
-  /**
+   /**
     * The lattice on which the test is applied.
     */
-   IntLatticeBasis* m_lat;
+   Reducer* m_reducer;
 
-  /**
+   /**
+    * The type of normalizer used for the the test.
+    */
+   NormaType m_normaType;
+
+   /**
     * The normalizer used for the the test.
     */
-   normalizer* m_normalizer;
+
+   Normalizer* m_normalizer;
 
    /**
     * Contains the results of the test.

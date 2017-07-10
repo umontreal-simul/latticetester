@@ -22,7 +22,10 @@ enum ReduceType {
    PairRed_LLL,                // Performs Pairwise Reduction
    PairRedRandomized_LLL,      // Perform Pairwise Reduction and then
                                // LLL Reduction
-   LLLNTLProxy,                // Performs proxy LLL Reduction with NTL Library
+   LLLNTLProxyFP,              // Performs proxy LLL Reduction with NTL Library
+                               // With double precision
+   LLLNTLProxyRR,              // Performs proxy LLL Reduction with NTL Library
+                               // With arbitrary precision
    LLLNTLExact,                // Performs exact LLL Reduction with NTL Library
    PairRed_LLLNTL,             // Perform Pairwise Reduction and then
                                // LLL Reduction with NTL Library
@@ -66,8 +69,11 @@ string toStringReduce (ReduceType reduce)
    case PairRedRandomized_LLL :
          return "PairRedRandomized_LLL";
 
-   case LLLNTLProxy :
-         return "LLLNTLProxy";
+   case LLLNTLProxyRR :
+         return "LLLNTLProxy_RR";
+
+   case LLLNTLProxyFP :
+         return "LLLNTLProxy_FP";
 
    case LLLNTLExact :
          return "LLLNTLExact";
@@ -180,7 +186,7 @@ vec_ZZ randomVector (int dimension, ZZ modulus, ZZ seed)
    return vector;
 }
 
-mat_ZZ CreateRNGBasis (const ZZ modulus, const int order, const int dimension, vec_ZZ& a, ZZ seed)
+mat_ZZ CreateRNGBasis (const ZZ modulus, const int order, const int dimension, vec_ZZ& a)
 {
    mat_ZZ basis;
    basis.SetDims(dimension,dimension);
@@ -193,8 +199,6 @@ mat_ZZ CreateRNGBasis (const ZZ modulus, const int order, const int dimension, v
    } else { //usual case
 
       // (a_i) coefficients
-      //vec_ZZ a;
-      //a = randomVector(order, modulus, seed);
 
       for (int i = 0; i < order; i++) {
          // left upper block

@@ -58,7 +58,7 @@ bool Reducer::PreRedDieterSV = false;
 bool Reducer::PreRedLLLSV = false;
 bool Reducer::PreRedLLLRM = false;
 bool Reducer::PreRedBKZ = true;
-long Reducer::maxNodesBB = 100000000;
+long Reducer::maxNodesBB = 10000000;
 
 
 
@@ -621,7 +621,7 @@ void Reducer::reductionFaible (int i, int j)
 }
 
 #ifdef WITH_NTL
-void Reducer::redLLLNTLProxy(double fact){
+void Reducer::redLLLNTLProxyFP(double fact){
    bool withDual = m_lat->withDual();
    if (withDual) {
       mat_ZZ U;
@@ -630,6 +630,17 @@ void Reducer::redLLLNTLProxy(double fact){
       m_lat->getDualBasis() = transpose(inv(U)) * m_lat->getDualBasis();
    } else
       LLL_FP(m_lat->getBasis(), fact, 0, 0);
+}
+
+void Reducer::redLLLNTLProxyRR(double fact){
+   bool withDual = m_lat->withDual();
+   if (withDual) {
+      mat_ZZ U;
+      U.SetDims(m_lat->getBasis().NumRows(), m_lat->getBasis().NumCols());
+      LLL_RR(m_lat->getBasis(), U, fact, 0, 0);
+      m_lat->getDualBasis() = transpose(inv(U)) * m_lat->getDualBasis();
+   } else
+      LLL_RR(m_lat->getBasis(), fact, 0, 0);
 }
 
 void Reducer::redLLLNTLExact(double fact){
@@ -831,7 +842,7 @@ bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const BMat & WTemp)
 
    ++m_countNodes;
    if (m_countNodes > maxNodesBB) {
-      cout << "*****  m_countNodes > maxNodesBB = " << maxNodesBB << endl;
+      cout << "-------- m_countNodes > maxNodesBB = " << maxNodesBB << endl;
       return false;
    }
 
@@ -1468,8 +1479,8 @@ bool Reducer::shortestVector (NormType norm)
    // no prereduction required
 
    //trace( "AVANT shortestVector");
-   if(PreRedBKZ)
-      redBKZ(0.999999, 20);
+   //if(PreRedBKZ)
+      //redBKZ(0.999999, 20);
 
    // put in comment to prevent use of PreRedDieter and LLL
    /*

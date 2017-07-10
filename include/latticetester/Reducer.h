@@ -226,13 +226,21 @@ public:
 
    /**
     * \copydoc redLLL(double, long, int)
-    * This version is implemented in the NTL Library with exact number
+    * This version is implemented in the NTL Library with approximate number
+    * with double precision
     */
-   void redLLLNTLProxy(double fact);
+   void redLLLNTLProxyFP(double fact);
 
    /**
     * \copydoc redLLL(double, long, int)
     * This version is implemented in the NTL Library with approximate number
+    * with arbitrary precision
+    */
+   void redLLLNTLProxyRR(double fact);
+
+   /**
+    * \copydoc redLLL(double, long, int)
+    * This version is implemented in the NTL Library with exact number
     * (arbitrary precision RR)
     */
    void redLLLNTLExact(double fact);

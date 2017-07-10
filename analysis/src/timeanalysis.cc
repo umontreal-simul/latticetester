@@ -125,7 +125,7 @@ const ZZ modulusRNG = power_ZZ(2, 31) - 1;
  * Must be int value.
  */
 const int MinDimension = 5;
-const int MaxDimension = 20;
+const int MaxDimension = 35;
 const int Interval_dim = MaxDimension - MinDimension+1;
 
 /*
@@ -157,7 +157,7 @@ const int maxcpt = 10000000;
 /*
  * Maximum number of Nodes in the Branch-and-Bound.
  */
-const int maxNodesBB = 1000000;
+const int maxNodesBB = 10000000;
 
 /*
  * Selecting method of reducing among :
@@ -198,15 +198,17 @@ ReduceType Reduce_type[] ={
    //RedLLL,
    //PairRed_LLL,
    //PairRedRandomized_LLL,
-   //LLLNTLProxy,
+   //LLLNTLProxyFP,
+   //LLLNTLProxyRR,
    //LLLNTLExact
+
    //PairRed_LLLNTL,
    //PairRedRandomized_LLLNTL,
    //BKZNTL,
    //PairRed_BKZNTL,
    //PairRedRandomized_BKZNTL,
    //PreRedDieter_LLL_BB,
-   PreRedDieter_BB,
+   //PreRedDieter_BB,
    LLL_BB,
    //RedDieter,
    //RedMinkowski,
@@ -280,9 +282,15 @@ bool reduce(
       }
       break;
 
-   case LLLNTLProxy : {
+   case LLLNTLProxyRR : {
          // LLL NTL reduction (floating point version = proxy)
-         red.redLLLNTLProxy(delta);
+         red.redLLLNTLProxyRR(delta);
+      }
+      break;
+
+   case LLLNTLProxyFP : {
+         // LLL NTL reduction (floating point version = proxy)
+         red.redLLLNTLProxyFP(delta);
       }
       break;
 
@@ -325,7 +333,7 @@ bool reduce(
    case PreRedDieter_LLL_BB : {
          // PreRed, LLL and then Branch and Bound
          red.preRedDieter(0);
-         red.redLLLNTLProxy(delta);
+         red.redLLLNTLProxyFP(delta);
       }
       break;
 
@@ -337,7 +345,7 @@ bool reduce(
 
    case LLL_BB : {
          // LLL and then Branch and Bound
-         red.redLLLNTLProxy(delta);
+         red.redLLLNTLProxyFP(delta);
       }
       break;
 
@@ -395,13 +403,13 @@ bool reduce2(
 
    case PairRed_LLLNTL : {
          // Pairwise reduction (in primal basis only) and then LLL NTL proxy
-         red.redLLLNTLProxy(delta);
+         red.redLLLNTLProxyFP(delta);
       }
       break;
 
    case PairRedRandomized_LLLNTL : {
          // Randomized pairwise reduction (in primal basis only) and then LLL NTL proxy
-         red.redLLLNTLProxy(delta);
+         red.redLLLNTLProxyFP(delta);
       }
       break;
 
@@ -417,14 +425,8 @@ bool reduce2(
       }
       break;
 
-   case PreRedDieter_BB : case LLL_BB : {
+   case PreRedDieter_BB : case LLL_BB : case PreRedDieter_LLL_BB : { // This
          // PreRed and then Branch and Bound
-         ok = red.redBB0(L2NORM);
-      }
-      break;
-
-   case PreRedDieter_LLL_BB : {
-         // Branch and Bound post BKZ
          ok = red.redBB0(L2NORM);
       }
       break;
@@ -465,7 +467,6 @@ int main (int argc, char *argv[])
 
    // to display progress bar
    boost::progress_display show_progress(maxIteration*Interval_dim);
-   cout << "maxcoef " << maxCoeff << endl;
    // Working variables
    int id_dimension = 0;
    bool all_BB_over = true;
@@ -498,7 +499,10 @@ int main (int argc, char *argv[])
                WITH_DUAL = false;
             }
             else{
-               V = CreateRNGBasis (modulusRNG, order, dimension, seedZZ);
+               // (a_i) coefficients
+               vec_ZZ a;
+               a = randomVector(order, modulusRNG, seedZZ);
+               V = CreateRNGBasis (modulusRNG, order, dimension, a);
                if(WITH_DUAL){
                   W = Dualize (V, modulusRNG, order);
                }
@@ -527,6 +531,8 @@ int main (int argc, char *argv[])
 
             bool ok = true;
             for(const ReduceType &name : Reduce_type){
+               if(!all_BB_over)
+                  break;
                begin = clock();
                ok = reduce(*reducers[name], name, seed_dieter, blocksize, delta, maxcpt, dimension);
                end = clock();
@@ -535,26 +541,27 @@ int main (int argc, char *argv[])
                lattices[name]->setNegativeNorm();
                lattices[name]->updateVecNorm();
                lattices[name]->sort(0);
-
             }
 
             for(const ReduceType &name : Reduce_type){
+               if(!all_BB_over)
+                  break;
                begin = clock();
                ok = reduce2(*reducers[name], name, seed_dieter, blocksize, delta, maxcpt, dimension);
                end = clock();
                all_BB_over = all_BB_over && ok;
+               //timing_results[name][id_dimension][iteration] += double (end - begin) / CLOCKS_PER_SEC;
                timing_results[name][id_dimension][iteration] = double (end - begin) / CLOCKS_PER_SEC;
-               //timing_results[name][id_dimension][iteration] = log(timing_results[name][id_dimension][iteration]);
                lattices[name]->setNegativeNorm();
                lattices[name]->updateVecNorm();
                lattices[name]->sort(0);
             }
 
-            if(lattices[LLL_BB]->getVecNorm(0) != lattices[BKZ_BB]->getVecNorm(0)){
-               cout << "Error : BKZ_BB : " << lattices[BKZ_BB]->getVecNorm(0) << endl;
-               cout << "Error : LLL_BB : " << lattices[LLL_BB]->getVecNorm(0) << endl;
-               nb_error_preredLLLetprered++;
-            }
+            //if(lattices[LLLNTLProxyRR]->getVecNorm(0) != lattices[LLLNTLProxyFP]->getVecNorm(0)){
+            //   cout << "Error : LLLNTLProxyRR : " << lattices[LLLNTLProxyRR]->getVecNorm(0) << endl;
+            //   cout << "Error : LLLNTLProxyFP : " << lattices[LLLNTLProxyFP]->getVecNorm(0) << endl;
+            //   nb_error_preredLLLetprered++;
+            //}
 
             for(const ReduceType &name : Reduce_type){
                basis[name]->BMat::clear();
@@ -613,12 +620,15 @@ int main (int argc, char *argv[])
    string build_plot = "myPlot <- ggplot(df1, aes(x=indice, y=value, group=variable))";
    build_plot += " + geom_line(aes(color=variable), size=1.2)";
    build_plot += " + geom_point(aes(shape=variable, color=variable), fill='white', size=3) ";
-   build_plot += " + labs(y = 'Time (Logarithm Scaled)', x = 'Dimension') + scale_y_log10(); ";
+   build_plot += " + labs(y = 'Time (Logarithm Scaled)', x = 'Dimension') + scale_y_log10() ";
+   build_plot += " + scale_colour_discrete(name='Reduction Type')";
+   build_plot += " + scale_shape_discrete(name='Reduction Type') ;";
+
 
 
 
    string print_plot =
-     "ggsave(filename=outFile, path=outPath, plot=myPlot, width = 25, height = 15, units = 'cm'); "
+     "ggsave(filename=outFile, path=outPath, plot=myPlot, width = 28, height = 17, units = 'cm'); "
       "print(myPlot); ";
    // parseEvalQ evluates without assignment
    R.parseEvalQ(library);

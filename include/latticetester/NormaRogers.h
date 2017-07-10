@@ -27,17 +27,17 @@ namespace LatticeTester {
 /**
  * This class implements the *Rogers* bounds on the density of sphere
  * packing. The length of vectors is computed using the
- * \f${\mathcal{L}}_2\f$ norm. The bounding lengths, for a lattice containing 
- * \f$n\f$ points per unit volume in dimension \f$t\f$, are given by 
- * \f$\ell_t^* = \gamma_t^{1/2} n^{-1/t}\f$, where the \f$\gamma_t\f$ are 
+ * \f${\mathcal{L}}_2\f$ norm. The bounding lengths, for a lattice containing
+ * \f$n\f$ points per unit volume in dimension \f$t\f$, are given by
+ * \f$\ell_t^* = \gamma_t^{1/2} n^{-1/t}\f$, where the \f$\gamma_t\f$ are
  * the *Rogers* lattice constants.
  */
 class NormaRogers : public Normalizer {
 public:
 
    /**
-    * Constructor for the Rogers bounds. The lattices have \f$n\f$ points per 
-    * unit volume, in all dimensions \f$\le t\f$. The bias factor `beta` 
+    * Constructor for the Rogers bounds. The lattices have \f$n\f$ points per
+    * unit volume, in all dimensions \f$\le t\f$. The bias factor `beta`
     * \f$= \beta\f$ gives more weight to some of the dimensions.
     * Note this class stores the log value of the density to handle larger values.
     * There is no restriction on the dimension \f$t\f$ which can be larger than 48.

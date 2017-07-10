@@ -46,13 +46,15 @@ public:
     * Constructor. The test will be applied on `lattice`, with the selected
     * `normalizer`.
     */
-   LatticeAnalysis (Reducer & reducer, NormaType normaType, int alpha = 0);
+   LatticeAnalysis (Reducer* reducer, NormType norm, 
+      NormaType normaType, int alpha = 0);
 
    /**
     * Destructor.
     */
    ~LatticeAnalysis ();
 
+<<<<<<< HEAD
    /**
     * Gets the results of the applied test.
     */
@@ -63,19 +65,13 @@ public:
     * The method returns `false` if the test was interrupted for any reason
     * before completion, and it returns `true` upon success. The result of
     * the test is kept in <tt>m_merit</tt>.
+=======
+   /** 
+    * PW_TODO : add comment
+>>>>>>> 7791334d6af45d5dfd30c4f82a94e8c071300aa6
     */
-   bool performTest (double fact = 0.999999, long blockSize = 20);
+   bool performTest ();
 
-   /**
-    * Creates and returns the normalizer corresponding to criterion
-    * `norma`. In the case of the \f$P_{\alpha}\f$ test, the argument
-    * `alpha` = \f$\alpha\f$. In all other cases, it is unused.
-    */
-   void initNormalizer (NormaType norma, int alpha);
-
-
-
-//==========================================================================
    /**
     * Reads the parameters of the test in input text file `datafile`; then do
     * the test. The data file must always have the extension `".dat"`, but must
@@ -84,48 +80,53 @@ public:
     * `doTest("myLattice")`. Returns 0 if the test completed successfully; returns
     * a negative integer if there was an error.
     */
-   int doTest (const char *datafile);
+   int doTestFromInputFile (const char *datafile);
 
    /**
     * Applies the method `doTest` to all the files with extension `".dat"`
     * in directory named `dirname`. Returns 0 if all the tests completed
     * successfully; returns a non-zero integer if there was an error.
     */
-   int doTestDir (const char *dirname);
-//==========================================================================
+   int doTestFromDirectory (const char *dirname);
+
+
+   /**
+    * Initialize m_normalizer to a pointer on a normalizer object
+    * of type norma.
+    */
+   void initNormalizer (NormaType norma, int alpha = 0);
+
+   /**
+    * Gets the results of the applied test.
+    */
+   double & getMerit () { return m_merit; }
+
+   void setReducer (Reducer* red) {m_reducer = red; }
+   void setDim (int dim) { m_dim = dim; }
+   void setNorm (NormType norm) { m_norm = norm; }
+   void setNormalizerType (NormaType normalizerType) { m_normalizerType = normalizerType; }
+    
+   
 
 private:
 
-   /**
-    * The lattice on which the test is applied.
-    */
-   Reducer* m_reducer;
-
-   /**
-    * The type of normalizer used for the the test.
-    */
-   NormaType m_normaType;
-
-   /**
-    * The normalizer used for the the test.
-    */
-
-   Normalizer* m_normalizer;
+  Reducer* reducer;
+  int m_dim;
+  NormType m_norm;
+  NormaType m_normalizerType;
+  Normalizer* m_normalizer;
+  
 
    /**
     * Contains the results of the test.
     */
    double m_merit;
 
-
-//==========================================================================
    /**
     * Returns a `Writer` created from the input file `infile` and the given
     * `OutputType`.
     */
    Writer* createWriter (const char *infile, OutputType ot);
-
-//==========================================================================
 
 };
 

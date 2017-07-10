@@ -620,7 +620,11 @@ void Reducer::reductionFaible (int i, int j)
    calculCholeski2LLL (i, j);
 }
 
+
 #ifdef WITH_NTL
+
+//=========================================================================
+
 void Reducer::redLLLNTLProxy(double fact){
    bool withDual = m_lat->withDual();
    if (withDual) {
@@ -631,6 +635,8 @@ void Reducer::redLLLNTLProxy(double fact){
    } else
       LLL_FP(m_lat->getBasis(), fact, 0, 0);
 }
+
+//=========================================================================
 
 void Reducer::redLLLNTLExact(double fact){
    bool withDual = m_lat->withDual();
@@ -646,7 +652,9 @@ void Reducer::redLLLNTLExact(double fact){
    }
 }
 
-void Reducer::redBKZ(double fact, long Blocksize) {
+//=========================================================================
+
+void Reducer::redBKZ(double fact, long blocksize) {
 
    bool withDual = m_lat->withDual();
    if (withDual) {
@@ -657,8 +665,10 @@ void Reducer::redBKZ(double fact, long Blocksize) {
    } else
       BKZ_XD(m_lat->getBasis(), fact, Blocksize);
 }
-#endif
 
+//=========================================================================
+
+#endif
 
 //=========================================================================
 
@@ -1464,21 +1474,6 @@ bool Reducer::reductMinkowski (int d)
 bool Reducer::shortestVector (NormType norm)
 // Square length of shortest vector can be recovered in m_lMin2
 {
-   // Perform pre-reductions using L2 norm temporarily.
-   // no prereduction required
-
-   //trace( "AVANT shortestVector");
-   if(PreRedBKZ)
-      redBKZ(0.999999, 20);
-
-   // put in comment to prevent use of PreRedDieter and LLL
-   /*
-   if (PreRedDieterSV)
-      preRedDieter (0);
-   if (PreRedLLLSV)
-      redLLL (0.999999, 1000000, m_lat->getDim ());
-   */
-
    if (norm != L2NORM) {
       m_lat->setNegativeNorm ();
       m_lat->setDualNegativeNorm ();
@@ -1495,58 +1490,13 @@ bool Reducer::shortestVector (NormType norm)
       exit (3);
    }
 
-   // put in comment to prevent use of PreRedDieter and LLL
-   /*
-   if (m_countNodes > SHORT_DIET)
-      PreRedDieterSV = true;
-   if (m_countNodes > SHORT_LLL)
-      PreRedLLLSV = true;
-   */
-
    m_lat->updateVecNorm();
    m_lat->sort(0);
    if(m_lat->withDual())
       m_lat->updateDualVecNorm();
 
-   //trace( "APRES shortestVector");
-
    return ok;
 }
-
-
-//=========================================================================
-
-bool Reducer::shortestVectorWithBKZ (NormType norm, double fact, long blockSize)
-// Square length of shortest vector can be recovered in m_lMin2
-{
-   // Perform BKZ pre-reduction using L2 norm temporarily.
-   if(PreRedBKZ)
-      redBKZ(fact, blockSize);
-
-   if (norm != L2NORM) {
-      m_lat->setNegativeNorm ();
-      m_lat->setDualNegativeNorm ();
-   }
-
-   /* Find the shortest vector for the selected norm. */
-   /* The L2 norm is used for the Choleski decomposition and BB bounds. */
-   bool ok;
-   if (norm == L1NORM || norm == L2NORM || norm == ZAREMBANORM) {
-      ok = redBB0 (norm);
-   } else {
-      ok = false;
-      cerr << "Reducer::shortestVector:   wrong norm";
-      exit (3);
-   }
-
-   m_lat->updateVecNorm();
-   m_lat->sort(0);
-   if(m_lat->withDual())
-      m_lat->updateDualVecNorm();
-   
-   return ok;
-}
-
 
 //=========================================================================
 

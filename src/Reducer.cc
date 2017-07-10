@@ -673,10 +673,10 @@ void Reducer::redBKZ(double fact, long blocksize) {
    if (withDual) {
       mat_ZZ U;
       U.SetDims(m_lat->getBasis().NumRows(), m_lat->getBasis().NumCols());
-      BKZ_XD(m_lat->getBasis(), U, fact, Blocksize);
+      BKZ_XD(m_lat->getBasis(), U, fact, blocksize);
       m_lat->getDualBasis() = transpose(inv(U)) * m_lat->getDualBasis();
    } else
-      BKZ_XD(m_lat->getBasis(), fact, Blocksize);
+      BKZ_XD(m_lat->getBasis(), fact, blocksize);
 }
 
 //=========================================================================

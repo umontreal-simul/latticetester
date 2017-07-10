@@ -1,4 +1,3 @@
-#include "latticetester/LatConfig.h"
 #include "latticetester/LatticeTesterConfig.h"
 #include "latticetester/Util.h"
 

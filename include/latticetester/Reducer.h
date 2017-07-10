@@ -42,6 +42,7 @@ namespace LatticeTester {
  * Beside, the alogorithm BKZ implemented in the NTL Library can be used
  * as a prereduction befor the Branch-and-Bound.
  */
+
 class Reducer {
 public:
 

@@ -207,26 +207,6 @@ ParamReader();
                         unsigned int pos);
 
    /**
-    * Reads an implementation condition from the <tt>pos</tt>-th token of
-    * the <tt>ln</tt>-th line into `field`.
-    */
-   void readImplemCond (ImplemCond & field, unsigned int ln,
-                        unsigned int pos);
-
-   /**
-    * Reads a search method from the <tt>pos</tt>-th token of the
-    * <tt>ln</tt>-th line into `field`.
-    */
-   void readSearchMethod (SearchMethod & field, unsigned int ln,
-                          unsigned int pos);
-
-   /**
-    * Checks that the components of \f$A\f$ satisfy \f$-m < A_i < m\f$,
-    * for \f$i=1, 2, …, k\f$.
-    */
-   bool checkBound (const MScal & m, const MVect & A, int k);
-
-   /**
     * Reads the configuration file into `config` for the Beyer and the
     * spectral tests.
     */

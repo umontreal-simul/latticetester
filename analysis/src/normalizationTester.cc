@@ -30,7 +30,7 @@
 #include "latticetester/Reducer.h"
 #include "latticetester/Types.h"
 #include "latticetester/NormaBestLat.h"
-#include "latticetester/LatticeTest.h"
+#include "latticetester/LatticeAnalysis.h"
 
 // include NTL headers
 #include <NTL/tools.h>

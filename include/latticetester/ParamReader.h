@@ -4,6 +4,8 @@
 #include "latticetester/Types.h"
 #include "latticetester/Util.h"
 #include "latticetester/Const.h"
+#include "latticetester/LatticeTesterConfig.h"
+
 #include <string>
 #include <vector>
 
@@ -123,6 +125,13 @@ ParamReader();
    void readBScal (BScal & field, unsigned int ln, int pos);
 
    /**
+    * Reads a `BMat` from the <tt>pos</tt>-th token of the <tt>ln</tt>-th
+    * line into `field`.
+    */
+   void readBMat (BMat & fields, unsigned int & ln, unsigned int pos,
+                 unsigned int numPos);
+
+   /**
     * Reads a `MScal` from the <tt>pos</tt>-th token of the <tt>ln</tt>-th
     * line into `field`.
     */
@@ -184,6 +193,14 @@ ParamReader();
                        unsigned int pos);
 
    /**
+    * Reads a type of PreReduction from the <tt>pos</tt>-th token of the
+    * <tt>ln</tt>-th line into `field`.
+    */
+   void readPreRed (PreReductionType & field, unsigned int ln,
+                     unsigned int pos);
+
+
+   /**
     * Reads an output form from the <tt>pos</tt>-th token of the
     * <tt>ln</tt>-th line into `field`.
     */
@@ -195,6 +212,13 @@ ParamReader();
     * for \f$i=1, 2, …, k\f$.
     */
    bool checkBound (const MScal & m, const MVect & A, int k);
+
+   /**
+    * Reads the configuration file into `config` for the Beyer and the
+    * spectral tests.
+    */
+   void read (LatticeTesterConfig & config);
+
 private:
 
 /**

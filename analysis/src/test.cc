@@ -33,6 +33,8 @@
 #include "latticetester/IntLatticeBasis.h"
 #include "latticetester/Reducer.h"
 #include "latticetester/Types.h"
+#include "latticetester/ParamReader.h"
+#include "latticetester/LatticeTesterConfig.h"
 
 // Include NTL Header
 #include <NTL/tools.h>
@@ -80,7 +82,7 @@ int main (int argc, char *argv[])
       //   status |= testall.doTestDir (argv[j]);
       string fname (argv[j]);
       fname += ".dat";
-      ParamReaderLat paramRdr (fname.c_str ());
+      ParamReader paramRdr (fname.c_str ());
       fname.clear ();
       LatticeTesterConfig config;
       paramRdr.read (config);

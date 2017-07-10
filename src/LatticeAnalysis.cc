@@ -32,13 +32,9 @@
 #include "latticetester/LatticeAnalysis.h"
 
 
-#include "latmrg/LatConfig.h"
-#include "latmrg/ParamReaderLat.h"
-#include "latmrg/Formatter.h"
-#include "latmrg/WriterRes.h"
-#include "latmrg/ReportHeaderLat.h"
-#include "latmrg/ReportFooterLat.h"
-#include "latmrg/ReportLat.h"
+#include "latticetester/LatticeTesterConfig.h"
+#include "latticetester/ParamReaderLat.h"
+
 
 
 using namespace std;

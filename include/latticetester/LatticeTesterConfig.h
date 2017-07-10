@@ -4,7 +4,7 @@
 #include "latticetester/Const.h"
 
 
-namespace LatMRG {
+namespace LatticeTester {
 
 /**
  * This class is used to save the configuration of a lattice test. It is used
@@ -54,33 +54,10 @@ public:
     */
    std::string fileName;
 
-   /**
-    * The number of MRG components.
-    */
-   int J;
-
-   /**
-    * The array of generator types for each MRG component. See module
-    * `Const` for more details.
-    */
-   GenType *genType;
-
-   /**
-    * The array of MRG components which describe the combined generator.
-    */
-   MRGComponent **comp;
-
    /*
-    * The minimal dimension for which the test will be performed. ************
-    * REMPLACÉ PAR `td[0]`. À ÉLIMINER.
+    * The dimensin of the lattice
     */
    int dimension;
-
-   /**
-    * The criterion for which the test will be performed. See module
-    * `Const` for the possible criterion types.
-    */
-   CriterionType criter;
 
    /**
     * The bound used for the normalization in the definition of \f$S_t\f$.
@@ -105,12 +82,6 @@ public:
     * definition of the possible norms.
     */
    LatticeTester::NormType norm;
-
-   /**
-    * Indicates the type of lattice used in the test. See `Const` for a
-    * definition of the possible lattice types.
-    */
-   LatticeType latType;
 
    /**
     * This flag is set `true` if the test is applied for lacunary indices.

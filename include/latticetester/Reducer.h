@@ -172,6 +172,11 @@ public:
     */
    bool shortestVector (NormType norm);
 
+
+   // PW_TODO
+   // temporary function name
+   bool shortestVectorWithBKZ (NormType norm, double fact = 0.999999, long blockSize = 20);
+
    /**
     * Similar to `ShortestVector` but uses the algorithm of Dieter
     * \cite rDIE75a, \cite rKNU98a&thinsp;.

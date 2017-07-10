@@ -167,61 +167,13 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
    setReducer(red);
    setDim(config.dim);
    setNorm(config.norm);
-   etNormalizerType(config.normalizer);
+   setNormalizerType(config.normalizer);
+   initNormalizer (config.normalizer);
+
    double fact = 1.0 - config.epsilon;
 
-
-   
-   red.shortestVectorWithBKZ(config.norm, fact, config.blockSize);
-
-   // calculating the density
-   // PW_TODO
-   // ok si la matrice est directement construite comme m-dual mais probleme si 
-   // travail direct sur primale re-scaled ?
-   // version avec logDensity en parametre (pou m^k sans besoin de calcul det)
-   RScal logDensity;
-   logDensity = - log( determinant(red.getIntLatticeBasis().getBasis()) );
-
-
-   // initializing the normalizer
-
-   Normalizer* normalizer;
-
-   switch (config.normalizer) {
-      case BESTLAT:
-         m_normalizer = new NormaBestLat (logDensity, config.dim);
-         break;
-      case LAMINATED:
-         m_normalizer = new NormaLaminated (logDensity, config.dim);
-         break;
-      case ROGERS:
-         m_normalizer = new NormaRogers (logDensity, config.dim);
-         break;
-      case MINKL1:
-         m_normalizer = new NormaMinkL1 (logDensity, config.dim);
-         break;
-      case MINKOWSKI:
-         m_normalizer = new NormaMinkowski (logDensity, config.dim);
-         break;
-      case NORMA_GENERIC:
-         m_normalizer = new Normalizer (logDensity, config.dim, "Norma_generic");
-         break;
-
-      /*
-      case PALPHA_N:
-         m_normalizer = new NormaPalpha (m_reducer->getIntLatticeBasis().getModulo(), alpha, dim);
-         //PW_TODO : c'est bien ça ?
-         break;
-      */
-
-      default:
-         cout << "normalizer:   no such case";
-         exit (2);
-   }
-
-
-   // Calculating the Figure of Merit using the selected normalization
-   m_merit = conv<double>(red.getMinLength()) / normalizer->getPreComputedBound(dim);
+   // performing the test
+   performTest(config.prered, fact, )
 
 
    ReportHeaderLat header (rw, &config, lattice);
@@ -231,128 +183,12 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
    double minVal[1 + toDim];
    SetZero (minVal, toDim);
 
-   Normalizer *normal = 0;
 
-   if (config.criter == SPECTRAL) {
-      normal = lattice->getNormalizer (config.norma, 0);
-      // creates and returns the normalizer corresponding to config.norma
-      normal->setNorm (config.norm);
-   } else if (config.criter == PALPHA &&
-              (config.calcPalpha == NORMPAL || config.calcPalpha == BAL)) {
-      normal = new NormaPalpha (lattice->getModulo(), config.alpha, toDim);
-   }
+   report.printHeader ();
+   footer.setLatticeTest (&spectralTest);
+   report.printTable ();
+   report.printFooter ();
 
-   if (!memLacF && config.lacunary) {
-      plac = new Lacunary (config.Lac, toDim);
-      lattice->setLac (*plac);
-   }
-
-
-   switch (config.criter) {
-   case SPECTRAL: {
-         LatTestSpectral spectralTest (normal, lattice);
-         lattice->buildBasis (fromDim - 1);
-
-         spectralTest.attach (&report);
-         report.printHeader ();
-         spectralTest.setDualFlag (config.dualF);
-         spectralTest.setInvertFlag (config.invertF);
-         spectralTest.setDetailFlag (config.detailF);
-         spectralTest.setMaxAllDimFlag (true);
-         spectralTest.setMaxNodesBB (config.maxNodesBB);
-
-         if (1 == config.d) {
-            spectralTest.test (fromDim, toDim, minVal);
-            // lattice->write();
-            footer.setLatticeTest (&spectralTest);
-            report.printTable ();
-            report.printFooter ();
-
-         } else {
-            if (config.genType[0] == MRG || config.genType[0] == LCG)
-               master = new MRGLattice (*(MRGLattice *) lattice);
-            else if (config.genType[0] == KOROBOV)
-               master = new KorobovLattice (*(KorobovLattice *) lattice);
-            else if (config.genType[0] == RANK1)
-               master = new Rank1Lattice (*(Rank1Lattice *) lattice);
-
-            master->buildBasis (toDim);
-            TestProjections proj (master, lattice, &spectralTest, config.td,
-                                  config.d);
-            proj. setOutput (rw);
-            // proj.setDualFlag (config.dualF);
-            proj.setPrintF (true);
-            double merit = proj.run (stationary, false, minVal);
-            int nbProj = proj.getNumProjections ();
-            rw->writeString ("\nMin merit:   ");
-            rw->writeDouble (sqrt (merit));
-            rw->newLine ();
-            rw->writeString ("Num projections:   ");
-            rw->writeInt (nbProj);
-            rw->newLine ();
-            // nbProj = proj.calcNumProjections(stationary, false);
-            // cout << "Num projections2:  " << nbProj << endl << endl;
-            delete master;
-         }
-      }
-      break;
-
-   case BEYER: {
-         LatTestBeyer beyerTest (lattice);
-         lattice->buildBasis (fromDim - 1);
-         beyerTest.attach (&report);
-         report.printHeader ();
-         beyerTest.setDualFlag (config.dualF);
-         beyerTest.setMaxAllDimFlag (true);
-         beyerTest.setMaxNodesBB (config.maxNodesBB);
-         beyerTest.setDetailFlag (config.detailF);
-         beyerTest.test (fromDim, toDim, minVal);
-         footer.setLatticeTest (&beyerTest);
-         report.printTable ();
-         report.printFooter ();
-         //rw->writeString (lattice->toStringDualBasis ());
-      }
-      break;
-
-   case PALPHA: {
-         LatTestPalpha palphaTest (normal, lattice);
-         palphaTest.setConfig (&config);
-         palphaTest.attach (&report);
-         report.printHeader ();
-         if (1 == config.d) {
-            palphaTest.test (fromDim, toDim, minVal);
-            footer.setLatticeTest (&palphaTest);
-            report.printTable ();
-            report.printFooter ();
-         } else {
-            MRGLattice master = MRGLattice (*(MRGLattice *) lattice);
-            master.buildBasis (toDim);
-            TestProjections proj (&master, lattice, &palphaTest, config.td,
-                                  config.d);
-            proj. setOutput (rw);
-            double merit = proj.run (true, false, minVal);
-            int nbProj = proj.getNumProjections ();
-            rw->writeString ("\n\nMin merit:   ");
-            rw->writeDouble (sqrt (merit));
-            rw->newLine ();
-            rw->writeString ("Num projections:   ");
-            rw->writeInt (nbProj);
-            rw->newLine ();
-            rw->newLine ();
-         }
-      }
-      break;
-
-   default:
-      cerr << "Default case for config.criter" << endl;
-      return -1;
-   }
-
-   if (normal != 0)
-      delete normal;
-   if (!memLacF && config.lacunary)
-      delete plac;
-   delete lattice;
    delete rw;
    return 0;
 }

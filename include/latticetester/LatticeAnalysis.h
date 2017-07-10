@@ -59,9 +59,10 @@ public:
     * The method returns `false` if the test was interrupted for any reason
     * before completion, and it returns `true` upon success. The result of
     * the test is kept in <tt>m_merit</tt>.
-    * PW_TODO : add comment
+    * PW_TODO : description à améliorer
     */
-   bool performTest ();
+   bool LatticeAnalysis::performTest (PreReductionType PreRed, double fact, 
+                                      long blockSize = 0);
 
    /**
     * Reads the parameters of the test in input text file `datafile`; then do

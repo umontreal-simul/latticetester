@@ -105,26 +105,33 @@ void LatticeAnalysis::initNormalizer (NormaType norma, int alpha)
 
 //===========================================================================
 
-bool LatticeAnalysis::performTest (double fact, long blockSize)
+bool LatticeAnalysis::performTest (PreReductionType PreRed, double fact, long blockSize)
 {
    bool result;
 
-   // finding shortest non-zero vector in the lattice
-   m_reducer->shortestVectorWithBKZ(norm, fact, blockSize);
-   //m_reducer.redBKZ(fact,blockSize); // BKZ reduction is performed
-   //result = m_reducer.redBB0(norm) // Then Brand-and-Bpund procedure is performed
+   // perform pre-reduction on the lattice
+   // PW_TODO : gérer le paramètre FP, QP, XD, RR pour les fonctions NTL
+   switch (PreRed) {
+      case BKZ:
+         m_reducer->redBKZ(fact, blocksize);
+         break;
+      case LenstraLL:
+         m_reducer->redLLLNTLProxyFP(fact);
+         break;
+      case PreRedDieter:
+         m_reducer->preRedDieter(0);
+         break;
+      default:
+         cout << "normalizer:   no such case";
+         exit (2);
+   }
+
+   // performing the Branch-and-Bound procedure to find the shortest non-zero vector
+   result = m_reducer->shortestVector(m_norm);
 
    // calculating the Figure of Merit
-   double length = conv<double>(m_reducer->getMinLength());
-   if (norm == L2NORM)
-      length *= length;
-
-   double maxLength = m_normalizer->getPreComputedBound(dim);
-
-   if (norm == L2NORM)
-      m_merit = sqrt(length / maxLength);
-   else 
-      m_merit = length / maxLength;
+   m_merit = conv<double>(m_reducer->getMinLength()) 
+            / m_normalizer->getPreComputedBound(m_dim);
 
    return result;
   

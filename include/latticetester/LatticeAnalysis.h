@@ -46,7 +46,7 @@ public:
     * Constructor. The test will be applied on `lattice`, with the selected
     * `normalizer`.
     */
-   LatticeAnalysis (Reducer* reducer, NormType norm, 
+   LatticeAnalysis (Reducer* reducer, NormType norm,
       NormaType normaType, int alpha = 0);
 
    /**
@@ -61,7 +61,7 @@ public:
     * the test is kept in <tt>m_merit</tt>.
     * PW_TODO : description à améliorer
     */
-   bool LatticeAnalysis::performTest (PreReductionType PreRed, double fact, 
+   bool performTest (PreReductionType PreRed, double fact,
                                       long blockSize = 0);
 
    /**
@@ -97,8 +97,8 @@ public:
    void setDim (int dim) { m_dim = dim; }
    void setNorm (NormType norm) { m_norm = norm; }
    void setNormalizerType (NormaType normalizerType) { m_normalizerType = normalizerType; }
-    
-   
+
+
 
 private:
 
@@ -107,7 +107,7 @@ private:
   NormType m_norm;
   NormaType m_normalizerType;
   Normalizer* m_normalizer;
-  
+
 
    /**
     * Contains the results of the test.

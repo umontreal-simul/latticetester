@@ -76,15 +76,16 @@ int main (int argc, char *argv[])
    for (int j = 1; j < argc; j++) {
       // Do the test for each data file or directory on the command line
       stat(argv[j], &buf);
-      if (0 != S_ISDIR(buf.st_mode))         // directory
-         status |= testall.doTestDir (argv[j]);
-      else {
-         string dataname(argv[j]);
-         dataname.append(".dat");
-         stat(dataname.c_str(), &buf);
-         if (0 != S_ISREG(buf.st_mode))    // data file
-            status |= testall.doTest (argv[j]);
-      }
+      //if (0 != S_ISDIR(buf.st_mode))         // directory
+      //   status |= testall.doTestDir (argv[j]);
+      string fname (argv[j]);
+      fname += ".dat";
+      ParamReaderLat paramRdr (fname.c_str ());
+      fname.clear ();
+      LatticeTesterConfig config;
+      paramRdr.read (config);
+
+      config.write()
    }
 
 

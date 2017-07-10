@@ -42,6 +42,19 @@ namespace LatticeTester {
 enum NormType { SUPNORM = 1, L1NORM = 2, L2NORM = 3, ZAREMBANORM = 4 };
 
 /**
+ * Indicates in which form and where the results will be sent.
+ * \anchor REF__Const_co_output
+ *
+ * `TERMINAL`: the results will appear only on the terminal screen.<br>
+ * `RES`: the results will be in plain text format and sent to a file with
+ * extension "<tt>.res</tt>".<br>
+ * `TEX`: the results will be in LaTeX format and sent to a file with extension
+ * "<tt>.tex</tt>".<br>
+ * `GEN`: the results will be sent to a file with extension "<tt>.gen</tt>".
+ */
+enum OutputType { TERMINAL, RES, TEX, GEN };
+
+/**
  * Indicates whether an integer is prime, probably prime, composite or its
  * status is unknown (or don’t care).
  */
@@ -95,6 +108,12 @@ enum NormaType { BESTLAT, LAMINATED, ROGERS, MINKOWSKI, MINKL1,
  */
 enum CalcType { PAL, NORMPAL, BAL, SEEKPAL };
 
+
+/**
+ * Indicates the Prereduction Type. BKZ, etc...
+ */
+enum PreReductionType {BKZ, PreRedDieter, LLL};
+
 /**
  * \name toString functions
  *
@@ -111,6 +130,9 @@ std::string toStringPrime (PrimeType);
 std::string toStringCriterion (CriterionType);
 std::string toStringNorma (NormaType);
 std::string toStringCalc (CalcType);
+std::string toStringPreRed (PreReductionType);
+std::string toStringOutput (OutputType);
+
 
 /**
  * @}

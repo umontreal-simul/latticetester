@@ -268,28 +268,6 @@ void ParamReader::readDouble(double& field, unsigned int ln, unsigned int pos)
 
 //===========================================================================
 
-void ParamReader::readGenType(GenType& field, unsigned int ln, unsigned int pos)
-{
-   string val;
-   getToken(val, ln, pos);
-
-   if (strcasecmp(val.c_str(), "LCG") == 0)
-      field = LCG;
-   else if (strcasecmp(val.c_str(), "MRG") == 0)
-      field = MRG;
-   else if (strcasecmp(val.c_str(), "MWC") == 0)
-      field = MWC;
-   else if (strcasecmp(val.c_str(), "KOROBOV") == 0)
-      field = KOROBOV;
-   else if (strcasecmp(val.c_str(), "RANK1") == 0)
-      field = RANK1;
-   else
-      MyExit(1, "readGenType:   NO SUCH CASE");
-}
-
-
-//===========================================================================
-
 void ParamReader::readMScal(MScal & field, unsigned int ln, unsigned int pos)
 {
    string val;
@@ -314,6 +292,19 @@ void ParamReader::readMVect(MVect & fields, unsigned int & ln, unsigned int pos,
    for (unsigned int i = pos; i < numPos; i++) {
       readMScal(fields[j], ln, i);
       j++;
+   }
+}
+
+//===========================================================================
+
+void ParamReader::readBMat(BMat & fields, unsigned int & ln, unsigned int pos,
+   unsigned int numPos)
+{
+   for (unsigned int j = pos; j < numPos; j++){
+      for (unsigned int i = pos; i < numPos; i++) {
+         readBScal(fields[j][i], ln, i);
+      }
+      ++ln;
    }
 }
 
@@ -453,26 +444,6 @@ void ParamReader::readNormaType(NormaType& field, unsigned int ln, unsigned int 
       field = NORMA_GENERIC;
    else
       MyExit(1, "readNormaType:   NO SUCH CASE");
-}
-
-
-//===========================================================================
-
-void ParamReader::readLatticeType(LatticeType& field, unsigned int ln, unsigned int pos)
-{
-   string val;
-   getToken(val, ln, pos);
-
-   if (0 == strcasecmp(val.c_str(), "FULL"))
-      field = FULL;
-   else if (0 == strcasecmp(val.c_str(), "RECURRENT"))
-      field = RECURRENT;
-   else if (0 == strcasecmp(val.c_str(), "ORBIT"))
-      field = ORBIT;
-   else if (0 == strcasecmp(val.c_str(), "PRIMEPOWER"))
-      field = PRIMEPOWER;
-   else
-      MyExit(1, "readLatticeType:   NO SUCH CASE");
 }
 
 

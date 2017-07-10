@@ -18,10 +18,7 @@ authors: Hicham Wahbi
 #include "latticetester/Types.h"
 #include "latticetester/Util.h"
 #include "latticetester/ParamReader.h"
-<<<<<<< HEAD
-=======
 #include "latticetester/LatticeTesterConfig.h"
->>>>>>> new_class_LatticeTest
 
 using namespace std;
 using namespace LatticeTester;

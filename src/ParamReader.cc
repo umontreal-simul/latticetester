@@ -18,6 +18,10 @@ authors: Hicham Wahbi
 #include "latticetester/Types.h"
 #include "latticetester/Util.h"
 #include "latticetester/ParamReader.h"
+<<<<<<< HEAD
+=======
+#include "latticetester/LatticeTesterConfig.h"
+>>>>>>> new_class_LatticeTest
 
 using namespace std;
 using namespace LatticeTester;
@@ -268,6 +272,7 @@ void ParamReader::readDouble(double& field, unsigned int ln, unsigned int pos)
 
 //===========================================================================
 
+<<<<<<< HEAD
 void ParamReader::readGenType(GenType& field, unsigned int ln, unsigned int pos)
 {
    string val;
@@ -290,6 +295,8 @@ void ParamReader::readGenType(GenType& field, unsigned int ln, unsigned int pos)
 
 //===========================================================================
 
+=======
+>>>>>>> new_class_LatticeTest
 void ParamReader::readMScal(MScal & field, unsigned int ln, unsigned int pos)
 {
    string val;
@@ -319,6 +326,22 @@ void ParamReader::readMVect(MVect & fields, unsigned int & ln, unsigned int pos,
 
 //===========================================================================
 
+<<<<<<< HEAD
+=======
+void ParamReader::readBMat(BMat & fields, unsigned int & ln, unsigned int pos,
+   unsigned int numPos)
+{
+   for (unsigned int j = pos; j < numPos; j++){
+      for (unsigned int i = pos; i < numPos; i++) {
+         readBScal(fields[j][i], ln, i);
+      }
+      ++ln;
+   }
+}
+
+//===========================================================================
+
+>>>>>>> new_class_LatticeTest
 void ParamReader::readIntVect (int* fields, unsigned int ln, unsigned int pos,
                                unsigned int num, int j)
 {
@@ -352,6 +375,7 @@ void ParamReader::readInterval (MVect & B, MVect & C, unsigned int & ln, int k)
    }
 }
 
+<<<<<<< HEAD
 
 //===========================================================================
 
@@ -371,6 +395,8 @@ void ParamReader::readCriterionType(CriterionType& field, unsigned int ln, unsig
 }
 
 
+=======
+>>>>>>> new_class_LatticeTest
 //===========================================================================
 
 void ParamReader::readNormType (NormType & field, unsigned int ln, unsigned int pos)
@@ -393,6 +419,7 @@ void ParamReader::readNormType (NormType & field, unsigned int ln, unsigned int 
 
 //===========================================================================
 
+<<<<<<< HEAD
 void ParamReader::readCalcType (CalcType & field, unsigned int ln, unsigned int pos)
 {
    string val;
@@ -434,6 +461,8 @@ void ParamReader::readDecompType (DecompType & field, unsigned int line,
 
 //===========================================================================
 
+=======
+>>>>>>> new_class_LatticeTest
 void ParamReader::readNormaType(NormaType& field, unsigned int ln, unsigned int pos)
 {
    string val;
@@ -458,6 +487,7 @@ void ParamReader::readNormaType(NormaType& field, unsigned int ln, unsigned int 
 
 //===========================================================================
 
+<<<<<<< HEAD
 void ParamReader::readLatticeType(LatticeType& field, unsigned int ln, unsigned int pos)
 {
    string val;
@@ -490,6 +520,8 @@ void ParamReader::readOrbit (int J, MRGComponent **comp, unsigned int & ln)
 
 //===========================================================================
 
+=======
+>>>>>>> new_class_LatticeTest
 void ParamReader::readOutputType(OutputType & field, unsigned int ln, unsigned int pos)
 {
    string val;
@@ -509,6 +541,7 @@ void ParamReader::readOutputType(OutputType & field, unsigned int ln, unsigned i
       MyExit(1, "readOutputType:   NO SUCH CASE");
 }
 
+<<<<<<< HEAD
 //===========================================================================
 
 void ParamReader::readImplemCond(ImplemCond& field, unsigned int ln, unsigned int pos)
@@ -529,6 +562,8 @@ void ParamReader::readImplemCond(ImplemCond& field, unsigned int ln, unsigned in
    else
       MyExit(1, "readImplemCond:   NO SUCH CASE");
 }
+=======
+>>>>>>> new_class_LatticeTest
 
 //===========================================================================
 
@@ -540,13 +575,20 @@ void ParamReader::readPreRed(PreReductionType& field, unsigned int ln, unsigned 
    if (0 == strcasecmp(val.c_str(), "BKZ"))
       field = BKZ;
    else if (0 == strcasecmp(val.c_str(), "PreRedDieter"))
+<<<<<<< HEAD
       field = APP_FACT;
    else if (0 == strcasecmp(val.c_str(), "LLL"))
       field = ZERO_COEF;
+=======
+      field = PreRedDieter;
+   else if (0 == strcasecmp(val.c_str(), "LLL"))
+      field = LLL;
+>>>>>>> new_class_LatticeTest
    else
       MyExit(1, "readPreRed:   NO SUCH CASE");
 }
 
+<<<<<<< HEAD
 //===========================================================================
 
 void ParamReader::readSearchMethod(SearchMethod& field, unsigned int ln, unsigned int pos)
@@ -635,6 +677,49 @@ bool ParamReader::checkPrimePower(LatticeType lat, long m2, long m3, int k)
    if (k > 1)
       MyExit(1, "LatticeType = PRIMEPOWER:   k > 1");
    return true;
+=======
+
+
+//===========================================================================
+
+bool ParamReader::checkBound (const MScal & m, const MVect & A, int k)
+{
+   for (int i = 0; i < k; i++) {
+      assert (A[i] < m);
+      assert (A[i] > -m);
+   }
+   return true;
+}
+
+
+void ParamReader::read (LatticeTesterConfig & config)
+{
+   getLines ();
+   unsigned int ln = 1;
+
+   readNormType (config.norm, ++ln, 0);
+   readNormaType (config.normalizer, ++ln, 0);
+   readPreRed (config.prereduction, ++ln, 0);
+
+   if(config.prereduction == BKZ){
+      readDouble (config.fact, ++ln, 0);
+      readInt (config.blocksize, ++ln, 0);
+   }
+   else if(config.prereduction == PreRedDieter){
+
+   else if(config.prereduction == LLL){
+      readDouble (config.fact, ++ln, 0);
+   }
+
+   readInt (config.dimension, ++ln, 0);
+
+   readBMat(config.basis, ++ln, 0, config.dimension);
+
+   readLong (config.maxNodesBB, ++ln, 1);
+
+   readOutputType(config.outputType, ++ln, 0);
+
+>>>>>>> new_class_LatticeTest
 }
 
 

@@ -29,78 +29,14 @@
 #include "latticetester/NormaMinkL1.h"
 #include "latticetester/NormaPalpha.h"
 #include "latticetester/NormaRogers.h"
-#include "latticetester/LatticeTest.h"
+#include "latticetester/LatticeAnalysis.h"
 
-
-#include "latmrg/LatConfig.h"
-#include "latmrg/ParamReaderLat.h"
-#include "latmrg/Formatter.h"
-#include "latmrg/WriterRes.h"
-#include "latmrg/ReportHeaderLat.h"
-#include "latmrg/ReportFooterLat.h"
-#include "latmrg/ReportLat.h"
-
+#include "latticetester/LatticeTesterConfig.h"
+#include "latticetester/ParamReaderLat.h"
 
 using namespace std;
 using namespace NTL;
 //using namespace NTL;
-
-
-
-
-namespace
-{
-
-//==========================================================================
-
-int getDir (string dir, std::vector <string> & files)
-{
-   DIR *dp;
-   struct dirent *dirp;
-   if ((dp = opendir (dir.c_str())) == NULL) {
-      cerr << "Directory: " << dir << endl;
-      perror ("Couldn't open the directory");
-      return errno;
-   }
-
-   // Does directory name ends with /
-   size_t j = dir.rfind('/');
-   string SEP("");
-   // if not, add one /
-   if (dir.size() != (1 + j))
-      SEP += "/";
-
-   while ((dirp = readdir (dp)) != NULL) {
-      if (0 == fnmatch("*.dat", dirp->d_name, 0))
-         // keeps full name including directory name
-         files.push_back (string (dir + SEP + dirp->d_name));
-   }
-   closedir (dp);
-   return 0;
-}
-
-
-void eraseExtension (std::vector <string> & files)
-{
-   for (unsigned int i = 0; i < files.size (); i++) {
-      size_t j = files[i].rfind(".dat");
-      if (j != string::npos)
-         files[i].erase(j);
-   }
-}
-
-
-void printFileNames (std::vector <string> & files)
-{
-   cout << "----------------------------------------------" << endl;
-   for (unsigned int i = 0; i < files.size (); i++) {
-      cout << files[i] << endl;
-   }
-}
-
-} // end namespace
-
-//==========================================================================
 
 
 namespace LatticeTester
@@ -108,10 +44,13 @@ namespace LatticeTester
 
 //===========================================================================
 
-LatticeAnalysis::LatticeAnalysis (Reducer & reducer, NormaType normaType, int alpha) 
+LatticeAnalysis::LatticeAnalysis (Reducer & reducer, NormType norm, 
+      NormaType normaType, int alpha) 
 {
    m_reducer = &reducer;
-   m_normaType = normaType;
+   m_dim = m_reducer->getIntLatticeBasis().getDim(); 
+   m_norm = norm;
+   m_normalizerType = normaType;
    initNormalizer(normaType, alpha);
 
 }
@@ -125,11 +64,50 @@ LatticeAnalysis::~LatticeAnalysis ()
 
 //===========================================================================
 
+void LatticeAnalysis::initNormalizer (NormaType norma, int alpha)
+{
+   // PW_TODO
+   // ok si la matrice est directement construite comme m-dual mais probleme si
+   // travail direct sur primale re-scaled ?
+   // version avec logDensity en parametre (pou m^k sans besoin de calcul det)
+
+   RScal logDensity;
+   logDensity = - log( determinant(m_reducer->getIntLatticeBasis().getBasis()) );
+
+   switch (norma) {
+      case BESTLAT:
+         m_normalizer = new NormaBestLat (logDensity, m_dim);
+         break;
+      case LAMINATED:
+         m_normalizer = new NormaLaminated (logDensity, m_dim);
+         break;
+      case ROGERS:
+         m_normalizer = new NormaRogers (logDensity, m_dim);
+         break;
+      case MINKL1:
+         m_normalizer = new NormaMinkL1 (logDensity, m_dim);
+         break;
+      case MINKOWSKI:
+         m_normalizer = new NormaMinkowski (logDensity, m_dim);
+         break;
+      case NORMA_GENERIC:
+         m_normalizer = new Normalizer (logDensity, m_dim, "Norma_generic");
+         break;
+      case PALPHA_N:
+         m_normalizer = new NormaPalpha (m_reducer->getIntLatticeBasis().getModulo(), alpha, dim);
+         //PW_TODO : c'est bien ça ?
+         break;
+      default:
+         cout << "normalizer:   no such case";
+         exit (2);
+   }
+}
+
+//===========================================================================
+
 bool LatticeAnalysis::performTest (double fact, long blockSize)
 {
    bool result;
-   NormType norm = m_reducer->getIntLatticeBasis().getNorm();
-   int dim = m_reducer->getIntLatticeBasis().getDim();
 
    // finding shortest non-zero vector in the lattice
    m_reducer->shortestVectorWithBKZ(norm, fact, blockSize);
@@ -152,97 +130,6 @@ bool LatticeAnalysis::performTest (double fact, long blockSize)
   
 }
 
-//===========================================================================
-
-void LatticeAnalysis::initNormalizer (NormaType norma, int alpha)
-{
-   int dim = m_reducer->getIntLatticeBasis().getDim(); 
-
-   // PW_TODO
-   // ok si la matrice est directement construite comme m-dual mais probleme si 
-   // travail direct sur primale re-scaled ?
-   // version avec logDensity en parametre (pou m^k sans besoin de calcul det)
-
-   RScal logDensity;
-   logDensity = - log( determinant(m_reducer->getIntLatticeBasis().getBasis()) );
-
-   switch (norma) {
-      case BESTLAT:
-         m_normalizer = new NormaBestLat (logDensity, dim);
-         break;
-      case LAMINATED:
-         m_normalizer = new NormaLaminated (logDensity, dim);
-         break;
-      case ROGERS:
-         m_normalizer = new NormaRogers (logDensity, dim);
-         break;
-      case MINKL1:
-         m_normalizer = new NormaMinkL1 (logDensity, dim);
-         break;
-      case MINKOWSKI:
-         m_normalizer = new NormaMinkowski (logDensity, dim);
-         break;
-      case NORMA_GENERIC:
-         m_normalizer = new Normalizer (logDensity, dim, "Norma_generic");
-         break;
-      case PALPHA_N:
-         m_normalizer = new NormaPalpha (m_reducer->getIntLatticeBasis().getModulo(), alpha, dim);
-         //PW_TODO : c'est bien ça ?
-         break;
-      default:
-         cout << "normalizer:   no such case";
-         exit (2);
-   }
-}
-
-//=========================================================================
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//==========================================================================
-
-Writer* LatticeAnalysis::createWriter (const char *infile, OutputType ot)
-{
-   Writer *rw = 0;
-   string fname;
-
-   switch (ot) {
-   case RES:
-      fname = infile;
-      fname += ".res";
-      rw = new WriterRes (fname.c_str ());
-      break;
-
-   case TEX:
-      fname = infile;
-      fname += ".tex";
-      // rw = new WriterTex(fname.c_str()); //EB Ne permet pas d'écrire en Tex
-      break;
-
-   case TERMINAL:
-      rw = new WriterRes (&cout);
-      break;
-
-   default:
-      cerr << "\n*** outputType:   no such case" << endl;
-      return 0;
-   }
-   return rw;
-}
-
-
 //==========================================================================
 
 /*
@@ -251,15 +138,9 @@ Writer* LatticeAnalysis::createWriter (const char *infile, OutputType ot)
  * "poil.dat", then infile is "poil".
  * Data files must always have the extension "dat".
  */
-int LatticeAnalysis::doTest (const char *infile)
+int LatticeAnalysis::doTestFromInputFile (const char *infile)
 {
-
-
-   //// mettre ici le code qui est dans le main
-
-
-   
-   // Lecture des paramètres
+   // parameters reading
    string fname (infile);
    fname += ".dat";
    ParamReaderLat paramRdr (fname.c_str ());
@@ -267,59 +148,75 @@ int LatticeAnalysis::doTest (const char *infile)
 
    LatConfig config;
    paramRdr.read (config);
-   //   config.write();
+   //config.write();
 
    Writer* rw = createWriter (infile, config.outputType);
 
-   LatMRG::IntLattice *lattice = 0;
-   LatMRG::IntLattice *master = 0;
-   Lacunary *plac = 0;
-   bool stationary = true;
-   int toDim = config.td[1];
-   int fromDim = config.td[0];
-   bool memLacF = true;        // Lacunary with only used lines-columns of
-   // bases
-   // memLacF = false; // Lacunary with all lines-columns of bases
 
-   if (config.J > 1) { //Several MRG
-      lattice = MRGLatticeFactory::fromCombMRG (config.comp, config.J,
-                toDim, 0, config.latType, config.norm);
 
-   } else {
-      if (config.latType == PRIMEPOWER) {
-         config.comp[0]->module.reduceM (config.comp[0]->a[0]);
-         if (memLacF && config.lacunary)
-            lattice = new MRGLatticeLac (config.comp[0]->module.mRed,
-               config.comp[0]->a, toDim, config.comp[0]->k, config.Lac,
-                                         config.latType, config.norm);
-         else{
-            lattice = new MRGLattice (config.comp[0]->module.mRed,
-               config.comp[0]->a, toDim, config.comp[0]->k,
-                                      config.latType, config.norm);
+   // creating the Reducer object
+   IntLatticeBasis basis (config.matrix, config.dim, config.norm);
+   Reducer red (basis);
 
-         }
+   // finding shortest non-zero vector in the lattice
+   // PW_TODO : disjonction de cas selon la pre-reduction choisie
+   double fact = 1.0 - config.epsilon;
+   red.shortestVectorWithBKZ(config.norm, fact, config.blockSize);
 
-      } else if (config.genType[0] == MRG || config.genType[0] == LCG) {
-         if (memLacF && config.lacunary){
-            lattice = new MRGLatticeLac (config.comp[0]->module.mRed,
-                config.comp[0]->a, toDim, config.comp[0]->k, config.Lac,
-                config.latType, config.norm);
-         }
-         else{
-            lattice = new MRGLattice (config.comp[0]->module.mRed,
-                config.comp[0]->a, toDim, config.comp[0]->k,
-                config.latType, config.norm);
-         }
+   // calculating the density
+   // PW_TODO
+   // ok si la matrice est directement construite comme m-dual mais probleme si 
+   // travail direct sur primale re-scaled ?
+   // version avec logDensity en parametre (pou m^k sans besoin de calcul det)
+   RScal logDensity;
+   logDensity = - log( determinant(red.getIntLatticeBasis().getBasis()) );
 
-      } else if (config.genType[0] == KOROBOV) {
-         lattice = new KorobovLattice (config.comp[0]->getM (),
-            config.comp[0]->a[1], toDim, config.norm);
-      } else if (config.genType[0] == RANK1) {
-         stationary = false;
-         lattice = new Rank1Lattice (config.comp[0]->getM (),
-            config.comp[0]->a, config.comp[0]->k, config.norm);
-      }
+
+   // initializing the normalizer
+
+   Normalizer* normalizer;
+
+   switch (config.normalizer) {
+      case BESTLAT:
+         m_normalizer = new NormaBestLat (logDensity, config.dim);
+         break;
+      case LAMINATED:
+         m_normalizer = new NormaLaminated (logDensity, config.dim);
+         break;
+      case ROGERS:
+         m_normalizer = new NormaRogers (logDensity, config.dim);
+         break;
+      case MINKL1:
+         m_normalizer = new NormaMinkL1 (logDensity, config.dim);
+         break;
+      case MINKOWSKI:
+         m_normalizer = new NormaMinkowski (logDensity, config.dim);
+         break;
+      case NORMA_GENERIC:
+         m_normalizer = new Normalizer (logDensity, config.dim, "Norma_generic");
+         break;
+
+      /*
+      case PALPHA_N:
+         m_normalizer = new NormaPalpha (m_reducer->getIntLatticeBasis().getModulo(), alpha, dim);
+         //PW_TODO : c'est bien ça ?
+         break;
+      */
+
+      default:
+         cout << "normalizer:   no such case";
+         exit (2);
    }
+
+
+   // Calculating the Figure of Merit using the selected normalization
+   m_merit = conv<double>(red.getMinLength()) / normalizer->getPreComputedBound(dim);
+
+   // deleting the normalizer pointer
+   delete normalizer;
+
+
+
 
    ReportHeaderLat header (rw, &config, lattice);
    ReportFooterLat footer (rw);
@@ -457,7 +354,7 @@ int LatticeAnalysis::doTest (const char *infile)
 
 //==========================================================================
 
-int LatticeAnalysis::doTestDir (const char *dirname)
+int LatticeAnalysis::doTestFromDirectory (const char *dirname)
 {
    string dir = string (dirname);
    std::vector <string> files = std::vector <string> ();
@@ -473,7 +370,96 @@ int LatticeAnalysis::doTestDir (const char *dirname)
    return flag;
 }
 
+//==========================================================================
+
+Writer* LatticeAnalysis::createWriter (const char *infile, OutputType ot)
+{
+   Writer *rw = 0;
+   string fname;
+
+   switch (ot) {
+   case RES:
+      fname = infile;
+      fname += ".res";
+      rw = new WriterRes (fname.c_str ());
+      break;
+
+   case TEX:
+      fname = infile;
+      fname += ".tex";
+      // rw = new WriterTex(fname.c_str()); //EB Ne permet pas d'écrire en Tex
+      break;
+
+   case TERMINAL:
+      rw = new WriterRes (&cout);
+      break;
+
+   default:
+      cerr << "\n*** outputType:   no such case" << endl;
+      return 0;
+   }
+   return rw;
+}
 
 //==========================================================================
 
+} // end namespace LatticeTester
+
+
+
+
+namespace
+{
+
+//==========================================================================
+
+int getDir (string dir, std::vector <string> & files)
+{
+   DIR *dp;
+   struct dirent *dirp;
+   if ((dp = opendir (dir.c_str())) == NULL) {
+      cerr << "Directory: " << dir << endl;
+      perror ("Couldn't open the directory");
+      return errno;
+   }
+
+   // Does directory name ends with /
+   size_t j = dir.rfind('/');
+   string SEP("");
+   // if not, add one /
+   if (dir.size() != (1 + j))
+      SEP += "/";
+
+   while ((dirp = readdir (dp)) != NULL) {
+      if (0 == fnmatch("*.dat", dirp->d_name, 0))
+         // keeps full name including directory name
+         files.push_back (string (dir + SEP + dirp->d_name));
+   }
+   closedir (dp);
+   return 0;
 }
+
+//==========================================================================
+
+void eraseExtension (std::vector <string> & files)
+{
+   for (unsigned int i = 0; i < files.size (); i++) {
+      size_t j = files[i].rfind(".dat");
+      if (j != string::npos)
+         files[i].erase(j);
+   }
+}
+
+//==========================================================================
+
+void printFileNames (std::vector <string> & files)
+{
+   cout << "----------------------------------------------" << endl;
+   for (unsigned int i = 0; i < files.size (); i++) {
+      cout << files[i] << endl;
+   }
+}
+
+//==========================================================================
+
+} // end namespace

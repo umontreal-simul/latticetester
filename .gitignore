@@ -1,5 +1,6 @@
 main.cc
 main.cpp
+build/
 latticetester.xcodeproj/
 latticetester.xcodeproj
 DerivedData/

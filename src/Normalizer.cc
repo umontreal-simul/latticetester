@@ -73,8 +73,11 @@ void Normalizer::init (const RScal &logDensity0, double beta0)
       #endif
       //log calculation to handle large values of n
 
+      //PW_TODO : verifier que cela peut rester commenté
+      /*
       if (m_norm == L2NORM)
          x *= 2; // L2norm is always used squared
+      */
 
       m_bounds[j] = exp(x); 
    }
@@ -137,8 +140,11 @@ double Normalizer::getBound (int j) const
    #endif
    //log calculation to handle large values of n
 
+   //PW_TODO : verifier que cela peut rester commenté bis
+   /*
    if (m_norm == L2NORM)
       x *= 2; // L2norm is always used squared
+   */
 
    return exp(x);
 }

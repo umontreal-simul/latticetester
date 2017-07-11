@@ -1,9 +1,10 @@
+SPECTRAL	Criterion
 L1NORM		norm
 MINKL1		normalization type
 LenstraLL	pre-reduction type
 0.999		fact
 2			matrix dimension
-1 51
+1 12
 0 101
 100000000	MaxNodeBB
 TERMINAL	Output
@@ -22,10 +23,14 @@ Matrix of example 7 in Pierre's paper:
 -3020738662083495906 -8814617570338055415 -1975258172869346907 0 0 0 0 1
 
 
+
+
+PAGE 45 PIERRE'S COURSE:
+//
 generateur a = 51, m = 101: 2 hyperplans
 1 51
 0 101
-
+//
 generateur a = 12, m = 101: 12 hyperplans
 1 12
 0 101

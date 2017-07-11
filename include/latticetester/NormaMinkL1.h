@@ -41,6 +41,7 @@ namespace LatticeTester {
  */
 
 //PW_TODO verif puissances gamma et n : ici n est traité comme la densité du primal alors que ce test ne s'applique que directement dans le dual
+//PW_TODO rendre la description plus claire
 
 class NormaMinkL1 : public Normalizer {
 public:

@@ -84,6 +84,12 @@ public:
    CriterionType test;
 
    /**
+    * The precision in which the test will be performed. See module
+    * `Const` for the possible precision types.
+    */
+   PrecisionType precision;
+
+   /**
     * The maximum number of nodes to be examined in any given
     * branch-and-bound procedure when computing \f$d_t\f$ or \f$q_t\f$.
     */

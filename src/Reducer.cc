@@ -667,16 +667,63 @@ void Reducer::redLLLNTLExact(double fact){
 
 //=========================================================================
 
-void Reducer::redBKZ(double fact, long blocksize) {
+void Reducer::redBKZ(double fact, long blocksize, PrecisionType precision) {
 
    bool withDual = m_lat->withDual();
+   mat_ZZ U;
+   U.SetDims(m_lat->getBasis().NumRows(), m_lat->getBasis().NumCols());
+
+   switch(precision){
+      case FP:
+         BKZ_FP(m_lat->getBasis(), U, fact, blocksize);
+         break;
+      case QP:
+         BKZ_QP(m_lat->getBasis(), U, fact, blocksize);
+         break;
+      case XD:
+         BKZ_XD(m_lat->getBasis(), U, fact, blocksize);
+         break;
+      case RR:
+         BKZ_RR(m_lat->getBasis(), U, fact, blocksize);
+         break;
+      default:
+         MyExit(1, "BKZ PrecisionType:   NO SUCH CASE");
+   }
+
    if (withDual) {
-      mat_ZZ U;
-      U.SetDims(m_lat->getBasis().NumRows(), m_lat->getBasis().NumCols());
-      BKZ_XD(m_lat->getBasis(), U, fact, blocksize);
       m_lat->getDualBasis() = transpose(inv(U)) * m_lat->getDualBasis();
-   } else
-      BKZ_XD(m_lat->getBasis(), fact, blocksize);
+   }
+}
+
+
+//=========================================================================
+
+void Reducer::redLLLNTL(double fact, PrecisionType precision) {
+
+   bool withDual = m_lat->withDual();
+   mat_ZZ U;
+   U.SetDims(m_lat->getBasis().NumRows(), m_lat->getBasis().NumCols());
+
+   switch(precision){
+      case FP:
+         LLL_FP(m_lat->getBasis(), U, fact, 0, 0);
+         break;
+      case QP:
+         LLL_QP(m_lat->getBasis(), U, fact, 0, 0);
+         break;
+      case XD:
+         LLL_XD(m_lat->getBasis(), U, fact, 0, 0);
+         break;
+      case RR:
+         LLL_RR(m_lat->getBasis(), U, fact, 0, 0);
+         break;
+      default:
+         MyExit(1, "LLL PrecisionType:   NO SUCH CASE");
+   }
+
+   if (withDual) {
+      m_lat->getDualBasis() = transpose(inv(U)) * m_lat->getDualBasis();
+   }
 }
 
 //=========================================================================

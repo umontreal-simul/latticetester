@@ -229,17 +229,11 @@ public:
 
    /**
     * \copydoc redLLL(double, long, int)
-    * This version is implemented in the NTL Library with approximate number
-    * with double precision
+    * This version is implemented in the NTL Library with approximate
+    * number with arbitrary precision. The precision can be given. See
+    * Const.h for further information.
     */
-   void redLLLNTLProxyFP(double fact);
-
-   /**
-    * \copydoc redLLL(double, long, int)
-    * This version is implemented in the NTL Library with approximate number
-    * with arbitrary precision
-    */
-   void redLLLNTLProxyRR(double fact);
+   void redLLLNTL(double fact, PrecisionType precision = XD);
 
    /**
     * \copydoc redLLL(double, long, int)
@@ -250,10 +244,12 @@ public:
 
    /**
     * Perform the BKZ (Block-Korkine-Zolotarev) basis reduction with the
-    * the coefficient `fact` and a block size `Blocksize`. It use the
-    * algorithm implemented in the NTL Library.
+    * the coefficient `fact` and a block size `Blocksize`. The precision
+    * can be given. See Const.h for further information.
     */
-   void redBKZ(double fact, long blocksize);
+   void redBKZ(double fact, long blocksize, PrecisionType precision = XD);
+
+
 
    /**
     * Reduces the current basis to a Minkowski reduced basis with respect

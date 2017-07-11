@@ -125,7 +125,7 @@ const ZZ modulusRNG = power_ZZ(2, 31) - 1;
  * Must be int value.
  */
 const int MinDimension = 5;
-const int MaxDimension = 25;
+const int MaxDimension = 22;
 const int Interval_dim = MaxDimension - MinDimension+1;
 
 /*
@@ -140,7 +140,7 @@ const int maxIteration = 100;
  * a LLL Reduction with the exact delta. We have noticed
  * only minor differences with this option.
  */
-const double delta = 0.5;
+const double delta = 0.75;
 const double epsilon = 1.0 - delta;
 
 /*
@@ -333,7 +333,7 @@ bool reduce(
    case PreRedDieter_LLL_BB : {
          // PreRed, LLL and then Branch and Bound
          red.preRedDieter(0);
-         red.redLLLNTLProxyFP(delta);
+         red.redLLLNTL(delta, FP);
       }
       break;
 
@@ -345,7 +345,7 @@ bool reduce(
 
    case LLL_BB : {
          // LLL and then Branch and Bound
-         red.redLLLNTLProxyFP(delta);
+         red.redLLLNTL(delta, FP);
       }
       break;
 
@@ -403,13 +403,13 @@ bool reduce2(
 
    case PairRed_LLLNTL : {
          // Pairwise reduction (in primal basis only) and then LLL NTL proxy
-         red.redLLLNTLProxyFP(delta);
+         red.redLLLNTL(delta, FP);
       }
       break;
 
    case PairRedRandomized_LLLNTL : {
          // Randomized pairwise reduction (in primal basis only) and then LLL NTL proxy
-         red.redLLLNTLProxyFP(delta);
+         red.redLLLNTL(delta, FP);
       }
       break;
 

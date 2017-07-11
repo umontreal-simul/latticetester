@@ -55,6 +55,20 @@ enum NormType { SUPNORM = 1, L1NORM = 2, L2NORM = 3, ZAREMBANORM = 4 };
 enum OutputType { TERMINAL, RES, TEX, GEN };
 
 /**
+ * Indicates in which precision the NTL algorithms will be perfoms :
+ * `FP` -- double
+ * `QP` -- quad_float (quasi quadruple precision)
+ *         this is useful when roundoff errors can cause problems
+ * `XD` -- xdouble (extended exponent doubles)
+ *         this is useful when numbers get too big
+ * `RR` -- RR (arbitrary precision floating point)
+           this is useful for large precision and magnitudes
+ * Generally speaking, the choice FP will be the fastest,
+ * but may be prone to roundoff errors and/or overflow.
+ */
+enum PrecisionType { FP, QP, XD, RR };
+
+/**
  * Indicates whether an integer is prime, probably prime, composite or its
  * status is unknown (or don’t care).
  */

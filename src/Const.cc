@@ -137,14 +137,14 @@ string toStringPreRed (PreReductionType prered)
 string toStringPrecision (PrecisionType precision)
 {
    switch (precision) {
-   case FP:
-      return "FP";
-   case QP:
-      return "QP";
-   case XD:
-      return "XD";
-   case RR:
-      return "RR";
+   case DOUBLE:
+      return "DOUBLE";
+   case QUADRUPLE:
+      return "QUADRUPLE";
+   case EXPONENT:
+      return "EXPONENT";
+   case ARBITRARY:
+      return "ARBITRARY";
    default:
       return "***** PrecisionType: IMPOSSIBLE CASE ";
    }

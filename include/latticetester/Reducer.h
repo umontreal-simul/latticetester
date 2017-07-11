@@ -233,7 +233,7 @@ public:
     * number with arbitrary precision. The precision can be given. See
     * Const.h for further information.
     */
-   void redLLLNTL(double fact, PrecisionType precision = XD);
+   void redLLLNTL(double fact, PrecisionType precision = QUADRUPLE);
 
    /**
     * \copydoc redLLL(double, long, int)
@@ -247,7 +247,7 @@ public:
     * the coefficient `fact` and a block size `Blocksize`. The precision
     * can be given. See Const.h for further information.
     */
-   void redBKZ(double fact, long blocksize, PrecisionType precision = XD);
+   void redBKZ(double fact, long blocksize, PrecisionType precision = QUADRUPLE);
 
 
 

@@ -181,7 +181,7 @@ bool LatticeAnalysis::performTest (PreReductionType PreRed, double fact, long bl
          m_reducer->redBKZ(fact, blocksize);
          break;
       case LenstraLL:
-         m_reducer->redLLLNTLProxyFP(fact);
+         m_reducer->redLLLNTL(fact);
          break;
       case PreRedDieter:
          m_reducer->preRedDieter(0);

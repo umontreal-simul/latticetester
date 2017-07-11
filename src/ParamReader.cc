@@ -419,14 +419,14 @@ void ParamReader::readPrecisionType(PrecisionType& field, unsigned int ln, unsig
    string val;
    getToken(val, ln, pos);
 
-   if (0 == strcasecmp(val.c_str(), "FP"))
-      field = FP;
-   else if (0 == strcasecmp(val.c_str(), "QP"))
-      field = QP;
-   else if (0 == strcasecmp(val.c_str(), "XD"))
-      field = XD;
-   else if (0 == strcasecmp(val.c_str(), "RR"))
-      field = RR;
+   if (0 == strcasecmp(val.c_str(), "DOUBLE"))
+      field = DOUBLE;
+   else if (0 == strcasecmp(val.c_str(), "QUADRUPLE"))
+      field = QUADRUPLE;
+   else if (0 == strcasecmp(val.c_str(), "EXPONENT"))
+      field = EXPONENT;
+   else if (0 == strcasecmp(val.c_str(), "ARBITRARY"))
+      field = ARBITRARY;
    else
       MyExit(1, "readPrecisionType:   NO SUCH CASE");
 }

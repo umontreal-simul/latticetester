@@ -125,14 +125,14 @@ const ZZ modulusRNG = power_ZZ(2, 31) - 1;
  * Must be int value.
  */
 const int MinDimension = 5;
-const int MaxDimension = 22;
+const int MaxDimension = 23;
 const int Interval_dim = MaxDimension - MinDimension+1;
 
 /*
  * Iteration loop over basis of same dimension.
  * Each random basis is computed with a different seed.
  */
-const int maxIteration = 100;
+const int maxIteration = 200;
 
 /*
  * a/b is the value of the delta in the LLL and BKZ
@@ -284,13 +284,13 @@ bool reduce(
 
    case LLLNTLProxyRR : {
          // LLL NTL reduction (floating point version = proxy)
-         red.redLLLNTLProxyRR(delta);
+         red.redLLLNTL(delta, ARBITRARY);
       }
       break;
 
    case LLLNTLProxyFP : {
          // LLL NTL reduction (floating point version = proxy)
-         red.redLLLNTLProxyFP(delta);
+         red.redLLLNTL(delta, DOUBLE);
       }
       break;
 
@@ -333,7 +333,7 @@ bool reduce(
    case PreRedDieter_LLL_BB : {
          // PreRed, LLL and then Branch and Bound
          red.preRedDieter(0);
-         red.redLLLNTL(delta, FP);
+         red.redLLLNTL(delta, DOUBLE);
       }
       break;
 
@@ -345,7 +345,7 @@ bool reduce(
 
    case LLL_BB : {
          // LLL and then Branch and Bound
-         red.redLLLNTL(delta, FP);
+         red.redLLLNTL(delta, DOUBLE);
       }
       break;
 
@@ -403,13 +403,13 @@ bool reduce2(
 
    case PairRed_LLLNTL : {
          // Pairwise reduction (in primal basis only) and then LLL NTL proxy
-         red.redLLLNTL(delta, FP);
+         red.redLLLNTL(delta, DOUBLE);
       }
       break;
 
    case PairRedRandomized_LLLNTL : {
          // Randomized pairwise reduction (in primal basis only) and then LLL NTL proxy
-         red.redLLLNTL(delta, FP);
+         red.redLLLNTL(delta, DOUBLE);
       }
       break;
 

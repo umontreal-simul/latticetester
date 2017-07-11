@@ -66,7 +66,7 @@ enum OutputType { TERMINAL, RES, TEX, GEN };
  * Generally speaking, the choice FP will be the fastest,
  * but may be prone to roundoff errors and/or overflow.
  */
-enum PrecisionType { FP, QP, XD, RR };
+enum PrecisionType { DOUBLE, QUADRUPLE, EXPONENT, ARBITRARY };
 
 /**
  * Indicates whether an integer is prime, probably prime, composite or its
@@ -147,6 +147,7 @@ std::string toStringNorma (NormaType);
 std::string toStringCalc (CalcType);
 std::string toStringPreRed (PreReductionType);
 std::string toStringOutput (OutputType);
+std::string toStringPrecision (PrecisionType);
 
 
 /**

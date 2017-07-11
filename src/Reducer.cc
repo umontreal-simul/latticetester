@@ -621,35 +621,11 @@ void Reducer::reductionFaible (int i, int j)
 }
 
 
+
+
+//=========================================================================
+
 #ifdef WITH_NTL
-
-//=========================================================================
-
-void Reducer::redLLLNTLProxyFP(double fact){
-   bool withDual = m_lat->withDual();
-   if (withDual) {
-      mat_ZZ U;
-      U.SetDims(m_lat->getBasis().NumRows(), m_lat->getBasis().NumCols());
-      LLL_FP(m_lat->getBasis(), U, fact, 0, 0);
-      m_lat->getDualBasis() = transpose(inv(U)) * m_lat->getDualBasis();
-   } else
-      LLL_FP(m_lat->getBasis(), fact, 0, 0);
-}
-
-//=========================================================================
-
-void Reducer::redLLLNTLProxyRR(double fact){
-   bool withDual = m_lat->withDual();
-   if (withDual) {
-      mat_ZZ U;
-      U.SetDims(m_lat->getBasis().NumRows(), m_lat->getBasis().NumCols());
-      LLL_RR(m_lat->getBasis(), U, fact, 0, 0);
-      m_lat->getDualBasis() = transpose(inv(U)) * m_lat->getDualBasis();
-   } else
-      LLL_RR(m_lat->getBasis(), fact, 0, 0);
-}
-
-//=========================================================================
 
 void Reducer::redLLLNTLExact(double fact){
    bool withDual = m_lat->withDual();
@@ -674,16 +650,16 @@ void Reducer::redBKZ(double fact, long blocksize, PrecisionType precision) {
    U.SetDims(m_lat->getBasis().NumRows(), m_lat->getBasis().NumCols());
 
    switch(precision){
-      case FP:
+      case DOUBLE:
          BKZ_FP(m_lat->getBasis(), U, fact, blocksize);
          break;
-      case QP:
+      case QUADRUPLE:
          BKZ_QP(m_lat->getBasis(), U, fact, blocksize);
          break;
-      case XD:
+      case EXPONENT:
          BKZ_XD(m_lat->getBasis(), U, fact, blocksize);
          break;
-      case RR:
+      case ARBITRARY:
          BKZ_RR(m_lat->getBasis(), U, fact, blocksize);
          break;
       default:
@@ -705,16 +681,16 @@ void Reducer::redLLLNTL(double fact, PrecisionType precision) {
    U.SetDims(m_lat->getBasis().NumRows(), m_lat->getBasis().NumCols());
 
    switch(precision){
-      case FP:
+      case DOUBLE:
          LLL_FP(m_lat->getBasis(), U, fact, 0, 0);
          break;
-      case QP:
+      case QUADRUPLE:
          LLL_QP(m_lat->getBasis(), U, fact, 0, 0);
          break;
-      case XD:
+      case EXPONENT:
          LLL_XD(m_lat->getBasis(), U, fact, 0, 0);
          break;
-      case RR:
+      case ARBITRARY:
          LLL_RR(m_lat->getBasis(), U, fact, 0, 0);
          break;
       default:
@@ -1525,6 +1501,7 @@ bool Reducer::reductMinkowski (int d)
       m_lat->setDualNegativeNorm();
       m_lat->updateDualScalL2Norm (0, dim);
    }
+   m_lMin2 = m_lat->getVecNorm(0);
    return true;
 }
 

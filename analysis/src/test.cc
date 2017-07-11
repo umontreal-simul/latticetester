@@ -14,6 +14,7 @@
  * The User need R distribution and the header RInside.h
  */
 
+
 // Include Header
 #include <iostream>
 #include <map>
@@ -99,4 +100,5 @@ int main (int argc, char *argv[])
    }
    return 0;
 }
+
 

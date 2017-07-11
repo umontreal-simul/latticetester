@@ -461,7 +461,7 @@ void ParamReader::read (LatticeTesterConfig & config)
    unsigned int ln = 1;
 
    readCriterionType (config.test, ln, 0);
-   readNormType (config.norm, ln, 1);
+   readNormType (config.norm, ++ln, 0);
    readNormaType (config.normalizer, ++ln, 0);
    readPreRed (config.prereduction, ++ln, 0);
    if(config.prereduction == BKZ){

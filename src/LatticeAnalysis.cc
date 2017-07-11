@@ -332,12 +332,12 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
    m_merit = conv<double>(m_reducer->getMinLength())
             / m_normalizer->getPreComputedBound(config.dim);
 
-   cout << "\n-----------------------------------------------------" << endl;
+   cout << "\n----------------------------------------------------------" << endl;
    cout << "Length of shortest non-zero vector = " << conv<double>(m_reducer->getMinLength());
    cout << " (" << toStringNorm(config.norm) << ")" << endl;
    cout << "Figure of Merit = " << m_merit;
    cout << " (" << toStringNorma(config.normalizer) << " normalization)" << endl;
-   cout << "-----------------------------------------------------" << endl;
+   cout << "----------------------------------------------------------" << endl;
 
    return 0;
 

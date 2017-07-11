@@ -57,11 +57,14 @@ IntLatticeBasis::IntLatticeBasis (const int dim, NormType norm):
    m_xx(0)
 
 {
+   m_basis.resize(dim,dim);
+   /*
 #ifdef WITH_NTL
    ident(m_basis, dim);
 #else
    m_basis = identity_matrix<long>(dim);
 #endif
+ */
    m_vecNorm.resize (dim);
    initVecNorm();
 }

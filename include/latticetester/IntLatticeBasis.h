@@ -24,21 +24,18 @@
 namespace LatticeTester {
 
 /**
+ * \brief
  * This class offers tools to manipulate lattice bases. Each lattice is
  * represented by a basis \f$V\f$ and a Norm. We can beside precise the
  * lattice by adding the dual lattice \f$W\f$ and the modulo.
  */
 
-/* Erwan
-* Cette classe représente un réseau. Une lattice est caractérisée par
-* une base et une norme. Cette classe est née de la fusion de IntLattice
-* et Basis. Elle permet une meilleure lisibilitée d'un réseau.
-*/
-
 class IntLatticeBasis {
 public:
 
     /**
+     * \struct IntLatticeBasis IntLatticeBasis.h "Constructor"
+     * \brief
      * Constructor. The primal basis is initialize with identity,
      * the dimension of the lattice with dim and the Norm used for
      * reduction with norm.

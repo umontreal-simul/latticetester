@@ -787,6 +787,7 @@ WARN_LOGFILE           =
 
 INPUT                  = \
      /Users/Erwan1/projects/github/LatticeTester/include/latticetester \
+     /Users/Erwan1/projects/github/LatticeTester/analysis/include \
      /Users/Erwan1/projects/github/LatticeTester/doxygen/doc
 
 # This tag can be used to specify the character encoding of the source files

@@ -30,7 +30,7 @@ namespace LatticeTester {
  * computed using the \f${\mathcal{L}}_2\f$ norm. The bounding lengths, for a
  * lattice containing \f$n\f$ points per unit volume in dimension \f$t\f$, 
  * are given by \f$\ell_t^* = \gamma_t^{1/2} n^{-1/t}\f$, where the 
- *\f$\gamma_t\f$ are the *Minkowski* lattice constants.
+ * \f$\gamma_t\f$ are the *Minkowski* lattice constants.
  */
 class NormaMinkowski : public Normalizer {
 public:

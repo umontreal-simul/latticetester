@@ -24,19 +24,17 @@ namespace LatticeTester {
  * different criteria. Included are well-known tests such as the *spectral*
  * test, the *Beyer* test, the \f$P_{\alpha}\f$ test. The corresponding
  * figures of merit for the lattice are the length of the shortest vector
- * in the *primal* or in the *dual* lattice computed with different norms,
- * the Beyer quotient, or the \f$P_{\alpha}\f$ criterion. For the standard
- * spectral test, the figure of merit is based on the length of the shortest
- * non-zero vector in the *dual* lattice, using the \f${\mathcal{L}}_2\f$ norm
- * to compute the length of vectors, and the inverse of this length gives the
- * maximal distance between successive hyperplanes covering all the points in
- * the *primal* lattice. If one computes the length of the shortest non-zero
- * vector in the *dual* lattice using the \f${\mathcal{L}}_1\f$ norm, one
- * obtains the minimal number of hyperplanes covering all the points of the
- * *primal* lattice.
+ * in the lattice computed with different norms, the Beyer quotient, or the
+ * \f$P_{\alpha}\f$ criterion. For the standard spectral test, the figure of 
+ * merit is based on the length of the shortest non-zero vector in the lattice,
+ * using the \f${\mathcal{L}}_2\f$ norm to compute the length of vectors, and 
+ * the inverse of this length gives the maximal distance between successive 
+ * hyperplanes covering all the points in the *primal* lattice. If one computes
+ * the length of the shortest non-zero vector in the *dual* lattice using the 
+ * \f${\mathcal{L}}_1\f$ norm, one obtains the minimal number of hyperplanes 
+ * covering all the points of the *primal* lattice.
  *
  */
-
  // PW_TODO update description
 
 class LatticeAnalysis {
@@ -66,7 +64,6 @@ public:
     * The method returns `false` if the test was interrupted for any reason
     * before completion, and it returns `true` upon success. The result of
     * the test is kept in <tt>m_merit</tt>.
-    * PW_TODO : description à améliorer
     */
    bool performTest (PreReductionType PreRed, double fact,
                                       long blockSize = 0);

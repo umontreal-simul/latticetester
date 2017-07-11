@@ -137,7 +137,7 @@ void LatticeAnalysis::initNormalizer (NormaType norma, int alpha)
    // version avec logDensity en parametre (pou m^k sans besoin de calcul det)
 
    RScal logDensity;
-   logDensity = - log( determinant(m_reducer->getIntLatticeBasis().getBasis()) );
+   logDensity = - log( abs( determinant(m_reducer->getIntLatticeBasis().getBasis()) ) );
 
    switch (norma) {
       case BESTLAT:
@@ -295,6 +295,7 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
 
    LatticeTesterConfig config;
    paramRdr.read (config);
+
    // cout << "Writing config = " << endl;
    // config.write();
 

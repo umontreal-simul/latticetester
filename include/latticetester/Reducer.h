@@ -289,8 +289,8 @@ public:
     */
    NScal getMinLength () {
       if (m_lat->getNorm() == L2NORM)
-         return sqrt(m_lat->getVecNorm(0));
-      else return m_lat->getVecNorm(0); }
+         return sqrt(m_lMin2);
+      else return m_lMin; }
 
    /**
     * Returns the length of the longest basis vector in the lattice.

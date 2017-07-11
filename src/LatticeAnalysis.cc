@@ -366,7 +366,7 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
    cout << "Length of shortest non-zero vector = " << conv<double>(m_reducer->getMinLength());
    cout << " (" << toStringNorm(config.norm) << ")" << endl;
    cout << "Criterion : " << toStringCriterion(config.test) << endl;
-   cout << "Figure of Merit = " << m_merit << endl;
+   cout << "Figure of Merit = " << m_merit;
    cout << " (" << toStringNorma(config.normalizer) << " normalization)" << endl;
    cout << "----------------------------------------------------------" << endl;
 

@@ -88,7 +88,7 @@ const int order = 3;
  * The Dimension to be analysed.
  * Must be int value.
  */
-const int dimension = 6;
+const int dimension = 8;
 
 /*
  * a/b is the value of the delta in the LLL and BKZ
@@ -146,8 +146,10 @@ int main ()
     // lattice basis creation
     BMat V;
     BMat W;
+   
+   HelloWorld();
 
-    V = CreateRNGBasis (modulusRNG, order, dimension, a, seedZZ);
+    V = CreateRNGBasis (modulusRNG, order, dimension, a);
     W = Dualize (V, modulusRNG, order);
     cout << "V =\n" << V << endl;
     cout << "W =\n" << W << endl;
@@ -201,11 +203,16 @@ int main ()
     // Nouvelle façon de faire ---------------------------
     // ---------------------------------------------------
 
+    NormType norm = L2NORM;
     NormaType normaType = BESTLAT;
-    LatticeTest latTest (red, normaType);
-    latTest.performTest();
+    PreReductionType preRed = BKZ;
+    double fact = 0.999999;
+    long blocksize = 20;
+   
+    LatticeAnalysis latAnalysis (red, norm, normaType);
+    latAnalysis.performTest(preRed, fact, blocksize);
 
-    cout << "FoM = " << latTest.getMerit() << endl;
+    cout << "FoM = " << latAnalysis.getMerit() << endl;
 
     return 0;
 }

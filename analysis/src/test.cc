@@ -26,7 +26,6 @@
 #include <time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <iostream>
 
 // Include LatticeTester Header
 #include "latticetester/Util.h"
@@ -77,12 +76,21 @@ int main (int argc, char *argv[])
       return -1;
    }
 
+   struct stat buf;
+   int status = 0;
+
 
    for (int j = 1; j < argc; j++) {
       // Do the test for each data file or directory on the command line
 
       //if (0 != S_ISDIR(buf.st_mode))         // directory
       //   status |= testall.doTestDir (argv[j]);
+
+      stat(argv[j], &buf);
+      string dataname(argv[j]);
+      dataname.append(".dat");
+      stat(dataname.c_str(), &buf);
+
       string fname (argv[j]);
       fname += ".dat";
       ParamReader paramRdr (fname.c_str ());

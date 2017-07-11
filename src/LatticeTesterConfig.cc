@@ -25,10 +25,10 @@ void LatticeTesterConfig::kill()
 
 void LatticeTesterConfig::write()
 {
-   cout << "Dimension:   " << dimension << endl;
+   cout << "Dimension:   " << dim << endl;
    cout << "normalizer: " << toStringNorma (normalizer) << endl;
    cout << "Prereduction: " << toStringPreRed (prereduction) << endl;
-   cout << "Lattice Basis" << basis << endl;
+   cout << "Lattice Basis \n" << basis << endl;
    cout << "maxNodesBB: " << maxNodesBB << endl;
    //cout << "outputType: " << toStringOutput (outputType) << endl;
 

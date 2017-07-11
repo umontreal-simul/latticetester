@@ -51,7 +51,7 @@ public:
    /*
     * The dimensin of the lattice
     */
-   int dimension;
+   int dim;
 
    /**
     * The bound used for the normalization in the definition of \f$S_t\f$.
@@ -93,7 +93,7 @@ public:
     * 1. If `fact` is closer to 1, the basis will be (typically) "more
     * reduced", but that will require more work.
     */
-   double fact;
+   double epsilon;
 
    /**
     * Used in BKZ. It stocks the number of blocks used for the BKZ reduction.

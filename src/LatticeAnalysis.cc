@@ -103,11 +103,11 @@ namespace LatticeTester
 
 //===========================================================================
 
-LatticeAnalysis::LatticeAnalysis (Reducer & reducer, NormType norm, 
-      NormaType normaType, int alpha) 
+LatticeAnalysis::LatticeAnalysis (Reducer & reducer, NormType norm,
+      NormaType normaType, int alpha)
 {
    m_reducer = &reducer;
-   m_dim = m_reducer->getIntLatticeBasis().getDim(); 
+   m_dim = m_reducer->getIntLatticeBasis().getDim();
    m_norm = norm;
    m_normalizerType = normaType;
    initNormalizer(normaType, alpha);
@@ -164,7 +164,7 @@ void LatticeAnalysis::initNormalizer (NormaType norma, int alpha)
 
 //===========================================================================
 
-bool LatticeAnalysis::performTest (PreReductionType PreRed, double fact, long blockSize)
+bool LatticeAnalysis::performTest (PreReductionType PreRed, double fact, long blocksize)
 {
    bool result;
 
@@ -172,7 +172,7 @@ bool LatticeAnalysis::performTest (PreReductionType PreRed, double fact, long bl
    // PW_TODO : gérer le paramètre FP, QP, XD, RR pour les fonctions NTL
    switch (PreRed) {
       case BKZ:
-         m_reducer->redBKZ(fact, blockSize);
+         m_reducer->redBKZ(fact, blocksize);
          break;
       case LenstraLL:
          m_reducer->redLLLNTLProxyFP(fact);
@@ -189,11 +189,11 @@ bool LatticeAnalysis::performTest (PreReductionType PreRed, double fact, long bl
    result = m_reducer->shortestVector(m_norm);
 
    // calculating the Figure of Merit
-   m_merit = conv<double>(m_reducer->getMinLength()) 
+   m_merit = conv<double>(m_reducer->getMinLength())
             / m_normalizer->getPreComputedBound(m_dim);
 
    return result;
-  
+
 }
 
 //==========================================================================
@@ -254,7 +254,7 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
    m_reducer->shortestVector(config.norm);
 
    // calculating the Figure of Merit
-   m_merit = conv<double>(m_reducer->getMinLength()) 
+   m_merit = conv<double>(m_reducer->getMinLength())
             / m_normalizer->getPreComputedBound(config.dim);
 
 
@@ -292,7 +292,7 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
    //config.write();
 
    // creating the Reducer object from input
-   IntLatticeBasis basis (config.matrix, config.dim, config.norm);
+   IntLatticeBasis basis (config.basis, config.dim, config.norm);
    Reducer red (basis);
 
    // update parameters
@@ -305,9 +305,9 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
    double fact = 1.0 - config.epsilon;
 
    // performing pre-reduction
-   switch (config.prered) {
+   switch (config.prereduction) {
       case BKZ:
-         m_reducer->redBKZ(fact, config.blockSize);
+         m_reducer->redBKZ(fact, config.blocksize);
          break;
       case LenstraLL:
          m_reducer->redLLLNTLProxyFP(fact);
@@ -324,7 +324,7 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
    m_reducer->shortestVector(config.norm);
 
    // calculating the Figure of Merit
-   m_merit = conv<double>(m_reducer->getMinLength()) 
+   m_merit = conv<double>(m_reducer->getMinLength())
             / m_normalizer->getPreComputedBound(config.dim);
 
    cout << "\n-----------------------------------------------------" << endl;

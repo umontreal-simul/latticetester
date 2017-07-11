@@ -314,10 +314,10 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
    // performing pre-reduction
    switch (config.prereduction) {
       case BKZ:
-         m_reducer->redBKZ(config.fact, config.blocksize);
+         m_reducer->redBKZ(config.fact, config.blocksize, config.precision);
          break;
       case LenstraLL:
-         m_reducer->redLLLNTLProxyFP(config.fact);
+         m_reducer->redLLLNTL(config.fact, config.precision);
          break;
       case PreRedDieter:
          m_reducer->preRedDieter(0);
@@ -363,6 +363,7 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
    }
 
    cout << "\n----------------------------------------------------------" << endl;
+   cout << "Prereduction : " << toStringPreRed(config.prereduction) << endl;
    cout << "Length of shortest non-zero vector = " << conv<double>(m_reducer->getMinLength());
    cout << " (" << toStringNorm(config.norm) << ")" << endl;
    cout << "Criterion : " << toStringCriterion(config.test) << endl;

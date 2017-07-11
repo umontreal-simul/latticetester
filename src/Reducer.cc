@@ -673,7 +673,7 @@ void Reducer::redBKZ(double fact, long blocksize, PrecisionType precision) {
    mat_ZZ U;
    U.SetDims(m_lat->getBasis().NumRows(), m_lat->getBasis().NumCols());
 
-   switch(precision)
+   switch(precision){
       case FP:
          BKZ_FP(m_lat->getBasis(), U, fact, blocksize);
          break;
@@ -688,6 +688,38 @@ void Reducer::redBKZ(double fact, long blocksize, PrecisionType precision) {
          break;
       default:
          MyExit(1, "BKZ PrecisionType:   NO SUCH CASE");
+   }
+
+   if (withDual) {
+      m_lat->getDualBasis() = transpose(inv(U)) * m_lat->getDualBasis();
+   }
+}
+
+
+//=========================================================================
+
+void Reducer::redLLLNTL(double fact, PrecisionType precision) {
+
+   bool withDual = m_lat->withDual();
+   mat_ZZ U;
+   U.SetDims(m_lat->getBasis().NumRows(), m_lat->getBasis().NumCols());
+
+   switch(precision){
+      case FP:
+         LLL_FP(m_lat->getBasis(), U, fact, 0, 0);
+         break;
+      case QP:
+         LLL_QP(m_lat->getBasis(), U, fact, 0, 0);
+         break;
+      case XD:
+         LLL_XD(m_lat->getBasis(), U, fact, 0, 0);
+         break;
+      case RR:
+         LLL_RR(m_lat->getBasis(), U, fact, 0, 0);
+         break;
+      default:
+         MyExit(1, "LLL PrecisionType:   NO SUCH CASE");
+   }
 
    if (withDual) {
       m_lat->getDualBasis() = transpose(inv(U)) * m_lat->getDualBasis();

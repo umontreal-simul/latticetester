@@ -199,6 +199,13 @@ ParamReader();
                        unsigned int pos);
 
    /**
+    * Reads a type of precision from the <tt>pos</tt>-th token of the
+    * <tt>ln</tt>-th line into `field`.
+    */
+   void readPrecisionType (PrecisionType & field, unsigned int ln,
+                       unsigned int pos);
+
+   /**
     * Reads a type of PreReduction from the <tt>pos</tt>-th token of the
     * <tt>ln</tt>-th line into `field`.
     */

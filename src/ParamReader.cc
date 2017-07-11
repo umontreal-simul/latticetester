@@ -411,6 +411,27 @@ void ParamReader::readNormaType(NormaType& field, unsigned int ln, unsigned int 
       MyExit(1, "readNormaType:   NO SUCH CASE");
 }
 
+//===========================================================================
+
+
+void ParamReader::readPrecisionType(PrecisionType& field, unsigned int ln, unsigned int pos)
+{
+   string val;
+   getToken(val, ln, pos);
+
+   if (0 == strcasecmp(val.c_str(), "FP"))
+      field = FP;
+   else if (0 == strcasecmp(val.c_str(), "QP"))
+      field = QP;
+   else if (0 == strcasecmp(val.c_str(), "XD"))
+      field = XD;
+   else if (0 == strcasecmp(val.c_str(), "RR"))
+      field = RR;
+   else
+      MyExit(1, "readPrecisionType:   NO SUCH CASE");
+}
+
+
 
 //===========================================================================
 
@@ -465,12 +486,14 @@ void ParamReader::read (LatticeTesterConfig & config)
    readNormaType (config.normalizer, ++ln, 0);
    readPreRed (config.prereduction, ++ln, 0);
    if(config.prereduction == BKZ){
+      readPrecisionType (config.precision, ++ln, 0);
       readDouble (config.fact, ++ln, 0);
       readInt (config.blocksize, ++ln, 0);
    }
    else if(config.prereduction == PreRedDieter){
    }
    else if(config.prereduction == LenstraLL){
+      readPrecisionType (config.precision, ++ln, 0);
       readDouble (config.fact, ++ln, 0);
    }
 

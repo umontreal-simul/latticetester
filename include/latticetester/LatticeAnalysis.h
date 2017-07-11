@@ -42,6 +42,13 @@ namespace LatticeTester {
 class LatticeAnalysis {
 
 public:
+
+  /**
+    * Base constructor. The test will be applied on `lattice`, with the selected
+    * `normalizer`.
+    */
+   LatticeAnalysis ();
+
   /**
     * Constructor. The test will be applied on `lattice`, with the selected
     * `normalizer`.

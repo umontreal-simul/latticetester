@@ -27,6 +27,7 @@
 #include "latticetester/Types.h"
 #include "latticetester/ParamReader.h"
 #include "latticetester/LatticeTesterConfig.h"
+#include "latticetester/LatticeAnalysis.h"
 
 // Include NTL Header
 #include <NTL/tools.h>

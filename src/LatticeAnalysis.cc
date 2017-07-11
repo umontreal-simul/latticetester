@@ -103,6 +103,12 @@ namespace LatticeTester
 
 //===========================================================================
 
+LatticeAnalysis::LatticeAnalysis ()
+{
+}
+
+//===========================================================================
+
 LatticeAnalysis::LatticeAnalysis (Reducer & reducer, NormType norm,
       NormaType normaType, int alpha)
 {
@@ -289,7 +295,8 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
 
    LatticeTesterConfig config;
    paramRdr.read (config);
-   //config.write();
+   cout << "Writing config = " << endl;
+   config.write();
 
    // creating the Reducer object from input
    IntLatticeBasis basis (config.basis, config.dim, config.norm);
@@ -302,15 +309,13 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
    setNormalizerType(config.normalizer);
    initNormalizer (config.normalizer);
 
-   double fact = 1.0 - config.epsilon;
-
    // performing pre-reduction
    switch (config.prereduction) {
       case BKZ:
-         m_reducer->redBKZ(fact, config.blocksize);
+         m_reducer->redBKZ(config.epsilon, config.blocksize);
          break;
       case LenstraLL:
-         m_reducer->redLLLNTLProxyFP(fact);
+         m_reducer->redLLLNTLProxyFP(config.epsilon);
          break;
       case PreRedDieter:
          m_reducer->preRedDieter(0);

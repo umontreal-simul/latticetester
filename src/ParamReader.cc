@@ -303,7 +303,7 @@ void ParamReader::readBMat(BMat & fields, unsigned int & ln, unsigned int pos,
 {
    for (unsigned int i = pos; i < numPos; i++){
       for (unsigned int j = pos; j < numPos; j++){
-         readBScal(fields[j][i], ln, j);
+         readBScal(fields[i][j], ln, j);
       }
       ln++;
    }

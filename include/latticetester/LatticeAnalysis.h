@@ -35,7 +35,6 @@ namespace LatticeTester {
  * covering all the points of the *primal* lattice.
  *
  */
- // PW_TODO update description
 
 class LatticeAnalysis {
 

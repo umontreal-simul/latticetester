@@ -21,13 +21,11 @@
 namespace LatticeTester
 {
 
-//PW_TODO ça colle pas entre : decription Doxy, Lg(i!) et les résultats affichés
-
-const double NormaMinkL1::m_gamma[] =
-{         //  GamMinkL1[i] = Lg(i!)
-            /* GamMinkL1[0] = */    0.00000000000000,
-            /* GamMinkL1[1] = */  1,
-            /* GamMinkL1[2] = */  2,
+const double NormaMinkL1::m_gamma0[] =
+{         //  GamMinkL1[t] = (t!)^{2/t}
+            /* GamMinkL1[0] = */  0.00000000000000,
+            /* GamMinkL1[1] = */  1.00000000000000,
+            /* GamMinkL1[2] = */  2.00000000000000,
             /* GamMinkL1[3] = */  3.301927248894626,
             /* GamMinkL1[4] = */  4.898979485566356,
             /* GamMinkL1[5] = */  6.786916380543178,
@@ -88,29 +86,37 @@ double NormaMinkL1::calcGamma (int dim)
    return exp(gamma);
 }
 
-// PW_TODO a tester et comparer aux valeurs precalculées
-// voir à l'initialisation comme c'est construit / calculé
-
 /*=========================================================================*/
 
 
-NormaMinkL1::NormaMinkL1 (const RScal & n, int t,
-                          double beta)
-      : Normalizer (n, t, "MinkL1", L1NORM, beta)
+NormaMinkL1::NormaMinkL1 (const RScal & logDensity, int t, double beta)
+      : Normalizer (logDensity, t, "MinkL1", L1NORM, beta)
 {
-   if (t > MAX_DIM) //fred
-      throw std::invalid_argument("NormaMinkL1:   dimension > MAX_DIM"); //fred
+   m_gamma = new double[t + 1];
 
-   Normalizer::init (n, beta);
+   int t0 = t;
+   if (t0 > MAX_DIM)
+      t0 = MAX_DIM;
+   for (int i = 0; i <= t0; i++)
+      m_gamma[i] = m_gamma0[i];
+   for (int i = t0 + 1; i <= t; i++)
+      m_gamma[i] = calcGamma(i);
+
+   Normalizer::init (logDensity, beta);
 }
 
+/*=========================================================================*/
 
+NormaMinkL1::~NormaMinkL1()
+{
+   delete[] m_gamma;
+}
 /*=========================================================================*/
 
 
 inline double NormaMinkL1::getGamma (int j) const throw(std::out_of_range)
 {
-   if (j < 1 || j > MAX_DIM)
+   if (j < 1 || j > m_maxDim)
       throw std::out_of_range("NormaMinkL1::getGamma");
    return m_gamma[j];
 }

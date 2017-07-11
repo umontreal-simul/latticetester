@@ -29,7 +29,7 @@ namespace LatticeTester {
  * nonzero vector in a lattice, based on the densest sphere packing in space.
  * The length of vectors is computed using the \f${\mathcal{L}}_1\f$ norm.
  * Here, the length of the shortest nonzero vector gives the minimal number
- * of hyperplanes that cover all the points of the lattice. The following
+ * of hyperplanes that cover all the points of the dual lattice aasociated. The following
  * upper bound in this case was established by Marsaglia
  * \cite rMAR68a&thinsp; by applying the general convex body theorem of
  * Minkowski:
@@ -49,7 +49,13 @@ public:
     * factor `beta` \f$= \beta\f$ gives more weight to some of the dimensions.
     * Restriction: \f$t \le48\f$.
     */
-   NormaMinkL1 (const RScal & n, int t, double beta = 1);
+   NormaMinkL1 (const RScal & logDensity, int t, double beta = 1);
+
+   /**
+    * Destructor.
+    */
+   ~NormaMinkL1();
+
 
    /**
     * Returns the value of the lattice constant \f$\gamma_j\f$ in
@@ -58,11 +64,17 @@ public:
    double getGamma (int j) const throw (std::out_of_range);
 private:
 
-   /**
-    * Lattice constants \f$\gamma_j\f$ for Marsaglia’s bounds in each dimension
-    * \f$j\f$.
+  /**
+    * The lattice constants \f$\gamma_j\f$ are the Marsaglia’s bounds in each
+    * dimension \f$j\f$.
     */
-   static const double m_gamma[1 + Normalizer::MAX_DIM];
+   double *m_gamma;
+
+   /**
+    * Precomputed lattice constants \f$\gamma_j\f$ for the Marsaglia’s bounds
+    * in each dimension \f$j \le48\f$.
+    */
+   static const double m_gamma0[1 + Normalizer::MAX_DIM];
 
    /**
     * Computes the MinkL1 bound in dimension \f$d\f$.

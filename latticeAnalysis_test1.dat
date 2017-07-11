@@ -1,8 +1,17 @@
-L2NORM		norm
-BestLat		normalization type
+L1NORM		norm
+MINKL1		normalization type
 LenstraLL	pre-reduction type
 0.999		fact
-8			matrix dimension
+2			matrix dimension
+1 12
+0 101
+100000000	MaxNodeBB
+TERMINAL	Output
+
+
+
+
+Matrix of example 7 in Pierre's paper:
 9223372036854773561 0 0 0 0 0 0 0
 0 9223372036854773561 0 0 0 0 0 0
 0 0 9223372036854773561 0 0 0 0 0
@@ -11,9 +20,13 @@ LenstraLL	pre-reduction type
 -7721957468801369126 -6629950407641799081 -2092544303070727312 0 0 1 0 0
 -8814617570338055415 -7721957468801369126 -1127730827481453799 0 0 0 1 0
 -3020738662083495906 -8814617570338055415 -1975258172869346907 0 0 0 0 1
-100000000	MaxNodeBB
-TERMINAL	Output
 
 
+generateur a = 51, m = 101: 2 hyperplans
+1 51
+0 101
 
-
+generateur a = 12, m = 101: 12 hyperplans
+1 12
+0 101
+PW_TODO : problème normalisation (1,3 c'est trop)

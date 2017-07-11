@@ -6,13 +6,14 @@
 //  Copyright © 2017 DIRO. All rights reserved.
 //
 
-#ifndef Tools_h
-#define Tools_h
+#ifndef TOOLS_H
+#define TOOLS_H
 
 #include "latticetester/IntLatticeBasis.h"
 #include "latticetester/Util.h"
 #include "latticetester/Normalizer.h"
 #include "latticetester/Reducer.h"
+#include "SimpleMRG.h"
 
 enum ReduceType {
    Initial,                    // No reduction applied, use for calibration
@@ -237,6 +238,5 @@ mat_ZZ Dualize (const mat_ZZ V, const ZZ modulus, const int k)
 
    return W;
 }
-
 
 #endif /* Tools_h */

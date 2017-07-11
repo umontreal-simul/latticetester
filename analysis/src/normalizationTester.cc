@@ -147,8 +147,6 @@ int main ()
     BMat V;
     BMat W;
    
-   HelloWorld();
-
     V = CreateRNGBasis (modulusRNG, order, dimension, a);
     W = Dualize (V, modulusRNG, order);
     cout << "V =\n" << V << endl;

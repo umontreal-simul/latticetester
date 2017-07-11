@@ -16,6 +16,7 @@
 // limitations under the License.
 
 #include "latticetester/NormaMinkL1.h"
+#include <cmath>
 
 namespace LatticeTester
 {
@@ -75,7 +76,20 @@ const double NormaMinkL1::m_gamma[] =
             /* GamMinkL1[48] = */  351.220237985132,
 };
 
+/*=========================================================================*/
 
+double NormaMinkL1::calcGamma (int dim)
+{
+   double gamma = 0.0;
+   for (int i = 1; i <= dim; i++)
+      gamma += log(i);
+   gamma *= 2.0 / dim;
+
+   return exp(gamma);
+}
+
+// PW_TODO a tester et comparer aux valeurs precalculées
+// voir à l'initialisation comme c'est construit / calculé
 
 /*=========================================================================*/
 

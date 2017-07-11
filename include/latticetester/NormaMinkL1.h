@@ -34,21 +34,18 @@ namespace LatticeTester {
  * \cite rMAR68a&thinsp; by applying the general convex body theorem of
  * Minkowski:
  * \f[
- * \ell_t^* = (t! n)^{1/t} = \gamma_t^{1/2} n^{-1/t}, 
+ * \ell_t^* = (t!)^{1/t}*(n)^{-1/t}) = \gamma_t^{1/2} n^{-1/t}, 
  * \f]
- * for lattices containing \f$n\f$ points per unit volume, in dimension \f$t\f$. 
- * The lattice constants are thus \f$\gamma_t = (t!)^{1/t}\f$.
+ * for a lattice containing \f$n\f$ points per unit volume, in dimension \f$t\f$. 
+ * The lattice constants are thus \f$\gamma_t = (t!)^{2/t}\f$.
  */
-
-//PW_TODO verif puissances gamma et n : ici n est traité comme la densité du primal alors que ce test ne s'applique que directement dans le dual
-//PW_TODO rendre la description plus claire
 
 class NormaMinkL1 : public Normalizer {
 public:
 
    /**
     * Constructor for the Marsaglia’s bounds with the
-    * \f${\mathcal{L}}_1\f$ norm. The lattices have \f$n\f$ points per unit volume, in all dimensions \f$\le t\f$. The bias
+    * \f${\mathcal{L}}_1\f$ norm. The lattice has \f$n\f$ points per unit volume, in all dimensions \f$\le t\f$. The bias
     * factor `beta` \f$= \beta\f$ gives more weight to some of the dimensions.
     * Restriction: \f$t \le48\f$.
     */
@@ -66,6 +63,11 @@ private:
     * \f$j\f$.
     */
    static const double m_gamma[1 + Normalizer::MAX_DIM];
+
+   /**
+    * Computes the MinkL1 bound in dimension \f$d\f$.
+    */
+   double calcGamma (int d);
 };
 
 }

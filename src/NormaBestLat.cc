@@ -21,6 +21,7 @@ namespace LatticeTester
 {
 
 /**
+ * REFERENCES:
  * These best gamma constants are calculated as defined in 
  * Conway and Sloane book (Sphere packing, Lattices and groups) : 
  *    - equation (47) page 20 of chapter 1

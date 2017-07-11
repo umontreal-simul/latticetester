@@ -30,7 +30,7 @@ namespace LatticeTester {
  * *laminated* lattices. The length of vectors is computed using the
  * \f${\mathcal{L}}_2\f$ norm. The bounding lengths, for a lattice containing
  * \f$n\f$ points per unit volume in dimension \f$t\f$, are given by 
- * \f$\ell_t^* = \gamma_t^{1/2} m^{-1/t}\f$ for, where the \f$\gamma_t\f$ are
+ * \f$\ell_t^* = \gamma_t^{1/2} n^{-1/t}\f$ for, where the \f$\gamma_t\f$ are
  * the lattice constants for the best *laminated* lattices \cite mCON99a&thinsp;.
  * Note this class stores the log value of the density to handle larger values.
  */

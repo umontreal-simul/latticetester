@@ -295,7 +295,7 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
 
    LatticeTesterConfig config;
    paramRdr.read (config);
-   cout << "Writing config = " << endl;
+   // cout << "Writing config = " << endl;
    // config.write();
 
    // creating the Reducer object from input
@@ -309,33 +309,63 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
    setNormalizerType(config.normalizer);
    initNormalizer (config.normalizer);
 
+
    // performing pre-reduction
    switch (config.prereduction) {
       case BKZ:
-         m_reducer->redBKZ(config.epsilon, config.blocksize);
+         m_reducer->redBKZ(config.fact, config.blocksize);
          break;
       case LenstraLL:
-         m_reducer->redLLLNTLProxyFP(config.epsilon);
+         m_reducer->redLLLNTLProxyFP(config.fact);
          break;
       case PreRedDieter:
          m_reducer->preRedDieter(0);
          break;
       default:
-         cout << "LatticeLatticeAnalysis::doTestFromInputFile:   no such case";
-         exit (2);
+         MyExit(1, "LatticeLatticeAnalysis::doTestFromInputFile:   no such case");
+         exit(1);
    }
 
    // performing the Branch-and-Bound procedure to find the shortest non-zero vector
-   m_reducer->shortestVector(config.norm);
+   switch (config.test) {
+      case SPECTRAL:
+         // performing the Branch-and-Bound procedure to find the shortest non-zero vector
+         m_reducer->shortestVector(config.norm);
 
-   // calculating the Figure of Merit
-   m_merit = conv<double>(m_reducer->getMinLength())
-            / m_normalizer->getPreComputedBound(config.dim);
+         // calculating the Figure of Merit
+         m_merit = conv<double>(m_reducer->getMinLength())
+                  / m_normalizer->getPreComputedBound(config.dim);
+         break;
+
+      case BEYER:
+         //performing the Branch-and-Bound procedure to find the Minkowski-reduced matrix
+         m_reducer->reductMinkowski(0);
+
+         // calculating the Figure of Merit
+         m_merit = conv<double>(m_reducer->getMinLength())
+                  /conv<double>(m_reducer->getMaxLength());
+         cout << "plus court vecteur : " << conv<double>(m_reducer->getMinLength()) << endl;
+         cout << "plus long vecteur : " << conv<double>(m_reducer->getMaxLength()) << endl;
+         break;
+
+      case PALPHA:
+         MyExit(1, "PALPHA:   NOT YET");
+         break;
+
+      case BOUND_JS:
+         MyExit(1, "BOUND_JS:   NOT YET");
+         break;
+
+      default:
+         MyExit(1, "BOUND_JS:   NOT YET");
+         exit(1);
+   }
 
    cout << "\n----------------------------------------------------------" << endl;
    cout << "Length of shortest non-zero vector = " << conv<double>(m_reducer->getMinLength());
    cout << " (" << toStringNorm(config.norm) << ")" << endl;
-   cout << "Figure of Merit = " << m_merit;
+   cout << "Criterion : " << toStringCriterion(config.test) << endl;
+   cout << "Figure of Merit = " << m_merit << endl;
    cout << " (" << toStringNorma(config.normalizer) << " normalization)" << endl;
    cout << "----------------------------------------------------------" << endl;
 

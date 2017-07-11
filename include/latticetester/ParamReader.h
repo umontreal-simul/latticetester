@@ -185,6 +185,13 @@ ParamReader();
                       unsigned int pos);
 
    /**
+    * Reads a test type from the <tt>pos</tt>-th token of the
+    * <tt>ln</tt>-th line into `field`.
+    */
+   void readCriterionType (CriterionType& field, unsigned int ln,
+                      unsigned int pos);
+
+   /**
     * Reads a type of normalization from the <tt>pos</tt>-th token of the
     * <tt>ln</tt>-th line into `field`.
     */

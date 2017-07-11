@@ -347,18 +347,41 @@ void ParamReader::readInterval (MVect & B, MVect & C, unsigned int & ln, int k)
 
 //===========================================================================
 
+void ParamReader::readCriterionType(CriterionType& field, unsigned int ln, unsigned int pos)
+{
+   string val;
+   getToken(val, ln, pos);
+
+   if (0 == strcasecmp(val.c_str(), "SPECTRAL"))
+      field = SPECTRAL;
+   else if (0 == strcasecmp(val.c_str(), "BEYER"))
+      field = BEYER;
+   else if (0 == strcasecmp(val.c_str(), "PALPHA")){
+      field = PALPHA;
+      MyExit(1, "readNormType:   PALPHA case not ready");
+   }
+   else
+      MyExit(1, "readCriterionType:   NO SUCH CASE");
+}
+
+//===========================================================================
+
 void ParamReader::readNormType (NormType & field, unsigned int ln, unsigned int pos)
 {
    string val;
    getToken(val, ln, pos);
-   if (0 == strcasecmp(val.c_str(), "SUPNORM"))
+   if (0 == strcasecmp(val.c_str(), "SUPNORM")){
       field = SUPNORM;
+      MyExit(1, "readNormType:   SUPNORM case not ready");
+   }
    else if (0 == strcasecmp(val.c_str(), "L1NORM"))
       field = L1NORM;
    else if (0 == strcasecmp(val.c_str(), "L2NORM"))
       field = L2NORM;
-   else if (0 == strcasecmp(val.c_str(), "ZAREMBANORM"))
+   else if (0 == strcasecmp(val.c_str(), "ZAREMBANORM")){
       field = ZAREMBANORM;
+      MyExit(1, "readNormType:   ZAREMBANORM case not ready");
+   }
     else
       MyExit(1, "readNormType:   NO SUCH CASE");
 }
@@ -437,17 +460,18 @@ void ParamReader::read (LatticeTesterConfig & config)
    getLines ();
    unsigned int ln = 1;
 
-   readNormType (config.norm, ln, 0);
+   readCriterionType (config.test, ln, 0);
+   readNormType (config.norm, ln, 1);
    readNormaType (config.normalizer, ++ln, 0);
    readPreRed (config.prereduction, ++ln, 0);
    if(config.prereduction == BKZ){
-      readDouble (config.epsilon, ++ln, 0);
+      readDouble (config.fact, ++ln, 0);
       readInt (config.blocksize, ++ln, 0);
    }
    else if(config.prereduction == PreRedDieter){
    }
    else if(config.prereduction == LenstraLL){
-      readDouble (config.epsilon, ++ln, 0);
+      readDouble (config.fact, ++ln, 0);
    }
 
    readInt (config.dim, ++ln, 0);

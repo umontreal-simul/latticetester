@@ -14,7 +14,6 @@
  * The User need R distribution and the header RInside.h
  */
 
-
 // Include Header
 #include <iostream>
 #include <map>
@@ -37,6 +36,7 @@
 #include "latticetester/Types.h"
 #include "latticetester/ParamReader.h"
 #include "latticetester/LatticeTesterConfig.h"
+#include "latticetester/LatticeAnalysis.h"
 
 // Include NTL Header
 #include <NTL/tools.h>
@@ -64,6 +64,9 @@ using namespace std;
 using namespace NTL;
 using namespace LatticeTester;
 
+
+//==================================================================================
+
 int main (int argc, char *argv[])
 {
 
@@ -76,32 +79,24 @@ int main (int argc, char *argv[])
       return -1;
    }
 
-   struct stat buf;
-   int status = 0;
 
+   struct stat buf; // properties of a file or directory
+   LatticeAnalysis latAnalysis;
+   int status = 0;
 
    for (int j = 1; j < argc; j++) {
       // Do the test for each data file or directory on the command line
 
-      //if (0 != S_ISDIR(buf.st_mode))         // directory
-      //   status |= testall.doTestDir (argv[j]);
-
       stat(argv[j], &buf);
-      string dataname(argv[j]);
-      dataname.append(".dat");
-      stat(dataname.c_str(), &buf);
-
-      string fname (argv[j]);
-      fname += ".dat";
-      ParamReader paramRdr (fname.c_str ());
-      fname.clear ();
-      LatticeTesterConfig config;
-      paramRdr.read (config);
-
-      config.write();
+      if (0 != S_ISDIR(buf.st_mode)) // directory
+         status |= latAnalysis.doTestFromDirectory (argv[j]);
+      else {
+         string dataname(argv[j]);
+         dataname.append(".dat");
+         stat(dataname.c_str(), &buf);
+         status |= latAnalysis.doTestFromInputFile (argv[j]);
+      }
    }
-
-
    return 0;
 }
 

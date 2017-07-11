@@ -75,7 +75,13 @@ public:
     * Norm used to measure the length of vectors. See module `Const` for a
     * definition of the possible norms.
     */
-   LatticeTester::NormType norm;
+   NormType norm;
+
+   /**
+    * The criterion for which the test will be performed. See module
+    * `Const` for the possible criterion types.
+    */
+   CriterionType test;
 
    /**
     * The maximum number of nodes to be examined in any given
@@ -93,7 +99,7 @@ public:
     * 1. If `fact` is closer to 1, the basis will be (typically) "more
     * reduced", but that will require more work.
     */
-   double epsilon;
+   double fact;
 
    /**
     * Used in BKZ. It stocks the number of blocks used for the BKZ reduction.

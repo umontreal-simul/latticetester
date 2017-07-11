@@ -112,7 +112,7 @@ bool WITH_DUAL = true;
  * Order of the Basis according to L'Écuyer's paper.
  * FullRandomMatrix flag must be false.
  */
-//const int order = 10;
+const int order = 10;
 
 /*
  * Modulo of the Basis according to L'Écuyer's paper.
@@ -125,7 +125,7 @@ const ZZ modulusRNG = power_ZZ(2, 31) - 1;
  * Must be int value.
  */
 const int MinDimension = 5;
-const int MaxDimension = 35;
+const int MaxDimension = 25;
 const int Interval_dim = MaxDimension - MinDimension+1;
 
 /*
@@ -140,7 +140,7 @@ const int maxIteration = 100;
  * a LLL Reduction with the exact delta. We have noticed
  * only minor differences with this option.
  */
-const double delta = 0.99999;
+const double delta = 0.5;
 const double epsilon = 1.0 - delta;
 
 /*

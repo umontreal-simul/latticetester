@@ -289,8 +289,17 @@ public:
     */
    NScal getMinLength () {
       if (m_lat->getNorm() == L2NORM)
-         return sqrt(m_lMin2);
-      else return m_lMin; }
+         return sqrt(m_lat->getVecNorm(0));
+      else return m_lat->getVecNorm(0); }
+
+   /**
+    * Returns the length of the longest basis vector in the lattice.
+    * Used in Beyer Test.
+    */
+   NScal getMaxLength () {
+      if (m_lat->getNorm() == L2NORM)
+         return sqrt(m_lat->getVecNorm(m_lat->getDim() - 1));
+      else return m_lat->getVecNorm(m_lat->getDim() - 1); }
 
    /**
     * Sets the lower bound on the square length of the shortest vector in

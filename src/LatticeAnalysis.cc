@@ -295,8 +295,8 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
 
    LatticeTesterConfig config;
    paramRdr.read (config);
-   cout << "Writing config =\n" << endl;
-   config.write();
+   cout << "Writing config = " << endl;
+   // config.write();
 
    // creating the Reducer object from input
    IntLatticeBasis basis (config.basis, config.dim, config.norm);

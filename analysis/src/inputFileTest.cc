@@ -1,6 +1,6 @@
 //
 //  inputFileTest.cpp
-//  main program to test LatticeTester execution 
+//  main program to test LatticeTester execution
 //  on an external input file.
 //
 
@@ -60,21 +60,34 @@ using namespace LatticeTester;
 
 int main (int argc, char *argv[])
 {
+
+   if (argc < 2) {
+      cerr << "\n*** Usage:\n   "
+           << argv[0] << " data_file1 data_file2 ...." << endl
+           << "or\n   "
+           << argv[0] << " dir1 dir2 ...." << endl
+           << endl;
+      return -1;
+   }
+
+
    struct stat buf; // properties of a file or directory
    LatticeAnalysis latAnalysis;
    int status = 0;
 
-   stat("latticeAnalysis_test1", &buf);
-   if (0 != S_ISDIR(buf.st_mode)) // directory
-      status |= latAnalysis.doTestFromDirectory ("latticeAnalysis_test1");
-   else {
-      string dataname("latticeAnalysis_test1");
-      dataname.append(".dat");
-      stat(dataname.c_str(), &buf);
+   for (int j = 1; j < argc; j++) {
+      // Do the test for each data file or directory on the command line
 
-      status |= latAnalysis.doTestFromInputFile ("/Users/paulwambergue/UdeM/latticetester/latticeAnalysis_test1");
+      stat(argv[j], &buf);
+      if (0 != S_ISDIR(buf.st_mode)) // directory
+         status |= latAnalysis.doTestFromDirectory (argv[j]);
+      else {
+         string dataname(argv[j]);
+         dataname.append(".dat");
+         stat(dataname.c_str(), &buf);
+         status |= latAnalysis.doTestFromInputFile (argv[j]);
+      }
    }
-
    return 0;
 }
 

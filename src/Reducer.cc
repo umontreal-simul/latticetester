@@ -1490,7 +1490,8 @@ bool Reducer::shortestVector (NormType norm)
 
    if (norm != L2NORM) {
       m_lat->setNegativeNorm ();
-      m_lat->setDualNegativeNorm ();
+      if(m_lat->withDual())
+         m_lat->setDualNegativeNorm ();
    }
 
    /* Find the shortest vector for the selected norm.  */

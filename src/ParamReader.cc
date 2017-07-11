@@ -194,6 +194,9 @@ void ParamReader::readChar(char & field, unsigned int ln, unsigned int pos)
 
 //===========================================================================
 
+/*
+ PW_TODO voir si besoin plus tard
+ 
 void ParamReader::readNumber3 (MScal & m, long & m1, long & m2, long & m3,
                                unsigned int ln, unsigned int pos)
 {
@@ -226,6 +229,7 @@ void ParamReader::readNumber3 (MScal & m, long & m1, long & m2, long & m3,
       sign = 1;
    m = sign*(power (m, m2) + m3);
 }
+*/
 
 
 //===========================================================================
@@ -250,13 +254,14 @@ void ParamReader::readLong(long& field, unsigned int ln, unsigned int pos)
 
 //===========================================================================
 
+#ifdef WITH_NTL
 void ParamReader::readZZ(NTL::ZZ & field, unsigned int ln, int pos)
 {
    string val;
    getToken(val, ln, pos);
    field = to_ZZ(val.c_str());
 }
-
+#endif
 //===========================================================================
 
 void ParamReader::readDouble(double& field, unsigned int ln, unsigned int pos)
@@ -268,7 +273,7 @@ void ParamReader::readDouble(double& field, unsigned int ln, unsigned int pos)
 }
 
 //===========================================================================
-
+   
 void ParamReader::readMScal(MScal & field, unsigned int ln, unsigned int pos)
 {
    string val;
@@ -303,7 +308,7 @@ void ParamReader::readBMat(BMat & fields, unsigned int & ln, unsigned int pos,
 {
    for (unsigned int i = pos; i < numPos; i++){
       for (unsigned int j = pos; j < numPos; j++){
-         readBScal(fields[i][j], ln, j);
+         readBScal(fields(i,j), ln, j);
       }
       ln++;
    }
@@ -335,6 +340,8 @@ void ParamReader::readDoubleVect(double* fields, unsigned int ln,
 
 //===========================================================================
 
+/*
+ // PW_TODO
 void ParamReader::readInterval (MVect & B, MVect & C, unsigned int & ln, int k)
 {
    long m1, m2, m3;
@@ -344,6 +351,7 @@ void ParamReader::readInterval (MVect & B, MVect & C, unsigned int & ln, int k)
       assert (C[i] >= B[i]);
    }
 }
+*/
 
 //===========================================================================
 

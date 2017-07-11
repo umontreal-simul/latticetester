@@ -58,8 +58,11 @@ using namespace LatticeTester;
 
 //==================================================================================
 
+#ifdef WITH_NTL
+
 int main (int argc, char *argv[])
 {
+   cout << "AVEC NTL" << endl;
    struct stat buf; // properties of a file or directory
    LatticeAnalysis latAnalysis;
    int status = 0;
@@ -78,3 +81,27 @@ int main (int argc, char *argv[])
    return 0;
 }
 
+#else
+
+int main (int argc, char *argv[])
+{
+   cout << "SANS NTL" << endl;
+   struct stat buf; // properties of a file or directory
+   LatticeAnalysis latAnalysis;
+   int status = 0;
+   
+   stat("latticeAnalysis_test1", &buf);
+   if (0 != S_ISDIR(buf.st_mode)) // directory
+      status |= latAnalysis.doTestFromDirectory ("latticeAnalysis_test1");
+   else {
+      string dataname("latticeAnalysis_test1");
+      dataname.append(".dat");
+      stat(dataname.c_str(), &buf);
+      
+      status |= latAnalysis.doTestFromInputFile ("/Users/paulwambergue/UdeM/latticetester/latticeAnalysis_test1");
+   }
+   
+   return 0;
+}
+
+#endif

@@ -174,6 +174,9 @@ public:
     Coordinates::size_type maxOrder() const { return m_maxOrder; }
 
 public:
+    /**
+     * Iterator
+     */
     class const_iterator : public boost::iterators::iterator_facade<const_iterator,
                                                                     const Coordinates, // value
                                                                     boost::iterators::forward_traversal_tag> // traversal

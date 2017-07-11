@@ -149,7 +149,9 @@ namespace NTL
 
 
 
-   // matrix proxy
+   /**
+    * Matrix Line
+    */
    template <class M>
    class matrix_row : public vector<typename M::value_type> {
    public:

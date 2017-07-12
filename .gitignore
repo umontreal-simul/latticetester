@@ -1,5 +1,7 @@
 main.cc
 main.cpp
+build/src/
+build/progs/
 build/
 latticetester.xcodeproj/
 latticetester.xcodeproj

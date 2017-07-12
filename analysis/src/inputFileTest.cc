@@ -63,7 +63,7 @@ using namespace LatticeTester;
 int main (int argc, char *argv[])
 {
    //string testLocation = "/Users/paulwambergue/UdeM/latticetester/inputTestFiles";
-   string testLocation = "/Users/paulwambergue/UdeM/latticetester/inputTestFiles/latticeAnalysis_testSavvidy";
+   string testLocation = "/Users/paulwambergue/UdeM/latticetester/inputTestFiles/latticeAnalysis_test1";
    
    struct stat buf; // properties of a file or directory
    LatticeAnalysis latAnalysis;

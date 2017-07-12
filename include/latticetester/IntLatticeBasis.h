@@ -26,16 +26,15 @@ namespace LatticeTester {
 /**
  * \brief
  * This class offers tools to manipulate lattice bases. Each lattice is
- * represented by a basis \f$V\f$ and a Norm. We can beside precise the
- * lattice by adding the dual lattice \f$W\f$ and the modulo.
+ * at least represented by a basis \f$V\f$, a dimension and a Norm.
+ * Users can beside precise the dual lattice \f$W\f$ and the modulo.
+ * In that case, the flag \f$m_withDual\f$ is set to \f$true\f$.
  */
 
 class IntLatticeBasis {
 public:
 
     /**
-     * \struct IntLatticeBasis IntLatticeBasis.h "Constructor"
-     * \brief
      * Constructor. The primal basis is initialize with identity,
      * the dimension of the lattice with dim and the Norm used for
      * reduction with norm.
@@ -143,19 +142,6 @@ public:
      * Set the norm used by the lattice
      */
     void setNorm (const NormType & norm) { m_norm = norm; }
-
-    /**
-     * Set the basis of the lattice
-     * Erwan : I think it is not needed
-     */
-    void setBasis (const BMat & basis) { m_basis = basis; }
-
-
-    /**
-     * Set all the norm egal to the value of NScal
-     * Erwan : I think it is not needed
-     */
-    void setVecNorm ( const NVect & vecnorm ){ m_vecNorm = vecnorm; }
 
     /**
      * Set the norm i egal to the value of NScal

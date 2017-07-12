@@ -28,6 +28,9 @@
 #ifndef LATTICETESTER__TYPES_H
 #define LATTICETESTER__TYPES_H
 
+#define WITH_NTL
+#define NTL_TYPES_CODE 2
+
 #ifdef WITH_NTL
 
    #include <NTL/vector.h>

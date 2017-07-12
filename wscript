@@ -145,8 +145,8 @@ def build(ctx):
     #     print("Building variant `%s'" % (ctx.variant,))
 
     ctx.recurse('src')
-    ctx.recurse('analysis')
-    # ctx.recurse('progs')
+    # ctx.recurse('analysis')
+    ctx.recurse('progs')
     # ctx.recurse('test')
     if ctx.env.BUILD_DOCS:
          ctx.recurse('doc')

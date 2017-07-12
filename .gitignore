@@ -1,18 +1,9 @@
 main.cc
 main.cpp
-build/src/
-build/progs/
-build/
 latticetester.xcodeproj/
 latticetester.xcodeproj
 DerivedData/
 Results/
 results.txt
 doxygen/
-build/
 
-# waf #
-#######
-/build/
-/waflib/
-/waftools/

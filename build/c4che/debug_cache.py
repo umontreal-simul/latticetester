@@ -26,7 +26,7 @@ CXX_SRC_F = []
 CXX_TGT_F = ['-c', '-o']
 DATADIR = '/usr/local/share'
 DATAROOTDIR = '/usr/local/share'
-DEFINES = ['WITH_NTL=1', 'NTL_TYPES_CODE=3', 'HAVE_NTL_VECTOR_H=1', 'LATTICETESTER_VERSION=1.1', 'HAVE_GMP_H=1', 'HAVE_ULCG_H=1', 'HAVE_NUM_H=1', 'DEBUG=1']
+DEFINES = ['WITH_NTL=1', 'NTL_TYPES_CODE=2', 'HAVE_NTL_VECTOR_H=1', 'LATTICETESTER_VERSION=1.1', 'HAVE_GMP_H=1', 'HAVE_ULCG_H=1', 'HAVE_NUM_H=1', 'DEBUG=1']
 DEFINES_ST = '-D%s'
 DEFINE_COMMENTS = {'HAVE_NTL_VECTOR_H': '', 'LATTICETESTER_VERSION': '', 'HAVE_GMP_H': '', 'HAVE_ULCG_H': '', 'HAVE_NUM_H': '', 'NTL_TYPES_CODE': '', 'DEBUG': '', 'WITH_NTL': ''}
 DEST_BINFMT = 'mac-o'
@@ -44,7 +44,7 @@ HAVE_ULCG_H = 1
 HTMLDIR = '/usr/local/share/doc/'
 INCLUDEDIR = '/usr/local/include'
 INFODIR = '/usr/local/share/info'
-LATTICETESTER_SUFFIX = 'ZZRR'
+LATTICETESTER_SUFFIX = 'ZZDD'
 LIBDIR = '/usr/local/lib'
 LIBEXECDIR = '/usr/local/libexec'
 LIBPATH_ST = '-L%s'

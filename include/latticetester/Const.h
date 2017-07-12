@@ -137,8 +137,6 @@ enum PreReductionType {BKZ, PreRedDieter, LenstraLL};
  * @{
  *
  * Returns the `enum` constants in this module as strings.
- * \remark **Richard:** These are global methods for now, but maybe `Const`
- * should be a class containing these methods.
  */
 std::string toStringNorm (NormType);
 std::string toStringPrime (PrimeType);

@@ -100,7 +100,7 @@ NormaLaminated::NormaLaminated (const RScal & logDensity, int t, double beta)
 inline double NormaLaminated::getGamma (int j) const
 throw(std::out_of_range)
 {
-   if (j < 1 || j > MAX_DIM) //fred
+   if (j < 1 || j > MAX_DIM)
       throw std::out_of_range("NormaLaminated::getGamma");
    return m_gamma[j];
 }

@@ -16,7 +16,6 @@
 // limitations under the License.
 
 #include "latticetester/NormaRogers.h"
-
 #include <cmath>
 
 namespace LatticeTester
@@ -108,13 +107,13 @@ NormaRogers::NormaRogers (const RScal & logDensity, int t, double beta)
       : Normalizer (logDensity, t, "Rogers", L2NORM, beta)
 {
    m_gamma = new double[t + 1];
+
    int t0 = t;
-/*   if (t0 > MAX_DIM)
-      t0 = MAX_DIM;*/
-   int i;
-   for (i = 0; i <= t0; i++)
+   if (t0 > MAX_DIM)
+      t0 = MAX_DIM;
+   for (int i = 0; i <= t0; i++)
       m_gamma[i] = m_gamma0[i];
-   for (i = t0 + 1; i <= t; i++)
+   for (int i = t0 + 1; i <= t; i++)
       m_gamma[i] = calcGamma(i);
 
    Normalizer::init (logDensity, beta);
@@ -132,11 +131,11 @@ NormaRogers::~NormaRogers()
 
 inline double NormaRogers::getGamma (int j) const throw(std::out_of_range)
 {
-   if (j < 1 || j > m_maxDim) //fred
+   if (j < 1 || j > m_maxDim)
       throw std::out_of_range("NormaRogers::getGamma");
    return m_gamma[j];
 }
 
 /*=======================================================================*/
 
-}
+} // end namespace LatticeTester

@@ -525,7 +525,7 @@ void Reducer::preRedDieter(int d)
          i = dim-1;
       else
          --i;
-   } while (!(m_countDieter >= BoundCount || m_cpt > MAX_PRE_RED)); // fred
+   } while (!(m_countDieter >= BoundCount || m_cpt > MAX_PRE_RED));
 }
 
 //=========================================================================
@@ -552,7 +552,7 @@ void Reducer::preRedDieterRandomized (int d, int seed)
          i = dim-1;
       else
          --i;
-   } while (!(m_countDieter >= BoundCount || m_cpt > MAX_PRE_RED)); // fred
+   } while (!(m_countDieter >= BoundCount || m_cpt > MAX_PRE_RED));
 }
 
 

@@ -170,37 +170,87 @@ void LatticeAnalysis::initNormalizer (NormaType norma, int alpha)
 
 //===========================================================================
 
-bool LatticeAnalysis::performTest (PreReductionType PreRed, double fact, long blocksize)
+/*
+
+bool LatticeAnalysis::performTest (CriterionType criterion, PreReductionType preRed, 
+      NormType norm, int dim, double fact, PrecisionType precision, int blocksize)
 {
+
+   //PW_TODO utiliser les member parameters
+
    bool result;
 
-   // perform pre-reduction on the lattice
-   // PW_TODO : gérer le paramètre FP, QP, XD, RR pour les fonctions NTL
-   switch (PreRed) {
+   // performing pre-reduction
+   switch (preRed) {
       case BKZ:
-         m_reducer->redBKZ(fact, blocksize);
+         m_reducer->redBKZ(fact, blocksize, precision);
          break;
       case LenstraLL:
-         m_reducer->redLLLNTL(fact);
+         m_reducer->redLLLNTL(fact, precision);
          break;
       case PreRedDieter:
          m_reducer->preRedDieter(0);
          break;
       default:
-         cout << "LatticeAnalysis::performTest:   no such case";
-         exit (2);
+         MyExit(1, "LatticeLatticeAnalysis::doTestFromInputFile:   no such case");
+         exit(1);
    }
 
    // performing the Branch-and-Bound procedure to find the shortest non-zero vector
-   result = m_reducer->shortestVector(m_norm);
+   switch (criterion) {
+      case SPECTRAL:
+         // performing the Branch-and-Bound procedure to find the shortest non-zero vector
+         result = m_reducer->shortestVector(norm);
 
-   // calculating the Figure of Merit
-   m_merit = conv<double>(m_reducer->getMinLength())
-            / m_normalizer->getPreComputedBound(m_dim);
+         // calculating the Figure of Merit
+         m_merit = conv<double>(m_reducer->getMinLength())
+                  / m_normalizer->getPreComputedBound(dim);
+         break;
+
+      case BEYER:
+         //performing the Branch-and-Bound procedure to find the Minkowski-reduced matrix
+         result = m_reducer->reductMinkowski(0);
+
+         // calculating the Figure of Merit
+         m_merit = conv<double>(m_reducer->getMinLength())
+                  /conv<double>(m_reducer->getMaxLength());
+         //cout << "plus court vecteur : " << conv<double>(m_reducer->getMinLength()) << endl;
+         //cout << "plus long vecteur : " << conv<double>(m_reducer->getMaxLength()) << endl;
+         break;
+
+      case PALPHA:
+         MyExit(1, "PALPHA:   NOT YET");
+         break;
+
+      case BOUND_JS:
+         MyExit(1, "BOUND_JS:   NOT YET");
+         break;
+
+      default:
+         MyExit(1, "BOUND_JS:   NOT YET");
+         exit(1);
+   }
 
    return result;
 
 }
+
+//==========================================================================
+
+void LatticeAnalysis::printTestResults () 
+{
+   cout << "\n----------------------------------------------------------" << endl;
+   cout << "Prereduction : " << toStringPreRed(config.prereduction) << endl;
+   cout << "Length of shortest non-zero vector = " << conv<double>(m_reducer->getMinLength());
+   cout << " (" << toStringNorm(config.norm) << ")" << endl;
+   cout << "Criterion : " << toStringCriterion(config.test) << endl;
+   cout << "Figure of Merit = " << m_merit;
+   cout << " (" << toStringNorma(config.normalizer) << " normalization)" << endl;
+   cout << "----------------------------------------------------------" << endl;
+
+}
+
+*/
 
 //==========================================================================
 
@@ -214,6 +264,7 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
 {
 
    // VERSION DEGUEUE AVEC WRITER
+   // PW_TODO à supprimer ou non plus tard
    /*
    // parameters reading
    string fname (infile);
@@ -287,6 +338,7 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
 
 
    // VERSION SANS WRITER
+
    // parameters reading
    string fname (infile);
    fname += ".dat";
@@ -296,8 +348,8 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
    LatticeTesterConfig config;
    paramRdr.read (config);
 
-   // cout << "Writing config = " << endl;
-   // config.write();
+   //cout << "Writing config = " << endl;
+   //config.write();
 
    // creating the Reducer object from input
    IntLatticeBasis basis (config.basis, config.dim, config.norm);

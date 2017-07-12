@@ -115,8 +115,8 @@ ParamReader();
     * 5, -1)\f$ will give \f$r=31\f$, while \f$(b, e, c) = (-2, 5, -1)\f$
     * will give \f$r=-31\f$.
     */
-   void readNumber3 (MScal & r, long & b, long & e, long & c,
-                     unsigned int ln, unsigned int pos);
+   
+   //void readNumber3 (MScal & r, long & b, long & e, long & c, unsigned int ln, unsigned int pos);
 
    /**
     * Reads a `BScal` from the <tt>pos</tt>-th token of the <tt>ln</tt>-th
@@ -175,7 +175,7 @@ ParamReader();
     * coefficient may be given in the form described in `readNumber3`
     * above.
     */
-   void readInterval (MVect & B, MVect & C, unsigned int & ln, int k);
+   //void readInterval (MVect & B, MVect & C, unsigned int & ln, int k);
 
    /**
     * Reads a norm from the <tt>pos</tt>-th token of the <tt>ln</tt>-th

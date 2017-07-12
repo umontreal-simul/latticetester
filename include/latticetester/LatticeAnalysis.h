@@ -35,7 +35,6 @@ namespace LatticeTester {
  * covering all the points of the *primal* lattice.
  *
  */
- // PW_TODO update description
 
 class LatticeAnalysis {
 
@@ -65,8 +64,10 @@ public:
     * before completion, and it returns `true` upon success. The result of
     * the test is kept in <tt>m_merit</tt>.
     */
-   bool performTest (PreReductionType PreRed, double fact,
-                                      long blockSize = 0);
+   //bool performTest (CriterionType criterion, PreReductionType preRed, 
+   //   NormType norm, int dim, double fact, PrecisionType precision, int blocksize);
+
+   //void LatticeAnalysis::printTestResults ();
 
    /**
     * Reads the parameters of the test in input text file `datafile`; then do

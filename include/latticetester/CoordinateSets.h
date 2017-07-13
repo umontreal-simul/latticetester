@@ -1,6 +1,6 @@
-// This file is part of LatticeTester.
+// This file is part of LatMRG.
 //
-// LatticeTester
+// LatMRG
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +15,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATTICETESTER__COORDINATE_SETS_H
-#define LATTICETESTER__COORDINATE_SETS_H
+#ifndef LATMRG__COORDINATE_SETS_H
+#define LATMRG__COORDINATE_SETS_H
 
 #include <set>
 #include <map>
@@ -25,10 +25,10 @@
 #include <boost/iterator/iterator_adaptor.hpp>
 #include <boost/config.hpp>
 #include "latticetester/Util.h"
-#include "latticetester/Coordinates.h"
 #include "latticetester/Types.h"
+#include "latmrg/Coordinates.h"
 
-namespace LatticeTester {
+namespace LatMRG {
 
 /**
  * Sequences of coordinate sets.

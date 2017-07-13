@@ -1,6 +1,6 @@
-// This file is part of LatticeTester.
+// This file is part of LatMRG.
 //
-// LatticeTester
+// LatMRG
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +15,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATTICETESTER__COORDINATES_H
-#define LATTICETESTER__COORDINATES_H
+#ifndef LATMRG__COORDINATES_H
+#define LATMRG__COORDINATES_H
 
 #include <iterator>
 #include <set>
@@ -25,7 +25,7 @@
 #include "latticetester/Util.h"
 
 
-namespace LatticeTester {
+namespace LatMRG {
 
 /**
  * Set of coordinates.

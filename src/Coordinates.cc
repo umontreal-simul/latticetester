@@ -1,6 +1,6 @@
-// This file is part of LatticeTester.
+// This file is part of LatMRG.
 //
-// LatticeTester
+// LatMRG
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,11 +15,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "latticetester/Coordinates.h"
+#include "latmrg/Coordinates.h"
 
 using namespace std;
 
-namespace LatticeTester {
+namespace LatMRG {
 
 ostream& operator<< (ostream& os, const Coordinates& coords)
 {

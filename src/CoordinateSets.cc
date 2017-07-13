@@ -1,6 +1,6 @@
-// This file is part of LatticeTester.
+// This file is part of LatMRG.
 //
-// LatticeTester
+// LatMRG
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,11 +15,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "latticetester/CoordinateSets.h"
 #include "latticetester/Util.h"
+#include "latmrg/CoordinateSets.h"
 #include <stdexcept>
 
-namespace LatticeTester { namespace CoordinateSets {
+namespace LatMRG { namespace CoordinateSets {
 
 //=========================================================================
 // FromRanges

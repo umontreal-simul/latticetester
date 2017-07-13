@@ -326,11 +326,10 @@ void IntLatticeBasis::sort (int d)
  * the square Euclidean length in V.vecNorm, W.vecNorm, etc.
  */
 {
-
    int dim = getDim ();
    for (int i = 0; i < dim; i++){
       if (getVecNorm(i) < 0) {
-         cout << "\n***** ERROR:   Negative norm for i = " << i <<
+         cout << "\n***** ERROR: sort   Negative norm for i = " << i <<
             ",  dim = " << dim << endl;
       }
    }

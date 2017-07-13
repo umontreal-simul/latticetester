@@ -118,14 +118,14 @@ const int order = 10;
  * Modulo of the Basis according to L'Écuyer's paper.
  * FullRandomMatrix flag must be false.
  */
-const ZZ modulusRNG = power_ZZ(2, 31) - 1;
+const ZZ modulusRNG = power_ZZ(2, 10) - 1;
 
 /*
  * The Dimensional interval to be analysed.
  * Must be int value.
  */
 const int MinDimension = 5;
-const int MaxDimension = 23;
+const int MaxDimension = 10;
 const int Interval_dim = MaxDimension - MinDimension+1;
 
 /*
@@ -193,7 +193,7 @@ const int maxNodesBB = 10000000;
  */
 ReduceType Reduce_type[] ={
    //Initial,
-   //PairRed,
+   PairRed,
    //PairRedRandomized,
    //RedLLL,
    //PairRed_LLL,
@@ -208,11 +208,11 @@ ReduceType Reduce_type[] ={
    //PairRed_BKZNTL,
    //PairRedRandomized_BKZNTL,
    //PreRedDieter_LLL_BB,
-   //PreRedDieter_BB,
-   LLL_BB,
+   PreRedDieter_BB
+   //LLL_BB,
    //RedDieter,
    //RedMinkowski,
-   BKZ_BB
+   //BKZ_BB
 };
 
 
@@ -494,6 +494,8 @@ int main (int argc, char *argv[])
             BMat basis_PairRed (dimension, dimension);
             BMat V;
             BMat W;
+
+
             if(FullRandomMatrix){
                V = RandomMatrix(dimension, minCoeff, maxCoeff, seed);
                WITH_DUAL = false;
@@ -518,7 +520,9 @@ int main (int argc, char *argv[])
                basis[name] = new BMat(V);
                if(WITH_DUAL){
                   dualbasis[name] = new BMat(W);
-                  lattices[name] = new IntLatticeBasis(*basis[name], *dualbasis[name], modulusRNG, dimension);
+                  MScal modulus_conv;
+                  conv(modulus_conv,modulusRNG);
+                  lattices[name] = new IntLatticeBasis(*basis[name], *dualbasis[name], modulus_conv, dimension);
                }
                else{
                   lattices[name] = new IntLatticeBasis(*basis[name], dimension);
@@ -540,6 +544,7 @@ int main (int argc, char *argv[])
                //timing_results[name][id_dimension][iteration] = double (end - begin) / CLOCKS_PER_SEC;
                lattices[name]->setNegativeNorm();
                lattices[name]->updateVecNorm();
+
                lattices[name]->sort(0);
             }
 

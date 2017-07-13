@@ -101,7 +101,6 @@ void printFileNames (std::vector <string> & files)
 } // end namespace
 
 
-
 namespace LatticeTester
 {
 

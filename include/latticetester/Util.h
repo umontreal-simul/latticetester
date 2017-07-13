@@ -1221,10 +1221,17 @@ std::ostream & operator<< (std::ostream & out, const std::map<K,T,C,A> & x)
 #if NTL_TYPES_CODE > 1
 #else
 
+
 #define BOOST_UBLAS_TYPE_CHECK 0
 #include <boost/numeric/ublas/matrix.hpp>
 #include <boost/numeric/ublas/lu.hpp>
 
+/**
+ * Because NTL cannot compute the determinant of a matrix<double>
+ * we have to work with boost library which offer a quick implementation
+ * of the determinant computation. This is used in normalization files
+ * and in LatticeAnalysis.
+ */
 template<typename ValType>
 ValType det_double(const boost::numeric::ublas::matrix<ValType>& matrix)
 {

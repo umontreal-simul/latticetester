@@ -9,8 +9,9 @@
 #ifndef TOOLS_H
 #define TOOLS_H
 
-#include "latticetester/IntLatticeBasis.h"
+#include "latticetester/Types.h"
 #include "latticetester/Util.h"
+#include "latticetester/IntLatticeBasis.h"
 #include "latticetester/Normalizer.h"
 #include "latticetester/Reducer.h"
 #include "SimpleMRG.h"
@@ -125,11 +126,11 @@ string toStringReduce (ReduceType reduce)
 
 
 
-mat_ZZ RandomMatrix (int dim, long min, long max, int seed)
+BMat RandomMatrix (int dim, long min, long max, int seed)
 {
-   mat_ZZ basis;
+   BMat basis;
    basis.SetDims(dim,dim);
-   ZZ det;
+   BScal det;
 
    srand(seed);
 
@@ -138,7 +139,23 @@ mat_ZZ RandomMatrix (int dim, long min, long max, int seed)
            for (int j = 0; j < dim; j++)
                basis[i][j] = min + (rand() % (max - min + 1));
        }
-       det = determinant(basis);
+
+#if NTL_TYPES_CODE != 1
+   det = determinant(basis);
+#else
+   // As NTL library does not support matrix with double
+   // we compute the determinant with the boost library
+   boost::numeric::ublas::matrix<long>  mat_tmps;
+
+   mat_tmps.resize(dim, dim);
+   for(unsigned int i = 0; i < dim; i++){
+      for(unsigned int j = 0; j < dim; i++){
+         mat_tmps(i,j) = basis[i][j];
+      }
+   }
+   det = det_double(mat_tmps);
+   //RScal logDensity(-log(abs(10000)));
+#endif
 
    } while ( det == 0 );
    return basis;
@@ -183,14 +200,19 @@ vec_ZZ randomVector (int dimension, ZZ modulus, ZZ seed)
    SetSeed(seed);
    for (int i = 0; i < dimension; i++)
       vector[i] = RandomBnd(modulus);
-
    return vector;
 }
 
-mat_ZZ CreateRNGBasis (const ZZ modulus, const int order, const int dimension, vec_ZZ& a)
+BMat CreateRNGBasis (const ZZ modulus, const int order, const int dimension, vec_ZZ& a)
 {
-   mat_ZZ basis;
+   BMat basis;
    basis.SetDims(dimension,dimension);
+
+   for(unsigned int i = 0; i < dimension; i++){
+      for(unsigned int j = 0; j < dimension; j++){
+         basis[i][j] = 0;
+      }
+   }
 
    if (dimension < order+1) {
       // degenerate case: identity matrix only
@@ -210,32 +232,40 @@ mat_ZZ CreateRNGBasis (const ZZ modulus, const int order, const int dimension, v
          initialState = canonicVector(order, i);
          SimpleMRG myMRG (modulus, order, a, initialState);
 
-         for (int l = order; l < dimension; l++)
-            basis[i][l] = conv<ZZ>(myMRG.getNextValue());
+         for (int l = order; l < dimension; l++){
+            ZZ_p nb_value(myMRG.getNextValue());
+            basis[i][l] = conv<BScal>(myMRG.getNextValue());
+         }
       }
 
       // right lower block
       for (int i = order; i < dimension; i++)
-         basis[i][i] = modulus;
+         conv(basis[i][i],modulus);
 
    } // end if
 
    return basis;
 }
 
-mat_ZZ Dualize (const mat_ZZ V, const ZZ modulus, const int k)
+BMat Dualize (const BMat V, const ZZ modulus, const int k)
 {
-   mat_ZZ W;
-   W.SetDims(V.NumRows(), V.NumRows());
-
+   BMat W;
+   W.resize(V.NumRows(), V.NumRows());
+#if NTL_TYPES_CODE != 1
    transpose(W,-V);
+#else
+   for(unsigned int i = 0; i < V.NumRows(); i++){
+      for(unsigned int j = 0; j < V.NumRows(); j++){
+         W[i][j] = -V[j][i];
+      }
+   }
+#endif
    long rmax = k;
    if(k>V.NumRows()){ rmax = V.NumRows(); }
    for (int i = 0; i < rmax; i++)
-      W[i][i] = modulus;
+      conv(W[i][i],modulus);
    for (int i = k; i < V.NumRows(); i++)
       W[i][i] = 1;
-
    return W;
 }
 

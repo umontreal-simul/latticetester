@@ -140,7 +140,7 @@ BMat RandomMatrix (int dim, long min, long max, int seed)
                basis[i][j] = min + (rand() % (max - min + 1));
        }
 
-#if NTL_TYPES_CODE != 1
+#if NTL_TYPES_CODE > 1
    det = determinant(basis);
 #else
    // As NTL library does not support matrix with double
@@ -251,7 +251,7 @@ BMat Dualize (const BMat V, const ZZ modulus, const int k)
 {
    BMat W;
    W.resize(V.NumRows(), V.NumRows());
-#if NTL_TYPES_CODE != 1
+#if NTL_TYPES_CODE > 1
    transpose(W,-V);
 #else
    for(unsigned int i = 0; i < V.NumRows(); i++){

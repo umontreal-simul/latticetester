@@ -658,7 +658,7 @@ void Reducer::redLLLNTLExact(double fact){
 void Reducer::redBKZ(double fact, long blocksize, PrecisionType precision) {
 
 
-#if NTL_CODES_TYPE > 1
+#if NTL_CODES_TYPE != 1
 
    bool withDual = m_lat->withDual();
    mat_ZZ U;
@@ -701,7 +701,7 @@ void Reducer::redBKZ(double fact, long blocksize, PrecisionType precision) {
 void Reducer::redLLLNTL(double fact, PrecisionType precision) {
 
 
-#if NTL_CODES_TYPE > 1
+#if NTL_CODES_TYPE != 1
 
    bool withDual = m_lat->withDual();
    mat_ZZ U;

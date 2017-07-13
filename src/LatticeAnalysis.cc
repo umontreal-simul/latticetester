@@ -151,7 +151,7 @@ void LatticeAnalysis::initNormalizer (NormaType norma, int alpha)
 
    mat_tmps.resize(m_dim, m_dim);
    for(unsigned int i = 0; i < m_dim; i++){
-      for(unsigned int j = 0; j < m_dim; i++){
+      for(unsigned int j = 0; j < m_dim; j++){
          mat_tmps(i,j) = m_reducer->getIntLatticeBasis().getBasis()(i,j);
       }
    }

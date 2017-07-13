@@ -204,7 +204,7 @@ ReduceType Reduce_type[] ={
 
    //PairRed_LLLNTL,
    //PairRedRandomized_LLLNTL,
-   //BKZNTL,
+   BKZNTL,
    //PairRed_BKZNTL,
    //PairRedRandomized_BKZNTL,
    //PreRedDieter_LLL_BB,

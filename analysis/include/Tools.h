@@ -149,7 +149,7 @@ BMat RandomMatrix (int dim, long min, long max, int seed)
 
    mat_tmps.resize(dim, dim);
    for(unsigned int i = 0; i < dim; i++){
-      for(unsigned int j = 0; j < dim; i++){
+      for(unsigned int j = 0; j < dim; j++){
          mat_tmps(i,j) = basis[i][j];
       }
    }

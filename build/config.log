@@ -1,4 +1,4 @@
-# project  configured on Thu Jul 13 09:40:33 2017 by
+# project  configured on Thu Jul 13 12:30:42 2017 by
 # waf 1.9.12 (abi 99, python 2070bf0 on darwin)
 # using ./waf configure --ntltypes LLDD
 #
@@ -701,9 +701,9 @@ int main(int argc, char **argv) {
 }
 
 <==
-[1/1] Compiling [32mbuild/.conf_check_64b24d9a9ae177d44870e15961518622/test.cpp[0m
+[1/1] Compiling [32mbuild/.conf_check_f59f2fda44544d0ba98fec63a71af1d2/test.cpp[0m
 
-['/usr/bin/clang++', '-std=c++11', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_64b24d9a9ae177d44870e15961518622/testbuild/test.cpp.1.o']
+['/usr/bin/clang++', '-std=c++11', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_f59f2fda44544d0ba98fec63a71af1d2/testbuild/test.cpp.1.o']
 yes
 ----------------------------------------
 Checking for compiler flags -std=c99
@@ -715,9 +715,9 @@ int main(int argc, char **argv) {
 }
 
 <==
-[1/1] Compiling [32mbuild/.conf_check_3d6712ef80bc7fcdcaf636e7d5b78866/test.c[0m
+[1/1] Compiling [32mbuild/.conf_check_cc34f35838b1ad745332f717a72b4573/test.c[0m
 
-['/usr/bin/clang', '-std=c99', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '../test.c', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_3d6712ef80bc7fcdcaf636e7d5b78866/testbuild/test.c.1.o']
+['/usr/bin/clang', '-std=c99', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '../test.c', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_cc34f35838b1ad745332f717a72b4573/testbuild/test.c.1.o']
 yes
 -----------------------------------------------------
 checking for compiler flag -Wno-unused-local-typedefs
@@ -785,12 +785,12 @@ int main(int argc, char **argv) {
 }
 
 <==
-[1/2] Compiling [32mbuild/.conf_check_998d3d87f56ef6b42da5b5ef0eead82a/test.cpp[0m
+[1/2] Compiling [32mbuild/.conf_check_d4a4205005ef04cf6ba41ee8f47990fa/test.cpp[0m
 
-['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_998d3d87f56ef6b42da5b5ef0eead82a/testbuild/test.cpp.1.o']
-[2/2] Linking [33mbuild/.conf_check_998d3d87f56ef6b42da5b5ef0eead82a/testbuild/testprog[0m
+['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_d4a4205005ef04cf6ba41ee8f47990fa/testbuild/test.cpp.1.o']
+[2/2] Linking [33mbuild/.conf_check_d4a4205005ef04cf6ba41ee8f47990fa/testbuild/testprog[0m
 
-['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_998d3d87f56ef6b42da5b5ef0eead82a/testbuild/testprog']
+['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_d4a4205005ef04cf6ba41ee8f47990fa/testbuild/testprog']
 yes
 -----------------------------------------------------
 Checking for library ntl
@@ -802,12 +802,12 @@ int main(int argc, char **argv) {
 }
 
 <==
-[1/2] Compiling [32mbuild/.conf_check_b06975a73ad719d96d0dc27167a96650/test.cpp[0m
+[1/2] Compiling [32mbuild/.conf_check_914ffed12e5db5caa2b2319b467a1bce/test.cpp[0m
 
-['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '-DHAVE_NTL_VECTOR_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_b06975a73ad719d96d0dc27167a96650/testbuild/test.cpp.1.o']
-[2/2] Linking [33mbuild/.conf_check_b06975a73ad719d96d0dc27167a96650/testbuild/testprog[0m
+['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '-DHAVE_NTL_VECTOR_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_914ffed12e5db5caa2b2319b467a1bce/testbuild/test.cpp.1.o']
+[2/2] Linking [33mbuild/.conf_check_914ffed12e5db5caa2b2319b467a1bce/testbuild/testprog[0m
 
-['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_b06975a73ad719d96d0dc27167a96650/testbuild/testprog', '-lntl']
+['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_914ffed12e5db5caa2b2319b467a1bce/testbuild/testprog', '-lntl']
 yes
 -----------------------------------------------------
 Checking for Boost version >= 1.57.0
@@ -817,9 +817,9 @@ Checking for Boost version >= 1.57.0
 #error "Boost >= 1.57.0 is required"
 #endif
 <==
-[1/1] Compiling [32mbuild/.conf_check_20f4a5833533f503690603f0351259de/test.cpp[0m
+[1/1] Compiling [32mbuild/.conf_check_de91cc0ff9202d92cca267df8e5d0d7a/test.cpp[0m
 
-['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '-DHAVE_NTL_VECTOR_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_20f4a5833533f503690603f0351259de/testbuild/test.cpp.1.o']
+['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '-DHAVE_NTL_VECTOR_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_de91cc0ff9202d92cca267df8e5d0d7a/testbuild/test.cpp.1.o']
 yes
 -----------------------------------------------------
 Setting LatticeTester version
@@ -835,12 +835,12 @@ int main(int argc, char **argv) {
 }
 
 <==
-[1/2] Compiling [32mbuild/.conf_check_a780dde9163a7a5dc0b7916891813d1a/test.cpp[0m
+[1/2] Compiling [32mbuild/.conf_check_15187741b1b48739cb16db429a47ca9e/test.cpp[0m
 
-['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_a780dde9163a7a5dc0b7916891813d1a/testbuild/test.cpp.1.o']
-[2/2] Linking [33mbuild/.conf_check_a780dde9163a7a5dc0b7916891813d1a/testbuild/testprog[0m
+['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_15187741b1b48739cb16db429a47ca9e/testbuild/test.cpp.1.o']
+[2/2] Linking [33mbuild/.conf_check_15187741b1b48739cb16db429a47ca9e/testbuild/testprog[0m
 
-['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_a780dde9163a7a5dc0b7916891813d1a/testbuild/testprog']
+['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_15187741b1b48739cb16db429a47ca9e/testbuild/testprog']
 yes
 -----------------------------------------------------
 Checking for library gmp
@@ -852,12 +852,12 @@ int main(int argc, char **argv) {
 }
 
 <==
-[1/2] Compiling [32mbuild/.conf_check_16067c26dd0c08d22ac32001bdc08886/test.cpp[0m
+[1/2] Compiling [32mbuild/.conf_check_c0cb574cbbd49df00b44d5ec0d304074/test.cpp[0m
 
-['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '-DHAVE_GMP_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_16067c26dd0c08d22ac32001bdc08886/testbuild/test.cpp.1.o']
-[2/2] Linking [33mbuild/.conf_check_16067c26dd0c08d22ac32001bdc08886/testbuild/testprog[0m
+['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '-DHAVE_GMP_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_c0cb574cbbd49df00b44d5ec0d304074/testbuild/test.cpp.1.o']
+[2/2] Linking [33mbuild/.conf_check_c0cb574cbbd49df00b44d5ec0d304074/testbuild/testprog[0m
 
-['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_16067c26dd0c08d22ac32001bdc08886/testbuild/testprog', '-lgmp']
+['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_c0cb574cbbd49df00b44d5ec0d304074/testbuild/testprog', '-lgmp']
 yes
 -----------------------------------------------------
 Checking for header ulcg.h
@@ -870,12 +870,12 @@ int main(int argc, char **argv) {
 }
 
 <==
-[1/2] Compiling [32mbuild/.conf_check_532d8d2d6c3abf566251673c15fcf213/test.cpp[0m
+[1/2] Compiling [32mbuild/.conf_check_1916a0694315a327e9714478e2e01174/test.cpp[0m
 
-['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '-DHAVE_GMP_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_532d8d2d6c3abf566251673c15fcf213/testbuild/test.cpp.1.o']
-[2/2] Linking [33mbuild/.conf_check_532d8d2d6c3abf566251673c15fcf213/testbuild/testprog[0m
+['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '-DHAVE_GMP_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_1916a0694315a327e9714478e2e01174/testbuild/test.cpp.1.o']
+[2/2] Linking [33mbuild/.conf_check_1916a0694315a327e9714478e2e01174/testbuild/testprog[0m
 
-['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_532d8d2d6c3abf566251673c15fcf213/testbuild/testprog']
+['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_1916a0694315a327e9714478e2e01174/testbuild/testprog']
 yes
 -----------------------------------------------------
 Checking for library testu01
@@ -887,12 +887,12 @@ int main(int argc, char **argv) {
 }
 
 <==
-[1/2] Compiling [32mbuild/.conf_check_81d41f172c11b523b397185fe15fc685/test.cpp[0m
+[1/2] Compiling [32mbuild/.conf_check_8414d6e3fd3e174510eddfced95f2286/test.cpp[0m
 
-['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '-DHAVE_GMP_H=1', '-DHAVE_ULCG_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_81d41f172c11b523b397185fe15fc685/testbuild/test.cpp.1.o']
-[2/2] Linking [33mbuild/.conf_check_81d41f172c11b523b397185fe15fc685/testbuild/testprog[0m
+['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '-DHAVE_GMP_H=1', '-DHAVE_ULCG_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_8414d6e3fd3e174510eddfced95f2286/testbuild/test.cpp.1.o']
+[2/2] Linking [33mbuild/.conf_check_8414d6e3fd3e174510eddfced95f2286/testbuild/testprog[0m
 
-['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_81d41f172c11b523b397185fe15fc685/testbuild/testprog', '-ltestu01', '-lgmp']
+['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_8414d6e3fd3e174510eddfced95f2286/testbuild/testprog', '-ltestu01', '-lgmp']
 yes
 -----------------------------------------------------
 Checking for header num.h
@@ -905,12 +905,12 @@ int main(int argc, char **argv) {
 }
 
 <==
-[1/2] Compiling [32mbuild/.conf_check_285781695c079508a7748a9142d971c4/test.cpp[0m
+[1/2] Compiling [32mbuild/.conf_check_22380b163fdfa7b7110121ba81530808/test.cpp[0m
 
-['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '-DHAVE_GMP_H=1', '-DHAVE_ULCG_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_285781695c079508a7748a9142d971c4/testbuild/test.cpp.1.o']
-[2/2] Linking [33mbuild/.conf_check_285781695c079508a7748a9142d971c4/testbuild/testprog[0m
+['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '-DHAVE_GMP_H=1', '-DHAVE_ULCG_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_22380b163fdfa7b7110121ba81530808/testbuild/test.cpp.1.o']
+[2/2] Linking [33mbuild/.conf_check_22380b163fdfa7b7110121ba81530808/testbuild/testprog[0m
 
-['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_285781695c079508a7748a9142d971c4/testbuild/testprog']
+['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_22380b163fdfa7b7110121ba81530808/testbuild/testprog']
 yes
 -----------------------------------------------------
 Checking for library mylib
@@ -922,10 +922,10 @@ int main(int argc, char **argv) {
 }
 
 <==
-[1/2] Compiling [32mbuild/.conf_check_c392273e96cfdc99a6928ff0546ee5fe/test.cpp[0m
+[1/2] Compiling [32mbuild/.conf_check_2cffa461d0a49416d3ff3b2084406b45/test.cpp[0m
 
-['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '-DHAVE_GMP_H=1', '-DHAVE_ULCG_H=1', '-DHAVE_NUM_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_c392273e96cfdc99a6928ff0546ee5fe/testbuild/test.cpp.1.o']
-[2/2] Linking [33mbuild/.conf_check_c392273e96cfdc99a6928ff0546ee5fe/testbuild/testprog[0m
+['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '-DHAVE_GMP_H=1', '-DHAVE_ULCG_H=1', '-DHAVE_NUM_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_2cffa461d0a49416d3ff3b2084406b45/testbuild/test.cpp.1.o']
+[2/2] Linking [33mbuild/.conf_check_2cffa461d0a49416d3ff3b2084406b45/testbuild/testprog[0m
 
-['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_c392273e96cfdc99a6928ff0546ee5fe/testbuild/testprog', '-lmylib']
+['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_2cffa461d0a49416d3ff3b2084406b45/testbuild/testprog', '-lmylib']
 yes

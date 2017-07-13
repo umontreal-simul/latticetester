@@ -1145,6 +1145,24 @@ void MyExit (int status, std::string msg);
  */
 
 /**
+ * Streaming operator for maps.
+ * Formats a map as: \texttt{\{ key1=>val1, ..., keyN=>valN \}}.
+ */
+template <class K, class T, class C, class A>
+std::ostream & operator<< (std::ostream & out, const std::map<K,T,C,A> & x)
+{
+   out << "{";
+   typename std::map<K,T,C,A>::const_iterator it = x.begin();
+   if (it != x.end()) {
+      out << it->first << "=>" << it->second;
+      while (++it != x.end())
+         out << ", " << it->first << "=>" << it->second;
+   }
+   out << "}";
+   return out;
+}
+
+/**
  * Streaming operator for vectors.
  * Formats a pair as: \c (first,second).
  */
@@ -1193,24 +1211,6 @@ std::ostream & operator<< (std::ostream & out, const std::set<K,C,A> & x)
    return out;
 }
 
-
-/**
- * Streaming operator for maps.
- * Formats a map as: \texttt{\{ key1=>val1, ..., keyN=>valN \}}.
- */
-template <class K, class T, class C, class A>
-std::ostream & operator<< (std::ostream & out, const std::map<K,T,C,A> & x)
-{
-   out << "{";
-   typename std::map<K,T,C,A>::const_iterator it = x.begin();
-   if (it != x.end()) {
-      out << it->first << "=>" << it->second;
-      while (++it != x.end())
-         out << ", " << it->first << "=>" << it->second;
-   }
-   out << "}";
-   return out;
-}
 
 /**
  * @}

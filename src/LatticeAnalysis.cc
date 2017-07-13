@@ -442,7 +442,7 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
    cout << "Criterion : " << toStringCriterion(config.test) << endl;
    cout << "Figure of Merit = " << m_merit;
    cout << " (" << toStringNorma(config.normalizer) << " normalization)" << endl;
-   cout << "----------------------------------------------------------" << endl;
+   cout << "----------------------------------------------------------\n" << endl;
 
    return 0;
 

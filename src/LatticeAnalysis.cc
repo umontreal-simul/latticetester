@@ -155,9 +155,8 @@ void LatticeAnalysis::initNormalizer (NormaType norma, int alpha)
          mat_tmps(i,j) = m_reducer->getIntLatticeBasis().getBasis()(i,j);
       }
    }
-
    RScal logDensity(-log( abs( det_double(mat_tmps) ) ) );
-   //RScal logDensity(-log(abs(10000)));
+
 #endif
 
 

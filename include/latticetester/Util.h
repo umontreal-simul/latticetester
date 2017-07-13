@@ -1218,9 +1218,7 @@ std::ostream & operator<< (std::ostream & out, const std::map<K,T,C,A> & x)
 
 }     // namespace LatticeTester
 
-#if NTL_TYPES_CODE > 1
-#else
-
+#if NTL_TYPES_CODE == 1
 
 #define BOOST_UBLAS_TYPE_CHECK 0
 #include <boost/numeric/ublas/matrix.hpp>

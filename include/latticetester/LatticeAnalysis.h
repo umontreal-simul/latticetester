@@ -9,7 +9,6 @@
 #include "latticetester/Const.h"
 #include "latticetester/IntLatticeBasis.h"
 #include "latticetester/Normalizer.h"
-#include "latticetester/Weights.h"
 #include "latticetester/Reducer.h"
 
 //#include "latticetester/Writer.h"

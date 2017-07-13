@@ -628,6 +628,9 @@ void Reducer::reductionFaible (int i, int j)
 #ifdef WITH_NTL
 
 void Reducer::redLLLNTLExact(double fact){
+
+#if NTL_CODES_TYPE > 1
+
    bool withDual = m_lat->withDual();
    if (withDual) {
       mat_ZZ U;
@@ -639,11 +642,23 @@ void Reducer::redLLLNTLExact(double fact){
       ZZ det(0);
       LLL(det, m_lat->getBasis(), 99999, 100000);
    }
+
+#else
+
+   cout << "**** WARNING redLLLNTLExact cannot be use with Double Precision (LLDD)\n";
+   cout << "**** in NTL nor without NTL. LLL reduction is used with our algorithm \n";
+   cout << "which can be slower.";
+   redLLL(fact, 1000000, m_lat->getDim ());
+
+#endif
 }
 
 //=========================================================================
 
 void Reducer::redBKZ(double fact, long blocksize, PrecisionType precision) {
+
+
+#if NTL_CODES_TYPE > 1
 
    bool withDual = m_lat->withDual();
    mat_ZZ U;
@@ -669,12 +684,24 @@ void Reducer::redBKZ(double fact, long blocksize, PrecisionType precision) {
    if (withDual) {
       m_lat->getDualBasis() = transpose(inv(U)) * m_lat->getDualBasis();
    }
+
+#else
+
+   cout << "**** WARNING redBKZ cannot be use with Double Precision (LLDD) in\n";
+   cout << "**** NTL nor without NTL. Instead, LLL reduction is performed with \n";
+   cout << "our algorithm which can be slower.";
+   redLLL(fact, 1000000, m_lat->getDim ());
+
+#endif
 }
 
 
 //=========================================================================
 
 void Reducer::redLLLNTL(double fact, PrecisionType precision) {
+
+
+#if NTL_CODES_TYPE > 1
 
    bool withDual = m_lat->withDual();
    mat_ZZ U;
@@ -700,6 +727,15 @@ void Reducer::redLLLNTL(double fact, PrecisionType precision) {
    if (withDual) {
       m_lat->getDualBasis() = transpose(inv(U)) * m_lat->getDualBasis();
    }
+
+#else
+
+   cout << "**** WARNING redLLLNTL cannot be use with Double Precision (LLDD) in\n";
+   cout << "**** NTL nor without NTL. LLL reduction is used with our algorithm \n";
+   cout << "which can be slower.";
+   redLLL(fact, 1000000, m_lat->getDim ());
+
+#endif
 }
 
 //=========================================================================

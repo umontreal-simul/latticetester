@@ -35,8 +35,12 @@
 #include "latticetester/ParamReader.h"
 
 using namespace std;
-using namespace NTL;
+
 //using namespace NTL;
+
+#include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/io.hpp>
+#include <boost/numeric/ublas/lu.hpp>
 
 
 
@@ -136,8 +140,27 @@ void LatticeAnalysis::initNormalizer (NormaType norma, int alpha)
    // travail direct sur primale re-scaled ?
    // version avec logDensity en parametre (pou m^k sans besoin de calcul det)
 
+
+
+#if NTL_TYPES_CODE > 1
    RScal logDensity;
-   logDensity = - log( abs( determinant(m_reducer->getIntLatticeBasis().getBasis()) ) );
+   logDensity = - log( abs( NTL::determinant(m_reducer->getIntLatticeBasis().getBasis()) ) );
+#else
+   // As NTL library does not support matrix with double
+   // we compute the determinant with the boost library
+   boost::numeric::ublas::matrix<long>  mat_tmps;
+
+   mat_tmps.resize(m_dim, m_dim);
+   for(unsigned int i = 0; i < m_dim; i++){
+      for(unsigned int j = 0; j < m_dim; i++){
+         mat_tmps(i,j) = m_reducer->getIntLatticeBasis().getBasis()(i,j);
+      }
+   }
+
+   RScal logDensity(-log( abs( det_double(mat_tmps) ) ) );
+   //RScal logDensity(-log(abs(10000)));
+#endif
+
 
    switch (norma) {
       case BESTLAT:
@@ -172,7 +195,7 @@ void LatticeAnalysis::initNormalizer (NormaType norma, int alpha)
 
 /*
 
-bool LatticeAnalysis::performTest (CriterionType criterion, PreReductionType preRed, 
+bool LatticeAnalysis::performTest (CriterionType criterion, PreReductionType preRed,
       NormType norm, int dim, double fact, PrecisionType precision, int blocksize)
 {
 
@@ -237,7 +260,7 @@ bool LatticeAnalysis::performTest (CriterionType criterion, PreReductionType pre
 
 //==========================================================================
 
-void LatticeAnalysis::printTestResults () 
+void LatticeAnalysis::printTestResults ()
 {
    cout << "\n----------------------------------------------------------" << endl;
    cout << "Prereduction : " << toStringPreRed(config.prereduction) << endl;

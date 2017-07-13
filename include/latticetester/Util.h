@@ -1218,6 +1218,38 @@ std::ostream & operator<< (std::ostream & out, const std::map<K,T,C,A> & x)
 
 }     // namespace LatticeTester
 
+#if NTL_TYPES_CODE > 1
+#else
+
+#define BOOST_UBLAS_TYPE_CHECK 0
+#include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/lu.hpp>
+
+template<typename ValType>
+ValType det_double(const boost::numeric::ublas::matrix<ValType>& matrix)
+{
+    // create a working copy of the input
+    boost::numeric::ublas::matrix<ValType> mLu(matrix);
+    boost::numeric::ublas::permutation_matrix<std::size_t> pivots(matrix.size1());
+
+    auto isSingular = boost::numeric::ublas::lu_factorize(mLu, pivots);
+    if (isSingular)
+        return static_cast<ValType>(0);
+
+    ValType det = static_cast<ValType>(1);
+    for (std::size_t i = 0; i < pivots.size(); ++i)
+    {
+        if (pivots(i) != i)
+            det *= static_cast<ValType>(-1);
+
+        det *= mLu(i, i);
+    }
+
+    return det;
+}
+
+#endif
+
 
 #ifdef WITH_NTL
 

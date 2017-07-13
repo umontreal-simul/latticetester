@@ -1,19 +1,13 @@
-<<<<<<< HEAD
-# project  configured on Wed Jul 12 10:32:56 2017 by
-# waf 1.9.12 (abi 99, python 20705f0 on darwin)
-# using ./waf configure --ntltypes ZZDD --boost /usr/local/ --ntl /usr/local/
-=======
-# project  configured on Wed Jul 12 14:14:25 2017 by
+# project  configured on Thu Jul 13 09:40:33 2017 by
 # waf 1.9.12 (abi 99, python 2070bf0 on darwin)
-# using ./waf configure --ntltypes ZZDD
->>>>>>> d06142999054b04129f35b98078114a6ee3e34d8
+# using ./waf configure --ntltypes LLDD
 #
 ----------------------------------------
 Setting top to
-/Users/paulwambergue/UdeM/latticetester
+/Users/Erwan1/projects/github/LatticeTester
 ----------------------------------------
 Setting out to
-/Users/paulwambergue/UdeM/latticetester/build
+/Users/Erwan1/projects/github/LatticeTester/build
 ----------------------------------------
 Build platform
 darwin
@@ -22,10 +16,10 @@ Use NTL
 yes
 ----------------------------------------
 NTL integer/real types
-ZZDD
+LLDD
 ----------------------------------------
 Checking for 'clang' (C compiler)
-find program=['clang'] paths=['/usr/local', '/usr/local/include', '/usr/bin', '/bin', '/usr/sbin', '/sbin', '/usr/local/bin', '/opt/X11/bin', '/Library/TeX/texbin', '/Library/Frameworks/Python.framework/Versions/2.7/bin', '/Library/Frameworks/Python.framework/Versions/3.4/bin', ''] var='CC' -> ['/usr/bin/clang']
+find program=['clang'] paths=['/Library/Frameworks/Python.framework/Versions/3.6/bin', '/usr/local/bin', '/Users/Erwan1/anaconda/bin', '/Users/Erwan1/anaconda/bin', '/usr/local/bin', '/usr/bin', '/bin', '/usr/sbin', '/sbin', '/opt/X11/bin', '/Library/TeX/texbin'] var='CC' -> ['/usr/bin/clang']
 ['/usr/bin/clang', '-dM', '-E', '-']
 out: #define OBJC_NEW_PROPERTIES 1
 #define _LP64 1
@@ -37,12 +31,14 @@ out: #define OBJC_NEW_PROPERTIES 1
 #define __ATOMIC_RELAXED 0
 #define __ATOMIC_RELEASE 3
 #define __ATOMIC_SEQ_CST 5
+#define __BIGGEST_ALIGNMENT__ 16
 #define __BLOCKS__ 1
 #define __BYTE_ORDER__ __ORDER_LITTLE_ENDIAN__
 #define __CHAR16_TYPE__ unsigned short
 #define __CHAR32_TYPE__ unsigned int
 #define __CHAR_BIT__ 8
 #define __CONSTANT_CFSTRINGS__ 1
+#define __DBL_DECIMAL_DIG__ 17
 #define __DBL_DENORM_MIN__ 4.9406564584124654e-324
 #define __DBL_DIG__ 15
 #define __DBL_EPSILON__ 2.2204460492503131e-16
@@ -56,10 +52,11 @@ out: #define OBJC_NEW_PROPERTIES 1
 #define __DBL_MIN_10_EXP__ (-307)
 #define __DBL_MIN_EXP__ (-1021)
 #define __DBL_MIN__ 2.2250738585072014e-308
-#define __DECIMAL_DIG__ 21
+#define __DECIMAL_DIG__ __LDBL_DECIMAL_DIG__
 #define __DYNAMIC__ 1
-#define __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ 1090
+#define __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ 101200
 #define __FINITE_MATH_ONLY__ 0
+#define __FLT_DECIMAL_DIG__ 9
 #define __FLT_DENORM_MIN__ 1.40129846e-45F
 #define __FLT_DIG__ 6
 #define __FLT_EPSILON__ 1.19209290e-7F
@@ -75,6 +72,7 @@ out: #define OBJC_NEW_PROPERTIES 1
 #define __FLT_MIN_EXP__ (-125)
 #define __FLT_MIN__ 1.17549435e-38F
 #define __FLT_RADIX__ 2
+#define __FXSR__ 1
 #define __GCC_ATOMIC_BOOL_LOCK_FREE 2
 #define __GCC_ATOMIC_CHAR16_T_LOCK_FREE 2
 #define __GCC_ATOMIC_CHAR32_T_LOCK_FREE 2
@@ -96,18 +94,71 @@ out: #define OBJC_NEW_PROPERTIES 1
 #define __GNUC_STDC_INLINE__ 1
 #define __GNUC__ 4
 #define __GXX_ABI_VERSION 1002
-#define __GXX_RTTI 1
+#define __INT16_C_SUFFIX__ 
+#define __INT16_FMTd__ "hd"
+#define __INT16_FMTi__ "hi"
+#define __INT16_MAX__ 32767
 #define __INT16_TYPE__ short
+#define __INT32_C_SUFFIX__ 
+#define __INT32_FMTd__ "d"
+#define __INT32_FMTi__ "i"
+#define __INT32_MAX__ 2147483647
 #define __INT32_TYPE__ int
 #define __INT64_C_SUFFIX__ LL
+#define __INT64_FMTd__ "lld"
+#define __INT64_FMTi__ "lli"
+#define __INT64_MAX__ 9223372036854775807LL
 #define __INT64_TYPE__ long long int
-#define __INT8_TYPE__ char
+#define __INT8_C_SUFFIX__ 
+#define __INT8_FMTd__ "hhd"
+#define __INT8_FMTi__ "hhi"
+#define __INT8_MAX__ 127
+#define __INT8_TYPE__ signed char
+#define __INTMAX_C_SUFFIX__ L
+#define __INTMAX_FMTd__ "ld"
+#define __INTMAX_FMTi__ "li"
 #define __INTMAX_MAX__ 9223372036854775807L
 #define __INTMAX_TYPE__ long int
 #define __INTMAX_WIDTH__ 64
+#define __INTPTR_FMTd__ "ld"
+#define __INTPTR_FMTi__ "li"
+#define __INTPTR_MAX__ 9223372036854775807L
 #define __INTPTR_TYPE__ long int
 #define __INTPTR_WIDTH__ 64
+#define __INT_FAST16_FMTd__ "hd"
+#define __INT_FAST16_FMTi__ "hi"
+#define __INT_FAST16_MAX__ 32767
+#define __INT_FAST16_TYPE__ short
+#define __INT_FAST32_FMTd__ "d"
+#define __INT_FAST32_FMTi__ "i"
+#define __INT_FAST32_MAX__ 2147483647
+#define __INT_FAST32_TYPE__ int
+#define __INT_FAST64_FMTd__ "ld"
+#define __INT_FAST64_FMTi__ "li"
+#define __INT_FAST64_MAX__ 9223372036854775807L
+#define __INT_FAST64_TYPE__ long int
+#define __INT_FAST8_FMTd__ "hhd"
+#define __INT_FAST8_FMTi__ "hhi"
+#define __INT_FAST8_MAX__ 127
+#define __INT_FAST8_TYPE__ signed char
+#define __INT_LEAST16_FMTd__ "hd"
+#define __INT_LEAST16_FMTi__ "hi"
+#define __INT_LEAST16_MAX__ 32767
+#define __INT_LEAST16_TYPE__ short
+#define __INT_LEAST32_FMTd__ "d"
+#define __INT_LEAST32_FMTi__ "i"
+#define __INT_LEAST32_MAX__ 2147483647
+#define __INT_LEAST32_TYPE__ int
+#define __INT_LEAST64_FMTd__ "ld"
+#define __INT_LEAST64_FMTi__ "li"
+#define __INT_LEAST64_MAX__ 9223372036854775807L
+#define __INT_LEAST64_TYPE__ long int
+#define __INT_LEAST8_FMTd__ "hhd"
+#define __INT_LEAST8_FMTi__ "hhi"
+#define __INT_LEAST8_MAX__ 127
+#define __INT_LEAST8_TYPE__ signed char
 #define __INT_MAX__ 2147483647
+#define __LDBL_DECIMAL_DIG__ 21
 #define __LDBL_DENORM_MIN__ 3.64519953188247460253e-4951L
 #define __LDBL_DIG__ 18
 #define __LDBL_EPSILON__ 1.08420217248550443401e-19L
@@ -129,17 +180,22 @@ out: #define OBJC_NEW_PROPERTIES 1
 #define __MMX__ 1
 #define __NO_INLINE__ 1
 #define __NO_MATH_INLINES 1
+#define __OBJC_BOOL_IS_BOOL 0
 #define __ORDER_BIG_ENDIAN__ 4321
 #define __ORDER_LITTLE_ENDIAN__ 1234
 #define __ORDER_PDP_ENDIAN__ 3412
 #define __PIC__ 2
 #define __POINTER_WIDTH__ 64
 #define __PRAGMA_REDEFINE_EXTNAME 1
+#define __PTRDIFF_FMTd__ "ld"
+#define __PTRDIFF_FMTi__ "li"
+#define __PTRDIFF_MAX__ 9223372036854775807L
 #define __PTRDIFF_TYPE__ long int
 #define __PTRDIFF_WIDTH__ 64
 #define __REGISTER_PREFIX__ 
 #define __SCHAR_MAX__ 127
 #define __SHRT_MAX__ 32767
+#define __SIG_ATOMIC_MAX__ 2147483647
 #define __SIG_ATOMIC_WIDTH__ 32
 #define __SIZEOF_DOUBLE__ 8
 #define __SIZEOF_FLOAT__ 4
@@ -154,12 +210,17 @@ out: #define OBJC_NEW_PROPERTIES 1
 #define __SIZEOF_SIZE_T__ 8
 #define __SIZEOF_WCHAR_T__ 4
 #define __SIZEOF_WINT_T__ 4
+#define __SIZE_FMTX__ "lX"
+#define __SIZE_FMTo__ "lo"
+#define __SIZE_FMTu__ "lu"
+#define __SIZE_FMTx__ "lx"
 #define __SIZE_MAX__ 18446744073709551615UL
 #define __SIZE_TYPE__ long unsigned int
 #define __SIZE_WIDTH__ 64
 #define __SSE2_MATH__ 1
 #define __SSE2__ 1
 #define __SSE3__ 1
+#define __SSE4_1__ 1
 #define __SSE_MATH__ 1
 #define __SSE__ 1
 #define __SSP__ 1
@@ -167,11 +228,101 @@ out: #define OBJC_NEW_PROPERTIES 1
 #define __STDC_HOSTED__ 1
 #define __STDC_UTF_16__ 1
 #define __STDC_UTF_32__ 1
-#define __STDC_VERSION__ 199901L
+#define __STDC_VERSION__ 201112L
 #define __STDC__ 1
+#define __UINT16_C_SUFFIX__ 
+#define __UINT16_FMTX__ "hX"
+#define __UINT16_FMTo__ "ho"
+#define __UINT16_FMTu__ "hu"
+#define __UINT16_FMTx__ "hx"
+#define __UINT16_MAX__ 65535
+#define __UINT16_TYPE__ unsigned short
+#define __UINT32_C_SUFFIX__ U
+#define __UINT32_FMTX__ "X"
+#define __UINT32_FMTo__ "o"
+#define __UINT32_FMTu__ "u"
+#define __UINT32_FMTx__ "x"
+#define __UINT32_MAX__ 4294967295U
+#define __UINT32_TYPE__ unsigned int
+#define __UINT64_C_SUFFIX__ ULL
+#define __UINT64_FMTX__ "llX"
+#define __UINT64_FMTo__ "llo"
+#define __UINT64_FMTu__ "llu"
+#define __UINT64_FMTx__ "llx"
+#define __UINT64_MAX__ 18446744073709551615ULL
+#define __UINT64_TYPE__ long long unsigned int
+#define __UINT8_C_SUFFIX__ 
+#define __UINT8_FMTX__ "hhX"
+#define __UINT8_FMTo__ "hho"
+#define __UINT8_FMTu__ "hhu"
+#define __UINT8_FMTx__ "hhx"
+#define __UINT8_MAX__ 255
+#define __UINT8_TYPE__ unsigned char
+#define __UINTMAX_C_SUFFIX__ UL
+#define __UINTMAX_FMTX__ "lX"
+#define __UINTMAX_FMTo__ "lo"
+#define __UINTMAX_FMTu__ "lu"
+#define __UINTMAX_FMTx__ "lx"
+#define __UINTMAX_MAX__ 18446744073709551615UL
 #define __UINTMAX_TYPE__ long unsigned int
+#define __UINTMAX_WIDTH__ 64
+#define __UINTPTR_FMTX__ "lX"
+#define __UINTPTR_FMTo__ "lo"
+#define __UINTPTR_FMTu__ "lu"
+#define __UINTPTR_FMTx__ "lx"
+#define __UINTPTR_MAX__ 18446744073709551615UL
+#define __UINTPTR_TYPE__ long unsigned int
+#define __UINTPTR_WIDTH__ 64
+#define __UINT_FAST16_FMTX__ "hX"
+#define __UINT_FAST16_FMTo__ "ho"
+#define __UINT_FAST16_FMTu__ "hu"
+#define __UINT_FAST16_FMTx__ "hx"
+#define __UINT_FAST16_MAX__ 65535
+#define __UINT_FAST16_TYPE__ unsigned short
+#define __UINT_FAST32_FMTX__ "X"
+#define __UINT_FAST32_FMTo__ "o"
+#define __UINT_FAST32_FMTu__ "u"
+#define __UINT_FAST32_FMTx__ "x"
+#define __UINT_FAST32_MAX__ 4294967295U
+#define __UINT_FAST32_TYPE__ unsigned int
+#define __UINT_FAST64_FMTX__ "lX"
+#define __UINT_FAST64_FMTo__ "lo"
+#define __UINT_FAST64_FMTu__ "lu"
+#define __UINT_FAST64_FMTx__ "lx"
+#define __UINT_FAST64_MAX__ 18446744073709551615UL
+#define __UINT_FAST64_TYPE__ long unsigned int
+#define __UINT_FAST8_FMTX__ "hhX"
+#define __UINT_FAST8_FMTo__ "hho"
+#define __UINT_FAST8_FMTu__ "hhu"
+#define __UINT_FAST8_FMTx__ "hhx"
+#define __UINT_FAST8_MAX__ 255
+#define __UINT_FAST8_TYPE__ unsigned char
+#define __UINT_LEAST16_FMTX__ "hX"
+#define __UINT_LEAST16_FMTo__ "ho"
+#define __UINT_LEAST16_FMTu__ "hu"
+#define __UINT_LEAST16_FMTx__ "hx"
+#define __UINT_LEAST16_MAX__ 65535
+#define __UINT_LEAST16_TYPE__ unsigned short
+#define __UINT_LEAST32_FMTX__ "X"
+#define __UINT_LEAST32_FMTo__ "o"
+#define __UINT_LEAST32_FMTu__ "u"
+#define __UINT_LEAST32_FMTx__ "x"
+#define __UINT_LEAST32_MAX__ 4294967295U
+#define __UINT_LEAST32_TYPE__ unsigned int
+#define __UINT_LEAST64_FMTX__ "lX"
+#define __UINT_LEAST64_FMTo__ "lo"
+#define __UINT_LEAST64_FMTu__ "lu"
+#define __UINT_LEAST64_FMTx__ "lx"
+#define __UINT_LEAST64_MAX__ 18446744073709551615UL
+#define __UINT_LEAST64_TYPE__ long unsigned int
+#define __UINT_LEAST8_FMTX__ "hhX"
+#define __UINT_LEAST8_FMTo__ "hho"
+#define __UINT_LEAST8_FMTu__ "hhu"
+#define __UINT_LEAST8_FMTx__ "hhx"
+#define __UINT_LEAST8_MAX__ 255
+#define __UINT_LEAST8_TYPE__ unsigned char
 #define __USER_LABEL_PREFIX__ _
-#define __VERSION__ "4.2.1 Compatible Apple LLVM 6.0 (clang-600.0.57)"
+#define __VERSION__ "4.2.1 Compatible Apple LLVM 8.1.0 (clang-802.0.42)"
 #define __WCHAR_MAX__ 2147483647
 #define __WCHAR_TYPE__ int
 #define __WCHAR_WIDTH__ 32
@@ -179,16 +330,19 @@ out: #define OBJC_NEW_PROPERTIES 1
 #define __WINT_WIDTH__ 32
 #define __amd64 1
 #define __amd64__ 1
-#define __apple_build_version__ 6000057
+#define __apple_build_version__ 8020042
 #define __block __attribute__((__blocks__(byref)))
 #define __clang__ 1
-#define __clang_major__ 6
-#define __clang_minor__ 0
+#define __clang_major__ 8
+#define __clang_minor__ 1
 #define __clang_patchlevel__ 0
-#define __clang_version__ "6.0 (clang-600.0.57)"
+#define __clang_version__ "8.1.0 (clang-802.0.42)"
 #define __core2 1
 #define __core2__ 1
 #define __llvm__ 1
+#define __nonnull _Nonnull
+#define __null_unspecified _Null_unspecified
+#define __nullable _Nullable
 #define __pic__ 2
 #define __strong 
 #define __tune_core2__ 1
@@ -197,491 +351,346 @@ out: #define OBJC_NEW_PROPERTIES 1
 #define __x86_64 1
 #define __x86_64__ 1
 
-find program=['llvm-ar', 'ar'] paths=['/usr/local', '/usr/local/include', '/usr/bin', '/bin', '/usr/sbin', '/sbin', '/usr/local/bin', '/opt/X11/bin', '/Library/TeX/texbin', '/Library/Frameworks/Python.framework/Versions/2.7/bin', '/Library/Frameworks/Python.framework/Versions/3.4/bin', ''] var='AR' -> ['/usr/bin/ar']
-find program=['ar'] paths=['/usr/local', '/usr/local/include', '/usr/bin', '/bin', '/usr/sbin', '/sbin', '/usr/local/bin', '/opt/X11/bin', '/Library/TeX/texbin', '/Library/Frameworks/Python.framework/Versions/2.7/bin', '/Library/Frameworks/Python.framework/Versions/3.4/bin', ''] var='AR' -> ['/usr/bin/ar']
+find program=['llvm-ar', 'ar'] paths=['/Library/Frameworks/Python.framework/Versions/3.6/bin', '/usr/local/bin', '/Users/Erwan1/anaconda/bin', '/Users/Erwan1/anaconda/bin', '/usr/local/bin', '/usr/bin', '/bin', '/usr/sbin', '/sbin', '/opt/X11/bin', '/Library/TeX/texbin'] var='AR' -> ['/usr/bin/ar']
+find program=['ar'] paths=['/Library/Frameworks/Python.framework/Versions/3.6/bin', '/usr/local/bin', '/Users/Erwan1/anaconda/bin', '/Users/Erwan1/anaconda/bin', '/usr/local/bin', '/usr/bin', '/bin', '/usr/sbin', '/sbin', '/opt/X11/bin', '/Library/TeX/texbin'] var='AR' -> ['/usr/bin/ar']
 /usr/bin/clang
 ----------------------------------------
 Checking for 'clang++' (C++ compiler)
-find program=['clang++'] paths=['/usr/local', '/usr/local/include', '/usr/bin', '/bin', '/usr/sbin', '/sbin', '/usr/local/bin', '/opt/X11/bin', '/Library/TeX/texbin', '/Library/Frameworks/Python.framework/Versions/2.7/bin', '/Library/Frameworks/Python.framework/Versions/3.4/bin', ''] var='CXX' -> ['/usr/local/bin/g++-4.7']
-['/usr/local/bin/g++-4.7', '-dM', '-E', '-']
-out: #define __DBL_MIN_EXP__ (-1021)
-#define __UINT_LEAST16_MAX__ 65535
+find program=['clang++'] paths=['/Library/Frameworks/Python.framework/Versions/3.6/bin', '/usr/local/bin', '/Users/Erwan1/anaconda/bin', '/Users/Erwan1/anaconda/bin', '/usr/local/bin', '/usr/bin', '/bin', '/usr/sbin', '/sbin', '/opt/X11/bin', '/Library/TeX/texbin'] var='CXX' -> ['/usr/bin/clang++']
+['/usr/bin/clang++', '-dM', '-E', '-']
+out: #define OBJC_NEW_PROPERTIES 1
+#define _LP64 1
+#define __APPLE_CC__ 6000
+#define __APPLE__ 1
 #define __ATOMIC_ACQUIRE 2
-#define __FLT_MIN__ 1.17549435082228750797e-38F
-#define __UINT_LEAST8_TYPE__ unsigned char
-#define __INTMAX_C(c) c ## L
+#define __ATOMIC_ACQ_REL 4
+#define __ATOMIC_CONSUME 1
+#define __ATOMIC_RELAXED 0
+#define __ATOMIC_RELEASE 3
+#define __ATOMIC_SEQ_CST 5
+#define __BIGGEST_ALIGNMENT__ 16
+#define __BLOCKS__ 1
+#define __BYTE_ORDER__ __ORDER_LITTLE_ENDIAN__
+#define __CHAR16_TYPE__ unsigned short
+#define __CHAR32_TYPE__ unsigned int
 #define __CHAR_BIT__ 8
-#define __UINT8_MAX__ 255
-#define __WINT_MAX__ 2147483647
-#define __ORDER_LITTLE_ENDIAN__ 1234
-#define __SIZE_MAX__ 18446744073709551615UL
-#define __WCHAR_MAX__ 2147483647
+#define __CONSTANT_CFSTRINGS__ 1
+#define __DBL_DECIMAL_DIG__ 17
+#define __DBL_DENORM_MIN__ 4.9406564584124654e-324
+#define __DBL_DIG__ 15
+#define __DBL_EPSILON__ 2.2204460492503131e-16
+#define __DBL_HAS_DENORM__ 1
+#define __DBL_HAS_INFINITY__ 1
+#define __DBL_HAS_QUIET_NAN__ 1
+#define __DBL_MANT_DIG__ 53
+#define __DBL_MAX_10_EXP__ 308
+#define __DBL_MAX_EXP__ 1024
+#define __DBL_MAX__ 1.7976931348623157e+308
+#define __DBL_MIN_10_EXP__ (-307)
+#define __DBL_MIN_EXP__ (-1021)
+#define __DBL_MIN__ 2.2250738585072014e-308
+#define __DECIMAL_DIG__ __LDBL_DECIMAL_DIG__
+#define __DYNAMIC__ 1
+#define __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ 101200
+#define __FINITE_MATH_ONLY__ 0
+#define __FLT_DECIMAL_DIG__ 9
+#define __FLT_DENORM_MIN__ 1.40129846e-45F
+#define __FLT_DIG__ 6
+#define __FLT_EPSILON__ 1.19209290e-7F
+#define __FLT_EVAL_METHOD__ 0
+#define __FLT_HAS_DENORM__ 1
+#define __FLT_HAS_INFINITY__ 1
+#define __FLT_HAS_QUIET_NAN__ 1
+#define __FLT_MANT_DIG__ 24
+#define __FLT_MAX_10_EXP__ 38
+#define __FLT_MAX_EXP__ 128
+#define __FLT_MAX__ 3.40282347e+38F
+#define __FLT_MIN_10_EXP__ (-37)
+#define __FLT_MIN_EXP__ (-125)
+#define __FLT_MIN__ 1.17549435e-38F
+#define __FLT_RADIX__ 2
+#define __FXSR__ 1
+#define __GCC_ATOMIC_BOOL_LOCK_FREE 2
+#define __GCC_ATOMIC_CHAR16_T_LOCK_FREE 2
+#define __GCC_ATOMIC_CHAR32_T_LOCK_FREE 2
+#define __GCC_ATOMIC_CHAR_LOCK_FREE 2
+#define __GCC_ATOMIC_INT_LOCK_FREE 2
+#define __GCC_ATOMIC_LLONG_LOCK_FREE 2
+#define __GCC_ATOMIC_LONG_LOCK_FREE 2
+#define __GCC_ATOMIC_POINTER_LOCK_FREE 2
+#define __GCC_ATOMIC_SHORT_LOCK_FREE 2
+#define __GCC_ATOMIC_TEST_AND_SET_TRUEVAL 1
+#define __GCC_ATOMIC_WCHAR_T_LOCK_FREE 2
 #define __GCC_HAVE_SYNC_COMPARE_AND_SWAP_1 1
+#define __GCC_HAVE_SYNC_COMPARE_AND_SWAP_16 1
 #define __GCC_HAVE_SYNC_COMPARE_AND_SWAP_2 1
 #define __GCC_HAVE_SYNC_COMPARE_AND_SWAP_4 1
-#define __DBL_DENORM_MIN__ ((double)4.94065645841246544177e-324L)
 #define __GCC_HAVE_SYNC_COMPARE_AND_SWAP_8 1
-#define __GCC_ATOMIC_CHAR_LOCK_FREE 2
-#define __FLT_EVAL_METHOD__ 0
-#define __GCC_ATOMIC_CHAR32_T_LOCK_FREE 2
-#define __x86_64 1
-#define __UINT_FAST64_MAX__ 18446744073709551615ULL
-#define __SIG_ATOMIC_TYPE__ int
-#define __DBL_MIN_10_EXP__ (-307)
-#define __FINITE_MATH_ONLY__ 0
-#define __GNUC_PATCHLEVEL__ 4
-#define __UINT_FAST8_MAX__ 255
-#define __DEC64_MAX_EXP__ 385
-#define __INT8_C(c) c
-#define __UINT_LEAST64_MAX__ 18446744073709551615ULL
-#define __SHRT_MAX__ 32767
-#define __LDBL_MAX__ 1.18973149535723176502e+4932L
-#define __UINT_LEAST8_MAX__ 255
-#define __GCC_ATOMIC_BOOL_LOCK_FREE 2
-#define __APPLE_CC__ 1
-#define __UINTMAX_TYPE__ long unsigned int
-#define __DEC32_EPSILON__ 1E-6DF
-#define __UINT32_MAX__ 4294967295U
-#define __LDBL_MAX_EXP__ 16384
-#define __WINT_MIN__ (-__WINT_MAX__ - 1)
-#define __SCHAR_MAX__ 127
-#define __WCHAR_MIN__ (-__WCHAR_MAX__ - 1)
-#define __INT64_C(c) c ## LL
-#define __DBL_DIG__ 15
-#define __GCC_ATOMIC_POINTER_LOCK_FREE 2
-#define __SIZEOF_INT__ 4
-#define __SIZEOF_POINTER__ 8
-#define __USER_LABEL_PREFIX__ _
-#define __STDC_HOSTED__ 1
-#define __LDBL_HAS_INFINITY__ 1
-#define __FLT_EPSILON__ 1.19209289550781250000e-7F
-#define __LDBL_MIN__ 3.36210314311209350626e-4932L
-#define __DEC32_MAX__ 9.999999E96DF
-#define __strong 
-#define __INT32_MAX__ 2147483647
-#define __SIZEOF_LONG__ 8
-#define __APPLE__ 1
-#define __UINT16_C(c) c
-#define __DECIMAL_DIG__ 21
-#define __LDBL_HAS_QUIET_NAN__ 1
-#define __DYNAMIC__ 1
+#define __GNUC_MINOR__ 2
+#define __GNUC_PATCHLEVEL__ 1
+#define __GNUC_STDC_INLINE__ 1
 #define __GNUC__ 4
-#define __MMX__ 1
-#define __FLT_HAS_DENORM__ 1
-#define __SIZEOF_LONG_DOUBLE__ 16
-#define __BIGGEST_ALIGNMENT__ 16
-#define __DBL_MAX__ ((double)1.79769313486231570815e+308L)
-#define __INT_FAST32_MAX__ 2147483647
-#define __DBL_HAS_INFINITY__ 1
-#define __DEC32_MIN_EXP__ (-94)
-#define __INT_FAST16_TYPE__ short int
-#define __LDBL_HAS_DENORM__ 1
-#define __DEC128_MAX__ 9.999999999999999999999999999999999E6144DL
-#define __INT_LEAST32_MAX__ 2147483647
-#define __DEC32_MIN__ 1E-95DF
-#define __weak 
-#define __DBL_MAX_EXP__ 1024
-#define __DEC128_EPSILON__ 1E-33DL
-#define __SSE2_MATH__ 1
-#define __PTRDIFF_MAX__ 9223372036854775807L
-#define __amd64 1
-#define __tune_core2__ 1
-#define __LONG_LONG_MAX__ 9223372036854775807LL
-#define __SIZEOF_SIZE_T__ 8
-#define __SIZEOF_WINT_T__ 4
 #define __GXX_ABI_VERSION 1002
-#define __FLT_MIN_EXP__ (-125)
-#define __INT_FAST64_TYPE__ long long int
-#define __DBL_MIN__ ((double)2.22507385850720138309e-308L)
-#define __LP64__ 1
-#define __DEC128_MIN__ 1E-6143DL
-#define __REGISTER_PREFIX__ 
-#define __UINT16_MAX__ 65535
-#define __DBL_HAS_DENORM__ 1
-#define __UINT8_TYPE__ unsigned char
-#define __NO_INLINE__ 1
-#define __FLT_MANT_DIG__ 24
-#define __VERSION__ "4.7.4"
-#define __UINT64_C(c) c ## ULL
-#define __GCC_ATOMIC_INT_LOCK_FREE 2
-#define __FLOAT_WORD_ORDER__ __ORDER_LITTLE_ENDIAN__
-#define __INT32_C(c) c
-#define __DEC64_EPSILON__ 1E-15DD
-#define __ORDER_PDP_ENDIAN__ 3412
-#define __DEC128_MIN_EXP__ (-6142)
-#define __INT_FAST32_TYPE__ int
-#define __UINT_LEAST16_TYPE__ short unsigned int
+#define __INT16_C_SUFFIX__ 
+#define __INT16_FMTd__ "hd"
+#define __INT16_FMTi__ "hi"
 #define __INT16_MAX__ 32767
-#define __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ 1090
-#define __SIZE_TYPE__ long unsigned int
-#define __UINT64_MAX__ 18446744073709551615ULL
-#define __INT8_TYPE__ signed char
-#define __FLT_RADIX__ 2
-#define __INT_LEAST16_TYPE__ short int
-#define __LDBL_EPSILON__ 1.08420217248550443401e-19L
-#define __UINTMAX_C(c) c ## UL
-#define __SSE_MATH__ 1
-#define __k8 1
-#define __SIG_ATOMIC_MAX__ 2147483647
-#define __GCC_ATOMIC_WCHAR_T_LOCK_FREE 2
-#define __SIZEOF_PTRDIFF_T__ 8
-#define __x86_64__ 1
-#define __DEC32_SUBNORMAL_MIN__ 0.000001E-95DF
-#define __INT_FAST16_MAX__ 32767
-#define __UINT_FAST32_MAX__ 4294967295U
-#define __UINT_LEAST64_TYPE__ long long unsigned int
-#define __FLT_HAS_QUIET_NAN__ 1
-#define __FLT_MAX_10_EXP__ 38
-#define __LONG_MAX__ 9223372036854775807L
-#define __DEC128_SUBNORMAL_MIN__ 0.000000000000000000000000000000001E-6143DL
-#define __FLT_HAS_INFINITY__ 1
-#define __UINT_FAST16_TYPE__ short unsigned int
-#define __DEC64_MAX__ 9.999999999999999E384DD
-#define __CHAR16_TYPE__ short unsigned int
-#define __PRAGMA_REDEFINE_EXTNAME 1
-#define __INT_LEAST16_MAX__ 32767
-#define __DEC64_MANT_DIG__ 16
-#define __INT64_MAX__ 9223372036854775807LL
-#define __UINT_LEAST32_MAX__ 4294967295U
-#define __GCC_ATOMIC_LONG_LOCK_FREE 2
-#define __INT_LEAST64_TYPE__ long long int
-#define __INT16_TYPE__ short int
-#define __INT_LEAST8_TYPE__ signed char
-#define __DEC32_MAX_EXP__ 97
-#define __INT_FAST8_MAX__ 127
-#define __INTPTR_MAX__ 9223372036854775807L
-#define __LITTLE_ENDIAN__ 1
-#define __SSE2__ 1
-#define __LDBL_MANT_DIG__ 64
-#define __CONSTANT_CFSTRINGS__ 1
-#define __DBL_HAS_QUIET_NAN__ 1
-#define __SIG_ATOMIC_MIN__ (-__SIG_ATOMIC_MAX__ - 1)
-#define __code_model_small__ 1
-#define __k8__ 1
-#define __INTPTR_TYPE__ long int
-#define __UINT16_TYPE__ short unsigned int
-#define __WCHAR_TYPE__ int
-#define __SIZEOF_FLOAT__ 4
-#define __pic__ 2
-#define __UINTPTR_MAX__ 18446744073709551615UL
-#define __DEC64_MIN_EXP__ (-382)
-#define __INT_FAST64_MAX__ 9223372036854775807LL
-#define __GCC_ATOMIC_TEST_AND_SET_TRUEVAL 1
-#define __FLT_DIG__ 6
-#define __UINT_FAST64_TYPE__ long long unsigned int
-#define __INT_MAX__ 2147483647
-#define __MACH__ 1
-#define __amd64__ 1
-#define __INT64_TYPE__ long long int
-#define __FLT_MAX_EXP__ 128
-#define __OBJC2__ 1
-#define __ORDER_BIG_ENDIAN__ 4321
-#define __DBL_MANT_DIG__ 53
-#define __INT_LEAST64_MAX__ 9223372036854775807LL
-#define __GCC_ATOMIC_CHAR16_T_LOCK_FREE 2
-#define __DEC64_MIN__ 1E-383DD
-#define __WINT_TYPE__ int
-#define __UINT_LEAST32_TYPE__ unsigned int
-#define __SIZEOF_SHORT__ 2
-#define __SSE__ 1
-#define __LDBL_MIN_EXP__ (-16381)
-#define __INT_LEAST8_MAX__ 127
-#define __SIZEOF_INT128__ 16
-#define __LDBL_MAX_10_EXP__ 4932
-#define __ATOMIC_RELAXED 0
-#define __DBL_EPSILON__ ((double)2.22044604925031308085e-16L)
-#define _LP64 1
-#define __UINT8_C(c) c
-#define __INT_LEAST32_TYPE__ int
-#define __SIZEOF_WCHAR_T__ 4
-#define __UINT64_TYPE__ long long unsigned int
-#define __INT_FAST8_TYPE__ signed char
-#define __DBL_DECIMAL_DIG__ 17
-#define __DEC_EVAL_METHOD__ 2
-#define __UINT32_C(c) c ## U
-#define __INTMAX_MAX__ 9223372036854775807L
-#define __BYTE_ORDER__ __ORDER_LITTLE_ENDIAN__
-#define __FLT_DENORM_MIN__ 1.40129846432481707092e-45F
-#define __INT8_MAX__ 127
-#define __PIC__ 2
-#define __UINT_FAST32_TYPE__ unsigned int
-#define __CHAR32_TYPE__ unsigned int
-#define __FLT_MAX__ 3.40282346638528859812e+38F
+#define __INT16_TYPE__ short
+#define __INT32_C_SUFFIX__ 
+#define __INT32_FMTd__ "d"
+#define __INT32_FMTi__ "i"
+#define __INT32_MAX__ 2147483647
 #define __INT32_TYPE__ int
-#define __SIZEOF_DOUBLE__ 8
-#define __FLT_MIN_10_EXP__ (-37)
+#define __INT64_C_SUFFIX__ LL
+#define __INT64_FMTd__ "lld"
+#define __INT64_FMTi__ "lli"
+#define __INT64_MAX__ 9223372036854775807LL
+#define __INT64_TYPE__ long long int
+#define __INT8_C_SUFFIX__ 
+#define __INT8_FMTd__ "hhd"
+#define __INT8_FMTi__ "hhi"
+#define __INT8_MAX__ 127
+#define __INT8_TYPE__ signed char
+#define __INTMAX_C_SUFFIX__ L
+#define __INTMAX_FMTd__ "ld"
+#define __INTMAX_FMTi__ "li"
+#define __INTMAX_MAX__ 9223372036854775807L
 #define __INTMAX_TYPE__ long int
-#define __DEC128_MAX_EXP__ 6145
-#define __ATOMIC_CONSUME 1
-#define __GNUC_MINOR__ 7
-#define __UINTMAX_MAX__ 18446744073709551615UL
-#define __DEC32_MANT_DIG__ 7
-#define __DBL_MAX_10_EXP__ 308
+#define __INTMAX_WIDTH__ 64
+#define __INTPTR_FMTd__ "ld"
+#define __INTPTR_FMTi__ "li"
+#define __INTPTR_MAX__ 9223372036854775807L
+#define __INTPTR_TYPE__ long int
+#define __INTPTR_WIDTH__ 64
+#define __INT_FAST16_FMTd__ "hd"
+#define __INT_FAST16_FMTi__ "hi"
+#define __INT_FAST16_MAX__ 32767
+#define __INT_FAST16_TYPE__ short
+#define __INT_FAST32_FMTd__ "d"
+#define __INT_FAST32_FMTi__ "i"
+#define __INT_FAST32_MAX__ 2147483647
+#define __INT_FAST32_TYPE__ int
+#define __INT_FAST64_FMTd__ "ld"
+#define __INT_FAST64_FMTi__ "li"
+#define __INT_FAST64_MAX__ 9223372036854775807L
+#define __INT_FAST64_TYPE__ long int
+#define __INT_FAST8_FMTd__ "hhd"
+#define __INT_FAST8_FMTi__ "hhi"
+#define __INT_FAST8_MAX__ 127
+#define __INT_FAST8_TYPE__ signed char
+#define __INT_LEAST16_FMTd__ "hd"
+#define __INT_LEAST16_FMTi__ "hi"
+#define __INT_LEAST16_MAX__ 32767
+#define __INT_LEAST16_TYPE__ short
+#define __INT_LEAST32_FMTd__ "d"
+#define __INT_LEAST32_FMTi__ "i"
+#define __INT_LEAST32_MAX__ 2147483647
+#define __INT_LEAST32_TYPE__ int
+#define __INT_LEAST64_FMTd__ "ld"
+#define __INT_LEAST64_FMTi__ "li"
+#define __INT_LEAST64_MAX__ 9223372036854775807L
+#define __INT_LEAST64_TYPE__ long int
+#define __INT_LEAST8_FMTd__ "hhd"
+#define __INT_LEAST8_FMTi__ "hhi"
+#define __INT_LEAST8_MAX__ 127
+#define __INT_LEAST8_TYPE__ signed char
+#define __INT_MAX__ 2147483647
+#define __LDBL_DECIMAL_DIG__ 21
 #define __LDBL_DENORM_MIN__ 3.64519953188247460253e-4951L
-#define __INT16_C(c) c
-#define __STDC__ 1
-#define __PTRDIFF_TYPE__ long int
-#define __ATOMIC_SEQ_CST 5
-#define __UINT32_TYPE__ unsigned int
-#define __UINTPTR_TYPE__ long unsigned int
-#define __DEC64_SUBNORMAL_MIN__ 0.000000000000001E-383DD
-#define __DEC128_MANT_DIG__ 34
-#define __LDBL_MIN_10_EXP__ (-4931)
-#define __SIZEOF_LONG_LONG__ 8
-#define __GCC_ATOMIC_LLONG_LOCK_FREE 2
 #define __LDBL_DIG__ 18
-#define __FLT_DECIMAL_DIG__ 9
-#define __UINT_FAST16_MAX__ 65535
-#define __GNUC_GNU_INLINE__ 1
-#define __GCC_ATOMIC_SHORT_LOCK_FREE 2
-#define __SSE3__ 1
-#define __UINT_FAST8_TYPE__ unsigned char
-#define __ATOMIC_ACQ_REL 4
-#define __ATOMIC_RELEASE 3
-
-from /Users/paulwambergue/UdeM/latticetester: Not clang/clang++
-not found
-----------------------------------------
-Checking for 'g++' (C++ compiler)
-find program=['g++', 'c++'] paths=['/usr/local', '/usr/local/include', '/usr/bin', '/bin', '/usr/sbin', '/sbin', '/usr/local/bin', '/opt/X11/bin', '/Library/TeX/texbin', '/Library/Frameworks/Python.framework/Versions/2.7/bin', '/Library/Frameworks/Python.framework/Versions/3.4/bin', ''] var='CXX' -> ['/usr/local/bin/g++-4.7']
-['/usr/local/bin/g++-4.7', '-dM', '-E', '-']
-out: #define __DBL_MIN_EXP__ (-1021)
-#define __UINT_LEAST16_MAX__ 65535
-#define __ATOMIC_ACQUIRE 2
-#define __FLT_MIN__ 1.17549435082228750797e-38F
-#define __UINT_LEAST8_TYPE__ unsigned char
-#define __INTMAX_C(c) c ## L
-#define __CHAR_BIT__ 8
-#define __UINT8_MAX__ 255
-#define __WINT_MAX__ 2147483647
+#define __LDBL_EPSILON__ 1.08420217248550443401e-19L
+#define __LDBL_HAS_DENORM__ 1
+#define __LDBL_HAS_INFINITY__ 1
+#define __LDBL_HAS_QUIET_NAN__ 1
+#define __LDBL_MANT_DIG__ 64
+#define __LDBL_MAX_10_EXP__ 4932
+#define __LDBL_MAX_EXP__ 16384
+#define __LDBL_MAX__ 1.18973149535723176502e+4932L
+#define __LDBL_MIN_10_EXP__ (-4931)
+#define __LDBL_MIN_EXP__ (-16381)
+#define __LDBL_MIN__ 3.36210314311209350626e-4932L
+#define __LITTLE_ENDIAN__ 1
+#define __LONG_LONG_MAX__ 9223372036854775807LL
+#define __LONG_MAX__ 9223372036854775807L
+#define __LP64__ 1
+#define __MACH__ 1
+#define __MMX__ 1
+#define __NO_INLINE__ 1
+#define __NO_MATH_INLINES 1
+#define __OBJC_BOOL_IS_BOOL 0
+#define __ORDER_BIG_ENDIAN__ 4321
 #define __ORDER_LITTLE_ENDIAN__ 1234
-#define __SIZE_MAX__ 18446744073709551615UL
-#define __WCHAR_MAX__ 2147483647
-#define __GCC_HAVE_SYNC_COMPARE_AND_SWAP_1 1
-#define __GCC_HAVE_SYNC_COMPARE_AND_SWAP_2 1
-#define __GCC_HAVE_SYNC_COMPARE_AND_SWAP_4 1
-#define __DBL_DENORM_MIN__ ((double)4.94065645841246544177e-324L)
-#define __GCC_HAVE_SYNC_COMPARE_AND_SWAP_8 1
-#define __GCC_ATOMIC_CHAR_LOCK_FREE 2
-#define __FLT_EVAL_METHOD__ 0
-#define __GCC_ATOMIC_CHAR32_T_LOCK_FREE 2
-#define __x86_64 1
-#define __UINT_FAST64_MAX__ 18446744073709551615ULL
-#define __SIG_ATOMIC_TYPE__ int
-#define __DBL_MIN_10_EXP__ (-307)
-#define __FINITE_MATH_ONLY__ 0
-#define __GNUC_PATCHLEVEL__ 4
-#define __UINT_FAST8_MAX__ 255
-#define __DEC64_MAX_EXP__ 385
-#define __INT8_C(c) c
-#define __UINT_LEAST64_MAX__ 18446744073709551615ULL
-#define __SHRT_MAX__ 32767
-#define __LDBL_MAX__ 1.18973149535723176502e+4932L
-#define __UINT_LEAST8_MAX__ 255
-#define __GCC_ATOMIC_BOOL_LOCK_FREE 2
-#define __APPLE_CC__ 1
-#define __UINTMAX_TYPE__ long unsigned int
-#define __DEC32_EPSILON__ 1E-6DF
-#define __UINT32_MAX__ 4294967295U
-#define __LDBL_MAX_EXP__ 16384
-#define __WINT_MIN__ (-__WINT_MAX__ - 1)
-#define __SCHAR_MAX__ 127
-#define __WCHAR_MIN__ (-__WCHAR_MAX__ - 1)
-#define __INT64_C(c) c ## LL
-#define __DBL_DIG__ 15
-#define __GCC_ATOMIC_POINTER_LOCK_FREE 2
-#define __SIZEOF_INT__ 4
-#define __SIZEOF_POINTER__ 8
-#define __USER_LABEL_PREFIX__ _
-#define __STDC_HOSTED__ 1
-#define __LDBL_HAS_INFINITY__ 1
-#define __FLT_EPSILON__ 1.19209289550781250000e-7F
-#define __LDBL_MIN__ 3.36210314311209350626e-4932L
-#define __DEC32_MAX__ 9.999999E96DF
-#define __strong 
-#define __INT32_MAX__ 2147483647
-#define __SIZEOF_LONG__ 8
-#define __APPLE__ 1
-#define __UINT16_C(c) c
-#define __DECIMAL_DIG__ 21
-#define __LDBL_HAS_QUIET_NAN__ 1
-#define __DYNAMIC__ 1
-#define __GNUC__ 4
-#define __MMX__ 1
-#define __FLT_HAS_DENORM__ 1
-#define __SIZEOF_LONG_DOUBLE__ 16
-#define __BIGGEST_ALIGNMENT__ 16
-#define __DBL_MAX__ ((double)1.79769313486231570815e+308L)
-#define __INT_FAST32_MAX__ 2147483647
-#define __DBL_HAS_INFINITY__ 1
-#define __DEC32_MIN_EXP__ (-94)
-#define __INT_FAST16_TYPE__ short int
-#define __LDBL_HAS_DENORM__ 1
-#define __DEC128_MAX__ 9.999999999999999999999999999999999E6144DL
-#define __INT_LEAST32_MAX__ 2147483647
-#define __DEC32_MIN__ 1E-95DF
-#define __weak 
-#define __DBL_MAX_EXP__ 1024
-#define __DEC128_EPSILON__ 1E-33DL
-#define __SSE2_MATH__ 1
-#define __PTRDIFF_MAX__ 9223372036854775807L
-#define __amd64 1
-#define __tune_core2__ 1
-#define __LONG_LONG_MAX__ 9223372036854775807LL
-#define __SIZEOF_SIZE_T__ 8
-#define __SIZEOF_WINT_T__ 4
-#define __GXX_ABI_VERSION 1002
-#define __FLT_MIN_EXP__ (-125)
-#define __INT_FAST64_TYPE__ long long int
-#define __DBL_MIN__ ((double)2.22507385850720138309e-308L)
-#define __LP64__ 1
-#define __DEC128_MIN__ 1E-6143DL
-#define __REGISTER_PREFIX__ 
-#define __UINT16_MAX__ 65535
-#define __DBL_HAS_DENORM__ 1
-#define __UINT8_TYPE__ unsigned char
-#define __NO_INLINE__ 1
-#define __FLT_MANT_DIG__ 24
-#define __VERSION__ "4.7.4"
-#define __UINT64_C(c) c ## ULL
-#define __GCC_ATOMIC_INT_LOCK_FREE 2
-#define __FLOAT_WORD_ORDER__ __ORDER_LITTLE_ENDIAN__
-#define __INT32_C(c) c
-#define __DEC64_EPSILON__ 1E-15DD
 #define __ORDER_PDP_ENDIAN__ 3412
-#define __DEC128_MIN_EXP__ (-6142)
-#define __INT_FAST32_TYPE__ int
-#define __UINT_LEAST16_TYPE__ short unsigned int
-#define __INT16_MAX__ 32767
-#define __ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ 1090
-#define __SIZE_TYPE__ long unsigned int
-#define __UINT64_MAX__ 18446744073709551615ULL
-#define __INT8_TYPE__ signed char
-#define __FLT_RADIX__ 2
-#define __INT_LEAST16_TYPE__ short int
-#define __LDBL_EPSILON__ 1.08420217248550443401e-19L
-#define __UINTMAX_C(c) c ## UL
-#define __SSE_MATH__ 1
-#define __k8 1
-#define __SIG_ATOMIC_MAX__ 2147483647
-#define __GCC_ATOMIC_WCHAR_T_LOCK_FREE 2
-#define __SIZEOF_PTRDIFF_T__ 8
-#define __x86_64__ 1
-#define __DEC32_SUBNORMAL_MIN__ 0.000001E-95DF
-#define __INT_FAST16_MAX__ 32767
-#define __UINT_FAST32_MAX__ 4294967295U
-#define __UINT_LEAST64_TYPE__ long long unsigned int
-#define __FLT_HAS_QUIET_NAN__ 1
-#define __FLT_MAX_10_EXP__ 38
-#define __LONG_MAX__ 9223372036854775807L
-#define __DEC128_SUBNORMAL_MIN__ 0.000000000000000000000000000000001E-6143DL
-#define __FLT_HAS_INFINITY__ 1
-#define __UINT_FAST16_TYPE__ short unsigned int
-#define __DEC64_MAX__ 9.999999999999999E384DD
-#define __CHAR16_TYPE__ short unsigned int
-#define __PRAGMA_REDEFINE_EXTNAME 1
-#define __INT_LEAST16_MAX__ 32767
-#define __DEC64_MANT_DIG__ 16
-#define __INT64_MAX__ 9223372036854775807LL
-#define __UINT_LEAST32_MAX__ 4294967295U
-#define __GCC_ATOMIC_LONG_LOCK_FREE 2
-#define __INT_LEAST64_TYPE__ long long int
-#define __INT16_TYPE__ short int
-#define __INT_LEAST8_TYPE__ signed char
-#define __DEC32_MAX_EXP__ 97
-#define __INT_FAST8_MAX__ 127
-#define __INTPTR_MAX__ 9223372036854775807L
-#define __LITTLE_ENDIAN__ 1
-#define __SSE2__ 1
-#define __LDBL_MANT_DIG__ 64
-#define __CONSTANT_CFSTRINGS__ 1
-#define __DBL_HAS_QUIET_NAN__ 1
-#define __SIG_ATOMIC_MIN__ (-__SIG_ATOMIC_MAX__ - 1)
-#define __code_model_small__ 1
-#define __k8__ 1
-#define __INTPTR_TYPE__ long int
-#define __UINT16_TYPE__ short unsigned int
-#define __WCHAR_TYPE__ int
-#define __SIZEOF_FLOAT__ 4
-#define __pic__ 2
-#define __UINTPTR_MAX__ 18446744073709551615UL
-#define __DEC64_MIN_EXP__ (-382)
-#define __INT_FAST64_MAX__ 9223372036854775807LL
-#define __GCC_ATOMIC_TEST_AND_SET_TRUEVAL 1
-#define __FLT_DIG__ 6
-#define __UINT_FAST64_TYPE__ long long unsigned int
-#define __INT_MAX__ 2147483647
-#define __MACH__ 1
-#define __amd64__ 1
-#define __INT64_TYPE__ long long int
-#define __FLT_MAX_EXP__ 128
-#define __OBJC2__ 1
-#define __ORDER_BIG_ENDIAN__ 4321
-#define __DBL_MANT_DIG__ 53
-#define __INT_LEAST64_MAX__ 9223372036854775807LL
-#define __GCC_ATOMIC_CHAR16_T_LOCK_FREE 2
-#define __DEC64_MIN__ 1E-383DD
-#define __WINT_TYPE__ int
-#define __UINT_LEAST32_TYPE__ unsigned int
-#define __SIZEOF_SHORT__ 2
-#define __SSE__ 1
-#define __LDBL_MIN_EXP__ (-16381)
-#define __INT_LEAST8_MAX__ 127
-#define __SIZEOF_INT128__ 16
-#define __LDBL_MAX_10_EXP__ 4932
-#define __ATOMIC_RELAXED 0
-#define __DBL_EPSILON__ ((double)2.22044604925031308085e-16L)
-#define _LP64 1
-#define __UINT8_C(c) c
-#define __INT_LEAST32_TYPE__ int
-#define __SIZEOF_WCHAR_T__ 4
-#define __UINT64_TYPE__ long long unsigned int
-#define __INT_FAST8_TYPE__ signed char
-#define __DBL_DECIMAL_DIG__ 17
-#define __DEC_EVAL_METHOD__ 2
-#define __UINT32_C(c) c ## U
-#define __INTMAX_MAX__ 9223372036854775807L
-#define __BYTE_ORDER__ __ORDER_LITTLE_ENDIAN__
-#define __FLT_DENORM_MIN__ 1.40129846432481707092e-45F
-#define __INT8_MAX__ 127
 #define __PIC__ 2
-#define __UINT_FAST32_TYPE__ unsigned int
-#define __CHAR32_TYPE__ unsigned int
-#define __FLT_MAX__ 3.40282346638528859812e+38F
-#define __INT32_TYPE__ int
-#define __SIZEOF_DOUBLE__ 8
-#define __FLT_MIN_10_EXP__ (-37)
-#define __INTMAX_TYPE__ long int
-#define __DEC128_MAX_EXP__ 6145
-#define __ATOMIC_CONSUME 1
-#define __GNUC_MINOR__ 7
-#define __UINTMAX_MAX__ 18446744073709551615UL
-#define __DEC32_MANT_DIG__ 7
-#define __DBL_MAX_10_EXP__ 308
-#define __LDBL_DENORM_MIN__ 3.64519953188247460253e-4951L
-#define __INT16_C(c) c
-#define __STDC__ 1
+#define __POINTER_WIDTH__ 64
+#define __PRAGMA_REDEFINE_EXTNAME 1
+#define __PTRDIFF_FMTd__ "ld"
+#define __PTRDIFF_FMTi__ "li"
+#define __PTRDIFF_MAX__ 9223372036854775807L
 #define __PTRDIFF_TYPE__ long int
-#define __ATOMIC_SEQ_CST 5
-#define __UINT32_TYPE__ unsigned int
-#define __UINTPTR_TYPE__ long unsigned int
-#define __DEC64_SUBNORMAL_MIN__ 0.000000000000001E-383DD
-#define __DEC128_MANT_DIG__ 34
-#define __LDBL_MIN_10_EXP__ (-4931)
+#define __PTRDIFF_WIDTH__ 64
+#define __REGISTER_PREFIX__ 
+#define __SCHAR_MAX__ 127
+#define __SHRT_MAX__ 32767
+#define __SIG_ATOMIC_MAX__ 2147483647
+#define __SIG_ATOMIC_WIDTH__ 32
+#define __SIZEOF_DOUBLE__ 8
+#define __SIZEOF_FLOAT__ 4
+#define __SIZEOF_INT128__ 16
+#define __SIZEOF_INT__ 4
+#define __SIZEOF_LONG_DOUBLE__ 16
 #define __SIZEOF_LONG_LONG__ 8
-#define __GCC_ATOMIC_LLONG_LOCK_FREE 2
-#define __LDBL_DIG__ 18
-#define __FLT_DECIMAL_DIG__ 9
-#define __UINT_FAST16_MAX__ 65535
-#define __GNUC_GNU_INLINE__ 1
-#define __GCC_ATOMIC_SHORT_LOCK_FREE 2
+#define __SIZEOF_LONG__ 8
+#define __SIZEOF_POINTER__ 8
+#define __SIZEOF_PTRDIFF_T__ 8
+#define __SIZEOF_SHORT__ 2
+#define __SIZEOF_SIZE_T__ 8
+#define __SIZEOF_WCHAR_T__ 4
+#define __SIZEOF_WINT_T__ 4
+#define __SIZE_FMTX__ "lX"
+#define __SIZE_FMTo__ "lo"
+#define __SIZE_FMTu__ "lu"
+#define __SIZE_FMTx__ "lx"
+#define __SIZE_MAX__ 18446744073709551615UL
+#define __SIZE_TYPE__ long unsigned int
+#define __SIZE_WIDTH__ 64
+#define __SSE2_MATH__ 1
+#define __SSE2__ 1
 #define __SSE3__ 1
+#define __SSE4_1__ 1
+#define __SSE_MATH__ 1
+#define __SSE__ 1
+#define __SSP__ 1
+#define __SSSE3__ 1
+#define __STDC_HOSTED__ 1
+#define __STDC_UTF_16__ 1
+#define __STDC_UTF_32__ 1
+#define __STDC_VERSION__ 201112L
+#define __STDC__ 1
+#define __UINT16_C_SUFFIX__ 
+#define __UINT16_FMTX__ "hX"
+#define __UINT16_FMTo__ "ho"
+#define __UINT16_FMTu__ "hu"
+#define __UINT16_FMTx__ "hx"
+#define __UINT16_MAX__ 65535
+#define __UINT16_TYPE__ unsigned short
+#define __UINT32_C_SUFFIX__ U
+#define __UINT32_FMTX__ "X"
+#define __UINT32_FMTo__ "o"
+#define __UINT32_FMTu__ "u"
+#define __UINT32_FMTx__ "x"
+#define __UINT32_MAX__ 4294967295U
+#define __UINT32_TYPE__ unsigned int
+#define __UINT64_C_SUFFIX__ ULL
+#define __UINT64_FMTX__ "llX"
+#define __UINT64_FMTo__ "llo"
+#define __UINT64_FMTu__ "llu"
+#define __UINT64_FMTx__ "llx"
+#define __UINT64_MAX__ 18446744073709551615ULL
+#define __UINT64_TYPE__ long long unsigned int
+#define __UINT8_C_SUFFIX__ 
+#define __UINT8_FMTX__ "hhX"
+#define __UINT8_FMTo__ "hho"
+#define __UINT8_FMTu__ "hhu"
+#define __UINT8_FMTx__ "hhx"
+#define __UINT8_MAX__ 255
+#define __UINT8_TYPE__ unsigned char
+#define __UINTMAX_C_SUFFIX__ UL
+#define __UINTMAX_FMTX__ "lX"
+#define __UINTMAX_FMTo__ "lo"
+#define __UINTMAX_FMTu__ "lu"
+#define __UINTMAX_FMTx__ "lx"
+#define __UINTMAX_MAX__ 18446744073709551615UL
+#define __UINTMAX_TYPE__ long unsigned int
+#define __UINTMAX_WIDTH__ 64
+#define __UINTPTR_FMTX__ "lX"
+#define __UINTPTR_FMTo__ "lo"
+#define __UINTPTR_FMTu__ "lu"
+#define __UINTPTR_FMTx__ "lx"
+#define __UINTPTR_MAX__ 18446744073709551615UL
+#define __UINTPTR_TYPE__ long unsigned int
+#define __UINTPTR_WIDTH__ 64
+#define __UINT_FAST16_FMTX__ "hX"
+#define __UINT_FAST16_FMTo__ "ho"
+#define __UINT_FAST16_FMTu__ "hu"
+#define __UINT_FAST16_FMTx__ "hx"
+#define __UINT_FAST16_MAX__ 65535
+#define __UINT_FAST16_TYPE__ unsigned short
+#define __UINT_FAST32_FMTX__ "X"
+#define __UINT_FAST32_FMTo__ "o"
+#define __UINT_FAST32_FMTu__ "u"
+#define __UINT_FAST32_FMTx__ "x"
+#define __UINT_FAST32_MAX__ 4294967295U
+#define __UINT_FAST32_TYPE__ unsigned int
+#define __UINT_FAST64_FMTX__ "lX"
+#define __UINT_FAST64_FMTo__ "lo"
+#define __UINT_FAST64_FMTu__ "lu"
+#define __UINT_FAST64_FMTx__ "lx"
+#define __UINT_FAST64_MAX__ 18446744073709551615UL
+#define __UINT_FAST64_TYPE__ long unsigned int
+#define __UINT_FAST8_FMTX__ "hhX"
+#define __UINT_FAST8_FMTo__ "hho"
+#define __UINT_FAST8_FMTu__ "hhu"
+#define __UINT_FAST8_FMTx__ "hhx"
+#define __UINT_FAST8_MAX__ 255
 #define __UINT_FAST8_TYPE__ unsigned char
-#define __ATOMIC_ACQ_REL 4
-#define __ATOMIC_RELEASE 3
+#define __UINT_LEAST16_FMTX__ "hX"
+#define __UINT_LEAST16_FMTo__ "ho"
+#define __UINT_LEAST16_FMTu__ "hu"
+#define __UINT_LEAST16_FMTx__ "hx"
+#define __UINT_LEAST16_MAX__ 65535
+#define __UINT_LEAST16_TYPE__ unsigned short
+#define __UINT_LEAST32_FMTX__ "X"
+#define __UINT_LEAST32_FMTo__ "o"
+#define __UINT_LEAST32_FMTu__ "u"
+#define __UINT_LEAST32_FMTx__ "x"
+#define __UINT_LEAST32_MAX__ 4294967295U
+#define __UINT_LEAST32_TYPE__ unsigned int
+#define __UINT_LEAST64_FMTX__ "lX"
+#define __UINT_LEAST64_FMTo__ "lo"
+#define __UINT_LEAST64_FMTu__ "lu"
+#define __UINT_LEAST64_FMTx__ "lx"
+#define __UINT_LEAST64_MAX__ 18446744073709551615UL
+#define __UINT_LEAST64_TYPE__ long unsigned int
+#define __UINT_LEAST8_FMTX__ "hhX"
+#define __UINT_LEAST8_FMTo__ "hho"
+#define __UINT_LEAST8_FMTu__ "hhu"
+#define __UINT_LEAST8_FMTx__ "hhx"
+#define __UINT_LEAST8_MAX__ 255
+#define __UINT_LEAST8_TYPE__ unsigned char
+#define __USER_LABEL_PREFIX__ _
+#define __VERSION__ "4.2.1 Compatible Apple LLVM 8.1.0 (clang-802.0.42)"
+#define __WCHAR_MAX__ 2147483647
+#define __WCHAR_TYPE__ int
+#define __WCHAR_WIDTH__ 32
+#define __WINT_TYPE__ int
+#define __WINT_WIDTH__ 32
+#define __amd64 1
+#define __amd64__ 1
+#define __apple_build_version__ 8020042
+#define __block __attribute__((__blocks__(byref)))
+#define __clang__ 1
+#define __clang_major__ 8
+#define __clang_minor__ 1
+#define __clang_patchlevel__ 0
+#define __clang_version__ "8.1.0 (clang-802.0.42)"
+#define __core2 1
+#define __core2__ 1
+#define __llvm__ 1
+#define __nonnull _Nonnull
+#define __null_unspecified _Null_unspecified
+#define __nullable _Nullable
+#define __pic__ 2
+#define __strong 
+#define __tune_core2__ 1
+#define __unsafe_unretained 
+#define __weak __attribute__((objc_gc(weak)))
+#define __x86_64 1
+#define __x86_64__ 1
 
-find program=['ar'] paths=['/usr/local', '/usr/local/include', '/usr/bin', '/bin', '/usr/sbin', '/sbin', '/usr/local/bin', '/opt/X11/bin', '/Library/TeX/texbin', '/Library/Frameworks/Python.framework/Versions/2.7/bin', '/Library/Frameworks/Python.framework/Versions/3.4/bin', ''] var='AR' -> ['/usr/bin/ar']
-/usr/local/bin/g++-4.7
+find program=['llvm-ar', 'ar'] paths=['/Library/Frameworks/Python.framework/Versions/3.6/bin', '/usr/local/bin', '/Users/Erwan1/anaconda/bin', '/Users/Erwan1/anaconda/bin', '/usr/local/bin', '/usr/bin', '/bin', '/usr/sbin', '/sbin', '/opt/X11/bin', '/Library/TeX/texbin'] var='AR' -> ['/usr/bin/ar']
+find program=['ar'] paths=['/Library/Frameworks/Python.framework/Versions/3.6/bin', '/usr/local/bin', '/Users/Erwan1/anaconda/bin', '/Users/Erwan1/anaconda/bin', '/usr/local/bin', '/usr/bin', '/bin', '/usr/sbin', '/sbin', '/opt/X11/bin', '/Library/TeX/texbin'] var='AR' -> ['/usr/bin/ar']
+/usr/bin/clang++
 ----------------------------------------
 Checking for compiler flags -std=c++11
 ==>
@@ -692,15 +701,9 @@ int main(int argc, char **argv) {
 }
 
 <==
-<<<<<<< HEAD
-[1/1] Compiling [32mbuild/.conf_check_632217fa512a375ef1b1a74955c77810/test.cpp[0m
+[1/1] Compiling [32mbuild/.conf_check_64b24d9a9ae177d44870e15961518622/test.cpp[0m
 
-['/usr/local/bin/g++-4.7', '-std=c++11', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=2', '../test.cpp', '-c', '-o/Users/paulwambergue/UdeM/latticetester/build/.conf_check_632217fa512a375ef1b1a74955c77810/testbuild/test.cpp.1.o']
-=======
-[1/1] Compiling [32mbuild/.conf_check_1b2626e41ec2418fd1d1fd3242bd1915/test.cpp[0m
-
-['/usr/bin/clang++', '-std=c++11', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=2', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_1b2626e41ec2418fd1d1fd3242bd1915/testbuild/test.cpp.1.o']
->>>>>>> d06142999054b04129f35b98078114a6ee3e34d8
+['/usr/bin/clang++', '-std=c++11', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_64b24d9a9ae177d44870e15961518622/testbuild/test.cpp.1.o']
 yes
 ----------------------------------------
 Checking for compiler flags -std=c99
@@ -712,46 +715,62 @@ int main(int argc, char **argv) {
 }
 
 <==
-<<<<<<< HEAD
-[1/1] Compiling [32mbuild/.conf_check_67d1039ab1d4cd8fd2910729db754a32/test.c[0m
+[1/1] Compiling [32mbuild/.conf_check_3d6712ef80bc7fcdcaf636e7d5b78866/test.c[0m
 
-['/usr/bin/clang', '-std=c99', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=2', '../test.c', '-c', '-o/Users/paulwambergue/UdeM/latticetester/build/.conf_check_67d1039ab1d4cd8fd2910729db754a32/testbuild/test.c.1.o']
-=======
-[1/1] Compiling [32mbuild/.conf_check_65a4eed807a013a3025203ff1302be13/test.c[0m
-
-['/usr/bin/clang', '-std=c99', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=2', '../test.c', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_65a4eed807a013a3025203ff1302be13/testbuild/test.c.1.o']
->>>>>>> d06142999054b04129f35b98078114a6ee3e34d8
+['/usr/bin/clang', '-std=c99', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '../test.c', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_3d6712ef80bc7fcdcaf636e7d5b78866/testbuild/test.c.1.o']
 yes
 -----------------------------------------------------
 checking for compiler flag -Wno-unused-local-typedefs
-['/usr/local/bin/g++-4.7', '-xc++', '-E', '-Wno-unused-local-typedefs', '-']
+['/usr/bin/clang++', '-xc++', '-E', '-Wno-unused-local-typedefs', '-']
 out: # 1 "<stdin>"
-# 1 "<command-line>"
-# 1 "<stdin>"
+# 1 "<built-in>" 1
+# 1 "<built-in>" 3
+# 340 "<built-in>" 3
+# 1 "<command line>" 1
+# 1 "<built-in>" 2
+# 1 "<stdin>" 2
+
 
 yes
 -----------------------------------------------------
 checking for compiler flag -Wno-unused-function
-['/usr/local/bin/g++-4.7', '-xc++', '-E', '-Wno-unused-function', '-']
+['/usr/bin/clang++', '-xc++', '-E', '-Wno-unused-function', '-']
 out: # 1 "<stdin>"
-# 1 "<command-line>"
-# 1 "<stdin>"
+# 1 "<built-in>" 1
+# 1 "<built-in>" 3
+# 340 "<built-in>" 3
+# 1 "<command line>" 1
+# 1 "<built-in>" 2
+# 1 "<stdin>" 2
+
 
 yes
 -----------------------------------------------------
 checking for compiler flag -Wnon-virtual-dtor
-['/usr/local/bin/g++-4.7', '-xc++', '-E', '-Wnon-virtual-dtor', '-']
+['/usr/bin/clang++', '-xc++', '-E', '-Wnon-virtual-dtor', '-']
 out: # 1 "<stdin>"
-# 1 "<command-line>"
-# 1 "<stdin>"
+# 1 "<built-in>" 1
+# 1 "<built-in>" 3
+# 340 "<built-in>" 3
+# 1 "<command line>" 1
+# 1 "<built-in>" 2
+# 1 "<stdin>" 2
+
 
 yes
 -----------------------------------------------------
 checking for compiler flag -Wshorten-64-to-32
-['/usr/local/bin/g++-4.7', '-xc++', '-E', '-Wshorten-64-to-32', '-']
-err: g++-4.7: error: unrecognized command line option '-Wshorten-64-to-32'
+['/usr/bin/clang++', '-xc++', '-E', '-Wshorten-64-to-32', '-']
+out: # 1 "<stdin>"
+# 1 "<built-in>" 1
+# 1 "<built-in>" 3
+# 340 "<built-in>" 3
+# 1 "<command line>" 1
+# 1 "<built-in>" 2
+# 1 "<stdin>" 2
 
-no
+
+yes
 git describe --tags --match 'v[0-9]*'
 err: fatal: No names found, cannot describe anything.
 
@@ -766,21 +785,12 @@ int main(int argc, char **argv) {
 }
 
 <==
-<<<<<<< HEAD
-[1/2] Compiling [32mbuild/.conf_check_6645ed223daadce5212f378bd7242167/test.cpp[0m
+[1/2] Compiling [32mbuild/.conf_check_998d3d87f56ef6b42da5b5ef0eead82a/test.cpp[0m
 
-['/usr/local/bin/g++-4.7', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-I/usr/local/include', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=2', '../test.cpp', '-c', '-o/Users/paulwambergue/UdeM/latticetester/build/.conf_check_6645ed223daadce5212f378bd7242167/testbuild/test.cpp.1.o']
-[2/2] Linking [33mbuild/.conf_check_6645ed223daadce5212f378bd7242167/testbuild/testprog[0m
+['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_998d3d87f56ef6b42da5b5ef0eead82a/testbuild/test.cpp.1.o']
+[2/2] Linking [33mbuild/.conf_check_998d3d87f56ef6b42da5b5ef0eead82a/testbuild/testprog[0m
 
-['/usr/local/bin/g++-4.7', 'test.cpp.1.o', '-o/Users/paulwambergue/UdeM/latticetester/build/.conf_check_6645ed223daadce5212f378bd7242167/testbuild/testprog', '-L/usr/local/lib', '-L/usr/local/lib']
-=======
-[1/2] Compiling [32mbuild/.conf_check_28aea8bd17e18896c8857624e1e80a9b/test.cpp[0m
-
-['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=2', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_28aea8bd17e18896c8857624e1e80a9b/testbuild/test.cpp.1.o']
-[2/2] Linking [33mbuild/.conf_check_28aea8bd17e18896c8857624e1e80a9b/testbuild/testprog[0m
-
-['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_28aea8bd17e18896c8857624e1e80a9b/testbuild/testprog']
->>>>>>> d06142999054b04129f35b98078114a6ee3e34d8
+['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_998d3d87f56ef6b42da5b5ef0eead82a/testbuild/testprog']
 yes
 -----------------------------------------------------
 Checking for library ntl
@@ -792,21 +802,12 @@ int main(int argc, char **argv) {
 }
 
 <==
-<<<<<<< HEAD
-[1/2] Compiling [32mbuild/.conf_check_8c82c9dacc80d01c9db45bdba5710ff2/test.cpp[0m
+[1/2] Compiling [32mbuild/.conf_check_b06975a73ad719d96d0dc27167a96650/test.cpp[0m
 
-['/usr/local/bin/g++-4.7', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-I/usr/local/include', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=2', '-DHAVE_NTL_VECTOR_H=1', '../test.cpp', '-c', '-o/Users/paulwambergue/UdeM/latticetester/build/.conf_check_8c82c9dacc80d01c9db45bdba5710ff2/testbuild/test.cpp.1.o']
-[2/2] Linking [33mbuild/.conf_check_8c82c9dacc80d01c9db45bdba5710ff2/testbuild/testprog[0m
+['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '-DHAVE_NTL_VECTOR_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_b06975a73ad719d96d0dc27167a96650/testbuild/test.cpp.1.o']
+[2/2] Linking [33mbuild/.conf_check_b06975a73ad719d96d0dc27167a96650/testbuild/testprog[0m
 
-['/usr/local/bin/g++-4.7', 'test.cpp.1.o', '-o/Users/paulwambergue/UdeM/latticetester/build/.conf_check_8c82c9dacc80d01c9db45bdba5710ff2/testbuild/testprog', '-L/usr/local/lib', '-L/usr/local/lib', '-lntl']
-=======
-[1/2] Compiling [32mbuild/.conf_check_7017fb218d0db2a09cb4c97f92f1b4ae/test.cpp[0m
-
-['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=2', '-DHAVE_NTL_VECTOR_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_7017fb218d0db2a09cb4c97f92f1b4ae/testbuild/test.cpp.1.o']
-[2/2] Linking [33mbuild/.conf_check_7017fb218d0db2a09cb4c97f92f1b4ae/testbuild/testprog[0m
-
-['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_7017fb218d0db2a09cb4c97f92f1b4ae/testbuild/testprog', '-lntl']
->>>>>>> d06142999054b04129f35b98078114a6ee3e34d8
+['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_b06975a73ad719d96d0dc27167a96650/testbuild/testprog', '-lntl']
 yes
 -----------------------------------------------------
 Checking for Boost version >= 1.57.0
@@ -816,15 +817,9 @@ Checking for Boost version >= 1.57.0
 #error "Boost >= 1.57.0 is required"
 #endif
 <==
-<<<<<<< HEAD
-[1/1] Compiling [32mbuild/.conf_check_f9ffa4151722af5c9faed8e8c99c79b3/test.cpp[0m
+[1/1] Compiling [32mbuild/.conf_check_20f4a5833533f503690603f0351259de/test.cpp[0m
 
-['/usr/local/bin/g++-4.7', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-I/usr/local/include', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=2', '-DHAVE_NTL_VECTOR_H=1', '../test.cpp', '-c', '-o/Users/paulwambergue/UdeM/latticetester/build/.conf_check_f9ffa4151722af5c9faed8e8c99c79b3/testbuild/test.cpp.1.o']
-=======
-[1/1] Compiling [32mbuild/.conf_check_201c7ef7d8f367bcf52cb37ec1409c74/test.cpp[0m
-
-['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=2', '-DHAVE_NTL_VECTOR_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_201c7ef7d8f367bcf52cb37ec1409c74/testbuild/test.cpp.1.o']
->>>>>>> d06142999054b04129f35b98078114a6ee3e34d8
+['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '-DHAVE_NTL_VECTOR_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_20f4a5833533f503690603f0351259de/testbuild/test.cpp.1.o']
 yes
 -----------------------------------------------------
 Setting LatticeTester version
@@ -840,21 +835,12 @@ int main(int argc, char **argv) {
 }
 
 <==
-<<<<<<< HEAD
-[1/2] Compiling [32mbuild/.conf_check_36a9f4e5a95419496181673f618c2488/test.cpp[0m
+[1/2] Compiling [32mbuild/.conf_check_a780dde9163a7a5dc0b7916891813d1a/test.cpp[0m
 
-['/usr/local/bin/g++-4.7', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-I/usr/local/include', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=2', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '../test.cpp', '-c', '-o/Users/paulwambergue/UdeM/latticetester/build/.conf_check_36a9f4e5a95419496181673f618c2488/testbuild/test.cpp.1.o']
-[2/2] Linking [33mbuild/.conf_check_36a9f4e5a95419496181673f618c2488/testbuild/testprog[0m
+['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_a780dde9163a7a5dc0b7916891813d1a/testbuild/test.cpp.1.o']
+[2/2] Linking [33mbuild/.conf_check_a780dde9163a7a5dc0b7916891813d1a/testbuild/testprog[0m
 
-['/usr/local/bin/g++-4.7', 'test.cpp.1.o', '-o/Users/paulwambergue/UdeM/latticetester/build/.conf_check_36a9f4e5a95419496181673f618c2488/testbuild/testprog', '-L/usr/local/lib', '-L/usr/local/lib']
-=======
-[1/2] Compiling [32mbuild/.conf_check_83447d02dd7eea05e2e7eb1606768fa0/test.cpp[0m
-
-['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=2', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_83447d02dd7eea05e2e7eb1606768fa0/testbuild/test.cpp.1.o']
-[2/2] Linking [33mbuild/.conf_check_83447d02dd7eea05e2e7eb1606768fa0/testbuild/testprog[0m
-
-['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_83447d02dd7eea05e2e7eb1606768fa0/testbuild/testprog']
->>>>>>> d06142999054b04129f35b98078114a6ee3e34d8
+['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_a780dde9163a7a5dc0b7916891813d1a/testbuild/testprog']
 yes
 -----------------------------------------------------
 Checking for library gmp
@@ -866,21 +852,12 @@ int main(int argc, char **argv) {
 }
 
 <==
-<<<<<<< HEAD
-[1/2] Compiling [32mbuild/.conf_check_ca07fc035eea7d55e1bc01e6478c000e/test.cpp[0m
+[1/2] Compiling [32mbuild/.conf_check_16067c26dd0c08d22ac32001bdc08886/test.cpp[0m
 
-['/usr/local/bin/g++-4.7', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-I/usr/local/include', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=2', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '-DHAVE_GMP_H=1', '../test.cpp', '-c', '-o/Users/paulwambergue/UdeM/latticetester/build/.conf_check_ca07fc035eea7d55e1bc01e6478c000e/testbuild/test.cpp.1.o']
-[2/2] Linking [33mbuild/.conf_check_ca07fc035eea7d55e1bc01e6478c000e/testbuild/testprog[0m
+['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '-DHAVE_GMP_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_16067c26dd0c08d22ac32001bdc08886/testbuild/test.cpp.1.o']
+[2/2] Linking [33mbuild/.conf_check_16067c26dd0c08d22ac32001bdc08886/testbuild/testprog[0m
 
-['/usr/local/bin/g++-4.7', 'test.cpp.1.o', '-o/Users/paulwambergue/UdeM/latticetester/build/.conf_check_ca07fc035eea7d55e1bc01e6478c000e/testbuild/testprog', '-L/usr/local/lib', '-L/usr/local/lib', '-lgmp']
-=======
-[1/2] Compiling [32mbuild/.conf_check_24e94dbaeeb9a53b0d69ad5fe45c3e9c/test.cpp[0m
-
-['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=2', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '-DHAVE_GMP_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_24e94dbaeeb9a53b0d69ad5fe45c3e9c/testbuild/test.cpp.1.o']
-[2/2] Linking [33mbuild/.conf_check_24e94dbaeeb9a53b0d69ad5fe45c3e9c/testbuild/testprog[0m
-
-['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_24e94dbaeeb9a53b0d69ad5fe45c3e9c/testbuild/testprog', '-lgmp']
->>>>>>> d06142999054b04129f35b98078114a6ee3e34d8
+['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_16067c26dd0c08d22ac32001bdc08886/testbuild/testprog', '-lgmp']
 yes
 -----------------------------------------------------
 Checking for header ulcg.h
@@ -893,21 +870,12 @@ int main(int argc, char **argv) {
 }
 
 <==
-<<<<<<< HEAD
-[1/2] Compiling [32mbuild/.conf_check_093917ca0a46be7bd4c40fbeb35c496f/test.cpp[0m
+[1/2] Compiling [32mbuild/.conf_check_532d8d2d6c3abf566251673c15fcf213/test.cpp[0m
 
-['/usr/local/bin/g++-4.7', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-I/usr/local/include', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=2', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '-DHAVE_GMP_H=1', '../test.cpp', '-c', '-o/Users/paulwambergue/UdeM/latticetester/build/.conf_check_093917ca0a46be7bd4c40fbeb35c496f/testbuild/test.cpp.1.o']
-[2/2] Linking [33mbuild/.conf_check_093917ca0a46be7bd4c40fbeb35c496f/testbuild/testprog[0m
+['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '-DHAVE_GMP_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_532d8d2d6c3abf566251673c15fcf213/testbuild/test.cpp.1.o']
+[2/2] Linking [33mbuild/.conf_check_532d8d2d6c3abf566251673c15fcf213/testbuild/testprog[0m
 
-['/usr/local/bin/g++-4.7', 'test.cpp.1.o', '-o/Users/paulwambergue/UdeM/latticetester/build/.conf_check_093917ca0a46be7bd4c40fbeb35c496f/testbuild/testprog', '-L/usr/local/lib', '-L/usr/local/lib']
-=======
-[1/2] Compiling [32mbuild/.conf_check_d7662fbd005a9fbabd9f1c5ebcf8e983/test.cpp[0m
-
-['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=2', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '-DHAVE_GMP_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_d7662fbd005a9fbabd9f1c5ebcf8e983/testbuild/test.cpp.1.o']
-[2/2] Linking [33mbuild/.conf_check_d7662fbd005a9fbabd9f1c5ebcf8e983/testbuild/testprog[0m
-
-['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_d7662fbd005a9fbabd9f1c5ebcf8e983/testbuild/testprog']
->>>>>>> d06142999054b04129f35b98078114a6ee3e34d8
+['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_532d8d2d6c3abf566251673c15fcf213/testbuild/testprog']
 yes
 -----------------------------------------------------
 Checking for library testu01
@@ -919,21 +887,12 @@ int main(int argc, char **argv) {
 }
 
 <==
-<<<<<<< HEAD
-[1/2] Compiling [32mbuild/.conf_check_b9a4962e64e7c8b8f151fca2cbd1de6c/test.cpp[0m
+[1/2] Compiling [32mbuild/.conf_check_81d41f172c11b523b397185fe15fc685/test.cpp[0m
 
-['/usr/local/bin/g++-4.7', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-I/usr/local/include', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=2', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '-DHAVE_GMP_H=1', '-DHAVE_ULCG_H=1', '../test.cpp', '-c', '-o/Users/paulwambergue/UdeM/latticetester/build/.conf_check_b9a4962e64e7c8b8f151fca2cbd1de6c/testbuild/test.cpp.1.o']
-[2/2] Linking [33mbuild/.conf_check_b9a4962e64e7c8b8f151fca2cbd1de6c/testbuild/testprog[0m
+['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '-DHAVE_GMP_H=1', '-DHAVE_ULCG_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_81d41f172c11b523b397185fe15fc685/testbuild/test.cpp.1.o']
+[2/2] Linking [33mbuild/.conf_check_81d41f172c11b523b397185fe15fc685/testbuild/testprog[0m
 
-['/usr/local/bin/g++-4.7', 'test.cpp.1.o', '-o/Users/paulwambergue/UdeM/latticetester/build/.conf_check_b9a4962e64e7c8b8f151fca2cbd1de6c/testbuild/testprog', '-L/usr/local/lib', '-L/usr/local/lib', '-ltestu01', '-lgmp']
-=======
-[1/2] Compiling [32mbuild/.conf_check_355cceec40e4dfa07ebb6c44e632cfa9/test.cpp[0m
-
-['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=2', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '-DHAVE_GMP_H=1', '-DHAVE_ULCG_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_355cceec40e4dfa07ebb6c44e632cfa9/testbuild/test.cpp.1.o']
-[2/2] Linking [33mbuild/.conf_check_355cceec40e4dfa07ebb6c44e632cfa9/testbuild/testprog[0m
-
-['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_355cceec40e4dfa07ebb6c44e632cfa9/testbuild/testprog', '-ltestu01', '-lgmp']
->>>>>>> d06142999054b04129f35b98078114a6ee3e34d8
+['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_81d41f172c11b523b397185fe15fc685/testbuild/testprog', '-ltestu01', '-lgmp']
 yes
 -----------------------------------------------------
 Checking for header num.h
@@ -946,21 +905,12 @@ int main(int argc, char **argv) {
 }
 
 <==
-<<<<<<< HEAD
-[1/2] Compiling [32mbuild/.conf_check_994173de762515c778ce36f00894244d/test.cpp[0m
+[1/2] Compiling [32mbuild/.conf_check_285781695c079508a7748a9142d971c4/test.cpp[0m
 
-['/usr/local/bin/g++-4.7', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-I/usr/local/include', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=2', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '-DHAVE_GMP_H=1', '-DHAVE_ULCG_H=1', '../test.cpp', '-c', '-o/Users/paulwambergue/UdeM/latticetester/build/.conf_check_994173de762515c778ce36f00894244d/testbuild/test.cpp.1.o']
-[2/2] Linking [33mbuild/.conf_check_994173de762515c778ce36f00894244d/testbuild/testprog[0m
+['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '-DHAVE_GMP_H=1', '-DHAVE_ULCG_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_285781695c079508a7748a9142d971c4/testbuild/test.cpp.1.o']
+[2/2] Linking [33mbuild/.conf_check_285781695c079508a7748a9142d971c4/testbuild/testprog[0m
 
-['/usr/local/bin/g++-4.7', 'test.cpp.1.o', '-o/Users/paulwambergue/UdeM/latticetester/build/.conf_check_994173de762515c778ce36f00894244d/testbuild/testprog', '-L/usr/local/lib', '-L/usr/local/lib']
-=======
-[1/2] Compiling [32mbuild/.conf_check_167cb3af727e3271151d273171fbd78c/test.cpp[0m
-
-['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=2', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '-DHAVE_GMP_H=1', '-DHAVE_ULCG_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_167cb3af727e3271151d273171fbd78c/testbuild/test.cpp.1.o']
-[2/2] Linking [33mbuild/.conf_check_167cb3af727e3271151d273171fbd78c/testbuild/testprog[0m
-
-['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_167cb3af727e3271151d273171fbd78c/testbuild/testprog']
->>>>>>> d06142999054b04129f35b98078114a6ee3e34d8
+['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_285781695c079508a7748a9142d971c4/testbuild/testprog']
 yes
 -----------------------------------------------------
 Checking for library mylib
@@ -972,19 +922,10 @@ int main(int argc, char **argv) {
 }
 
 <==
-<<<<<<< HEAD
-[1/2] Compiling [32mbuild/.conf_check_59816d2c7f1b607e3ec46a4d93038f44/test.cpp[0m
+[1/2] Compiling [32mbuild/.conf_check_c392273e96cfdc99a6928ff0546ee5fe/test.cpp[0m
 
-['/usr/local/bin/g++-4.7', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-I/usr/local/include', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=2', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '-DHAVE_GMP_H=1', '-DHAVE_ULCG_H=1', '-DHAVE_NUM_H=1', '../test.cpp', '-c', '-o/Users/paulwambergue/UdeM/latticetester/build/.conf_check_59816d2c7f1b607e3ec46a4d93038f44/testbuild/test.cpp.1.o']
-[2/2] Linking [33mbuild/.conf_check_59816d2c7f1b607e3ec46a4d93038f44/testbuild/testprog[0m
+['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=1', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '-DHAVE_GMP_H=1', '-DHAVE_ULCG_H=1', '-DHAVE_NUM_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_c392273e96cfdc99a6928ff0546ee5fe/testbuild/test.cpp.1.o']
+[2/2] Linking [33mbuild/.conf_check_c392273e96cfdc99a6928ff0546ee5fe/testbuild/testprog[0m
 
-['/usr/local/bin/g++-4.7', 'test.cpp.1.o', '-o/Users/paulwambergue/UdeM/latticetester/build/.conf_check_59816d2c7f1b607e3ec46a4d93038f44/testbuild/testprog', '-L/usr/local/lib', '-L/usr/local/lib', '-lmylib']
-=======
-[1/2] Compiling [32mbuild/.conf_check_42a33513e382fcfed992c481d1867403/test.cpp[0m
-
-['/usr/bin/clang++', '-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-DWITH_NTL=1', '-DNTL_TYPES_CODE=2', '-DHAVE_NTL_VECTOR_H=1', '-DLATTICETESTER_VERSION=1.1', '-DHAVE_GMP_H=1', '-DHAVE_ULCG_H=1', '-DHAVE_NUM_H=1', '../test.cpp', '-c', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_42a33513e382fcfed992c481d1867403/testbuild/test.cpp.1.o']
-[2/2] Linking [33mbuild/.conf_check_42a33513e382fcfed992c481d1867403/testbuild/testprog[0m
-
-['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_42a33513e382fcfed992c481d1867403/testbuild/testprog', '-lmylib']
->>>>>>> d06142999054b04129f35b98078114a6ee3e34d8
+['/usr/bin/clang++', 'test.cpp.1.o', '-o/Users/Erwan1/projects/github/LatticeTester/build/.conf_check_c392273e96cfdc99a6928ff0546ee5fe/testbuild/testprog', '-lmylib']
 yes

@@ -8,25 +8,25 @@ CCLNK_TGT_F = ['-o']
 CC_NAME = 'clang'
 CC_SRC_F = []
 CC_TGT_F = ['-c', '-o']
-CC_VERSION = ('4', '7', '4')
+CC_VERSION = ('8', '1', '0')
 CFLAGS = ['-std=c99', '-Wall']
 CFLAGS_MACBUNDLE = ['-fPIC']
 CFLAGS_cshlib = ['-fPIC']
 COMPILER_CC = 'clang'
-COMPILER_CXX = 'g++'
+COMPILER_CXX = 'clang++'
 CPPPATH_ST = '-I%s'
-CXX = ['/usr/local/bin/g++-4.7']
-CXXFLAGS = ['-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-g']
+CXX = ['/usr/bin/clang++']
+CXXFLAGS = ['-std=c++11', '-Wall', '-Wno-unused-local-typedefs', '-Wno-unused-function', '-Wnon-virtual-dtor', '-Wshorten-64-to-32', '-g']
 CXXFLAGS_MACBUNDLE = ['-fPIC']
 CXXFLAGS_cxxshlib = ['-fPIC']
 CXXLNK_SRC_F = []
 CXXLNK_TGT_F = ['-o']
-CXX_NAME = 'gcc'
+CXX_NAME = 'clang'
 CXX_SRC_F = []
 CXX_TGT_F = ['-c', '-o']
 DATADIR = '/usr/local/share'
 DATAROOTDIR = '/usr/local/share'
-DEFINES = ['WITH_NTL=1', 'NTL_TYPES_CODE=2', 'HAVE_NTL_VECTOR_H=1', 'LATTICETESTER_VERSION=1.1', 'HAVE_GMP_H=1', 'HAVE_ULCG_H=1', 'HAVE_NUM_H=1', 'DEBUG=1']
+DEFINES = ['WITH_NTL=1', 'NTL_TYPES_CODE=1', 'HAVE_NTL_VECTOR_H=1', 'LATTICETESTER_VERSION=1.1', 'HAVE_GMP_H=1', 'HAVE_ULCG_H=1', 'HAVE_NUM_H=1', 'DEBUG=1']
 DEFINES_ST = '-D%s'
 DEFINE_COMMENTS = {'HAVE_NTL_VECTOR_H': '', 'LATTICETESTER_VERSION': '', 'HAVE_GMP_H': '', 'HAVE_ULCG_H': '', 'HAVE_NUM_H': '', 'NTL_TYPES_CODE': '', 'DEBUG': '', 'WITH_NTL': ''}
 DEST_BINFMT = 'mac-o'
@@ -43,12 +43,10 @@ HAVE_NUM_H = 1
 HAVE_ULCG_H = 1
 HTMLDIR = '/usr/local/share/doc/'
 INCLUDEDIR = '/usr/local/include'
-INCLUDES = ['/usr/local/include', '/usr/local/include']
 INFODIR = '/usr/local/share/info'
-LATTICETESTER_SUFFIX = 'ZZDD'
+LATTICETESTER_SUFFIX = 'LLDD'
 LIBDIR = '/usr/local/lib'
 LIBEXECDIR = '/usr/local/libexec'
-LIBPATH = ['/usr/local/lib', '/usr/local/lib']
 LIBPATH_ST = '-L%s'
 LIB_GMP = ['gmp']
 LIB_MYLIB = ['mylib']
@@ -61,7 +59,7 @@ LINKFLAGS_cstlib = []
 LINKFLAGS_cxxshlib = ['-dynamiclib']
 LINKFLAGS_cxxstlib = []
 LINK_CC = ['/usr/bin/clang']
-LINK_CXX = ['/usr/local/bin/g++-4.7']
+LINK_CXX = ['/usr/bin/clang++']
 LOCALEDIR = '/usr/local/share/locale'
 LOCALSTATEDIR = '/usr/local/var'
 MANDIR = '/usr/local/share/man'

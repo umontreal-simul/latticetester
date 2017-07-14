@@ -141,7 +141,7 @@ void Reducer::copy (const Reducer & red)
    m_lMin2 = red.m_lMin2;
    m_BoundL2 = red.m_BoundL2;
    m_IC = new int[3 + m_lat->getDim ()];
-   for (int i = 0; i < 3 + m_lat->getDim (); i++)
+   for (int i = 0; i < 2 + m_lat->getDim (); i++)
       m_IC[i] = red.m_IC[i];
 }
 
@@ -453,7 +453,6 @@ void Reducer::pairwiseRedPrimal (int i, int d)
 void Reducer::pairwiseRedDual (int i)
 {
    int j;
- // trace( "AVANT pairwiseRedDual");
    const int dim = m_lat->getDim ();
 
    ++m_countDieter;
@@ -906,11 +905,8 @@ bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const BMat & WTemp)
    bool high;
    int k;
    RScal S1, S2, S3, S4, mR;
-// trace( "AVANT tryZ");
 
    const int dim = m_lat->getDim ();
-   //conv (mR, m_lat->getM ());
-
    ++m_countNodes;
    if (m_countNodes > maxNodesBB) {
       cout << "-------- m_countNodes > maxNodesBB = " << maxNodesBB << endl;
@@ -1069,8 +1065,6 @@ bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const BMat & WTemp)
             high = true;
       }
    }
-
- // trace( "APRES tryZ");
    return true;
 }
 

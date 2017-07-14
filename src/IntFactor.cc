@@ -76,7 +76,7 @@ PrimeType IntFactor::isPrime (const MScal & y, long k)
    MScal NbPrem;
    NTL::ZZ LIM;
    LIM = NTL::conv<ZZ>("4294967295");
-   std::ifstream in ("/u/simardr/latmrg/prime.dat"); // contains primes < 2^16
+   std::ifstream in ("/Users/Erwan1/projects/github/LatMRG/data/prime.dat"); // contains primes < 2^16
    if (!(in.is_open())) {
       std::cerr << "Error:   cannot open file   prime.dat\n";
       exit(8);

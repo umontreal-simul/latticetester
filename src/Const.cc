@@ -152,4 +152,21 @@ string toStringPrecision (PrecisionType precision)
 
 //===========================================================================
 
+
+string toStringOutput (OutputType sort)
+{
+   switch (sort) {
+   case TERMINAL:
+      return "TERMINAL";
+   case RES:
+      return "RES";
+   case TEX:
+      return "TEX";
+   case GEN:
+      return "GEN";
+   default:
+      return "***** OutputType: IMPOSSIBLE CASE ";
+   }
+}
+
 }

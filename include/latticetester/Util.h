@@ -787,12 +787,12 @@ inline void CalcNorm (const Vect & V, int n, Scal & S, NormType norm)
 }
 
 /**
- * Copies vector \f$A\f$ into vector \f$B\f$ using components \f$[0..n-1]\f$.
+ * Copies vector \f$B\f$ into vector \f$A\f$ using components \f$[0..n-1]\f$.
  */
 template <typename Vect>
-inline void CopyVect (const Vect & A, Vect & B, int n)
+inline void CopyVect (Vect & A, const Vect & B, int n)
 {
-    for (int k = 0; k < n; k++)  B[k] = A[k];
+    for (int k = 0; k < n; k++)  A[k] = B[k];
 }
 
 /**
@@ -959,25 +959,25 @@ inline void DeleteMatr (MMatP & A)
 #endif
 
 /**
- * Copies matrix \f$A\f$ into matrix \f$B\f$.
+ * Copies matrix \f$B\f$ into matrix \f$A\f$.
  */
 template <typename Matr>
-inline void CopyMatr (const Matr & A, Matr & B, int n)
+inline void CopyMatr (Matr & A, const Matr & B, int n)
 {
     for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
-            B[i][j] = A[i][j];
+            A[i][j] = B[i][j];
 }
 
 /**
  * As above.
  */
 template <typename Matr>
-inline void CopyMatr (const Matr & A, Matr & B, int line, int col)
+inline void CopyMatr (Matr & A, const Matr & B, int line, int col)
 {
     for (int i = 0; i < line; i++)
         for (int j = 0; j < col; j++)
-            B[i][j] = A[i][j];
+            A[i][j] = B[i][j];
 }
 
 /**

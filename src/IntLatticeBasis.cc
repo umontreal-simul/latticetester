@@ -288,7 +288,7 @@ void IntLatticeBasis::permute (int i, int j)
 bool IntLatticeBasis::checkDuality ()
 {
    if(!m_withDual) {
-      cout << "DO NOT USE checkDuality without dual" << endl;
+      cout << "DO NOT USE IntLatticeBasis::checkDuality without dual" << endl;
       return false;
    }
    BScal S;

@@ -415,6 +415,10 @@ void ParamReader::readNormaType(NormaType& field, unsigned int ln, unsigned int 
       field = MINKOWSKI;
    else if (0 == strcasecmp(val.c_str(), "NORMA_GENERIC"))
       field = NORMA_GENERIC;
+   else if (0 == strcasecmp(val.c_str(), "L1"))
+      field = L1;
+   else if (0 == strcasecmp(val.c_str(), "L2"))
+      field = L2;
    else
       MyExit(1, "readNormaType:   NO SUCH CASE");
 }
@@ -487,6 +491,23 @@ void ParamReader::readPreRed(PreReductionType& field, unsigned int ln, unsigned 
 
 //===========================================================================
 
+void initNorm(LatticeTesterConfig & config)
+{
+   switch(config.normalizer){
+   case BESTLAT: case LAMINATED: case ROGERS: case NORMA_GENERIC: case MINKOWSKI: case L2:
+      config.norm = L2NORM;
+      break;
+   case MINKL1: case L1:
+      config.norm = L1NORM;
+      break;
+   default:
+      MyExit(1, "initNorm NORMA:   NO SUCH CASE");
+      break;
+   }
+}
+
+//===========================================================================
+
 
 void ParamReader::read (LatticeTesterConfig & config)
 {
@@ -494,19 +515,21 @@ void ParamReader::read (LatticeTesterConfig & config)
    unsigned int ln = 1;
 
    readCriterionType (config.test, ln, 0);
-   readNormType (config.norm, ++ln, 0);
-   readNormaType (config.normalizer, ++ln, 0);
+   if(config.test == SPECTRAL){
+      readNormaType (config.normalizer, ln, 1);
+      initNorm(config);
+   }
    readPreRed (config.prereduction, ++ln, 0);
    if(config.prereduction == BKZ){
-      readPrecisionType (config.precision, ++ln, 0);
-      readDouble (config.fact, ++ln, 0);
-      readInt (config.blocksize, ++ln, 0);
+      readPrecisionType (config.precision, ln, 1);
+      readDouble (config.fact, ln, 2);
+      readInt (config.blocksize, ln, 3);
    }
    else if(config.prereduction == PreRedDieter){
    }
    else if(config.prereduction == LenstraLL){
-      readPrecisionType (config.precision, ++ln, 0);
-      readDouble (config.fact, ++ln, 0);
+      readPrecisionType (config.precision, ln, 1);
+      readDouble (config.fact, ln, 2);
    }
 
    readInt (config.dim, ++ln, 0);

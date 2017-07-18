@@ -92,6 +92,10 @@ string toStringNorma (NormaType norma)
       return "MINKOWSKI";
    case NORMA_GENERIC:
       return "NORMA_GENERIC";
+   case L1:
+      return "L1";
+   case L2:
+      return "L2";
    default:
       return "***** NormaType: IMPOSSIBLE CASE ";
    }

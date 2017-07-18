@@ -107,7 +107,7 @@ enum CriterionType { SPECTRAL, BEYER, PALPHA, BOUND_JS };
  * case when no useful normalization constant is known.
  */
 enum NormaType { BESTLAT, LAMINATED, ROGERS, MINKOWSKI, MINKL1,
-                 PALPHA_N, NORMA_GENERIC };
+                 PALPHA_N, NORMA_GENERIC, L1, L2 };
 
 /**
  * Indicates which type of calculation is considered for the

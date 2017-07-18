@@ -66,7 +66,6 @@ using namespace LatticeTester;
 
 int main (int argc, char *argv[])
 {
-
    if (argc < 2) {
       cerr << "\n*** Usage:\n   "
            << argv[0] << " data_file1 data_file2 ...." << endl
@@ -75,8 +74,8 @@ int main (int argc, char *argv[])
            << endl;
       return -1;
    }
-
-
+   //cout << "ARGC " << argc << endl;
+   
    struct stat buf; // properties of a file or directory
    LatticeAnalysis latAnalysis;
    int status = 0;
@@ -94,7 +93,7 @@ int main (int argc, char *argv[])
          status |= latAnalysis.doTestFromInputFile (argv[j]);
       }
    }
-   return 0;
+   return 1;
 }
 
 

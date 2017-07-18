@@ -108,6 +108,8 @@ namespace LatticeTester
 
 LatticeAnalysis::LatticeAnalysis ()
 {
+   m_normalizer = 0;
+   m_reducer = 0;
 }
 
 //===========================================================================
@@ -182,6 +184,10 @@ void LatticeAnalysis::initNormalizer (NormaType norma, int alpha)
       case PALPHA_N:
          m_normalizer = new NormaPalpha (m_reducer->getIntLatticeBasis().getModulo(), alpha, m_dim);
          //PW_TODO : c'est bien ça ?
+         break;
+      case L1:
+         break;
+      case L2:
          break;
       default:
          cout << "LatticeAnalysis::initNormalizer:   no such case";
@@ -409,8 +415,13 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
          m_reducer->shortestVector(config.norm);
 
          // calculating the Figure of Merit
-         m_merit = conv<double>(m_reducer->getMinLength())
+         if(config.normalizer == L1 || config.normalizer == L2){
+            m_merit = conv<double>(m_reducer->getMinLength());
+         }
+         else{
+            m_merit = conv<double>(m_reducer->getMinLength())
                   / m_normalizer->getPreComputedBound(config.dim);
+         }
          break;
 
       case BEYER:

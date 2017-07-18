@@ -425,7 +425,7 @@ bool reduce2(
       }
       break;
 
-   case PreRedDieter_BB : case LLL_BB : case PreRedDieter_LLL_BB : { // This
+   case PreRedDieter_BB : case LLL_BB : case PreRedDieter_LLL_BB : {
          // PreRed and then Branch and Bound
          ok = red.redBB0(L2NORM);
       }

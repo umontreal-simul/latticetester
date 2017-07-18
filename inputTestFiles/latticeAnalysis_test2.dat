@@ -1,9 +1,5 @@
-SPECTRAL	Criterion
-L1NORM		norm
-MINKL1		normalization type
-LenstraLL	pre-reduction type
-DOUBLE		floating point precision
-0.999		fact
+SPECTRAL MINKL1
+LenstraLL DOUBLE 0.999999
 2			matrix dimension
 1 51	
 0 101

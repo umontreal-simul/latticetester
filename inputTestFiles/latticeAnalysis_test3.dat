@@ -1,11 +1,6 @@
-SPECTRAL	Criterion
-L2NORM		norm
-BESTLAT		normalization type
-BKZ	pre-reduction type
-DOUBLE		floating point precision
-0.999		fact
-20			blocksize
-8			matrix dimension
+SPECTRAL BESTLAT
+BKZ	DOUBLE 0.999 20
+8	matrix dimension
 9223372036854773561 0 0 0 0 0 0 0
 0 9223372036854773561 0 0 0 0 0 0
 0 0 9223372036854773561 0 0 0 0 0

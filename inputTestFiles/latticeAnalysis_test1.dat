@@ -1,18 +1,25 @@
-SPECTRAL	Figure of Merit
-L1NORM		norm
-MINKL1		normalization type
-LenstraLL	pre-reduction type
-DOUBLE		floating point precision
-0.999		fact
-2			matrix dimension
+# Figure of Merit
+SPECTRAL MINKL1	
+
+# pre-reduction type
+LenstraLL DOUBLE 0.999999	
+
+# basis dimension
+2		
+
+# matrix with basis vector in line				
 1 12
 0 101
-100000000	MaxNodeBB
-TERMINAL	Output
+
+# Maximum number of visited nodes in the BB
+100000000
+
+# Output printing
+TERMINAL		
 
 
-Comments
 
+COMMENTS
 This matrix corresponds to a MRG with
 	order = 1
 	modulo = 101

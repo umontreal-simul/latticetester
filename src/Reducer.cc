@@ -702,29 +702,36 @@ void Reducer::redLLLNTL(double fact, PrecisionType precision) {
 
 #if NTL_TYPES_CODE > 1
 
-   bool withDual = m_lat->withDual();
-   mat_ZZ U;
-   U.SetDims(m_lat->getBasis().NumRows(), m_lat->getBasis().NumCols());
+   if(precision == EXACT)
+      redLLLNTLExact(fact);
+   else{
 
-   switch(precision){
-      case DOUBLE:
-         LLL_FP(m_lat->getBasis(), U, fact, 0, 0);
-         break;
-      case QUADRUPLE:
-         LLL_QP(m_lat->getBasis(), U, fact, 0, 0);
-         break;
-      case EXPONENT:
-         LLL_XD(m_lat->getBasis(), U, fact, 0, 0);
-         break;
-      case ARBITRARY:
-         LLL_RR(m_lat->getBasis(), U, fact, 0, 0);
-         break;
-      default:
-         MyExit(1, "LLL PrecisionType:   NO SUCH CASE");
-   }
+      bool withDual = m_lat->withDual();
+      mat_ZZ U;
+      U.SetDims(m_lat->getBasis().NumRows(), m_lat->getBasis().NumCols());
 
-   if (withDual) {
-      m_lat->getDualBasis() = transpose(inv(U)) * m_lat->getDualBasis();
+      switch(precision){
+         case DOUBLE:
+            LLL_FP(m_lat->getBasis(), U, fact, 0, 0);
+            break;
+         case QUADRUPLE:
+            LLL_QP(m_lat->getBasis(), U, fact, 0, 0);
+            break;
+         case EXPONENT:
+            LLL_XD(m_lat->getBasis(), U, fact, 0, 0);
+            break;
+         case ARBITRARY:
+            LLL_RR(m_lat->getBasis(), U, fact, 0, 0);
+            break;
+         case EXACT:
+            break;
+         default:
+            MyExit(1, "LLL PrecisionType:   NO SUCH CASE");
+      }
+
+      if (withDual) {
+         m_lat->getDualBasis() = transpose(inv(U)) * m_lat->getDualBasis();
+      }
    }
 
 #else

@@ -127,10 +127,13 @@ string toStringPreRed (PreReductionType prered)
       return "PreRedDieter";
    case LenstraLL:
       return "LenstraLL";
+   case NOPRERED:
+      return "NOPRERED";
    default:
       return "***** PreReductionType: IMPOSSIBLE CASE ";
    }
 }
+
 
 //===========================================================================
 
@@ -145,6 +148,8 @@ string toStringPrecision (PrecisionType precision)
       return "EXPONENT";
    case ARBITRARY:
       return "ARBITRARY";
+   case EXACT:
+      return "EXACT";
    default:
       return "***** PrecisionType: IMPOSSIBLE CASE ";
    }

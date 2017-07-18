@@ -395,6 +395,8 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
       case PreRedDieter:
          m_reducer->preRedDieter(0);
          break;
+      case NOPRERED:
+         break;
       default:
          MyExit(1, "LatticeLatticeAnalysis::doTestFromInputFile:   no such case");
          exit(1);
@@ -418,8 +420,8 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
          // calculating the Figure of Merit
          m_merit = conv<double>(m_reducer->getMinLength())
                   /conv<double>(m_reducer->getMaxLength());
-         cout << "plus court vecteur : " << conv<double>(m_reducer->getMinLength()) << endl;
-         cout << "plus long vecteur : " << conv<double>(m_reducer->getMaxLength()) << endl;
+         cout << "shortest vector : " << conv<double>(m_reducer->getMinLength()) << endl;
+         cout << "largest vecteur : " << conv<double>(m_reducer->getMaxLength()) << endl;
          break;
 
       case PALPHA:

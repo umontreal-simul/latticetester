@@ -196,7 +196,7 @@ void ParamReader::readChar(char & field, unsigned int ln, unsigned int pos)
 
 /*
  PW_TODO voir si besoin plus tard
- 
+
 void ParamReader::readNumber3 (MScal & m, long & m1, long & m2, long & m3,
                                unsigned int ln, unsigned int pos)
 {
@@ -273,7 +273,7 @@ void ParamReader::readDouble(double& field, unsigned int ln, unsigned int pos)
 }
 
 //===========================================================================
-   
+
 void ParamReader::readMScal(MScal & field, unsigned int ln, unsigned int pos)
 {
    string val;
@@ -435,6 +435,8 @@ void ParamReader::readPrecisionType(PrecisionType& field, unsigned int ln, unsig
       field = EXPONENT;
    else if (0 == strcasecmp(val.c_str(), "ARBITRARY"))
       field = ARBITRARY;
+   else if (0 == strcasecmp(val.c_str(), "EXACT"))
+      field = EXACT;
    else
       MyExit(1, "readPrecisionType:   NO SUCH CASE");
 }
@@ -477,6 +479,8 @@ void ParamReader::readPreRed(PreReductionType& field, unsigned int ln, unsigned 
       field = PreRedDieter;
    else if (0 == strcasecmp(val.c_str(), "LenstraLL"))
       field = LenstraLL;
+   else if (0 == strcasecmp(val.c_str(), "NOPRERED"))
+      field = NOPRERED;
    else
       MyExit(1, "readPreRed:   NO SUCH CASE");
 }

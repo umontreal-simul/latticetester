@@ -789,6 +789,7 @@ WARN_LOGFILE           =
 INPUT                  = \
      /Users/Erwan1/projects/github/LatticeTester/include/latticetester \
      /Users/Erwan1/projects/github/LatticeTester/analysis/include \
+     /Users/Erwan1/projects/github/LatticeTester/doxygen/doc/intro.dox \
      /Users/Erwan1/projects/github/LatticeTester/doxygen/doc
 
 # This tag can be used to specify the character encoding of the source files
@@ -883,7 +884,7 @@ EXAMPLE_RECURSIVE      = NO
 # that contain images that are to be included in the documentation (see the
 # \image command).
 
-IMAGE_PATH             =
+IMAGE_PATH             = /Users/Erwan1/projects/github/LatticeTester/doxygen/images
 
 # The INPUT_FILTER tag can be used to specify a program that doxygen should
 # invoke to filter for each input file. Doxygen will invoke the filter program
@@ -1511,6 +1512,7 @@ MATHJAX_RELPATH        = http://cdn.mathjax.org/mathjax/latest
 
 MATHJAX_EXTENSIONS     = TeX/AMSmath TeX/AMSsymbols
 
+
 # The MATHJAX_CODEFILE tag can be used to specify a file with javascript pieces
 # of code that will be used on startup of the MathJax code. See the MathJax site
 # (see: http://docs.mathjax.org/en/latest/output.html) for more details. For an
@@ -1667,7 +1669,7 @@ PAPER_TYPE             = a4
 # If left blank no extra packages will be included.
 # This tag requires that the tag GENERATE_LATEX is set to YES.
 
-EXTRA_PACKAGES         = amsmath amsfonts amssymb url verbatim xcolor textcomp tcode mybold mymathbb mycal html
+EXTRA_PACKAGES         = amsmath amsfonts amssymb url verbatim xcolor textcomp tcode mybold mymathbb mycal html algorithm algpseudocode
 
 # The LATEX_HEADER tag can be used to specify a personal LaTeX header for the
 # generated LaTeX document. The header should contain everything until the first
@@ -2320,7 +2322,7 @@ DIRECTORY_GRAPH        = YES
 # The default value is: png.
 # This tag requires that the tag HAVE_DOT is set to YES.
 
-DOT_IMAGE_FORMAT       = svg
+DOT_IMAGE_FORMAT       = svg png
 
 # If DOT_IMAGE_FORMAT is set to svg, then this option can be set to YES to
 # enable generation of interactive SVG images that allow zooming and panning.

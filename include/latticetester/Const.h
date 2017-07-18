@@ -66,7 +66,7 @@ enum OutputType { TERMINAL, RES, TEX, GEN };
  * Generally speaking, the choice FP will be the fastest,
  * but may be prone to roundoff errors and/or overflow.
  */
-enum PrecisionType { DOUBLE, QUADRUPLE, EXPONENT, ARBITRARY };
+enum PrecisionType { DOUBLE, QUADRUPLE, EXPONENT, ARBITRARY, EXACT };
 
 /**
  * Indicates whether an integer is prime, probably prime, composite or its
@@ -127,7 +127,7 @@ enum CalcType { PAL, NORMPAL, BAL, SEEKPAL };
  * Indicates the Prereduction Type. BKZ, etc...
  */
 
-enum PreReductionType {BKZ, PreRedDieter, LenstraLL};
+enum PreReductionType {BKZ, PreRedDieter, LenstraLL, NOPRERED};
 
 /**
  * \name toString functions

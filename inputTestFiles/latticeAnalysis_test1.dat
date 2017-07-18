@@ -1,11 +1,11 @@
-SPECTRAL	Criterion
+SPECTRAL	Figure of Merit
 L1NORM		norm
 MINKL1		normalization type
 LenstraLL	pre-reduction type
 DOUBLE		floating point precision
 0.999		fact
 2			matrix dimension
-1 12	
+1 12
 0 101
 100000000	MaxNodeBB
 TERMINAL	Output

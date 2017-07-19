@@ -10,8 +10,8 @@
 #include "latticetester/IntLatticeBasis.h"
 #include "latticetester/Normalizer.h"
 #include "latticetester/Reducer.h"
-
-//#include "latticetester/Writer.h"
+#include "latticetester/LatTestWriter.h"
+#include "latticetester/LatTestWriterRes.h"
 #include "latticetester/LatticeTesterConfig.h"
 
 namespace LatticeTester {
@@ -47,10 +47,10 @@ public:
 
   /**
     * Constructor. The test will be applied on `lattice`, with the selected
-    * `normalizer`.
+    * `normalizer` and `criterion`.
     */
-   LatticeAnalysis (Reducer & reducer, NormType norm,
-      NormaType normaType, int alpha = 0);
+   LatticeAnalysis (Reducer & reducer, CriterionType criterion, NormaType normaType,
+                    PreReductionType preRed, NormType norm, int alpha = 0);
 
    /**
     * Destructor.
@@ -63,10 +63,9 @@ public:
     * before completion, and it returns `true` upon success. The result of
     * the test is kept in <tt>m_merit</tt>.
     */
-   //bool performTest (CriterionType criterion, PreReductionType preRed, 
-   //   NormType norm, int dim, double fact, PrecisionType precision, int blocksize);
+   bool doTest (double fact, PrecisionType precision, int blocksize = 20);
 
-   //void LatticeAnalysis::printTestResults ();
+   void printTestResults ();
 
    /**
     * Reads the parameters of the test in input text file `datafile`; then do
@@ -95,23 +94,53 @@ public:
    /**
     * Gets the results of the applied test.
     */
-   double & getMerit () { return m_merit; }
+   double getMerit () const { return m_merit; }
 
+   /**
+    * Set functions
+    */
    void setReducer (Reducer & red) {m_reducer = &red; }
-   void setDim (int dim) { m_dim = dim; }
-   void setNorm (NormType norm) { m_norm = norm; }
+   void setCriterion (CriterionType criterion) { m_criterion = criterion; }
    void setNormalizerType (NormaType normalizerType) { m_normalizerType = normalizerType; }
-
-
+   void setPreReduction (PreReductionType preRed) { m_preRed = preRed; }
+   void setNorm (NormType norm) { m_norm = norm; }
+   void setDim (int dim) { m_dim = dim; }
 
 private:
-
+  /**
+   * Pointer to the reducer class used to perform pre-reductions and Branch-and-Bound
+   */
   Reducer* m_reducer;
-  int m_dim;
-  NormType m_norm;
-  NormaType m_normalizerType;
+
+  /**
+   * Type of pre-reduction
+   */
+   PreReductionType m_preRed;
+
+  /**
+   * Type of test applied: SPECTRAL, BEYER, ...
+   */
+   CriterionType m_criterion;
+
+  /**
+   * Pointer to the Normalizer class used to normalize the results
+   */
   Normalizer* m_normalizer;
 
+  /**
+   * Type of normalization chosen for the test
+   */
+  NormaType m_normalizerType;
+
+  /**
+   * Norm used
+   */
+  NormType m_norm;
+
+  /**
+   * dimension of ???
+   */
+   int m_dim;
 
    /**
     * Contains the results of the test.
@@ -122,7 +151,7 @@ private:
     * Returns a `Writer` created from the input file `infile` and the given
     * `OutputType`.
     */
-   //Writer* createWriter (const char *infile, OutputType ot);
+   LatTestWriter* createLatTestWriter (const char *infile, OutputType ot);
 
 };
 

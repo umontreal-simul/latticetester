@@ -47,7 +47,7 @@ public:
     * e^{\alpha s/(\alpha-1)}\f$, then there exists an integer vector
     * \f$\mathbf{a} \in\mathbb Z^s\f$ such that
     * \f[
-    *   P_{\alpha}(s, \mathbf{a})  \le  B_{\alpha}(s)  =  {\Big [WARNING: attributes={'char': <plasTeX.TeXFragment object at 0x7f9d49b94e20>}] \frac{e}{s} \Big [WARNING: attributes={'char': <plasTeX.TeXFragment object at 0x7f9d49b94f58>}]}^{\alpha s} \frac{(2\ln m + s)^{\alpha s}}{m^{\alpha}}.
+    *   P_{\alpha}(s, \mathbf{a})  \le  B_{\alpha}(s)  = \frac{e}{s}^{\alpha s} \frac{(2\ln m + s)^{\alpha s}}{m^{\alpha}}.
     * \f]
     * If the conditions for the existence of the bound are not satisfied,
     * the function returns \f$-1\f$.
@@ -57,7 +57,7 @@ public:
    /**
     * Returns the value of \f$\alpha\f$.
     */
-   int getAlpha () const;
+   int getAlpha () const { return alpha; }
 private:
 
    /**

@@ -34,15 +34,6 @@ NormaPalpha::NormaPalpha (const MScal & n, int alp, int s, NormType norm)
    alpha = alp;
 }
 
-
-/*=========================================================================*/
-
-int NormaPalpha::getAlpha () const
-{
-   return alpha;
-}
-
-
 /*=========================================================================*/
 
 double NormaPalpha::calcBound (int alpha, int dim)

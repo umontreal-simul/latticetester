@@ -69,6 +69,14 @@ public:
                   NormType norm = L2NORM, double beta = 1);
 
    /**
+    * Constructor only used by the NormaPalpha class. It doesn't take any
+    * log density argument. This only works for rank1 lattices, having m points 
+    * per unit of volume (m being a prime number), normalized with NormaPalpha.
+    */
+   //PW_TODO remettre la classe rank1lattice dans lattice tester ?
+   Normalizer (int t, std::string Name, NormType norm = L2NORM, double beta = 1);
+
+   /**
     * Destructor.
     */
    virtual ~Normalizer ()
@@ -79,7 +87,7 @@ public:
     * lattices have \f$Density\f$ points per unit volume and the bias factor 
     * is `beta` for all dimensions \f$j\le\f$ `maxDim`.
     */
-   void init (const RScal & logDensity, double beta);
+   virtual void init (const RScal & logDensity, double beta);
 
    /**
     * Returns this object as a string.

@@ -149,6 +149,26 @@ void IntLatticeBasis::copyBasis (const IntLatticeBasis & lat)
 
 /*=========================================================================*/
 
+void IntLatticeBasis::copyBasis (const IntLatticeBasis & lat, int n)
+{
+   if(m_dim == n)
+      CopyMatr(m_basis, lat.m_basis, n);
+      CopyVect(m_vecNorm, lat.m_vecNorm, n);
+      m_withDual = lat.m_withDual;
+      if(m_withDual){
+         m_dualbasis.resize(n, n);
+         m_dualvecNorm.resize(n);
+         CopyMatr(m_dualbasis, lat.m_dualbasis, n);
+         CopyVect(m_dualvecNorm, lat.m_dualvecNorm, n);
+      }
+      m_modulo = lat.m_modulo;
+      m_xx = new bool[n];
+      for (int i = 0; i < n; i++)
+         m_xx[i] = lat.getXX(i);
+}
+
+/*=========================================================================*/
+
 void IntLatticeBasis::initVecNorm ()
 {
    m_xx = new bool[m_dim];
@@ -283,6 +303,7 @@ void IntLatticeBasis::permute (int i, int j)
    m_xx[i] = b;
 }
 
+
 /*=========================================================================*/
 
 bool IntLatticeBasis::checkDuality ()
@@ -352,30 +373,45 @@ void IntLatticeBasis::write () const
 {
    cout << "Dim = " << m_dim << " \n \n";
    for (int i = 0; i < m_dim; i++) {
-      cout << "   | ";
+      cout << "  |     ";
       for (int j = 0; j < m_dim; j++) {
-         cout << setprecision (4) <<
-         setw (3) << m_basis(i,j) << "   ";
+         cout << setprecision (15) << m_basis(i,j) << "\t";
       }
+      cout << "    |";
       if(m_withDual){
-         cout << " |  |  ";
+         cout <<"  |     ";
          for (int j = 0; j < m_dim; j++) {
-            cout << setprecision (4) <<
-            setw (3) << m_dualbasis(i,j) << "   ";
+            cout << setprecision (15) <<
+            m_dualbasis(i,j) << "\t";
          }
+         cout << "    |";
       }
-      cout << " |  " << endl;
+      cout << "\n";
+
    }
    cout << "\n";
    cout << "Norm used : " << toStringNorm(m_norm) << "\n" << endl;
-   cout << "Norm of each Basis' vector : \n";
+   cout << "Norm of each Basis vector : \n";
+   cout << " Primal     ";
+   if(m_withDual)
+      cout << "\t Dual \n";
+   cout << "\n";
+
    for (int i = 0; i < m_dim; i++) {
       cout << "   ";
       if (m_vecNorm[i] < 0) {
-         cout << "NaN OR Not computed" << endl;
+         cout << "NaN OR Not computed";
       } else {
-         cout << m_vecNorm[i] << endl;
+         cout << m_vecNorm[i];
       }
+      if(m_withDual){
+         cout << "\t \t \t ";
+         if (m_dualvecNorm[i] < 0)
+            cout << "NaN OR Not computed";
+         else
+            cout << m_dualvecNorm[i];
+      }
+      cout << "\n";
    }
 }
 

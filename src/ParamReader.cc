@@ -194,8 +194,6 @@ void ParamReader::readChar(char & field, unsigned int ln, unsigned int pos)
 
 //===========================================================================
 
-/*
- PW_TODO voir si besoin plus tard
 
 void ParamReader::readNumber3 (MScal & m, long & m1, long & m2, long & m3,
                                unsigned int ln, unsigned int pos)
@@ -229,7 +227,7 @@ void ParamReader::readNumber3 (MScal & m, long & m1, long & m2, long & m3,
       sign = 1;
    m = sign*(power (m, m2) + m3);
 }
-*/
+
 
 
 //===========================================================================

@@ -84,6 +84,11 @@ public:
     void copyBasis (const IntLatticeBasis & lat);
 
     /**
+     * Copy the n first elements of the lattice lat
+     */
+    void copyBasis (const IntLatticeBasis & lat, int n);
+
+    /**
      * Set all the norm of the matrix to -1
      */
     void initVecNorm ();
@@ -157,6 +162,11 @@ public:
      * Return True if we use Dual.
      */
     bool withDual() { return m_withDual; }
+
+    /**
+     * Set the Dual Flag.
+     */
+    void setDualFlag(bool flag) { m_withDual = flag; }
 
     /**
      * Get and det m_xx but I don't now what means m_xx
@@ -258,6 +268,8 @@ public:
      * Return a string with the dual basis and its norms
      */
     std::string toStringDualBasis() const;
+
+    IntLatticeBasis* getAdresse() { return this; }
 
     /**
      * Writes the lattice and the parameters on standard output

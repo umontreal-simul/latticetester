@@ -115,8 +115,8 @@ ParamReader();
     * 5, -1)\f$ will give \f$r=31\f$, while \f$(b, e, c) = (-2, 5, -1)\f$
     * will give \f$r=-31\f$.
     */
-   
-   //void readNumber3 (MScal & r, long & b, long & e, long & c, unsigned int ln, unsigned int pos);
+
+   void readNumber3 (MScal & r, long & b, long & e, long & c, unsigned int ln, unsigned int pos);
 
    /**
     * Reads a `BScal` from the <tt>pos</tt>-th token of the <tt>ln</tt>-th

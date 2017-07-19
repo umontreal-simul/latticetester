@@ -247,7 +247,7 @@ public:
     * the coefficient `fact` and a block size `Blocksize`. The precision
     * can be given. See Const.h for further information.
     */
-   void redBKZ(double fact = 0.999999, long blocksize = 20, PrecisionType precision = QUADRUPLE);
+   void redBKZ(double fact = 0.999999, long blocksize = 10, PrecisionType precision = QUADRUPLE, int dim = 0);
 
 
 

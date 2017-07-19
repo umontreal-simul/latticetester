@@ -370,7 +370,7 @@ bool Reducer::calculCholeski (RVect & DC2, RMat & C0)
 void Reducer::trace (char *mess)
 {
    cout << endl << "================================= " << mess << endl;
-   cout << "dim = " << m_lat->getDim () << endl;
+   //cout << "dim = " << m_lat->getDim () << endl;
    m_lat->setNegativeNorm();
    m_lat->setDualNegativeNorm();
    m_lat->updateVecNorm ();
@@ -652,37 +652,50 @@ void Reducer::redLLLNTLExact(double fact){
 #endif
 }
 
+
+
 //=========================================================================
 
-void Reducer::redBKZ(double fact, long blocksize, PrecisionType precision) {
+void Reducer::redBKZ(double fact, long blocksize, PrecisionType precision, int dim) {
+
+   IntLatticeBasis *lattmp = 0;
+   if(dim >0){
+      lattmp = new IntLatticeBasis(dim, m_lat->getNorm());
+      lattmp->copyBasis(*m_lat, dim);
+   }
+   else{
+      lattmp = m_lat->getAdresse();
+   }
 
 
 #if NTL_TYPES_CODE > 1
 
    bool withDual = m_lat->withDual();
    mat_ZZ U;
-   U.SetDims(m_lat->getBasis().NumRows(), m_lat->getBasis().NumCols());
+   U.SetDims(lattmp->getBasis().NumRows(), m_lat->getBasis().NumCols());
 
    switch(precision){
       case DOUBLE:
-         BKZ_FP(m_lat->getBasis(), U, fact, blocksize);
+         BKZ_FP(lattmp->getBasis(), U, fact, blocksize);
          break;
       case QUADRUPLE:
-         BKZ_QP(m_lat->getBasis(), U, fact, blocksize);
+         BKZ_QP(lattmp->getBasis(), U, fact, blocksize);
          break;
       case EXPONENT:
-         BKZ_XD(m_lat->getBasis(), U, fact, blocksize);
+         BKZ_XD(lattmp->getBasis(), U, fact, blocksize);
          break;
       case ARBITRARY:
-         BKZ_RR(m_lat->getBasis(), U, fact, blocksize);
+         BKZ_RR(lattmp->getBasis(), U, fact, blocksize);
          break;
       default:
          MyExit(1, "BKZ PrecisionType:   NO SUCH CASE");
    }
 
    if (withDual) {
-      m_lat->getDualBasis() = transpose(inv(U)) * m_lat->getDualBasis();
+      lattmp->getDualBasis() = transpose(inv(U)) * lattmp->getDualBasis();
    }
+
+   m_lat->copyBasis(*lattmp, dim);
 
 #else
 

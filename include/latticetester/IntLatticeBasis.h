@@ -269,8 +269,6 @@ public:
      */
     std::string toStringDualBasis() const;
 
-    IntLatticeBasis* getAdresse() { return this; }
-
     /**
      * Writes the lattice and the parameters on standard output
      */

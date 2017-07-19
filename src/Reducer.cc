@@ -664,7 +664,7 @@ void Reducer::redBKZ(double fact, long blocksize, PrecisionType precision, int d
       lattmp->copyBasis(*m_lat, dim);
    }
    else{
-      lattmp = m_lat->getAdresse();
+      lattmp = m_lat;
    }
 
 

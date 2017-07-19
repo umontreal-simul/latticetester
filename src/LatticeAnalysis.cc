@@ -114,15 +114,16 @@ LatticeAnalysis::LatticeAnalysis ()
 
 //===========================================================================
 
-LatticeAnalysis::LatticeAnalysis (Reducer & reducer, NormType norm,
-      NormaType normaType, int alpha)
+LatticeAnalysis::LatticeAnalysis (Reducer & reducer, CriterionType criterion, 
+   NormaType normaType, PreReductionType preRed, NormType norm, int alpha)
 {
    m_reducer = &reducer;
-   m_dim = m_reducer->getIntLatticeBasis().getDim();
-   m_norm = norm;
+   m_criterion = criterion;
    m_normalizerType = normaType;
    initNormalizer(normaType, alpha);
-
+   m_preRed = preRed;
+   m_norm = norm;
+   m_dim = m_reducer->getIntLatticeBasis().getDim();
 }
 
 //===========================================================================
@@ -130,6 +131,9 @@ LatticeAnalysis::LatticeAnalysis (Reducer & reducer, NormType norm,
 LatticeAnalysis::~LatticeAnalysis ()
 {
    delete m_normalizer;
+   //PW_TODO à supprimer ou non ?
+   //delete m_reducer;
+   
 }
 
 //===========================================================================
@@ -141,8 +145,6 @@ void LatticeAnalysis::initNormalizer (NormaType norma, int alpha)
    // travail direct sur primale re-scaled ?
    // version avec logDensity en parametre (pou m^k sans besoin de calcul det)
 
-
-
 #if NTL_TYPES_CODE > 1
    RScal logDensity;
    logDensity = - log( abs( NTL::determinant(m_reducer->getIntLatticeBasis().getBasis()) ) );
@@ -150,7 +152,6 @@ void LatticeAnalysis::initNormalizer (NormaType norma, int alpha)
    // As NTL library does not support matrix with double
    // we compute the determinant with the boost library
    boost::numeric::ublas::matrix<long>  mat_tmps;
-
    mat_tmps.resize(m_dim, m_dim);
    for(unsigned int i = 0; i < m_dim; i++){
       for(unsigned int j = 0; j < m_dim; j++){
@@ -158,9 +159,7 @@ void LatticeAnalysis::initNormalizer (NormaType norma, int alpha)
       }
    }
    RScal logDensity(-log( abs( det_double(mat_tmps) ) ) );
-
 #endif
-
 
    switch (norma) {
       case BESTLAT:
@@ -197,18 +196,12 @@ void LatticeAnalysis::initNormalizer (NormaType norma, int alpha)
 
 //===========================================================================
 
-/*
-
-bool LatticeAnalysis::performTest (CriterionType criterion, PreReductionType preRed,
-      NormType norm, int dim, double fact, PrecisionType precision, int blocksize)
+bool LatticeAnalysis::doTest (double fact, PrecisionType precision, int blocksize)
 {
-
-   //PW_TODO utiliser les member parameters
-
    bool result;
 
    // performing pre-reduction
-   switch (preRed) {
+   switch (m_preRed) {
       case BKZ:
          m_reducer->redBKZ(fact, blocksize, precision);
          break;
@@ -218,66 +211,63 @@ bool LatticeAnalysis::performTest (CriterionType criterion, PreReductionType pre
       case PreRedDieter:
          m_reducer->preRedDieter(0);
          break;
+      case NOPRERED:
+         break;
       default:
-         MyExit(1, "LatticeLatticeAnalysis::doTestFromInputFile:   no such case");
+         MyExit(1, "LatticeLatticeAnalysis::doTest:   no such case");
          exit(1);
    }
 
    // performing the Branch-and-Bound procedure to find the shortest non-zero vector
-   switch (criterion) {
+   switch (m_criterion) {
       case SPECTRAL:
          // performing the Branch-and-Bound procedure to find the shortest non-zero vector
-         result = m_reducer->shortestVector(norm);
-
+         result = m_reducer->shortestVector(m_norm);
          // calculating the Figure of Merit
-         m_merit = conv<double>(m_reducer->getMinLength())
-                  / m_normalizer->getPreComputedBound(dim);
+         if(m_normalizerType == L1 || m_normalizerType == L2) {
+            m_merit = conv<double>(m_reducer->getMinLength());
+         } else {
+            m_merit = conv<double>(m_reducer->getMinLength())
+                  / m_normalizer->getPreComputedBound(m_dim);
+         }
          break;
-
       case BEYER:
          //performing the Branch-and-Bound procedure to find the Minkowski-reduced matrix
          result = m_reducer->reductMinkowski(0);
-
          // calculating the Figure of Merit
          m_merit = conv<double>(m_reducer->getMinLength())
                   /conv<double>(m_reducer->getMaxLength());
-         //cout << "plus court vecteur : " << conv<double>(m_reducer->getMinLength()) << endl;
-         //cout << "plus long vecteur : " << conv<double>(m_reducer->getMaxLength()) << endl;
          break;
-
       case PALPHA:
          MyExit(1, "PALPHA:   NOT YET");
          break;
-
       case BOUND_JS:
          MyExit(1, "BOUND_JS:   NOT YET");
          break;
-
       default:
          MyExit(1, "BOUND_JS:   NOT YET");
          exit(1);
    }
 
    return result;
-
 }
 
 //==========================================================================
 
 void LatticeAnalysis::printTestResults ()
 {
+   //PW_TODO à tester en construisant l'objet LatticeAnalysis directement
+   // dans le code
+
    cout << "\n----------------------------------------------------------" << endl;
-   cout << "Prereduction : " << toStringPreRed(config.prereduction) << endl;
+   cout << "Criterion : " << toStringCriterion(m_criterion) << endl;
+   cout << "Prereduction used: " << toStringPreRed(m_preRed) << endl;
    cout << "Length of shortest non-zero vector = " << conv<double>(m_reducer->getMinLength());
-   cout << " (" << toStringNorm(config.norm) << ")" << endl;
-   cout << "Criterion : " << toStringCriterion(config.test) << endl;
+   cout << " (" << toStringNorm(m_norm) << ")" << endl;
    cout << "Figure of Merit = " << m_merit;
-   cout << " (" << toStringNorma(config.normalizer) << " normalization)" << endl;
-   cout << "----------------------------------------------------------" << endl;
-
+   cout << " (" << toStringNorma(m_normalizerType) << " normalization)" << endl;
+   cout << "----------------------------------------------------------\n" << endl;
 }
-
-*/
 
 //==========================================================================
 
@@ -287,85 +277,9 @@ void LatticeAnalysis::printTestResults ()
  * "poil.dat", then infile is "poil".
  * Data files must always have the extension "dat".
  */
+
 int LatticeAnalysis::doTestFromInputFile (const char *infile)
-{
-
-   // VERSION DEGUEUE AVEC WRITER
-   // PW_TODO à supprimer ou non plus tard
-   /*
-   // parameters reading
-   string fname (infile);
-   fname += ".dat";
-   ParamReader paramRdr (fname.c_str ());
-   fname.clear ();
-
-   LatConfig config;
-   paramRdr.read (config);
-   //config.write();
-
-   Writer* rw = createWriter (infile, config.outputType);
-
-   // creating the Reducer object from input
-   IntLatticeBasis basis (config.matrix, config.dim, config.norm);
-   Reducer red (basis);
-
-   // update parameters
-   setReducer(red);
-   setDim(config.dim);
-   setNorm(config.norm);
-   setNormalizerType(config.normalizer);
-   initNormalizer (config.normalizer);
-
-   double fact = 1.0 - config.epsilon;
-
-   // performing pre-reduction
-   switch (config.prered) {
-      case BKZ:
-         m_reducer->redBKZ(fact, config.blockSize);
-         break;
-      case LenstraLL:
-         m_reducer->redLLLNTLProxyFP(fact);
-         break;
-      case PreRedDieter:
-         m_reducer->preRedDieter(0);
-         break;
-      default:
-         cout << "LatticeLatticeAnalysis::doTestFromInputFile:   no such case";
-         exit (2);
-   }
-
-   // performing the Branch-and-Bound procedure to find the shortest non-zero vector
-   m_reducer->shortestVector(config.norm);
-
-   // calculating the Figure of Merit
-   m_merit = conv<double>(m_reducer->getMinLength())
-            / m_normalizer->getPreComputedBound(config.dim);
-
-
-
-
-
-   ReportHeader header (rw, &config, lattice);
-   ReportFooter footer (rw);
-   Report report (rw, &config, &header, &footer);
-
-   double minVal[1 + toDim];
-   SetZero (minVal, toDim);
-
-
-   report.printHeader ();
-   //footer.setLatticeTest (&spectralTest);
-   report.printTable ();
-   report.printFooter ();
-
-   delete rw;
-   return 0;
-   */
-
-
-
-   // VERSION SANS WRITER
-
+{   
    // parameters reading
    string fname (infile);
    fname += ".dat";
@@ -374,91 +288,54 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
 
    LatticeTesterConfig config;
    paramRdr.read (config);
-
-   //cout << "Writing config = " << endl;
    //config.write();
+
+   LatTestWriter* rw = createLatTestWriter (infile, config.outputType);
 
    // creating the Reducer object from input
    IntLatticeBasis basis (config.basis, config.dim, config.norm);
    Reducer red (basis);
-
    // update parameters
    setReducer(red);
-   setDim(config.dim);
-   setNorm(config.norm);
+   setCriterion(config.test);
    setNormalizerType(config.normalizer);
+   setDim(config.dim);
    initNormalizer (config.normalizer);
+   setPreReduction(config.prereduction);
+   setNorm(config.norm);
+   //PW_TODO int alpha for Palpha test?
 
-
-   // performing pre-reduction
-   switch (config.prereduction) {
-      case BKZ:
-         m_reducer->redBKZ(config.fact, config.blocksize, config.precision);
-         break;
-      case LenstraLL:
-         m_reducer->redLLLNTL(config.fact, config.precision);
-         break;
-      case PreRedDieter:
-         m_reducer->preRedDieter(0);
-         break;
-      case NOPRERED:
-         break;
-      default:
-         MyExit(1, "LatticeLatticeAnalysis::doTestFromInputFile:   no such case");
-         exit(1);
+   if (!doTest(config.fact, config.precision, config.blocksize)) {
+      MyExit(1, "error in LatticeAnalysis::doTestFromInputFile");
+      exit(1);
    }
 
-   // performing the Branch-and-Bound procedure to find the shortest non-zero vector
-   switch (config.test) {
-      case SPECTRAL:
-         // performing the Branch-and-Bound procedure to find the shortest non-zero vector
-         m_reducer->shortestVector(config.norm);
+   // putting the results in the output stream
+   rw->writeString("\n----------------------------------------------------------");
+   rw->newLine();
+   rw->writeString("Criterion : "); 
+   rw->writeString(toStringCriterion(m_criterion));
+   rw->newLine();
+   rw->writeString("Prereduction used: ");
+   rw->writeString(toStringPreRed(m_preRed));
+   rw->newLine();
+   rw->writeString("Length of shortest non-zero vector = ");
+   rw->writeDouble(conv<double>(m_reducer->getMinLength()));
+   rw->writeString(" (");
+   rw->writeString(toStringNorm(m_norm));
+   rw->writeString(")");
+   rw->newLine();
+   rw->writeString("Figure of Merit = ");
+   rw->writeDouble(m_merit);
+   rw->writeString(" (");
+   rw->writeString(toStringNorma(m_normalizerType));
+   rw->writeString(" normalization)");
+   rw->newLine();
+   rw->writeString("----------------------------------------------------------\n");
+   rw->newLine();
 
-         // calculating the Figure of Merit
-         if(config.normalizer == L1 || config.normalizer == L2){
-            m_merit = conv<double>(m_reducer->getMinLength());
-         }
-         else{
-            m_merit = conv<double>(m_reducer->getMinLength())
-                  / m_normalizer->getPreComputedBound(config.dim);
-         }
-         break;
-
-      case BEYER:
-         //performing the Branch-and-Bound procedure to find the Minkowski-reduced matrix
-         m_reducer->reductMinkowski(0);
-
-         // calculating the Figure of Merit
-         m_merit = conv<double>(m_reducer->getMinLength())
-                  /conv<double>(m_reducer->getMaxLength());
-         cout << "shortest vector : " << conv<double>(m_reducer->getMinLength()) << endl;
-         cout << "largest vecteur : " << conv<double>(m_reducer->getMaxLength()) << endl;
-         break;
-
-      case PALPHA:
-         MyExit(1, "PALPHA:   NOT YET");
-         break;
-
-      case BOUND_JS:
-         MyExit(1, "BOUND_JS:   NOT YET");
-         break;
-
-      default:
-         MyExit(1, "BOUND_JS:   NOT YET");
-         exit(1);
-   }
-
-   cout << "\n----------------------------------------------------------" << endl;
-   cout << "Prereduction : " << toStringPreRed(config.prereduction) << endl;
-   cout << "Length of shortest non-zero vector = " << conv<double>(m_reducer->getMinLength());
-   cout << " (" << toStringNorm(config.norm) << ")" << endl;
-   cout << "Criterion : " << toStringCriterion(config.test) << endl;
-   cout << "Figure of Merit = " << m_merit;
-   cout << " (" << toStringNorma(config.normalizer) << " normalization)" << endl;
-   cout << "----------------------------------------------------------\n" << endl;
-
+   delete rw;
    return 0;
-
 }
 
 
@@ -482,27 +359,28 @@ int LatticeAnalysis::doTestFromDirectory (const char *dirname)
 
 //==========================================================================
 
-/*
-Writer* LatticeAnalysis::createWriter (const char *infile, OutputType ot)
+LatTestWriter* LatticeAnalysis::createLatTestWriter (const char *infile, OutputType ot)
 {
-   Writer *rw = 0;
+   LatTestWriter *rw = 0;
    string fname;
 
    switch (ot) {
    case RES:
       fname = infile;
       fname += ".res";
-      rw = new WriterRes (fname.c_str ());
+      rw = new LatTestWriterRes (fname.c_str ());
       break;
 
    case TEX:
       fname = infile;
       fname += ".tex";
-      // rw = new WriterTex(fname.c_str()); //EB Ne permet pas d'écrire en Tex
+      //rw = new WriterTex(fname.c_str()); //EB Ne permet pas d'écrire en Tex
+      cerr << "\n*** outputType:   TEX not implemented" << endl;
+      return 0;
       break;
 
    case TERMINAL:
-      rw = new WriterRes (&cout);
+      rw = new LatTestWriterRes (&cout);
       break;
 
    default:
@@ -511,7 +389,6 @@ Writer* LatticeAnalysis::createWriter (const char *infile, OutputType ot)
    }
    return rw;
 }
-*/
 
 //==========================================================================
 

@@ -191,9 +191,7 @@ void ParamReader::readChar(char & field, unsigned int ln, unsigned int pos)
    field = val[0];
 }
 
-
 //===========================================================================
-
 
 void ParamReader::readNumber3 (MScal & m, long & m1, long & m2, long & m3,
                                unsigned int ln, unsigned int pos)
@@ -227,8 +225,6 @@ void ParamReader::readNumber3 (MScal & m, long & m1, long & m2, long & m3,
       sign = 1;
    m = sign*(power (m, m2) + m3);
 }
-
-
 
 //===========================================================================
 
@@ -364,7 +360,6 @@ void ParamReader::readCriterionType(CriterionType& field, unsigned int ln, unsig
       field = BEYER;
    else if (0 == strcasecmp(val.c_str(), "PALPHA")){
       field = PALPHA;
-      MyExit(1, "readNormType:   PALPHA case not ready");
    }
    else
       MyExit(1, "readCriterionType:   NO SUCH CASE");
@@ -513,33 +508,47 @@ void ParamReader::read (LatticeTesterConfig & config)
    unsigned int ln = 1;
 
    readCriterionType (config.test, ln, 0);
-   if(config.test == SPECTRAL){
-      readNormaType (config.normalizer, ln, 1);
-      initNorm(config);
+
+   switch(config.test) {
+
+      case SPECTRAL:
+         readNormaType (config.normalizer, ln, 1);
+         initNorm(config);
+         readPreRed (config.prereduction, ++ln, 0);
+         if (config.prereduction == BKZ) {
+            readPrecisionType (config.precision, ln, 1);
+            readDouble (config.fact, ln, 2);
+            readInt (config.blocksize, ln, 3);
+         } else if(config.prereduction == LenstraLL) {
+            readPrecisionType (config.precision, ln, 1);
+            readDouble (config.fact, ln, 2);
+         }
+         readInt (config.dim, ++ln, 0);
+         config.basis.resize(config.dim, config.dim);
+         readBMat(config.basis, ++ln, 0, config.dim);
+         readLong (config.maxNodesBB, ln, 0);
+         readOutputType(config.outputType, ++ln, 0);
+         break;
+
+      case BEYER: 
+         MyExit(1, "BEYER not implemented yet. Need to change pre-red in reductMinkowski (either preRedDieter with dual basis calculation or redBKZ pre-redduction directly"); 
+         break;
+
+      case PALPHA:
+         long m1, m2, m3;
+         readNumber3(config.modulo, m1, m2, m3, ++ln, 0);
+         readInt (config.alpha, ++ln, 0);
+         readInt (config.dim, ++ln, 0);
+         config.basis.resize(config.dim, config.dim);
+         readBMat(config.basis, ++ln, 0, config.dim);
+         readLong (config.maxNodesBB, ln, 0);
+         readOutputType(config.outputType, ++ln, 0);
+         break;
+
+      default:
+         MyExit(1, "Criterion type:   NO SUCH CASE");
+         break;
    }
-   readPreRed (config.prereduction, ++ln, 0);
-   if(config.prereduction == BKZ){
-      readPrecisionType (config.precision, ln, 1);
-      readDouble (config.fact, ln, 2);
-      readInt (config.blocksize, ln, 3);
-   }
-   else if(config.prereduction == PreRedDieter){
-   }
-   else if(config.prereduction == LenstraLL){
-      readPrecisionType (config.precision, ln, 1);
-      readDouble (config.fact, ln, 2);
-   }
-
-   readInt (config.dim, ++ln, 0);
-
-   config.basis.resize(config.dim, config.dim);
-
-   readBMat(config.basis, ++ln, 0, config.dim);
-
-   readLong (config.maxNodesBB, ln, 0);
-
-   readOutputType(config.outputType, ++ln, 0);
-
 }
 
 

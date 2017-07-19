@@ -101,6 +101,16 @@ public:
    BMat basis;
 
    /**
+    * The modulo of the rank1 lattice for Palpha test
+    */
+   MScal modulo;
+
+   /**
+    * The alpha coefficient for Palpha test (for rank 1 lattices)
+    */
+   int alpha;
+
+   /**
     * Used in LLL and BKZ. See Reducer. It must be smaller than
     * 1. If `fact` is closer to 1, the basis will be (typically) "more
     * reduced", but that will require more work.

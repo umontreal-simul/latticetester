@@ -233,13 +233,13 @@ bool LatticeAnalysis::doTest (double fact, PrecisionType precision, int blocksiz
                   /conv<double>(m_reducer->getMaxLength());
          break;
       case PALPHA:
-         MyExit(1, "PALPHA:   NOT YET");
+         MyExit(1, "PALPHA:   to be implemented");
          break;
       case BOUND_JS:
          MyExit(1, "BOUND_JS:   NOT YET");
          break;
       default:
-         MyExit(1, "BOUND_JS:   NOT YET");
+         MyExit(1, "LatticeAnalysis::doTest:   NO SUCH CASE");
          exit(1);
    }
 

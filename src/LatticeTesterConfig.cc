@@ -25,13 +25,47 @@ void LatticeTesterConfig::kill()
 
 void LatticeTesterConfig::write()
 {
-   cout << "Dimension:   " << dim << endl;
-   cout << "normalizer: " << toStringNorma (normalizer) << endl;
-   cout << "Prereduction: " << toStringPreRed (prereduction) << endl;
-   cout << "Lattice Basis \n" << basis << endl;
-   cout << "maxNodesBB: " << maxNodesBB << endl;
-   //cout << "outputType: " << toStringOutput (outputType) << endl;
 
+   switch(test) {
+
+      case SPECTRAL:
+         cout << "\n----- LatticeTesterConfig::write -----" << endl;
+         cout << "Criterion: " << toStringCriterion(test) << endl;
+         cout << "Norm: " << toStringNorm(norm) << endl;
+         cout << "Normalizer: " << toStringNorma (normalizer) << endl;
+
+         cout << "Prereduction: " << toStringPreRed (prereduction);
+         cout << " (with " << toStringPrecision(precision) << " precision";
+         cout << " and fact = " << fact << ")" << endl;
+
+         cout << "Dimension of the basis: " << dim << endl;
+         cout << "Lattice Basis = \n" << basis << endl;
+         cout << "maxNodesBB: " << maxNodesBB << endl;
+         break;
+
+      case PALPHA:
+         cout << "\n----- LatticeTesterConfig::write -----" << endl;
+         cout << "Criterion: " << toStringCriterion(test) << endl;
+         cout << "alpha: " << alpha << endl;
+         cout << "modulo: " << modulo << endl;
+
+         cout << "Dimension of the basis: " << dim << endl;
+         cout << "Lattice Basis = \n" << basis << endl;
+         cout << "maxNodesBB: " << maxNodesBB << endl;
+         break;
+
+      case BEYER:
+         cout << "\n----- LatticeTesterConfig::write -----" << endl;
+         cout << "Criterion: " << toStringCriterion(test) << endl;
+         cout << "Dimension of the basis: " << dim << endl;
+         cout << "Lattice Basis = \n" << basis << endl;
+         cout << "maxNodesBB: " << maxNodesBB << endl;
+         break;
+
+      default:
+         MyExit(1, "LatticeTesterConfig::write:  NO SUCH CASE");
+         break;
+   }
 }
 
 } // namespace LatticeTester

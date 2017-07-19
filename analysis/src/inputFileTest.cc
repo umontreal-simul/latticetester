@@ -66,7 +66,7 @@ int main (int argc, char *argv[])
    
    // Paul
    string testLocation = "/Users/paulwambergue/UdeM/latticetester/inputTestFiles";
-   //string testLocation = "/Users/paulwambergue/UdeM/latticetester/inputTestFiles/latticeAnalysis_test1";
+   //string testLocation = "/Users/paulwambergue/UdeM/latticetester/inputTestFiles/latticeAnalysis_test4";
    
    struct stat buf; // properties of a file or directory
    LatticeAnalysis latAnalysis;

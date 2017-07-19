@@ -16,6 +16,10 @@
 #include "NTL/LLL.h"
 #include "NTL/vec_ZZ.h"
 #include "NTL/mat_ZZ.h"
+#else
+#include <boost/numeric/ublas/matrix.hpp>
+#include <boost/numeric/ublas/io.hpp>
+#include <boost/numeric/ublas/lu.hpp>
 #endif
 
 #include "latticetester/Types.h"
@@ -30,19 +34,11 @@
 #include "latticetester/NormaPalpha.h"
 #include "latticetester/NormaRogers.h"
 #include "latticetester/LatticeAnalysis.h"
-
 #include "latticetester/LatticeTesterConfig.h"
 #include "latticetester/ParamReader.h"
 
 using namespace std;
-
 //using namespace NTL;
-
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/io.hpp>
-#include <boost/numeric/ublas/lu.hpp>
-
-
 
 namespace
 {
@@ -130,10 +126,8 @@ LatticeAnalysis::LatticeAnalysis (Reducer & reducer, CriterionType criterion,
 
 LatticeAnalysis::~LatticeAnalysis ()
 {
-   delete m_normalizer;
-   //PW_TODO à supprimer ou non ?
-   //delete m_reducer;
-   
+   if (m_normalizer != 0)
+      delete m_normalizer;
 }
 
 //===========================================================================
@@ -256,11 +250,8 @@ bool LatticeAnalysis::doTest (double fact, PrecisionType precision, int blocksiz
 
 void LatticeAnalysis::printTestResults ()
 {
-   //PW_TODO à tester en construisant l'objet LatticeAnalysis directement
-   // dans le code
-
    cout << "\n----------------------------------------------------------" << endl;
-   cout << "Criterion : " << toStringCriterion(m_criterion) << endl;
+   cout << "Criterion: " << toStringCriterion(m_criterion) << endl;
    cout << "Prereduction used: " << toStringPreRed(m_preRed) << endl;
    cout << "Length of shortest non-zero vector = " << conv<double>(m_reducer->getMinLength());
    cout << " (" << toStringNorm(m_norm) << ")" << endl;
@@ -313,7 +304,7 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
    // putting the results in the output stream
    rw->writeString("\n----------------------------------------------------------");
    rw->newLine();
-   rw->writeString("Criterion : "); 
+   rw->writeString("Criterion: "); 
    rw->writeString(toStringCriterion(m_criterion));
    rw->newLine();
    rw->writeString("Prereduction used: ");
@@ -337,7 +328,6 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
    delete rw;
    return 0;
 }
-
 
 //==========================================================================
 

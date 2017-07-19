@@ -94,7 +94,7 @@ public:
    /**
     * Gets the results of the applied test.
     */
-   double & getMerit () { return m_merit; }
+   double getMerit () const { return m_merit; }
 
    /**
     * Set functions

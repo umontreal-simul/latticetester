@@ -672,7 +672,7 @@ void Reducer::redBKZ(double fact, long blocksize, PrecisionType precision, int d
 
    bool withDual = m_lat->withDual();
    mat_ZZ U;
-   U.SetDims(lattmp->getBasis().NumRows(), m_lat->getBasis().NumCols());
+   U.SetDims(lattmp->getBasis().size1(), m_lat->getBasis().size2());
 
    switch(precision){
       case DOUBLE:

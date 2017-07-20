@@ -156,8 +156,8 @@ void IntLatticeBasis::copyBasis (const IntLatticeBasis & lat, int n)
       CopyVect(m_vecNorm, lat.m_vecNorm, n);
       m_withDual = lat.m_withDual;
       if(m_withDual){
-         m_dualbasis.resize(n, n);
-         m_dualvecNorm.resize(n);
+         m_dualbasis.resize(m_basis.size1(), m_basis.size1());
+         m_dualvecNorm.resize(m_basis.size1());
          CopyMatr(m_dualbasis, lat.m_dualbasis, n);
          CopyVect(m_dualvecNorm, lat.m_dualvecNorm, n);
       }

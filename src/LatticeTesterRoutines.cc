@@ -20,8 +20,10 @@
 
 namespace LatticeTester {
 
+//*=============================================================================================	
+
 double ShortestVector(BMat matrix, NormType norm, PreReductionType preRed, 
-	PrecisionType doublePrecision, double fact, int blocsize)
+	PrecisionType doublePrecision, double fact, int blocksize)
 {
 	int dimension;
 	if (matrix.size1() != matrix.size2()) {
@@ -38,10 +40,10 @@ double ShortestVector(BMat matrix, NormType norm, PreReductionType preRed,
 	// performing pre-reduction
 	switch (preRed) {
 		case BKZ:
-			red.redBKZ(doublePrecision, fact, blocksize);
+			red.redBKZ(fact, blocksize, doublePrecision);
 			break;
 		case LenstraLL:
-			red.redLLLNTL(doublePrecision, fact);
+			red.redLLLNTL(fact, doublePrecision);
 			break;
 		case PreRedDieter:
 			red.preRedDieter(0);
@@ -57,30 +59,121 @@ double ShortestVector(BMat matrix, NormType norm, PreReductionType preRed,
 	}
 
 	// performing the Branch-and-Bound procedure to find the shortest non-zero vector.
-	// foundShortest bool is set to true if the algorithm terminates without any error.
-	bool foundShortest;
-    foundShortest = red.shortestVector(norm);
-
-    double length;
-    if (foundShortest) {
-	    if (norm == L2NORM) { //L2NORM is stored squared
-	    	length = conv<double>(red.getMinLength());
-	    	length = sqrt(length);
-	    } else if (norm == L1NORM)
-	    	length = conv<double>(red.getMinLength());
-	} else 
-		length = -1.0;
-
-	return length;
+	// red.shortestVector(norm) is a bool set to *true* if the Branch-and-Bound algorithm
+	// terminates without any error.
+	if (red.shortestVector(norm))
+		return conv<double>(red.getMinLength());
+	else 
+		return -1.0;
 }
 
+//*=============================================================================================
 
+double ShortestVector(BMat matrix, NormType norm, long maxNodesBB, PreReductionType preRed, 
+	PrecisionType doublePrecision, double fact, int blocksize)
+{
+	Reducer::maxNodesBB = maxNodesBB; // setting the number of nodes visited in the BB procedure
+	return ShortestVector(matrix, norm, preRed, doublePrecision, fact, blocksize);
+}
 
+//*=============================================================================================
+
+double FigureOfMerit(BMat matrix, NormaType normalizerType, PreReductionType preRed,
+	PrecisionType doublePrecision, double fact, int blocksize)
+{
+	double merit;
+
+	int dimension;
+	if (matrix.size1() != matrix.size2()) {
+		MyExit(1, "LatticeTesterRoutines::ShortestVector:   NEED A SQUARE MATRIX");
+		exit(1);
+		// C'est pas un peu nul ça ?
+	} else 
+		dimension = matrix.size1();
+
+	// creation of the norm and normalizer objects
+	NormType norm;
+	Normalizer* normalizer;
+
+	// calculation of the log-density of the matrix used to initialize the normalizer
+	RScal logDensity;
+#if NTL_TYPES_CODE > 1
+	logDensity = - log( abs(NTL::determinant(matrix)) );
+#else 
+	// NTL library does not support matrix with double: we then use the boost library
+	boost::numeric::ublas::matrix<long>  mat_tmps;
+	mat_tmps.resize(dimension, dimension);
+	for (unsigned int i = 0; i < dimension; i++) {
+		for (unsigned int j = 0; j < dimension; j++) {
+			mat_tmps(i,j) = matrix(i,j);
+		}
+	}
+	logDensity = -log( abs(det_double(mat_tmps)) );
+#endif
+
+	// we initialize the norm and normalizer objects according to the normalizerType used
+	switch (normalizerType) {
+		case BESTLAT:
+			norm = L2NORM;
+			normalizer = new NormaBestLat (logDensity, dimension);
+			break;
+		case LAMINATED:
+			norm = L2NORM;
+			normalizer = new NormaLaminated (logDensity, dimension);
+			break;
+		case ROGERS:
+			norm = L2NORM;
+			normalizer = new NormaRogers (logDensity, dimension);
+			break;
+		case MINKOWSKI:
+			norm = L2NORM;
+			normalizer = new NormaMinkowski (logDensity, dimension);
+			break;
+		case MINKL1:
+			norm = L1NORM;
+			normalizer = new NormaMinkL1 (logDensity, dimension);
+			break;
+        default: //PALPHA_N, NORMA_GENERIC, L1, L2
+        	MyExit(1, "LatticeTesterRoutines::FigureOfMerit:   NO SUCH CASE FOR *normalization type*");
+			exit(1);
+	}
+
+	// compute the shortest non-zero vector
+	merit = ShortestVector(matrix, norm, preRed, doublePrecision, fact, blocksize);
+	
+	if (merit == -1.0)
+		return -1.0; // the BB procedure didn't terminated well
+
+	// normalization step
+	merit /= conv<double>(normalizer->getPreComputedBound(dimension));
+	
+	delete normalizer;
+	return merit; 
+}
+
+//*=============================================================================================
+
+double FigureOfMerit(BMat matrix, NormaType normalizerType, long maxNodesBB, 
+	PreReductionType preRed, PrecisionType doublePrecision, 
+	double fact, int blocksize)
+{
+	Reducer::maxNodesBB = maxNodesBB; // setting the number of nodes visited in the BB procedure
+	return FigureOfMerit(matrix, normalizerType, preRed, doublePrecision, fact, blocksize);
+}
+
+//*=============================================================================================
+
+void MinkowskiReduction(BMat & matrix)
+{
+
+}
+
+//*=============================================================================================
 
 } // end namespace LatticeTester
 
 
-
+/*
 
 enum NormType { SUPNORM = 1, L1NORM = 2, L2NORM = 3, ZAREMBANORM = 4 };
 
@@ -88,12 +181,9 @@ PrecisionType { DOUBLE, QUADRUPLE, EXPONENT, ARBITRARY, EXACT };
 
 PreReductionType {BKZ, PreRedDieter, LenstraLL, NOPRERED};
 
+CriterionType { SPECTRAL, BEYER, PALPHA, BOUND_JS };
 
+NormaType { BESTLAT, LAMINATED, ROGERS, MINKOWSKI, MINKL1,
+                 PALPHA_N, NORMA_GENERIC, L1, L2 };
 
-BKZ precision, fact, blocskize
-
-LLL precision fact
-
-PreRedDieter
-
-NOpredred
+*/

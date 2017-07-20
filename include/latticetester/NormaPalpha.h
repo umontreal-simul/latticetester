@@ -35,10 +35,10 @@ public:
    /**
     * Constructor for the bounds \f$B_{\alpha}(s)\f$ obtained for lattices, in
     * all dimensions \f$\le s\f$, where \f$\alpha= {}\f$<tt>alpha</tt>. The
-    * lattices have rank \f$1\f$, with \f$n\f$ points per unit volume.
+    * lattices have rank \f$1\f$, with \f$m\f$ points per unit volume.
     * Restriction: \f$2 \le s \le48\f$, \f$\alpha\ge2\f$, and \f$m\f$ prime.
     */
-   NormaPalpha (const MScal & n, int alpha, int s, NormType norm = L2NORM);
+   NormaPalpha (const MScal & m, int alpha, int s, NormType norm = L2NORM);
 
    /**
     * Computes and returns the bound \f$B_{\alpha}(s)\f$ given in
@@ -55,15 +55,25 @@ public:
    double calcBound (int alpha, int s);
 
    /**
+    * Initializes the bounds for the Palpha normalization.
+    */
+   void init (int alpha);
+
+   /**
     * Returns the value of \f$\alpha\f$.
     */
-   int getAlpha () const { return alpha; }
+   int getAlpha () const { return m_alpha; }
 private:
+
+  /**
+   * The value of \f$\m\f$.
+   */
+  MScal m_m;
 
    /**
     * The value of \f$\alpha\f$.
     */
-   int alpha;
+   int m_alpha;
 };
 
 }

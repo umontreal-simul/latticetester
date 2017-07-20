@@ -48,6 +48,16 @@ Normalizer::Normalizer (const RScal & logDensity0, int maxDim, std::string name,
 
 /*-------------------------------------------------------------------------*/
 
+Normalizer::Normalizer (int maxDim, std::string name,
+                        NormType norm, double beta0) :
+      m_name(name), m_norm(norm), m_logDensity(0), m_maxDim(maxDim),
+      m_beta(beta0)
+{
+   m_bounds = new double[maxDim + 1];
+}
+
+/*-------------------------------------------------------------------------*/
+
 
 void Normalizer::init (const RScal &logDensity0, double beta0)
 /*

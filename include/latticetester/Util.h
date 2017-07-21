@@ -617,6 +617,8 @@ template <typename Vect>
 inline void CreateVect (Vect & A, int d)
 {
     A.resize (1 + d);
+    for (int i = 0; i < (d+1); i++)
+        A[i] = 0;
     // aaa clear (A);
 }
 

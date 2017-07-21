@@ -725,7 +725,7 @@ inline void Invert (const MVect & A, MVect & B, int n)
 {
     conv(B[n], 1);
     for(int i = 0; i < n; i++){
-       B[i] = -A[n - i];
+       B[i] = -A[n - i -1];
     }
 }
 

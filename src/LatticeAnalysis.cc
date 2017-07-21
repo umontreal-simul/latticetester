@@ -111,7 +111,8 @@ LatticeAnalysis::LatticeAnalysis ()
 //===========================================================================
 
 LatticeAnalysis::LatticeAnalysis (Reducer & reducer, CriterionType criterion, 
-   NormaType normaType, PreReductionType preRed, NormType norm, int alpha)
+   NormaType normaType, PreReductionType preRed, NormType norm, int alpha,
+   long maxNodesBB)
 {
    m_reducer = &reducer;
    m_criterion = criterion;
@@ -120,6 +121,7 @@ LatticeAnalysis::LatticeAnalysis (Reducer & reducer, CriterionType criterion,
    m_preRed = preRed;
    m_norm = norm;
    m_dim = m_reducer->getIntLatticeBasis().getDim();
+   Reducer::maxNodesBB = m_maxNodesBB = maxNodesBB;
 }
 
 //===========================================================================
@@ -294,6 +296,7 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
    initNormalizer (config.normalizer);
    setPreReduction(config.prereduction);
    setNorm(config.norm);
+   setMaxNodesBB(config.maxNodesBB);
    //PW_TODO int alpha for Palpha test?
 
    if (!doTest(config.fact, config.precision, config.blocksize)) {

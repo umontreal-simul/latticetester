@@ -50,7 +50,8 @@ public:
     * `normalizer` and `criterion`.
     */
    LatticeAnalysis (Reducer & reducer, CriterionType criterion, NormaType normaType,
-                    PreReductionType preRed, NormType norm, int alpha = 0);
+                    PreReductionType preRed, NormType norm, int alpha = 0,
+                    long maxNodesBB = 10000000);
 
    /**
     * Destructor.
@@ -105,6 +106,7 @@ public:
    void setPreReduction (PreReductionType preRed) { m_preRed = preRed; }
    void setNorm (NormType norm) { m_norm = norm; }
    void setDim (int dim) { m_dim = dim; }
+   void setMaxNodesBB (long maxNodesBB) { Reducer::maxNodesBB = m_maxNodesBB = maxNodesBB; }
 
 private:
   /**
@@ -146,6 +148,11 @@ private:
     * Contains the results of the test.
     */
    double m_merit;
+
+   /**
+    * Contains the maximum number of nodes visited in the Branch-and-Bound procedure
+    */
+   long m_maxNodesBB;
 
    /**
     * Returns a `Writer` created from the input file `infile` and the given

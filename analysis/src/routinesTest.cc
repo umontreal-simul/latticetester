@@ -32,8 +32,8 @@ int main (int argc, char *argv[])
 {
    // all the parameters
    BMat matrix;
-   NormType norm = L1NORM;
-   NormaType normalizerType = MINKL1;
+   NormType norm = L2NORM;
+   NormaType normalizerType = BESTLAT;
    long maxNodesBB = 5;
    PreReductionType preRed = LenstraLL;
    PrecisionType doublePrecision = QUADRUPLE; 

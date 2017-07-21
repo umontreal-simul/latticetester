@@ -58,6 +58,7 @@ using namespace LatticeTester;
 
 //==================================================================================
 
+/*
 int main (int argc, char *argv[])
 {
    // Erwan
@@ -65,8 +66,8 @@ int main (int argc, char *argv[])
    //string testLocation = "ton_path_vers_dossier_input_files/input_file";
    
    // Paul
-   string testLocation = "/Users/paulwambergue/UdeM/latticetester/inputTestFiles";
-   //string testLocation = "/Users/paulwambergue/UdeM/latticetester/inputTestFiles/latticeAnalysis_test4";
+   //string testLocation = "/Users/paulwambergue/UdeM/latticetester/inputTestFiles";
+   string testLocation = "/Users/paulwambergue/UdeM/latticetester/inputTestFiles/latticeAnalysis_test3";
    
    struct stat buf; // properties of a file or directory
    LatticeAnalysis latAnalysis;
@@ -85,4 +86,5 @@ int main (int argc, char *argv[])
    
    return 0;
 }
+*/
 

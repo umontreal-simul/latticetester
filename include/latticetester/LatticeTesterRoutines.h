@@ -41,6 +41,7 @@ double ShortestVector(BMat matrix, NormType norm, long maxNodesBB,
  * Returns -1.0 if there was an error in Branch-and-Bound procedure while calculating
  * the length of shortest non-zero vector. Return the figure of merit otherwise.
  */
+// PW_TODO also implement BEYER merit using MinkowskiReduction().
 double FigureOfMerit(BMat matrix, NormaType normalizerType, PreReductionType preRed = BKZ,
 	PrecisionType doublePrecision = DOUBLE, double fact = 0.999, int blocksize = 20);
 
@@ -53,9 +54,22 @@ double FigureOfMerit(BMat matrix, NormaType normalizerType, long maxNodesBB,
 	double fact = 0.999, int blocksize = 20);
 
 
+/**
+ * This function reduces a basis to a Minkowski-reduced basis. Such basis has strong 
+ * properties regarding the length of its vectors but will require a huge running time, 
+ * especially when the dimension of the basis increases. Such Minkowski-reduced basis
+ * is usefull, for example, to calculate a Beyer quotient (as implemented in 
+ * FigureOfMerit()). 
+ */
+bool MinkowskiReduction(BMat & matrix, PreReductionType preRed = BKZ,
+	PrecisionType doublePrecision = DOUBLE, double fact = 0.999, int blocksize = 20);
 
-// Minkowki reduction of the basis
-void MinkowskiReduction(BMat & matrix);
+/**
+ * Same thing as before but with the possibility to set a different value for 
+ * the variable maxNodesBB.
+ */
+bool MinkowskiReduction(BMat & matrix, long maxNodesBB, PreReductionType preRed = BKZ,
+	PrecisionType doublePrecision = DOUBLE, double fact = 0.999, int blocksize = 20);
 
 
 } // end namespace LatticeTester

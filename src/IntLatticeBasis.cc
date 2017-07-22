@@ -151,7 +151,7 @@ void IntLatticeBasis::copyBasis (const IntLatticeBasis & lat)
 
 void IntLatticeBasis::copyBasis (const IntLatticeBasis & lat, int n)
 {
-   if(m_dim == n)
+   if(m_dim == n) {
       CopyMatr(m_basis, lat.m_basis, n);
       CopyVect(m_vecNorm, lat.m_vecNorm, n);
       m_withDual = lat.m_withDual;
@@ -165,6 +165,7 @@ void IntLatticeBasis::copyBasis (const IntLatticeBasis & lat, int n)
       m_xx = new bool[n];
       for (int i = 0; i < n; i++)
          m_xx[i] = lat.getXX(i);
+      }
 }
 
 /*=========================================================================*/

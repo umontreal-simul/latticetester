@@ -661,6 +661,7 @@ void Reducer::redBKZ(double fact, long blocksize, PrecisionType precision, int d
    IntLatticeBasis *lattmp = 0;
    if(dim >0){
       lattmp = new IntLatticeBasis(dim, m_lat->getNorm());
+
       lattmp->copyBasis(*m_lat, dim);
    }
    else{
@@ -705,6 +706,10 @@ void Reducer::redBKZ(double fact, long blocksize, PrecisionType precision, int d
    redLLL(fact, 1000000, m_lat->getDim ());
 
 #endif
+
+   if (dim>0)
+      delete lattmp;
+
 }
 
 
@@ -1509,8 +1514,15 @@ bool Reducer::reductMinkowski (int d)
          m_lat->setXX (true, i);
       for (i = d; i < dim; i++)
          m_lat->setXX (false, i);
+
+
       do {
+
+         //redBKZ(0.9999, 10, QUADRUPLE);
+         // PW_TODO
+         // trop long parce que ne fait pas attention au dual et réduit seulement le primal 
          preRedDieter (d);
+
          m_lat->setNegativeNorm(d);
          m_lat->updateVecNorm (d);
          if(withDual){

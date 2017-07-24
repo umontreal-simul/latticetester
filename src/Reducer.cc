@@ -717,6 +717,7 @@ void Reducer::redBKZ(double fact, long blocksize, PrecisionType precision, int d
 
 void Reducer::redLLLNTL(double fact, PrecisionType precision) {
 
+   //PW_TODO reprendre pour sous dim
 
 #if NTL_TYPES_CODE > 1
 
@@ -1516,11 +1517,11 @@ bool Reducer::reductMinkowski (int d)
          m_lat->setXX (false, i);
 
 
-      do {
+      found = false; 
 
+      do {
          //redBKZ(0.9999, 10, QUADRUPLE);
-         // PW_TODO
-         // trop long parce que ne fait pas attention au dual et réduit seulement le primal 
+         // PW_TODO trop long parce que ne fait pas attention au dual et réduit seulement le primal 
          preRedDieter (d);
 
          m_lat->setNegativeNorm(d);
@@ -1531,6 +1532,7 @@ bool Reducer::reductMinkowski (int d)
          }
          m_lat->sort (d);
          found = false;
+
          for (i = 0; i < dim; i++) {
             if (!m_lat->getXX (i)) {
                // On essaie de reduire le i-ieme vecteur.
@@ -1542,6 +1544,7 @@ bool Reducer::reductMinkowski (int d)
                }
             }
          }
+
       } while (found);
       // Stage 3
       if (dim > 7) {
@@ -1555,8 +1558,11 @@ bool Reducer::reductMinkowski (int d)
       }
    } while (found);
 
-   if (totalNodes > MINK_LLL)
-      PreRedLLLRM = true;
+   if (totalNodes > MINK_LLL) {
+      //PW_TODO
+      //PreRedLLLRM = true;
+   }
+   
    m_lat->setNegativeNorm();
    m_lat->updateScalL2Norm (0, dim);
    if(withDual){

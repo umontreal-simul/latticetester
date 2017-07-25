@@ -132,19 +132,23 @@ double Normalizer::getBound (int j) const
 {
    assert (j >= 1 && j <= m_maxDim);
 
-   double x,y;
-   double logBeta;
-   y = 1./j;
-   logBeta = log(m_beta);
+   if (j >= 1 && j <= Normalizer::MAX_DIM)
+      return getPreComputedBound (j);
+   else {
+      double x,y;
+      double logBeta;
+      y = 1./j;
+      logBeta = log(m_beta);
 
-   #if NTL_TYPES_CODE == 3
-      x = 0.5 * log (getGamma(j)) + j * logBeta - y * conv<double>(m_logDensity);
-   #else
-      x = 0.5 * log (getGamma(j)) + j * logBeta - y * m_logDensity;
-   #endif
-   //log calculation to handle large values of n
+      #if NTL_TYPES_CODE == 3
+         x = 0.5 * log (getGamma(j)) + j * logBeta - y * conv<double>(m_logDensity);
+      #else
+         x = 0.5 * log (getGamma(j)) + j * logBeta - y * m_logDensity;
+      #endif
+      //log calculation to handle large values of n
 
-   return exp(x);
+      return exp(x);
+   }
 }
 
 } // end namespace LatticeTester

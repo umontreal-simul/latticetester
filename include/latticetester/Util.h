@@ -613,6 +613,9 @@ inline void DeleteVect (Real* & A)
  * Creates the vector \f$A\f$ of dimensions \f$d+1\f$ and initializes its
  * elements to 0.
  */
+
+//PW_TODO dimension d+1 ?
+
 template <typename Vect>
 inline void CreateVect (Vect & A, int d)
 {

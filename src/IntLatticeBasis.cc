@@ -135,16 +135,17 @@ void IntLatticeBasis::kill ()
 
 void IntLatticeBasis::copyBasis (const IntLatticeBasis & lat)
 {
-   if(m_dim == lat.m_dim)
-      m_basis = lat.m_basis;
-      m_dualbasis = lat.m_dualbasis;
-      m_vecNorm = lat.m_vecNorm;
-      m_dualvecNorm = lat.m_dualvecNorm;
-      m_withDual = lat.m_withDual;
-      m_modulo = lat.m_modulo;
-      m_xx = new bool[m_dim];
-      for (int i = 0; i < m_dim; i++)
-         m_xx[i] = lat.getXX(i);
+   //if(m_dim == lat.m_dim)
+   
+   m_basis = lat.m_basis;
+   m_dualbasis = lat.m_dualbasis;
+   m_vecNorm = lat.m_vecNorm;
+   m_dualvecNorm = lat.m_dualvecNorm;
+   m_withDual = lat.m_withDual;
+   m_modulo = lat.m_modulo;
+   m_xx = new bool[m_dim];
+   for (int i = 0; i < m_dim; i++)
+      m_xx[i] = lat.getXX(i);
 }
 
 /*=========================================================================*/

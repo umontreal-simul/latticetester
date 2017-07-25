@@ -15,6 +15,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+
 #ifndef LATTICETESTER__INTLATTICEBASIS_H
 #define LATTICETESTER__INTLATTICEBASIS_H
 #include "latticetester/Types.h"
@@ -24,7 +25,10 @@
 namespace LatticeTester {
 
 /**
- * \brief
+ * \class IntLatticeBasis
+ *
+ * \brief This class represents a Lattice and its basis
+ *
  * This class offers tools to manipulate lattice bases. Each lattice is
  * at least represented by a basis \f$V\f$, a dimension and a Norm.
  * Users can beside precise the dual lattice \f$W\f$ and the modulo.

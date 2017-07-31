@@ -76,14 +76,16 @@ void Normalizer::init (const RScal &logDensity0, double beta0)
    for (int j = 1; j <= m_maxDim; j++) {
       y =  1. / j;
 
-      #if NTL_TYPES_CODE == 3
+#if NTL_TYPES_CODE == 3
          x = 0.5 * log (getGamma(j)) + j * logBeta - y * conv<double>(logDensity0);
-      #else 
+#else
          x = 0.5 * log (getGamma(j)) + j * logBeta - y * logDensity0;
-      #endif
+#endif
+      if (m_norm == L2NORM)
+         x = x + x;
       //log calculation to handle large values of n
-
-      m_bounds[j] = exp(x); 
+      //x = 0.5 * log (getGamma(j)) + j * logBeta;
+      m_bounds[j] = exp(x);
    }
 }
 
@@ -139,12 +141,14 @@ double Normalizer::getBound (int j) const
       double logBeta;
       y = 1./j;
       logBeta = log(m_beta);
-
+      /* Erwan */
       #if NTL_TYPES_CODE == 3
          x = 0.5 * log (getGamma(j)) + j * logBeta - y * conv<double>(m_logDensity);
       #else
          x = 0.5 * log (getGamma(j)) + j * logBeta - y * m_logDensity;
       #endif
+
+      // x = 0.5 * log (getGamma(j)) + j * logBeta;
       //log calculation to handle large values of n
 
       return exp(x);

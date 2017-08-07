@@ -64,6 +64,7 @@ void Normalizer::init (const RScal &logDensity0, double beta0)
  * Computes the vector m_bounds that corresponds to the upper bound for a lattice of
  * density \f$Density_0\f$.
  */
+
 {
    double x, y;
    double logBeta;
@@ -77,47 +78,15 @@ void Normalizer::init (const RScal &logDensity0, double beta0)
       y =  1. / j;
 
 #if NTL_TYPES_CODE == 3
-         x = 0.5 * log (getGamma(j)) + j * logBeta - y * conv<double>(logDensity0);
-#else
-         x = 0.5 * log (getGamma(j)) + j * logBeta - y * logDensity0;
+      x = 0.5 * log (getGamma(j)) + j * logBeta - y * conv<double>(logDensity0);
+#else 
+      x = 0.5 * log (getGamma(j)) + j * logBeta - y * logDensity0;
 #endif
-      if (m_norm == L2NORM)
-         //x = x + x;
-      //log calculation to handle large values of n
-      //x = 0.5 * log (getGamma(j)) + j * logBeta;
-      m_bounds[j] = exp(x);
-   }
-}
-
-
-/*
-//PW_TODO remettre comme avant
-
-{
-   double x, y;
-   double logBeta;
-   m_logDensity = logDensity0;
-   m_beta = beta0;
-
-   y = 1.0;
-   logBeta = log (m_beta);
-
-   for (int j = 1; j <= m_maxDim; j++) {
-      y =  1. / j;
-
-      #if NTL_TYPES_CODE == 3
-         x = 0.5 * log (getGamma(j)) + j * logBeta - y * conv<double>(logDensity0);
-      #else 
-         x = 0.5 * log (getGamma(j)) + j * logBeta - y * logDensity0;
-      #endif
       //log calculation to handle large values of n
 
       m_bounds[j] = exp(x); 
    }
 }
-
-*/
-
 
 /*-------------------------------------------------------------------------*/
 

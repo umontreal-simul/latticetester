@@ -20,8 +20,6 @@ namespace LatticeTester {
  */
 class ParamReader { 
 
-//PW_TODO attention même classe que dans LatMRG
-
 public:
    static const int MAX_WORD_SIZE = 64;
 

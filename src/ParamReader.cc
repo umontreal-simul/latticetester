@@ -335,7 +335,6 @@ void ParamReader::readDoubleVect(double* fields, unsigned int ln,
 //===========================================================================
 
 /*
- // PW_TODO
 void ParamReader::readInterval (MVect & B, MVect & C, unsigned int & ln, int k)
 {
    long m1, m2, m3;

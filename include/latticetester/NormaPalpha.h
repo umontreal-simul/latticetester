@@ -20,7 +20,6 @@
 #define LATTICETESTER__NORMAPALPHA_H
 #include "latticetester/Normalizer.h"
 
-//PW_TODO : relire toute cette classe et clarifier les notations
 
 namespace LatticeTester {
 

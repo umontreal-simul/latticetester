@@ -58,7 +58,7 @@ using namespace LatticeTester;
 
 //==================================================================================
 
-/*
+#if 0
 int main (int argc, char *argv[])
 {
    // Erwan
@@ -68,6 +68,8 @@ int main (int argc, char *argv[])
    // Paul
    //string testLocation = "/Users/paulwambergue/UdeM/latticetester/inputTestFiles";
    string testLocation = "/Users/paulwambergue/UdeM/latticetester/inputTestFiles/latticeAnalysis_test3";
+   
+   //PW_TODO ça marche pas
    
    struct stat buf; // properties of a file or directory
    LatticeAnalysis latAnalysis;
@@ -86,5 +88,5 @@ int main (int argc, char *argv[])
    
    return 0;
 }
-*/
+#endif
 

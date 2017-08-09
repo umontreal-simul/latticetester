@@ -179,29 +179,14 @@ bool MinkowskiReduction(BMat & matrix, PreReductionType preRed, PrecisionType do
 	Reducer red (basis);
 
 	// performing pre-reduction
-	switch (preRed) {
-		case BKZ:
-			red.redBKZ(fact, blocksize, doublePrecision);
-			break;
-		case LenstraLL:
-			red.redLLLNTL(fact, doublePrecision);
-			break;
-		case PreRedDieter:
-			red.preRedDieter(0);
-			break;
-		case NOPRERED:
-			cout << "WARNING: no pre-reduction is performed before applying Branch-and-Bound";
-			cout << " procedure. Running time could increase dramaticaly with the matrix dimension.";
-			cout << endl;
-			break;
-		default:
-			MyExit(1, "LatticeTesterRoutines::ShortestVector:   NO SUCH CASE FOR PreReductionType");
-			exit(1);
-	}
+	red.preRedDieter(0);
+	// PW_TODO: check if possible to use other (better) prereduction?
 
-	// performing the Minkowski reduction. Returns false if the algorithm didn't terminated well, 
-	// returns true if it a success.
-	return red.reductMinkowski (0);
+	// performing the Minkowski reduction. Returns *false* if the algorithm didn't terminated well, 
+	// returns *true* if it a success.
+	bool reductionSuccess = red.reductMinkowski (0);
+	matrix = red.getIntLatticeBasis().getBasis();
+	return reductionSuccess;
 }
 
 //*=============================================================================================
@@ -213,86 +198,49 @@ bool MinkowskiReduction(BMat & matrix, long maxNodesBB, PreReductionType preRed,
 	return MinkowskiReduction(matrix, preRed, doublePrecision, fact, blocksize);
 }
 
+//*=============================================================================================
 
-
-
-/*
-bool LatTestBeyer::test (int fromDim, int toDim, double minVal[])
+double FigureOfMeritBeyer(BMat matrix, PreReductionType preRed, PrecisionType doublePrecision, 
+							double fact, int blocksize)
 {
-   m_fromDim = fromDim;
-   m_toDim = toDim;
-   init ();
+	int dimension;
+	if (matrix.size1() != matrix.size2()) {
+		MyExit(1, "LatticeTesterRoutines::ShortestVector:   NEED A SQUARE MATRIX");
+		exit(1);
+		// C'est pas un peu nul ça ?
+	} else 
+		dimension = matrix.size1();
 
-   resetFromDim (m_lat->getOrder (), fromDim);
-   while (m_lat->getDim () < fromDim)
-      m_lat->incDim ();
-   Reducer red (*m_lat);
+	bool reductionSuccess;
+	//m_lat->dualize ();
+   reductionSuccess = MinkowskiReduction(matrix, preRed, doublePrecision, fact, blocksize);
+	//m_lat->dualize ();
 
-   m_lat->dualize ();
-   red.preRedDieter (0);
-   m_lat->dualize ();
+	//if (m_dualF)
+	//m_lat->dualize ();
 
-   while (true) {
-      if (m_dualF)
-         m_lat->dualize ();
-      bool success = red.reductMinkowski (0);
-      int dim = m_lat->getDim ();
-      if (success) {
-         m_lat->updateScalL2Norm (0);
-         m_lat->updateScalL2Norm (dim-1);
-
-         double x1, x2;        // si VV[1] et VV[dim] sont tres
-         // grands, il faudrait envisager de changer x1 et x2 en xdouble.
-         conv (x1, m_lat->getVecNorm (0));
-         conv (x2, m_lat->getVecNorm (dim-1));
-         m_merit[dim] = x1 / x2;
-
-         // Si on sait deja que ce gen. ne pourra etre retenu,
-         // on le rejette tout de suite et on arrete le test.
-         if ((m_maxAllDimFlag && (m_merit[dim] < minVal[toDim]))
-             || (m_merit[dim] < minVal[dim])) {
-            m_merit[dim] = 0.0;
-            return false;
-         }
-         if (3 == m_detailF) {
-            dispatchLatUpdate(*m_lat);
-         }
-
-         prepAndDisp (dim);
-         if (m_dualF)
-            m_lat->dualize ();
-
-      } else {
-         m_merit[dim] = 0.0;
-         return false;
-      }
-
-      if (dim == toDim)
-         break;
-      m_lat->incDim();
-      red = Reducer(*m_lat);
-   }
-
-   return true;
+	if (reductionSuccess) {
+		IntLatticeBasis basis (matrix, dimension, L2NORM);
+		basis.updateScalL2Norm (0);
+		basis.updateScalL2Norm (dimension-1);
+		double x1, x2; // maybe using something else than double (xdouble, RR?)
+		conv (x1, basis.getVecNorm (0));
+		conv (x2, basis.getVecNorm (dimension-1));
+		return sqrt(x1 / x2);
+	} else 
+		return -1.0;
 }
-*/
+
+//*=============================================================================================
+
+double FigureOfMeritBeyer(BMat matrix, long maxNodesBB, PreReductionType preRed,
+							PrecisionType doublePrecision, double fact, int blocksize)
+{
+	Reducer::maxNodesBB = maxNodesBB; // setting the number of nodes visited in the BB procedure
+   return FigureOfMeritBeyer(matrix, preRed, doublePrecision, fact, blocksize);
+}
 
 //*=============================================================================================
 
 } // end namespace LatticeTester
 
-
-/*
-
-enum NormType { SUPNORM = 1, L1NORM = 2, L2NORM = 3, ZAREMBANORM = 4 };
-
-PrecisionType { DOUBLE, QUADRUPLE, EXPONENT, ARBITRARY, EXACT };
-
-PreReductionType {BKZ, PreRedDieter, LenstraLL, NOPRERED};
-
-CriterionType { SPECTRAL, BEYER, PALPHA, BOUND_JS };
-
-NormaType { BESTLAT, LAMINATED, ROGERS, MINKOWSKI, MINKL1,
-                 PALPHA_N, NORMA_GENERIC, L1, L2 };
-
-*/

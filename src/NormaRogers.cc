@@ -108,6 +108,7 @@ NormaRogers::NormaRogers (const RScal & logDensity, int t, double beta)
 {
    m_gamma = new double[t + 1];
 
+   /*
    int t0 = t;
    if (t0 > MAX_DIM)
       t0 = MAX_DIM;
@@ -115,6 +116,12 @@ NormaRogers::NormaRogers (const RScal & logDensity, int t, double beta)
       m_gamma[i] = m_gamma0[i];
    for (int i = t0 + 1; i <= t; i++)
       m_gamma[i] = calcGamma(i);
+   */
+
+   //PW_TODO remmetre comme avant après debugging
+   for (int i = 0; i <= t; i++)
+      m_gamma[i] = calcGamma(i);
+
 
    Normalizer::init (logDensity, beta);
 }

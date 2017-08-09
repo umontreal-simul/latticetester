@@ -661,19 +661,16 @@ void Reducer::redBKZ(double fact, long blocksize, PrecisionType precision, int d
    IntLatticeBasis *lattmp = 0;
    if(dim >0){
       lattmp = new IntLatticeBasis(dim, m_lat->getNorm());
-
       lattmp->copyBasis(*m_lat, dim);
    }
-   else{
+   else
       lattmp = m_lat;
-   }
-
 
 #if NTL_TYPES_CODE > 1
 
    bool withDual = m_lat->withDual();
    mat_ZZ U;
-   U.SetDims(lattmp->getBasis().size1(), m_lat->getBasis().size2());
+   U.SetDims(lattmp->getBasis().size1(), lattmp->getBasis().size2());
 
    switch(precision){
       case DOUBLE:
@@ -692,9 +689,8 @@ void Reducer::redBKZ(double fact, long blocksize, PrecisionType precision, int d
          MyExit(1, "BKZ PrecisionType:   NO SUCH CASE");
    }
 
-   if (withDual) {
+   if (withDual)
       lattmp->getDualBasis() = transpose(inv(U)) * lattmp->getDualBasis();
-   }
 
    m_lat->copyBasis(*lattmp, dim);
 
@@ -715,32 +711,37 @@ void Reducer::redBKZ(double fact, long blocksize, PrecisionType precision, int d
 
 //=========================================================================
 
-void Reducer::redLLLNTL(double fact, PrecisionType precision) {
+void Reducer::redLLLNTL(double fact, PrecisionType precision, int dim) {
 
-   //PW_TODO reprendre pour sous dim
+   IntLatticeBasis *lattmp = 0;
+   if(dim >0){
+      lattmp = new IntLatticeBasis(dim, m_lat->getNorm());
+      lattmp->copyBasis(*m_lat, dim);
+   }
+   else
+      lattmp = m_lat;
 
 #if NTL_TYPES_CODE > 1
 
    if(precision == EXACT)
       redLLLNTLExact(fact);
    else{
-
       bool withDual = m_lat->withDual();
       mat_ZZ U;
-      U.SetDims(m_lat->getBasis().NumRows(), m_lat->getBasis().NumCols());
+      U.SetDims(lattmp->getBasis().NumRows(), lattmp->getBasis().NumCols());
 
       switch(precision){
          case DOUBLE:
-            LLL_FP(m_lat->getBasis(), U, fact, 0, 0);
+            LLL_FP(lattmp->getBasis(), U, fact, 0, 0);
             break;
          case QUADRUPLE:
-            LLL_QP(m_lat->getBasis(), U, fact, 0, 0);
+            LLL_QP(lattmp->getBasis(), U, fact, 0, 0);
             break;
          case EXPONENT:
-            LLL_XD(m_lat->getBasis(), U, fact, 0, 0);
+            LLL_XD(lattmp->getBasis(), U, fact, 0, 0);
             break;
          case ARBITRARY:
-            LLL_RR(m_lat->getBasis(), U, fact, 0, 0);
+            LLL_RR(lattmp->getBasis(), U, fact, 0, 0);
             break;
          case EXACT:
             break;
@@ -748,9 +749,11 @@ void Reducer::redLLLNTL(double fact, PrecisionType precision) {
             MyExit(1, "LLL PrecisionType:   NO SUCH CASE");
       }
 
-      if (withDual) {
-         m_lat->getDualBasis() = transpose(inv(U)) * m_lat->getDualBasis();
-      }
+      if (withDual)
+         lattmp->getDualBasis() = transpose(inv(U)) * lattmp->getDualBasis();
+
+      m_lat->copyBasis(*lattmp, dim);
+
    }
 
 #else
@@ -761,6 +764,9 @@ void Reducer::redLLLNTL(double fact, PrecisionType precision) {
    redLLL(fact, 1000000, m_lat->getDim ());
 
 #endif
+
+   if (dim>0)
+      delete lattmp;
 }
 
 //=========================================================================
@@ -1520,8 +1526,6 @@ bool Reducer::reductMinkowski (int d)
       found = false; 
 
       do {
-         //redBKZ(0.9999, 10, QUADRUPLE);
-         // PW_TODO trop long parce que ne fait pas attention au dual et réduit seulement le primal 
          preRedDieter (d);
 
          m_lat->setNegativeNorm(d);
@@ -1558,10 +1562,11 @@ bool Reducer::reductMinkowski (int d)
       }
    } while (found);
 
+   /*
    if (totalNodes > MINK_LLL) {
-      //PW_TODO
-      //PreRedLLLRM = true;
+      PreRedLLLRM = true;
    }
+   */
    
    m_lat->setNegativeNorm();
    m_lat->updateScalL2Norm (0, dim);

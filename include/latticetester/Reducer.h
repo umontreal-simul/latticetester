@@ -233,7 +233,7 @@ public:
     * number with arbitrary precision. The precision can be given. See
     * Const.h for further information.
     */
-   void redLLLNTL(double fact = 0.99999, PrecisionType precision = QUADRUPLE);
+   void redLLLNTL(double fact = 0.99999, PrecisionType precision = QUADRUPLE, int dim = 0);
 
    /**
     * \copydoc redLLL(double, long, int)

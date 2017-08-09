@@ -20,8 +20,6 @@
 namespace LatticeTester
 {
 
-// PW_TODO : get reference 
-
 const double NormaMinkowski::m_gamma[ ] =
    {
       /* GamMinkowski[0] = */    0.00000000000000,

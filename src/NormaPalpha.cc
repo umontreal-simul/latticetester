@@ -65,16 +65,12 @@ double NormaPalpha::calcBound (int alpha, int dim)
       return -1;
    }
 
-
-   //PW_TODO à voir besoin de prime.dat
-   /*
    int stat = IntFactor::isPrime (m_m,0);
    if (stat != PRIME) {
       std::cout << "NormaPalpha::calcBound:  m is not prime.   Returns -1" << std:: endl;
       return -1;
    }
-   */
-
+   
    double Term1 = log (MM);
    if (Term1 <= alpha*dim /(alpha - 1)) {
       std::cout << "NormaPalpha::calcBound:" << std::endl;

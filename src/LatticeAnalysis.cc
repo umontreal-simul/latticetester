@@ -178,7 +178,6 @@ void LatticeAnalysis::initNormalizer (NormaType norma, int alpha)
          break;
       case PALPHA_N:
          m_normalizer = new NormaPalpha (m_reducer->getIntLatticeBasis().getModulo(), alpha, m_dim);
-         //PW_TODO : c'est bien ça ?
          break;
       case L1:
          break;
@@ -297,8 +296,7 @@ int LatticeAnalysis::doTestFromInputFile (const char *infile)
    setPreReduction(config.prereduction);
    setNorm(config.norm);
    setMaxNodesBB(config.maxNodesBB);
-   //PW_TODO int alpha for Palpha test?
-
+   
    if (!doTest(config.fact, config.precision, config.blocksize)) {
       MyExit(1, "error in LatticeAnalysis::doTestFromInputFile");
       exit(1);

@@ -19,6 +19,7 @@
 
 namespace LatticeTester {
 
+
 /**
  * This function allows computation of the shortest non-zero vector in a lattice,
  * according to the selected norm. Many parameters can bet set by the user, otherwise
@@ -44,7 +45,6 @@ double ShortestVector(BMat matrix, NormType norm, long maxNodesBB,
  * Returns -1.0 if there was an error in Branch-and-Bound procedure while calculating
  * the length of shortest non-zero vector. Return the figure of merit otherwise.
  */
-// PW_TODO also implement BEYER merit using MinkowskiReduction().
 double FigureOfMerit(BMat matrix, NormaType normalizerType, PreReductionType preRed = BKZ,
 	PrecisionType doublePrecision = DOUBLE, double fact = 0.999, int blocksize = 20);
 
@@ -55,7 +55,6 @@ double FigureOfMerit(BMat matrix, NormaType normalizerType, PreReductionType pre
 double FigureOfMerit(BMat matrix, NormaType normalizerType, long maxNodesBB,
 	PreReductionType preRed = BKZ, PrecisionType doublePrecision = DOUBLE,
 	double fact = 0.999, int blocksize = 20);
-
 
 /**
  * This function reduces a basis to a Minkowski-reduced basis. Such basis has strong
@@ -74,6 +73,22 @@ bool MinkowskiReduction(BMat & matrix, PreReductionType preRed = BKZ,
 bool MinkowskiReduction(BMat & matrix, long maxNodesBB, PreReductionType preRed = BKZ,
 	PrecisionType doublePrecision = DOUBLE, double fact = 0.999, int blocksize = 20);
 
+/**
+ * This function compute the Figure of Merit to a given matrix, according to the
+ * Beyer criteria. It first computes the Minkowski-reduced basis of the lattice 
+ * and then makes the quotient of shortest over longest vector.
+ * Returns -1.0 if there was an error in Branch-and-Bound procedure while calculating
+ * the Minkowski-reduced basis. Return the figure of merit otherwise.
+ */
+double FigureOfMeritBeyer(BMat matrix, PreReductionType preRed = BKZ,
+	PrecisionType doublePrecision = DOUBLE, double fact = 0.999, int blocksize = 20);
+
+/**
+ * Same thing as before but with the possibility to set a different value for
+ * the variable maxNodesBB.
+ */
+double FigureOfMeritBeyer(BMat matrix, long maxNodesBB, PreReductionType preRed = BKZ,
+	PrecisionType doublePrecision = DOUBLE, double fact = 0.999, int blocksize = 20);
 
 } // end namespace LatticeTester
 

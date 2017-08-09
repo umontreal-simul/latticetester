@@ -57,9 +57,6 @@ public:
     * Note that the log value of the density is stored (instead of the density 
     * itself) so it is easier to manipulate really large values of density.
     *
-    */
-
-   /* PW_TODO : a voir
     * \remark **Richard:** Je crois que ce facteur `beta` devrait
     * disparaître car des poids beaucoup plus généraux sont maintenant
     * implantés dans les classes `*Weights`.
@@ -73,7 +70,6 @@ public:
     * log density argument. This only works for rank1 lattices, having m points 
     * per unit of volume (m being a prime number), normalized with NormaPalpha.
     */
-   //PW_TODO remettre la classe rank1lattice dans lattice tester ?
    Normalizer (int t, std::string Name, NormType norm = L2NORM, double beta = 1);
 
    /**

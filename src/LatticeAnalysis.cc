@@ -136,11 +136,7 @@ LatticeAnalysis::~LatticeAnalysis ()
 
 void LatticeAnalysis::initNormalizer (NormaType norma, int alpha)
 {
-   // PW_TODO
-   // ok si la matrice est directement construite comme m-dual mais probleme si
-   // travail direct sur primale re-scaled ?
-   // version avec logDensity en parametre (pou m^k sans besoin de calcul det)
-
+ 
 #if NTL_TYPES_CODE > 1
    RScal logDensity;
    logDensity = - log( abs( NTL::determinant(m_reducer->getIntLatticeBasis().getBasis()) ) );

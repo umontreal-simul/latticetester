@@ -58,6 +58,7 @@ using namespace LatticeTester;
 
 //==================================================================================
 
+#if 0
 int main (int argc, char *argv[])
 {
    // Erwan
@@ -86,5 +87,6 @@ int main (int argc, char *argv[])
    
    return 0;
 }
+#endif
 
 

@@ -180,7 +180,6 @@ bool MinkowskiReduction(BMat & matrix, PreReductionType preRed, PrecisionType do
 
 	// performing pre-reduction
 	red.preRedDieter(0);
-	// PW_TODO: check if possible to use other (better) prereduction?
 
 	// performing the Minkowski reduction. Returns *false* if the algorithm didn't terminated well, 
 	// returns *true* if it a success.

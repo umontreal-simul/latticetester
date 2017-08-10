@@ -26,11 +26,9 @@ using namespace LatticeTester;
 
 //==================================================================================
 
-#if 0
 int main (int argc, char *argv[])
 {
    // all the parameters
-   BMat matrix;
    NormType norm = L2NORM;
    NormaType normalizerType = BESTLAT;
    long maxNodesBB = 5;
@@ -39,14 +37,7 @@ int main (int argc, char *argv[])
    double fact = 0.9;
    int blocksize = 10;
 
-   // initialization of matrix B
-
-   /*
-   matrix.resize(2,2);
-   matrix[0][0]=1; matrix[0][1]=12;
-   matrix[1][0]=0; matrix[1][1]=101;
-   */
-   
+   BMat matrix;
    matrix.resize(8,8);
    //dual
    matrix[0][0]=9223372036854773561;    
@@ -80,18 +71,25 @@ int main (int argc, char *argv[])
    */
    
    
+   BMat testMatrix; // primal basis associated to the Beyer test in Afflerbach and Grothe paper
+   testMatrix.resize(5,5);
+   testMatrix[0][0]=-49; testMatrix[0][1]=111; testMatrix[0][2]=-51; testMatrix[0][3]=54; testMatrix[0][4]=192828764;
+   testMatrix[1][0]=-52; testMatrix[1][1]=72; testMatrix[1][2]=-53; testMatrix[1][3]=-120; testMatrix[1][4]=456124356;
+   testMatrix[2][0]=63; testMatrix[2][1]=12; testMatrix[2][2]=-147; testMatrix[2][3]=52; testMatrix[2][4]=312050804;
+   testMatrix[3][0]=-113; testMatrix[3][1]=-85; testMatrix[3][2]=-46; testMatrix[3][3]=95; testMatrix[3][4]=89691097;
+   testMatrix[4][0]=0; testMatrix[4][1]=0; testMatrix[4][2]=0; testMatrix[4][3]=0; testMatrix[4][4]=536870909;
+   
+   
    cout << "matrix = \n" << matrix << endl;
-
    // printing the length of shortest vector
    cout << "Length = " << ShortestVector(matrix, norm) << endl; //, preRed, doublePrecision, fact, blocksize) << endl;
-
    // printing the FoM
    cout << "FoM = " << FigureOfMerit(matrix, normalizerType) << endl; //, preRed, doublePrecision, blocksize) << endl;
    
+   cout << "\ntestMatrix = \n" << testMatrix << endl;
    // printing the FoM Beyer
-   cout << "FoM Beyer = " << FigureOfMeritBeyer(matrix) << endl; //, preRed, doublePrecision, blocksize) << endl;
+   cout << "FoM Beyer = " << FigureOfMeritBeyer(testMatrix) << endl; //, preRed, doublePrecision, blocksize) << endl;
    
    return 0;
 }
-#endif
 

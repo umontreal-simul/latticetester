@@ -1,0 +1,234 @@
+\ProvidesPackage{tcode}
+    [2004/08/07 TCode]
+\RequirePackage{html}
+\RequirePackage{alltt}
+
+%\latex{
+\newcommand{\param}[2]{\paragraph{\texttt{#1}: }#2}
+\newcommand{\return}[1]{\paragraph{\textbf{Returns} }#1}
+\newcommand{\exception}[2]{\paragraph{\texttt{#1}: }#2}
+\newcommand{\blocktag}[2]{\paragraph{\texttt{#1}: }#2}
+\def\bs{\char92}
+\newcommand{\htsum}{\sum}
+\newcommand{\htint}{\int}
+\newcommand{\htprod}{\prod}
+%}
+
+%\def\defmodule#1 {\addcontentsline{toc}{subsection}{#1} \markboth{#1}{#1}
+%   \centerline {\LARGE\bf #1}\bigskip \thispagestyle{nomark}}
+%\def\defclass#1 {\section*{\centerline {\LARGE\bf #1}}\bigskip
+%  \markboth{#1}{#1}\thispagestyle{empty}
+%   \addcontentsline{toc}{subsection}{#1}}
+\def\ps@nomark {\def\leftmark{} \def\rightmark{}}
+\let\defmodule=\defclass
+\let\defclass\relax
+\newcounter{javaclass}
+\newcounter{javamember}[javaclass]
+\def\@clssection{\@startsection{subsection}%
+   {2}{0mm}{-\baselineskip}{0.5\baselineskip}%
+   {\center\LARGE\bfseries}}
+\newcommand{\defclass}[1]{\newpage\@clssection{#1}
+  \stepcounter{javaclass}
+  \markboth{#1}{#1}\thispagestyle{nomark}}
+\newcommand{\packagename}{Package}
+\newcommand{\defpackage}[1]{\section{\packagename~\texttt{#1}}
+     \markboth{\packagename~\texttt{#1}}{\packagename~\texttt{#1}}\thispagestyle{nomark}}
+\newcommand{\defdefaultpackage}{\addcontentsline{toc}{section}{Default
+    package}}
+
+\newcommand{\guisec}[1]{\vspace{20pt}
+\noindent\hrulefill\hspace{10pt}{\bf #1}\hspace{10pt}\hrulefill
+\vspace{10pt}\nopagebreak}
+
+\newif\ifdetailed\detailedtrue
+\def\detailed{\begingroup\setbox0=\vbox\bgroup\smallskip}
+\def\enddetailed{\egroup\ifdetailed\unvbox0\fi\endgroup}
+
+\def\citep{\@ifnextchar [{\@tempswatrue\@citexp}{\@tempswafalse\@citexp[]}}
+
+
+{\obeyspaces\gdef {\ }}
+\def\setverbatim{\def\par{\leavevmode\endgraf}
+            \parskip=0pt\parindent=0pt\obeylines\obeyspaces }
+\chardef\other=12
+\def\ttverbatim{\setverbatim\tt
+       \catcode`~=\other
+       \catcode`\{=\other \catcode`\}=\other \catcode`\_=\other
+       \catcode`\^=\other \catcode`\$=\other \catcode`\%=\other
+       \catcode`\#=\other \catcode`\&=\other \baselineskip=11pt
+       }
+    % Reproduit tel quel ce qui est ecrit, en caracteres \tt.
+    % On doit faire  \begingroup\ttverbatim   ....  \endgroup
+\def\smallttverbatim{\ttverbatim\small\tt}
+\def\code {\vfil\vfilneg\vbox\bgroup\ttverbatim}
+\def\longcode {\vfil\vfilneg\bgroup\ttverbatim}
+\def\smallc {\small\tt\baselineskip=9.5pt}
+\def\footc {\footnotesize\tt\baselineskip=9.0pt}
+\def\smallcode {\code\smallc}
+\let\endcode=\egroup
+\let\endlongcode=\egroup
+\let\vcode=\code
+\let\endvcode=\egroup
+
+
+% \latex{\def\bs{\char92}}
+% \html{\def\bs{\rawhtml\\endrawhtml}}
+
+
+% Changes @ into an ordinary character.
+\makeatletter
+
+%\def\latexonly{}
+%\def\endlatexonly{}
+
+% We define a TeX command that takes anything as an argument.
+% But the argument must be followed by some predetermined string.
+% Strongly inspired from the LaTeX verbatim environment
+% Some catcodes must be changed to allow \, { and } inside
+% that string. Without any change, this would be processed as a
+% control sequence instead of a normal string.
+% Here, the group is not a macro and the tokens are
+% processed, so the catcode changes have immediate effect.
+\begingroup \catcode `|=0 \catcode `[= 1
+\catcode`]=2 \catcode `\{=12 \catcode `\}=12
+\catcode`\\=12 |gdef|@xhideenv#1\end{hide}[|end[hide]]
+|gdef|@xhide#1\endhide[|endhide]
+|endgroup
+
+% This command activates the verbatim mode that will allow
+% the command defined above to take paragraphs as its argument, not
+% only one line of text as in usual cases. The catcode of
+% every special character, including escape, is changed to other
+% so no LaTeX command will be processed. The commands following
+% the \let\do line has effect even if \ is redefined because
+% the \@hide command's definition was tokenized before the catcodes
+% change.
+\def\@hide{\ttverbatim
+  \let\do\@makeother \dospecials
+%\obeylines
+  \everypar \expandafter{\the\everypar \unpenalty}%
+\@vobeyspaces
+}
+
+% To make an environment that hides its contents, we put
+% the contents into box0 instead of the outer vertical list.
+% If full is set to true, the boxing will be undone and
+% the contents, moved to the outer vertical list.
+% The outer grouping allows the box to be local to the
+% environments. With boxes like that, nesting is allowed.
+\newif\ifhide\hidetrue
+\def\hide{\begingroup\setbox0=\vbox\bgroup\smallskip}
+% \def\endhide{\egroup\iffull\unvbox0\fi\endgroup}
+\def\endhide{\egroup\ifhide\else\unvbox0\fi\endgroup}
+%  perhaps  \iffull ...\fi  -->  \ifhide\else ... \fi
+
+
+% Here, we use a different strategy because no command processing
+% must occur. First, verbatim mode is enabled and a special
+% command is called. This command takes one argument and
+% must be followed by \end{htmlonly}. The argument, which is the
+% contents of the environment, will be discarded without processing.
+% This technique is strongly inspired from the LaTeX verbatim
+% environment.
+%\def\htmlonly{\begingroup\@hide \@xhtmlonly}
+%\def\endhtmlonly{\endgroup}
+
+% When tokenizing the definition of code command,
+% TeX must know that { and } can be part of a TeX command,
+% [ and ] must become group delimiters.
+% These changes will apply to a group defined here, not
+% for the content inside the code environment.
+% Inside the code command, we must redefine the catcode.
+% When the macro is expanded, it will execute the catcode tokens,
+% changing again { and } to make them ``letters''.
+\begingroup
+\catcode`\{=11
+\catcode`\}=11
+\catcode`\[=1
+\catcode`\]=2
+\gdef\@code[\ttverbatim
+\let\@xh=\@xhide
+\def\hide[\bgroup
+  \let\do\@makeother \dospecials
+  \everypar \expandafter[\the\everypar \unpenalty]%
+  \@vobeyspaces \@xh]
+\def\endhide[\egroup\let\@xh=\@xhide]
+\catcode`\{=11
+\catcode`\}=11
+\def\begin{hide}[\let\@xh=\@xhideenv
+\begin[hide]]
+]
+\gdef\code[\vfil\vfilneg\vbox\bgroup\@code
+\def\end{code}[\end[code]]]
+\gdef\longcode[\vfil\vfilneg\bgroup\@code
+\def\end{longcode}[\end[longcode]]]
+\gdef\smallcode[\code\smallc
+\def\end{smallcode}[\end[smallcode]]]
+\gdef\vcode[\code
+\def\end{vcode}[\end[vcode]]]
+\gdef\longvcode[\longcode
+\def\end{longvcode}[\end[longvcode]]]
+\endgroup
+\def\endcode{\egroup}
+\def\endlongcode{\egroup}
+\def\endsmallcode{\egroup}
+\def\endvcode{\egroup}
+\def\endlongvcode{\egroup}
+
+%%  This is adapted from \boxedverbatim in moreverb.sty
+\def\boxedverbatiminput#1{%
+  \def\verbatim@processline{%
+    {\setbox1=\hbox{\the\verbatim@line}%
+    \hsize=\wd0 \the\verbatim@line\par}}%
+  \@minipagetrue%%%DPC%%%
+  \@tempswatrue%%%DPC%%%
+  \setbox0=\vbox\bgroup \verbatiminput{#1}\egroup
+  \centerline{\fbox{\box0}}%
+}
+
+\makeatother
+
+\def\parup{\nobreak\vskip -2pt\nobreak}
+\def\tab{\small\parindent=0pt\advance\leftskip by 1.5em\parup}
+\def\tabb{\small\parindent=0pt\advance\leftskip by 3.0em\parup}
+\def\tabbb{\small\parindent=0pt\advance\leftskip by 4.5em\parup}
+\def\endtab{\vskip 0.01pt\advance\leftskip by -1.5em\normalsize}
+\def\endtabb{\vskip 0.01pt\advance\leftskip by -3.0em\normalsize}
+\def\endtabbb{\vskip 0.01pt\advance\leftskip by -4.5em\normalsize}
+
+% The class and externalclass macros could be merged if it was
+% possible to react differently if an optional argument is absent.
+% TeX, unfortunately, does not support overloading of macros.
+% class could have an optional argument for the package.
+% If it is specified, we format \texttt{package.class}.
+% If not, we format \texttt{class}. To have that work,
+% we would have to force the user to append a period after
+% the package name (\class[package.]{class}).
+\def\class#1{\texttt{#1}}
+\def\externalclass#1#2{\texttt{#2}}
+
+% The same type of problem happens here.
+% Signature could be turned into an optional argument,
+% but it would have to go at the beginning of the method,
+% which is not intuitive. (e.g. \method[double]{density})
+\def\method#1#2{\texttt{#1}}
+% We have to choose whether the name of the class will be prepended
+% before the name of the method.  This increases the quantity
+% of long typed-text names that result in overfull hboxe.
+% In Javadoc, since the name is an hyperlink, the class name is
+% less a necessity. So in general, it is not required. One can
+% prepend it manually before the \externalmethod if needed.
+\def\externalmethod#1#2#3#4{\texttt{#3}}
+\def\clsexternalmethod#1#2#3#4{\texttt{#2}\discretionary{}{}{}\texttt{.#3}}
+\def\unmoved{\relax}
+
+% To insert links label commands in the code blocks, we must
+% use alltt instead of code. However, alltt leaves
+% too much space before and after the blocks, so we
+% reduce this space.
+\newenvironment{lcode}{\begingroup
+\setlength{\partopsep}{0cm}
+\setlength{\topsep}{0cm}
+\setlength{\parskip}{0cm}
+\begin{alltt}
+}{\end{alltt}\endgroup}

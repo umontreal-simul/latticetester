@@ -1,0 +1,91 @@
+/**
+ * \page FindMK FindMK
+ *
+ * This module contains the main program to search for all prime integers
+ * \f$m\f$ in a given interval, i.e. such that \f$2^e + c_1 \le m\le2^e +
+ * c_2\f$ and for which \f$r = (m^k-1)/(m-1)\f$ is also prime. We may also
+ * require that \f$(m-1)/2\f$ be prime by setting the boolean variable *Safe*
+ * to `true`. If the boolean *Facto* is `true`, the program will factorize
+ * \f$m-1\f$ and write the factors in a file with extension `.fac`. (See
+ * class LatMRG::Primes for the basic method called by the
+ * program.)
+ *
+ * The program is called `findmk`. \anchor REF__FindMK_ref_findmk The program
+ * reads the search parameters from a file. This data file must have the
+ * extension `.dat`. To run the program, the name of the data file must be
+ * given without extension on the command line, and the results will be
+ * written in a file of the same name but with extension `.res`. For example,
+ * if the data file is called `find1.dat`, then the program is run by calling
+ *
+ *  `findmk find1`
+ *
+ * and the results will be written in file `find1.res`. If factorization of
+ * \f$m-1\f$ is required, the factors will be written in file `find1.fac`.
+ *
+ * The data file must have the format displayed in Figure&nbsp; {@link
+ * REF__FindMK_findmk_dat findmk.dat}.
+ *
+ * <center>
+ *  <div class="LatSoft-fbox"><div class="LatSoft-parbox">
+ * <table class="LatSoft-table">
+ * <tr>
+ *   <td colspan="3" class="l">\# This is a comment line</td>
+ * </tr><tr>
+ *   <td class="l">\f$k\f$</td>
+ *   <td class="l"></td>
+ *   <td class="l">order</td>
+ * </tr><tr>
+ *   <td class="l">\f$e\f$</td>
+ *   <td class="l"></td>
+ *   <td class="l"></td>
+ * </tr><tr>
+ *   <td class="l">\f$c_1\f$</td>
+ *   <td class="l"></td>
+ *   <td class="l"></td>
+ * </tr><tr>
+ *   <td class="l">\f$c_2\f$</td>
+ *   <td class="l"></td>
+ *   <td class="l"></td>
+ * </tr><tr>
+ *   <td class="l"><em>Safe</em></td>
+ *   <td class="l"></td>
+ *   <td class="l">a boolean</td>
+ * </tr><tr>
+ *   <td class="l"><em>Facto</em></td>
+ *   <td class="l"></td>
+ *   <td class="l">a boolean</td>
+ * </tr>
+ * </table>
+ * </div></div> <center>\anchor REF__FindMK_findmk_dat Data file format for
+ * `findmk`.</center>
+ * </center>
+ *
+ * The file must contain the following parameters in that order:
+ *
+ * <dl><dt>\f$k\f$:</dt>
+ * <dd>
+ * the order of the MRG.
+ * </dd>
+ * <dt>\f$e\f$:</dt>
+ * <dd>
+ * the modulus of congruence will be close to \f$2^e\f$.
+ * </dd>
+ * <dt>\f$c_1\f$:</dt>
+ * <dd>
+ * gives the lower limit for \f$m\f$ as \f$m \ge2^e + c_1\f$.
+ * </dd>
+ * <dt>\f$c_1\f$:</dt>
+ * <dd>
+ * gives the upper limit for \f$m\f$ as \f$m \le2^e + c_2\f$.
+ * </dd>
+ * <dt><em>Safe</em>:</dt>
+ * <dd>
+ * if `true`, only \f$m\f$ such that \f$(m-1)/2\f$ is prime are considered.
+ * </dd>
+ * <dt><em>Facto</em>:</dt>
+ * <dd>
+ * if `true`, the program will factorize \f$m-1\f$ and write the factors in a
+ * file with extension `.fac`.
+ * </dd>
+ * </dl>
+ */

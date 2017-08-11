@@ -59,7 +59,7 @@ PROJECT_LOGO           =
 # entered, it will be relative to the location where doxygen was started. If
 # left blank the current directory will be used.
 
-OUTPUT_DIRECTORY       = doxygen
+OUTPUT_DIRECTORY       = doc
 
 # If the CREATE_SUBDIRS tag is set to YES then doxygen will create 4096 sub-
 # directories (in 2 levels) under the output directory of each output format and
@@ -705,11 +705,11 @@ LAYOUT_FILE            =
 # search path. See also \cite for info how to create references.
 
 CITE_BIB_FILES         = \
-    doxygen/bib/ift.bib \
-    doxygen/bib/math.bib \
-    doxygen/bib/random.bib \
-    doxygen/bib/simul.bib \
-    doxygen/bib/vrt.bib
+    doc/bib/ift.bib \
+    doc/bib/math.bib \
+    doc/bib/random.bib \
+    doc/bib/simul.bib \
+    doc/bib/vrt.bib
 
 #---------------------------------------------------------------------------
 # Configuration options related to warning and progress messages
@@ -891,7 +891,7 @@ EXAMPLE_RECURSIVE      = NO
 # that contain images that are to be included in the documentation (see the
 # \image command).
 
-IMAGE_PATH             = /Users/paulwambergue/UdeM/latticetester/doxygen/images
+IMAGE_PATH             = /Users/paulwambergue/UdeM/latticetester/doc/images
 
 # The INPUT_FILTER tag can be used to specify a program that doxygen should
 # invoke to filter for each input file. Doxygen will invoke the filter program
@@ -1138,7 +1138,9 @@ HTML_STYLESHEET        =
 # list). For an example see the documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_STYLESHEET  = /Users/paulwambergue/UdeM/latticetester/doxygen/latsoft.css
+HTML_EXTRA_STYLESHEET  = 
+
+#/Users/paulwambergue/UdeM/latticetester/doxygen/latsoft.css
 
 # The HTML_EXTRA_FILES tag can be used to specify one or more extra images or
 # other source files which should be copied to the HTML output directory. Note
@@ -1356,7 +1358,7 @@ QHP_NAMESPACE          = org.doxygen.Project
 # The default value is: doc.
 # This tag requires that the tag GENERATE_QHP is set to YES.
 
-QHP_VIRTUAL_FOLDER     = doc
+QHP_VIRTUAL_FOLDER     = doxygen
 
 # If the QHP_CUST_FILTER_NAME tag is set, it specifies the name of a custom
 # filter to add. For more information please see Qt Help Project / Custom

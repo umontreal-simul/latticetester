@@ -1,0 +1,32 @@
+/*!
+
+\mainpage LatMRG Manual
+
+*A software package for theoretical analysis of linear congruential random number generators and integration lattices.*
+
+\section latmrg_overview Overview
+
+LatMRG is a software toolkit for examining theoretical properties of
+linear congruential or multiple recursive random number generators.
+It is implemented as a library of modules written in C++.
+It offers tools to check whether a generator has maximal period or not,
+to apply the lattice and spectral tests (in large dimensions),
+and to perform computer searches for good (or bad) generators
+according to different criteria.
+One can analyse the lattice structure of points formed by successive
+values in the generator's sequence, or formed by “leapfrog” values.
+Generators with large moduli and multipliers (e.g. numbers of many
+hundreds of bits), as well as combined generators, can also be analyzed.
+Multiply-with-carry generators can also be studied by analyzing their
+corresponding linear congruential generators.
+
+
+\section latmrg_outline Manual Outline
+
+- \subpage intro
+- \subpage usage
+- \subpage dev
+- \subpage detailed_usage
+
+
+*/

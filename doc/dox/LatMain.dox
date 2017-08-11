@@ -1,0 +1,498 @@
+/**
+ * \page LatMain LatMain
+ *
+ * This is the main program for the lattice tests. Depending on the
+ * parameters in the data file, it runs either the spectral, the Beyer, or
+ * the \f$P_{\alpha}\f$ tests and compute the figure of merit for the given
+ * lattice (see classes `LatTestSpectral`, `LatTestBeyer`, and
+ * `LatTestPalpha` for details and the form of the data file).
+ * \anchor REF__LatMain_ref_latmain The program reads the name of the data
+ * file from the command line. The data file must have the extension `.dat`.
+ * To run the program, the name of the data file must be given without
+ * extension on the command line. For example, in the `LLDD` case (see
+ * below), if the data file is called `lat1.dat`, then one must call
+ *
+ *  `latLLDD lat1`
+ *
+ * Depending on the parameters in the data file, the results will be sent on
+ * the terminal or in a file with the same name as the data file, but with
+ * extension `.res` or `.tex`. In the above example, the results would be in
+ * either `lat1.res` or `lat1.tex`.
+ *
+ * **NEW:** It is now possible to apply the tests on several data files in
+ * one call. One must use the command line
+ *
+ *  <tt>latLLDD file1 file2 …</tt>
+ *
+ * If the parameter *Output Form* below is set to `Res` in a data file, then
+ * the results will be sent to a `.res` file corresponding to each data file
+ * name.
+ *
+ * **NEW:** It is also possible to apply the tests on all the data files with
+ * extension `".dat"` in one or more directories in one call. One must use
+ * the command line
+ *
+ *  <tt>latLLDD dir1 dir2 …</tt>
+ *
+ * The files without extension `".dat"` in the directories will be
+ * disregarded. If the parameter *Output Form* below is set to `Res` in a
+ * data file, then the results will be sent to a `.res` file corresponding to
+ * each data file name.
+ *
+ * Three different executable programs have been compiled from `LatMain`,
+ * depending on the types of `BScal`, `MScal`, `NScal`, `RScal` (the
+ * definition of these types is given in module \ref Types.h).
+ * They are named `latLLDD`, `latZZDD`, and `latZZRR`. The types are
+ * as defined in the following table:
+ *
+ * <center>
+ *
+ * <table class="LatSoft-table LatSoft-has-hlines">
+ * <tr class="bt">
+ *   <td class="l bl br"></td>
+ *   <td class="c bl br">`BScal`</td>
+ *   <td class="c bl br">`MScal`</td>
+ *   <td class="c bl br">`NScal`</td>
+ *   <td class="c bl br">`RScal`</td>
+ * </tr><tr class="bt">
+ *   <td class="l bl br">`latLLDD`</td>
+ *   <td class="c bl br">`long`</td>
+ *   <td class="c bl br">`long`</td>
+ *   <td class="c bl br">`double`</td>
+ *   <td class="c bl br">`double`</td>
+ * </tr><tr>
+ *   <td class="l bl br">`latZZDD`</td>
+ *   <td class="c bl br">`ZZ`</td>
+ *   <td class="c bl br">`ZZ`</td>
+ *   <td class="c bl br">`double`</td>
+ *   <td class="c bl br">`double`</td>
+ * </tr><tr>
+ *   <td class="l bl br">`latZZRR`</td>
+ *   <td class="c bl br">`ZZ`</td>
+ *   <td class="c bl br">`ZZ`</td>
+ *   <td class="c bl br">`RR`</td>
+ *   <td class="c bl br">`RR`</td>
+ * </tr>
+ * </table>
+ *
+ * </center>
+ *
+ *  `ZZ` and `RR` are the big integers and the big floating-point numbers
+ * defined in NTL. The program `latLLDD` is the fastest but works only when
+ * \f$m\f$, the number of points of the lattice, is not too large. The
+ * program `latZZRR` is very slow, but works for arbitrary large numbers.
+ * `latZZDD` is much faster than `latZZRR`. Thus one should work with
+ * `latLLDD` if possible, and if not, with `latZZDD`, and otherwise with
+ * `latZZRR` as the last choice.
+ *
+ * <center><div class="LatSoft-fbox">\image html latmain_01.svg
+ * <!--
+ * LaTeX code used to generate the picture:
+ *
+ * \hsize =12.0cm \rm \begin{tabular}{l} \textit{Test} \textit{Normalizer}
+ *
+ * \\ \textit{Norm}
+ *
+ * \\ \textit{ReadGenFile} ~ $[$\textit{GenFile\/ }$]$
+ *
+ * \\ $J$ \hspace{4em} number of components
+ *
+ * \\ $\left.\begin{array}{ll} GenType & \\ m &  \mbox{\textrm{modulus}} \\ k
+ * &  \mbox{order} \\ \textit{CoefCond}~ [\mbox{$s$ $k_1$ $k_2
+ * \cdots k_{s}$}] & \\ a_1\  \dots \   a_ k &
+ * \mbox{coefficients} \\ \end{array} \  \right\} \mbox{ (Repeat $J$ times)
+ * }$
+ *
+ * \\ $d$
+ *
+ * \\ \textit{td[0]} \textit{td[1]} \ldots \textit{td[d]}
+ *
+ * \\ \textit{Dual flag}
+ *
+ * \\ \textit{LatticeType}
+ *
+ * \\ \textit{LacGroupSize ~ LacSpacing}
+ *
+ * \\ \textit{MaxNodesBB}
+ *
+ * \\ \textit{Invert flag}
+ *
+ * \\ \textit{Detail flag}
+ *
+ * \\ \textit{Output Form}
+ *
+ * \\ \end{tabular}
+ * --></div></center>
+ *
+ * <center> Data file format for Beyer and spectral tests. </center>
+ *
+ *  \anchor REF__LatMain_spectral_data
+ *
+ * The data must be in a file with extension <tt>.dat</tt>. Lines whose first
+ * non-blank character is a <tt>#</tt> are comments, and are dropped by the
+ * reader program. The data fields have the following meaning: For the
+ * spectral and Beyer tests, the format must be as given in Figure&nbsp;
+ * {@link REF__LatMain_spectral_data spectral.data}. For the Palpha test, the
+ * format must be as given in Figure&nbsp; {@link REF__LatMain_palpha_data
+ * palpha.data} below.
+ *
+ * <dl><dt><em>Test</em> &lt;<em>Normalizer</em>&gt;:</dt>
+ * <dd>
+ * The lattice test can be one of <tt>Spectral</tt>, <tt>Beyer</tt> or
+ * <tt>Palpha</tt>. The normalizer depends on which lattice test is
+ * performed. For the <tt>Spectral</tt> test, it may be one of
+ * <tt>BestLat</tt>, <tt>Laminated</tt>, <tt>Rogers</tt>, <tt>Minkowski</tt>
+ * or <tt>MinkL1</tt>, otherwise it may be left blank.
+ * </dd>
+ * <dt><em>Norm</em>:</dt>
+ * <dd>
+ * To measure the length of vectors. Can be <tt>L1NORM</tt> or
+ * <tt>L2NORM</tt>.
+ * </dd>
+ * <dt><em>ReadGenFile</em> &lt;<em>Genfile</em>&gt;:</dt>
+ * <dd>
+ * <tt>boolean</tt> and file name (without extension). When *ReadGenFile* is
+ * <tt>false</tt>, the search is made according to the values of the fields
+ * below. When <tt>true</tt>, the generators to be tested are those listed in
+ * the file &lt;*Genfile*&gt;<tt>.gen</tt>.
+ * </dd>
+ * <dt><em>J</em>:</dt>
+ * <dd>
+ * Number of components in the combined generator.
+ * </dd>
+ * <dt><em>GenType</em>:</dt>
+ * <dd>
+ * Type of generator. For now, the possibilities are:
+ *
+ * <dl><dt><tt>MRG</tt></dt>
+ * <dd>
+ * means that this component is an MRG.
+ * </dd>
+ * <dt><tt>MWC</tt></dt>
+ * <dd>
+ * means that this component is a multiply-with-carry (MWC) generator. Each
+ * MWC generator is converted by the program to its corresponding LCG (see,
+ * e.g., \cite rCOU97a, \cite rLEC98a&thinsp;).
+ * </dd>
+ * <dt><tt>KOROBOV</tt>:</dt>
+ * <dd>
+ * means that this component is a Korobov lattice.
+ * </dd>
+ * <dt><tt>RANK1</tt>:</dt>
+ * <dd>
+ * means that this component is a rank 1 lattice.
+ * </dd>
+ * </dl>
+ * </dd>
+ * <dt><em>m, k</em>:</dt>
+ * <dd>
+ * Modulus and order of the recurrence. Must be positive integers.
+ * </dd>
+ * <dt><em>CoefCond</em>&nbsp;&lt;\f$s\f$ \f$k_1\f$ \f$k_2 \cdots k_s\f$&gt;:</dt>
+ * <dd>
+ * Conditions on the coefficients. The possible cases are:
+ *
+ * <dl><dt><tt>NonZero</tt> \f$s\f$ \f${k_1}\f$ \f${k_2}\f$
+ * \f$\cdots\f$ \f${k_s}\f$:</dt>
+ * <dd>
+ * all the coefficients \f$a_j\f$ are 0, except for \f$s\f$ of them: the
+ * non-zero coefficients are \f$a_{k_1}\f$, \f$a_{k_2}\f$, …, \f$a_{k_s}\f$,
+ * and their values are given on the following line. For example, for a MRG
+ * of order \f$k=10\f$, the line <tt>"NonZero 4 2 5 8 10"</tt> means that the
+ * vector of coefficients is \f$\mathbf{a} = (0, \alpha, 0, 0, \beta, 0, 0,
+ * \gamma, 0, \delta)\f$ where \f$\alpha, \beta, \gamma, \delta\f$ are
+ * the \f$s\f$ non-zero coefficients given on the following line.
+ * </dd>
+ * <dt><tt>Equal</tt> \f$s\f$ \f${k_1}\f$ \f${k_2}\f$
+ * \f$\cdots\f$ \f${k_s}\f$:</dt>
+ * <dd>
+ * The coefficients are equal by groups. There are \f$s\f$ groups: the first
+ * group of \f$k_1\f$ coefficients are all equal, the second group of
+ * \f$k_2 - k_1\f$ coefficients are all equal, and so on until the last group
+ * of \f$(k_s - k_{s-1})\f$ coefficients. \f$k_j\f$ is the vector index of
+ * the last element of group \f$j\f$. For example, for a MRG of order
+ * \f$k=10\f$, the line <tt>"Equal 4 2 5 8 10"</tt> will give a vector of
+ * coefficients of the form \f$\mathbf{a} =
+ * (\alpha, \alpha, \beta, \beta, \beta, \gamma, \gamma, \gamma, \delta, \delta)\f$ where
+ * \f$\alpha, \beta, \gamma, \delta\f$ are \f$s\f$ coefficients given on
+ * the following line.
+ * </dd>
+ * <dt><tt>NoCond</tt>:</dt>
+ * <dd>
+ * There is no condition on the coefficients and they are all given on the
+ * following line.
+ * </dd>
+ * </dl>
+ * </dd>
+ * <dt>\f$(a_1,a_2,…,a_k)\f$:</dt>
+ * <dd>
+ * the vector of (integer) multipliers all given on one line.
+ * </dd>
+ * <dt><em>d</em>:</dt>
+ * <dd>
+ * The number of kinds of projections. The standard case has \f$d=1\f$ and
+ * the test will be run for all successive dimensions from *td[0] = MinDim*
+ * to *td[1] = MaxDim*.
+ * </dd>
+ * <dt><em>td[0]</em> &nbsp;<em>td[1]</em> …&nbsp;<em>td[d]</em>:</dt>
+ * <dd>
+ * The test will be run for all successive dimensions from *td[0]* to
+ * *td[1]*, then for all 2-dimensional projections for dimensions up to
+ * *td[2]* (if \f$d\ge2\f$), for all 3-dimensional projections for
+ * dimensions up to *td[3]* (if \f$d\ge3\f$), …, and for all
+ * \f$d\f$-dimensional projections for dimensions up to *td[d]*. The simplest
+ * case has \f$d=1\f$.
+ * </dd>
+ * <dt><em>Dual flag</em>:</dt>
+ * <dd>
+ * `true` if the dual lattice is analyzed; `false` for the primal lattice.
+ * </dd>
+ * <dt><em>LatticeType</em>:</dt>
+ * <dd>
+ * Indicates whether to analyze the lattice generated by all possible states,
+ * or a sublattice generated by the set of recurrent states or by a subcycle
+ * of the generator. The admissible values are <tt>(Full, Recurrent, Orbit,
+ * PrimePower)</tt>.
+ *
+ * <dl><dt><tt>Full</tt>:</dt>
+ * <dd>
+ * The complete lattice, generated by all possible initial states, will be
+ * analyzed.
+ * </dd>
+ * <dt><tt>Recurrent</tt>:</dt>
+ * <dd>
+ * If the (combined) generator has transient states, then the lattice
+ * analyzed will be the sublattice generated by the set of recurrent states.
+ * </dd>
+ * <dt><tt>Orbit</tt>:</dt>
+ * <dd>
+ * The grid generated by the (forward) orbit of a state of the (combined)
+ * generator is analyzed. This state is specified as follows. On the
+ * following \f$J\f$ lines, the initial state for each component must be
+ * given. This is an integer vector with a number of components equal to the
+ * order of the component.
+ * </dd>
+ * <dt><tt>PrimePower</tt>:</dt>
+ * <dd>
+ * In the case where some component is an MLCG whose modulus is a power of a
+ * prime \f$p\f$, then the states visited over a single orbit (subcycle) of
+ * that component generate a sublattice (when \f$a \equiv1 \pmod p\f$) or
+ * belong to the union of \f$p-1\f$ sublattices (otherwise). If *LatticeType*
+ * takes this value, if a component is an MLCG (\f$k=1\f$), and if the
+ * modulus of that MLCG is given in the data file in the form (b): \f$(x y
+ * z)\f$ with \f$z=0\f$ and \f$x\f$ prime, then what is analyzed is one of
+ * those sublattices. This is done by dividing the modulus by the appropriate
+ * power of \f$p\f$, as described in \cite rLEC94e&thinsp;. For example, if
+ * \f$p=2\f$ and \f$a \mod8 = 5\f$, then the modulus is divided by 4 as in
+ * \cite rFIS90a, \cite rKNU81a&thinsp;.
+ * </dd>
+ * </dl>
+ * </dd>
+ * <dt><em>LacGroupSize &nbsp;LacSpacing</em>:</dt>
+ * <dd>
+ * These data fields are positive integers, used to introduce lacunary
+ * indices. If the respective values are \f$s\f$ and \f$d\f$, then we will
+ * analyze the lattice structure of vectors of the form \f$(u_{i+1}, …,
+ * u_{i+s}, u_{i+d+1},…, u_{i+d+s}, u_{i+2d+1},…, u_{i+2d+s}, …)\f$, formed
+ * by groups of \f$s\f$ successive values, taken \f$d\f$ values apart. To
+ * analyze vectors of successive values (as usual), take \f$s=d=1\f$ or
+ * \f$s\f$ larger or equal to *MaxDim*. To analyze lacunary indices that are
+ * not evenly spaced, put \f$s = -t\f$ where <em>\f$t=\f$MaxDim</em> and
+ * then, on the \f$t\f$ lines that follow, give the \f$t\f$ lacunary indices
+ * \f$i_1,…,i_t\f$, which are interpreted as in Section  {@link
+ * REF__sec1_sec_lacunary lacunary}.
+ * </dd>
+ * <dt><em>MaxNodesBB</em>:</dt>
+ * <dd>
+ * An integer giving the maximum number of nodes to be examined in any given
+ * branch-and-bound procedure when computing \f$d_t\f$ or \f$q_t\f$. When
+ * that value is exceeded, the branch-and-bound is stopped and the generator
+ * is rejected. The number of generators rejected for that reason is given in
+ * the results. A small value of *MaxNodesBB* will make the program run
+ * faster (sometimes much faster), permitting to examine more generators, but
+ * will increase the chances of rejecting good generators.
+ * </dd>
+ * <dt><em>Invert flag</em>:</dt>
+ * <dd>
+ * If `true`, the inverse of the length of the shortest vector will be
+ * printed in the results, otherwise the length itself is printed.
+ * </dd>
+ * <dt><em>Detail flag</em>:</dt>
+ * <dd>
+ * The default value of the flag is 0. If it is \f$>0\f$, extra details are
+ * printed in the results. If the flag is 1, the shortest vector of the basis
+ * is printed. If the flag is 2, all the vectors of the final basis are
+ * printed. If the flag is 3, all the vectors of the initial primal and dual
+ * bases are printed.
+ * </dd>
+ * <dt><em>Output Form</em>:</dt>
+ * <dd>
+ * Selects on which output the results will be written. The possible values
+ * are <tt>(Terminal, RES, TEX)</tt>. Lowercases are also allowed.
+ *
+ * <dl><dt><tt>Terminal</tt>:</dt>
+ * <dd>
+ * the results will be written on the terminal screen.
+ * </dd>
+ * <dt><tt>Res</tt>:</dt>
+ * <dd>
+ * the results are sent to a file with the same name as the data file, but
+ * with extension <tt>.res</tt>.
+ * </dd>
+ * <dt><tt>Tex</tt>:</dt>
+ * <dd>
+ * the results are written in a file intended for LaTeX, with extension
+ * <tt>.tex</tt>.
+ * </dd>
+ * </dl>
+ * </dd>
+ * </dl>
+ *
+ * The form of the data file for the Palpha test must be as shown in Fig.
+ * {@link REF__LatMain_palpha_data palpha.data}.
+ *
+ * <center>
+ *  <div class="LatSoft-fbox"><div class="LatSoft-parbox">
+ * <table class="LatSoft-table">
+ * <tr>
+ *   <td colspan="3" class="l">\# This is a comment line</td>
+ * </tr><tr>
+ *   <td class="l">`PALPHA`</td>
+ *   <td class="l"></td>
+ *   <td class="l">must always be there</td>
+ * </tr><tr>
+ *   <td class="l"><em>calcType</em></td>
+ *   <td class="l"></td>
+ *   <td class="l"></td>
+ * </tr><tr>
+ *   <td class="l">`LCG`</td>
+ *   <td class="l"></td>
+ *   <td class="l">only LCG are possible for now</td>
+ * </tr><tr>
+ *   <td class="l">\f$m\f$</td>
+ *   <td class="l"></td>
+ *   <td class="l">number of points</td>
+ * </tr><tr>
+ *   <td class="l">\f$a\f$</td>
+ *   <td class="l"></td>
+ *   <td class="l">multiplier</td>
+ * </tr><tr>
+ *   <td class="l">\f$d\f$</td>
+ *   <td class="l"></td>
+ *   <td class="l">= 1 for now</td>
+ * </tr><tr>
+ *   <td class="l"><em>minDim</em></td>
+ *   <td class="l"><em>maxDim</em></td>
+ *   <td class="l">two integers</td>
+ * </tr><tr>
+ *   <td class="l"><em>primeM</em></td>
+ *   <td class="l"><em>verifyM</em></td>
+ *   <td class="l">two booleans</td>
+ * </tr><tr>
+ *   <td class="l"><em>maxPeriod</em></td>
+ *   <td class="l"><em>verifyP</em></td>
+ *   <td class="l">two booleans</td>
+ * </tr><tr>
+ *   <td class="l"><em>alpha</em></td>
+ *   <td class="l"></td>
+ *   <td class="l">\f$\alpha\f$, an integer</td>
+ * </tr><tr>
+ *   <td class="l"><em>seed</em></td>
+ *   <td class="l"></td>
+ *   <td class="l">seed of the LCG, an integer</td>
+ * </tr><tr>
+ *   <td class="l">\f$\beta_0, \beta_1\f$, \f$…, \beta_s\f$</td>
+ *   <td class="l"></td>
+ *   <td class="l">\f$s\f$ = <em>maxDim</em></td>
+ * </tr><tr>
+ *   <td class="l"><em>outputForm</em></td>
+ *   <td class="l"></td>
+ *   <td class="l">`terminal`, `res` or `tex`</td>
+ * </tr>
+ * </table>
+ * </div></div> <center>\anchor REF__LatMain_palpha_data Data file format for
+ * the \f$P_{\alpha}\f$ test.</center>
+ * </center>
+ *
+ * Lines whose first non-blank character is a <tt>#</tt> are comments, and
+ * are dropped by the reader program. The file must contain the following
+ * parameters in that order:
+ *
+ * <dl><dt>`PALPHA`:</dt>
+ * <dd>
+ * must always be there literally. This indicates to the program that the
+ * parameters to be read are for the \f$P_{\alpha}\f$ test, instead of the
+ * spectral or Beyer tests.
+ * </dd>
+ * <dt><em>calcType</em>:</dt>
+ * <dd>
+ * must be one of `PAL`, `BAL`, or `NORMPAL`. See the description of these
+ * cases in the definition of LatCommon::CalcType.
+ * </dd>
+ * <dt>`LCG`:</dt>
+ * <dd>
+ * must always be there literally.
+ * </dd>
+ * <dt>\f$m\f$:</dt>
+ * <dd>
+ * the number of points of the point set or the modulus of congruence of the
+ * LCG.
+ * </dd>
+ * <dt>\f$a\f$:</dt>
+ * <dd>
+ * the multiplier of the LCG or of the Korobov lattice. Restriction: \f$a
+ * \in\{1, 2, …, m-1\}\f$.
+ * </dd>
+ * <dt>\f$d\f$:</dt>
+ * <dd>
+ * The number of kinds of projections. Always \f$d=1\f$ for now.
+ * </dd>
+ * <dt><em>minDim</em> and <em>maxDim</em>:</dt>
+ * <dd>
+ * the test will be done in all dimensions \f$s\f$ such that *minDim*
+ * \f$\le s \le\f$ *maxDim*.
+ * </dd>
+ * <dt><em>primeM</em> and <em>verifyM</em>:</dt>
+ * <dd>
+ * if *primeM* is `true`, the program considers that \f$m\f$ is a prime
+ * number; if `false`, \f$m\f$ is assumed not prime. If *verifyM* is `true`,
+ * the program will verify that \f$m\f$ is effectively prime and reset
+ * *primeM* to its correct value. If *verifyM* is `false`, the program will
+ * not verify the primality of \f$m\f$; in that case, it is the
+ * responsibility of the user to set the right value for *primeM*.
+ * </dd>
+ * <dt><em>maxPeriod</em> and <em>verifyP</em>:</dt>
+ * <dd>
+ * if *maxPeriod* is `true`, the program considers that the LCG has maximal
+ * period; if `false`, the LCG is assumed not to have maximal period. If
+ * *verifyP* is `true`, the program will verify that the LCG has maximal
+ * period and will reset *maxPeriod* to its correct value. If *verifyP* is
+ * `false`, the program will not verify that the LCG has maximal period; in
+ * that case, it is the responsibility of the user to set the right value for
+ * *maxPeriod*.
+ * </dd>
+ * <dt><em>alpha</em>:</dt>
+ * <dd>
+ * the value of \f$\alpha\f$. Must be one of \f$\{2, 4, 6, 8\}\f$.
+ * </dd>
+ * <dt><em>seed</em>:</dt>
+ * <dd>
+ * The starting state of the LCG. Must be one of \f$\{1, 2, …, m-1\}\f$.
+ * </dd>
+ * <dt>\f$\beta_0, \beta_1\f$, \f$…, \beta_s\f$:</dt>
+ * <dd>
+ * \f$s+1\f$ real numbers on a line where \f$s =\f$ *maxDim*. They are the
+ * weights \f$\beta_j\f$.
+ * </dd>
+ * <dt><em>outputForm</em>:</dt>
+ * <dd>
+ * can take the values `terminal` (the output will be sent on the terminal),
+ * `res` (the output will be written in plain text format in a file), or
+ * `tex` (the output will be written in LaTeX format in a file). In the last
+ * two cases, the name of the output file will always have the same stem as
+ * the data file name. For example, if the data file is named `alp1.dat`,
+ * then the output file will be called `alp1.res` and `alp1.tex`,
+ * respectively.
+ * </dd>
+ * </dl>
+ */

@@ -7,3 +7,6 @@ Results/
 results.txt
 doxygen/
 build/
+doc/html/
+doc/xml/
+doc/latex/

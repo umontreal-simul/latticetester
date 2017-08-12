@@ -5,7 +5,9 @@ latticetester.xcodeproj
 DerivedData/
 Results/
 results.txt
-doxygen/
+doxygen/html/
+doxygen/bib/
+doxygen/latex/
 build/
 doc/html/
 doc/xml/

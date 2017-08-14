@@ -4,17 +4,22 @@
 
 # Overview
 
-* *LatticeTester* is a C++ software library and tool to measure theoretical measures
-of uniformity (or figures of merit) for lattices in the \f$t\f$-dimensional the real space \f$\mathbb{R}^t\f$
-that contain \f$\mathbb{Z}^t\f$ as a sublattice or are contained in \f$\mathbb{Z}^t\f$.
-Such lattices are encountered for example in quasi-Monte Carlo integration
+* *LatticeTester* is a C++ software library and tool to compute theoretical measures
+of uniformity (figures of merit) for lattices in the \f$t\f$-dimensional real space \f$\mathbb{R}^t\f$. 
+Such lattices contain \f$\mathbb{Z}^t\f$ as a sublattice or are contained in \f$\mathbb{Z}^t\f$, and
+are encountered for example in quasi-Monte Carlo integration
 (by lattice rules) and in the analysis of uniform random number generators
-defined by linear recurrences modulo a large integer.
-Measures of uniformity include the length of the shortest nonzero vector
-in the lattice or in its dual (the spectral test), the Beyer ratio,
-\f$\mathcal{P}_\alpha\f$, as well as figures of merit that take normalized versions
-of these measures over projections of the lattice on subsets of the $t$ coordinates,
-and then take a weighted sum or the worst-case over the class of considered projections.
+based on linear recurrences modulo a large integer.
+
+Measures of uniformity include: 
+- the length of the shortest non-zero vector in the lattice or in its dual lattice 
+(the spectral test),
+- the Beyer ratio,
+- the \f$\mathcal{P}_\alpha\f$ test, 
+- as well as figures of merit that take normalized versions of these measures over 
+projections of the lattice on subsets of the \f$t\f$ coordinates, and then take a weighted 
+sum or the worst-case over the class of considered projections.
+
 LatticeTester is used in particular in the *Lattice Builder* and *LatMRG*
 software tools, designed to construct and analyze lattice rules and linear generators.
 
@@ -22,18 +27,20 @@ software tools, designed to construct and analyze lattice rules and linear gener
 
 # Contents and implementation
 
-* *LatticeTester* provides several tests applied on lattice structure. In particular
+* *LatticeTester* provides several tests applied on the lattice structure. In particular
 it implements the Spectral Test given originally by Coveyou and MacPherson \cite rCOV67a
 and improved by Knuth \cite rKNU69a. This test requires an algorithm solving the shortest
 vector problem (SVP). *LatticeTester* implements a solution based on a branch and bound
 procedure given originally by Dieter \cite rDIE75a, improved by Knuth \cite rKNU69a
-and then by Fincke and Pohst \cite mFIN85a. The last version uses a Cholesky decomposition
-and is precisely implemented in *LatticeTester*. This version can solve SVP for le L2 norm
-and for the L1 norm.
+and then by Fincke and Pohst \cite mFIN85a. The lastest version uses a Cholesky decomposition
+and is precisely implemented in *LatticeTester*. This version can solve SVP for the L2 norm
+as well as for the L1 norm.
 
-The computing time of the branch and bound depends mostly on the dimension (non-polynomial
-dependency). Beside, it depends on the vectors of the input basis. Basically, the more
-the input basis is reduced, the faster will be the branch and ound process. Hence, one must perform a basis reduction in advance otherwise the computing time will explode.
+The computing time of the branch and bound procedure depends mostly on the dimension (non-polynomial
+dependency). But it also significantly depends on the length of the vectors in the input basis. 
+Basically, the shortest the vectors (i.e the more the input basis is already reduced), the fastest 
+the branch and bound will be performed. Hence, one must perform a basis reduction in advance to prevent
+explodeing of the computing time.
 
 Pre-reduction available in *LatticeTester* are :
 

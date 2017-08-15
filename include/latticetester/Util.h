@@ -1034,11 +1034,25 @@ template <typename Matr>
 void Triangularization (Matr & W, Matr & V, int lin, int col,
                         const MScal & m)
 {
+
+
+    // PW_TODO utilise une élimination de Gauss ???
+    // voir papier "orbit" page 12
+
+    /*
+    cout << "\n----- Triangularization -----" << endl;
+    cout << "W avant = \n" << W << endl; 
+    cout << "V avant = \n" << V << endl; 
+    */
+
    MScal T1, T2, T3, T4, T5, T6, T7, T8;
 
    for (int j = 0; j < col; j++) {
+
+      // set the coefficients between 0 and m-1
       for (int i = 0; i < lin; i++)
          Modulo (W(i,j), m, W(i,j));
+
       int r = 0;
       while (r < lin-1) {
          while (IsZero (W(r,j)) && r < lin-1)
@@ -1091,6 +1105,13 @@ void Triangularization (Matr & W, Matr & V, int lin, int col,
       }
    }
 //   CheckTriangular (V, col, m);
+
+    /*
+    cout << "W après = \n" << W << endl; 
+    cout << "V après = \n" << V << endl;
+    cout << "----- fin Triangularization -----\n" << endl;
+    */
+
 }
 
 /**
@@ -1098,9 +1119,16 @@ void Triangularization (Matr & W, Matr & V, int lin, int col,
  * matrix `B`. Only the first \f$d\f$ lines and columns are considered.
  */
 
+//PW_TODO add comment on conditions: besoin des conditions de Triangularization ?
+
 template <typename Matr>
 void CalcDual (const Matr & A, Matr & B, int d, const MScal & m)
 {
+
+    //cout << "\n----- CalcDual -----" << endl;
+    //cout << "m_vSI avant = \n" << A << endl; 
+    //cout << "m_wSI avant = \n" << B << endl; 
+
    for (int i = 0; i < d; i++) {
       for (int j = i + 1; j < d; j++)
          clear (B(i,j));
@@ -1119,6 +1147,10 @@ void CalcDual (const Matr & A, Matr & B, int d, const MScal & m)
          DivideRound (B(i,j), A(j,j), B(i,j));
       }
    }
+
+   //cout << "m_vSI après = \n" << A << endl; 
+   //cout << "m_wSI après = \n" << B << endl;
+   //cout << "----- fin CalcDual -----\n" << endl;
 }
 
 /**

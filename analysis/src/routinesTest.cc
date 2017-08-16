@@ -28,6 +28,8 @@ using namespace LatticeTester;
 
 int main (int argc, char *argv[])
 {
+   
+#if 0
    // all the parameters
    NormType norm = L2NORM;
    NormaType normalizerType = BESTLAT;
@@ -89,7 +91,48 @@ int main (int argc, char *argv[])
    cout << "\ntestMatrix = \n" << testMatrix << endl;
    // printing the FoM Beyer
    cout << "FoM Beyer = " << FigureOfMeritBeyer(testMatrix) << endl; //, preRed, doublePrecision, blocksize) << endl;
+   */
    
+#endif
+   
+   int m_order = 5;
+   int m_numberLacIndices = 3;
+   BScal m_modulo;
+   m_modulo = conv<ZZ>("4611686018427341489");
+   
+   BMat m_vSI;
+   m_vSI.resize(5,3);
+   BMat m_wSI;
+   m_wSI.resize(5,3);
+   
+   m_wSI[0][0]=1; m_wSI[0][1]=5;  m_wSI[0][2]=6;
+   m_wSI[1][0]=2; m_wSI[1][1]=16; m_wSI[1][2]=18;
+   m_wSI[2][0]=1; m_wSI[2][1]=11; m_wSI[2][2]=12;
+   m_wSI[3][0]=1; m_wSI[3][1]=8;  m_wSI[3][2]= 9;
+   m_wSI[4][0]=1; m_wSI[4][1]=6;  m_wSI[4][2]=7;
+
+   cout << "\nAVANT TRIANGULARIZATION" << endl;
+   cout << "m_vSI = \n" << m_vSI << endl;
+   cout << "m_wSI = \n" << m_wSI << endl;
+   
+   // transforming this generating familly into a basis of the lattice
+   Triangularization <BMat> (m_wSI, m_vSI, m_order, m_numberLacIndices, m_modulo);
+   
+   cout << "\nAPRES TRIANGULARIZATION" << endl;
+   cout << "m_vSI = \n" << m_vSI << endl;
+   cout << "m_wSI = \n" << m_wSI << endl;
+   
+   
+   
+
+   MScal A, B, C, D, E, F, G;
+   A = 3;
+   B = 9;
+   
+   Euclide (A, B, C, D, E, F, G);
+   
+   Euclide (A, B, C, D, E, F, B);
+
    return 0;
 }
 

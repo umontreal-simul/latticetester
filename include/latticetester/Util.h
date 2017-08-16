@@ -543,6 +543,7 @@ inline void DivideRound (const NTL::ZZ & a, const NTL::ZZ & b, NTL::ZZ & q)
     x = abs (a);
     y = abs (b);
     //****** ATTENTION: bug de NTL: DivRem change le signe de a quand a < 0.
+    //PW_TODO à voir
     DivRem (q, r, x, y);
     LeftShift (r, r, 1);
     if (r > y)
@@ -1035,84 +1036,93 @@ void Triangularization (Matr & W, Matr & V, int lin, int col,
                         const MScal & m)
 {
 
+    cout << "\n********** beginning Triangulariation **********\n" << endl;
+
+    bool printDetail = true;
+
 
     // PW_TODO utilise une élimination de Gauss ???
     // voir papier "orbit" page 12
+    MScal T1, T2, T3, T4, T5, T6, T7, T8;
 
-    /*
-    cout << "\n----- Triangularization -----" << endl;
-    cout << "W avant = \n" << W << endl; 
-    cout << "V avant = \n" << V << endl; 
-    */
+    for (int j = 0; j < col; j++) {
 
-   MScal T1, T2, T3, T4, T5, T6, T7, T8;
+        if (printDetail==true) {
+            cout << "\n----- " << j << "th system -----" << endl;
+            cout << W << endl;
+        }
 
-   for (int j = 0; j < col; j++) {
+        // set the coefficients between 0 and m-1
+        for (int i = 0; i < lin; i++)
+            Modulo (W(i,j), m, W(i,j));
 
-      // set the coefficients between 0 and m-1
-      for (int i = 0; i < lin; i++)
-         Modulo (W(i,j), m, W(i,j));
+        int r = 0;
 
-      int r = 0;
-      while (r < lin-1) {
-         while (IsZero (W(r,j)) && r < lin-1)
-            ++r;
-         if (r < lin-1) {
-            int s = r + 1;
-            while (IsZero (W(s,j)) && s < lin-1)
-               ++s;
-            if (!IsZero (W(s,j))) {
-               Euclide (W(r,j), W(s,j), T1, T2, T3, T4, W(s,j));
-               clear (W(r,j));
-               for (int j1 = j + 1; j1 < col; j1++) {
-                  T5 = T1 * W(r,j1);
-                  T6 = T2 * W(s,j1);
-                  T7 = T3 * W(r,j1);
-                  T8 = T4 * W(s,j1);
-                  W(s,j1) = T5 + T6;
-                  Modulo (W(s,j1), m, W(s,j1));
-                  W(r,j1) = T7 + T8;
-                  Modulo (W(r,j1), m, W(r,j1));
-               }
-            } else {
-               for (int j1 = j; j1 < col; j1++) {
-                  std::swap (W(r,j1), W(s,j1));
-               }
+        while (r < lin-1) {
+
+            while (IsZero (W(r,j)) && r < lin-1)
+                ++r;
+            if (r < lin-1) {
+                int s = r + 1;
+                while (IsZero (W(s,j)) && s < lin-1)
+                    ++s;
+                if (!IsZero (W(s,j))) {
+
+                    MScal temp;
+                    cout << "*" << endl;
+                    Euclide (W(r,j), W(s,j), T1, T2, T3, T4, temp);
+                    W(s,j) = temp;
+
+                    clear (W(r,j));
+
+                    for (int j1 = j + 1; j1 < col; j1++) {
+                        T5 = T1 * W(r,j1);
+                        T6 = T2 * W(s,j1);
+                        T7 = T3 * W(r,j1);
+                        T8 = T4 * W(s,j1);
+                        W(s,j1) = T5 + T6;
+                        Modulo (W(s,j1), m, W(s,j1));
+                        W(r,j1) = T7 + T8;
+                        Modulo (W(r,j1), m, W(r,j1));
+                    }
+                } else {
+                    for (int j1 = j; j1 < col; j1++) {
+                        std::swap (W(r,j1), W(s,j1));
+                    }
+                }
+                r = s;
             }
-            r = s;
-         }
-      }
-      if (IsZero (W(lin-1,j))) {
-         for (int j1 = 0; j1 < col; j1++) {
-            if (j1 != j)
-               clear (V(j,j1));
-            else
-               V(j,j1) = m;
-         }
-      } else {
-         Euclide (W(lin-1,j), m, T1, T2, T3, T4, V(j,j));
-         for (int j1 = 0; j1 < j; j1++)
-            clear (V(j,j1));
-         for (int j1 = j + 1; j1 < col; j1++) {
-            T2 = W(lin-1,j1) * T1;
-            Modulo (T2, m, V(j,j1));
-         }
-         Quotient (m, V(j,j), T1);
-         for (int j1 = j + 1; j1 < col; j1++) {
-            W(lin-1,j1) *= T1;
-            Modulo (W(lin-1,j1), m, W(lin-1,j1));
-         }
-      }
-   }
-//   CheckTriangular (V, col, m);
+        }
 
-    /*
-    cout << "W après = \n" << W << endl; 
-    cout << "V après = \n" << V << endl;
-    cout << "----- fin Triangularization -----\n" << endl;
-    */
+        if (IsZero (W(lin-1,j))) {
 
+            for (int j1 = 0; j1 < col; j1++) {
+                if (j1 != j)
+                    clear (V(j,j1));
+                else
+                    V(j,j1) = m;
+            }
+
+        } else {
+
+            Euclide (W(lin-1,j), m, T1, T2, T3, T4, V(j,j));
+            for (int j1 = 0; j1 < j; j1++)
+                clear (V(j,j1));
+            for (int j1 = j + 1; j1 < col; j1++) {
+                T2 = W(lin-1,j1) * T1;
+                Modulo (T2, m, V(j,j1));
+            }
+            Quotient (m, V(j,j), T1);
+            for (int j1 = j + 1; j1 < col; j1++) {
+                W(lin-1,j1) *= T1;
+                Modulo (W(lin-1,j1), m, W(lin-1,j1));
+            }
+        }
+    }
+
+    //CheckTriangular (V, col, m);
 }
+
 
 /**
  * Calculates the \f$m\f$-dual of the matrix `A`. The result is placed in the
@@ -1129,28 +1139,40 @@ void CalcDual (const Matr & A, Matr & B, int d, const MScal & m)
     //cout << "m_vSI avant = \n" << A << endl; 
     //cout << "m_wSI avant = \n" << B << endl; 
 
-   for (int i = 0; i < d; i++) {
-      for (int j = i + 1; j < d; j++)
-         clear (B(i,j));
-// Dans l'original, c'est Quotient pour Lac et DivideRound pour non-Lac ??
-//        Quotient(m, A(i,i), B(i,i));
-      DivideRound (m, A(i,i), B(i,i));
-      for (int j = i - 1; j >= 0; j--) {
-         clear (B(i,j));
-         for (int k = j + 1; k <= i; k++) {
-            B(i,j) += A(j,k) * B(i,k);
-         }
-         if (B(i,j) != 0)
-            B(i,j) = -B(i,j);
-// Dans l'original, c'est Quotient pour Lac et DivideRound pour non-Lac ??
-//         Quotient(B(i,j), A(j,j), B(i,j));
-         DivideRound (B(i,j), A(j,j), B(i,j));
-      }
-   }
+    for (int i = 0; i < d; i++) {
 
-   //cout << "m_vSI après = \n" << A << endl; 
-   //cout << "m_wSI après = \n" << B << endl;
-   //cout << "----- fin CalcDual -----\n" << endl;
+        for (int j = i + 1; j < d; j++)
+            clear (B(i,j));
+
+        //Dans l'original, c'est Quotient pour Lac et DivideRound pour non-Lac ??
+        //Quotient(m, A(i,i), B(i,i));
+        DivideRound (m, A(i,i), B(i,i));
+
+        for (int j = i - 1; j >= 0; j--) {
+
+            clear (B(i,j));
+
+            for (int k = j + 1; k <= i; k++)
+                B(i,j) += A(j,k) * B(i,k);
+
+            if (B(i,j) != 0)
+                B(i,j) = -B(i,j);
+
+            //Dans l'original, c'est Quotient pour Lac et DivideRound pour non-Lac ??
+            //Quotient(B(i,j), A(j,j), B(i,j));
+            DivideRound (B(i,j), A(j,j), B(i,j));
+
+            // get coefficient between 0 and m-1
+            //Modulo (B(i,j), m, B(i,j));
+            // PW_TODO résultat n'est pas le meme avec ou sans
+
+        }
+
+    }
+
+    //cout << "m_vSI après = \n" << A << endl; 
+    //cout << "m_wSI après = \n" << B << endl;
+    //cout << "----- fin CalcDual -----\n" << endl;
 }
 
 /**

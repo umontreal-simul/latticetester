@@ -124,7 +124,8 @@ enum CalcType { PAL, NORMPAL, BAL, SEEKPAL };
 
 
 /**
- * Indicates the Prereduction Type. BKZ, etc...
+ * Indicates the Prereduction Type (BKZ, LenstraLL, ...) used before applying the 
+ * Branch and Bound procedure.
  */
 
 enum PreReductionType {BKZ, PreRedDieter, LenstraLL, NOPRERED};

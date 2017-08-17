@@ -2,8 +2,8 @@
  * \page aaroutine Main functions
  *
  *
- * We present here the routine function included in *LatticeTester*.
- * Please, read the Background before using theses function.
+ * We present here the routine functions included in *LatticeTester*.
+ * Please, read the Background before using theses functions.
  *
  *
  \htmlonly
@@ -57,8 +57,8 @@
 </div><div class="memdoc">
 
 
-<p>This function compute the Figure of Merit to a given matrix, according to a normalization criteria. </p>
-<p>It first computes the shortest non-zero vector using the above functions. It then normalizes this value. Returns -1.0 if there was an error in Branch-and-Bound procedure while calculating the length of shortest non-zero vector. Return the figure of merit otherwise. </p>
+<p>This function compute the Figure of Merit for a given matrix, according to a specified normalization criteria. </p>
+<p>It first computes the shortest non-zero vector using the function <a>ShortestVector()</a>. It then normalizes this value. Returns -1.0 if there was an error in Branch-and-Bound procedure while calculating the length of shortest non-zero vector. Return the figure of merit otherwise. </p>
 
 </div>
 </div>
@@ -278,6 +278,7 @@
 
 <p>This function allows computation of the shortest non-zero vector in a lattice, according to the selected norm. </p>
 <p>Many parameters can bet set by the user, otherwise the function work with default values. Returns -1.0 if there was an error in Branch-and-Bound procedure. Return the length of the shortest non-zero vector otherwise. </p>
+<p>For a given <a>PreReductionType</a> one can set the <a>PrecisionType</a> (type of precision used for floating point calculation), the coefficient <a>fact</a> used as a parameter in both BZK and LLL pre-reduction algorithms, and the parameter <a>blocksize</a> is used in BKZ to specifiy the size of the sub-block reduced at each step. </p>
 
 </div>
 </div>
@@ -396,7 +397,9 @@ Same thing as before but with the possibility to set a different value for the v
 
 This function allows computation of the shortest non-\/zero vector in a lattice, according to the selected norm.
 
-Many parameters can bet set by the user, otherwise the function work with default values. Returns -\/1.\+0 if there was an error in Branch-\/and-\/\+Bound procedure. Return the length of the shortest non-\/zero vector otherwise. \mbox{\Hypertarget{namespaceLatticeTester_a163335d2c66ef11b6494eeddf06de8c9}\label{namespaceLatticeTester_a163335d2c66ef11b6494eeddf06de8c9}}
+Many parameters can bet set by the user, otherwise the function work with default values. Returns -\/1.\+0 if there was an error in Branch-\/and-\/\+Bound procedure. Return the length of the shortest non-\/zero vector otherwise.
+
+\mbox{\Hypertarget{namespaceLatticeTester_a163335d2c66ef11b6494eeddf06de8c9}\label{namespaceLatticeTester_a163335d2c66ef11b6494eeddf06de8c9}}
 \index{Lattice\+Tester@{Lattice\+Tester}!Shortest\+Vector@{Shortest\+Vector}}
 \index{Shortest\+Vector@{Shortest\+Vector}!Lattice\+Tester@{Lattice\+Tester}}
 \subsection{\texorpdfstring{Shortest\+Vector()}{ShortestVector()}\hspace{0.1cm}{\footnotesize\ttfamily [2/2]}}

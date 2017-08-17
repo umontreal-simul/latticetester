@@ -140,12 +140,12 @@ private:
   NormType m_norm;
 
   /**
-   * dimension of ???
+   * the dimension of the test
    */
    int m_dim;
 
    /**
-    * Contains the results of the test.
+    * Contains the results of the test
     */
    double m_merit;
 

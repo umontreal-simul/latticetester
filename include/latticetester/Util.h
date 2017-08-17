@@ -1028,6 +1028,14 @@ bool CheckTriangular (const Matr & A, int dim, const MScal & m)
  * \f$W\f$. However, the matrix \f$W\f$ will be transformed too in order to
  * preserve duality. Only the first `lin` lines and the first `col` columns
  * of the matrices will be considered.
+ * The main idea is to transform a generating family of vectors into a 
+ * basis (removing from the family the vectors that are linear combination 
+ * of other vectors).
+ *
+ * Refer to the article: R. Couture and P L'Ecuyer, Orbits and lattices for
+ * linear random number generators with composite moduli, Mathematics of
+ * Computation, Volume 65, Number 213, bottom of page 199.
+ * 
  */
 
 
@@ -1035,21 +1043,15 @@ template <typename Matr>
 void Triangularization (Matr & W, Matr & V, int lin, int col,
                         const MScal & m)
 {
-
-    // PW_TODO utilise une élimination de Gauss ???
-    // voir papier "orbit" page 12
     MScal T1, T2, T3, T4, T5, T6, T7, T8;
 
     for (int j = 0; j < col; j++) {
 
-        // set the coefficients between 0 and m-1
         for (int i = 0; i < lin; i++)
             Modulo (W(i,j), m, W(i,j));
 
         int r = 0;
-
         while (r < lin-1) {
-
             while (IsZero (W(r,j)) && r < lin-1)
                 ++r;
             if (r < lin-1) {
@@ -1058,10 +1060,26 @@ void Triangularization (Matr & W, Matr & V, int lin, int col,
                     ++s;
                 if (!IsZero (W(s,j))) {
 
-                    //PW_TODO add comment here about temp variable
                     MScal temp;
                     Euclide (W(r,j), W(s,j), T1, T2, T3, T4, temp);
                     W(s,j) = temp;
+                    /*
+                    -- Remark --
+                    Previously, the call to function Euclide was made with
+                    the following arguments : 
+                    (W(r,j), W(s,j), T1, T2, T3, T4, W(s,j))
+                    But because this function uses references, the result 
+                    was always the same:
+                        W(r,j) = W(r,j)
+                        W(s,j) = W(r,j)
+                        T1 = 0
+                        T2 = 1
+                        T3 = -1
+                        T4 = 1
+                    We then added a temporary variable *temp* so that the
+                    calculation of coefficients T1, T2, T3 and T4 is
+                    performed properly.
+                    */
 
                     clear (W(r,j));
 
@@ -1083,7 +1101,6 @@ void Triangularization (Matr & W, Matr & V, int lin, int col,
                 r = s;
             }
         }
-
         if (IsZero (W(lin-1,j))) {
 
             for (int j1 = 0; j1 < col; j1++) {
@@ -1092,9 +1109,7 @@ void Triangularization (Matr & W, Matr & V, int lin, int col,
                 else
                     V(j,j1) = m;
             }
-
         } else {
-
             Euclide (W(lin-1,j), m, T1, T2, T3, T4, V(j,j));
             for (int j1 = 0; j1 < j; j1++)
                 clear (V(j,j1));
@@ -1117,23 +1132,22 @@ void Triangularization (Matr & W, Matr & V, int lin, int col,
 /**
  * Calculates the \f$m\f$-dual of the matrix `A`. The result is placed in the
  * matrix `B`. Only the first \f$d\f$ lines and columns are considered.
+ *
+ * The vectors of the basis (lines of A) need to verify the properties (i), (ii)
+ * (iii), (iv) as described in the article: R. Couture and P L'Ecuyer, Orbits 
+ * and lattices for linear random number generators with composite moduli, 
+ * Mathematics of Computation, Volume 65, Number 213, bottom of page 199.
  */
-
-//PW_TODO add comment on conditions: besoin des conditions de Triangularization ?
 
 template <typename Matr>
 void CalcDual (const Matr & A, Matr & B, int d, const MScal & m)
 {
-
-    //cout << "\n----- CalcDual -----" << endl;
-    //cout << "m_vSI avant = \n" << A << endl; 
-    //cout << "m_wSI avant = \n" << B << endl; 
-
     for (int i = 0; i < d; i++) {
 
         for (int j = i + 1; j < d; j++)
             clear (B(i,j));
 
+        //PW_TODO check this
         //Dans l'original, c'est Quotient pour Lac et DivideRound pour non-Lac ??
         //Quotient(m, A(i,i), B(i,i));
         DivideRound (m, A(i,i), B(i,i));
@@ -1151,18 +1165,9 @@ void CalcDual (const Matr & A, Matr & B, int d, const MScal & m)
             //Dans l'original, c'est Quotient pour Lac et DivideRound pour non-Lac ??
             //Quotient(B(i,j), A(j,j), B(i,j));
             DivideRound (B(i,j), A(j,j), B(i,j));
-
-            // get coefficient between 0 and m-1
-            //Modulo (B(i,j), m, B(i,j));
-            // PW_TODO résultat n'est pas le meme avec ou sans
-
         }
 
     }
-
-    //cout << "m_vSI après = \n" << A << endl; 
-    //cout << "m_wSI après = \n" << B << endl;
-    //cout << "----- fin CalcDual -----\n" << endl;
 }
 
 /**

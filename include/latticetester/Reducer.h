@@ -33,14 +33,14 @@ namespace LatticeTester {
  * For a given lattice, this class implements methods to reduce its basis in
  * the sense of Minkowski and to find the shortest non-zero vector of the
  * lattice using pre-reductions and a branch-and-bound (BB) algorithm
- * \cite rLEC97c&thinsp; . It also implements the method of Lenstra, Lenstra
+ * \cite rLEC97c&thinsp;. It also implements the method of Lenstra, Lenstra
  * and Lovasz (LLL) \cite mLEN82a&thinsp; as well as the method of Dieter
  * \cite rDIE75a&thinsp; to reduce a lattice basis.
  * The Minkowski, LLL and Branch-and-bound Reduction do not need the dual
  * lattice. Nonetheless, if a IntLatticeBasis object with a true with-dual
  * flag is given to a Reducer, the duality will be preserve during reduction.
- * Beside, the alogorithm BKZ implemented in the NTL Library can be used
- * as a prereduction befor the Branch-and-Bound.
+ * Beside, the algorithm BKZ implemented in the NTL Library can be used
+ * as a prereduction before the Branch-and-Bound.
  */
 
 class Reducer {

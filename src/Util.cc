@@ -127,11 +127,9 @@ void Euclide (const MScal & A, const MScal & B, MScal & C, MScal & D, MScal & E,
               MScal & F, MScal & G)
 {
 
-   //PW_TODO
-   MScal oldA = A;
-   MScal oldB = B;
+   //MScal oldA = A;
+   //MScal oldB = B;
 
-   
    MScal X, Y, Z;
    G = A;
    Z = B;
@@ -140,9 +138,9 @@ void Euclide (const MScal & A, const MScal & B, MScal & C, MScal & D, MScal & E,
    clear (E);
    set9 (F);
 
-   cout << "   Euclide :" << endl;
-   cout << "      inputs: A = " << oldA << ", B = " << oldB << endl;
-   cout << "      values used: A=" << A << ", B=" << B << ", C=" << C << ", D=" << D << ", E=" << E << ", F=" << F << ", G=" << G << ", (X=" << X << ", Y=" << Y << ", Z=" << Z << ")" << endl;
+   //cout << "   Euclide :" << endl;
+   //cout << "      inputs: A = " << oldA << ", B = " << oldB << endl;
+   //cout << "      values used: A=" << A << ", B=" << B << ", C=" << C << ", D=" << D << ", E=" << E << ", F=" << F << ", G=" << G << ", (X=" << X << ", Y=" << Y << ", Z=" << Z << ")" << endl;
 
    if (IsZero(A)) {
       swap9<MScal>(G, Z);
@@ -165,11 +163,10 @@ void Euclide (const MScal & A, const MScal & B, MScal & C, MScal & D, MScal & E,
       F += Y;
    }
 
-   //PW_TODO
-   cout << "             " << C << " x A + " << D << " x B = " << G << endl;
-   cout << "             " << E << " x A + " << F << " x B = 0" << endl;
-   cout << "      outputs: A=" << A << ", B=" << B << ", C=" << C << ", D=" << D << ", E=" << E << ", F=" << F << ", G=" << G << endl;
-   cout << endl;
+   //cout << "             " << C << " x A + " << D << " x B = " << G << endl;
+   //cout << "             " << E << " x A + " << F << " x B = 0" << endl;
+   //cout << "      outputs: A=" << A << ", B=" << B << ", C=" << C << ", D=" << D << ", E=" << E << ", F=" << F << ", G=" << G << endl;
+   //cout << endl;
 }
 
 

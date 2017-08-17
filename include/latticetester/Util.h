@@ -794,7 +794,7 @@ inline void CalcNorm (const Vect & V, int n, Scal & S, NormType norm)
  */
 template <typename Vect>
 inline void CopyVect (Vect & A, const Vect & B, int n)
-{
+{   
     for (int k = 0; k < n; k++)  A[k] = B[k];
 }
 
@@ -1036,21 +1036,11 @@ void Triangularization (Matr & W, Matr & V, int lin, int col,
                         const MScal & m)
 {
 
-    cout << "\n********** beginning Triangulariation **********\n" << endl;
-
-    bool printDetail = true;
-
-
     // PW_TODO utilise une élimination de Gauss ???
     // voir papier "orbit" page 12
     MScal T1, T2, T3, T4, T5, T6, T7, T8;
 
     for (int j = 0; j < col; j++) {
-
-        if (printDetail==true) {
-            cout << "\n----- " << j << "th system -----" << endl;
-            cout << W << endl;
-        }
 
         // set the coefficients between 0 and m-1
         for (int i = 0; i < lin; i++)
@@ -1068,8 +1058,8 @@ void Triangularization (Matr & W, Matr & V, int lin, int col,
                     ++s;
                 if (!IsZero (W(s,j))) {
 
+                    //PW_TODO add comment here about temp variable
                     MScal temp;
-                    cout << "*" << endl;
                     Euclide (W(r,j), W(s,j), T1, T2, T3, T4, temp);
                     W(s,j) = temp;
 

@@ -65,7 +65,7 @@ void LatTestWriter::writeMScal(const MScal & value)
 
 void LatTestWriter::writeMMat(const MMat & A)
 {
-   int sizeA = A.size1();
+   long sizeA = A.size1();
    *m_stream << "   [";
    for (int i = 0; i < sizeA; i++) {
       if (i == 0) { *m_stream << "["; }

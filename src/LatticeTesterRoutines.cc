@@ -31,7 +31,7 @@ double ShortestVector(BMat matrix, NormType norm, PreReductionType preRed,
 		exit(1);
 		// C'est pas un peu nul ça ?
 	} else 
-		dimension = matrix.size1();
+		dimension = (int) matrix.size1();
 
 	// creating objects needed to perform the test
 	IntLatticeBasis basis (matrix, dimension, norm);
@@ -89,7 +89,7 @@ double FigureOfMerit(BMat matrix, NormaType normalizerType, PreReductionType pre
 		exit(1);
 		// C'est pas un peu nul ça ?
 	} else 
-		dimension = matrix.size1();
+		dimension = (int) matrix.size1();
 
 	// creation of the norm and normalizer objects
 	NormType norm;
@@ -172,7 +172,7 @@ bool MinkowskiReduction(BMat & matrix, PreReductionType preRed, PrecisionType do
 		exit(1);
 		// C'est pas un peu nul ça ?
 	} else 
-		dimension = matrix.size1();
+		dimension = (int) matrix.size1();
 
 	// creating objects needed to perform the test
 	IntLatticeBasis basis (matrix, dimension, L2NORM);
@@ -208,7 +208,7 @@ double FigureOfMeritBeyer(BMat matrix, PreReductionType preRed, PrecisionType do
 		exit(1);
 		// C'est pas un peu nul ça ?
 	} else 
-		dimension = matrix.size1();
+		dimension = (int) matrix.size1();
 
 	bool reductionSuccess;
 	//m_lat->dualize ();

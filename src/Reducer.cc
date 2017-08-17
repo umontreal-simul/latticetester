@@ -696,9 +696,10 @@ void Reducer::redBKZ(double fact, long blocksize, PrecisionType precision, int d
 
 #else
 
-   cout << "**** WARNING redBKZ cannot be use with Double Precision (LLDD) in\n";
-   cout << "**** NTL nor without NTL. Instead, LLL reduction is performed with \n";
-   cout << "our algorithm which can be slower.";
+   cout << "\n**** WARNING redBKZ cannot be use with long type for integers\n";
+   cout << "**** (LLDD) and requires ZZ type. Instead, LLL reduction is\n";
+   cout << "**** performed with our algorithm which can be much slower.\n";
+   cout << endl;
    redLLL(fact, 1000000, m_lat->getDim ());
 
 #endif
@@ -758,9 +759,10 @@ void Reducer::redLLLNTL(double fact, PrecisionType precision, int dim) {
 
 #else
 
-   cout << "**** WARNING redLLLNTL cannot be use with Double Precision (LLDD) in\n";
-   cout << "**** NTL nor without NTL. LLL reduction is used with our algorithm \n";
-   cout << "which can be slower.";
+   cout << "\n**** WARNING redLLLNTL cannot be use with long type for integers\n";
+   cout << "**** (LLDD) and requires ZZ type. Instead, LLL reduction is performed\n";
+   cout << "**** with our algorithm which can be much slower.\n";
+   cout << endl;
    redLLL(fact, 1000000, m_lat->getDim ());
 
 #endif
@@ -872,7 +874,6 @@ void Reducer::redLLL (double fact, long maxcpt, int Max)
    if(withDual){
       m_lat->setDualNegativeNorm ();
    }
-   //cout << "UTILISATION DE LLL RICHARD" << endl;
 }
 
 

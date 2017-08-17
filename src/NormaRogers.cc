@@ -96,7 +96,6 @@ double NormaRogers::calcGamma (int dim)
 
    r = 0.5 * dimr * log2 (dimr / s) + 1.5 * log2 (dimr) - t + 5.25 / (dimr + 2.5);
    r = 4 * exp2(2 * r / dimr);
-   // PW_TODO : pourquoi *4 et pas *2 ? Ça colle pas avec le cours de Pierre page 289
    return r;
 }
 
@@ -107,8 +106,7 @@ NormaRogers::NormaRogers (const RScal & logDensity, int t, double beta)
       : Normalizer (logDensity, t, "Rogers", L2NORM, beta)
 {
    m_gamma = new double[t + 1];
-
-   /*
+   
    int t0 = t;
    if (t0 > MAX_DIM)
       t0 = MAX_DIM;
@@ -116,12 +114,9 @@ NormaRogers::NormaRogers (const RScal & logDensity, int t, double beta)
       m_gamma[i] = m_gamma0[i];
    for (int i = t0 + 1; i <= t; i++)
       m_gamma[i] = calcGamma(i);
-   */
 
-   //PW_TODO remmetre comme avant après debugging
-   for (int i = 0; i <= t; i++)
+   for (int i = t0 + 1; i <= t; i++)
       m_gamma[i] = calcGamma(i);
-
 
    Normalizer::init (logDensity, beta);
 }

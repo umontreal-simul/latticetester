@@ -30,7 +30,7 @@ int main (int argc, char *argv[])
 {
    // all the parameters
    NormType norm = L2NORM;
-   NormaType normalizerType = BESTLAT;
+   NormaType normalizerType = ROGERS;
    long maxNodesBB = 5;
    PreReductionType preRed = BKZ; //LenstraLL;
    PrecisionType doublePrecision = QUADRUPLE; 

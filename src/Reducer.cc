@@ -940,6 +940,9 @@ bool Reducer::tryZ (int j, int i, int Stage, bool & smaller, const BMat & WTemp)
    RScal S1, S2, S3, S4, mR;
 
    const int dim = m_lat->getDim ();
+   conv (mR, m_lat->getModulo());
+
+
    ++m_countNodes;
    if (m_countNodes > maxNodesBB) {
       cout << "-------- m_countNodes > maxNodesBB = " << maxNodesBB << endl;

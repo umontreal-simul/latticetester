@@ -189,7 +189,7 @@ void LatticeAnalysis::initNormalizer (NormaType norma, int alpha)
 
 bool LatticeAnalysis::doTest (double fact, PrecisionType precision, int blocksize)
 {
-   bool result;
+   bool result = false;
 
    // performing pre-reduction
    switch (m_preRed) {

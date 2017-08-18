@@ -25,6 +25,7 @@ def options(ctx):
     ctx.add_option('--ntl', action='store', help='prefix under which NTL is installed')
     ctx.add_option('--ntltypes', action='store', help='set NTL integer/real types: {}'.format(', '.join(NUMTYPES)))
     ctx.add_option('--gmp', action='store', help='prefix under which GMP is installed')
+    ctx.add_option('--testu01', action='store', help='prefix under which testu01 is installed')
 
 
 def configure(ctx):
@@ -72,6 +73,8 @@ def configure(ctx):
         deps.add_deps_path(ctx, 'Boost', ctx.options.boost)
     if ctx.options.ntl:
         deps.add_deps_path(ctx, 'NTL', ctx.options.ntl)
+    if ctx.options.testu01:
+        deps.add_deps_path(ctx, 'TestU01', ctx.options.testu01)
 
     ctx_check = deps.shared_or_static(ctx, ctx.check)
 
@@ -145,8 +148,10 @@ def build(ctx):
     #     print("Building variant `%s'" % (ctx.variant,))
 
     ctx.recurse('src')
+
     # ctx.recurse('analysis')
-    ctx.recurse('progs')
+    ctx.recurse('progs')    
+
     # ctx.recurse('test')
     if ctx.env.BUILD_DOCS:
          ctx.recurse('doc')

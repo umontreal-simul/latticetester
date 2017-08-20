@@ -122,8 +122,7 @@ double Normalizer::getGamma (int) const
 
 double Normalizer::getPreComputedBound (int j) const
 {
-   //assert (j >= 1 && j <= m_maxDim);
-   //PW_TODO
+   assert (j >= 1 && j <= m_maxDim);
    return m_bounds[j];
 }
 
@@ -132,8 +131,7 @@ double Normalizer::getPreComputedBound (int j) const
 double Normalizer::getBound (int j) const
 {
    
-   //assert (j >= 1 && j <= m_maxDim);
-   //PW_TODO
+   assert (j >= 1 && j <= m_maxDim);
 
    if (j >= 1 && j <= Normalizer::MAX_DIM)
       return getPreComputedBound (j);

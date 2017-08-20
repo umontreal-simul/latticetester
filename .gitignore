@@ -12,3 +12,5 @@ build/
 doc/html/
 doc/xml/
 doc/latex/
+waflib/
+waftools/

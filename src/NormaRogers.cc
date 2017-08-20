@@ -96,6 +96,7 @@ double NormaRogers::calcGamma (int dim)
 
    r = 0.5 * dimr * log2 (dimr / s) + 1.5 * log2 (dimr) - t + 5.25 / (dimr + 2.5);
    r = 4 * exp2(2 * r / dimr);
+   // PW_TODO : pourquoi *4 et pas *2 ? Ça colle pas avec le cours de Pierre page 289
    return r;
 }
 

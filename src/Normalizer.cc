@@ -122,7 +122,8 @@ double Normalizer::getGamma (int) const
 
 double Normalizer::getPreComputedBound (int j) const
 {
-   assert (j >= 1 && j <= m_maxDim);
+   //assert (j >= 1 && j <= m_maxDim);
+   //PW_TODO
    return m_bounds[j];
 }
 
@@ -130,7 +131,9 @@ double Normalizer::getPreComputedBound (int j) const
 
 double Normalizer::getBound (int j) const
 {
-   assert (j >= 1 && j <= m_maxDim);
+   
+   //assert (j >= 1 && j <= m_maxDim);
+   //PW_TODO
 
    if (j >= 1 && j <= Normalizer::MAX_DIM)
       return getPreComputedBound (j);
@@ -149,6 +152,10 @@ double Normalizer::getBound (int j) const
       // x = 0.5 * log (getGamma(j)) + j * logBeta;
       //log calculation to handle large values of n
 
+
+         cout << "m_logDensity = " << m_logDensity << endl;
+
+         
       return exp(x);
    }
 }

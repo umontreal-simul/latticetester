@@ -8,7 +8,7 @@ from waflib import Utils
 
 import imp
 def waftool(name):
-    return imp.load_module('waf_' + name, *imp.find_module(name, ['./waftools']))
+    return imp.load_module('waf_' + name, *imp.find_module(name, ['./waftools', './latticetester/waftools']))
 
 NUMTYPES = {'LLDD': 1, 'ZZDD': 2, 'ZZRR': 3}
 

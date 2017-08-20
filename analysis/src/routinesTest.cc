@@ -26,6 +26,8 @@ using namespace LatticeTester;
 
 //==================================================================================
 
+#if 0
+
 int main (int argc, char *argv[])
 {
    // all the parameters
@@ -92,4 +94,6 @@ int main (int argc, char *argv[])
 
    return 0;
 }
+
+#endif
 

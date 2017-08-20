@@ -8,9 +8,10 @@ results.txt
 doxygen/html/
 doxygen/bib/
 doxygen/latex/
-build/
 doc/html/
 doc/xml/
 doc/latex/
+build/
 waflib/
 waftools/
+.waf-1.9.12-b227b06a1e8640d5a0d30ef8e165ab44/

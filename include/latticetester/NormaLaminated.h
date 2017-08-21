@@ -43,7 +43,7 @@ public:
     * factor `beta` \f$= \beta\f$ gives more weight to some of the dimensions. 
     * Restriction: \f$t \le48\f$.
     */
-   NormaLaminated (const RScal & logDensity, int t, double beta = 1);
+   NormaLaminated (RScal & logDensity, int t, double beta = 1);
 
    /**
     * Returns the value of the lattice constant \f$\gamma_j\f$ in

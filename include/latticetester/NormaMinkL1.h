@@ -49,7 +49,7 @@ public:
     * factor `beta` \f$= \beta\f$ gives more weight to some of the dimensions.
     * Restriction: \f$t \le48\f$.
     */
-   NormaMinkL1 (const RScal & logDensity, int t, double beta = 1);
+   NormaMinkL1 (RScal & logDensity, int t, double beta = 1);
 
    /**
     * Destructor.

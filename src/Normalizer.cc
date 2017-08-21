@@ -38,7 +38,7 @@ const int Normalizer::MAX_DIM;
 
 /*-------------------------------------------------------------------------*/
 
-Normalizer::Normalizer (const RScal & logDensity0, int maxDim, std::string name,
+Normalizer::Normalizer (RScal & logDensity0, int maxDim, std::string name,
                         NormType norm, double beta0) :
       m_name(name), m_norm(norm), m_logDensity(logDensity0), m_maxDim(maxDim),
       m_beta(beta0)
@@ -59,10 +59,10 @@ Normalizer::Normalizer (int maxDim, std::string name,
 /*-------------------------------------------------------------------------*/
 
 
-void Normalizer::init (const RScal &logDensity0, double beta0)
+void Normalizer::init (RScal &logDensity0, double beta0)
 /*
  * Computes the vector m_bounds that corresponds to the upper bound for a lattice of
- * density \f$Density_0\f$.
+ * log-density \f$logDensity_0\f$.
  */
 
 {
@@ -124,38 +124,34 @@ double Normalizer::getPreComputedBound (int j) const
 {
    assert (j >= 1 && j <= m_maxDim);
    return m_bounds[j];
+
+   //PW_TODO : te be removed, with init method as well
 }
 
 /*-------------------------------------------------------------------------*/
 
 double Normalizer::getBound (int j) const
 {
-   
+   /*
    assert (j >= 1 && j <= m_maxDim);
-
    if (j >= 1 && j <= Normalizer::MAX_DIM)
       return getPreComputedBound (j);
    else {
+   */
+
       double x,y;
       double logBeta;
       y = 1./j;
       logBeta = log(m_beta);
-      /* Erwan */
       #if NTL_TYPES_CODE == 3
          x = 0.5 * log (getGamma(j)) + j * logBeta - y * conv<double>(m_logDensity);
       #else
          x = 0.5 * log (getGamma(j)) + j * logBeta - y * m_logDensity;
       #endif
-
-      // x = 0.5 * log (getGamma(j)) + j * logBeta;
       //log calculation to handle large values of n
 
-
-         cout << "m_logDensity = " << m_logDensity << endl;
-
-         
       return exp(x);
-   }
+   //}
 }
 
 } // end namespace LatticeTester

@@ -89,7 +89,7 @@ double NormaMinkL1::calcGamma (int dim)
 /*=========================================================================*/
 
 
-NormaMinkL1::NormaMinkL1 (const RScal & logDensity, int t, double beta)
+NormaMinkL1::NormaMinkL1 (RScal & logDensity, int t, double beta)
       : Normalizer (logDensity, t, "MinkL1", L1NORM, beta)
 {
    m_gamma = new double[t + 1];

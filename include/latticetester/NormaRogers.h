@@ -42,7 +42,7 @@ public:
     * Note this class stores the log value of the density to handle larger values.
     * There is no restriction on the dimension \f$t\f$ which can be larger than 48.
     */
-   NormaRogers (const RScal & logDensity, int t, double beta = 1);
+   NormaRogers (RScal & logDensity, int t, double beta = 1);
 
    /**
     * Destructor.

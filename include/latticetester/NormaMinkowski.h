@@ -43,7 +43,7 @@ public:
     * Note this class stores the log value of the density to handle larger values.
     * Restriction: \f$t \le48\f$.
     */
-   NormaMinkowski (const RScal & logDensity, int t, double beta = 1);
+   NormaMinkowski (RScal & logDensity, int t, double beta = 1);
 
    /**
     * Returns the value of the lattice constant \f$\gamma_j\f$ in

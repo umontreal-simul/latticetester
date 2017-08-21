@@ -62,7 +62,7 @@ public:
     * implantés dans les classes `*Weights`.
     */
 
-   Normalizer (const RScal & logDensity, int t, std::string Name,
+   Normalizer (RScal & logDensity, int t, std::string Name,
                   NormType norm = L2NORM, double beta = 1);
 
    /**
@@ -83,7 +83,7 @@ public:
     * lattices have \f$Density\f$ points per unit volume and the bias factor 
     * is `beta` for all dimensions \f$j\le\f$ `maxDim`.
     */
-   virtual void init (const RScal & logDensity, double beta);
+   virtual void init (RScal & logDensity, double beta);
 
    /**
     * Returns this object as a string.
@@ -95,6 +95,18 @@ public:
     */
    NormType getNorm () const
    { return m_norm; }
+
+   /**
+    * Sets the log-density associated with this object to `logDensity`.
+    */
+   void setLogDensity (RScal logDensity)
+   { m_logDensity = logDensity; }
+
+   /**
+    * Returns the `logDensity` associated with this object.
+    */
+   RScal getLogDensity () const
+   { return m_logDensity; }
 
    /**
     * Sets the norm associated with this object to `norm`.

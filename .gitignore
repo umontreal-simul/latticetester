@@ -13,7 +13,9 @@ doc/xml/
 doc/latex/
 build/
 waflib/
-waftools/
+waftools/compiler.pyc
+waftools/deps.pyc
+waftools/version.pyc
 .waf-1.9.12-b227b06a1e8640d5a0d30ef8e165ab44/
 .lock-waf_darwin_build
 waf

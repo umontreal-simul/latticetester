@@ -53,6 +53,16 @@ public:
     */
    double calcBound (int alpha, int s);
 
+   /*
+    * Preventing the compiler from raising the warning: 
+    * ''
+    * latticetester/NormaPalpha.h:59:9: warning: 
+    * 'LatticeTester::NormaPalpha::init' hides overloaded virtual function [-Woverloaded-virtual]
+    * void init (int alpha);
+    * ''
+    */
+   using Normalizer::init;
+
    /**
     * Initializes the bounds for the Palpha normalization.
     */
@@ -62,6 +72,7 @@ public:
     * Returns the value of \f$\alpha\f$.
     */
    int getAlpha () const { return m_alpha; }
+   
 private:
 
   /**

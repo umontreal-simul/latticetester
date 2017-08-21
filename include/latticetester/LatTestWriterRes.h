@@ -98,7 +98,9 @@ unsigned int m_margins;
     * Set to `true` if the writer is in a tabbed section, otherwise it is
     * `false`.
     */
-   bool m_inTabbed;
+   //bool m_inTabbed;
+   // remark: unused variable
+   
 };
 
 }   

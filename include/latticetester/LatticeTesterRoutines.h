@@ -20,6 +20,8 @@
 namespace LatticeTester {
 
 
+//PW_TODO: ou est le modulo ????????
+
 /**
  * This function allows computation of the shortest non-zero vector in a lattice,
  * according to the selected norm. Many parameters can bet set by the user, otherwise

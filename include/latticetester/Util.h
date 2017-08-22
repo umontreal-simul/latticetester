@@ -543,7 +543,6 @@ inline void DivideRound (const NTL::ZZ & a, const NTL::ZZ & b, NTL::ZZ & q)
     x = abs (a);
     y = abs (b);
     //****** ATTENTION: bug de NTL: DivRem change le signe de a quand a < 0.
-    //PW_TODO à voir
     DivRem (q, r, x, y);
     LeftShift (r, r, 1);
     if (r > y)
@@ -1147,8 +1146,9 @@ void CalcDual (const Matr & A, Matr & B, int d, const MScal & m)
         for (int j = i + 1; j < d; j++)
             clear (B(i,j));
 
-        //PW_TODO check this
-        //Dans l'original, c'est Quotient pour Lac et DivideRound pour non-Lac ??
+        // WARNING:
+        // Dans l'original, c'est *Quotient* pour Lac et *DivideRound* pour non-Lac ??
+
         //Quotient(m, A(i,i), B(i,i));
         DivideRound (m, A(i,i), B(i,i));
 
@@ -1162,7 +1162,8 @@ void CalcDual (const Matr & A, Matr & B, int d, const MScal & m)
             if (B(i,j) != 0)
                 B(i,j) = -B(i,j);
 
-            //Dans l'original, c'est Quotient pour Lac et DivideRound pour non-Lac ??
+            // WARNING:
+            // Dans l'original, c'est *Quotient* pour Lac et *DivideRound* pour non-Lac ??
             //Quotient(B(i,j), A(j,j), B(i,j));
             DivideRound (B(i,j), A(j,j), B(i,j));
         }

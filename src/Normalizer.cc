@@ -125,7 +125,14 @@ double Normalizer::getPreComputedBound (int j) const
    assert (j >= 1 && j <= m_maxDim);
    return m_bounds[j];
 
-   //PW_TODO : te be removed, with init method as well
+   /*
+   remark: 
+   in the init method, the bounds are pre-computed for the dimensions of
+   the projection, and are accessible throw this function. But in the code
+   a call to function getBound (below) is made. This means the pre-computed
+   bounds are not used and the bounds are calculated again at each step with 
+   the function below. Could be improved.
+   */
 }
 
 /*-------------------------------------------------------------------------*/

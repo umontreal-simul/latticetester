@@ -84,13 +84,13 @@ int main (int argc, char *argv[])
    
    cout << "matrix = \n" << matrix << endl;
    // printing the length of shortest vector
-   cout << "Length = " << ShortestVector(matrix, norm) << endl; //, preRed, doublePrecision, fact, blocksize) << endl;
+   cout << "Length = " << ShortestVector(matrix, norm, preRed, doublePrecision, fact, blocksize) << endl;
    // printing the FoM
-   cout << "FoM = " << FigureOfMerit(matrix, normalizerType) << endl; //, preRed, doublePrecision, blocksize) << endl;
+   cout << "FoM = " << FigureOfMerit(matrix, normalizerType, preRed, doublePrecision, blocksize) << endl;
    
    cout << "\ntestMatrix = \n" << testMatrix << endl;
    // printing the FoM Beyer
-   cout << "FoM Beyer = " << FigureOfMeritBeyer(testMatrix) << endl; //, preRed, doublePrecision, blocksize) << endl;
+   cout << "FoM Beyer = " << FigureOfMeritBeyer(testMatrix, preRed, doublePrecision, blocksize) << endl;
 
    return 0;
 }

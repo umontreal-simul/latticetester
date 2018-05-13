@@ -71,7 +71,7 @@ public:
    virtual Weight getWeight (const Coordinates & projection) const;
 
    virtual unsigned int getSize () const 
-   { return m_weights.size(); } 
+   { return (unsigned int) m_weights.size(); } 
 
    /**
     * Returns a map of weights for all projections whose largest index is \c

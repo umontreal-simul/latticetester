@@ -76,7 +76,7 @@ public:
    { return m_defaultWeight; } 
 
     virtual unsigned int getSize () const 
-   { return m_weights.size(); } 
+   { return (unsigned int) m_weights.size(); } 
 
    /**
     * Sets the default weight of all orders for which a weight

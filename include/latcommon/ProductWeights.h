@@ -77,6 +77,18 @@ public:
    virtual void setDefaultWeight (Weight weight) 
    { m_defaultWeight = weight; }
 
+   virtual const std::vector<Weight>& getWeights() const
+   {
+       return m_weights;
+   }
+
+   virtual Weight getDefaultWeight() const
+   {
+       return m_defaultWeight;
+   }
+
+
+
 #ifdef WITH_XML
    /**
     * Static factory method; create a \c ProductWeights object by

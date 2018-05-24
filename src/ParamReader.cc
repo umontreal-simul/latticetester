@@ -553,4 +553,4 @@ void ParamReader::read (LatticeTesterConfig & config)
 
 //===========================================================================
 
-} // End namespace LatMRG
+} // End namespace LatticeTester

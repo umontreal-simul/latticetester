@@ -18,7 +18,7 @@
 /**
  * \file latticetester/Types.h
  *
- * Sets the <tt>typedef</tt>’s for all the types used in LatMRG. Depending on
+ * Sets the <tt>typedef</tt>’s for all the types used in LatticeTester. Depending on
  * how `NTL_TYPES_CODE` is defined, all types used will be primitives, like `long`,
  * `double`, etc., or the large number types defined in NTL will be used. The
  * `NTL_TYPES_CODE` variable is defined in the Makefile. \anchor REF__Types_mod_Types
@@ -135,7 +135,7 @@
 
 
 
-   namespace LatMRG {
+   namespace LatticeTester {
       typedef void ProcII (int, int);
    }
 

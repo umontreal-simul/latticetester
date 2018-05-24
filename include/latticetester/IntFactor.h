@@ -124,5 +124,5 @@ private:
 #endif
 };    // class IntFactor
 
-}     // namespace LatMRG
+}     // namespace LatticeTester
 #endif

@@ -1,32 +1,105 @@
-// This file is part of LatCommon.
-//
-// LatCommon
-// Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
-//
-// Licensed under the Apache License, Version 2.0 (the "License");
-// you may not use this file except in compliance with the License.
-// You may obtain a copy of the License at
-//
-//     http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an "AS IS" BASIS,
-// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-// See the License for the specific language governing permissions and
-// limitations under the License.
-
 /*!
-\mainpage LatCommon: Common Classes
 
-This library regroups the classes that are shared by LatMRG and by Lattice Builder.
+\mainpage LatticeTester Manual
 
-Can be compiled so that matrices and vectors use the boost::numeric::ublas
-backend or with the NTL backend.
+# Overview
 
-Suggested reading:
-- LatCommon::Coordinates
-- LatCommon::Sequence
-- LatCommon::CoordinateSets
+* *LatticeTester* is a C++ software library and tool to compute theoretical measures
+of uniformity (figures of merit) for lattices in the \f$t\f$-dimensional real space \f$\mathbb{R}^t\f$. 
+Such lattices contain \f$\mathbb{Z}^t\f$ as a sublattice or are contained in \f$\mathbb{Z}^t\f$, and
+are encountered for example in quasi-Monte Carlo integration
+(by lattice rules) and in the analysis of uniform random number generators
+based on linear recurrences modulo a large integer.
+
+Measures of uniformity include: 
+- the length of the shortest non-zero vector in the lattice or in its dual lattice 
+(the spectral test),
+- the Beyer ratio,
+- the \f$\mathcal{P}_\alpha\f$ test, 
+- as well as figures of merit that take normalized versions of these measures over 
+projections of the lattice on subsets of the \f$t\f$ coordinates, and then take a weighted 
+sum or the worst-case over the class of considered projections.
+
+LatticeTester is used in particular in the *Lattice Builder* and *LatMRG*
+software tools, designed to construct and analyze lattice rules and linear generators.
+
+
+
+# Contents and implementation
+
+* *LatticeTester* provides several tests applied on the lattice structure. In particular
+it implements the Spectral Test given originally by Coveyou and MacPherson \cite rCOV67a
+and improved by Knuth \cite rKNU69a. This test requires an algorithm solving the shortest
+vector problem (SVP). *LatticeTester* implements a solution based on a branch and bound
+procedure given originally by Dieter \cite rDIE75a, improved by Knuth \cite rKNU69a
+and then by Fincke and Pohst \cite mFIN85a. The lastest version uses a Cholesky decomposition
+and is precisely implemented in *LatticeTester*. This version can solve SVP for the L2 norm
+as well as for the L1 norm.
+
+The computing time of the branch and bound procedure depends mostly on the dimension (non-polynomial
+dependency). But it also significantly depends on the length of the vectors in the input basis. 
+Basically, the shortest the vectors (i.e the more the input basis is already reduced), the fastest 
+the branch and bound will be performed. Hence, one must perform a basis reduction in advance to prevent
+explodeing of the computing time.
+
+Pre-reduction available in *LatticeTester* are :
+
+<dl><dt>Dieter Pre-reduction</dt><dd>given by Dieter in \cite rDIE75a.</dd>
+
+<dt>LLL reduction</dt><dd> given Lenstra, Lenstra and Lovasz in \cite mLEN82a.</dd>
+
+<dt>Block Korkin-Zolotarev (BKZ)</dt><dd> reduction given by Schnorr \cite rSCH87a
+\cite mSCH91a.</dd>
+</dl>
+
+These pre-reductions can be perform in a polynomial time.
+
+The shortest vector given by the branch and bound shall then be compared to an upper
+bound. *LatticeTester* propose several normalization givn in \cite mCON88a :
+
+<dl><dt><tt>BestLat</tt>:</dt>
+<dd> The best theoretical bounds on the length of the shortest vector in a lattice,
+based on the densest sphere packing in lattices. For dimension up to 8,
+bounds are exacts, beyond values are approximate</dd>
+
+<dt><tt>Rogers</tt>:</dt>
+<dd> The Rogers normalization refers to Rogers bounds.</dd>
+
+<dt><tt>Laminated</tt>:</dt>
+<dd> The Laminated normalization is based on the densest sphere packing in *laminated*
+lattices.</dd>
+
+<dt><tt>Minkowski</tt>:</dt>
+<dd> The boundings lengths of Minkowski normalization are related to the Minkowski lattice constants.</dd>
+
+<dt><tt>MinkowskiL1</tt>:</dt>
+<dd> This is the same as the Minkowski noramization but this is applied for the L1 norm.</dd>
+
+</dl>
+
+Moreover, *LatticeTester* implements a variant of the branch and bound process in order to
+perform a Minkowski reduction \cite mMIN11a \cite rAFF85a. This reduction is needed for
+computing Beyer-quotient which quantify the uniformity in a lattice.
+
+
+The vast majority - and more specifically LLL and BKZ reduction - of the implementation
+is based on the NTL library developped by Victor Shoup \cite iSHO05a. It is based itself
+on the GNU Multiple Precision Arithmetic Library (GMP) \cite iGMP06a, which allow several
+precision for calculs including an arbitrary precision.
+
+The precision of calcul must be precise before compiling the software.
+
+
+
+
+
+# Manual Outline
+
+- \subpage aaroutine
+- \subpage a_intro
+- \subpage detailed_usage
+
+
+
 
 */
-// vim: ft=cpp.doxygen

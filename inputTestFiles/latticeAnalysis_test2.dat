@@ -1,0 +1,17 @@
+SPECTRAL MINKL1
+LenstraLL DOUBLE 0.999999
+2			matrix dimension
+1 51	
+0 101
+100000000	MaxNodeBB
+TERMINAL	Output
+
+
+Comments
+
+This matrix corresponds to a MRG with
+	order = 1
+	modulo = 101
+	a = 51
+There are 2 hyperplans at the intersection with the unit cube in 2 dimension.
+See plots page 45 of Pierre's course.

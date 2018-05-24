@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "latcommon/IntFactor.h"
+#include "latticetester/IntFactor.h"
 
 #include <fstream>
 #include <sstream>
@@ -23,12 +23,16 @@
 #include <iomanip>
 #include <string>
 
+#include <unistd.h>
+#include <stdio.h>
+
+
 #ifdef WITH_NTL
 #include "NTL/ZZ.h"
 #endif
 
 
-namespace LatCommon
+namespace LatticeTester
 {
 
 
@@ -73,24 +77,33 @@ std::string IntFactor::toString (PrimeType stat)
 
 PrimeType IntFactor::isPrime (const MScal & y, long k)
 {
-   MScal NbPrem;
+   static constexpr unsigned int NB_PRIMES = 6543;
+   MScal NbPrem = 2;
    NTL::ZZ LIM;
-   LIM = NTL::to_ZZ ("4294967295");
-   std::ifstream in ("/u/simardr/latmrg/prime.dat"); // contains primes < 2^16
-   if (!(in.is_open())) {
-      std::cerr << "Error:   cannot open file   prime.dat\n";
-      exit(8);
-   }
-   in.ignore (100, '\n');  // ignore first line = number of primes in file
+   LIM = NTL::conv<ZZ>("4295098369");
+      //    unsigned int c[200];
+   static const std::array<unsigned int, NB_PRIMES> primes =
+      {{
+            #include "../data/prime.dat"
+      }};
+   // std::ifstream in ("../share/latticetester/data/prime.dat"); // contains primes < 2^16
+      //    if (!(in.is_open())) {
+      //       std::cerr << "Error:   cannot open file   prime.dat\n";
+      //       exit(8);
+      //    }
+      //    in.ignore (100, '\n');  // ignore first line = number of primes in file
 
    MScal ys = NTL::SqrRoot (y);
-   if (ys > 65536)
-      ys = 65536;
-   // The condition NbPrem < 65536 is necessary because there seems to
-   // be a bug in ZZ input: does not detect end-of-file and gives an error.
-   while ((in >> NbPrem) && (NbPrem <= ys)) {
+//    if (ys > 65536)
+//       ys = 65536;
+//    // The condition NbPrem < 65536 is necessary because there seems to
+//    // be a bug in ZZ input: does not detect end-of-file and gives an error.
+   unsigned int i = 1;
+   while (i < NB_PRIMES && (NbPrem <= ys)) {
       if (y % NbPrem == 0)
          return COMPOSITE;
+      NbPrem = primes[i];
+      i++;
    }
    if (y <= LIM)
       return PRIME;
@@ -110,7 +123,7 @@ PrimeType IntFactor::isPrime (const MScal& n, long)
 {
    if (n == 2)
       return PRIME;
-   if ((n & 1) == 0)
+   if ((n & 1) == 0) //means that n is even
       return COMPOSITE;
    long factmax = static_cast<long>(std::sqrt (n));
    for (long i = 3; i <= factmax; i += 2)
@@ -146,4 +159,4 @@ PrimeType IntFactor::isProbPrime (const MScal & y, long k)
 
 //===========================================================================
 
-}                                 // namespace LatMRG
+}                                 // namespace LatticeTester

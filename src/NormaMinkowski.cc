@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,11 +15,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "latcommon/NormaMinkowski.h"
+#include "latticetester/NormaMinkowski.h"
 
-namespace LatCommon
+namespace LatticeTester
 {
-
 
 const double NormaMinkowski::m_gamma[ ] =
    {
@@ -79,12 +78,12 @@ const double NormaMinkowski::m_gamma[ ] =
 /*=========================================================================*/
 
 
-NormaMinkowski::NormaMinkowski (const MScal & m, int k, int t, double beta)
-      : Normalizer (m, k, t, "Minkowski", L2NORM, beta)
+NormaMinkowski::NormaMinkowski (RScal & logDensity, int t, double beta)
+      : Normalizer (logDensity, t, "Minkowski", L2NORM, beta)
 {
    if (t > MAX_DIM)
       throw std::invalid_argument("NormaMinkowski:   dimension > MAX_DIM");
-   Normalizer::init (m, k, beta);
+   Normalizer::init (logDensity, beta);
 }
 
 

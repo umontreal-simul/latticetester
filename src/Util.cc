@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "latcommon/Util.h"
+#include "latticetester/Util.h"
 #include <cstdlib>
 #include <cmath>
 #include <climits>
@@ -59,7 +59,7 @@ unsigned long RandValue ()
 //============================================================================
 
 
-namespace LatCommon
+namespace LatticeTester
 {
 
 const long TWO_EXP[64] = {
@@ -126,6 +126,10 @@ long gcd (long u, long v)
 void Euclide (const MScal & A, const MScal & B, MScal & C, MScal & D, MScal & E,
               MScal & F, MScal & G)
 {
+
+   //MScal oldA = A;
+   //MScal oldB = B;
+
    MScal X, Y, Z;
    G = A;
    Z = B;
@@ -133,6 +137,10 @@ void Euclide (const MScal & A, const MScal & B, MScal & C, MScal & D, MScal & E,
    clear (D);
    clear (E);
    set9 (F);
+
+   //cout << "   Euclide :" << endl;
+   //cout << "      inputs: A = " << oldA << ", B = " << oldB << endl;
+   //cout << "      values used: A=" << A << ", B=" << B << ", C=" << C << ", D=" << D << ", E=" << E << ", F=" << F << ", G=" << G << ", (X=" << X << ", Y=" << Y << ", Z=" << Z << ")" << endl;
 
    if (IsZero(A)) {
       swap9<MScal>(G, Z);
@@ -154,6 +162,11 @@ void Euclide (const MScal & A, const MScal & B, MScal & C, MScal & D, MScal & E,
       Y = X * D;
       F += Y;
    }
+
+   //cout << "             " << C << " x A + " << D << " x B = " << G << endl;
+   //cout << "             " << E << " x A + " << F << " x B = 0" << endl;
+   //cout << "      outputs: A=" << A << ", B=" << B << ", C=" << C << ", D=" << D << ", E=" << E << ", F=" << F << ", G=" << G << endl;
+   //cout << endl;
 }
 
 
@@ -200,7 +213,7 @@ int RandInt (int i, int j)
 }
 
 
-double RandU01() 
+double RandU01()
 {
    return NORM53 * (RandValue() >> 11);
 }
@@ -221,11 +234,11 @@ void SetSeed (unsigned long seed)  {
    etat2 = seed[1] | 512;
    etat3 = seed[2] | 4096;
    etat4 = seed[3] | 131072;
-   etat5 = seed[4] | 8388608; 
+   etat5 = seed[4] | 8388608;
    */
 }
 
 
 //===========================================================================
 
-}        // namespace LatCommon
+}        // namespace LatticeTester

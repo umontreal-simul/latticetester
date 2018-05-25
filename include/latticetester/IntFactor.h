@@ -115,13 +115,11 @@ private:
     */
    LatticeTester::PrimeType m_status;
 
-#ifdef WITH_NTL
    /**
     * Applies the Miller-Rabin probability test with \f$k\f$ trials to
     * \f$y\f$.
     */
    static LatticeTester::PrimeType isProbPrime (const MScal & y, long k);
-#endif
 };    // class IntFactor
 
 }     // namespace LatticeTester

@@ -26,10 +26,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-
-#ifdef WITH_NTL
 #include "NTL/ZZ.h"
-#endif
 
 
 namespace LatticeTester
@@ -71,9 +68,6 @@ std::string IntFactor::toString (PrimeType stat)
 
 
 //===========================================================================
-
-
-#ifdef WITH_NTL
 
 PrimeType IntFactor::isPrime (const MScal & y, long k)
 {
@@ -119,27 +113,9 @@ PrimeType IntFactor::isPrime (long k)
    return isPrime (m_factor, k);
 }
 
-#else
-
-PrimeType IntFactor::isPrime (const MScal& n, long)
-{
-   if (n == 2)
-      return PRIME;
-   if ((n & 1) == 0) //means that n is even
-      return COMPOSITE;
-   long factmax = static_cast<long>(std::sqrt (n));
-   for (long i = 3; i <= factmax; i += 2)
-      if (n % i == 0)
-         return COMPOSITE;
-   return PRIME;
-}
-
-#endif
-
 
 //===========================================================================
 
-#ifdef WITH_NTL
 PrimeType IntFactor::isProbPrime (const MScal & y, long k)
 {
    PrimeType stat;
@@ -157,7 +133,6 @@ PrimeType IntFactor::isProbPrime (const MScal & y, long k)
    }
    return stat;
 }
-#endif
 
 //===========================================================================
 

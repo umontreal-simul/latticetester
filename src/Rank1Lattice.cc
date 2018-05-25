@@ -2,11 +2,6 @@
 #include "latticetester/Util.h"
 #include <cassert>
 
-#ifdef WITH_NTL
-#else
-using namespace boost::numeric::ublas;
-#endif
-
 using namespace std;
 using namespace LatticeTester;
 

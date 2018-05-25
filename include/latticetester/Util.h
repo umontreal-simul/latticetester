@@ -38,10 +38,8 @@
 #include "latticetester/Types.h"
 #include "latticetester/Const.h"
 
-#ifdef WITH_NTL
 #include "NTL/tools.h"
 #include "NTL/ZZ.h"
-#endif
 
 
 namespace LatticeTester {
@@ -93,23 +91,6 @@ unsigned long RandBits (int s);
  */
 void SetSeed (unsigned long seed);
 
-/**
- * @}
- */
-
-/**
- * \name NTL compatibility utilities
- *
- * @{
- */
-
-#ifndef WITH_NTL
-/**
- * Converts \f$y\f$ to \f$x\f$.
- */
-template <typename A, typename B>
-void conv (A & x, const B & y) { x = y; }
-#endif
 
 /**
  * Returns 1 if \f$x\f$ is odd, and 0 otherwise.
@@ -144,7 +125,6 @@ inline void set9 (long & x)
     x = 1;
 }
 
-#ifdef WITH_NTL
 /**
  * Sets \f$x\f$ to 1.
  */
@@ -152,7 +132,6 @@ inline void set9 (NTL::ZZ & x)
 {
     NTL::set(x);
 }
-#endif
 
 /**
  * @}
@@ -164,7 +143,6 @@ inline void set9 (NTL::ZZ & x)
  * @{
  */
 
-#ifdef WITH_NTL
 /**
  * Returns \f$p^i\f$.
  */
@@ -172,9 +150,7 @@ inline long power (long p, long i)
 {
    return NTL::power_long (p, i);
 }
-#endif
 
-#ifdef WITH_NTL
 /**
  * Sets \f$z = 2^i\f$.
  */
@@ -189,15 +165,6 @@ inline void power2 (ZZ& z, long i)
 {
    z = NTL::power_ZZ (2, i);
 }
-#else
-/**
- * Sets \f$z = 2^i\f$.
- */
-inline void power2 (long & z, long i)
-{
-   z = 1L << i;
-}
-#endif
 
 /**
  * Returns \f$\sqrt{x}\f$ for \f$x\ge0\f$, and \f$-1\f$ for \f$x < 0\f$.
@@ -328,7 +295,6 @@ inline void Quotient (const Int & a, const Int & b, Int & q)
     q = a/b;
 }
 
-#ifdef WITH_NTL
 /**
  * \copydoc Quotient(const Int&, const Int&, Int*)
  */
@@ -339,7 +305,6 @@ inline void Quotient (const NTL::ZZ & a, const NTL::ZZ & b, NTL::ZZ & q)
     if (q < 0 && r != 0)
        ++q;
 }
-#endif
 
 template <typename Real>
 inline void Modulo (const Real & a, const Real & b, Real & r)
@@ -398,7 +363,6 @@ inline void Modulo (const long & a, const long & b, long & r)
     }
 }
 
-#ifdef WITH_NTL
 /**
  * \copydoc Modulo(const long&, const long&, long&)
  */
@@ -408,7 +372,6 @@ inline void Modulo (const NTL::ZZ & a, const NTL::ZZ & b, NTL::ZZ & r)
     if (r < 0)
         r -= b;
 }
-#endif
 
 /**
  * Computes the quotient \f$q = a/b\f$ and remainder \f$r = a
@@ -468,7 +431,6 @@ inline void Divide (long & q, long & r, const long & a, const long & b)
     r = z.rem;       // r = a % b;
 }
 
-#ifdef WITH_NTL
 /**
  * \copydoc Divide(long&, long&, const long&, const long&)
  */
@@ -481,7 +443,6 @@ inline void Divide (NTL::ZZ & q, NTL::ZZ & r, const NTL::ZZ & a,
         r -= b;
     }
 }
-#endif
 
 /**
  * Integer division: \f$a = b/d\f$.
@@ -513,13 +474,8 @@ inline void DivideRound (const long & a, const long & b, long & q)
        neg = true;
     else
        neg = false;
-#ifdef WITH_NTL
     long x = abs(a);
     long y = abs(b);
-#else
-    long x = std::abs(a);
-    long y = std::abs(b);
-#endif
     ldiv_t z = ldiv (x, y);
     q = z.quot;
     long r = z.rem;
@@ -530,7 +486,6 @@ inline void DivideRound (const long & a, const long & b, long & q)
        q = -q;
 }
 
-#ifdef WITH_NTL
 /**
  * \copydoc DivideRound(const long&, const long&, long&)
  */
@@ -550,7 +505,6 @@ inline void DivideRound (const NTL::ZZ & a, const NTL::ZZ & b, NTL::ZZ & q)
     if (s)
        q = -q;
 }
-#endif
 
 /**
  * Returns the value of the greatest common divisor of \f$a\f$ and \f$b\f$.
@@ -742,11 +696,7 @@ inline void CalcNorm (const Vect & V, int n, Scal & S, NormType norm)
         case L1NORM:
             for (int i = 0; i < n; i++) {
                 conv (y, V[i]);
-#ifdef WITH_NTL
                 S += abs(y);
-#else
-                S += std::abs(y);
-#endif
             }
             break;
 
@@ -760,11 +710,7 @@ inline void CalcNorm (const Vect & V, int n, Scal & S, NormType norm)
 
         case SUPNORM:
             for (int i = 0; i < n; i++) {
-#ifdef WITH_NTL
                 conv (y, abs(V[i]));
-#else
-                conv (y, std::abs(V[i]));
-#endif
                 if (y > S)
                     S = y;
             }
@@ -773,11 +719,7 @@ inline void CalcNorm (const Vect & V, int n, Scal & S, NormType norm)
         case ZAREMBANORM:
             S = 1.0;
             for (int i = 0; i < n; i++) {
-#ifdef WITH_NTL
                 conv (y, abs(V[i]));
-#else
-                conv (y, std::abs(V[i]));
-#endif
                 if (y > 1.0)
                    S *= y;
             }
@@ -912,7 +854,6 @@ inline void CreateMatr (MMat& A, int d)
     //clear (A);
 }
 
-#ifdef WITH_NTL
 /**
  * \copydoc CreateMatr(MMat&, int)
  */
@@ -920,7 +861,6 @@ inline void CreateMatr (MMatP & A, int d)
 {
     A.SetDims (d, d);   clear (A);
 }
-#endif
 
 /**
  * Creates the matrix \f$A\f$ of dimensions (<tt>line</tt>)
@@ -932,7 +872,6 @@ inline void CreateMatr (MMat& A, int line, int col)
     //clear (A);
 }
 
-#ifdef WITH_NTL
 /**
  * \copydoc CreateMatr(MMat&, int, int)
  */
@@ -940,7 +879,6 @@ inline void CreateMatr (MMatP & A, int line, int col)
 {
     A.SetDims (line, col);   clear (A);
 }
-#endif
 
 /**
  * Deletes the matrix \f$A\f$.
@@ -950,7 +888,6 @@ inline void DeleteMatr (MMat& A)
     A.clear ();
 }
 
-#ifdef WITH_NTL
 /**
  * As above.
  */
@@ -958,7 +895,6 @@ inline void DeleteMatr (MMatP & A)
 {
     A.kill ();
 }
-#endif
 
 /**
  * Copies matrix \f$B\f$ into matrix \f$A\f$.
@@ -1308,7 +1244,6 @@ ValType det_double(const boost::numeric::ublas::matrix<ValType>& matrix)
 #endif
 
 
-#ifdef WITH_NTL
 
 namespace NTL {
 
@@ -1339,6 +1274,3 @@ inline void conv (double & r, const char* c) {
 }     // namespace NTL
 
 #endif
-
-#endif
-

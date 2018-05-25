@@ -9,8 +9,6 @@ DEBUG_FLAGS = -std=c++14 -g -Wall -O2
 INCLUDES = -I./include
 
 # This is included for backwards compatibility
-DEFINITIONS = -DWITH_NTL -DHAVE_NTL_VECTOR_H -DHAVE_GMP_H -DHAVE_ULCG_H\
-	      -DHAVE_NUM_H
 DEF_LLDD = -DNTL_TYPES_CODE=1
 DEF_ZZDD = -DNTL_TYPES_CODE=2
 DEF_ZZRR = -DNTL_TYPES_CODE=3
@@ -60,10 +58,10 @@ bin: lib progs_objects
 progs_objects: $(PROGS_O)
 
 $(OBJ_DIR)/%.o:$(SRC_DIR)/%.cc
-	$(CC) $(CFLAGS) $(INCLUDES) $(DEFINITIONS) $(NUM_TYPES) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) $(NUM_TYPES) -c $< -o $@
 
 $(PRO_DIR)/%.o:$(PRO_DIR)/%.cc
-	$(CC) $(CFLAGS) $(INCLUDES) $(DEFINITIONS) $(NUM_TYPES) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) $(NUM_TYPES) -c $< -o $@
 	$(CC) $@ $(STAT_LIBS_PATH) $(STAT_LIBS) $(DYN_LIBS_PATH) $(DYN_LIBS) -o $(BIN_DIR)/$(@:progs/%.o=%) 
 
 #==============================================================================

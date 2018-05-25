@@ -7,11 +7,10 @@
 #include "latticetester/NormaMinkowski.h"
 #include "latticetester/NormaPalpha.h"
 
-#ifdef WITH_NTL
 #include "NTL/quad_float.h"
 #include "NTL/RR.h"
+
 using namespace NTL;
-#endif
 using namespace std;
 using namespace LatticeTester;
 

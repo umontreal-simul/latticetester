@@ -20,10 +20,8 @@
 #include <cmath>
 #include <climits>
 
-#ifdef WITH_NTL
 #include "NTL/ZZ.h"
 using namespace NTL;
-#endif
 
 namespace
 {

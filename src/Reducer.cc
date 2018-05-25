@@ -30,7 +30,6 @@
 #include "latticetester/Normalizer.h"
 #include "latticetester/Reducer.h"
 
-#ifdef WITH_NTL
 #include <NTL/tools.h>
 #include <NTL/ZZ.h>
 #include <NTL/matrix.h>
@@ -38,13 +37,6 @@
 #include <NTL/vec_vec_ZZ.h>
 #include <NTL/mat_ZZ.h>
 #include <NTL/LLL.h>
-#else
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/matrix_proxy.hpp>
-
-using namespace boost::numeric::ublas;
-#endif
 
 
 using namespace std;
@@ -624,8 +616,6 @@ void Reducer::reductionFaible (int i, int j)
 
 //=========================================================================
 
-#ifdef WITH_NTL
-
 void Reducer::redLLLNTLExact(double fact){
 
 #if NTL_TYPES_CODE > 1
@@ -644,7 +634,7 @@ void Reducer::redLLLNTLExact(double fact){
 
 #else
 
-   cout << "**** WARNING redLLLNTLExact cannot be use with Double Precision (LLDD)\n";
+   cout << "**** WARNING redLLLNTLExact cannot be used with Double Precision (LLDD)\n";
    cout << "**** in NTL nor without NTL. LLL reduction is used with our algorithm \n";
    cout << "which can be slower.";
    redLLL(fact, 1000000, m_lat->getDim ());
@@ -771,9 +761,6 @@ void Reducer::redLLLNTL(double fact, PrecisionType precision, int dim) {
       delete lattmp;
 }
 
-//=========================================================================
-
-#endif
 
 //=========================================================================
 
@@ -1723,4 +1710,4 @@ bool Reducer::shortestVectorDieter (NormType norm)
 
 //=========================================================================
 
-}                                 // end namespace
+} // end namespace LatticeTester

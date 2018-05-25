@@ -248,14 +248,14 @@ void ParamReader::readLong(long& field, unsigned int ln, unsigned int pos)
 
 //===========================================================================
 
-#ifdef WITH_NTL
 void ParamReader::readZZ(NTL::ZZ & field, unsigned int ln, int pos)
 {
    string val;
    getToken(val, ln, pos);
    field = to_ZZ(val.c_str());
 }
-#endif
+
+
 //===========================================================================
 
 void ParamReader::readDouble(double& field, unsigned int ln, unsigned int pos)

@@ -11,16 +11,10 @@
 #include <typeinfo>
 #include <list>
 
-#ifdef WITH_NTL
 #include "NTL/ZZ.h"
 #include "NTL/LLL.h"
 #include "NTL/vec_ZZ.h"
 #include "NTL/mat_ZZ.h"
-#else
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/io.hpp>
-#include <boost/numeric/ublas/lu.hpp>
-#endif
 
 #include "latticetester/Types.h"
 #include "latticetester/Util.h"

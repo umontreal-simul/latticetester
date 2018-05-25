@@ -28,16 +28,12 @@
 #ifndef LATTICETESTER__TYPES_H
 #define LATTICETESTER__TYPES_H
 
-//#define WITH_NTL
-//#define NTL_TYPES_CODE 2
 
-#ifdef WITH_NTL
-
-   #include <NTL/vector.h>
-   #include <NTL/matrix.h>
-   #include "ntlwrap.h"
-   using NTL::matrix_row;
-   using namespace NTL;
+#include <NTL/vector.h>
+#include <NTL/matrix.h>
+#include "ntlwrap.h"
+using NTL::matrix_row;
+using namespace NTL;
 
 #if NTL_TYPES_CODE == 1
    // the case  "LLDD"
@@ -129,8 +125,6 @@
    typedef NTL::matrix<RR> RMat;
    typedef ZZ_pX    PolX;
    typedef ZZ_pE    PolE;
-#else
-#error "NTL_TYPES_CODE is not defined"
 #endif
 
 
@@ -139,32 +133,4 @@
       typedef void ProcII (int, int);
    }
 
-#else
-
-   // use Boost ublas
-   #include <boost/numeric/ublas/vector.hpp>
-   #include <boost/numeric/ublas/vector_proxy.hpp>
-   #include <boost/numeric/ublas/matrix.hpp>
-   #include <boost/numeric/ublas/matrix_proxy.hpp>
-
-
-   typedef long                                 MScal;
-   typedef boost::numeric::ublas::vector<long>  MVect;
-   typedef boost::numeric::ublas::matrix<long>  MMat;
-
-   typedef long                                 BScal;
-   typedef boost::numeric::ublas::vector<long>  BVect;
-   typedef boost::numeric::ublas::matrix<long>  BMat;
-
-   typedef double                                 NScal;
-   typedef boost::numeric::ublas::vector<double>  NVect;
-   typedef boost::numeric::ublas::matrix<double>  NMat;
-
-   typedef double                                 RScal;
-   typedef boost::numeric::ublas::vector<double>  RVect;
-   typedef boost::numeric::ublas::matrix<double>  RMat;
-
 #endif
-#endif
-
-

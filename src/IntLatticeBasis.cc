@@ -32,17 +32,10 @@
 #include <string>
 #include <typeinfo>
 
-#ifdef WITH_NTL
 #include "NTL/quad_float.h"
 #include "NTL/RR.h"
-using namespace NTL;
-#else
-#include <boost/numeric/ublas/vector.hpp>
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/matrix_proxy.hpp>
-using namespace boost::numeric::ublas;
-#endif
 
+using namespace NTL;
 using namespace std;
 
 

@@ -15,10 +15,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifdef WITH_NTL
 #include "NTL/ZZ.h"
 #include "NTL/tools.h"
-#endif
 
 #include <cassert>
 #include <cstdlib>

@@ -28,7 +28,7 @@ NTL_CLIENT
  * The two floowing two classes are copies from NTL::Vec<T> and NTL::Mat<T>, but
  * they contain additional member functions having same names to the ones
  * used in boost library.
- * This name conversion is meant to have the samee function names in boost and NTL
+ * This name conversion is meant to have the same function names in boost and NTL
  * and allows us to have LatticeTester work with either boost library or NTL library
  * depending on WITH_NTL
  */

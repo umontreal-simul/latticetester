@@ -1402,6 +1402,7 @@ bool Reducer::redBB0 (NormType norm)
  * vector square length will be in m_lMin2.
  */
 {
+      
    bool withDual = m_lat->withDual();
    bool smaller = false;
    int k, h;
@@ -1487,17 +1488,17 @@ bool Reducer::redBB0 (NormType norm)
       }
 
       /* The new candidate for a shortest vector will be in
-         m_lat->getBasis()[1]. */
+         m_lat->getBasis()(0). */
       /* In the case of L1NORM or others, check that it is really smaller.  */
       if (norm == L2NORM)
-         m_lat->permute (k, 1);
+         m_lat->permute (k, 0);
       else {
          matrix_row<BMat> row5(m_lat->getBasis(), k);
          CalcNorm (row5, dim, x, norm);
          if (x < m_lMin) {
             m_lMin = x;
             m_lMin2 = m_lMin * m_lMin;
-            m_lat->permute (k, 1);
+            m_lat->permute (k, 0);
          }
       }
    }

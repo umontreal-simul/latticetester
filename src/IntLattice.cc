@@ -143,11 +143,7 @@ void IntLattice::calcLgVolDual2 (double lgm2)
 
 void IntLattice::dualize ()
 {
-   BMat tmp(m_basis.size1(), m_basis.size2());
-
-   tmp = m_basis;
-   m_basis = m_dualbasis;
-   m_dualbasis = tmp;
+   std::swap(m_basis, m_dualbasis);
    setNegativeNorm ();
    setDualNegativeNorm ();
 
@@ -177,7 +173,7 @@ void IntLattice::buildProjection (IntLattice* lattice, const Coordinates & proj)
    for (Coordinates::const_iterator iter = proj.begin();
         iter != proj.end(); ++iter) {
       for (int j = 0; j < dim; j++){
-         lattice->m_dualbasis[j][i] = m_basis[j][*iter];
+         lattice->m_dualbasis(j, i) = m_basis(j, (*iter));
       }
       ++i;
    }

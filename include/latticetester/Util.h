@@ -616,7 +616,7 @@ inline void DeleteVect (Real* & A)
 template <typename Vect>
 inline void CreateVect (Vect & A, int d)
 {
-    A.resize (1 + d);
+    A.resize (1 + d);   // Pierre: weird, maybe should be d?
     for (int i = 0; i < (d+1); i++)
         A[i] = 0;
     // aaa clear (A);
@@ -662,7 +662,7 @@ inline void SetValue (Real* A, int d, const Real & x)
 }
 
 /**
- * Prints components \f$[c..d]\f$ of vector \f$A\f$ as a string. Components
+ * Prints components \f$[c..d-1]\f$ of vector \f$A\f$ as a string. Components
  * are separated by string `sep`.
  */
 template <typename Vect>
@@ -670,9 +670,9 @@ std::string toString (const Vect & A, int c, int d, const char* sep)
 {
     std::ostringstream out;
     out << "[";
-    for (int i = c; i < d; i++)
+    for (int i = c; i < d-1; i++)
         out << A[i] << sep;
-    out << A[d] << "]";
+    out << A[d-1] << "]";
     return out.str ();
 }
 

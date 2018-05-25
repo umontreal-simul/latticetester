@@ -16,9 +16,6 @@ namespace LatticeTester {
  * \f]
  * Without loss of generality, one may choose \f$a_1 = 1\f$.
  *
- * \warning There is some code duplication with LatticeTester::Rank1Lattice.  This
- * should be fixed in the future.
- *
  */
 class Rank1Lattice: public LatticeTester::IntLattice {
 public:

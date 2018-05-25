@@ -16,9 +16,8 @@ namespace LatticeTester
 
 Rank1Lattice::Rank1Lattice (const MScal & n, const MVect & a, int maxDim,
                            NormType norm):
-                  IntLattice::IntLattice (n, maxDim, norm)
+                  IntLattice::IntLattice (n, 1, maxDim, norm)
 {
-   m_a.resize(maxDim);
    m_a = a;
    init();
 }
@@ -50,8 +49,6 @@ Rank1Lattice & Rank1Lattice::operator= (const Rank1Lattice & lat)
       return * this;
    copy (lat);
    init ();
-   int dim = lat.getDim ();
-   m_a.resize (dim);
    m_a = lat.m_a;
    return *this;
 }
@@ -65,8 +62,6 @@ Rank1Lattice::Rank1Lattice (const Rank1Lattice & lat):
 {
    // MyExit (1, "Rank1Lattice:: constructeur n'est pas terminé " );
    init ();
-   int maxDim = lat.getDim ();
-   m_a.resize (maxDim);
    m_a = lat.m_a;
 }
 
@@ -75,7 +70,7 @@ Rank1Lattice::Rank1Lattice (const Rank1Lattice & lat):
 
 std::string Rank1Lattice::toStringCoef ()const
 {
-   return toString (m_a, 1, getDim ());
+   return toString (m_a, 0, getDim ());
 }
 
 
@@ -112,7 +107,7 @@ void Rank1Lattice::buildBasis (int d)
          }
       }
    }
-
+   
    // if a[0] != 1, the basis must be triangularized
    if (m_basis (0, 0) != 1) {
       Triangularization < BMat > (m_basis, m_dualbasis, d, d, m_modulo);
@@ -120,7 +115,7 @@ void Rank1Lattice::buildBasis (int d)
    }
    CalcDual < BMat > (m_basis, m_dualbasis, d, m_modulo);
    setNegativeNorm ();
-   setDualNegativeNorm (true);
+   setDualNegativeNorm ();
 }
 
 //===========================================================================

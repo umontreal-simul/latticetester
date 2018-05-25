@@ -229,7 +229,7 @@ public:
 
     /**
      * Updates the norm of all basis vectors from dimensions `d1` to `d2`
-     * (inclusive) using the `L2NORM`.
+     * (exclusive) using the `L2NORM`.
      */
     void updateScalL2Norm (const int k1, const int k2);
 
@@ -241,7 +241,7 @@ public:
 
     /**
      * Updates the norm of all dual basis vectors from dimensions `d1`
-     * to `d2` (inclusive) using the `L2NORM`.
+     * to `d2` (exclusive) using the `L2NORM`.
      */
     void updateDualScalL2Norm (const int k1, const int k2);
 

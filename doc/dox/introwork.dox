@@ -1,0 +1,57 @@
+ * \begin{algorithm}[ht!]
+ *     \vspace{10pt}
+ *     \caption{Branch And Bound}
+ *     \begin{algorithmic}[1]
+ *         \Function{BranchBound}{$b, n$}\Comment{Where  $b = (b_{1},
+ *          ..., b_{n})$ ordered basis of a Lattice}
+ *             \State Compute $C=(c_{i,j})_{i,j \in [1..n]}$ Cholesky
+ *          decomposition of Product Scalar Matrix
+ *         \State{ $v = b_{1}$}
+ *         \State $Find = True$
+ *         \While{Find} \Comment{While we find a shorter vector}
+ *             \State $v \gets v'$
+ *             \State $z = (z_{1}, ..., z_{n}) = (0 ... 0)$
+ *             \State $Find \gets BBrec(v, b, n)$
+ *         \EndWhile
+ *         \EndFunction
+ *     \end{algorithmic}
+ * \label{BBall}
+ * \end{algorithm}
+ *
+ *
+ * \begin{algorithm}[ht!]
+ *     \vspace{10pt}
+ *     \caption{Branch And Bound Recursif}
+ *         \begin{algorithmic}[1]
+ *             \Function{BBrec}{$v, b, h, z$}\Comment{Where  $b = (b_{1},
+ *          ..., b_{n})$ ordered basis of a Lattice}
+ *             \State $min \gets \Delta^{-}(v, z, h, b)$
+ *             \State $max \gets \Delta^{+}(v, z, h, b)$
+ *             \If{$max < min$} \Comment{If there is no value possible
+ *          for $z_{h}$, it means that this branch cannot lead to a
+ *          shorter vector}
+ *                 \State return $False$
+ *         \ElsIf{h=0}
+ *             \State $v \gets \sum_{i=1}^{n}z_{i}b_{i}$
+ *             \State return $True$
+ *             \EndIf
+ *         \For{$i \in [min .. max]$} \Comment{i takes successively the
+ *         value $ctr = \frac{min + max}{2}$, $ctr+1$, $ctr-1$, $ctr+2$,
+ *         $ctr-2$, etc.}
+ *             \If{$i = 0$, $h=1$ and $\forall k \in [2..n], z_{k} = 0$}
+ *                 \State \textit{continue} \Comment{Avoid null vector}
+ *             \ElsIf{$h=n$ and $i<0$}
+ *                 \State \textit{continue}  \Comment{Without losing any
+ *                 generality, we consider only the case $z_{n} \geq 0$}
+ *             \EndIf
+ *             \State $z_{h} = i$
+ *                 \If{BBrec(v, b, h-1, z)}
+ *                 \State return $True$
+ *             \EndIf
+ *             \EndFor
+ *             \State return $False$
+ *         \EndFunction
+ *     \end{algorithmic}
+ * \label{BBrec}
+ * \end{algorithm}
+ *

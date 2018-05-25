@@ -1,0 +1,28 @@
+# Figure of Merit
+SPECTRAL MINKL1	
+
+# pre-reduction type
+LenstraLL DOUBLE 0.999999	
+
+# basis dimension
+2		
+
+# matrix with basis vector in line				
+1 12
+0 101
+
+# Maximum number of visited nodes in the BB
+100000000
+
+# Output printing
+TERMINAL		
+
+
+
+COMMENTS
+This matrix corresponds to a MRG with
+	order = 1
+	modulo = 101
+	a = 12
+There are 12 hyperplans at the intersection with the unit cube in 2 dimension.
+See plots page 45 of Pierre's course.

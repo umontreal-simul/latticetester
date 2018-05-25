@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,10 +18,10 @@
 #include <sstream>
 #include <iostream>
 
-#include "latcommon/Lacunary.h"
+#include "latticetester/Lacunary.h"
 
 
-namespace LatCommon
+namespace LatticeTester
 {
 
 /*=========================================================================*/
@@ -31,7 +31,7 @@ std::string Lacunary::toString () const
    std::ostringstream out;
    out << "dim = " << m_dim;
    out << "\nLac = {\n   ";
-   for (int i = 1; i <= m_dim; i++)
+   for (int i = 0; i < m_dim; i++)
       out << m_lac[i] << "\n   ";
    out << "}\n";
    return out.str ();
@@ -51,13 +51,13 @@ bool Lacunary::calcIndicesStreams (int s, int w, int & minDim,
    }
 
    if (m_dim < maxDim) {
-      DeleteVect (m_lac);
-      CreateVect (m_lac, maxDim);
+      LatticeTester::DeleteVect (m_lac);
+      LatticeTester::CreateVect (m_lac, maxDim);
       m_dim = maxDim;
    }
 
    BScal t1;
-   power2 (t1, (long) w);
+   LatticeTester::power2 (t1, (long) w);
    BScal t;
    t = 0;
    int i = 1;
@@ -73,4 +73,4 @@ bool Lacunary::calcIndicesStreams (int s, int w, int & minDim,
    }
 }
 
-}                // namespace LatMRG
+} // namespace LatticeTester

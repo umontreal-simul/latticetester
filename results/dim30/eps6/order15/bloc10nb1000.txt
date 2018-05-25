@@ -1,0 +1,59 @@
+BlocSize = 10
+epsilon = 1e-06
+dimension = 30
+nombre de matrices testées = 1000
+ordre de la matrice : 15
+Nombre de Branch and Bound non terminés : 0
+Dual non utilisé
+
+---------------- TIMING AVG ----------------
+
+       PairRedPrimal = 0.28486( +/- 0.00474516)
+ PairRedPrimalRandom = 0.457322( +/- 0.0135897)
+
+                 LLL = 5.15063( +/- 0.101382)
+         PairRed+LLL = 5.41424 (5.1249) ( +/- 0.120715)
+   PairRedRandom+LLL = 5.59702 (5.13564) ( +/- 0.13003)
+
+              LLLNTL = 0.104849( +/- 0.000259547)
+      PairRed+LLLNTL = 0.383081 (0.0965725) ( +/- 0.00430791)
+PairRedRandom+LLLNTL = 0.553117 (0.0963335) ( +/- 0.000203362)
+
+
+              BKZNTL = 0.112368) ( +/- 0.000294599)
+      PairRed+BKZNTL = 0.390267 (0.103322) ( +/- 0.000245542)
+PairRedRandom+BKZNTL = 0.565204 (0.104048) ( +/- 0.000259339)
+
+          BB Classic = 5.93732 (0.446767) ( +/- 0.1292))
+              BB BKZ = 0.330225 (0.218374) ( +/- 0.0223478)
+
+
+--------------------------------------------
+
+---------------- LENGTH AVG ----------------
+
+             Initial = 4611686014132420609 Error Rate : 1
+       PairRedPrimal = 3831480464136324 Error Rate : 1
+ PairRedPrimalRandom = 14834017924516130 Error Rate : 1
+
+                 LLL = 4742601018 Error Rate : 0.554
+         PairRed+LLL = 4728956375 Error Rate : 0.557
+   PairRedRandom+LLL = 4723080537 Error Rate : 0.575
+
+              LLLNTL = 4742601018 Error Rate : 0.554
+      PairRed+LLLNTL = 4728956375 Error Rate : 0.557
+PairRedRandom+LLLNTL = 4723080537 Error Rate : 0.575
+
+
+              BKZNTL = 4490598804 Error Rate : 0.228
+      PairRed+BKZNTL = 4490845798 Error Rate : 0.225
+PairRedRandom+BKZNTL = 4487241984 Error Rate : 0.233
+
+          BB Classic = 4426460851 Error Rate : 0
+              BB BKZ = 4426460851 Error Rate : 0
+
+
+--------------------------------------------
+
+
+Total running time = 25295

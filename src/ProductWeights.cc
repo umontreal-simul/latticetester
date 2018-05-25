@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,8 +15,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "latcommon/ProductWeights.h"
-#include "latcommon/Util.h"
+#include "latticetester/ProductWeights.h"
+#include "latticetester/Util.h"
 #include <sstream>
 
 #include <boost/lexical_cast.hpp>
@@ -24,7 +24,7 @@ using boost::lexical_cast;
 using boost::bad_lexical_cast;
 
 
-namespace LatCommon
+namespace LatticeTester
 {
 
 //===========================================================================
@@ -63,18 +63,18 @@ Weight ProductWeights::getWeight (const Coordinates & projection) const
 
 void ProductWeights::format(std::ostream& os) const
 {
-   using LatCommon::operator<<;
+   using LatticeTester::operator<<;
    os << "ProductWeights(" << m_weights << ", default=" << m_defaultWeight << ")";
 }
 
-} // namespace LatCommon
+} // namespace LatticeTester
 
 //===========================================================================
 
 #ifdef WITH_XML
 #include "xmlerror.hpp"
 
-namespace LatCommon
+namespace LatticeTester
 {
 
 ProductWeights* ProductWeights::createFromXML (const pugi::xml_node & root)
@@ -113,5 +113,5 @@ ProductWeights* ProductWeights::createFromXML (const pugi::xml_node & root)
    }
 }
 
-} // namespace LatCommon
+} // namespace LatticeTester
 #endif

@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,13 +15,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "latcommon/NormaRogers.h"
-
+#include "latticetester/NormaRogers.h"
 #include <cmath>
 
-namespace LatCommon
+namespace LatticeTester
 {
 
+/**
+ * These Rogers gamma constants are calculated as defined in 
+ * Conway and Sloane book (Sphere packing, Lattices and groups) : 
+ *    - equation (47) page 20 of chapter 1
+ *    - table 1.2 page 15 of chapter 1
+ */
 
 const double NormaRogers::m_gamma0[ ] =
    {
@@ -91,26 +96,36 @@ double NormaRogers::calcGamma (int dim)
 
    r = 0.5 * dimr * log2 (dimr / s) + 1.5 * log2 (dimr) - t + 5.25 / (dimr + 2.5);
    r = 4 * exp2(2 * r / dimr);
+
+   /*
+   remark: 
+   Why "r = 4 * ..." and not "r = 2 * ..." as described in Pierre's 
+   course IFT6561 page 273 ?
+   */
+
    return r;
 }
 
 
 /*=========================================================================*/
 
-NormaRogers::NormaRogers (const MScal & m, int k, int t, double beta)
-      : Normalizer (m, k, t, "Rogers", L2NORM, beta)
+NormaRogers::NormaRogers (RScal & logDensity, int t, double beta)
+      : Normalizer (logDensity, t, "Rogers", L2NORM, beta)
 {
    m_gamma = new double[t + 1];
+   
    int t0 = t;
-/*   if (t0 > MAX_DIM)
-      t0 = MAX_DIM;*/
-   int i;
-   for (i = 0; i <= t0; i++)
+   if (t0 > MAX_DIM)
+      t0 = MAX_DIM;
+   for (int i = 0; i <= t0; i++)
       m_gamma[i] = m_gamma0[i];
-   for (i = t0 + 1; i <= t; i++)
+   for (int i = t0 + 1; i <= t; i++)
       m_gamma[i] = calcGamma(i);
 
-   Normalizer::init (m, k, beta);
+   for (int i = t0 + 1; i <= t; i++)
+      m_gamma[i] = calcGamma(i);
+
+   Normalizer::init (logDensity, beta);
 }
 
 /*=========================================================================*/
@@ -125,11 +140,11 @@ NormaRogers::~NormaRogers()
 
 inline double NormaRogers::getGamma (int j) const throw(std::out_of_range)
 {
-   if (j < 1 || j > m_maxDim) //fred
+   if (j < 1 || j > m_maxDim)
       throw std::out_of_range("NormaRogers::getGamma");
    return m_gamma[j];
 }
 
 /*=======================================================================*/
 
-}
+} // end namespace LatticeTester

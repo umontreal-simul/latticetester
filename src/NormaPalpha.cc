@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,74 +15,75 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "latcommon/NormaPalpha.h"
-#include "latcommon/IntFactor.h"
+#include "latticetester/NormaPalpha.h"
+#include "latticetester/IntFactor.h"
 #include <stdexcept>
 
 
-namespace LatCommon
+namespace LatticeTester
 {
 
-NormaPalpha::NormaPalpha (const MScal & m, int alp, int s, NormType norm)
-      : Normalizer (m, 1, s, "Palpha", norm, 1.0)
+NormaPalpha::NormaPalpha (const MScal & m, int alpha, int s, NormType norm)
+      : Normalizer (s, "Palpha", norm, 1.0)
 {
    if (s > MAX_DIM)
       throw std::invalid_argument("NormaPalpha:   dimension > MAX_DIM");
-   for (int j = 2; j <= s; j++)
-      m_cst[j] = calcBound (alp, j);
-   alpha = alp;
+   m_m = m;
+   m_alpha = alpha;
 }
-
 
 /*=========================================================================*/
 
-int NormaPalpha::getAlpha () const
+void NormaPalpha::init (int alpha)
+/*
+ * Computes the vector m_bounds that corresponds to the upper bound for a 
+ * rank 1 lattice of density \f$m\f$ (prime number). The bound doesn't exit 
+ * for dimension < 2.
+ */
 {
-   return alpha;
+   m_alpha = alpha;
+   for (int j = 2; j <= m_maxDim; j++)
+      m_bounds[j] = calcBound (alpha, j);
 }
-
 
 /*=========================================================================*/
 
 double NormaPalpha::calcBound (int alpha, int dim)
 {
-   const double eBase = 2.71828182845904523536;
+   double Res;
+
+   const double eBasis = 2.71828182845904523536;
    double MM;
    conv (MM, m_m);
-   MScal mm;
-   conv (mm, m_m);
+
    if (dim <= 1) {
-      std::cout << "calcBound:  dim < 2.   Returns -1" << std:: endl;
+      std::cout << "NormaPalpha::calcBound:  dim < 2.   Returns -1" << std:: endl;
       return -1;
    }
    if (alpha <= 1) {
-      std::cout << "calcBound:  alpha < 2.   Returns -1" << std:: endl;
+      std::cout << "NormaPalpha::calcBound:  alpha < 2.   Returns -1" << std:: endl;
       return -1;
    }
-   int stat = IntFactor::isPrime (mm,0);
+
+   int stat = IntFactor::isPrime (m_m,0);
    if (stat != PRIME) {
-      std::cout << "calcBound:  m is not prime.   Returns -1" << std:: endl;
+      std::cout << "NormaPalpha::calcBound:  m is not prime.   Returns -1" << std:: endl;
       return -1;
    }
+   
    double Term1 = log (MM);
    if (Term1 <= alpha*dim /(alpha - 1)) {
-      std::cout << "calcBound:  log (M) <= alpha*dim /(alpha - 1) for dim = "
-         << dim << ".   Returns -1" << std:: endl;
+      std::cout << "NormaPalpha::calcBound:" << std::endl;
+      std::cout << "   m < exp(alpha*dim/(alpha - 1)) for dim = " << dim << std::endl;
+      std::cout << "   Assumption required for existence of theoretical calcBound is not validated." << std::endl;
+      std::cout << "   Returns -1" << std::endl;
       return -1;
    }
 
-   Term1 = (2.0 * Term1 + dim) * eBase / dim;
-   int j;
-   
-   double Res = Term1;
-   for (j = 1; j < dim; ++j)
-      Res *= Term1;
+   Term1 = (2.0 * Term1 + dim) * eBasis / dim;   
+   Res = alpha * dim * log(Term1) - alpha * log(MM);
 
-   Res = Term1 = Res / MM;
-   for (j = 1; j < alpha; ++j)
-      Res *= Term1;
-
-   return Res;
+   return exp(Res);
 }
 
 //========================================================================

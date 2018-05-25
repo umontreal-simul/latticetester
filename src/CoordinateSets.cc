@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,11 +15,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "latcommon/CoordinateSets.h"
-#include "latcommon/Util.h"
+#include "latticetester/Util.h"
+#include "latticetester/CoordinateSets.h"
 #include <stdexcept>
 
-namespace LatCommon { namespace CoordinateSets {
+namespace LatticeTester { namespace CoordinateSets {
 
 //=========================================================================
 // FromRanges

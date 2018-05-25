@@ -1,6 +1,6 @@
-// This file is part of LatCommon.
+// This file is part of LatticeTester.
 //
-// LatCommon
+// LatticeTester
 // Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -17,7 +17,7 @@
 
 /*************************************************************************\
  *
- * Package:        LatCommon
+ * Package:        LatticeTester
  * File:           Nume.cc
  * Environment:    ANSI C
  *
@@ -25,7 +25,7 @@
  * e-mail: lecuyer@iro.umontreal.ca
  *
 \*************************************************************************/
-#include "latcommon/Num.h"
+#include "latticetester/Num.h"
 #include <cmath>
 #include <stdexcept>
 // #include <boost/math/constants/constants.hpp>
@@ -161,7 +161,7 @@ double sumH (double x, long n)
 //-------------------------------------------------------------------------
 
 
-namespace LatCommon
+namespace LatticeTester
 {
 
 long lFactorial (int n)

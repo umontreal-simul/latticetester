@@ -36,101 +36,101 @@ using NTL::matrix_row;
 using namespace NTL;
 
 #if NTL_TYPES_CODE == 1
-   // the case  "LLDD"
+// the case  "LLDD"
 
-   #include "NTL/lzz_p.h"
-   #include "NTL/vec_lzz_p.h"
-   #include "NTL/mat_lzz_p.h"
-   #include "NTL/lzz_pX.h"
-   #include "NTL/lzz_pE.h"
-   #include "NTL/lzz_pEX.h"
+#include "NTL/lzz_p.h"
+#include "NTL/vec_lzz_p.h"
+#include "NTL/mat_lzz_p.h"
+#include "NTL/lzz_pX.h"
+#include "NTL/lzz_pE.h"
+#include "NTL/lzz_pEX.h"
 
-   typedef long              MScal;
-   typedef NTL::vector<long> MVect;
-   typedef NTL::matrix<long> MMat;
-   typedef zz_p     MScalP;
-   typedef vec_zz_p MVectP;
-   typedef mat_zz_p MMatP;
-   typedef long                BScal;
-   typedef NTL::vector<long>   BVect;
-   typedef NTL::matrix<long>   BMat;
-   typedef double              NScal;
-   typedef NTL::vector<double> NVect;
-   typedef NTL::matrix<double> NMat;
-   typedef double              RScal;
-   typedef NTL::vector<double> RVect;
-   typedef NTL::matrix<double> RMat;
-   typedef zz_pX    PolX;
-   typedef zz_pE    PolE;
+typedef long              MScal;
+typedef NTL::vector<long> MVect;
+typedef NTL::matrix<long> MMat;
+typedef zz_p     MScalP;
+typedef vec_zz_p MVectP;
+typedef mat_zz_p MMatP;
+typedef long                BScal;
+typedef NTL::vector<long>   BVect;
+typedef NTL::matrix<long>   BMat;
+typedef double              NScal;
+typedef NTL::vector<double> NVect;
+typedef NTL::matrix<double> NMat;
+typedef double              RScal;
+typedef NTL::vector<double> RVect;
+typedef NTL::matrix<double> RMat;
+typedef zz_pX    PolX;
+typedef zz_pE    PolE;
 #elif NTL_TYPES_CODE == 2
-   // the case  "ZZDD"
+// the case  "ZZDD"
 
-   #include "NTL/ZZ.h"
-   #include "NTL/vec_ZZ.h"
-   #include "NTL/mat_ZZ.h"
-   #include "NTL/ZZ_p.h"
-   #include "NTL/vec_ZZ_p.h"
-   #include "NTL/mat_ZZ_p.h"
-   #include "NTL/ZZ_pE.h"
-   #include "NTL/ZZ_pX.h"
-   #include "NTL/ZZ_pEX.h"
+#include "NTL/ZZ.h"
+#include "NTL/vec_ZZ.h"
+#include "NTL/mat_ZZ.h"
+#include "NTL/ZZ_p.h"
+#include "NTL/vec_ZZ_p.h"
+#include "NTL/mat_ZZ_p.h"
+#include "NTL/ZZ_pE.h"
+#include "NTL/ZZ_pX.h"
+#include "NTL/ZZ_pEX.h"
 
-   typedef ZZ              MScal;
-   typedef NTL::vector<ZZ> MVect;
-   typedef NTL::matrix<ZZ> MMat;
-   typedef ZZ_p     MScalP;
-   typedef vec_ZZ_p MVectP;
-   typedef mat_ZZ_p MMatP;
-   typedef ZZ              BScal;
-   typedef NTL::vector<ZZ> BVect;
-   typedef NTL::matrix<ZZ> BMat;
-   typedef double              NScal;
-   typedef NTL::vector<double> NVect;
-   typedef NTL::matrix<double> NMat;
-   typedef double              RScal;
-   typedef NTL::vector<double> RVect;
-   typedef NTL::matrix<double> RMat;
-   typedef ZZ_pX    PolX;
-   typedef ZZ_pE    PolE;
+typedef ZZ              MScal;
+typedef NTL::vector<ZZ> MVect;
+typedef NTL::matrix<ZZ> MMat;
+typedef ZZ_p     MScalP;
+typedef vec_ZZ_p MVectP;
+typedef mat_ZZ_p MMatP;
+typedef ZZ              BScal;
+typedef NTL::vector<ZZ> BVect;
+typedef NTL::matrix<ZZ> BMat;
+typedef double              NScal;
+typedef NTL::vector<double> NVect;
+typedef NTL::matrix<double> NMat;
+typedef double              RScal;
+typedef NTL::vector<double> RVect;
+typedef NTL::matrix<double> RMat;
+typedef ZZ_pX    PolX;
+typedef ZZ_pE    PolE;
 #elif NTL_TYPES_CODE == 3
-   // the case  "ZZRR"
+// the case  "ZZRR"
 
-   #include "NTL/ZZ.h"
-   #include "NTL/vec_ZZ.h"
-   #include "NTL/mat_ZZ.h"
-   #include "NTL/RR.h"
-   #include "NTL/vec_RR.h"
-   #include "NTL/mat_RR.h"
-   #include "NTL/ZZ_p.h"
-   #include "NTL/vec_ZZ_p.h"
-   #include "NTL/mat_ZZ_p.h"
-   #include "NTL/ZZ_pE.h"
-   #include "NTL/ZZ_pX.h"
-   #include "NTL/ZZ_pEX.h"
+#include "NTL/ZZ.h"
+#include "NTL/vec_ZZ.h"
+#include "NTL/mat_ZZ.h"
+#include "NTL/RR.h"
+#include "NTL/vec_RR.h"
+#include "NTL/mat_RR.h"
+#include "NTL/ZZ_p.h"
+#include "NTL/vec_ZZ_p.h"
+#include "NTL/mat_ZZ_p.h"
+#include "NTL/ZZ_pE.h"
+#include "NTL/ZZ_pX.h"
+#include "NTL/ZZ_pEX.h"
 
-   typedef ZZ              MScal;
-   typedef NTL::vector<ZZ> MVect;
-   typedef NTL::matrix<ZZ> MMat;
-   typedef ZZ_p     MScalP;
-   typedef vec_ZZ_p MVectP;
-   typedef mat_ZZ_p MMatP;
-   typedef ZZ              BScal;
-   typedef NTL::vector<ZZ> BVect;
-   typedef NTL::matrix<ZZ> BMat;
-   typedef RR              NScal;
-   typedef NTL::vector<RR> NVect;
-   typedef NTL::matrix<RR> NMat;
-   typedef RR              RScal;
-   typedef NTL::vector<RR> RVect;
-   typedef NTL::matrix<RR> RMat;
-   typedef ZZ_pX    PolX;
-   typedef ZZ_pE    PolE;
+typedef ZZ              MScal;
+typedef NTL::vector<ZZ> MVect;
+typedef NTL::matrix<ZZ> MMat;
+typedef ZZ_p     MScalP;
+typedef vec_ZZ_p MVectP;
+typedef mat_ZZ_p MMatP;
+typedef ZZ              BScal;
+typedef NTL::vector<ZZ> BVect;
+typedef NTL::matrix<ZZ> BMat;
+typedef RR              NScal;
+typedef NTL::vector<RR> NVect;
+typedef NTL::matrix<RR> NMat;
+typedef RR              RScal;
+typedef NTL::vector<RR> RVect;
+typedef NTL::matrix<RR> RMat;
+typedef ZZ_pX    PolX;
+typedef ZZ_pE    PolE;
 #endif
 
 
 
-   namespace LatticeTester {
-      typedef void ProcII (int, int);
-   }
+namespace LatticeTester {
+  typedef void ProcII (int, int);
+}
 
 #endif

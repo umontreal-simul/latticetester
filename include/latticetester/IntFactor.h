@@ -24,103 +24,103 @@
 
 namespace LatticeTester {
 
-/**
- * The objects of this class are the "prime" factors in the decomposition of
- * a positive integer. The class contains functions to determine whether a
- * number is prime, probably prime or composite. The related class
- * `IntFactorization` contains the list of "prime" factors. (This class
- * should be a private nested class inside `IntFactorization`.)
- *
- * <div class="LatSoft-bigskip"></div>
- */
-class IntFactor {
-public:
+  /**
+   * The objects of this class are the "prime" factors in the decomposition of
+   * a positive integer. The class contains functions to determine whether a
+   * number is prime, probably prime or composite. The related class
+   * `IntFactorization` contains the list of "prime" factors. (This class
+   * should be a private nested class inside `IntFactorization`.)
+   *
+   * <div class="LatSoft-bigskip"></div>
+   */
+  class IntFactor {
+    public:
 
-   /**
-    * Constructor for a factor \f$x\f$, with multiplicity `mult` and status
-    * `stat`.
-    */
-   IntFactor (const MScal & x, int mult = 1,
-                 LatticeTester::PrimeType stat = LatticeTester::UNKNOWN):
-                 m_factor (x), m_multiplicity (mult), m_status (stat) {   }
+      /**
+       * Constructor for a factor \f$x\f$, with multiplicity `mult` and status
+       * `stat`.
+       */
+      IntFactor (const MScal & x, int mult = 1,
+          LatticeTester::PrimeType stat = LatticeTester::UNKNOWN):
+        m_factor (x), m_multiplicity (mult), m_status (stat) {   }
 
-   /**
-    * Returns the value of `factor`.
-    */
-   MScal getFactor () const { return m_factor; }
+      /**
+       * Returns the value of `factor`.
+       */
+      MScal getFactor () const { return m_factor; }
 
-   /**
-    * Sets the value of `factor` to \f$x\f$.
-    */
-   void setFactor (const MScal & x) { m_factor = x; }
+      /**
+       * Sets the value of `factor` to \f$x\f$.
+       */
+      void setFactor (const MScal & x) { m_factor = x; }
 
-   /**
-    * Returns the multiplicity of this object.
-    */
-   int getMultiplicity () const { return m_multiplicity; }
+      /**
+       * Returns the multiplicity of this object.
+       */
+      int getMultiplicity () const { return m_multiplicity; }
 
-   /**
-    * Sets the multiplicity of this object to \f$m\f$.
-    */
-   void setMultiplicity (int m) { m_multiplicity = m; }
+      /**
+       * Sets the multiplicity of this object to \f$m\f$.
+       */
+      void setMultiplicity (int m) { m_multiplicity = m; }
 
-   /**
-    * Returns the status of this object.
-    */
-   LatticeTester::PrimeType getStatus () const { return m_status; }
+      /**
+       * Returns the status of this object.
+       */
+      LatticeTester::PrimeType getStatus () const { return m_status; }
 
-   /**
-    * Sets the status of this object to \f$s\f$.
-    */
-   void setStatus (LatticeTester::PrimeType s) { m_status = s; }
+      /**
+       * Sets the status of this object to \f$s\f$.
+       */
+      void setStatus (LatticeTester::PrimeType s) { m_status = s; }
 
-   /**
-    * Tests whether \f$y\f$ is prime. First tests whether \f$y\f$ is
-    * divisible by all small primes \f$p\f$ (\f$p < 2^{16}\f$) that are
-    * kept in file `prime.dat`. Then applies the Miller-Rabin probability
-    * test with \f$k\f$ trials.
-    */
-   static LatticeTester::PrimeType isPrime (const MScal & y, long k);
+      /**
+       * Tests whether \f$y\f$ is prime. First tests whether \f$y\f$ is
+       * divisible by all small primes \f$p\f$ (\f$p < 2^{16}\f$) that are
+       * kept in file `prime.dat`. Then applies the Miller-Rabin probability
+       * test with \f$k\f$ trials.
+       */
+      static LatticeTester::PrimeType isPrime (const MScal & y, long k);
 
-   /**
-    * Tests whether this factor is prime. Similar to `isPrime` above.
-    */
-   LatticeTester::PrimeType isPrime (long k);
+      /**
+       * Tests whether this factor is prime. Similar to `isPrime` above.
+       */
+      LatticeTester::PrimeType isPrime (long k);
 
-   /**
-    * Transforms status `stat` in an easily readable string and returns
-    * it.
-    */
-   static std::string toString (LatticeTester::PrimeType stat);
+      /**
+       * Transforms status `stat` in an easily readable string and returns
+       * it.
+       */
+      static std::string toString (LatticeTester::PrimeType stat);
 
-   /**
-    * Returns this object as a string.
-    */
-   std::string toString () const;
+      /**
+       * Returns this object as a string.
+       */
+      std::string toString () const;
 
-private:
+    private:
 
-   /**
-    * The factor.
-    */
-   MScal m_factor;
+      /**
+       * The factor.
+       */
+      MScal m_factor;
 
-   /**
-    * The multiplicity of this factor.
-    */
-   int m_multiplicity;
+      /**
+       * The multiplicity of this factor.
+       */
+      int m_multiplicity;
 
-   /**
-    * The status of this factor, i.e. whether it is prime, composite, ...
-    */
-   LatticeTester::PrimeType m_status;
+      /**
+       * The status of this factor, i.e. whether it is prime, composite, ...
+       */
+      LatticeTester::PrimeType m_status;
 
-   /**
-    * Applies the Miller-Rabin probability test with \f$k\f$ trials to
-    * \f$y\f$.
-    */
-   static LatticeTester::PrimeType isProbPrime (const MScal & y, long k);
-};    // class IntFactor
+      /**
+       * Applies the Miller-Rabin probability test with \f$k\f$ trials to
+       * \f$y\f$.
+       */
+      static LatticeTester::PrimeType isProbPrime (const MScal & y, long k);
+  };    // class IntFactor
 
 }     // namespace LatticeTester
 #endif

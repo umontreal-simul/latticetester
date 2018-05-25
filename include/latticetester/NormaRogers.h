@@ -24,55 +24,55 @@
 
 namespace LatticeTester {
 
-/**
- * This class implements the *Rogers* bounds on the density of sphere
- * packing. The length of vectors is computed using the
- * \f${\mathcal{L}}_2\f$ norm. The bounding lengths, for a lattice containing
- * \f$n\f$ points per unit volume in dimension \f$t\f$, are given by
- * \f$\ell_t^* = \gamma_t^{1/2} n^{-1/t}\f$, where the \f$\gamma_t\f$ are
- * the *Rogers* lattice constants.
- */
-class NormaRogers : public Normalizer {
-public:
+  /**
+   * This class implements the *Rogers* bounds on the density of sphere
+   * packing. The length of vectors is computed using the
+   * \f${\mathcal{L}}_2\f$ norm. The bounding lengths, for a lattice containing
+   * \f$n\f$ points per unit volume in dimension \f$t\f$, are given by
+   * \f$\ell_t^* = \gamma_t^{1/2} n^{-1/t}\f$, where the \f$\gamma_t\f$ are
+   * the *Rogers* lattice constants.
+   */
+  class NormaRogers : public Normalizer {
+    public:
 
-   /**
-    * Constructor for the Rogers bounds. The lattices have \f$n\f$ points per
-    * unit volume, in all dimensions \f$\le t\f$. The bias factor `beta`
-    * \f$= \beta\f$ gives more weight to some of the dimensions.
-    * Note this class stores the log value of the density to handle larger values.
-    * There is no restriction on the dimension \f$t\f$ which can be larger than 48.
-    */
-   NormaRogers (RScal & logDensity, int t, double beta = 1);
+      /**
+       * Constructor for the Rogers bounds. The lattices have \f$n\f$ points per
+       * unit volume, in all dimensions \f$\le t\f$. The bias factor `beta`
+       * \f$= \beta\f$ gives more weight to some of the dimensions.
+       * Note this class stores the log value of the density to handle larger values.
+       * There is no restriction on the dimension \f$t\f$ which can be larger than 48.
+       */
+      NormaRogers (RScal & logDensity, int t, double beta = 1);
 
-   /**
-    * Destructor.
-    */
-   ~NormaRogers();
+      /**
+       * Destructor.
+       */
+      ~NormaRogers();
 
-   /**
-    * Returns the value of the Rogers lattice constant \f$\gamma_j\f$ in
-    * dimension \f$j\f$.
-    */
-   double getGamma (int j) const throw (std::out_of_range);
-private:
+      /**
+       * Returns the value of the Rogers lattice constant \f$\gamma_j\f$ in
+       * dimension \f$j\f$.
+       */
+      double getGamma (int j) const throw (std::out_of_range);
+    private:
 
-   /**
-    * The lattice constants \f$\gamma_j\f$ are the Rogers bounds in each
-    * dimension \f$j\f$.
-    */
-   double *m_gamma;
+      /**
+       * The lattice constants \f$\gamma_j\f$ are the Rogers bounds in each
+       * dimension \f$j\f$.
+       */
+      double *m_gamma;
 
-   /**
-    * Precomputed lattice constants \f$\gamma_j\f$ for the Rogers bounds
-    * in each dimension \f$j \le48\f$.
-    */
-   static const double m_gamma0[1 + Normalizer::MAX_DIM];
+      /**
+       * Precomputed lattice constants \f$\gamma_j\f$ for the Rogers bounds
+       * in each dimension \f$j \le48\f$.
+       */
+      static const double m_gamma0[1 + Normalizer::MAX_DIM];
 
-   /**
-    * Computes the Rogers bound in dimension \f$d\f$.
-    */
-   double calcGamma (int d);
-};
+      /**
+       * Computes the Rogers bound in dimension \f$d\f$.
+       */
+      double calcGamma (int d);
+  };
 
 }
 #endif

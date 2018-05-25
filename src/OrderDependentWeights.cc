@@ -27,36 +27,36 @@ using boost::bad_lexical_cast;
 namespace LatticeTester
 {
 
-//===========================================================================
+  //===========================================================================
 
-OrderDependentWeights::OrderDependentWeights (Weight defaultWeight)
-   : m_defaultWeight(defaultWeight)
-{
-}
+  OrderDependentWeights::OrderDependentWeights (Weight defaultWeight)
+    : m_defaultWeight(defaultWeight)
+  {
+  }
 
-//===========================================================================
+  //===========================================================================
 
-void OrderDependentWeights::setWeightForOrder (Coordinates::size_type order, Weight weight)
-{
-   if (order >= m_weights.size())
+  void OrderDependentWeights::setWeightForOrder (Coordinates::size_type order, Weight weight)
+  {
+    if (order >= m_weights.size())
       m_weights.resize(order + 1);
-   m_weights[order] = weight;
-}
+    m_weights[order] = weight;
+  }
 
-//===========================================================================
+  //===========================================================================
 
-Weight OrderDependentWeights::getWeight (const Coordinates& projection) const
-{
-   return getWeightForOrder(projection.size());
-}
+  Weight OrderDependentWeights::getWeight (const Coordinates& projection) const
+  {
+    return getWeightForOrder(projection.size());
+  }
 
-//===========================================================================
+  //===========================================================================
 
-void OrderDependentWeights::format(std::ostream& os) const
-{
-   using LatticeTester::operator<<;
-   os << "OrderDependentWeights(" << m_weights << ", default=" << m_defaultWeight << ")";
-}
+  void OrderDependentWeights::format(std::ostream& os) const
+  {
+    using LatticeTester::operator<<;
+    os << "OrderDependentWeights(" << m_weights << ", default=" << m_defaultWeight << ")";
+  }
 
 } // namespace LatticeTester
 
@@ -68,42 +68,42 @@ void OrderDependentWeights::format(std::ostream& os) const
 namespace LatticeTester
 {
 
-OrderDependentWeights* OrderDependentWeights::createFromXML (const pugi::xml_node& root)
-{
-   OrderDependentWeights* o = new OrderDependentWeights();
+  OrderDependentWeights* OrderDependentWeights::createFromXML (const pugi::xml_node& root)
+  {
+    OrderDependentWeights* o = new OrderDependentWeights();
 
-   pugi::xml_node node;
+    pugi::xml_node node;
 
-   try {
+    try {
       // default weight
       node = root.child("default").child("weight");
       if (node)
-         o->setDefaultWeight(lexical_cast<Weight>(node.child_value()));
+        o->setDefaultWeight(lexical_cast<Weight>(node.child_value()));
 
       // per-dimension weights
       for (pugi::xml_node dnode = root.child("dimension"); dnode; dnode = dnode.next_sibling("dimension")) {
-         // weight
-         node = dnode.child("weight");
-         if (!node)
-            throw pugi::xml_error(dnode, "missing <weight> element");
-         Weight weight = lexical_cast<Weight>(node.child_value());
-         // dimension (projection order)
-         node = dnode.child("dimension");
-         if (!node)
-            throw pugi::xml_error(dnode, "missing <dimension> element");
-         int dimension = lexical_cast<int>(node.child_value());
+        // weight
+        node = dnode.child("weight");
+        if (!node)
+          throw pugi::xml_error(dnode, "missing <weight> element");
+        Weight weight = lexical_cast<Weight>(node.child_value());
+        // dimension (projection order)
+        node = dnode.child("dimension");
+        if (!node)
+          throw pugi::xml_error(dnode, "missing <dimension> element");
+        int dimension = lexical_cast<int>(node.child_value());
 
-         // store weight
-         o->setWeightForOrder(dimension, weight);
+        // store weight
+        o->setWeightForOrder(dimension, weight);
       }
 
       return o;
-   }
-   catch (bad_lexical_cast& e) {
+    }
+    catch (bad_lexical_cast& e) {
       delete o;
       throw pugi::xml_error(node, e.what());
-   }
-}
+    }
+  }
 
 } // namespace LatticeTester
 #endif

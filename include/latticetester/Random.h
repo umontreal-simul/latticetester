@@ -20,63 +20,63 @@
 
 
 namespace LatticeTester {
-/**
- *
- *
- * This class generates random numbers (in fact pseudo-random numbers).
- * The generator used is the 64-bits generator \c LFSR258
- * from L'Ecuyer \cite rLEC99a  with period length near \f$2^{258}\f$
- * for 64-bits machines, and the 32-bits generator \c LFSR113
- * from L'Ecuyer \cite rLEC99a  with period length near \f$2^{113}\f$
- * on  32-bits machines. Thus the random numbers generated will be
- * different on 32-bits and 64-bits machines.
- *
- *
- */
-class Random {
-public:
+  /**
+   *
+   *
+   * This class generates random numbers (in fact pseudo-random numbers).
+   * The generator used is the 64-bits generator \c LFSR258
+   * from L'Ecuyer \cite rLEC99a  with period length near \f$2^{258}\f$
+   * for 64-bits machines, and the 32-bits generator \c LFSR113
+   * from L'Ecuyer \cite rLEC99a  with period length near \f$2^{113}\f$
+   * on  32-bits machines. Thus the random numbers generated will be
+   * different on 32-bits and 64-bits machines.
+   *
+   *
+   */
+  class Random {
+    public:
 
-   /**
-    * Constructor using a default seed for the generator.
-    * One may reset the seed by calling \c setSeed.
-    */
-   Random();
+      /**
+       * Constructor using a default seed for the generator.
+       * One may reset the seed by calling \c setSeed.
+       */
+      Random();
 
-   /**
-    * Destructor.
-    */
-   ~Random()  {}
+      /**
+       * Destructor.
+       */
+      ~Random()  {}
 
-   /**
-    * Returns a random number in \f$[0, 1)\f$. The number has 53 random bits
-    * of resolution on 64-bits machines, and 32 random bits
-    * on 32-bits machines.
-    */
-   double randU01();
+      /**
+       * Returns a random number in \f$[0, 1)\f$. The number has 53 random bits
+       * of resolution on 64-bits machines, and 32 random bits
+       * on 32-bits machines.
+       */
+      double randU01();
 
-   /**
-    * Return a random integer in \f$[i, j]\f$. The numbers \f$i\f$ and \f$j\f$ can occur.
-    * Restriction: \f$i < j\f$.
-    */
-   int randInt (int i, int j);
+      /**
+       * Return a random integer in \f$[i, j]\f$. The numbers \f$i\f$ and \f$j\f$ can occur.
+       * Restriction: \f$i < j\f$.
+       */
+      int randInt (int i, int j);
 
-   /**
-    * Returns random blocks of \f$s\f$ bits (\f$s\f$-bit integers).
-    */
-   unsigned long randBits (int s);
+      /**
+       * Returns random blocks of \f$s\f$ bits (\f$s\f$-bit integers).
+       */
+      unsigned long randBits (int s);
 
-   /**
-    * Sets the seed of the generator. If not called, a default seed is used.
-    */
-   void setSeed (unsigned long seed);
+      /**
+       * Sets the seed of the generator. If not called, a default seed is used.
+       */
+      void setSeed (unsigned long seed);
 
 
-private:
+    private:
 
-   unsigned long randValue();
+      unsigned long randValue();
 
-   unsigned long etat1, etat2, etat3, etat4, etat5;
-};
+      unsigned long etat1, etat2, etat3, etat4, etat5;
+  };
 
 }
 

@@ -28,69 +28,69 @@
 
 
 namespace LatticeTester {
-/**
- * Product and order-dependent (POD) weights.
- *
- * This class implements POD weights.
- * The weight of a projection depends on the order of the projection and on the
- * coordinates that are in the projection.
- */
-class PODWeights : public Weights {
-protected:
+  /**
+   * Product and order-dependent (POD) weights.
+   *
+   * This class implements POD weights.
+   * The weight of a projection depends on the order of the projection and on the
+   * coordinates that are in the projection.
+   */
+  class PODWeights : public Weights {
+    protected:
 
-   OrderDependentWeights m_orderDependentWeights;
-   ProductWeights m_productWeights;
+      OrderDependentWeights m_orderDependentWeights;
+      ProductWeights m_productWeights;
 
-public:
+    public:
 
-   /**
-    * Constructs order-dependent weights with default weight.
-    */
-   PODWeights();
+      /**
+       * Constructs order-dependent weights with default weight.
+       */
+      PODWeights();
 
-   /**
-    * Destructor.
-    */
-   virtual ~PODWeights()
-   { }
+      /**
+       * Destructor.
+       */
+      virtual ~PODWeights()
+      { }
 
-   virtual std::string name() const { return "POD"; }
+      virtual std::string name() const { return "POD"; }
 
-   /**
-    * Returns the weight of the projection specified by \c projection.
-    */
-   virtual Weight getWeight (const Coordinates & projection) const;
+      /**
+       * Returns the weight of the projection specified by \c projection.
+       */
+      virtual Weight getWeight (const Coordinates & projection) const;
 
-   /**
-    * Returns the order-dependent part of the weights.
-    */
-   OrderDependentWeights& getOrderDependentWeights()
-   { return m_orderDependentWeights; }
+      /**
+       * Returns the order-dependent part of the weights.
+       */
+      OrderDependentWeights& getOrderDependentWeights()
+      { return m_orderDependentWeights; }
 
-   const OrderDependentWeights& getOrderDependentWeights() const
-   { return m_orderDependentWeights; }
+      const OrderDependentWeights& getOrderDependentWeights() const
+      { return m_orderDependentWeights; }
 
-   /**
-    * Returns the product part of the weights.
-    */
-   ProductWeights& getProductWeights()
-   { return m_productWeights; }
+      /**
+       * Returns the product part of the weights.
+       */
+      ProductWeights& getProductWeights()
+      { return m_productWeights; }
 
-   const ProductWeights& getProductWeights() const
-   { return m_productWeights; }
+      const ProductWeights& getProductWeights() const
+      { return m_productWeights; }
 
 #ifdef WITH_XML
-   /**
-    * Static factory method; create a \c PODWeights object by
-    * parsing XML data.
-    */
-   static PODWeights* createFromXML (const pugi::xml_node & node);
+      /**
+       * Static factory method; create a \c PODWeights object by
+       * parsing XML data.
+       */
+      static PODWeights* createFromXML (const pugi::xml_node & node);
 #endif
 
-protected:
-   /// \copydoc LatticeTester::Weights::format()
-   virtual void format(std::ostream& os) const;
-};
+    protected:
+      /// \copydoc LatticeTester::Weights::format()
+      virtual void format(std::ostream& os) const;
+  };
 
 }
 

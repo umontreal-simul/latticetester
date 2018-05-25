@@ -24,40 +24,40 @@
 
 namespace LatticeTester {
 
-/**
- * This class implements *Minkowski*’s theoretical bounds on the length of
- * the shortest nonzero vector in a lattice. The length of a vector is
- * computed using the \f${\mathcal{L}}_2\f$ norm. The bounding lengths, for a
- * lattice containing \f$n\f$ points per unit volume in dimension \f$t\f$, 
- * are given by \f$\ell_t^* = \gamma_t^{1/2} n^{-1/t}\f$, where the 
- * \f$\gamma_t\f$ are the *Minkowski* lattice constants.
- */
-class NormaMinkowski : public Normalizer {
-public:
+  /**
+   * This class implements *Minkowski*’s theoretical bounds on the length of
+   * the shortest nonzero vector in a lattice. The length of a vector is
+   * computed using the \f${\mathcal{L}}_2\f$ norm. The bounding lengths, for a
+   * lattice containing \f$n\f$ points per unit volume in dimension \f$t\f$, 
+   * are given by \f$\ell_t^* = \gamma_t^{1/2} n^{-1/t}\f$, where the 
+   * \f$\gamma_t\f$ are the *Minkowski* lattice constants.
+   */
+  class NormaMinkowski : public Normalizer {
+    public:
 
-   /**
-    * Constructor for the bounds obtained for Minkowski lattices. The lattices
-    * have \f$n\f$ points per unit volume, in all dimensions \f$\le t\f$. 
-    * The bias factor `beta` \f$= \beta\f$ gives more weight to some of the 
-    * dimensions. 
-    * Note this class stores the log value of the density to handle larger values.
-    * Restriction: \f$t \le48\f$.
-    */
-   NormaMinkowski (RScal & logDensity, int t, double beta = 1);
+      /**
+       * Constructor for the bounds obtained for Minkowski lattices. The lattices
+       * have \f$n\f$ points per unit volume, in all dimensions \f$\le t\f$. 
+       * The bias factor `beta` \f$= \beta\f$ gives more weight to some of the 
+       * dimensions. 
+       * Note this class stores the log value of the density to handle larger values.
+       * Restriction: \f$t \le48\f$.
+       */
+      NormaMinkowski (RScal & logDensity, int t, double beta = 1);
 
-   /**
-    * Returns the value of the lattice constant \f$\gamma_j\f$ in
-    * dimension \f$j\f$.
-    */
-   double getGamma (int j) const throw (std::out_of_range);
-private:
+      /**
+       * Returns the value of the lattice constant \f$\gamma_j\f$ in
+       * dimension \f$j\f$.
+       */
+      double getGamma (int j) const throw (std::out_of_range);
+    private:
 
-   /**
-    * Lattice constants \f$\gamma_j\f$ for the Minkowski lattices in each
-    * dimension \f$j\f$.
-    */
-   static const double m_gamma[1 + Normalizer::MAX_DIM];
-};
+      /**
+       * Lattice constants \f$\gamma_j\f$ for the Minkowski lattices in each
+       * dimension \f$j\f$.
+       */
+      static const double m_gamma[1 + Normalizer::MAX_DIM];
+  };
 
 }
 #endif

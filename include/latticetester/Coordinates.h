@@ -27,62 +27,62 @@
 
 namespace LatticeTester {
 
-/**
- * Set of coordinates.
- */
+  /**
+   * Set of coordinates.
+   */
 
-class Coordinates : public std::set<size_t> {
+  class Coordinates : public std::set<size_t> {
     public:
-        /**
-         * Constructs an empty coordinate set.
-         */
-        Coordinates():
+      /**
+       * Constructs an empty coordinate set.
+       */
+      Coordinates():
         std::set<value_type>()
-        { }
+    { }
 
-        /**
-         * Copy-constructor.
-         */
-        Coordinates(const Coordinates& other):
+      /**
+       * Copy-constructor.
+       */
+      Coordinates(const Coordinates& other):
         std::set<value_type>(other)
-        { }
+    { }
 
-        /**
-         * Constructs a coordinate set populated with the values from \c first
-         * (inclusively) to \c last (exclusively).
-         */
-        template<typename InputIterator>
+      /**
+       * Constructs a coordinate set populated with the values from \c first
+       * (inclusively) to \c last (exclusively).
+       */
+      template<typename InputIterator>
         Coordinates(InputIterator first, InputIterator last):
-        std::set<value_type>(first, last)
-        { }
-};
+          std::set<value_type>(first, last)
+    { }
+  };
 
 
-/**
- * \relates Coordinates
- * Formats the coordinate set \c coords and outputs it to \c os.
- */
+  /**
+   * \relates Coordinates
+   * Formats the coordinate set \c coords and outputs it to \c os.
+   */
 
-std::ostream& operator<< (std::ostream& os, const Coordinates& coords);
+  std::ostream& operator<< (std::ostream& os, const Coordinates& coords);
 
-/**
- * \relates Coordinates
- * Reads a formatted coordinate set from \c is.
- *
- * The input must consist of positive integers separated by whitespace and/or by
- * commas, and optionally enclosed in braces.  The ordering is not important.
- * Repeated values are ignored.
- * For example, the following strings are valid input that would produce
- * equivalent Coordinates objects:
- * - <tt>1 2 5</tt>
- * - <tt>1, 2, 5</tt>
- * - <tt>{1 2 5}</tt>
- * - <tt>{1,2,5}</tt>
- * - <tt>{1, 2, 5}</tt>
- * - <tt>2 5 1</tt>
- * - <tt>2 1 5 1</tt>
- */
-std::istream& operator>> (std::istream& is, Coordinates& coords);
+  /**
+   * \relates Coordinates
+   * Reads a formatted coordinate set from \c is.
+   *
+   * The input must consist of positive integers separated by whitespace and/or by
+   * commas, and optionally enclosed in braces.  The ordering is not important.
+   * Repeated values are ignored.
+   * For example, the following strings are valid input that would produce
+   * equivalent Coordinates objects:
+   * - <tt>1 2 5</tt>
+   * - <tt>1, 2, 5</tt>
+   * - <tt>{1 2 5}</tt>
+   * - <tt>{1,2,5}</tt>
+   * - <tt>{1, 2, 5}</tt>
+   * - <tt>2 5 1</tt>
+   * - <tt>2 1 5 1</tt>
+   */
+  std::istream& operator>> (std::istream& is, Coordinates& coords);
 
 } //end namespace
 

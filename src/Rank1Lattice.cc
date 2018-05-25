@@ -9,116 +9,116 @@ using namespace LatticeTester;
 namespace LatticeTester
 {
 
-Rank1Lattice::Rank1Lattice (const MScal & n, const MVect & a, int maxDim,
-                           NormType norm):
-                  IntLattice::IntLattice (n, 1, maxDim, norm)
-{
-   m_a = a;
-   init();
-}
+  Rank1Lattice::Rank1Lattice (const MScal & n, const MVect & a, int maxDim,
+      NormType norm):
+    IntLattice::IntLattice (n, 1, maxDim, norm)
+  {
+    m_a = a;
+    init();
+  }
 
 
-//=========================================================================
+  //=========================================================================
 
-Rank1Lattice::~Rank1Lattice()
-{
-   m_a.clear ();
-}
+  Rank1Lattice::~Rank1Lattice()
+  {
+    m_a.clear ();
+  }
 
 
-//=========================================================================
+  //=========================================================================
 
-void Rank1Lattice::init()
-{
-   IntLattice::init();
-   for (int r = 1; r < getDim(); r++)
+  void Rank1Lattice::init()
+  {
+    IntLattice::init();
+    for (int r = 1; r < getDim(); r++)
       m_lgVolDual2[r] = m_lgVolDual2[r - 1];
-}
+  }
 
 
-//=========================================================================
+  //=========================================================================
 
-Rank1Lattice & Rank1Lattice::operator= (const Rank1Lattice & lat)
-{
-   if (this == &lat)
+  Rank1Lattice & Rank1Lattice::operator= (const Rank1Lattice & lat)
+  {
+    if (this == &lat)
       return * this;
-   copy (lat);
-   init ();
-   m_a = lat.m_a;
-   return *this;
-}
+    copy (lat);
+    init ();
+    m_a = lat.m_a;
+    return *this;
+  }
 
 
-//=========================================================================
+  //=========================================================================
 
-Rank1Lattice::Rank1Lattice (const Rank1Lattice & lat):
-      IntLattice::IntLattice (lat.m_modulo, lat.getOrder (),
-                              lat.getDim (), lat.getNorm ())
-{
-   // MyExit (1, "Rank1Lattice:: constructeur n'est pas terminé " );
-   init ();
-   m_a = lat.m_a;
-}
-
-
-//===========================================================================
-
-std::string Rank1Lattice::toStringCoef ()const
-{
-   return toString (m_a, 0, getDim ());
-}
+  Rank1Lattice::Rank1Lattice (const Rank1Lattice & lat):
+    IntLattice::IntLattice (lat.m_modulo, lat.getOrder (),
+        lat.getDim (), lat.getNorm ())
+  {
+    // MyExit (1, "Rank1Lattice:: constructeur n'est pas terminé " );
+    init ();
+    m_a = lat.m_a;
+  }
 
 
-//=========================================================================
+  //===========================================================================
 
-void Rank1Lattice::incDim ()
-{
-   // kill();
-   buildBasis (1 + getDim ());
-   setNegativeNorm ();
-   setDualNegativeNorm ();
-}
+  std::string Rank1Lattice::toStringCoef ()const
+  {
+    return toString (m_a, 0, getDim ());
+  }
 
 
-//===========================================================================
+  //=========================================================================
 
-void Rank1Lattice::buildBasis (int d)
-{
-   // assert(d <= getMaxDim());
-   setDim (d);
+  void Rank1Lattice::incDim ()
+  {
+    // kill();
+    buildBasis (1 + getDim ());
+    setNegativeNorm ();
+    setDualNegativeNorm ();
+  }
 
-   // conv(m_v[1][1], 1);
 
-   for (int j = 0; j < d; j++) {
+  //===========================================================================
+
+  void Rank1Lattice::buildBasis (int d)
+  {
+    // assert(d <= getMaxDim());
+    setDim (d);
+
+    // conv(m_v[1][1], 1);
+
+    for (int j = 0; j < d; j++) {
       m_basis (0, j) = m_a[j];
-   }
+    }
 
-   for (int i = 1; i < d; i++) {
+    for (int i = 1; i < d; i++) {
       for (int j = 0; j < d; j++) {
-         if (i == j) {
-            m_basis (i, j) = m_modulo;
-         } else {
-            m_basis (i, j) = 0;
-         }
+        if (i == j) {
+          m_basis (i, j) = m_modulo;
+        } else {
+          m_basis (i, j) = 0;
+        }
       }
-   }
-   
-   // if a[0] != 1, the basis must be triangularized
-   if (m_basis (0, 0) != 1) {
+    }
+
+    // if a[0] != 1, the basis must be triangularized
+    if (m_basis (0, 0) != 1) {
       Triangularization < BMat > (m_basis, m_dualbasis, d, d, m_modulo);
       dualize ();
-   }
-   CalcDual < BMat > (m_basis, m_dualbasis, d, m_modulo);
-   setNegativeNorm ();
-   setDualNegativeNorm ();
-}
+    }
+    CalcDual < BMat > (m_basis, m_dualbasis, d, m_modulo);
+    setNegativeNorm ();
+    setDualNegativeNorm ();
+  }
 
-//===========================================================================
+  //===========================================================================
 
-void Rank1Lattice::dualize ()
-{
-   BMat tmps(m_basis);   m_basis = m_dualbasis;   m_dualbasis = tmps;
-}
+  void Rank1Lattice::dualize ()
+  {
+    BMat tmps(m_basis);   m_basis = m_dualbasis;   m_dualbasis = tmps;
+  }
 
 
 } //namespace

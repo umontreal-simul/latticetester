@@ -24,53 +24,53 @@
 namespace LatticeTester
 {
 
-/*=========================================================================*/
+  /*=========================================================================*/
 
-std::string Lacunary::toString () const
-{
-   std::ostringstream out;
-   out << "dim = " << m_dim;
-   out << "\nLac = {\n   ";
-   for (int i = 0; i < m_dim; i++)
+  std::string Lacunary::toString () const
+  {
+    std::ostringstream out;
+    out << "dim = " << m_dim;
+    out << "\nLac = {\n   ";
+    for (int i = 0; i < m_dim; i++)
       out << m_lac[i] << "\n   ";
-   out << "}\n";
-   return out.str ();
-}
+    out << "}\n";
+    return out.str ();
+  }
 
 
-/*=========================================================================*/
+  /*=========================================================================*/
 
 
-bool Lacunary::calcIndicesStreams (int s, int w, int & minDim,
-                                   int maxDim, int order)
-{
-   if (w == 0) {
+  bool Lacunary::calcIndicesStreams (int s, int w, int & minDim,
+      int maxDim, int order)
+  {
+    if (w == 0) {
       if (minDim <= order)
-         minDim = order + 1;
+        minDim = order + 1;
       return false;
-   }
+    }
 
-   if (m_dim < maxDim) {
+    if (m_dim < maxDim) {
       LatticeTester::DeleteVect (m_lac);
       LatticeTester::CreateVect (m_lac, maxDim);
       m_dim = maxDim;
-   }
+    }
 
-   BScal t1;
-   LatticeTester::power2 (t1, (long) w);
-   BScal t;
-   t = 0;
-   int i = 1;
-   while (true) {
+    BScal t1;
+    LatticeTester::power2 (t1, (long) w);
+    BScal t;
+    t = 0;
+    int i = 1;
+    while (true) {
       for (int j = 0; j < s; j++) {
-         if (i <= maxDim) {
-            m_lac[i] = t + j;
-            i++;
-         } else
-            return true;
+        if (i <= maxDim) {
+          m_lac[i] = t + j;
+          i++;
+        } else
+          return true;
       }
       t += t1;
-   }
-}
+    }
+  }
 
 } // namespace LatticeTester

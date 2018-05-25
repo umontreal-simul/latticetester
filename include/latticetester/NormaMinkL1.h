@@ -24,63 +24,63 @@
 
 namespace LatticeTester {
 
-/**
- * This class implements theoretical bounds on the length of the shortest
- * nonzero vector in a lattice, based on the densest sphere packing in space.
- * The length of vectors is computed using the \f${\mathcal{L}}_1\f$ norm.
- * Here, the length of the shortest nonzero vector gives the minimal number
- * of hyperplanes that cover all the points of the dual lattice aasociated. The following
- * upper bound in this case was established by Marsaglia
- * \cite rMAR68a&thinsp; by applying the general convex body theorem of
- * Minkowski:
- * \f[
- * \ell_t^* = (t!)^{1/t}*(n)^{-1/t}) = \gamma_t^{1/2} n^{-1/t}, 
- * \f]
- * for a lattice containing \f$n\f$ points per unit volume, in dimension \f$t\f$. 
- * The lattice constants are thus \f$\gamma_t = (t!)^{2/t}\f$.
- */
-
-class NormaMinkL1 : public Normalizer {
-public:
-
-   /**
-    * Constructor for the Marsaglia’s bounds with the
-    * \f${\mathcal{L}}_1\f$ norm. The lattice has \f$n\f$ points per unit volume, in all dimensions \f$\le t\f$. The bias
-    * factor `beta` \f$= \beta\f$ gives more weight to some of the dimensions.
-    * Restriction: \f$t \le48\f$.
-    */
-   NormaMinkL1 (RScal & logDensity, int t, double beta = 1);
-
-   /**
-    * Destructor.
-    */
-   ~NormaMinkL1();
-
-
-   /**
-    * Returns the value of the lattice constant \f$\gamma_j\f$ in
-    * dimension \f$j\f$.
-    */
-   double getGamma (int j) const throw (std::out_of_range);
-private:
-
   /**
-    * The lattice constants \f$\gamma_j\f$ are the Marsaglia’s bounds in each
-    * dimension \f$j\f$.
-    */
-   double *m_gamma;
+   * This class implements theoretical bounds on the length of the shortest
+   * nonzero vector in a lattice, based on the densest sphere packing in space.
+   * The length of vectors is computed using the \f${\mathcal{L}}_1\f$ norm.
+   * Here, the length of the shortest nonzero vector gives the minimal number
+   * of hyperplanes that cover all the points of the dual lattice aasociated. The following
+   * upper bound in this case was established by Marsaglia
+   * \cite rMAR68a&thinsp; by applying the general convex body theorem of
+   * Minkowski:
+   * \f[
+   * \ell_t^* = (t!)^{1/t}*(n)^{-1/t}) = \gamma_t^{1/2} n^{-1/t}, 
+   * \f]
+   * for a lattice containing \f$n\f$ points per unit volume, in dimension \f$t\f$. 
+   * The lattice constants are thus \f$\gamma_t = (t!)^{2/t}\f$.
+   */
 
-   /**
-    * Precomputed lattice constants \f$\gamma_j\f$ for the Marsaglia’s bounds
-    * in each dimension \f$j \le48\f$.
-    */
-   static const double m_gamma0[1 + Normalizer::MAX_DIM];
+  class NormaMinkL1 : public Normalizer {
+    public:
 
-   /**
-    * Computes the MinkL1 bound in dimension \f$d\f$.
-    */
-   double calcGamma (int d);
-};
+      /**
+       * Constructor for the Marsaglia’s bounds with the
+       * \f${\mathcal{L}}_1\f$ norm. The lattice has \f$n\f$ points per unit volume, in all dimensions \f$\le t\f$. The bias
+       * factor `beta` \f$= \beta\f$ gives more weight to some of the dimensions.
+       * Restriction: \f$t \le48\f$.
+       */
+      NormaMinkL1 (RScal & logDensity, int t, double beta = 1);
+
+      /**
+       * Destructor.
+       */
+      ~NormaMinkL1();
+
+
+      /**
+       * Returns the value of the lattice constant \f$\gamma_j\f$ in
+       * dimension \f$j\f$.
+       */
+      double getGamma (int j) const throw (std::out_of_range);
+    private:
+
+      /**
+       * The lattice constants \f$\gamma_j\f$ are the Marsaglia’s bounds in each
+       * dimension \f$j\f$.
+       */
+      double *m_gamma;
+
+      /**
+       * Precomputed lattice constants \f$\gamma_j\f$ for the Marsaglia’s bounds
+       * in each dimension \f$j \le48\f$.
+       */
+      static const double m_gamma0[1 + Normalizer::MAX_DIM];
+
+      /**
+       * Computes the MinkL1 bound in dimension \f$d\f$.
+       */
+      double calcGamma (int d);
+  };
 
 }
 #endif

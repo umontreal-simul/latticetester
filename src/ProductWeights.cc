@@ -27,45 +27,45 @@ using boost::bad_lexical_cast;
 namespace LatticeTester
 {
 
-//===========================================================================
+  //===========================================================================
 
-ProductWeights::ProductWeights (Weight defaultWeight)
-   : m_defaultWeight(defaultWeight)
-{
-}
+  ProductWeights::ProductWeights (Weight defaultWeight)
+    : m_defaultWeight(defaultWeight)
+  {
+  }
 
-//===========================================================================
+  //===========================================================================
 
-void ProductWeights::setWeightForCoordinate (Coordinates::size_type coordinate, Weight weight)
-{
-   if (coordinate >= m_weights.size())
+  void ProductWeights::setWeightForCoordinate (Coordinates::size_type coordinate, Weight weight)
+  {
+    if (coordinate >= m_weights.size())
       m_weights.resize(coordinate + 1);
-   m_weights[coordinate] = weight;
-}
+    m_weights[coordinate] = weight;
+  }
 
-//===========================================================================
+  //===========================================================================
 
-Weight ProductWeights::getWeight (const Coordinates & projection) const
-{
-   if (projection.empty())
+  Weight ProductWeights::getWeight (const Coordinates & projection) const
+  {
+    if (projection.empty())
       return m_defaultWeight;
 
-   Weight w = 1.0;
-   Coordinates::const_iterator it = projection.begin();
-   while (it != projection.end()) {
+    Weight w = 1.0;
+    Coordinates::const_iterator it = projection.begin();
+    while (it != projection.end()) {
       w *= getWeightForCoordinate(*it);
       ++it;
-   }
-   return w;
-}
+    }
+    return w;
+  }
 
-//===========================================================================
+  //===========================================================================
 
-void ProductWeights::format(std::ostream& os) const
-{
-   using LatticeTester::operator<<;
-   os << "ProductWeights(" << m_weights << ", default=" << m_defaultWeight << ")";
-}
+  void ProductWeights::format(std::ostream& os) const
+  {
+    using LatticeTester::operator<<;
+    os << "ProductWeights(" << m_weights << ", default=" << m_defaultWeight << ")";
+  }
 
 } // namespace LatticeTester
 
@@ -77,41 +77,41 @@ void ProductWeights::format(std::ostream& os) const
 namespace LatticeTester
 {
 
-ProductWeights* ProductWeights::createFromXML (const pugi::xml_node & root)
-{
-   ProductWeights* o = new ProductWeights();
+  ProductWeights* ProductWeights::createFromXML (const pugi::xml_node & root)
+  {
+    ProductWeights* o = new ProductWeights();
 
-   pugi::xml_node node;
+    pugi::xml_node node;
 
-   try {
+    try {
       // default weight (optional)
       node = root.child("default").child("weight");
       if (node)
-         o->setDefaultWeight(lexical_cast<Weight>(node.child_value()));
+        o->setDefaultWeight(lexical_cast<Weight>(node.child_value()));
 
       // per-coordinate weights
       for (pugi::xml_node cnode = root.child("coordinate"); cnode; cnode = cnode.next_sibling("coordinate")) {
-         // weight
-         node = cnode.child("weight");
-         if (!node)
-            throw pugi::xml_error(cnode, "missing <weight> element");
-         Weight weight = lexical_cast<Weight>(node.child_value());
-         // coordinate index
-         node = cnode.child("coordinate");
-         if (!node)
-            throw pugi::xml_error(cnode, "missing <coordinate> element");
-         int coordinate = lexical_cast<Weight>(node.child_value());
-         // store weight
-         o->setWeightForCoordinate(coordinate, weight);
+        // weight
+        node = cnode.child("weight");
+        if (!node)
+          throw pugi::xml_error(cnode, "missing <weight> element");
+        Weight weight = lexical_cast<Weight>(node.child_value());
+        // coordinate index
+        node = cnode.child("coordinate");
+        if (!node)
+          throw pugi::xml_error(cnode, "missing <coordinate> element");
+        int coordinate = lexical_cast<Weight>(node.child_value());
+        // store weight
+        o->setWeightForCoordinate(coordinate, weight);
       }
 
       return o;
-   }
-   catch (bad_lexical_cast& e) {
+    }
+    catch (bad_lexical_cast& e) {
       delete o;
       throw pugi::xml_error(node, e.what());
-   }
-}
+    }
+  }
 
 } // namespace LatticeTester
 #endif

@@ -78,7 +78,9 @@ std::string IntFactor::toString (PrimeType stat)
 PrimeType IntFactor::isPrime (const MScal & y, long k)
 {
    static constexpr unsigned int NB_PRIMES = 6543;
-   MScal NbPrem = 2;
+   // NbPrem has to be instanciated if we use NTL types
+   MScal NbPrem;
+   NbPrem = 2;
    NTL::ZZ LIM;
    LIM = NTL::conv<ZZ>("4295098369");
       //    unsigned int c[200];

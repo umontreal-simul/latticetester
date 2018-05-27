@@ -114,7 +114,7 @@ namespace LatticeTester
   /*=========================================================================*/
 
 
-  inline double NormaMinkL1::getGamma (int j) const throw(std::out_of_range)
+  inline double NormaMinkL1::getGamma (int j) const
   {
     if (j < 1 || j > m_maxDim)
       throw std::out_of_range("NormaMinkL1::getGamma");

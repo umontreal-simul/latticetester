@@ -98,7 +98,7 @@ namespace LatticeTester
   /*=========================================================================*/
 
 
-  inline double NormaBestLat::getGamma (int j) const throw(std::out_of_range)
+  inline double NormaBestLat::getGamma (int j) const
   {
     if (j < 1 || j > MAX_DIM)
       throw std::out_of_range("NormaBestLat::getGamma");

@@ -98,12 +98,11 @@ namespace LatticeTester
 
 
   inline double NormaLaminated::getGamma (int j) const
-    throw(std::out_of_range)
-    {
-      if (j < 1 || j > MAX_DIM)
-        throw std::out_of_range("NormaLaminated::getGamma");
-      return m_gamma[j];
-    }
+  {
+    if (j < 1 || j > MAX_DIM)
+      throw std::out_of_range("NormaLaminated::getGamma");
+    return m_gamma[j];
+  }
 
   /*=======================================================================*/
 

@@ -61,7 +61,7 @@ namespace LatticeTester {
        * Returns the value of the lattice constant \f$\gamma_j\f$ in
        * dimension \f$j\f$.
        */
-      double getGamma (int j) const throw (std::out_of_range);
+      double getGamma (int j) const;
     private:
 
       /**

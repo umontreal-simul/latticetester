@@ -138,7 +138,7 @@ course IFT6561 page 273 ?
   /*=========================================================================*/
 
 
-  inline double NormaRogers::getGamma (int j) const throw(std::out_of_range)
+  inline double NormaRogers::getGamma (int j) const
   {
     if (j < 1 || j > m_maxDim)
       throw std::out_of_range("NormaRogers::getGamma");

@@ -22,6 +22,7 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <array>
 
 #include <unistd.h>
 #include <stdio.h>
@@ -86,12 +87,6 @@ PrimeType IntFactor::isPrime (const MScal & y, long k)
       {{
             #include "../data/prime.dat"
       }};
-   // std::ifstream in ("../share/latticetester/data/prime.dat"); // contains primes < 2^16
-      //    if (!(in.is_open())) {
-      //       std::cerr << "Error:   cannot open file   prime.dat\n";
-      //       exit(8);
-      //    }
-      //    in.ignore (100, '\n');  // ignore first line = number of primes in file
 
    MScal ys = NTL::SqrRoot (y);
 //    if (ys > 65536)

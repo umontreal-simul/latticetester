@@ -35,6 +35,7 @@ namespace
                 etat2 = GERME, etat3 = GERME, etat4 = GERME, etat5 = GERME;
 
 
+  // What generator is this???
   unsigned long RandValue ()
   {
     unsigned long b;
@@ -117,56 +118,6 @@ namespace LatticeTester
 
     return u << shift;
   }
-
-
-  //===========================================================================
-
-  void Euclide (const MScal & A, const MScal & B, MScal & C, MScal & D, MScal & E,
-      MScal & F, MScal & G)
-  {
-
-    //MScal oldA = A;
-    //MScal oldB = B;
-
-    MScal X, Y, Z;
-    G = A;
-    Z = B;
-    set9 (C);
-    clear (D);
-    clear (E);
-    set9 (F);
-
-    //cout << "   Euclide :" << endl;
-    //cout << "      inputs: A = " << oldA << ", B = " << oldB << endl;
-    //cout << "      values used: A=" << A << ", B=" << B << ", C=" << C << ", D=" << D << ", E=" << E << ", F=" << F << ", G=" << G << ", (X=" << X << ", Y=" << Y << ", Z=" << Z << ")" << endl;
-
-    if (IsZero(A)) {
-      swap9<MScal>(G, Z);
-      swap9<MScal>(C, E);
-      swap9<MScal>(D, F);
-      return;
-    }
-
-    while (!IsZero(Z)) {
-      swap9<MScal>(G, Z);
-      swap9<MScal>(C, E);
-      swap9<MScal>(D, F);
-      Quotient (Z, G, X);
-      X = -X;
-      Y = X * G;
-      Z += Y;
-      Y = X * C;
-      E += Y;
-      Y = X * D;
-      F += Y;
-    }
-
-    //cout << "             " << C << " x A + " << D << " x B = " << G << endl;
-    //cout << "             " << E << " x A + " << F << " x B = 0" << endl;
-    //cout << "      outputs: A=" << A << ", B=" << B << ", C=" << C << ", D=" << D << ", E=" << E << ", F=" << F << ", G=" << G << endl;
-    //cout << endl;
-  }
-
 
   //===========================================================================
 

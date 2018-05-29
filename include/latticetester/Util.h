@@ -528,8 +528,52 @@ namespace LatticeTester {
    *    0.
    * \f}
    */
-  void Euclide (const MScal & a, const MScal & b, MScal & C, MScal & D,
-      MScal & E, MScal & F, MScal & G);
+  template<typename Int>
+    void Euclide (const Int & A, const Int & B, Int & C, Int & D,
+        Int & E, Int & F, Int & G)
+    {
+
+      //Int oldA = A;
+      //Int oldB = B;
+
+      Int X, Y, Z;
+      G = A;
+      Z = B;
+      set9 (C);
+      clear (D);
+      clear (E);
+      set9 (F);
+
+      //cout << "   Euclide :" << endl;
+      //cout << "      inputs: A = " << oldA << ", B = " << oldB << endl;
+      //cout << "      values used: A=" << A << ", B=" << B << ", C=" << C << ", D=" << D << ", E=" << E << ", F=" << F << ", G=" << G << ", (X=" << X << ", Y=" << Y << ", Z=" << Z << ")" << endl;
+
+      if (IsZero(A)) {
+        swap9<Int>(G, Z);
+        swap9<Int>(C, E);
+        swap9<Int>(D, F);
+        return;
+      }
+
+      while (!IsZero(Z)) {
+        swap9<Int>(G, Z);
+        swap9<Int>(C, E);
+        swap9<Int>(D, F);
+        Quotient (Z, G, X);
+        X = -X;
+        Y = X * G;
+        Z += Y;
+        Y = X * C;
+        E += Y;
+        Y = X * D;
+        F += Y;
+      }
+
+      //cout << "             " << C << " x A + " << D << " x B = " << G << endl;
+      //cout << "             " << E << " x A + " << F << " x B = 0" << endl;
+      //cout << "      outputs: A=" << A << ", B=" << B << ", C=" << C << ", D=" << D << ", E=" << E << ", F=" << F << ", G=" << G << endl;
+      //cout << endl;
+    }
 
   /**
    * @}
@@ -658,12 +702,13 @@ namespace LatticeTester {
   /**
    * Computes the scalar product of vectors \f$A\f$ and \f$B\f$, using
    * components \f$[0..n-1]\f$, and puts the result in \f$D\f$.
+   * THIS DOES NOT SEEM TO BE A VERY SAFE IMPLEMENTATION
    */
-  template <typename Vect1, typename Vect2, typename Scal>
+  template <typename Int, typename Vect1, typename Vect2, typename Scal>
     inline void ProdScal (const Vect1 & A, const Vect2 & B, int n, Scal & D)
     {
       // Le produit A[i] * B[i] peut déborder, d'oÃ¹ conv.
-      MScal C;   C = 0;
+      Int C;   C = 0;
       for (int i = 0; i < n; i++)
         C += A[i] * B[i];
       conv (D, C);
@@ -675,13 +720,14 @@ namespace LatticeTester {
    * Transforms the polynomial \f$A_0 + A_1x^1 + \cdots+ A_nx^n\f$ into
    * \f$x^n - A_1x^{n-1} - \cdots- A_n\f$. The result is put in \f$B\f$.
    */
-  inline void Invert (const MVect & A, MVect & B, int n)
-  {
-    conv(B[n], 1);
-    for(int i = 0; i < n; i++){
-      B[i] = -A[n - i -1];
+  template<typename IntVec>
+    inline void Invert (const IntVec & A, IntVec & B, int n)
+    {
+      conv(B[n], 1);
+      for(int i = 0; i < n; i++){
+        B[i] = -A[n - i -1];
+      }
     }
-  }
 
   /**
    * Computes the `norm` norm of vector \f$V\f$, using components \f$[1..n]\f$,
@@ -848,11 +894,12 @@ namespace LatticeTester {
    * Creates the square matrix \f$A\f$ of dimensions
    * \f$d\times d\f$ and initializes its elements to 0.
    */
-  inline void CreateMatr (MMat& A, int d)
-  {
-    A.resize (d, d);
-    //clear (A);
-  }
+  template<typename IntMat>
+    inline void CreateMatr (IntMat& A, int d)
+    {
+      A.resize (d, d);
+      //clear (A);
+    }
 
   /**
    * \copydoc CreateMatr(MMat&, int)
@@ -866,11 +913,12 @@ namespace LatticeTester {
    * Creates the matrix \f$A\f$ of dimensions (<tt>line</tt>)
    * \f$\times\f$ (<tt>col</tt>). Initializes its elements to 0.
    */
-  inline void CreateMatr (MMat& A, int line, int col)
-  {
-    A.resize(line, col);
-    //clear (A);
-  }
+  template<typename IntMat>
+    inline void CreateMatr (IntMat& A, int line, int col)
+    {
+      A.resize(line, col);
+      //clear (A);
+    }
 
   /**
    * \copydoc CreateMatr(MMat&, int, int)
@@ -883,10 +931,11 @@ namespace LatticeTester {
   /**
    * Deletes the matrix \f$A\f$.
    */
-  inline void DeleteMatr (MMat& A)
-  {
-    A.clear ();
-  }
+  template<typename IntMat>
+    inline void DeleteMatr (IntMat& A)
+    {
+      A.clear ();
+    }
 
   /**
    * As above.
@@ -942,8 +991,8 @@ namespace LatticeTester {
    * Checks that square matrix \f$A\f$ is upper triangular (modulo \f$m\f$) for
    * dimensions 1 to `dim`.
    */
-  template <typename Matr>
-    bool CheckTriangular (const Matr & A, int dim, const MScal & m)
+  template <typename Matr, typename Int>
+    bool CheckTriangular (const Matr & A, int dim, const Int & m)
     {
       for (int i = 1; i < dim; i++) {
         for (int j = 0; j < i; j++) {
@@ -974,11 +1023,11 @@ namespace LatticeTester {
    */
 
 
-  template <typename Matr>
+  template <typename Matr, typename Int>
     void Triangularization (Matr & W, Matr & V, int lin, int col,
-        const MScal & m)
+        const Int & m)
     {
-      MScal T1, T2, T3, T4, T5, T6, T7, T8;
+      Int T1, T2, T3, T4, T5, T6, T7, T8;
 
       for (int j = 0; j < col; j++) {
 
@@ -995,7 +1044,7 @@ namespace LatticeTester {
               ++s;
             if (!IsZero (W(s,j))) {
 
-              MScal temp;
+              Int temp;
               Euclide (W(r,j), W(s,j), T1, T2, T3, T4, temp);
               W(s,j) = temp;
               /*
@@ -1074,8 +1123,8 @@ namespace LatticeTester {
    * Mathematics of Computation, Volume 65, Number 213, bottom of page 199.
    */
 
-  template <typename Matr>
-    void CalcDual (const Matr & A, Matr & B, int d, const MScal & m)
+  template <typename Matr, typename Int>
+    void CalcDual (const Matr & A, Matr & B, int d, const Int & m)
     {
       for (int i = 0; i < d; i++) {
 

@@ -1,71 +1,22 @@
+// This file is part of LatticeTester.
+//
+// LatticeTester
+// Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #include "latticetester/LatticeTesterConfig.h"
-#include "latticetester/Util.h"
 
-using namespace std;
-using namespace LatticeTester;
-
-namespace LatticeTester
-{
-
-  LatticeTesterConfig::LatticeTesterConfig()
-  {
-    fileName.reserve(MAX_WORD_SIZE);
-    //a.SetLength(1+maxDim);
-    detailF = 0;
-  }
-
-  LatticeTesterConfig::~LatticeTesterConfig()
-  {
-    kill();
-  }
-
-  void LatticeTesterConfig::kill()
-  {
-  }
-
-  void LatticeTesterConfig::write()
-  {
-
-    switch(test) {
-
-      case SPECTRAL:
-        cout << "\n----- LatticeTesterConfig::write -----" << endl;
-        cout << "Criterion: " << toStringCriterion(test) << endl;
-        cout << "Norm: " << toStringNorm(norm) << endl;
-        cout << "Normalizer: " << toStringNorma (normalizer) << endl;
-
-        cout << "Prereduction: " << toStringPreRed (prereduction);
-        cout << " (with " << toStringPrecision(precision) << " precision";
-        cout << " and fact = " << fact << ")" << endl;
-
-        cout << "Dimension of the basis: " << dim << endl;
-        cout << "Lattice Basis = \n" << basis << endl;
-        cout << "maxNodesBB: " << maxNodesBB << endl;
-        break;
-
-      case PALPHA:
-        cout << "\n----- LatticeTesterConfig::write -----" << endl;
-        cout << "Criterion: " << toStringCriterion(test) << endl;
-        cout << "alpha: " << alpha << endl;
-        cout << "modulo: " << modulo << endl;
-
-        cout << "Dimension of the basis: " << dim << endl;
-        cout << "Lattice Basis = \n" << basis << endl;
-        cout << "maxNodesBB: " << maxNodesBB << endl;
-        break;
-
-      case BEYER:
-        cout << "\n----- LatticeTesterConfig::write -----" << endl;
-        cout << "Criterion: " << toStringCriterion(test) << endl;
-        cout << "Dimension of the basis: " << dim << endl;
-        cout << "Lattice Basis = \n" << basis << endl;
-        cout << "maxNodesBB: " << maxNodesBB << endl;
-        break;
-
-      default:
-        MyExit(1, "LatticeTesterConfig::write:  NO SUCH CASE");
-        break;
-    }
-  }
-
-} // namespace LatticeTester
+int main() {
+  return 0;
+}

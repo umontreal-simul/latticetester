@@ -48,20 +48,20 @@ using namespace NTL;
 typedef long              MScal;
 typedef NTL::vector<long> MVect;
 typedef NTL::matrix<long> MMat;
-typedef zz_p     MScalP;
-typedef vec_zz_p MVectP;
-typedef mat_zz_p MMatP;
+typedef zz_p     MScalP; // This appears nowhere
+typedef vec_zz_p MVectP; // This appears nowhere
+typedef mat_zz_p MMatP; // This appears only once
 typedef long                BScal;
 typedef NTL::vector<long>   BVect;
 typedef NTL::matrix<long>   BMat;
 typedef double              NScal;
 typedef NTL::vector<double> NVect;
-typedef NTL::matrix<double> NMat;
+typedef NTL::matrix<double> NMat; // This appears nowhere
 typedef double              RScal;
 typedef NTL::vector<double> RVect;
 typedef NTL::matrix<double> RMat;
-typedef zz_pX    PolX;
-typedef zz_pE    PolE;
+typedef zz_pX    PolX; // This appears nowhere
+typedef zz_pE    PolE; // This appears nowhere
 #elif NTL_TYPES_CODE == 2
 // the case  "ZZDD"
 

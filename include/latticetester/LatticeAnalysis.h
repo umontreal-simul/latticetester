@@ -3,16 +3,25 @@
 
 #include <string>
 #include <list>
+#include <dirent.h>
+#include <fnmatch.h>
 
 #include "latticetester/Types.h"
 #include "latticetester/Util.h"
 #include "latticetester/Const.h"
 #include "latticetester/IntLatticeBasis.h"
 #include "latticetester/Normalizer.h"
+#include "latticetester/NormaBestLat.h"
+#include "latticetester/NormaLaminated.h"
+#include "latticetester/NormaMinkowski.h"
+#include "latticetester/NormaMinkL1.h"
+#include "latticetester/NormaPalpha.h"
+#include "latticetester/NormaRogers.h"
 #include "latticetester/Reducer.h"
 #include "latticetester/LatTestWriter.h"
 #include "latticetester/LatTestWriterRes.h"
 #include "latticetester/LatticeTesterConfig.h"
+#include "latticetester/ParamReader.h"
 
 namespace LatticeTester {
 
@@ -25,142 +34,511 @@ namespace LatticeTester {
    * figures of merit for the lattice are the length of the shortest vector
    * in the lattice computed with different norms, the Beyer quotient, or the
    * \f$P_{\alpha}\f$ criterion. For the standard spectral test, the figure of 
-   * merit is based on the length of the shortest non-zero vector in the lattice,
-   * using the \f${\mathcal{L}}_2\f$ norm to compute the length of vectors, and 
-   * the inverse of this length gives the maximal distance between successive 
-   * hyperplanes covering all the points in the *primal* lattice. If one computes
-   * the length of the shortest non-zero vector in the *dual* lattice using the 
-   * \f${\mathcal{L}}_1\f$ norm, one obtains the minimal number of hyperplanes 
-   * covering all the points of the *primal* lattice.
+   * merit is based on the length of the shortest non-zero vector in the 
+   * lattice, using the \f${\mathcal{L}}_2\f$ norm to compute the length of 
+   * vectors, and the inverse of this length gives the maximal distance between 
+   * successive hyperplanes covering all the points in the *primal* lattice. If 
+   * one computes the length of the shortest non-zero vector in the *dual* 
+   * lattice using the \f${\mathcal{L}}_1\f$ norm, one obtains the minimal 
+   * number of hyperplanes covering all the points of the *primal* lattice.
    *
    */
 
-  class LatticeAnalysis {
+  template<typename Int, typename IntVec, typename IntMat, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
+    class LatticeAnalysis {
 
-    public:
+      public:
 
-      /**
-       * Base constructor. The test will be applied on `lattice`, with the selected
-       * `normalizer`.
-       */
-      LatticeAnalysis ();
+        /**
+         * Base constructor. The test will be applied on `lattice`, with the 
+         * selected `normalizer`.
+         */
+        LatticeAnalysis ();
 
-      /**
-       * Constructor. The test will be applied on `lattice`, with the selected
-       * `normalizer` and `criterion`.
-       */
-      LatticeAnalysis (Reducer & reducer, CriterionType criterion, NormaType normaType,
-          PreReductionType preRed, NormType norm, int alpha = 0,
-          long maxNodesBB = 10000000);
+        /**
+         * Constructor. The test will be applied on `lattice`, with the 
+         * selected `normalizer` and `criterion`.
+         */
+        LatticeAnalysis (Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat> & reducer, CriterionType criterion,
+            NormaType normaType, PreReductionType preRed, NormType norm,
+            int alpha = 0, long maxNodesBB = 10000000);
 
-      /**
-       * Destructor.
-       */
-      ~LatticeAnalysis ();
+        /**
+         * Destructor.
+         */
+        ~LatticeAnalysis ();
 
-      /**
-       * Performs the test in dimension `dim`.
-       * The method returns `false` if the test was interrupted for any reason
-       * before completion, and it returns `true` upon success. The result of
-       * the test is kept in <tt>m_merit</tt>.
-       */
-      bool doTest (double fact, PrecisionType precision, int blocksize = 20);
+        /**
+         * Performs the test in dimension `dim`.
+         * The method returns `false` if the test was interrupted for any 
+         * reason before completion, and it returns `true` upon success. The 
+         * result of the test is kept in <tt>m_merit</tt>.
+         */
+        bool doTest (double fact, PrecisionType precision, int blocksize = 20);
 
-      void printTestResults ();
+        void printTestResults ();
 
-      /**
-       * Reads the parameters of the test in input text file `datafile`; then do
-       * the test. The data file must always have the extension `".dat"`, but must
-       * be given as argument here *without extension*. For example, if the data
-       * file is named `myLattice.dat`, then the method must be called as
-       * `doTest("myLattice")`. Returns 0 if the test completed successfully; returns
-       * a negative integer if there was an error.
-       */
-      int doTestFromInputFile (const char *datafile);
+        /**
+         * Reads the parameters of the test in input text file `datafile`; then 
+         * do the test. The data file must always have the extension `".dat"`, 
+         * but must be given as argument here *without extension*. For example, 
+         * if the data file is named `myLattice.dat`, then the method must be 
+         * called as `doTest("myLattice")`. Returns 0 if the test completed 
+         * successfully; returns a negative integer if there was an error.
+         */
+        int doTestFromInputFile (const char *datafile);
 
-      /**
-       * Applies the method `doTest` to all the files with extension `".dat"`
-       * in directory named `dirname`. Returns 0 if all the tests completed
-       * successfully; returns a non-zero integer if there was an error.
-       */
-      int doTestFromDirectory (const char *dirname);
+        /**
+         * Applies the method `doTest` to all the files with extension `".dat"`
+         * in directory named `dirname`. Returns 0 if all the tests completed
+         * successfully; returns a non-zero integer if there was an error.
+         */
+        int doTestFromDirectory (const char *dirname);
 
 
-      /**
-       * Initialize m_normalizer to a pointer on a normalizer object
-       * of type norma.
-       */
-      void initNormalizer (NormaType norma, int alpha = 0);
+        /**
+         * Initialize m_normalizer to a pointer on a normalizer object
+         * of type norma.
+         */
+        void initNormalizer (NormaType norma, int alpha = 0);
 
-      /**
-       * Gets the results of the applied test.
-       */
-      double getMerit () const { return m_merit; }
+        /**
+         * Gets the results of the applied test.
+         */
+        double getMerit () const { return m_merit; }
 
-      /**
-       * Set functions
-       */
-      void setReducer (Reducer & red) {m_reducer = &red; }
-      void setCriterion (CriterionType criterion) { m_criterion = criterion; }
-      void setNormalizerType (NormaType normalizerType) { m_normalizerType = normalizerType; }
-      void setPreReduction (PreReductionType preRed) { m_preRed = preRed; }
-      void setNorm (NormType norm) { m_norm = norm; }
-      void setDim (int dim) { m_dim = dim; }
-      void setMaxNodesBB (long maxNodesBB) { Reducer::maxNodesBB = m_maxNodesBB = maxNodesBB; }
+        /**
+         * Set functions
+         */
+        void setReducer (Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat> & red) {m_reducer = &red; }
 
-    private:
-      /**
-       * Pointer to the reducer class used to perform pre-reductions and Branch-and-Bound
-       */
-      Reducer* m_reducer;
+        void setCriterion (CriterionType criterion) 
+        {
+          m_criterion = criterion;
+        }
 
-      /**
-       * Type of pre-reduction
-       */
-      PreReductionType m_preRed;
+        void setNormalizerType (NormaType normalizerType)
+        {
+          m_normalizerType = normalizerType;
+        }
 
-      /**
-       * Type of test applied: SPECTRAL, BEYER, ...
-       */
-      CriterionType m_criterion;
+        void setPreReduction (PreReductionType preRed) { m_preRed = preRed; }
 
-      /**
-       * Pointer to the Normalizer class used to normalize the results
-       */
-      Normalizer* m_normalizer;
+        void setNorm (NormType norm) { m_norm = norm; }
 
-      /**
-       * Type of normalization chosen for the test
-       */
-      NormaType m_normalizerType;
+        void setDim (int dim) { m_dim = dim; }
 
-      /**
-       * Norm used
-       */
-      NormType m_norm;
+        void setMaxNodesBB (long maxNodesBB)
+        {
+          Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::maxNodesBB = m_maxNodesBB = maxNodesBB;
+        }
 
-      /**
-       * the dimension of the test
-       */
-      int m_dim;
+      private:
+        /**
+         * Pointer to the reducer class used to perform pre-reductions and 
+         * Branch-and-Bound
+         */
+        Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>* m_reducer;
 
-      /**
-       * Contains the results of the test
-       */
-      double m_merit;
+        /**
+         * Type of pre-reduction
+         */
+        PreReductionType m_preRed;
 
-      /**
-       * Contains the maximum number of nodes visited in the Branch-and-Bound procedure
-       */
-      long m_maxNodesBB;
+        /**
+         * Type of test applied: SPECTRAL, BEYER, ...
+         */
+        CriterionType m_criterion;
 
-      /**
-       * Returns a `Writer` created from the input file `infile` and the given
-       * `OutputType`.
-       */
-      LatTestWriter* createLatTestWriter (const char *infile, OutputType ot);
+        /**
+         * Pointer to the Normalizer class used to normalize the results
+         */
+        Normalizer<RedDbl>* m_normalizer;
 
-  };
+        /**
+         * Type of normalization chosen for the test
+         */
+        NormaType m_normalizerType;
+
+        /**
+         * Norm used
+         */
+        NormType m_norm;
+
+        /**
+         * the dimension of the test
+         */
+        int m_dim;
+
+        /**
+         * Contains the results of the test
+         */
+        double m_merit;
+
+        /**
+         * Contains the maximum number of nodes visited in the Branch-and-Bound 
+         * procedure
+         */
+        long m_maxNodesBB;
+
+        /**
+         * Returns a `Writer` created from the input file `infile` and the 
+         * given `OutputType`.
+         */
+        LatTestWriter<Int, IntMat>* createLatTestWriter (const char *infile,
+            OutputType ot);
+
+    }; // End class LatticeAnalysis
+
+  //===========================================================================
+  // Utility functions
+
+  int getDir (string dir, std::vector <string> & files)
+  {
+    DIR *dp;
+    struct dirent *dirp;
+    if ((dp = opendir (dir.c_str())) == NULL) {
+      cerr << "Directory: " << dir << endl;
+      perror ("Couldn't open the directory");
+      return errno;
+    }
+
+    // Does directory name ends with /
+    size_t j = dir.rfind('/');
+    string SEP("");
+    // if not, add one /
+    if (dir.size() != (1 + j))
+      SEP += "/";
+
+    while ((dirp = readdir (dp)) != NULL) {
+      if (0 == fnmatch("*.dat", dirp->d_name, 0))
+        // keeps full name including directory name
+        files.push_back (string (dir + SEP + dirp->d_name));
+    }
+    closedir (dp);
+    return 0;
+  }
+
+  //===========================================================================
+
+  void eraseExtension (std::vector <string> & files)
+  {
+    for (unsigned int i = 0; i < files.size (); i++) {
+      size_t j = files[i].rfind(".dat");
+      if (j != string::npos)
+        files[i].erase(j);
+    }
+  }
+
+  //===========================================================================
+
+  void printFileNames (std::vector <string> & files)
+  {
+    cout << "----------------------------------------------" << endl;
+    for (unsigned int i = 0; i < files.size (); i++) {
+      cout << files[i] << endl;
+    }
+  }
+
+  //===========================================================================
+  // Class implementation
+
+  template<typename Int, typename IntVec, typename IntMat, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
+    LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::LatticeAnalysis ()
+    {
+      m_normalizer = 0;
+      m_reducer = 0;
+    }
+
+  //===========================================================================
+
+  template<typename Int, typename IntVec, typename IntMat, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
+    LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::LatticeAnalysis (Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat> & reducer, 
+        CriterionType criterion, NormaType normaType, PreReductionType preRed,
+        NormType norm, int alpha, long maxNodesBB)
+    {
+      m_reducer = &reducer;
+      m_criterion = criterion;
+      m_normalizerType = normaType;
+      initNormalizer(normaType, alpha);
+      m_preRed = preRed;
+      m_norm = norm;
+      m_dim = m_reducer->getIntLatticeBasis().getDim();
+      Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::maxNodesBB = m_maxNodesBB = maxNodesBB;
+    }
+
+  //===========================================================================
+
+  template<typename Int, typename IntVec, typename IntMat, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
+    LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::~LatticeAnalysis ()
+    {
+      if (m_normalizer != 0)
+        delete m_normalizer;
+    }
+
+  //===========================================================================
+
+  template<typename Int, typename IntVec, typename IntMat, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
+    void LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::initNormalizer (NormaType norma, int alpha)
+    {
+
+#if NTL_TYPES_CODE > 1
+      RedDbl logDensity;
+      logDensity = - log( abs( NTL::determinant(
+              m_reducer->getIntLatticeBasis().getBasis()) ) );
+#else
+      // As NTL library does not support matrix with double
+      // we compute the determinant with the boost library
+      boost::numeric::ublas::matrix<long>  mat_tmps;
+      mat_tmps.resize(m_dim, m_dim);
+      for(unsigned int i = 0; i < m_dim; i++){
+        for(unsigned int j = 0; j < m_dim; j++){
+          mat_tmps(i,j) = m_reducer->getIntLatticeBasis().getBasis()(i,j);
+        }
+      }
+      RedDbl logDensity(-log( abs( det_double(mat_tmps) ) ) );
+#endif
+
+      switch (norma) {
+        case BESTLAT:
+          m_normalizer = new NormaBestLat<RedDbl> (logDensity, m_dim);
+          break;
+        case LAMINATED:
+          m_normalizer = new NormaLaminated<RedDbl> (logDensity, m_dim);
+          break;
+        case ROGERS:
+          m_normalizer = new NormaRogers<RedDbl> (logDensity, m_dim);
+          break;
+        case MINKL1:
+          m_normalizer = new NormaMinkL1<RedDbl> (logDensity, m_dim);
+          break;
+        case MINKOWSKI:
+          m_normalizer = new NormaMinkowski<RedDbl> (logDensity, m_dim);
+          break;
+        case NORMA_GENERIC:
+          m_normalizer = new Normalizer<RedDbl> (logDensity, m_dim, "Norma_generic");
+          break;
+        case PALPHA_N:
+          m_normalizer = new NormaPalpha<Int, RedDbl> (
+              m_reducer->getIntLatticeBasis().getModulo(), alpha, m_dim);
+          break;
+        case L1:
+          break;
+        case L2:
+          break;
+        default:
+          cout << "LatticeAnalysis::initNormalizer:   no such case";
+          exit (2);
+      }
+    }
+
+  //===========================================================================
+
+  template<typename Int, typename IntVec, typename IntMat, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
+    bool LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::doTest (double fact, PrecisionType precision,
+        int blocksize)
+    {
+      bool result = false;
+
+      // performing pre-reduction
+      switch (m_preRed) {
+        case BKZ:
+          m_reducer->redBKZ(fact, blocksize, precision);
+          break;
+        case LenstraLL:
+          m_reducer->redLLLNTL(fact, precision);
+          break;
+        case PreRedDieter:
+          m_reducer->preRedDieter(0);
+          break;
+        case NOPRERED:
+          break;
+        default:
+          MyExit(1, "LatticeLatticeAnalysis::doTest:   no such case");
+          exit(1);
+      }
+
+      // performing the Branch-and-Bound procedure to find the shortest 
+      // non-zero vector
+      switch (m_criterion) {
+        case SPECTRAL:
+          // performing the Branch-and-Bound procedure to find the shortest 
+          // non-zero vector
+          result = m_reducer->shortestVector(m_norm);
+          // calculating the Figure of Merit
+          if(m_normalizerType == L1 || m_normalizerType == L2) {
+            m_merit = conv<double>(m_reducer->getMinLength());
+          } else {
+            m_merit = conv<double>(m_reducer->getMinLength())
+              / m_normalizer->getPreComputedBound(m_dim);
+          }
+          break;
+        case BEYER:
+          //performing the Branch-and-Bound procedure to find the 
+          //Minkowski-reduced matrix
+          result = m_reducer->reductMinkowski(0);
+          // calculating the Figure of Merit
+          m_merit = conv<double>(m_reducer->getMinLength())
+            /conv<double>(m_reducer->getMaxLength());
+          break;
+        case PALPHA:
+          MyExit(1, "PALPHA:   to be implemented");
+          break;
+        case BOUND_JS:
+          MyExit(1, "BOUND_JS:   NOT YET");
+          break;
+        default:
+          MyExit(1, "LatticeAnalysis::doTest:   NO SUCH CASE");
+          exit(1);
+      }
+
+      return result;
+    }
+
+  //===========================================================================
+
+  template<typename Int, typename IntVec, typename IntMat, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
+    void LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::printTestResults ()
+    {
+      cout << "\n----------------------------------------------------------" 
+        << endl;
+      cout << "Criterion: " << toStringCriterion(m_criterion) << endl;
+      cout << "Prereduction used: " << toStringPreRed(m_preRed) << endl;
+      cout << "Length of shortest non-zero vector = " 
+        << conv<double>(m_reducer->getMinLength());
+      cout << " (" << toStringNorm(m_norm) << ")" << endl;
+      cout << "Figure of Merit = " << m_merit;
+      cout << " (" << toStringNorma(m_normalizerType) << " normalization)" 
+        << endl;
+      cout << "----------------------------------------------------------\n" 
+        << endl;
+    }
+
+  //===========================================================================
+
+  /*
+   * Reads the test parameters in infile; then do the test.
+   * infile is the data file name without extension: if the data file is named
+   * "poil.dat", then infile is "poil".
+   * Data files must always have the extension "dat".
+   */
+
+  template<typename Int, typename IntVec, typename IntMat, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
+    int LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::doTestFromInputFile (const char *infile)
+    {   
+      // parameters reading
+      string fname (infile);
+      fname += ".dat";
+      ParamReader<Int, IntVec, BasInt, BasIntMat, RedDbl> paramRdr (fname.c_str ());
+      fname.clear ();
+
+      LatticeTesterConfig<Int, BasIntMat> config;
+      paramRdr.read (config);
+      //config.write();
+
+      LatTestWriter<Int, IntMat>* rw = createLatTestWriter (infile, config.outputType);
+
+      // creating the Reducer object from input
+      IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> basis (config.basis, config.dim, config.norm);
+      Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat> red (basis);
+      // update parameters
+      setReducer(red);
+      setCriterion(config.test);
+      setNormalizerType(config.normalizer);
+      setDim(config.dim);
+      initNormalizer (config.normalizer);
+      setPreReduction(config.prereduction);
+      setNorm(config.norm);
+      setMaxNodesBB(config.maxNodesBB);
+
+      if (!doTest(config.fact, config.precision, config.blocksize)) {
+        MyExit(1, "error in LatticeAnalysis::doTestFromInputFile");
+        exit(1);
+      }
+
+      // putting the results in the output stream
+      rw->writeString(
+          "\n----------------------------------------------------------");
+      rw->newLine();
+      rw->writeString("Criterion: "); 
+      rw->writeString(toStringCriterion(m_criterion));
+      rw->newLine();
+      rw->writeString("Prereduction used: ");
+      rw->writeString(toStringPreRed(m_preRed));
+      rw->newLine();
+      rw->writeString("Length of shortest non-zero vector = ");
+      rw->writeDouble(conv<double>(m_reducer->getMinLength()));
+      rw->writeString(" (");
+      rw->writeString(toStringNorm(m_norm));
+      rw->writeString(")");
+      rw->newLine();
+      rw->writeString("Figure of Merit = ");
+      rw->writeDouble(m_merit);
+      rw->writeString(" (");
+      rw->writeString(toStringNorma(m_normalizerType));
+      rw->writeString(" normalization)");
+      rw->newLine();
+      rw->writeString(
+          "----------------------------------------------------------\n");
+      rw->newLine();
+
+      delete rw;
+      return 0;
+    }
+
+  //===========================================================================
+
+  template<typename Int, typename IntVec, typename IntMat, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
+    int LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::doTestFromDirectory (const char *dirname)
+    {
+      string dir = string (dirname);
+      std::vector <string> files = std::vector <string> ();
+
+      getDir (dir, files);
+      printFileNames (files);
+      eraseExtension (files);
+
+      int flag = 0;
+      for (unsigned int i = 0; i < files.size (); i++)
+        flag |= doTestFromInputFile (files[i].c_str());
+
+      return flag;
+    }
+
+  //===========================================================================
+
+  template<typename Int, typename IntVec, typename IntMat, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
+    LatTestWriter<Int, IntMat>* LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::createLatTestWriter (
+        const char *infile, OutputType ot)
+    {
+      LatTestWriter<Int, IntMat> *rw = 0;
+      string fname;
+
+      switch (ot) {
+        case RES:
+          fname = infile;
+          fname += ".res";
+          rw = new LatTestWriterRes<Int, IntMat> (fname.c_str ());
+          break;
+
+        case TEX:
+          fname = infile;
+          fname += ".tex";
+          //rw = new WriterTex(fname.c_str()); //EB Ne permet pas d'écrire en Tex
+          cerr << "\n*** outputType:   TEX not implemented" << endl;
+          return 0;
+          break;
+
+        case TERMINAL:
+          rw = new LatTestWriterRes<Int, IntMat> (&cout);
+          break;
+
+        default:
+          cerr << "\n*** outputType:   no such case" << endl;
+          return 0;
+      }
+      return rw;
+    }
 
 } // end namespace
 

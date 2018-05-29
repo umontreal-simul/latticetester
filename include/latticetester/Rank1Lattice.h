@@ -17,63 +17,186 @@ namespace LatticeTester {
    * Without loss of generality, one may choose \f$a_1 = 1\f$.
    *
    */
-  class Rank1Lattice: public LatticeTester::IntLattice {
-    public:
+  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+    class Rank1Lattice: public IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> {
+      public:
 
-      /**
-       * Constructor. \f$d\f$ represents the number of multipliers in the array
-       * `a`.
-       */
-      Rank1Lattice (const MScal & n, const MVect & a, int d,
-          LatticeTester::NormType norm = LatticeTester::L2NORM);
+        /**
+         * Constructor. \f$d\f$ represents the number of multipliers in the array
+         * `a`.
+         */
+        Rank1Lattice (const Int & n, const IntVec & a, int d,
+            LatticeTester::NormType norm = LatticeTester::L2NORM);
 
-      /**
-       * Copy constructor.
-       */
-      Rank1Lattice (const Rank1Lattice & Lat);
+        /**
+         * Copy constructor.
+         */
+        Rank1Lattice (const Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> & Lat);
 
-      /**
-       * Assigns `Lat` to this object.
-       */
-      Rank1Lattice & operator= (const Rank1Lattice & Lat);
+        /**
+         * Assigns `Lat` to this object.
+         */
+        Rank1Lattice & operator= (const Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> & Lat);
 
-      /**
-       * Destructor.
-       */
-      ~Rank1Lattice();
+        /**
+         * Destructor.
+         */
+        ~Rank1Lattice();
 
-      /**
-       * Returns the vector of multipliers \f$a\f$ as a string.
-       */
-      std::string toStringCoef() const;
+        /**
+         * Returns the vector of multipliers \f$a\f$ as a string.
+         */
+        std::string toStringCoef() const;
 
-      /**
-       * Builds the basis in dimension \f$d\f$.
-       */
-      void buildBasis (int d);
+        /**
+         * Builds the basis in dimension \f$d\f$.
+         */
+        void buildBasis (int d);
 
-      /**
-       * Dualize the matrix. The matrix entered need to have
-       * the particular shape describe ERWAN
-       */
-      void dualize ();
+        /**
+         * Dualize the matrix. The matrix entered need to have
+         * the particular shape describe ERWAN
+         */
+        void dualize ();
 
-      /**
-       * Increases the dimension by 1.
-       */
-      void incDim ();
-    protected:
+        /**
+         * Increases the dimension by 1.
+         */
+        void incDim ();
+      protected:
 
-      /**
-       * Initializes the rank 1 lattice.
-       */
-      void init();
+        /**
+         * Initializes the rank 1 lattice.
+         */
+        void init();
 
-      /**
-       * The multipliers of the rank 1 lattice rule.
-       */
-      MVect m_a;
-  };
+        /**
+         * The multipliers of the rank 1 lattice rule.
+         */
+        IntVec m_a;
+    };
 
-}
+  //===========================================================================
+
+  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+    Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::Rank1Lattice (const Int & n, const IntVec & a, int maxDim,
+        NormType norm):
+      IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> (n, 1, maxDim, norm)
+  {
+    this->m_a = a;
+    init();
+  }
+
+
+  //=========================================================================
+
+  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+    Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::~Rank1Lattice()
+    {
+      this->m_a.clear ();
+    }
+
+
+  //=========================================================================
+
+  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+    void Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::init()
+    {
+      IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::init();
+      for (int r = 1; r < this->getDim(); r++)
+        this->m_lgVolDual2[r] = this->m_lgVolDual2[r - 1];
+    }
+
+
+  //=========================================================================
+
+  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+    Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> & Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::operator= (const Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> & lat)
+    {
+      if (this == &lat)
+        return * this;
+      copy (lat);
+      init ();
+      this->m_a = lat.m_a;
+      return *this;
+    }
+
+
+  //=========================================================================
+
+  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+    Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::Rank1Lattice (const Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> & lat):
+      IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> (lat.m_modulo, lat.getOrder (),
+          lat.getDim (), lat.getNorm ())
+  {
+    // MyExit (1, "Rank1Lattice:: constructeur n'est pas terminé " );
+    init ();
+    this->m_a = lat.m_a;
+  }
+
+
+  //===========================================================================
+
+  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+    std::string Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::toStringCoef ()const
+    {
+      return toString (this->m_a, 0, this->getDim ());
+    }
+
+
+  //=========================================================================
+
+  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+    void Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::incDim ()
+    {
+      // kill();
+      buildBasis (1 + this->getDim ());
+      this->setNegativeNorm ();
+      this->setDualNegativeNorm ();
+    }
+
+
+  //===========================================================================
+
+  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+    void Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::buildBasis (int d)
+    {
+      // assert(d <= getMaxDim());
+      this->setDim (d);
+
+      // conv(m_v[1][1], 1);
+
+      for (int j = 0; j < d; j++) {
+        this->m_basis (0, j) = this->m_a[j];
+      }
+
+      for (int i = 1; i < d; i++) {
+        for (int j = 0; j < d; j++) {
+          if (i == j) {
+            this->m_basis (i, j) = this->m_modulo;
+          } else {
+            this->m_basis (i, j) = 0;
+          }
+        }
+      }
+
+      // if a[0] != 1, the basis must be triangularized
+      if (this->m_basis (0, 0) != 1) {
+        Triangularization < BasIntMat > (this->m_basis, this->m_dualbasis, d, d, this->m_modulo);
+        dualize ();
+      }
+      CalcDual < BasIntMat > (this->m_basis, this->m_dualbasis, d, this->m_modulo);
+      this->setNegativeNorm ();
+      this->setDualNegativeNorm ();
+    }
+
+  //===========================================================================
+
+  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+    void Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::dualize ()
+    {
+      BasIntMat tmps(this->m_basis);   this->m_basis = this->m_dualbasis;   this->m_dualbasis = tmps;
+    }
+
+} // End namespace LatticeTester
 #endif

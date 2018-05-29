@@ -15,52 +15,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/* NormaLaminated.h for ISO C++ */
-#ifndef LATTICETESTER__NORMALAMINATED_H
-#define LATTICETESTER__NORMALAMINATED_H
-#include "latticetester/Normalizer.h"
-#include <stdexcept>
+#include "latticetester/NormaLaminated.h"
 
-
-namespace LatticeTester {
-
-  /**
-   * This class implements theoretical bounds on the length of the shortest
-   * nonzero vector in a lattice, based on the densest sphere packing in
-   * *laminated* lattices. The length of vectors is computed using the
-   * \f${\mathcal{L}}_2\f$ norm. The bounding lengths, for a lattice containing
-   * \f$n\f$ points per unit volume in dimension \f$t\f$, are given by 
-   * \f$\ell_t^* = \gamma_t^{1/2} n^{-1/t}\f$ for, where the \f$\gamma_t\f$ are
-   * the lattice constants for the best *laminated* lattices \cite mCON99a&thinsp;.
-   * Note this class stores the log value of the density to handle larger values.
-   */
-  template<typename RedDbl>
-    class NormaLaminated : public Normalizer<RedDbl> {
-      public:
-
-        /**
-         * Constructor for the bounds obtained for laminated lattices. The lattices
-         * have \f$Density\f$ points per unit volume, in all dimensions \f$\le t\f$. The bias
-         * factor `beta` \f$= \beta\f$ gives more weight to some of the dimensions. 
-         * Restriction: \f$t \le48\f$.
-         */
-        NormaLaminated (RedDbl & logDensity, int t, double beta = 1);
-
-        /**
-         * Returns the value of the lattice constant \f$\gamma_j\f$ in
-         * dimension \f$j\f$.
-         */
-        double getGamma (int j) const;
-      private:
-
-        /**
-         * Lattice constants \f$\gamma_j\f$ for the laminated lattices in each
-         * dimension \f$j\f$.
-         */
-        static const double m_gamma[1 + Normalizer<RedDbl>::MAX_DIM];
-    }; // End class NormaLaminated
-
-  //=============================================================================
+namespace LatticeTester
+{
 
   /**
    * These laminated gamma constants are calculated as defined in 
@@ -68,8 +26,8 @@ namespace LatticeTester {
    *    - equation (47) page 20 of chapter 1
    *    - table 6.1 page 158 of chapter 6
    */
-  template<typename RedDbl>
-          const double NormaLaminated<RedDbl>::m_gamma[] =
+
+  const double NormaLaminated::m_gamma[] =
   {
     /* Gamma[0] = */    0.00000000000000,
     /* Gamma[1] = */    1.00000000000000,
@@ -126,26 +84,26 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename RedDbl>
-    NormaLaminated<RedDbl>::NormaLaminated (RedDbl & logDensity, int t, double beta)
-    : Normalizer<RedDbl> (logDensity, t, "Laminated", L2NORM, beta)
-    {
-      if (t > this->MAX_DIM)
-        throw std::invalid_argument("NormaLaminated:   dimension > this->MAX_DIM");
-      Normalizer<RedDbl>::init (logDensity, beta);
-    }
+
+  NormaLaminated::NormaLaminated (RScal & logDensity, int t, double beta)
+    : Normalizer (logDensity, t, "Laminated", L2NORM, beta)
+  {
+    if (t > MAX_DIM)
+      throw std::invalid_argument("NormaLaminated:   dimension > MAX_DIM");
+    Normalizer::init (logDensity, beta);
+  }
 
 
   /*=========================================================================*/
 
-  template<typename RedDbl>
-    inline double NormaLaminated<RedDbl>::getGamma (int j) const
-    {
-      if (j < 1 || j > this->MAX_DIM)
-        throw std::out_of_range("NormaLaminated::getGamma");
-      return m_gamma[j];
-    }
 
+  inline double NormaLaminated::getGamma (int j) const
+  {
+    if (j < 1 || j > MAX_DIM)
+      throw std::out_of_range("NormaLaminated::getGamma");
+    return m_gamma[j];
+  }
+
+  /*=======================================================================*/
 
 }
-#endif

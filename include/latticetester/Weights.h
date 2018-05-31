@@ -28,7 +28,7 @@ namespace LatticeTester {
    * Scalar weight type.
    *
    * \note We could have used \c Weight, but it might be wise to leave this \c
-   * typedef in case we decide to use <tt>long Weight</tt> at some point.
+   * typedef in case we decide to use <tt>std::int64_t Weight</tt> at some point.
    */
   typedef double Weight;
 

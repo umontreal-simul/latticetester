@@ -285,7 +285,7 @@ namespace LatticeTester {
         lattmp (*this);
       int dim = this->getDim();
 
-      //long sizemat = m_basis.size1();
+      //std::int64_t sizemat = m_basis.size1();
       // declared as an "unused variable" by the compiler
 
       this->m_basis.resize(dim+1, dim+1);

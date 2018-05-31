@@ -27,13 +27,14 @@
 #ifndef LATTICETESTER__NUM_H
 #define LATTICETESTER__NUM_H
 
+#include <cstdint>
 
 namespace LatticeTester {
 
   /**
    * Calculates \f$t!\f$, the factorial of \f$t\f$.
    */
-  long lFactorial (int t);
+  std::int64_t lFactorial (int t);
 
   /**
    * Returns the value of the logarithmic derivative of the Gamma function
@@ -63,7 +64,7 @@ namespace LatticeTester {
   /**
    * Computes the \f$n\f$-th harmonic number \f$H_n  = \sum_{j=1}^n 1/j\f$.
    */
-  double Harmonic (long n);
+  double Harmonic (std::int64_t n);
 
   /**
    * Computes the sum
@@ -73,7 +74,7 @@ namespace LatticeTester {
    * where the symbol \f$\sum^\prime\f$ means that the term with \f$j=0\f$ is excluded
    * from the sum.
    */
-  double Harmonic2 (long n);
+  double Harmonic2 (std::int64_t n);
 
   /**
    * Computes and returns the value of the series (see \cite vJOE92b)
@@ -82,7 +83,7 @@ namespace LatticeTester {
    * \f]
    * Restrictions: \f$n>0\f$ and \f$0 \le x \le 1\f$.
    */
-  double FourierC1 (double x, long n);
+  double FourierC1 (double x, std::int64_t n);
 
   /**
    * Computes and returns the value of the series
@@ -93,7 +94,7 @@ namespace LatticeTester {
    * from the sum, and assuming that the imaginary part of \f$G(x, n)\f$ vanishes.
    * Restrictions: \f$n>0\f$ and \f$0 \le x \le 1\f$.
    */
-  double FourierE1 (double x, long n);
+  double FourierE1 (double x, std::int64_t n);
 
 }
 

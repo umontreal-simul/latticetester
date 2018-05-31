@@ -19,6 +19,7 @@
 #define LATTICETESTER__INTFACTOR_H
 #include <string>
 #include <iomanip>
+#include <cstdint>
 
 #include "latticetester/Const.h"
 
@@ -84,12 +85,12 @@ namespace LatticeTester {
          * kept in file `prime.dat`. Then applies the Miller-Rabin probability
          * test with \f$k\f$ trials.
          */
-        static PrimeType isPrime (const Int & y, long k);
+        static PrimeType isPrime (const Int & y, std::int64_t k);
 
         /**
          * Tests whether this factor is prime. Similar to `isPrime` above.
          */
-        LatticeTester::PrimeType isPrime (long k);
+        LatticeTester::PrimeType isPrime (std::int64_t k);
 
         /**
          * Transforms status `stat` in an easily readable string and returns
@@ -123,7 +124,7 @@ namespace LatticeTester {
          * Applies the Miller-Rabin probability test with \f$k\f$ trials to
          * \f$y\f$.
          */
-        static LatticeTester::PrimeType isProbPrime (const Int & y, long k);
+        static LatticeTester::PrimeType isProbPrime (const Int & y, std::int64_t k);
     };    // class IntFactor
 
   //===========================================================================
@@ -168,7 +169,7 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int>
-    PrimeType IntFactor<Int>::isPrime (const Int & y, long k)
+    PrimeType IntFactor<Int>::isPrime (const Int & y, std::int64_t k)
     {
       static constexpr unsigned int NB_PRIMES = 6543;
       // NbPrem has to be instanciated if we use NTL types
@@ -210,7 +211,7 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int>
-    PrimeType IntFactor<Int>::isPrime (long k)
+    PrimeType IntFactor<Int>::isPrime (std::int64_t k)
     {
       return isPrime (m_factor, k);
     }
@@ -219,10 +220,10 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int>
-    PrimeType IntFactor<Int>::isProbPrime (const Int & y, long k)
+    PrimeType IntFactor<Int>::isProbPrime (const Int & y, std::int64_t k)
     {
       PrimeType stat;
-      long res = NTL::ProbPrime (y, k);
+      std::int64_t res = NTL::ProbPrime (y, k);
 
       switch (res) {
         case 0:

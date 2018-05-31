@@ -18,7 +18,9 @@
 #ifndef LATTICETESTER__LACUNARY_H
 #define LATTICETESTER__LACUNARY_H
 #include "latticetester/Util.h"
+
 #include <string>
+#include <cstdint>
 
 namespace LatticeTester {
 
@@ -134,7 +136,7 @@ namespace LatticeTester {
       }
 
       BasInt t1;
-      LatticeTester::power2 (t1, (long) w);
+      LatticeTester::power2 (t1, (std::int64_t) w);
       BasInt t;
       t = 0;
       int i = 1;

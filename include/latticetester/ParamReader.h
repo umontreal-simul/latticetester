@@ -11,6 +11,7 @@
 #include <cassert>
 #include <fstream>
 #include <sstream>
+#include <cstdint>
 
 
 namespace LatticeTester {
@@ -89,10 +90,10 @@ namespace LatticeTester {
         void readInt (int & field, unsigned int ln, unsigned int pos);
 
         /**
-         * Reads a long from the <tt>pos</tt>-th token of the <tt>ln</tt>-th
+         * Reads a std::int64_t from the <tt>pos</tt>-th token of the <tt>ln</tt>-th
          * line into `field`.
          */
-        void readLong (long & field, unsigned int ln, unsigned int pos);
+        void readLong (std::int64_t & field, unsigned int ln, unsigned int pos);
 
         /**
          * Reads a large integer from the <tt>pos</tt>-th token of the
@@ -122,7 +123,7 @@ namespace LatticeTester {
          * 5, -1)\f$ will give \f$r=31\f$, while \f$(b, e, c) = (-2, 5, -1)\f$
          * will give \f$r=-31\f$.
          */
-        void readNumber3 (Int & r, long & b, long & e, long & c,
+        void readNumber3 (Int & r, std::int64_t & b, std::int64_t & e, std::int64_t & c,
             unsigned int ln, unsigned int pos);
 
         /**
@@ -451,7 +452,7 @@ namespace LatticeTester {
   template<typename Int, typename IntVec, typename BasInt, typename BasIntMat,
     typename RedDbl>
     void ParamReader<Int, IntVec, BasInt, BasIntMat, RedDbl>::readNumber3 (
-        Int & m, long & m1, long & m2, long & m3, unsigned int ln, 
+        Int & m, std::int64_t & m1, std::int64_t & m2, std::int64_t & m3, unsigned int ln, 
         unsigned int pos)
     {
       m2 = m3 = 0;
@@ -502,7 +503,7 @@ namespace LatticeTester {
   template<typename Int, typename IntVec, typename BasInt, typename BasIntMat,
     typename RedDbl>
     void ParamReader<Int, IntVec, BasInt, BasIntMat, RedDbl>::readLong(
-        long& field, unsigned int ln, unsigned int pos)
+        std::int64_t& field, unsigned int ln, unsigned int pos)
     {
       std::string val;
       getToken(val, ln, pos);
@@ -624,7 +625,7 @@ namespace LatticeTester {
   /*
    * void ParamReader::readInterval (MVect & B, MVect & C, unsigned int & ln, int k)
    * {
-   * long m1, m2, m3;
+   * std::int64_t m1, m2, m3;
    * for (int i = 1; i <= k; i++) {
    * readNumber3 (B[i], m1, m2, m3, ++ln, 1);
    * readNumber3 (C[i], m1, m2, m3, ++ln, 1);
@@ -848,7 +849,7 @@ namespace LatticeTester {
           break;
 
         case PALPHA:
-          long m1, m2, m3;
+          std::int64_t m1, m2, m3;
           readNumber3(config.modulo, m1, m2, m3, ++ln, 0);
           readInt (config.alpha, ++ln, 0);
           readInt (config.dim, ++ln, 0);

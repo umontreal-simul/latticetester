@@ -19,7 +19,7 @@
  * \file latticetester/Types.h
  *
  * Sets the <tt>typedef</tt>’s for all the types used in LatticeTester. Depending on
- * how `NTL_TYPES_CODE` is defined, all types used will be primitives, like `long`,
+ * how `NTL_TYPES_CODE` is defined, all types used will be primitives, like `std::int64_t`,
  * `double`, etc., or the large number types defined in NTL will be used. The
  * `NTL_TYPES_CODE` variable is defined in the Makefile. \anchor REF__Types_mod_Types
  *
@@ -28,10 +28,13 @@
 #ifndef LATTICETESTER__TYPES_H
 #define LATTICETESTER__TYPES_H
 
+#include <cstdint>
 
 #include <NTL/vector.h>
 #include <NTL/matrix.h>
+
 #include "ntlwrap.h"
+
 using NTL::matrix_row;
 using namespace NTL;
 
@@ -45,15 +48,15 @@ using namespace NTL;
 #include "NTL/lzz_pE.h"
 #include "NTL/lzz_pEX.h"
 
-typedef long              MScal;
-typedef NTL::vector<long> MVect;
-typedef NTL::matrix<long> MMat;
+typedef std::int64_t              MScal;
+typedef NTL::vector<std::int64_t> MVect;
+typedef NTL::matrix<std::int64_t> MMat;
 typedef zz_p     MScalP; // This appears nowhere
 typedef vec_zz_p MVectP; // This appears nowhere
 typedef mat_zz_p MMatP; // This appears only once
-typedef long                BScal;
-typedef NTL::vector<long>   BVect;
-typedef NTL::matrix<long>   BMat;
+typedef std::int64_t                BScal;
+typedef NTL::vector<std::int64_t>   BVect;
+typedef NTL::matrix<std::int64_t>   BMat;
 typedef double              NScal;
 typedef NTL::vector<double> NVect;
 typedef NTL::matrix<double> NMat; // This appears nowhere

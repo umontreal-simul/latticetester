@@ -27,6 +27,7 @@
 #include <sstream>
 #include <vector>
 #include <limits>
+#include <cstdint>
 
 namespace LatticeTester {
 
@@ -47,7 +48,7 @@ namespace LatticeTester {
         void redLLLNTLExact(Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl,
             DblVec, RedDbl, RedDblVec, RedDblMat>& red, double fact);
         void redBKZ(Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
-            RedDbl, RedDblVec, RedDblMat>& red, double fact, long blocksize, 
+            RedDbl, RedDblVec, RedDblMat>& red, double fact, std::int64_t blocksize, 
             PrecisionType precision, int dim);
         void redLLLNTL(Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
             RedDbl, RedDblVec, RedDblMat>& red, double fact,
@@ -81,7 +82,7 @@ namespace LatticeTester {
            * automatically set to `true` for the next call; otherwise it is set to
            * `false`.
            */
-          static const long SHORT_DIET = 1000;
+          static const std::int64_t SHORT_DIET = 1000;
 
           /**
            * Whenever the number of nodes in the branch-and-bound tree exceeds
@@ -89,7 +90,7 @@ namespace LatticeTester {
            * automatically set to `true` for the next call; otherwise it is set
            * to `false`.
            */
-          static const long SHORT_LLL = 1000;
+          static const std::int64_t SHORT_LLL = 1000;
 
           /**
            * Whenever the number of nodes in the branch-and-bound tree exceeds
@@ -97,21 +98,21 @@ namespace LatticeTester {
            * `PreRedLLLRM` is automatically set to `true` for the next call;
            * otherwise it is set to `false`.
            */
-          static const long MINK_LLL = 500000;
+          static const std::int64_t MINK_LLL = 500000;
 
           /**
            * Maximum number of transformations in the method `PreRedDieter`.
            * After <tt>MAX_PRE_RED</tt> successful transformations have been
            * performed, the prereduction is stopped.
            */
-          static const long MAX_PRE_RED = 1000000;
+          static const std::int64_t MAX_PRE_RED = 1000000;
 
           /**
            * The maximum number of nodes in the branch-and-bound tree when
            * calling `ShortestVector` or `reductMinkowski`. When this number is
            * exceeded, the method aborts and returns `false`.
            */
-          static long maxNodesBB;
+          static std::int64_t maxNodesBB;
 
           /**
            * \name Pre-reduction flags
@@ -177,7 +178,7 @@ namespace LatticeTester {
            * \f$V_j\f$ when this happens. Returns in \f$k\f$ the last index
            * \f$j\f$ such that \f$|z_j|=1\f$.
            */
-          void transformStage3 (std::vector<long> & z, int & k);
+          void transformStage3 (std::vector<std::int64_t> & z, int & k);
 
           /**
            * Finds a Choleski decomposition of the basis. Returns in `C0` the
@@ -261,10 +262,10 @@ namespace LatticeTester {
            * is applied until `maxcpt` successful transformations have been done.
            * Always uses the Euclidean norm.
            */
-          void redLLL (double fact, long maxcpt, int dim);
+          void redLLL (double fact, std::int64_t maxcpt, int dim);
 
           /**
-           * \copydoc redLLL(double, long, int)
+           * \copydoc redLLL(double, std::int64_t, int)
            * This version is implemented in the NTL Library with approximate
            * number with arbitrary precision. The precision can be given. See
            * Const.h for further information.
@@ -273,7 +274,7 @@ namespace LatticeTester {
               PrecisionType precision = QUADRUPLE, int dim = 0);
 
           /**
-           * \copydoc redLLL(double, long, int)
+           * \copydoc redLLL(double, std::int64_t, int)
            * This version is implemented in the NTL Library with exact number
            * (arbitrary precision RR)
            */
@@ -284,7 +285,7 @@ namespace LatticeTester {
            * the coefficient `fact` and a block size `Blocksize`. The precision
            * can be given. See Const.h for further information.
            */
-          void redBKZ(double fact = 0.999999, long blocksize = 10,
+          void redBKZ(double fact = 0.999999, std::int64_t blocksize = 10,
               PrecisionType precision = QUADRUPLE, int dim = 0);
 
 
@@ -295,7 +296,7 @@ namespace LatticeTester {
            * already reduced and sorted. If `MaxNodesBB` is exceeded during one
            * of the branch-and-bound step, the method aborts and returns `false`.
            * Otherwise it returns `true`, the basis is reduced and sorted by
-           * vector lengths (the shortest vector is `V[0]` and the longest is
+           * vector lengths (the shortest vector is `V[0]` and the std::int64_test is
            * <tt>V[Dim-1]</tt>).
            */
           bool reductMinkowski (int d);
@@ -327,7 +328,7 @@ namespace LatticeTester {
             else return m_lMin; }
 
           /**
-           * Returns the length of the longest basis vector in the lattice.
+           * Returns the length of the std::int64_test basis vector in the lattice.
            * Used in Beyer Test.
            */
           Dbl getMaxLength () {
@@ -425,15 +426,15 @@ namespace LatticeTester {
           RedDblMat m_c0, m_c2, m_cho2, m_gramVD;
           int *m_IC;             // Indices in Cholesky
 
-          std::vector<long> m_zLI;
-          std::vector<long> m_zShort;
-          long m_countNodes;     // Counts number of nodes in the branch-and-bound tree
-          long m_countDieter;    // Counts number of attempts since last successful
+          std::vector<std::int64_t> m_zLI;
+          std::vector<std::int64_t> m_zShort;
+          std::int64_t m_countNodes;     // Counts number of nodes in the branch-and-bound tree
+          std::int64_t m_countDieter;    // Counts number of attempts since last successful
           // Dieter transformation
-          long m_cpt;            // Counts number of successes in pre-reduction
+          std::int64_t m_cpt;            // Counts number of successes in pre-reduction
           // transformations
           bool m_foundZero;      // = true -> the zero vector has been found
-          // long m_BoundL2Count;   // Number of cases for which the reduction stops
+          // std::int64_t m_BoundL2Count;   // Number of cases for which the reduction stops
           // because any vector is shorter than L2 Bound.
           /**
            * @}
@@ -450,11 +451,11 @@ namespace LatticeTester {
   // Specialization for the case LLXX
   template<typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec,
     typename RedDblMat>
-      struct specReducer<long, long, NTL::vector<long>, NTL::matrix<long>, Dbl,
+      struct specReducer<std::int64_t, std::int64_t, NTL::vector<std::int64_t>, NTL::matrix<std::int64_t>, Dbl,
     DblVec, RedDbl, RedDblVec, RedDblMat> {
 
-      void redLLLNTLExact(Reducer<long, long, NTL::vector<long>,
-          NTL::matrix<long>, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>& red,
+      void redLLLNTLExact(Reducer<std::int64_t, std::int64_t, NTL::vector<std::int64_t>,
+          NTL::matrix<std::int64_t>, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>& red,
           double fact)
       {
         cout << "**** WARNING redLLLNTLExact cannot be used with Double Precision (LLDD)\n";
@@ -463,21 +464,21 @@ namespace LatticeTester {
         red.redLLL(fact, 1000000, red.getIntLatticeBasis()->getDim ());
       }
 
-      void redBKZ(Reducer<long, long, NTL::vector<long>, NTL::matrix<long>, 
+      void redBKZ(Reducer<std::int64_t, std::int64_t, NTL::vector<std::int64_t>, NTL::matrix<std::int64_t>, 
           Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>& red, double fact,
-          long blocksize, PrecisionType precision, int dim)
+          std::int64_t blocksize, PrecisionType precision, int dim)
       {
-        IntLatticeBasis<long, long, NTL::vector<long>, NTL::matrix<long>,
+        IntLatticeBasis<std::int64_t, std::int64_t, NTL::vector<std::int64_t>, NTL::matrix<std::int64_t>,
         Dbl, DblVec, RedDbl> *lattmp = 0;
         if(dim >0){
-          lattmp = new IntLatticeBasis<long, long, NTL::vector<long>,
-                 NTL::matrix<long>, Dbl, DblVec, RedDbl>(
+          lattmp = new IntLatticeBasis<std::int64_t, std::int64_t, NTL::vector<std::int64_t>,
+                 NTL::matrix<std::int64_t>, Dbl, DblVec, RedDbl>(
                      dim, red.getIntLatticeBasis()->getNorm());
           lattmp->copyBasis(*red.getIntLatticeBasis(), dim);
         }
         else
           lattmp = red.getIntLatticeBasis();
-        cout << "\n**** WARNING redBKZ cannot be use with long type for integers\n";
+        cout << "\n**** WARNING redBKZ cannot be use with std::int64_t type for integers\n";
         cout << "**** (LLDD) and requires ZZ type. Instead, LLL reduction is\n";
         cout << "**** performed with our algorithm which can be much slower.\n";
         cout << endl;
@@ -485,21 +486,21 @@ namespace LatticeTester {
         if (dim>0) delete lattmp; 
       }
 
-      void redLLLNTL(Reducer<long, long, NTL::vector<long>, NTL::matrix<long>,
+      void redLLLNTL(Reducer<std::int64_t, std::int64_t, NTL::vector<std::int64_t>, NTL::matrix<std::int64_t>,
           Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>& red, double fact,
           PrecisionType precision, int dim)
       {
-        IntLatticeBasis<long, long, NTL::vector<long>, NTL::matrix<long>, Dbl, 
+        IntLatticeBasis<std::int64_t, std::int64_t, NTL::vector<std::int64_t>, NTL::matrix<std::int64_t>, Dbl, 
         DblVec, RedDbl> *lattmp = 0;
         if(dim >0){
-          lattmp = new IntLatticeBasis<long, long, NTL::vector<long>,
-                 NTL::matrix<long>, Dbl, DblVec, RedDbl>(
+          lattmp = new IntLatticeBasis<std::int64_t, std::int64_t, NTL::vector<std::int64_t>,
+                 NTL::matrix<std::int64_t>, Dbl, DblVec, RedDbl>(
                      dim, red.getIntLatticeBasis()->getNorm());
           lattmp->copyBasis(*red.getIntLatticeBasis(), dim);
         }
         else
           lattmp = red.getIntLatticeBasis();
-        cout << "\n**** WARNING redLLLNTL cannot be use with long type for integers\n";
+        cout << "\n**** WARNING redLLLNTL cannot be use with std::int64_t type for integers\n";
         cout << "**** (LLDD) and requires ZZ type. Instead, LLL reduction is performed\n";
         cout << "**** with our algorithm which can be much slower.\n";
         cout << endl;
@@ -535,7 +536,7 @@ namespace LatticeTester {
 
       void redBKZ(Reducer<NTL::ZZ, NTL::ZZ, NTL::vector<NTL::ZZ>,
           NTL::matrix<NTL::ZZ>, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>& red,
-          double fact, long blocksize, PrecisionType precision, int dim)
+          double fact, std::int64_t blocksize, PrecisionType precision, int dim)
       {
         IntLatticeBasis<NTL::ZZ, NTL::ZZ, NTL::vector<NTL::ZZ>,
         NTL::matrix<NTL::ZZ>, Dbl, DblVec, RedDbl> *lattmp = 0;
@@ -655,7 +656,7 @@ namespace LatticeTester {
   template<typename Int, typename BasInt, typename BasIntVec,
     typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
     typename RedDblVec, typename RedDblMat>
-      long Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+      std::int64_t Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
     RedDblVec, RedDblMat>::maxNodesBB = 10000000;
 
 
@@ -1172,7 +1173,7 @@ namespace LatticeTester {
       void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
     RedDblVec, RedDblMat>::preRedDieter(int d)
     {
-      long BoundCount;
+      std::int64_t BoundCount;
       const int dim = m_lat->getDim ();
       bool withDual = m_lat->withDual();
 
@@ -1201,7 +1202,7 @@ namespace LatticeTester {
       void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
     RedDblVec, RedDblMat>::preRedDieterRandomized (int d, int seed)
     {
-      long BoundCount;
+      std::int64_t BoundCount;
       const int dim = m_lat->getDim ();
       bool withDual = m_lat->withDual();
 
@@ -1245,7 +1246,7 @@ namespace LatticeTester {
        */
     {
       RedDbl cte;
-      long cteLI;
+      std::int64_t cteLI;
       bool withDual = m_lat->withDual();
       cte = m_cho2(i,j) / m_cho2(i,i);
 
@@ -1341,14 +1342,14 @@ namespace LatticeTester {
     typename RedDblVec, typename RedDblMat>
       void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
     RedDblVec, RedDblMat>::redBKZ(
-        double fact, long blocksize, PrecisionType precision, int dim)
+        double fact, std::int64_t blocksize, PrecisionType precision, int dim)
     {
       spec.redBKZ(*this, fact, blocksize, precision, dim);
     }
   // This function is impemented in Reducer.cc because it needs to be overloaded
   /*
    *    template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-   *    void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::redBKZ(double fact, long blocksize, PrecisionType precision, int dim) {
+   *    void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::redBKZ(double fact, std::int64_t blocksize, PrecisionType precision, int dim) {
    *
    *    IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> *lattmp = 0;
    *    if(dim >0){
@@ -1388,7 +1389,7 @@ namespace LatticeTester {
    *
    *#else
    *
-   *cout << "\n**** WARNING redBKZ cannot be use with long type for integers\n";
+   *cout << "\n**** WARNING redBKZ cannot be use with std::int64_t type for integers\n";
    *cout << "**** (LLDD) and requires ZZ type. Instead, LLL reduction is\n";
    *cout << "**** performed with our algorithm which can be much slower.\n";
    *cout << endl;
@@ -1459,7 +1460,7 @@ namespace LatticeTester {
    *
    *#else
    *
-   *     cout << "\n**** WARNING redLLLNTL cannot be use with long type for integers\n";
+   *     cout << "\n**** WARNING redLLLNTL cannot be use with std::int64_t type for integers\n";
    *     cout << "**** (LLDD) and requires ZZ type. Instead, LLL reduction is performed\n";
    *     cout << "**** with our algorithm which can be much slower.\n";
    *     cout << endl;
@@ -1477,7 +1478,7 @@ namespace LatticeTester {
     typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
     typename RedDblVec, typename RedDblMat>
       void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
-    RedDblVec, RedDblMat>::redLLL (double fact, long maxcpt, int Max)
+    RedDblVec, RedDblMat>::redLLL (double fact, std::int64_t maxcpt, int Max)
       /*
        * Effectue la pre-reduction de B au sens de Lenstra-Lenstra-Lovasz. N'utilise
        * pas les vecteurs m_lat->getBasis().vecNorm, Wm_lat->getDualBasis().
@@ -1488,7 +1489,7 @@ namespace LatticeTester {
       int i, j, k, h;
       RedDbl Cho0ij;
       RedDbl limite;
-      long cpt;
+      std::int64_t cpt;
 
       const int dim = m_lat->getDim ();
 
@@ -1583,10 +1584,10 @@ namespace LatticeTester {
     typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
     typename RedDblVec, typename RedDblMat>
       void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, 
-    RedDblVec, RedDblMat>::transformStage3 (std::vector<long> & z, int & k)
+    RedDblVec, RedDblMat>::transformStage3 (std::vector<std::int64_t> & z, int & k)
     {
       int j, i;
-      long q;
+      std::int64_t q;
       const int dim = m_lat->getDim ();
       bool withDual = m_lat->withDual();
 
@@ -1621,7 +1622,7 @@ namespace LatticeTester {
             }
           }
           // Permutation.
-          swap <long>(z[i], z[j]);
+          swap <std::int64_t>(z[i], z[j]);
           m_lat->permute (i, j);
         }
         j = i;
@@ -1640,10 +1641,10 @@ namespace LatticeTester {
         const BasIntMat & WTemp)
       // Si m_countNodes > MaxNodes retourne false, sinon retourne true.
     {
-      long max0, min0;
+      std::int64_t max0, min0;
       RedDbl x, dc;
       RedDbl center;
-      long zhigh, zlow, h;
+      std::int64_t zhigh, zlow, h;
       bool high;
       int k;
       RedDbl S1, S2, S3, S4, mR;
@@ -1839,7 +1840,7 @@ namespace LatticeTester {
       // trace( "AVANT redBB");
       smaller = false;
 
-      // Approximation du carre de la longueur de Vi.
+      // Approximation du carre de la std::int64_tueur de Vi.
       if (m_lat->getVecNorm(i) < 0) {
         matrix_row<BasIntMat> row1(m_lat->getBasis(), i);
         ProdScal<Int> (row1, row1, dim, tmp);
@@ -1961,7 +1962,7 @@ namespace LatticeTester {
        * Procedure recursive implantant le BB pour shortestVector (redBB0).
        * Si m_countNodes > MaxNodes, retourne false.
        * Sinon, retourne true: on a trouve le plus court vecteur.
-       * Le carre de la longueur du plus court vecteur a date est dans m_lMin2.
+       * Le carre de la std::int64_tueur du plus court vecteur a date est dans m_lMin2.
        * Si j=1 et on trouve un plus court vecteur, on retrouve les zj
        * correspondants dans m_zShort.
        */
@@ -1969,12 +1970,12 @@ namespace LatticeTester {
       /* Note: Pour une implantation non recursive, ces variables devraient
          etre des tableaux indices par j. */
       RedDbl dc, x, center;
-      long min0, max0;            // Bornes de l'intervalle pour les z_j.
-      long zlow, zhigh;           // Valeur courante examinee a gauche et a
+      std::int64_t min0, max0;            // Bornes de l'intervalle pour les z_j.
+      std::int64_t zlow, zhigh;           // Valeur courante examinee a gauche et a
       // droite du centre.
       bool high;                  // Indique si on est a d. ou g. du centre.
       int k;
-      long temp;
+      std::int64_t temp;
 
       const int dim = m_lat->getDim ();
 
@@ -2069,7 +2070,7 @@ namespace LatticeTester {
                 /* La condition suivante ralentit le programme; je l'ai mise donc en
                    commentaire. Il est très rare qu'elle soit effective et permette de sortir
                    prématurément, et seulement pour de grandes dimensions dans le cas L2NORM.
-                   Mais on doit la tester à chaque passage ici, et la longueur des candidats
+                   Mais on doit la tester à chaque passage ici, et la std::int64_tueur des candidats
                    plus courts diminue lentement.
                    Il se pourrait que ce soit parfois plus rapide dans le cas L1NORM,
                    dépendant de la dimension. Mais L2NORM est primordial. */
@@ -2164,7 +2165,7 @@ namespace LatticeTester {
            of the current lattice, we don't need to find the shortest vector in this
            lattice. Use only in seek function
 
-           S'il existe dans ce réseau un vecteur de longueur plus courte que celle
+           S'il existe dans ce réseau un vecteur de std::int64_tueur plus courte que celle
            du meilleur réseau trouvé à date, il n'est pas nécessaire de trouver le
            plus court vecteur de ce réseau: on peut l'éliminer immédiatement. */
 
@@ -2240,7 +2241,7 @@ namespace LatticeTester {
       bool withDual = m_lat->withDual();
       const int dim = m_lat->getDim ();
       int i;
-      long totalNodes = 0;
+      std::int64_t totalNodes = 0;
       bool found;
       bool smaller;               // A smaller vector has been found
 

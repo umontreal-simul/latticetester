@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <cstdint>
 
 
 namespace LatticeTester {
@@ -210,7 +211,7 @@ namespace LatticeTester {
   template<typename Int, typename IntMat>
     void LatTestWriter<Int, IntMat>::writeMMat(const IntMat & A)
     {
-      long sizeA = A.size1();
+      std::int64_t sizeA = A.size1();
       *m_stream << "   [";
       for (int i = 0; i < sizeA; i++) {
         if (i == 0) { *m_stream << "["; }

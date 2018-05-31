@@ -21,6 +21,8 @@
 #include <NTL/vector.h>
 #include <NTL/matrix.h>
 
+#include <cstdint>
+
 
 NTL_CLIENT
 
@@ -38,7 +40,7 @@ namespace NTL
   template <typename T> class vector : public Vec<T>{
     public:
 
-      typedef long size_type;
+      typedef std::int64_t size_type;
 
       /**
        * Constructor.
@@ -98,7 +100,7 @@ namespace NTL
 
     public:
 
-      typedef long size_type;
+      typedef std::int64_t size_type;
 
       /**
        * Constructor.

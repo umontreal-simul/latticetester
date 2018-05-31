@@ -13,8 +13,9 @@
 #include "latticetester/NormaMinkowski.h"
 #include "latticetester/NormaMinkL1.h"
 #include "latticetester/NormaRogers.h"
-
 #include "latticetester/Reducer.h"
+
+#include <cstdint>
 
 namespace LatticeTester {
 
@@ -85,7 +86,7 @@ namespace LatticeTester {
   template<typename Int, typename BasInt, typename BasIntVec, 
     typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
     typename RedDblVec, typename RedDblMat>
-      double ShortestVector(BasIntMat matrix, NormType norm, long maxNodesBB,
+      double ShortestVector(BasIntMat matrix, NormType norm, std::int64_t maxNodesBB,
           PreReductionType preRed = BKZ, PrecisionType doublePrecision = DOUBLE,
           double fact = 0.999, int blocksize = 20)
       {
@@ -135,7 +136,7 @@ namespace LatticeTester {
       logDensity = - log( abs(NTL::determinant(matrix)) );
       //#else 
       // NTL library does not support matrix with double: we then use the boost library
-      boost::numeric::ublas::matrix<long>  mat_tmps;
+      boost::numeric::ublas::matrix<std::int64_t>  mat_tmps;
       mat_tmps.resize(dimension, dimension);
       for (unsigned int i = 0; i < dimension; i++) {
         for (unsigned int j = 0; j < dimension; j++) {
@@ -195,9 +196,9 @@ namespace LatticeTester {
      */
     // LLDD specialization
     template<>
-    double FigureOfMerit<long, long, NTL::vector<long>, NTL::matrix<long>,
+    double FigureOfMerit<std::int64_t, std::int64_t, NTL::vector<std::int64_t>, NTL::matrix<std::int64_t>,
            double, NTL::vector<double>, double, NTL::vector<double>,
-           NTL::matrix<double>>(NTL::matrix<long> matrix,
+           NTL::matrix<double>>(NTL::matrix<std::int64_t> matrix,
                NormaType normalizerType, PreReductionType preRed,
         PrecisionType doublePrecision, double fact, int blocksize)
     {
@@ -217,7 +218,7 @@ namespace LatticeTester {
 
       // calculation of the log-density of the matrix used to initialize the normalizer
       double logDensity;
-      // We have to wrap NTL because it does not work with long by default
+      // We have to wrap NTL because it does not work with std::int64_t by default
       NTL::mat_ZZ temp(NTL::INIT_SIZE, dimension, dimension);
       for (int i = 0; i < dimension; i++) {
         for (int j = 0; j < dimension; j++){
@@ -254,7 +255,7 @@ namespace LatticeTester {
       }
 
       // compute the shortest non-zero vector
-      merit = ShortestVector<long, long, NTL::vector<long>, NTL::matrix<long>,
+      merit = ShortestVector<std::int64_t, std::int64_t, NTL::vector<std::int64_t>, NTL::matrix<std::int64_t>,
             double, NTL::vector<double>, double, NTL::vector<double>,
             NTL::matrix<double>>(matrix, norm, preRed, doublePrecision, fact,
                 blocksize);
@@ -356,7 +357,7 @@ namespace LatticeTester {
     typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, 
     typename RedDblVec, typename RedDblMat>
     double FigureOfMerit(BasIntMat matrix, NormaType normalizerType, 
-        long maxNodesBB, PreReductionType preRed = BKZ, 
+        std::int64_t maxNodesBB, PreReductionType preRed = BKZ, 
         PrecisionType doublePrecision = DOUBLE, double fact = 0.999,
         int blocksize = 20)
     {
@@ -411,7 +412,7 @@ namespace LatticeTester {
   template<typename Int, typename BasInt, typename BasIntVec, 
     typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, 
     typename RedDblVec, typename RedDblMat>
-    bool MinkowskiReduction(BasIntMat & matrix, long maxNodesBB, 
+    bool MinkowskiReduction(BasIntMat & matrix, std::int64_t maxNodesBB, 
         PreReductionType preRed = BKZ, PrecisionType doublePrecision = DOUBLE, 
         double fact = 0.999, int blocksize = 20)
     {
@@ -424,7 +425,7 @@ namespace LatticeTester {
   /**
    * This function compute the Figure of Merit to a given matrix, according to the
    * Beyer criteria. It first computes the Minkowski-reduced basis of the lattice 
-   * and then makes the quotient of shortest over longest vector.
+   * and then makes the quotient of shortest over std::int64_test vector.
    * Returns -1.0 if there was an error in Branch-and-Bound procedure while calculating
    * the Minkowski-reduced basis. Return the figure of merit otherwise.
    */
@@ -472,7 +473,7 @@ namespace LatticeTester {
   template<typename Int, typename BasInt, typename BasIntVec, 
     typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, 
     typename RedDblVec, typename RedDblMat>
-    double FigureOfMeritBeyer(BasIntMat matrix, long maxNodesBB, 
+    double FigureOfMeritBeyer(BasIntMat matrix, std::int64_t maxNodesBB, 
         PreReductionType preRed = BKZ, PrecisionType doublePrecision = DOUBLE, 
         double fact = 0.999, int blocksize = 20)
     {

@@ -35,6 +35,7 @@
 #include <map>
 #include <cmath>
 #include <cstdlib>
+#include <cstdint>
 #include "latticetester/Const.h"
 
 #include "NTL/tools.h"
@@ -55,7 +56,7 @@ namespace LatticeTester {
    * Table of powers of 2: <tt>TWO_EXP[</tt>\f$i\f$<tt>]</tt> \f$= 2^i\f$,
    * \f$i=0, 1, …, 63\f$.
    */
-  extern const long TWO_EXP[];
+  extern const std::int64_t TWO_EXP[];
 
   /**
    * Swaps the values of `x` and `y`.
@@ -82,26 +83,26 @@ namespace LatticeTester {
   /**
    * Returns random blocks of \f$s\f$ bits (\f$s\f$-bit integers).
    */
-  unsigned long RandBits (int s);
+  std::uint64_t RandBits (int s);
 
   /**
    * Sets the seed of the generator. If not called, a default seed will be
    * used.
    */
-  void SetSeed (unsigned long seed);
+  void SetSeed (std::uint64_t seed);
 
 
   /**
    * Returns 1 if \f$x\f$ is odd, and 0 otherwise.
    */
-  inline long IsOdd (const long & x) {
+  inline std::int64_t IsOdd (const std::int64_t & x) {
     return x & 1;
   }
 
   /**
    * Return `true` if \f$x = 0\f$.
    */
-  inline bool IsZero (const long & x)
+  inline bool IsZero (const std::int64_t & x)
   {
     return x == 0;
   }
@@ -114,12 +115,12 @@ namespace LatticeTester {
   /**
    * Sets \f$x\f$ to 0.
    */
-  inline void clear (long & x) { x = 0; }
+  inline void clear (std::int64_t & x) { x = 0; }
 
   /**
    * Sets \f$x\f$ to 1.
    */
-  inline void set9 (long & x)
+  inline void set9 (std::int64_t & x)
   {
     x = 1;
   }
@@ -145,7 +146,7 @@ namespace LatticeTester {
   /**
    * Returns \f$p^i\f$.
    */
-  inline long power (long p, long i)
+  inline std::int64_t power (std::int64_t p, std::int64_t i)
   {
     return NTL::power_long (p, i);
   }
@@ -153,14 +154,14 @@ namespace LatticeTester {
   /**
    * Sets \f$z = 2^i\f$.
    */
-  inline void power2 (long & z, long i)
+  inline void power2 (std::int64_t & z, std::int64_t i)
   {
     z = NTL::power_long (2, i);
   }
   /**
    * Sets \f$z = 2^i\f$.
    */
-  inline void power2 (NTL::ZZ& z, long i)
+  inline void power2 (NTL::ZZ& z, std::int64_t i)
   {
     z = NTL::power_ZZ (2, i);
   }
@@ -196,7 +197,7 @@ namespace LatticeTester {
   /**
    * Logarithm of \f$x\f$ in base 2.
    */
-  inline double Lg (long x)
+  inline double Lg (std::int64_t x)
   {
     return log ((double)x) / 0.6931471805599453094;
   }
@@ -215,7 +216,7 @@ namespace LatticeTester {
    * \f$x< 0\f$ respectively.
    */
   template <typename T>
-    inline long sign (const T & x)
+    inline std::int64_t sign (const T & x)
     {
       if (x > 0) return 1; else if (x < 0) return -1; else return 0;
     }
@@ -232,7 +233,7 @@ namespace LatticeTester {
   /**
    * Calculates \f$t!\f$, the factorial of \f$t\f$.
    */
-  long Factorial (int t);
+  std::int64_t Factorial (int t);
 
   /**
    * @}
@@ -244,7 +245,7 @@ namespace LatticeTester {
    *
    * For negative operands, the `/` and <tt>%</tt> operators do not give the
    * same results for NTL large integers `ZZ` and for primitive types `int` and
-   * `long`. The negative quotient differs by 1 and the remainder also differs.
+   * `std::int64_t`. The negative quotient differs by 1 and the remainder also differs.
    * Thus the following small `inline` functions for division and remainder.
    * \remark **Richard:** Pour certaines fonctions, les résultats sont mis dans
    * les premiers arguments de la fonction pour être compatible avec NTL; pour
@@ -351,7 +352,7 @@ namespace LatticeTester {
    *
    * </center>
    */
-  inline void Modulo (const long & a, const long & b, long & r)
+  inline void Modulo (const std::int64_t & a, const std::int64_t & b, std::int64_t & r)
   {
     r = a % b;
     if (r < 0) {
@@ -363,7 +364,7 @@ namespace LatticeTester {
   }
 
   /**
-   * \copydoc Modulo(const long&, const long&, long&)
+   * \copydoc Modulo(const std::int64_t&, const std::int64_t&, std::int64_t&)
    */
   inline void Modulo (const NTL::ZZ & a, const NTL::ZZ & b, NTL::ZZ & r)
   {
@@ -423,7 +424,7 @@ namespace LatticeTester {
    *
    * </center>
    */
-  inline void Divide (long & q, long & r, const long & a, const long & b)
+  inline void Divide (std::int64_t & q, std::int64_t & r, const std::int64_t & a, const std::int64_t & b)
   {
     ldiv_t z = ldiv (a, b);
     q = z.quot;      // q = a / b;
@@ -431,7 +432,7 @@ namespace LatticeTester {
   }
 
   /**
-   * \copydoc Divide(long&, long&, const long&, const long&)
+   * \copydoc Divide(std::int64_t&, std::int64_t&, const std::int64_t&, const std::int64_t&)
    */
   inline void Divide (NTL::ZZ & q, NTL::ZZ & r, const NTL::ZZ & a,
       const NTL::ZZ & b)
@@ -446,7 +447,7 @@ namespace LatticeTester {
   /**
    * Integer division: \f$a = b/d\f$.
    */
-  inline void div (long & a, const long & b, const long & d)
+  inline void div (std::int64_t & a, const std::int64_t & b, const std::int64_t & d)
   {
     a = b/d;
   }
@@ -466,18 +467,18 @@ namespace LatticeTester {
    * Computes \f$a/b\f$, rounds the result to the nearest integer and returns
    * the result in \f$q\f$.
    */
-  inline void DivideRound (const long & a, const long & b, long & q)
+  inline void DivideRound (const std::int64_t & a, const std::int64_t & b, std::int64_t & q)
   {
     bool neg;
     if ((a > 0 && b < 0) || (a < 0 && b > 0))
       neg = true;
     else
       neg = false;
-    long x = abs(a);
-    long y = abs(b);
+    std::int64_t x = abs(a);
+    std::int64_t y = abs(b);
     ldiv_t z = ldiv (x, y);
     q = z.quot;
-    long r = z.rem;
+    std::int64_t r = z.rem;
     r <<= 1;
     if (r > y)
       ++q;
@@ -486,7 +487,7 @@ namespace LatticeTester {
   }
 
   /**
-   * \copydoc DivideRound(const long&, const long&, long&)
+   * \copydoc DivideRound(const std::int64_t&, const std::int64_t&, std::int64_t&)
    */
   inline void DivideRound (const NTL::ZZ & a, const NTL::ZZ & b, NTL::ZZ & q)
   {
@@ -508,9 +509,9 @@ namespace LatticeTester {
   /**
    * Returns the value of the greatest common divisor of \f$a\f$ and \f$b\f$.
    * \remark **Richard:** Il y a déjà des fonctions GCD dans NTL, pour les
-   * `long` et les `ZZ` (voir fichier ZZ.h)
+   * `std::int64_t` et les `ZZ` (voir fichier ZZ.h)
    */
-  long gcd (long a, long b);
+  std::int64_t gcd (std::int64_t a, std::int64_t b);
 
   /**
    * For given \f$a\f$ and \f$b\f$, returns the values \f$C\f$, \f$D\f$,
@@ -809,10 +810,10 @@ namespace LatticeTester {
   /**
    * Computes the greatest common divisor of \f$V[k],…,V[n-1]\f$.
    */
-  inline long GCD2vect (std::vector<long> V, int k, int n)
+  inline std::int64_t GCD2vect (std::vector<std::int64_t> V, int k, int n)
   {
     int i = k;
-    long r, d, c;
+    std::int64_t r, d, c;
     d = labs (V[k]);
     while (d != 1 && i < n) {
       c = labs (V[i]);
@@ -1304,7 +1305,7 @@ namespace NTL {
   /**
    * Converts the array of characters (string) `c` into `l`.
    */
-  inline void conv (long & l, const char* c) {
+  inline void conv (std::int64_t & l, const char* c) {
     l = strtol(c, (char **) NULL, 10);
   }
 

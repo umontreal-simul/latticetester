@@ -3,6 +3,8 @@
 #include "latticetester/Const.h"
 #include "latticetester/Util.h"
 
+#include <cstdint>
+
 
 namespace LatticeTester {
 
@@ -94,7 +96,7 @@ namespace LatticeTester {
          * The maximum number of nodes to be examined in any given
          * branch-and-bound procedure when computing \f$d_t\f$ or \f$q_t\f$.
          */
-        long maxNodesBB;
+        std::int64_t maxNodesBB;
 
         /**
          * The basis of the Lattice where the test will be apply

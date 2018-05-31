@@ -18,6 +18,8 @@
 #ifndef LATTICETESTER__RANDOM_H
 #define LATTICETESTER__RANDOM_H
 
+#include <cstdint>
+
 
 namespace LatticeTester {
   /**
@@ -63,19 +65,19 @@ namespace LatticeTester {
       /**
        * Returns random blocks of \f$s\f$ bits (\f$s\f$-bit integers).
        */
-      unsigned long randBits (int s);
+      std::uint64_t randBits (int s);
 
       /**
        * Sets the seed of the generator. If not called, a default seed is used.
        */
-      void setSeed (unsigned long seed);
+      void setSeed (std::uint64_t seed);
 
 
     private:
 
-      unsigned long randValue();
+      std::uint64_t randValue();
 
-      unsigned long etat1, etat2, etat3, etat4, etat5;
+      std::uint64_t etat1, etat2, etat3, etat4, etat5;
   };
 
 }

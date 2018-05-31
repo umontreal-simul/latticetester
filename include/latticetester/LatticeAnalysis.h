@@ -6,6 +6,7 @@
 #include <dirent.h>
 #include <fnmatch.h>
 #include <typeinfo>
+#include <cstdint>
 
 #include "latticetester/Util.h"
 #include "latticetester/Const.h"
@@ -85,7 +86,7 @@ namespace LatticeTester {
               DblVec, RedDbl, RedDblVec, RedDblMat> & reducer,
               CriterionType criterion, NormaType normaType, 
               PreReductionType preRed, NormType norm, int alpha = 0, 
-              long maxNodesBB = 10000000);
+              std::int64_t maxNodesBB = 10000000);
 
           /**
            * Destructor.
@@ -162,7 +163,7 @@ namespace LatticeTester {
 
           void setDim (int dim) { m_dim = dim; }
 
-          void setMaxNodesBB (long maxNodesBB)
+          void setMaxNodesBB (std::int64_t maxNodesBB)
           {
             Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
               RedDblVec, RedDblMat>::maxNodesBB = m_maxNodesBB = maxNodesBB;
@@ -228,7 +229,7 @@ namespace LatticeTester {
            * Contains the maximum number of nodes visited in the Branch-and-Bound 
            * procedure
            */
-          long m_maxNodesBB;
+          std::int64_t m_maxNodesBB;
 
           /**
            * Returns a `Writer` created from the input file `infile` and the 
@@ -252,11 +253,11 @@ namespace LatticeTester {
   // LLXX case specialization
   template<typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec,
     typename RedDblMat>
-      struct specLatticeAnalysis<long, NTL::vector<long>, NTL::matrix<long>,
-    long, NTL::vector<long>, NTL::matrix<long>, Dbl, DblVec, RedDbl, RedDblVec,
+      struct specLatticeAnalysis<std::int64_t, NTL::vector<std::int64_t>, NTL::matrix<std::int64_t>,
+    std::int64_t, NTL::vector<std::int64_t>, NTL::matrix<std::int64_t>, Dbl, DblVec, RedDbl, RedDblVec,
     RedDblMat> {
-      void initNormalizer(LatticeAnalysis<long, NTL::vector<long>,
-          NTL::matrix<long>, long, NTL::vector<long>, NTL::matrix<long>, Dbl,
+      void initNormalizer(LatticeAnalysis<std::int64_t, NTL::vector<std::int64_t>,
+          NTL::matrix<std::int64_t>, std::int64_t, NTL::vector<std::int64_t>, NTL::matrix<std::int64_t>, Dbl,
           DblVec, RedDbl, RedDblVec, RedDblMat>& latanal, NormaType norma,
           int alpha) {
         RedDbl logDensity;
@@ -300,7 +301,7 @@ namespace LatticeTester {
                   latanal.getDim(), "Norma_generic"));
             break;
           case PALPHA_N:
-            latanal.setNormalizer(new NormaPalpha<long, RedDbl> (
+            latanal.setNormalizer(new NormaPalpha<std::int64_t, RedDbl> (
                   latanal.getReducer()->getIntLatticeBasis()->getModulo(),
                   alpha, latanal.getDim()));
             break;
@@ -444,7 +445,7 @@ namespace LatticeTester {
     DblVec, RedDbl, RedDblVec, RedDblMat>::LatticeAnalysis (Reducer<Int, BasInt,
         BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat> 
         & reducer, CriterionType criterion, NormaType normaType,
-        PreReductionType preRed, NormType norm, int alpha, long maxNodesBB)
+        PreReductionType preRed, NormType norm, int alpha, std::int64_t maxNodesBB)
     {
       m_reducer = &reducer;
       m_criterion = criterion;
@@ -486,9 +487,9 @@ namespace LatticeTester {
    * logDensity = - log( abs( NTL::determinant(
    * m_reducer->getIntLatticeBasis()->getBasis()) ) );
    * #else
-   * // As NTL library does not support matrix with long
+   * // As NTL library does not support matrix with std::int64_t
    * // we compute the determinant with the boost library
-   * boost::numeric::ublas::matrix<long>  mat_tmps;
+   * boost::numeric::ublas::matrix<std::int64_t>  mat_tmps;
    * mat_tmps.resize(m_dim, m_dim);
    * for(unsigned int i = 0; i < m_dim; i++){
    * for(unsigned int j = 0; j < m_dim; j++){

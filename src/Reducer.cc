@@ -57,7 +57,7 @@ namespace LatticeTester
 bool Reducer::PreRedDieterSV = false;
 bool Reducer::PreRedLLLSV = false;
 bool Reducer::PreRedLLLRM = false;
-bool Reducer::PreRedBKZ = true;
+bool Reducer::PreRedBKZ = false;
 long Reducer::maxNodesBB = 10000000;
 
 

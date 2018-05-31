@@ -77,14 +77,16 @@ namespace LatticeTester {
        * Returns a map of weights for all projections whose largest index is \c
        * largestIndex.
        */
-      virtual const WeightsMap& getWeightsForLargestIndex(Coordinates::value_type largestIndex) const;
+      virtual const WeightsMap& getWeightsForLargestIndex(
+          Coordinates::value_type largestIndex) const;
 
 #ifdef WITH_XML
       /**
        * Static factory method; create a ProjectionDependentWeights object by
        * parsing XML data.
        */
-      static ProjectionDependentWeights* createFromXML (const pugi::xml_node& node);
+      static ProjectionDependentWeights* createFromXML (
+          const pugi::xml_node& node);
 #endif
 
       /**

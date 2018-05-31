@@ -62,13 +62,18 @@ namespace LatticeTester {
       /**
        * Returns the weight associated to the given coordinate.
        */
-      virtual Weight getWeightForCoordinate (Coordinates::size_type coordinate) const  {
-        return coordinate < m_weights.size() ? m_weights[coordinate] : m_defaultWeight; }
+      virtual Weight getWeightForCoordinate (
+          Coordinates::size_type coordinate) const
+      {
+        return coordinate < m_weights.size() ?
+          m_weights[coordinate] : m_defaultWeight;
+      }
 
       /**
        * Sets the weight for the coordinate specified by \c coordinate.
        */
-      virtual void setWeightForCoordinate (Coordinates::size_type coordinate, Weight weight);
+      virtual void setWeightForCoordinate (
+          Coordinates::size_type coordinate, Weight weight);
 
       /**
        * Sets the default weight of all coordinates for which a weight

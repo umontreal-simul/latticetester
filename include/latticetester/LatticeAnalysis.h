@@ -5,8 +5,8 @@
 #include <list>
 #include <dirent.h>
 #include <fnmatch.h>
+#include <typeinfo>
 
-#include "latticetester/Types.h"
 #include "latticetester/Util.h"
 #include "latticetester/Const.h"
 #include "latticetester/IntLatticeBasis.h"
@@ -24,6 +24,26 @@
 #include "latticetester/ParamReader.h"
 
 namespace LatticeTester {
+
+  // Declaration is needed for specializer structure definition
+  template<typename Int, typename IntVec, typename IntMat, typename BasInt,
+    typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec,
+    typename RedDbl, typename RedDblVec, typename RedDblMat>
+      class LatticeAnalysis;
+
+  /**
+   * This structure specializes certain members of LatticeAnalysis. 
+   * \todo Render this struct invisible outside of this file with an unnamed 
+   * namespace or something like that.
+   * */
+  template<typename Int, typename IntVec, typename IntMat, typename BasInt,
+    typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec,
+    typename RedDbl, typename RedDblVec, typename RedDblMat>
+      struct specLatticeAnalysis {
+        void initNormalizer(LatticeAnalysis<Int, IntVec, IntMat, BasInt,
+            BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec,
+            RedDblMat>& latanal, NormaType norma, int alpha);
+      };
 
   /**
    * This class gathers other classes of LatticeTester to create an object
@@ -44,151 +64,313 @@ namespace LatticeTester {
    *
    */
 
-  template<typename Int, typename IntVec, typename IntMat, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    class LatticeAnalysis {
+  template<typename Int, typename IntVec, typename IntMat, typename BasInt,
+    typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec,
+    typename RedDbl, typename RedDblVec, typename RedDblMat>
+      class LatticeAnalysis {
 
-      public:
+        public:
 
-        /**
-         * Base constructor. The test will be applied on `lattice`, with the 
-         * selected `normalizer`.
-         */
-        LatticeAnalysis ();
+          /**
+           * Base constructor. The test will be applied on `lattice`, with the 
+           * selected `normalizer`.
+           */
+          LatticeAnalysis ();
 
-        /**
-         * Constructor. The test will be applied on `lattice`, with the 
-         * selected `normalizer` and `criterion`.
-         */
-        LatticeAnalysis (Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat> & reducer, CriterionType criterion,
-            NormaType normaType, PreReductionType preRed, NormType norm,
-            int alpha = 0, long maxNodesBB = 10000000);
+          /**
+           * Constructor. The test will be applied on `lattice`, with the 
+           * selected `normalizer` and `criterion`.
+           */
+          LatticeAnalysis (Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl,
+              DblVec, RedDbl, RedDblVec, RedDblMat> & reducer,
+              CriterionType criterion, NormaType normaType, 
+              PreReductionType preRed, NormType norm, int alpha = 0, 
+              long maxNodesBB = 10000000);
 
-        /**
-         * Destructor.
-         */
-        ~LatticeAnalysis ();
+          /**
+           * Destructor.
+           */
+          ~LatticeAnalysis ();
 
-        /**
-         * Performs the test in dimension `dim`.
-         * The method returns `false` if the test was interrupted for any 
-         * reason before completion, and it returns `true` upon success. The 
-         * result of the test is kept in <tt>m_merit</tt>.
-         */
-        bool doTest (double fact, PrecisionType precision, int blocksize = 20);
+          /**
+           * Performs the test in dimension `dim`.
+           * The method returns `false` if the test was interrupted for any 
+           * reason before completion, and it returns `true` upon success. The 
+           * result of the test is kept in <tt>m_merit</tt>.
+           */
+          bool doTest (double fact, PrecisionType precision,
+              int blocksize = 20);
 
-        void printTestResults ();
+          void printTestResults ();
 
-        /**
-         * Reads the parameters of the test in input text file `datafile`; then 
-         * do the test. The data file must always have the extension `".dat"`, 
-         * but must be given as argument here *without extension*. For example, 
-         * if the data file is named `myLattice.dat`, then the method must be 
-         * called as `doTest("myLattice")`. Returns 0 if the test completed 
-         * successfully; returns a negative integer if there was an error.
-         */
-        int doTestFromInputFile (const char *datafile);
+          /**
+           * Reads the parameters of the test in input text file `datafile`; then 
+           * do the test. The data file must always have the extension `".dat"`, 
+           * but must be given as argument here *without extension*. For example, 
+           * if the data file is named `myLattice.dat`, then the method must be 
+           * called as `doTest("myLattice")`. Returns 0 if the test completed 
+           * successfully; returns a negative integer if there was an error.
+           */
+          int doTestFromInputFile (const char *datafile);
 
-        /**
-         * Applies the method `doTest` to all the files with extension `".dat"`
-         * in directory named `dirname`. Returns 0 if all the tests completed
-         * successfully; returns a non-zero integer if there was an error.
-         */
-        int doTestFromDirectory (const char *dirname);
+          /**
+           * Applies the method `doTest` to all the files with extension `".dat"`
+           * in directory named `dirname`. Returns 0 if all the tests completed
+           * successfully; returns a non-zero integer if there was an error.
+           */
+          int doTestFromDirectory (const char *dirname);
 
 
-        /**
-         * Initialize m_normalizer to a pointer on a normalizer object
-         * of type norma.
-         */
-        void initNormalizer (NormaType norma, int alpha = 0);
+          /**
+           * Initialize m_normalizer to a pointer on a normalizer object
+           * of type norma.
+           */
+          void initNormalizer (NormaType norma, int alpha = 0);
 
-        /**
-         * Gets the results of the applied test.
-         */
-        double getMerit () const { return m_merit; }
+          /**
+           * Gets the results of the applied test.
+           */
+          double getMerit () const { return m_merit; }
 
-        /**
-         * Set functions
-         */
-        void setReducer (Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat> & red) {m_reducer = &red; }
+          /**
+           * Set functions
+           */
+          void setReducer (Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl,
+              DblVec, RedDbl, RedDblVec, RedDblMat> & red)
+          {
+            m_reducer = &red;
+          }
 
-        void setCriterion (CriterionType criterion) 
-        {
-          m_criterion = criterion;
+          void setCriterion (CriterionType criterion) 
+          {
+            m_criterion = criterion;
+          }
+
+          void setNormalizerType (NormaType normalizerType)
+          {
+            m_normalizerType = normalizerType;
+          }
+
+          void setNormalizer (Normalizer<RedDbl>* normalizer) 
+          {
+            m_normalizer = normalizer;
+          }
+
+          void setPreReduction (PreReductionType preRed) { m_preRed = preRed; }
+
+          void setNorm (NormType norm) { m_norm = norm; }
+
+          void setDim (int dim) { m_dim = dim; }
+
+          void setMaxNodesBB (long maxNodesBB)
+          {
+            Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+              RedDblVec, RedDblMat>::maxNodesBB = m_maxNodesBB = maxNodesBB;
+          }
+
+          /**
+           * Get functions.
+           * */
+          int getDim() { return m_dim;}
+
+          Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+            RedDblVec, RedDblMat>* getReducer() 
+            {
+              return m_reducer;
+            }
+
+          Normalizer<RedDbl>* getNormalizer() { return m_normalizer;}
+
+        private:
+          /**
+           * Pointer to the reducer class used to perform pre-reductions and 
+           * Branch-and-Bound
+           */
+          Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+            RedDblVec, RedDblMat>* m_reducer;
+
+          /**
+           * Type of pre-reduction
+           */
+          PreReductionType m_preRed;
+
+          /**
+           * Type of test applied: SPECTRAL, BEYER, ...
+           */
+          CriterionType m_criterion;
+
+          /**
+           * Pointer to the Normalizer class used to normalize the results
+           */
+          Normalizer<RedDbl>* m_normalizer;
+
+          /**
+           * Type of normalization chosen for the test
+           */
+          NormaType m_normalizerType;
+
+          /**
+           * Norm used
+           */
+          NormType m_norm;
+
+          /**
+           * the dimension of the test
+           */
+          int m_dim;
+
+          /**
+           * Contains the results of the test
+           */
+          double m_merit;
+
+          /**
+           * Contains the maximum number of nodes visited in the Branch-and-Bound 
+           * procedure
+           */
+          long m_maxNodesBB;
+
+          /**
+           * Returns a `Writer` created from the input file `infile` and the 
+           * given `OutputType`.
+           */
+          LatTestWriter<Int, IntMat>* createLatTestWriter (const char *infile,
+              OutputType ot);
+
+          /**
+           * This contains methods that need to be specialized
+           * */
+          struct specLatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec,
+            BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat> spec;
+
+      }; // End class LatticeAnalysis
+
+  //===========================================================================
+
+  // specLatticeAnalysis specialization
+
+  // LLXX case specialization
+  template<typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec,
+    typename RedDblMat>
+      struct specLatticeAnalysis<long, NTL::vector<long>, NTL::matrix<long>,
+    long, NTL::vector<long>, NTL::matrix<long>, Dbl, DblVec, RedDbl, RedDblVec,
+    RedDblMat> {
+      void initNormalizer(LatticeAnalysis<long, NTL::vector<long>,
+          NTL::matrix<long>, long, NTL::vector<long>, NTL::matrix<long>, Dbl,
+          DblVec, RedDbl, RedDblVec, RedDblMat>& latanal, NormaType norma,
+          int alpha) {
+        RedDbl logDensity;
+        // We have to cast to NTL::matrix<ZZ> because it does not compute the 
+        // determinant of a general matrix by default.
+        // This may cause bugs at places where the old implementation did not
+        // because boost did not compute the good determinant for big matrixes
+        // somehow.
+        NTL::mat_ZZ temp;
+        temp.SetDims(latanal.getDim(), latanal.getDim());
+        for (int i = 0; i < latanal.getDim(); i++) {
+          for (int j = 0; j < latanal.getDim(); j++){
+            temp[i][j] = latanal.getReducer()->getIntLatticeBasis()->
+              getBasis()(i,j);
+          }
         }
-
-        void setNormalizerType (NormaType normalizerType)
-        {
-          m_normalizerType = normalizerType;
+        logDensity = -log(abs(NTL::determinant(temp)));
+        switch (norma) {
+          case BESTLAT:
+            latanal.setNormalizer(new NormaBestLat<RedDbl> (logDensity,
+                  latanal.getDim()));
+            break;
+          case LAMINATED:
+            latanal.setNormalizer(new NormaLaminated<RedDbl> (logDensity,
+                  latanal.getDim()));
+            break;
+          case ROGERS:
+            latanal.setNormalizer(new NormaRogers<RedDbl> (logDensity,
+                  latanal.getDim()));
+            break;
+          case MINKL1:
+            latanal.setNormalizer(new NormaMinkL1<RedDbl> (logDensity,
+                  latanal.getDim()));
+            break;
+          case MINKOWSKI:
+            latanal.setNormalizer(new NormaMinkowski<RedDbl> (logDensity,
+                  latanal.getDim()));
+            break;
+          case NORMA_GENERIC:
+            latanal.setNormalizer(new Normalizer<RedDbl> (logDensity,
+                  latanal.getDim(), "Norma_generic"));
+            break;
+          case PALPHA_N:
+            latanal.setNormalizer(new NormaPalpha<long, RedDbl> (
+                  latanal.getReducer()->getIntLatticeBasis()->getModulo(),
+                  alpha, latanal.getDim()));
+            break;
+          case L1:
+            break;
+          case L2:
+            break;
+          default:
+            cout << "LatticeAnalysis::initNormalizer:   no such case";
+            exit (2);
         }
+      } 
+    };
 
-        void setPreReduction (PreReductionType preRed) { m_preRed = preRed; }
-
-        void setNorm (NormType norm) { m_norm = norm; }
-
-        void setDim (int dim) { m_dim = dim; }
-
-        void setMaxNodesBB (long maxNodesBB)
-        {
-          Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::maxNodesBB = m_maxNodesBB = maxNodesBB;
+  // ZZXX case specialization
+  template<typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec,
+    typename RedDblMat>
+      struct specLatticeAnalysis<NTL::ZZ, NTL::vector<NTL::ZZ>,
+    NTL::matrix<NTL::ZZ>, NTL::ZZ, NTL::vector<NTL::ZZ>, NTL::matrix<NTL::ZZ>,
+    Dbl, DblVec, RedDbl, RedDblVec, RedDblMat> {
+      void initNormalizer(LatticeAnalysis<NTL::ZZ, NTL::vector<NTL::ZZ>,
+          NTL::matrix<NTL::ZZ>, NTL::ZZ, NTL::vector<NTL::ZZ>,
+          NTL::matrix<NTL::ZZ>, Dbl, DblVec, RedDbl, RedDblVec,
+          RedDblMat>& latanal, NormaType norma, int alpha) {
+        RedDbl logDensity;
+        // We suppose we already have NTL::ZZ as integer type
+        // Could have some kind of error detection here
+        logDensity = -log(abs(NTL::determinant(
+                latanal.getReducer()->getIntLatticeBasis()->getBasis())));
+        switch (norma) {
+          case BESTLAT:
+            latanal.setNormalizer(new NormaBestLat<RedDbl> (logDensity,
+                  latanal.getDim()));
+            break;
+          case LAMINATED:
+            latanal.setNormalizer(new NormaLaminated<RedDbl> (logDensity,
+                  latanal.getDim()));
+            break;
+          case ROGERS:
+            latanal.setNormalizer(new NormaRogers<RedDbl> (logDensity,
+                  latanal.getDim()));
+            break;
+          case MINKL1:
+            latanal.setNormalizer(new NormaMinkL1<RedDbl> (logDensity,
+                  latanal.getDim()));
+            break;
+          case MINKOWSKI:
+            latanal.setNormalizer(new NormaMinkowski<RedDbl> (logDensity,
+                  latanal.getDim()));
+            break;
+          case NORMA_GENERIC:
+            latanal.setNormalizer(new Normalizer<RedDbl> (logDensity,
+                  latanal.getDim(), "Norma_generic"));
+            break;
+          case PALPHA_N:
+            latanal.setNormalizer(new NormaPalpha<NTL::ZZ, RedDbl> (
+                  latanal.getReducer()->getIntLatticeBasis()->getModulo(),
+                  alpha, latanal.getDim()));
+            break;
+          case L1:
+            break;
+          case L2:
+            break;
+          default:
+            cout << "LatticeAnalysis::initNormalizer:   no such case";
+            exit (2);
         }
+      }
+    };
 
-      private:
-        /**
-         * Pointer to the reducer class used to perform pre-reductions and 
-         * Branch-and-Bound
-         */
-        Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>* m_reducer;
-
-        /**
-         * Type of pre-reduction
-         */
-        PreReductionType m_preRed;
-
-        /**
-         * Type of test applied: SPECTRAL, BEYER, ...
-         */
-        CriterionType m_criterion;
-
-        /**
-         * Pointer to the Normalizer class used to normalize the results
-         */
-        Normalizer<RedDbl>* m_normalizer;
-
-        /**
-         * Type of normalization chosen for the test
-         */
-        NormaType m_normalizerType;
-
-        /**
-         * Norm used
-         */
-        NormType m_norm;
-
-        /**
-         * the dimension of the test
-         */
-        int m_dim;
-
-        /**
-         * Contains the results of the test
-         */
-        double m_merit;
-
-        /**
-         * Contains the maximum number of nodes visited in the Branch-and-Bound 
-         * procedure
-         */
-        long m_maxNodesBB;
-
-        /**
-         * Returns a `Writer` created from the input file `infile` and the 
-         * given `OutputType`.
-         */
-        LatTestWriter<Int, IntMat>* createLatTestWriter (const char *infile,
-            OutputType ot);
-
-    }; // End class LatticeAnalysis
 
   //===========================================================================
   // Utility functions
@@ -243,8 +425,11 @@ namespace LatticeTester {
   //===========================================================================
   // Class implementation
 
-  template<typename Int, typename IntVec, typename IntMat, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::LatticeAnalysis ()
+  template<typename Int, typename IntVec, typename IntMat, typename BasInt,
+    typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec,
+    typename RedDbl, typename RedDblVec, typename RedDblMat>
+      LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat, Dbl,
+    DblVec, RedDbl, RedDblVec, RedDblMat>::LatticeAnalysis ()
     {
       m_normalizer = 0;
       m_reducer = 0;
@@ -252,10 +437,14 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename IntVec, typename IntMat, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::LatticeAnalysis (Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat> & reducer, 
-        CriterionType criterion, NormaType normaType, PreReductionType preRed,
-        NormType norm, int alpha, long maxNodesBB)
+  template<typename Int, typename IntVec, typename IntMat, typename BasInt,
+    typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec,
+    typename RedDbl, typename RedDblVec, typename RedDblMat>
+      LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat, Dbl,
+    DblVec, RedDbl, RedDblVec, RedDblMat>::LatticeAnalysis (Reducer<Int, BasInt,
+        BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat> 
+        & reducer, CriterionType criterion, NormaType normaType,
+        PreReductionType preRed, NormType norm, int alpha, long maxNodesBB)
     {
       m_reducer = &reducer;
       m_criterion = criterion;
@@ -263,14 +452,18 @@ namespace LatticeTester {
       initNormalizer(normaType, alpha);
       m_preRed = preRed;
       m_norm = norm;
-      m_dim = m_reducer->getIntLatticeBasis().getDim();
-      Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::maxNodesBB = m_maxNodesBB = maxNodesBB;
+      m_dim = m_reducer->getIntLatticeBasis()->getDim();
+      Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec,
+        RedDblMat>::maxNodesBB = m_maxNodesBB = maxNodesBB;
     }
 
   //===========================================================================
 
-  template<typename Int, typename IntVec, typename IntMat, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::~LatticeAnalysis ()
+  template<typename Int, typename IntVec, typename IntMat, typename BasInt,
+    typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec,
+    typename RedDbl, typename RedDblVec, typename RedDblMat>
+      LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat, Dbl,
+    DblVec, RedDbl, RedDblVec, RedDblMat>::~LatticeAnalysis ()
     {
       if (m_normalizer != 0)
         delete m_normalizer;
@@ -278,65 +471,86 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename IntVec, typename IntMat, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    void LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::initNormalizer (NormaType norma, int alpha)
+  // This is the old implementation (templatized)
+  /* 
+   *    template<typename Int, typename IntVec, typename IntMat, typename BasInt,
+   *    typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec,
+   *    typename RedDbl, typename RedDblVec, typename RedDblMat>
+   *    void LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat,
+   *    Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::initNormalizer (
+   *    NormaType norma, int alpha)
+   *    {
+   *    RedDbl logDensity;
+   * #if NTL_TYPES_CODE > 1
+   * RedDbl logDensity;
+   * logDensity = - log( abs( NTL::determinant(
+   * m_reducer->getIntLatticeBasis()->getBasis()) ) );
+   * #else
+   * // As NTL library does not support matrix with long
+   * // we compute the determinant with the boost library
+   * boost::numeric::ublas::matrix<long>  mat_tmps;
+   * mat_tmps.resize(m_dim, m_dim);
+   * for(unsigned int i = 0; i < m_dim; i++){
+   * for(unsigned int j = 0; j < m_dim; j++){
+   * mat_tmps(i,j) = m_reducer->getIntLatticeBasis()->getBasis()(i,j);
+   * }
+   * }
+   * RedDbl logDensity(-log( abs( det_double(mat_tmps) ) ) );
+   * #endif
+   * switch (norma) {
+   * case BESTLAT:
+   * m_normalizer = new NormaBestLat<RedDbl> (logDensity, m_dim);
+   * break;
+   * case LAMINATED:
+   * m_normalizer = new NormaLaminated<RedDbl> (logDensity, m_dim);
+   * break;
+   * case ROGERS:
+   * m_normalizer = new NormaRogers<RedDbl> (logDensity, m_dim);
+   * break;
+   * case MINKL1:
+   * m_normalizer = new NormaMinkL1<RedDbl> (logDensity, m_dim);
+   * break;
+   * case MINKOWSKI:
+   * m_normalizer = new NormaMinkowski<RedDbl> (logDensity, m_dim);
+   * break;
+   * case NORMA_GENERIC:
+   * m_normalizer = new Normalizer<RedDbl> (logDensity, m_dim, "Norma_generic");
+   * break;
+   * case PALPHA_N:
+   * m_normalizer = new NormaPalpha<Int, RedDbl> (
+   * m_reducer->getIntLatticeBasis()->getModulo(), alpha, m_dim);
+   * break;
+   * case L1:
+   * break;
+   * case L2:
+   * break;
+   * default:
+   * cout << "LatticeAnalysis::initNormalizer:   no such case";
+   * exit (2);
+   * }
+   * }
+   * */
+
+  //===========================================================================
+
+  template<typename Int, typename IntVec, typename IntMat, typename BasInt,
+    typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec,
+    typename RedDbl, typename RedDblVec, typename RedDblMat>
+      void LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat,
+    Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::initNormalizer (
+        NormaType norma, int alpha)
     {
-
-#if NTL_TYPES_CODE > 1
-      RedDbl logDensity;
-      logDensity = - log( abs( NTL::determinant(
-              m_reducer->getIntLatticeBasis().getBasis()) ) );
-#else
-      // As NTL library does not support matrix with double
-      // we compute the determinant with the boost library
-      boost::numeric::ublas::matrix<long>  mat_tmps;
-      mat_tmps.resize(m_dim, m_dim);
-      for(unsigned int i = 0; i < m_dim; i++){
-        for(unsigned int j = 0; j < m_dim; j++){
-          mat_tmps(i,j) = m_reducer->getIntLatticeBasis().getBasis()(i,j);
-        }
-      }
-      RedDbl logDensity(-log( abs( det_double(mat_tmps) ) ) );
-#endif
-
-      switch (norma) {
-        case BESTLAT:
-          m_normalizer = new NormaBestLat<RedDbl> (logDensity, m_dim);
-          break;
-        case LAMINATED:
-          m_normalizer = new NormaLaminated<RedDbl> (logDensity, m_dim);
-          break;
-        case ROGERS:
-          m_normalizer = new NormaRogers<RedDbl> (logDensity, m_dim);
-          break;
-        case MINKL1:
-          m_normalizer = new NormaMinkL1<RedDbl> (logDensity, m_dim);
-          break;
-        case MINKOWSKI:
-          m_normalizer = new NormaMinkowski<RedDbl> (logDensity, m_dim);
-          break;
-        case NORMA_GENERIC:
-          m_normalizer = new Normalizer<RedDbl> (logDensity, m_dim, "Norma_generic");
-          break;
-        case PALPHA_N:
-          m_normalizer = new NormaPalpha<Int, RedDbl> (
-              m_reducer->getIntLatticeBasis().getModulo(), alpha, m_dim);
-          break;
-        case L1:
-          break;
-        case L2:
-          break;
-        default:
-          cout << "LatticeAnalysis::initNormalizer:   no such case";
-          exit (2);
-      }
+      spec.initNormalizer(*this, norma, alpha);
     }
 
   //===========================================================================
 
-  template<typename Int, typename IntVec, typename IntMat, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    bool LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::doTest (double fact, PrecisionType precision,
-        int blocksize)
+  template<typename Int, typename IntVec, typename IntMat, typename BasInt,
+    typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec,
+    typename RedDbl, typename RedDblVec, typename RedDblMat>
+      bool LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat, 
+    Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::doTest (
+        double fact, PrecisionType precision, int blocksize)
     {
       bool result = false;
 
@@ -397,8 +611,11 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename IntVec, typename IntMat, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    void LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::printTestResults ()
+  template<typename Int, typename IntVec, typename IntMat, typename BasInt,
+    typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec,
+    typename RedDbl, typename RedDblVec, typename RedDblMat>
+      void LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat,
+    Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::printTestResults ()
     {
       cout << "\n----------------------------------------------------------" 
         << endl;
@@ -423,8 +640,12 @@ namespace LatticeTester {
    * Data files must always have the extension "dat".
    */
 
-  template<typename Int, typename IntVec, typename IntMat, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    int LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::doTestFromInputFile (const char *infile)
+  template<typename Int, typename IntVec, typename IntMat, typename BasInt,
+    typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec,
+    typename RedDbl, typename RedDblVec, typename RedDblMat>
+      int LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat, Dbl,
+    DblVec, RedDbl, RedDblVec, RedDblMat>::doTestFromInputFile (
+        const char *infile)
     {   
       // parameters reading
       string fname (infile);
@@ -436,11 +657,14 @@ namespace LatticeTester {
       paramRdr.read (config);
       //config.write();
 
-      LatTestWriter<Int, IntMat>* rw = createLatTestWriter (infile, config.outputType);
+      LatTestWriter<Int, IntMat>* rw = createLatTestWriter (infile,
+          config.outputType);
 
       // creating the Reducer object from input
-      IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> basis (config.basis, config.dim, config.norm);
-      Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat> red (basis);
+      IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
+        RedDbl> basis (config.basis, config.dim, config.norm);
+      Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec,
+        RedDblMat> red (basis);
       // update parameters
       setReducer(red);
       setCriterion(config.test);
@@ -488,8 +712,12 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename IntVec, typename IntMat, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    int LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::doTestFromDirectory (const char *dirname)
+  template<typename Int, typename IntVec, typename IntMat, typename BasInt,
+    typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec,
+    typename RedDbl, typename RedDblVec, typename RedDblMat>
+      int LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat, Dbl,
+    DblVec, RedDbl, RedDblVec, RedDblMat>::doTestFromDirectory (
+        const char *dirname)
     {
       string dir = string (dirname);
       std::vector <string> files = std::vector <string> ();
@@ -507,9 +735,12 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename IntVec, typename IntMat, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    LatTestWriter<Int, IntMat>* LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::createLatTestWriter (
-        const char *infile, OutputType ot)
+  template<typename Int, typename IntVec, typename IntMat, typename BasInt,
+    typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec,
+    typename RedDbl, typename RedDblVec, typename RedDblMat>
+      LatTestWriter<Int, IntMat>* LatticeAnalysis<Int, IntVec, IntMat, BasInt,
+    BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec,
+    RedDblMat>::createLatTestWriter (const char *infile, OutputType ot)
     {
       LatTestWriter<Int, IntMat> *rw = 0;
       string fname;

@@ -14,7 +14,6 @@
 #include "latticetester/CoordinateSets.h"
 #include "latticetester/Lacunary.h"
 //#include "latticetester/Const.h"
-//#include "latticetester/Types.h"
 #include "latticetester/Util.h"
 
 namespace LatticeTester {
@@ -23,163 +22,173 @@ namespace LatticeTester {
    * \copydoc LatticeTester::IntLatticeBasis
    * Beside, it contains fonction use in LatticeTester
    */
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    class IntLattice : public IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> {
-      public:
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+      class IntLattice : public IntLatticeBasis<Int, BasInt, BasIntVec,
+      BasIntMat, Dbl, DblVec, RedDbl> {
+        public:
 
-        /**
-         * \copydoc LatticeTester::IntLatticeBasis::IntLatticeBasis (
-         const BasIntMat primalbasis,
-         const BasIntMat dualbasis,
-         const Int modulo,
-         const int dim,
-         NormType norm = L2NORM);
-         */
-        IntLattice (Int modulo, int k, int maxDim, NormType norm = L2NORM);
+          /**
+           * \copydoc LatticeTester::IntLatticeBasis::IntLatticeBasis (
+           const BasIntMat primalbasis,
+           const BasIntMat dualbasis,
+           const Int modulo,
+           const int dim,
+           NormType norm = L2NORM);
+           */
+          IntLattice (Int modulo, int k, int maxDim, NormType norm = L2NORM);
 
-        /**
-         * \copydoc LatticeTester::IntLatticeBasis::IntLatticeBasis (const IntLatticeBasis & Lat)
-         */
-        IntLattice (const IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> & Lat);
+          /**
+           * \copydoc LatticeTester::IntLatticeBasis::IntLatticeBasis (const IntLatticeBasis & Lat)
+           */
+          IntLattice (const IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl,
+              DblVec, RedDbl> & Lat);
 
-        /**
-         * Same as assignment operator above.
-         */
-        void copy (const IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> & lattice);
+          /**
+           * Same as assignment operator above.
+           */
+          void copy (const IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl,
+              DblVec, RedDbl> & lattice);
 
-        /**
-         * Destructor.
-         */
-        virtual ~IntLattice ();
+          /**
+           * Destructor.
+           */
+          virtual ~IntLattice ();
 
-        /**
-         * Init the matrix
-         */
-        void init ();
+          /**
+           * Init the matrix
+           */
+          void init ();
 
-        /**
-         * Return the order of the matrix
-         */
-        int getOrder() const { return m_order; }
+          /**
+           * Return the order of the matrix
+           */
+          int getOrder() const { return m_order; }
 
-        /**
-         * Increment the dimension of the element of the lattice
-         */
-        virtual void incDim ();
+          /**
+           * Increment the dimension of the element of the lattice
+           */
+          virtual void incDim ();
 
-        /**
-         * Computes the logarithm of the normalization factor
-         * (<tt>m_lgVolDual2</tt>) in all dimensions \f$\le\f$ `MaxDim` for
-         * the lattice. `lgm2` is the logarithm in base 2 of \f$m^2\f$.
-         */
-        void calcLgVolDual2 (double lgm2);
+          /**
+           * Computes the logarithm of the normalization factor
+           * (<tt>m_lgVolDual2</tt>) in all dimensions \f$\le\f$ `MaxDim` for
+           * the lattice. `lgm2` is the logarithm in base 2 of \f$m^2\f$.
+           */
+          void calcLgVolDual2 (double lgm2);
 
-        /**
-         * Gives the log of m^(2*i) if i < order, else gives the log of m^(2*i)
-         */
-        double getLgVolDual2 (int i) const { return m_lgVolDual2[i]; }
+          /**
+           * Gives the log of m^(2*i) if i < order, else gives the log of m^(2*i)
+           */
+          double getLgVolDual2 (int i) const { return m_lgVolDual2[i]; }
 
-        /**
-         * Exchange the primal basis and the dual basis.
-         */
-        void dualize ();
+          /**
+           * Exchange the primal basis and the dual basis.
+           */
+          void dualize ();
 
-        /**
-         * This function is called to fix the normalization constants to get
-         * the normalized merit from the shortest distance in the lattice. If
-         * `dualF` is `true`, the normalization constant is reset for the dual
-         * lattice, otherwise it is reset for the primal lattice.
-         */
-        void fixLatticeNormalization (bool dualF);
-
-
-        /**
-         * Builds the basis (and dual basis) of the projection `proj` for this
-         * lattice. The result is placed in the `lattice` lattice. The basis is
-         * triangularized to form a proper basis.
-         */
-        void buildProjection (IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>* lattice,
-            const Coordinates & proj);
-
-        /**
-         * Builds the basis for the lattice in dimension `d`.
-         * This fonction is implemented in subclasses
-         */
-        virtual void buildBasis (int d);
-
-        /**
-         * Creates and returns the normalizer corresponding to criterion
-         * `norma`. In the case of the \f$P_{\alpha}\f$ test, the argument
-         * `alpha` = \f$\alpha\f$. In all other cases, it is unused.
-         */
-        LatticeTester::Normalizer<RedDbl> * getNormalizer (NormaType norma, int alpha,
-            bool dualF);
-
-        /**
-         * Does nothing is this base class.
-         */
-        virtual void setLac (const Lacunary<BasInt, BasIntVec> &) {
-          LatticeTester::MyExit(1, "IntLattice.setLac is empty"); }
-
-        /**
-         * Returns the vector of multipliers (or coefficients) \f$A\f$ as a
-         * string.
-         */
-        virtual std::string toStringCoef() const;
+          /**
+           * This function is called to fix the normalization constants to get
+           * the normalized merit from the shortest distance in the lattice. If
+           * `dualF` is `true`, the normalization constant is reset for the dual
+           * lattice, otherwise it is reset for the primal lattice.
+           */
+          void fixLatticeNormalization (bool dualF);
 
 
-        //    /**
-        //     * The components of the lattice when it is built out of more than one
-        //     * component. When there is only one component, it is unused as the
-        //     * parameters are the same as above.
-        //     */
-        // //    std::vector<MRGComponent *> comp;
+          /**
+           * Builds the basis (and dual basis) of the projection `proj` for this
+           * lattice. The result is placed in the `lattice` lattice. The basis is
+           * triangularized to form a proper basis.
+           */
+          void buildProjection (IntLattice<Int, BasInt, BasIntVec, BasIntMat,
+              Dbl, DblVec, RedDbl>* lattice,
+              const Coordinates & proj);
+
+          /**
+           * Builds the basis for the lattice in dimension `d`.
+           * This fonction is implemented in subclasses
+           */
+          virtual void buildBasis (int d);
+
+          /**
+           * Creates and returns the normalizer corresponding to criterion
+           * `norma`. In the case of the \f$P_{\alpha}\f$ test, the argument
+           * `alpha` = \f$\alpha\f$. In all other cases, it is unused.
+           */
+          LatticeTester::Normalizer<RedDbl> * getNormalizer (NormaType norma,
+              int alpha, bool dualF);
+
+          /**
+           * Does nothing is this base class.
+           */
+          virtual void setLac (const Lacunary<BasInt, BasIntVec> &) 
+          {
+            LatticeTester::MyExit(1, "IntLattice.setLac is empty"); 
+          }
+
+          /**
+           * Returns the vector of multipliers (or coefficients) \f$A\f$ as a
+           * string.
+           */
+          virtual std::string toStringCoef() const;
 
 
-      protected:
+          //    /**
+          //     * The components of the lattice when it is built out of more than one
+          //     * component. When there is only one component, it is unused as the
+          //     * parameters are the same as above.
+          //     */
+          // //    std::vector<MRGComponent *> comp;
 
-        /**
-         * \copydoc LatticeTester::IntLatticeBasis::kill()
-         */
-        virtual void kill ();
 
-        /**
-         * The order of the basis.
-         */
-        int m_order;
+        protected:
 
-        /**
-         * The maximum Dimension for the test
-         */
-        //int m_maxDim;
+          /**
+           * \copydoc LatticeTester::IntLatticeBasis::kill()
+           */
+          virtual void kill ();
 
-        /*
-         * Represente sur dual along the diagonal?? ERWAN
-         */
-        double *m_lgVolDual2;
+          /**
+           * The order of the basis.
+           */
+          int m_order;
 
-        /**
-         * The logarithm \f$\log_2 (m^2)\f$.
-         */
-        double m_lgm2;
+          /**
+           * The maximum Dimension for the test
+           */
+          //int m_maxDim;
 
-        /**
-         * Use to save the dual basis and the basis in some works.
-         */
-        BasIntMat m_wSI, m_vSI;
+          /*
+           * Represente sur dual along the diagonal?? ERWAN
+           */
+          double *m_lgVolDual2;
 
-        /**
-         * Working Variables use in MRGLattice.h
-         */
-        Int m_t1, m_t2, m_t3;
+          /**
+           * The logarithm \f$\log_2 (m^2)\f$.
+           */
+          double m_lgm2;
 
-    }; // Class IntLattice
+          /**
+           * Use to save the dual basis and the basis in some works.
+           */
+          BasIntMat m_wSI, m_vSI;
+
+          /**
+           * Working Variables use in MRGLattice.h
+           */
+          Int m_t1, m_t2, m_t3;
+
+      }; // Class IntLattice
 
   //===========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::IntLattice ( Int modulo, int k, int maxDim,
-        NormType norm): IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>(maxDim, norm)
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+      IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
+    RedDbl>::IntLattice ( Int modulo, int k, int maxDim, NormType norm): 
+      IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
+      RedDbl>(maxDim, norm)
   {
     this->m_dim = maxDim;
     this->m_withDual = true;
@@ -193,9 +202,13 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::IntLattice (const IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> & Lat):
-      IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>(Lat)
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+      IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
+    RedDbl>::IntLattice (const IntLattice<Int, BasInt, BasIntVec, BasIntMat,
+        Dbl, DblVec, RedDbl> & Lat):
+      IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
+      RedDbl>(Lat)
   {
     this->m_withDual = true;
     m_order = Lat.m_order;
@@ -208,11 +221,14 @@ namespace LatticeTester {
   //===========================================================================
 
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::init ()
+  template<typename Int, typename BasInt, typename BasIntVec, 
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+      void IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
+    RedDbl>::init ()
     {
       int dim = this->getDim ();
-      IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::initVecNorm();
+      IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
+        RedDbl>::initVecNorm();
       double temp;
       conv (temp, this->m_modulo);
 
@@ -226,10 +242,13 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::kill ()
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+      void IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, 
+    RedDbl>::kill ()
     {
-      IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::kill();
+      IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, 
+      RedDbl>::kill();
 
       if (m_lgVolDual2 == 0)
         return;
@@ -247,18 +266,23 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::~IntLattice ()
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+      IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
+    RedDbl>::~IntLattice ()
     {
       kill ();
     }
 
   //===========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::incDim ()
+  template<typename Int, typename BasInt, typename BasIntVec, 
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+      void IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, 
+    RedDbl>::incDim ()
     {
-      IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> lattmp (*this);
+      IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> 
+        lattmp (*this);
       int dim = this->getDim();
 
       //long sizemat = m_basis.size1();
@@ -284,8 +308,10 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::calcLgVolDual2 (double lgm2)
+  template<typename Int, typename BasInt, typename BasIntVec, 
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+      void IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
+    RedDbl>::calcLgVolDual2 (double lgm2)
     {
       int dim = this->getDim();
       int rmax = min(m_order, dim);
@@ -301,8 +327,10 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::dualize ()
+  template<typename Int, typename BasInt, typename BasIntVec, 
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+      void IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, 
+    RedDbl>::dualize ()
     {
       std::swap(this->m_basis, this->m_dualbasis);
       this->setNegativeNorm ();
@@ -312,8 +340,10 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::fixLatticeNormalization(bool dualF)
+  template<typename Int, typename BasInt, typename BasIntVec, 
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+      void IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, 
+    RedDbl>::fixLatticeNormalization(bool dualF)
     {
       // Normalization factor: dual to primal : M^(k/dim) -> 1/M^(k/dim)
       if (( dualF && m_lgVolDual2[1] < 0.0) ||
@@ -327,9 +357,11 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::buildProjection (IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>* lattice,
-        const Coordinates & proj)
+  template<typename Int, typename BasInt, typename BasIntVec, 
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+      void IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, 
+    RedDbl>::buildProjection (IntLattice<Int, BasInt, BasIntVec, BasIntMat,
+        Dbl, DblVec, RedDbl>* lattice, const Coordinates & proj)
     {
       const int dim = this->getDim ();
       //  cout << "      ESPION_2\n";  getPrimalBasis ().write();
@@ -370,8 +402,10 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::buildBasis (int d)
+  template<typename Int, typename BasInt, typename BasIntVec, 
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+      void IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, 
+    RedDbl>::buildBasis (int d)
     {
       MyExit(1, " buildBasis does nothing");
       d++;  // eliminates compiler warning
@@ -379,8 +413,11 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::copy (const IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> & lat)
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+      void IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, 
+    RedDbl>::copy (const IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, 
+        DblVec, RedDbl> & lat)
     {
       m_order = lat.getOrder();
       this->m_modulo = lat.m_modulo;
@@ -394,9 +431,10 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    Normalizer<RedDbl> * IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::getNormalizer (NormaType norma, int alpha,
-        bool dualF)
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+      Normalizer<RedDbl> * IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl,
+    DblVec, RedDbl>::getNormalizer (NormaType norma, int alpha, bool dualF)
     {
       int dim = this->getDim();
       Normalizer<RedDbl> *normal;
@@ -439,8 +477,10 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    string IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::toStringCoef () const
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+      string IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, 
+    RedDbl>::toStringCoef () const
     {
       assert (0);
       return std::string();

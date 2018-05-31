@@ -105,13 +105,17 @@ namespace NTL
        */
       matrix<T>() {}
       matrix<T>(const Mat<T>& a) : Mat<T>(a) {}
-      matrix<T>(size_type size1, size_type size2) : Mat<T>(INIT_SIZE, size1, size2) {}
+      matrix<T>(size_type size1, size_type size2) :
+        Mat<T>(INIT_SIZE, size1, size2) {}
 
       /**
        * Set the matrix dimensions to (size1, size2)
        * a copy from NTL::Mat<T>::SetDims
        */
-      void resize(size_type size1, size_type size2) { this->SetDims(size1, size2); }
+      void resize(size_type size1, size_type size2)
+      {
+        this->SetDims(size1, size2);
+      }
 
       /**
        * release space and set to length 0
@@ -142,7 +146,9 @@ namespace NTL
        * in NTL::Vec<T> the ()() operator starts from 1 wich is not compatible with boost
        */
       T& operator()(size_type i, size_type j) { return (*this)[i][j]; }
-      const T& operator()(size_type i, size_type j) const { return (*this)[i][j]; }
+      const T& operator()(size_type i, size_type j) const {
+        return (*this)[i][j];
+      }
 
   };
 
@@ -155,8 +161,12 @@ namespace NTL
   template <class M>
     class matrix_row : public vector<typename M::value_type> {
       public:
-        inline matrix_row(M& data, typename M::size_type i) { this->_vec__rep = (typename M::value_type*&) data[i]._vec__rep; }
-        inline ~matrix_row() { this->_vec__rep = 0; /* avoid destruction in parent class */ }
+        inline matrix_row(M& data, typename M::size_type i) {
+          this->_vec__rep = (typename M::value_type*&) data[i]._vec__rep;
+        }
+        inline ~matrix_row() {
+          this->_vec__rep = 0; /* avoid destruction in parent class */
+        }
     };
 }
 

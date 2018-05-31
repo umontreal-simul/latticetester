@@ -8,12 +8,6 @@ DEBUG_FLAGS = -std=c++14 -g -Wall -O2
 # define any directories containing header files other than /usr/include
 INCLUDES = -I./include
 
-# This is included for backwards compatibility
-DEF_LLDD = -DNTL_TYPES_CODE=1
-DEF_ZZDD = -DNTL_TYPES_CODE=2
-DEF_ZZRR = -DNTL_TYPES_CODE=3
-NUM_TYPES = $(DEF_ZZDD)
-
 # define library paths in addition to /usr/lib
 #   if I wanted to include libraries not in /usr/lib I'd specify
 #   their path using -Lpath, something like:
@@ -58,10 +52,10 @@ bin: lib progs_objects
 progs_objects: $(PROGS_O)
 
 $(OBJ_DIR)/%.o:$(SRC_DIR)/%.cc
-	$(CC) $(CFLAGS) $(INCLUDES) $(NUM_TYPES) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 $(PRO_DIR)/%.o:$(PRO_DIR)/%.cc
-	$(CC) $(CFLAGS) $(INCLUDES) $(NUM_TYPES) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 	$(CC) $@ $(STAT_LIBS_PATH) $(STAT_LIBS) $(DYN_LIBS_PATH) $(DYN_LIBS) -o $(BIN_DIR)/$(@:progs/%.o=%) 
 
 #==============================================================================

@@ -17,6 +17,6 @@
 
 #include "latticetester/NormaBestLat.h"
 
-int maint() {
+int main() {
   return 0;
 }

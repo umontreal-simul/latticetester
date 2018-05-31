@@ -1,6 +1,5 @@
 #ifndef RANK1LATTICE_H
 #define RANK1LATTICE_H
-#include "latticetester/Types.h"
 #include "latticetester/Const.h"
 #include "latticetester/IntLattice.h"
 
@@ -17,8 +16,10 @@ namespace LatticeTester {
    * Without loss of generality, one may choose \f$a_1 = 1\f$.
    *
    */
-  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    class Rank1Lattice: public IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> {
+  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+    class Rank1Lattice: public IntLattice<Int, BasInt, BasIntVec, BasIntMat,
+    Dbl, DblVec, RedDbl> {
       public:
 
         /**
@@ -31,12 +32,14 @@ namespace LatticeTester {
         /**
          * Copy constructor.
          */
-        Rank1Lattice (const Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> & Lat);
+        Rank1Lattice (const Rank1Lattice<Int, IntVec, BasInt, BasIntVec,
+            BasIntMat, Dbl, DblVec, RedDbl> & Lat);
 
         /**
          * Assigns `Lat` to this object.
          */
-        Rank1Lattice & operator= (const Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> & Lat);
+        Rank1Lattice & operator= (const Rank1Lattice<Int, IntVec, BasInt,
+            BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> & Lat);
 
         /**
          * Destructor.
@@ -78,10 +81,13 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::Rank1Lattice (const Int & n, const IntVec & a, int maxDim,
+  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+    Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, 
+    RedDbl>::Rank1Lattice (const Int & n, const IntVec & a, int maxDim,
         NormType norm):
-      IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> (n, 1, maxDim, norm)
+      IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> (
+          n, 1, maxDim, norm)
   {
     this->m_a = a;
     init();
@@ -90,8 +96,10 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::~Rank1Lattice()
+  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+    Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, 
+    RedDbl>::~Rank1Lattice()
     {
       this->m_a.clear ();
     }
@@ -99,8 +107,10 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::init()
+  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+    void Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
+    RedDbl>::init()
     {
       IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::init();
       for (int r = 1; r < this->getDim(); r++)
@@ -110,8 +120,12 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> & Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::operator= (const Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> & lat)
+  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+    Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
+    RedDbl> & Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, 
+    DblVec, RedDbl>::operator= (const Rank1Lattice<Int, IntVec, BasInt,
+        BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> & lat)
     {
       if (this == &lat)
         return * this;
@@ -124,10 +138,13 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::Rank1Lattice (const Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> & lat):
-      IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> (lat.m_modulo, lat.getOrder (),
-          lat.getDim (), lat.getNorm ())
+  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+    Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, 
+    RedDbl>::Rank1Lattice (const Rank1Lattice<Int, IntVec, BasInt, BasIntVec, 
+        BasIntMat, Dbl, DblVec, RedDbl> & lat):
+      IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> (
+          lat.m_modulo, lat.getOrder (), lat.getDim (), lat.getNorm ())
   {
     // MyExit (1, "Rank1Lattice:: constructeur n'est pas terminé " );
     init ();
@@ -137,8 +154,10 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    std::string Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::toStringCoef ()const
+  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+    std::string Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl,
+    DblVec, RedDbl>::toStringCoef ()const
     {
       return toString (this->m_a, 0, this->getDim ());
     }
@@ -146,8 +165,10 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::incDim ()
+  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+    void Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
+    RedDbl>::incDim ()
     {
       // kill();
       buildBasis (1 + this->getDim ());
@@ -158,8 +179,10 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::buildBasis (int d)
+  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+    void Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
+    RedDbl>::buildBasis (int d)
     {
       // assert(d <= getMaxDim());
       this->setDim (d);
@@ -182,20 +205,26 @@ namespace LatticeTester {
 
       // if a[0] != 1, the basis must be triangularized
       if (this->m_basis (0, 0) != 1) {
-        Triangularization < BasIntMat > (this->m_basis, this->m_dualbasis, d, d, this->m_modulo);
+        Triangularization < BasIntMat > (
+            this->m_basis, this->m_dualbasis, d, d, this->m_modulo);
         dualize ();
       }
-      CalcDual < BasIntMat > (this->m_basis, this->m_dualbasis, d, this->m_modulo);
+      CalcDual < BasIntMat > (
+          this->m_basis, this->m_dualbasis, d, this->m_modulo);
       this->setNegativeNorm ();
       this->setDualNegativeNorm ();
     }
 
   //===========================================================================
 
-  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::dualize ()
+  template<typename Int, typename IntVec, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+    void Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, 
+    RedDbl>::dualize ()
     {
-      BasIntMat tmps(this->m_basis);   this->m_basis = this->m_dualbasis;   this->m_dualbasis = tmps;
+      BasIntMat tmps(this->m_basis);
+      this->m_basis = this->m_dualbasis;
+      this->m_dualbasis = tmps;
     }
 
 } // End namespace LatticeTester

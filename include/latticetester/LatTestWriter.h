@@ -1,6 +1,5 @@
 #ifndef LATTESTWRITER_H
 #define LATTESTWRITER_H
-#include "latticetester/Types.h"
 
 #include <iostream>
 #include <string>
@@ -147,7 +146,7 @@ namespace LatticeTester {
   template<typename Int, typename IntMat>
     LatTestWriter<Int, IntMat>::LatTestWriter(const char* fileName)
     {
-      m_stream = new ofstream(fileName);
+      m_stream = new std::ofstream(fileName);
       //_stream = dynamic_cast<ostream*>(new ofstream(fileName));
       if (m_stream->fail()) {
         throw 1;
@@ -158,7 +157,7 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int, typename IntMat>
-    LatTestWriter<Int, IntMat>::LatTestWriter(ostream* stream)
+    LatTestWriter<Int, IntMat>::LatTestWriter(std::ostream* stream)
     {
       m_stream = stream;
       m_clean = false;
@@ -193,7 +192,7 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int, typename IntMat>
-    void LatTestWriter<Int, IntMat>::writeString(const string & value)
+    void LatTestWriter<Int, IntMat>::writeString(const std::string & value)
     {
       *m_stream << value;
     }
@@ -221,9 +220,9 @@ namespace LatticeTester {
           *m_stream << A[i][j] << " ";
 
         if (i == (sizeA-1)) { *m_stream << A[i][sizeA-1] << "]"; }
-        else { *m_stream << A[i][sizeA-1] << "]" << endl; }
+        else { *m_stream << A[i][sizeA-1] << "]" << std::endl; }
       }
-      *m_stream << "]" << endl;
+      *m_stream << "]" << std::endl;
     }
 
   //===========================================================================

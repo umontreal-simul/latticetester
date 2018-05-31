@@ -17,7 +17,6 @@
 
 #ifndef LATTICETESTER__LACUNARY_H
 #define LATTICETESTER__LACUNARY_H
-#include "latticetester/Types.h"
 #include "latticetester/Util.h"
 #include <string>
 
@@ -35,14 +34,22 @@ namespace LatticeTester {
          * Constructor for a set of \f$t\f$ lacunary indices given in \f$C[j]\f$, for
          * \f$j = 1, 2, …, t\f$.
          */
-        Lacunary (const BasIntVec & C, int t) { m_dim = t; LatticeTester::CreateVect (m_lac, t);
-          LatticeTester::CopyVect (m_lac, C, t); }
+        Lacunary (const BasIntVec & C, int t)
+        {
+          m_dim = t; 
+          LatticeTester::CreateVect (m_lac, t);
+          LatticeTester::CopyVect (m_lac, C, t);
+        }
 
         /**
          * Constructor for a set of \f$t\f$ lacunary indices. The lacunary
          * indices can be read later by `ReadLac`.
          */
-        explicit Lacunary (int t = 0) { m_dim = t; LatticeTester::CreateVect (m_lac, t); }
+        explicit Lacunary (int t = 0) 
+        {
+          m_dim = t; 
+          LatticeTester::CreateVect (m_lac, t); 
+        }
 
         /**
          * Destructor.
@@ -71,7 +78,8 @@ namespace LatticeTester {
          * If `MinDim` is smaller than `Order`, it is reset to `Order` + 1.
          * Returns `true` in the lacunary case, and `false` otherwise.
          */
-        bool calcIndicesStreams (int s, int w, int & minDim, int maxDim, int order);
+        bool calcIndicesStreams (int s, int w, int & minDim, int maxDim, 
+            int order);
 
         /**
          * Returns this object as a string.
@@ -110,8 +118,8 @@ namespace LatticeTester {
 
 
   template<typename BasInt, typename BasIntVec>
-    bool Lacunary<BasInt, BasIntVec>::calcIndicesStreams (int s, int w, int & minDim,
-        int maxDim, int order)
+    bool Lacunary<BasInt, BasIntVec>::calcIndicesStreams (int s, int w, 
+        int & minDim, int maxDim, int order)
     {
       if (w == 0) {
         if (minDim <= order)

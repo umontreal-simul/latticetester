@@ -35,7 +35,6 @@
 #include <map>
 #include <cmath>
 #include <cstdlib>
-#include "latticetester/Types.h"
 #include "latticetester/Const.h"
 
 #include "NTL/tools.h"
@@ -161,7 +160,7 @@ namespace LatticeTester {
   /**
    * Sets \f$z = 2^i\f$.
    */
-  inline void power2 (ZZ& z, long i)
+  inline void power2 (NTL::ZZ& z, long i)
   {
     z = NTL::power_ZZ (2, i);
   }
@@ -711,7 +710,7 @@ namespace LatticeTester {
       Int C;   C = 0;
       for (int i = 0; i < n; i++)
         C += A[i] * B[i];
-      conv (D, C);
+      NTL::conv (D, C);
     }
 
 
@@ -741,14 +740,14 @@ namespace LatticeTester {
       switch (norm) {
         case L1NORM:
           for (int i = 0; i < n; i++) {
-            conv (y, V[i]);
+            NTL::conv (y, V[i]);
             S += abs(y);
           }
           break;
 
         case L2NORM:
           for (int i = 0; i < n; i++) {
-            conv (y, V[i]);
+            NTL::conv (y, V[i]);
             S += y*y;
           }
           //S = sqrt(S);
@@ -756,7 +755,7 @@ namespace LatticeTester {
 
         case SUPNORM:
           for (int i = 0; i < n; i++) {
-            conv (y, abs(V[i]));
+            NTL::conv (y, abs(V[i]));
             if (y > S)
               S = y;
           }
@@ -765,7 +764,7 @@ namespace LatticeTester {
         case ZAREMBANORM:
           S = 1.0;
           for (int i = 0; i < n; i++) {
-            conv (y, abs(V[i]));
+            NTL::conv (y, abs(V[i]));
             if (y > 1.0)
               S *= y;
           }
@@ -793,7 +792,7 @@ namespace LatticeTester {
     inline void ModifVect (Vect1 & A, const Vect2 & B, Scal x, int n)
     {
       typename Vect2::value_type a;
-      conv (a, x);
+      NTL::conv (a, x);
       for (int i = 0; i < n; i++)
         A[i] = A[i] + B[i]*a;
     }
@@ -901,13 +900,13 @@ namespace LatticeTester {
       //clear (A);
     }
 
-  /**
-   * \copydoc CreateMatr(MMat&, int)
-   */
-  inline void CreateMatr (MMatP & A, int d)
-  {
-    A.SetDims (d, d);   clear (A);
-  }
+  // /**
+  //  * \copydoc CreateMatr(MMat&, int)
+  //  */
+  // inline void CreateMatr (MMatP & A, int d)
+  // {
+  //   A.SetDims (d, d);   clear (A);
+  // }
 
   /**
    * Creates the matrix \f$A\f$ of dimensions (<tt>line</tt>)
@@ -920,13 +919,13 @@ namespace LatticeTester {
       //clear (A);
     }
 
-  /**
-   * \copydoc CreateMatr(MMat&, int, int)
-   */
-  inline void CreateMatr (MMatP & A, int line, int col)
-  {
-    A.SetDims (line, col);   clear (A);
-  }
+  // /**
+  //  * \copydoc CreateMatr(MMat&, int, int)
+  //  */
+  // inline void CreateMatr (MMatP & A, int line, int col)
+  // {
+  //   A.SetDims (line, col);   clear (A);
+  // }
 
   /**
    * Deletes the matrix \f$A\f$.
@@ -937,13 +936,13 @@ namespace LatticeTester {
       A.clear ();
     }
 
-  /**
-   * As above.
-   */
-  inline void DeleteMatr (MMatP & A)
-  {
-    A.kill ();
-  }
+  // /**
+  //  * As above.
+  //  */
+  // inline void DeleteMatr (MMatP & A)
+  // {
+  //   A.kill ();
+  // }
 
   /**
    * Copies matrix \f$B\f$ into matrix \f$A\f$.
@@ -1255,42 +1254,42 @@ namespace LatticeTester {
 
 }     // namespace LatticeTester
 
-#if NTL_TYPES_CODE == 1
+// #if NTL_TYPES_CODE == 1
 
-#define BOOST_UBLAS_TYPE_CHECK 0
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/lu.hpp>
+// #define BOOST_UBLAS_TYPE_CHECK 0
+// #include <boost/numeric/ublas/matrix.hpp>
+// #include <boost/numeric/ublas/lu.hpp>
 
-/**
- * Because NTL cannot compute the determinant of a matrix<double>
- * we have to work with boost library which offer a quick implementation
- * of the determinant computation. This is used in normalization files
- * and in LatticeAnalysis.
- */
-  template<typename ValType>
-ValType det_double(const boost::numeric::ublas::matrix<ValType>& matrix)
-{
-  // create a working copy of the input
-  boost::numeric::ublas::matrix<ValType> mLu(matrix);
-  boost::numeric::ublas::permutation_matrix<std::size_t> pivots(matrix.size1());
+// /**
+//  * Because NTL cannot compute the determinant of a matrix<double>
+//  * we have to work with boost library which offer a quick implementation
+//  * of the determinant computation. This is used in normalization files
+//  * and in LatticeAnalysis.
+//  */
+//   template<typename ValType>
+// ValType det_double(const boost::numeric::ublas::matrix<ValType>& matrix)
+// {
+//   // create a working copy of the input
+//   boost::numeric::ublas::matrix<ValType> mLu(matrix);
+//   boost::numeric::ublas::permutation_matrix<std::size_t> pivots(matrix.size1());
 
-  auto isSingular = boost::numeric::ublas::lu_factorize(mLu, pivots);
-  if (isSingular)
-    return static_cast<ValType>(0);
+//   auto isSingular = boost::numeric::ublas::lu_factorize(mLu, pivots);
+//   if (isSingular)
+//     return static_cast<ValType>(0);
 
-  ValType det = static_cast<ValType>(1);
-  for (std::size_t i = 0; i < pivots.size(); ++i)
-  {
-    if (pivots(i) != i)
-      det *= static_cast<ValType>(-1);
+//   ValType det = static_cast<ValType>(1);
+//   for (std::size_t i = 0; i < pivots.size(); ++i)
+//   {
+//     if (pivots(i) != i)
+//       det *= static_cast<ValType>(-1);
 
-    det *= mLu(i, i);
-  }
+//     det *= mLu(i, i);
+//   }
 
-  return det;
-}
+//   return det;
+// }
 
-#endif
+// #endif
 
 
 

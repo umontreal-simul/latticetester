@@ -118,7 +118,7 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int, typename IntMat>
-    LatTestWriterRes<Int, IntMat>::LatTestWriterRes (ostream * stream, 
+    LatTestWriterRes<Int, IntMat>::LatTestWriterRes (std::ostream * stream, 
         unsigned int margins): LatTestWriter<Int, IntMat> (stream)
   {
     m_margins = margins;
@@ -165,7 +165,7 @@ namespace LatticeTester {
   template<typename Int, typename IntMat>
     void LatTestWriterRes<Int, IntMat>::newLine ()
     {
-      *this->m_stream << m_prefix << endl;
+      *this->m_stream << m_prefix << std::endl;
     }
 
   //===========================================================================
@@ -173,14 +173,14 @@ namespace LatticeTester {
   template<typename Int, typename IntMat>
     void LatTestWriterRes<Int, IntMat>::newParagraph ()
     {
-      *this->m_stream << endl << endl;
+      *this->m_stream << std::endl << std::endl;
       endTabbedSection ();
     }
 
   //===========================================================================
 
   template<typename Int, typename IntMat>
-    void LatTestWriterRes<Int, IntMat>::writeMathString (const string s)
+    void LatTestWriterRes<Int, IntMat>::writeMathString (const std::string s)
     {
       *this->m_stream << m_prefix << s;
     }
@@ -188,9 +188,9 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int, typename IntMat>
-    void LatTestWriterRes<Int, IntMat>::writeStandOutMathString (const string s)
+    void LatTestWriterRes<Int, IntMat>::writeStandOutMathString (const std::string s)
     {
-      *this->m_stream << endl << "\t" << s << endl;
+      *this->m_stream << std::endl << "\t" << s << std::endl;
     }
 
   //===========================================================================
@@ -332,12 +332,12 @@ namespace LatticeTester {
       }
     }
     if (i == nb_lig[0] - 1) {
-      *this->m_stream << endl;
+      *this->m_stream << std::endl;
       for (int k = 0; k < total_length; k++) {
         *this->m_stream << "-";
       }
     }
-    *this->m_stream << endl;
+    *this->m_stream << std::endl;
   }
 
   // deleting pointers

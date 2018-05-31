@@ -25,7 +25,6 @@
 #include <boost/iterator/iterator_adaptor.hpp>
 #include <boost/config.hpp>
 #include "latticetester/Util.h"
-#include "latticetester/Types.h"
 #include "latticetester/Coordinates.h"
 
 namespace LatticeTester {
@@ -117,7 +116,10 @@ namespace LatticeTester {
           void increment();
 
           bool equal(const const_iterator& other) const
-          { return m_seq == other.m_seq && (other.m_atEnd ? m_atEnd : m_value == other.m_value); }
+          { 
+            return m_seq == other.m_seq 
+              && (other.m_atEnd ? m_atEnd : m_value == other.m_value);
+          }
 
           const Coordinates& dereference() const
           { return m_value; }

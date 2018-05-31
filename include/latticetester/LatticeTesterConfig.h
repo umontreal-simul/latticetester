@@ -1,6 +1,5 @@
 #ifndef LATTICETESTERCONFIG_H
 #define LATTICETESTERCONFIG_H
-#include "latticetester/Types.h"
 #include "latticetester/Const.h"
 #include "latticetester/Util.h"
 
@@ -167,37 +166,37 @@ namespace LatticeTester {
       switch(test) {
 
         case SPECTRAL:
-          cout << "\n----- LatticeTesterConfig::write -----" << endl;
-          cout << "Criterion: " << toStringCriterion(test) << endl;
-          cout << "Norm: " << toStringNorm(norm) << endl;
-          cout << "Normalizer: " << toStringNorma (normalizer) << endl;
+          std::cout << "\n----- LatticeTesterConfig::write -----" << std::endl;
+          std::cout << "Criterion: " << toStringCriterion(test) << std::endl;
+          std::cout << "Norm: " << toStringNorm(norm) << std::endl;
+          std::cout << "Normalizer: " << toStringNorma (normalizer) << std::endl;
 
-          cout << "Prereduction: " << toStringPreRed (prereduction);
-          cout << " (with " << toStringPrecision(precision) << " precision";
-          cout << " and fact = " << fact << ")" << endl;
+          std::cout << "Prereduction: " << toStringPreRed (prereduction);
+          std::cout << " (with " << toStringPrecision(precision) << " precision";
+          std::cout << " and fact = " << fact << ")" << std::endl;
 
-          cout << "Dimension of the basis: " << dim << endl;
-          cout << "Lattice Basis = \n" << basis << endl;
-          cout << "maxNodesBB: " << maxNodesBB << endl;
+          std::cout << "Dimension of the basis: " << dim << std::endl;
+          std::cout << "Lattice Basis = \n" << basis << std::endl;
+          std::cout << "maxNodesBB: " << maxNodesBB << std::endl;
           break;
 
         case PALPHA:
-          cout << "\n----- LatticeTesterConfig::write -----" << endl;
-          cout << "Criterion: " << toStringCriterion(test) << endl;
-          cout << "alpha: " << alpha << endl;
-          cout << "modulo: " << modulo << endl;
+          std::cout << "\n----- LatticeTesterConfig::write -----" << std::endl;
+          std::cout << "Criterion: " << toStringCriterion(test) << std::endl;
+          std::cout << "alpha: " << alpha << std::endl;
+          std::cout << "modulo: " << modulo << std::endl;
 
-          cout << "Dimension of the basis: " << dim << endl;
-          cout << "Lattice Basis = \n" << basis << endl;
-          cout << "maxNodesBB: " << maxNodesBB << endl;
+          std::cout << "Dimension of the basis: " << dim << std::endl;
+          std::cout << "Lattice Basis = \n" << basis << std::endl;
+          std::cout << "maxNodesBB: " << maxNodesBB << std::endl;
           break;
 
         case BEYER:
-          cout << "\n----- LatticeTesterConfig::write -----" << endl;
-          cout << "Criterion: " << toStringCriterion(test) << endl;
-          cout << "Dimension of the basis: " << dim << endl;
-          cout << "Lattice Basis = \n" << basis << endl;
-          cout << "maxNodesBB: " << maxNodesBB << endl;
+          std::cout << "\n----- LatticeTesterConfig::write -----" << std::endl;
+          std::cout << "Criterion: " << toStringCriterion(test) << std::endl;
+          std::cout << "Dimension of the basis: " << dim << std::endl;
+          std::cout << "Lattice Basis = \n" << basis << std::endl;
+          std::cout << "maxNodesBB: " << maxNodesBB << std::endl;
           break;
 
         default:

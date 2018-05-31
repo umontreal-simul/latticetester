@@ -19,7 +19,6 @@
 #define LATTICETESTER__REDUCER_H
 #include "NTL/LLL.h"
 
-#include "latticetester/Types.h"
 #include "latticetester/Const.h"
 #include "latticetester/Util.h"
 #include "latticetester/IntLatticeBasis.h"
@@ -30,6 +29,31 @@
 #include <limits>
 
 namespace LatticeTester {
+
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      class Reducer;
+
+  /**
+   * This struct specializes some of the functions in a `Reducer`. This is a
+   * workaround needed implementation wise since you can't specialize member
+   * functions of a class without specializing the whole class.
+   * */
+  template<typename Int, typename BasInt, typename BasIntVec, 
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, 
+    typename RedDblVec, typename RedDblMat>
+      struct specReducer {
+        void redLLLNTLExact(Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl,
+            DblVec, RedDbl, RedDblVec, RedDblMat>& red, double fact);
+        void redBKZ(Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
+            RedDbl, RedDblVec, RedDblMat>& red, double fact, long blocksize, 
+            PrecisionType precision, int dim);
+        void redLLLNTL(Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
+            RedDbl, RedDblVec, RedDblMat>& red, double fact,
+            PrecisionType precision, int dim);
+      };
+
 
   /**
    * For a given lattice, this class implements methods to reduce its basis in
@@ -45,373 +69,604 @@ namespace LatticeTester {
    * as a prereduction before the Branch-and-Bound.
    */
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    class Reducer {
-      public:
+  template<typename Int, typename BasInt, typename BasIntVec, 
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      class Reducer {
+        public:
 
-        /**
-         * Whenever the number of nodes in the branch-and-bound tree exceeds
-         * <tt>SHORT_DIET</tt> in the method `ShortestVector`, `PreRedDieterSV` is
-         * automatically set to `true` for the next call; otherwise it is set to
-         * `false`.
-         */
-        static const long SHORT_DIET = 1000;
+          /**
+           * Whenever the number of nodes in the branch-and-bound tree exceeds
+           * <tt>SHORT_DIET</tt> in the method `ShortestVector`, `PreRedDieterSV` is
+           * automatically set to `true` for the next call; otherwise it is set to
+           * `false`.
+           */
+          static const long SHORT_DIET = 1000;
 
-        /**
-         * Whenever the number of nodes in the branch-and-bound tree exceeds
-         * <tt>SHORT_LLL</tt> in the method `ShortestVector`, `PreRedLLLSV` is
-         * automatically set to `true` for the next call; otherwise it is set
-         * to `false`.
-         */
-        static const long SHORT_LLL = 1000;
+          /**
+           * Whenever the number of nodes in the branch-and-bound tree exceeds
+           * <tt>SHORT_LLL</tt> in the method `ShortestVector`, `PreRedLLLSV` is
+           * automatically set to `true` for the next call; otherwise it is set
+           * to `false`.
+           */
+          static const long SHORT_LLL = 1000;
 
-        /**
-         * Whenever the number of nodes in the branch-and-bound tree exceeds
-         * <tt>MINK_LLL</tt> in the method <tt>reductMinkowski</tt>,
-         * `PreRedLLLRM` is automatically set to `true` for the next call;
-         * otherwise it is set to `false`.
-         */
-        static const long MINK_LLL = 500000;
+          /**
+           * Whenever the number of nodes in the branch-and-bound tree exceeds
+           * <tt>MINK_LLL</tt> in the method <tt>reductMinkowski</tt>,
+           * `PreRedLLLRM` is automatically set to `true` for the next call;
+           * otherwise it is set to `false`.
+           */
+          static const long MINK_LLL = 500000;
 
-        /**
-         * Maximum number of transformations in the method `PreRedDieter`.
-         * After <tt>MAX_PRE_RED</tt> successful transformations have been
-         * performed, the prereduction is stopped.
-         */
-        static const long MAX_PRE_RED = 1000000;
+          /**
+           * Maximum number of transformations in the method `PreRedDieter`.
+           * After <tt>MAX_PRE_RED</tt> successful transformations have been
+           * performed, the prereduction is stopped.
+           */
+          static const long MAX_PRE_RED = 1000000;
 
-        /**
-         * The maximum number of nodes in the branch-and-bound tree when
-         * calling `ShortestVector` or `reductMinkowski`. When this number is
-         * exceeded, the method aborts and returns `false`.
-         */
-        static long maxNodesBB;
+          /**
+           * The maximum number of nodes in the branch-and-bound tree when
+           * calling `ShortestVector` or `reductMinkowski`. When this number is
+           * exceeded, the method aborts and returns `false`.
+           */
+          static long maxNodesBB;
 
-        /**
-         * \name Pre-reduction flags
-         * @{
-         *
-         * These boolean variables indicate which type of pre-reduction is to be
-         * performed for `ShortestVector` (SV) and for `reductMinkowski` (RM).
-         * `Dieter` means the pairwise pre-reduction as in the method `PreRedDieter`.
-         * `LLL` means the LLL reduction of Lenstra, Lenstra, and Lovász. The
-         * variable `PreRedDieterSV` is originally set to `true` and the two others
-         * are originally set to `false`. These variables are reset automatically
-         * depending on the thresholds `MinkLLL, ShortDiet, ShortLLL` as explained
-         * above.
-         */
-        static bool PreRedDieterSV;
-        static bool PreRedLLLSV;
-        static bool PreRedLLLRM;
-        static bool PreRedBKZ;
+          /**
+           * \name Pre-reduction flags
+           * @{
+           *
+           * These boolean variables indicate which type of pre-reduction is to be
+           * performed for `ShortestVector` (SV) and for `reductMinkowski` (RM).
+           * `Dieter` means the pairwise pre-reduction as in the method `PreRedDieter`.
+           * `LLL` means the LLL reduction of Lenstra, Lenstra, and Lovász. The
+           * variable `PreRedDieterSV` is originally set to `true` and the two others
+           * are originally set to `false`. These variables are reset automatically
+           * depending on the thresholds `MinkLLL, ShortDiet, ShortLLL` as explained
+           * above.
+           */
+          static bool PreRedDieterSV;
+          static bool PreRedLLLSV;
+          static bool PreRedLLLRM;
+          static bool PreRedBKZ;
 
-        /**
-         * @}
-         */
+          /**
+           * @}
+           */
 
-        /**
-         * Constructor. Initializes the reducer to work on lattice `lat`.
-         */
-        Reducer (IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> & lat);
+          /**
+           * Constructor. Initializes the reducer to work on lattice `lat`.
+           */
+          Reducer (IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
+              RedDbl> & lat);
 
-        /**
-         * Copy constructor.
-         */
-        Reducer (const Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat> & red);
+          /**
+           * Copy constructor.
+           */
+          Reducer (const Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, 
+              RedDbl, RedDblVec, RedDblMat> & red);
 
-        /**
-         * Destructor.
-         */
-        ~Reducer ();
+          /**
+           * Destructor.
+           */
+          ~Reducer ();
 
-        /**
-         * Assignment operator.
-         */
-        Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat> & operator= (const Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat> & red);
+          /**
+           * Assignment operator.
+           */
+          Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, 
+            RedDblVec, RedDblMat> & operator= (const Reducer<Int, BasInt,
+                BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat> 
+                & red);
 
-        /**
-         * Copies the reducer `red` into this object.
-         * \remark **Richard:** Encore utile?
-         */
-        void copy (const Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat> & red);
+          /**
+           * Copies the reducer `red` into this object.
+           * \remark **Richard:** Encore utile?
+           */
+          void copy (const Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, 
+              DblVec, RedDbl, RedDblVec, RedDblMat> & red);
 
-        /**
-         * Method used in `reductMinkowski` to perform a transformation of
-         * stage 3 described in \cite rAFF85a&thinsp;. Also used in
-         * `ShortestVector`. Assumes that \f$\sum_{i=1}^t z_i V_i\f$ is a
-         * short vector that will enter the basis. Tries to reduce some vectors
-         * by looking for indices \f$i < j\f$ such that \f$|z_j| > 1\f$ and
-         * \f$q=\lfloor z_i/z_j\rfloor\not0\f$, and adding \f$q V_i\f$ to
-         * \f$V_j\f$ when this happens. Returns in \f$k\f$ the last index
-         * \f$j\f$ such that \f$|z_j|=1\f$.
-         */
-        void transformStage3 (std::vector<long> & z, int & k);
+          /**
+           * Method used in `reductMinkowski` to perform a transformation of
+           * stage 3 described in \cite rAFF85a&thinsp;. Also used in
+           * `ShortestVector`. Assumes that \f$\sum_{i=1}^t z_i V_i\f$ is a
+           * short vector that will enter the basis. Tries to reduce some vectors
+           * by looking for indices \f$i < j\f$ such that \f$|z_j| > 1\f$ and
+           * \f$q=\lfloor z_i/z_j\rfloor\not0\f$, and adding \f$q V_i\f$ to
+           * \f$V_j\f$ when this happens. Returns in \f$k\f$ the last index
+           * \f$j\f$ such that \f$|z_j|=1\f$.
+           */
+          void transformStage3 (std::vector<long> & z, int & k);
 
-        /**
-         * Finds a Choleski decomposition of the basis. Returns in `C0` the
-         * elements of the upper triangular matrix of the Choleski
-         * decomposition that are above the diagonal. Returns in `DC2` the
-         * squared elements of the diagonal.
-         */
-        bool calculCholeski (RedDblVec & DC2, RedDblMat & C0);
+          /**
+           * Finds a Choleski decomposition of the basis. Returns in `C0` the
+           * elements of the upper triangular matrix of the Choleski
+           * decomposition that are above the diagonal. Returns in `DC2` the
+           * squared elements of the diagonal.
+           */
+          bool calculCholeski (RedDblVec & DC2, RedDblMat & C0);
 
-        /**
-         * Tries to find shorter vectors in `reductMinkowski`.
-         */
-        bool tryZ  (int j, int i, int Stage, bool & smaller, const BasIntMat & WTemp);
+          /**
+           * Tries to find shorter vectors in `reductMinkowski`.
+           */
+          bool tryZ  (int j, int i, int Stage, bool & smaller, 
+              const BasIntMat & WTemp);
 
-        /**
-         * Tries to find a shorter vector in `shortestVector`.
-         */
-        bool tryZ0 (int j, bool & smaller);
+          /**
+           * Tries to find a shorter vector in `shortestVector`.
+           */
+          bool tryZ0 (int j, bool & smaller);
 
-        /**
-         * Computes the shortest non-zero vector of this lattice with respect
-         * to norm `norm` using branch-and-bound and the algorithm described in
-         * \cite rLEC97c&thinsp;. The `Norm` member of this object will be
-         * changed to `norm`. If `MaxNodesBB` is exceeded during one of the
-         * branch-and-bounds, the method aborts and returns `false`. Otherwise,
-         * it returns `true`. Uses the pre-reduction algorithms of Dieter and
-         * of Lenstra-Lenstra-Lovasz.
-         * Advice: must perform pre-reduction before using this Branch-and-Bound
-         * method on high dimension basis.
-         */
-        bool shortestVector (NormType norm);
+          /**
+           * Computes the shortest non-zero vector of this lattice with respect
+           * to norm `norm` using branch-and-bound and the algorithm described in
+           * \cite rLEC97c&thinsp;. The `Norm` member of this object will be
+           * changed to `norm`. If `MaxNodesBB` is exceeded during one of the
+           * branch-and-bounds, the method aborts and returns `false`. Otherwise,
+           * it returns `true`. Uses the pre-reduction algorithms of Dieter and
+           * of Lenstra-Lenstra-Lovasz.
+           * Advice: must perform pre-reduction before using this Branch-and-Bound
+           * method on high dimension basis.
+           */
+          bool shortestVector (NormType norm);
 
-        /**
-         * Similar to `ShortestVector` but uses the algorithm of Dieter
-         * \cite rDIE75a, \cite rKNU98a&thinsp;.
-         */
-        bool shortestVectorDieter (NormType norm);
+          /**
+           * Similar to `ShortestVector` but uses the algorithm of Dieter
+           * \cite rDIE75a, \cite rKNU98a&thinsp;.
+           */
+          bool shortestVectorDieter (NormType norm);
 
-        /**
-         * Tries to shorten the vectors of the primal basis using
-         * branch-and-bound, in `reductMinkowski`.
-         */
-        bool redBB (int i, int d, int Stage, bool & smaller);
+          /**
+           * Tries to shorten the vectors of the primal basis using
+           * branch-and-bound, in `reductMinkowski`.
+           */
+          bool redBB (int i, int d, int Stage, bool & smaller);
 
-        /**
-         * Tries to shorten the smallest vector of the primal basis using
-         * branch-and-bound, in `ShortestVector`.
-         */
-        bool redBB0 (NormType norm);
+          /**
+           * Tries to shorten the smallest vector of the primal basis using
+           * branch-and-bound, in `ShortestVector`.
+           */
+          bool redBB0 (NormType norm);
 
-        /**
-         * Performs the reductions of the preceding two methods using
-         * cyclically all values of \f$i\f$ (only for \f$i > d\f$ in the latter
-         * case) and stops after either `MaxPreRed` successful transformations
-         * have been achieved or no further reduction is possible. Always use
-         * the Euclidean norm.
-         */
-        void preRedDieter (int d);
-
-
-        /**
-         * \copydoc preRedDieter(int)
-         * The choice of i is randomized.
-         */
-        void preRedDieterRandomized (int d, int seed);
-
-
-        /**
-         * Finds the shortest non-zero vector using norm `norm`. Returns `true`
-         * upon success. Uses the algorithm of Dieter \cite rDIE75a&thinsp;
-         * given in Knuth \cite rKNU98a&thinsp;.
-         */
-        bool redDieter (NormType norm);
-
-        /**
-         * Performs a LLL (Lenstra-Lenstra-Lovasz) basis reduction up to
-         * dimension `dim` with coefficient `fact`, which must be smaller than
-         * 1. If `fact` is closer to 1, the basis will be (typically) "more
-         * reduced", but that will require more work. The reduction algorithm
-         * is applied until `maxcpt` successful transformations have been done.
-         * Always uses the Euclidean norm.
-         */
-        void redLLL (double fact, long maxcpt, int dim);
-
-        /**
-         * \copydoc redLLL(double, long, int)
-         * This version is implemented in the NTL Library with approximate
-         * number with arbitrary precision. The precision can be given. See
-         * Const.h for further information.
-         */
-        void redLLLNTL(double fact = 0.99999, PrecisionType precision = QUADRUPLE, int dim = 0);
-
-        /**
-         * \copydoc redLLL(double, long, int)
-         * This version is implemented in the NTL Library with exact number
-         * (arbitrary precision RR)
-         */
-        void redLLLNTLExact(double fact);
-
-        /**
-         * Perform the BKZ (Block-Korkine-Zolotarev) basis reduction with the
-         * the coefficient `fact` and a block size `Blocksize`. The precision
-         * can be given. See Const.h for further information.
-         */
-        void redBKZ(double fact = 0.999999, long blocksize = 10, PrecisionType precision = QUADRUPLE, int dim = 0);
+          /**
+           * Performs the reductions of the preceding two methods using
+           * cyclically all values of \f$i\f$ (only for \f$i > d\f$ in the latter
+           * case) and stops after either `MaxPreRed` successful transformations
+           * have been achieved or no further reduction is possible. Always use
+           * the Euclidean norm.
+           */
+          void preRedDieter (int d);
 
 
+          /**
+           * \copydoc preRedDieter(int)
+           * The choice of i is randomized.
+           */
+          void preRedDieterRandomized (int d, int seed);
 
-        /**
-         * Reduces the current basis to a Minkowski reduced basis with respect
-         * to the Euclidean norm, assuming that the first \f$d\f$ vectors are
-         * already reduced and sorted. If `MaxNodesBB` is exceeded during one
-         * of the branch-and-bound step, the method aborts and returns `false`.
-         * Otherwise it returns `true`, the basis is reduced and sorted by
-         * vector lengths (the shortest vector is `V[0]` and the longest is
-         * <tt>V[Dim-1]</tt>).
-         */
-        bool reductMinkowski (int d);
 
-        /**
-         * Performs pairwise reductions. This method tries to reduce each basis
-         * vector with index larger than \f$d\f$ and distinct from \f$i\f$ by
-         * adding to it a multiple of the \f$i\f$-th vector. Always uses the
-         * Euclidean norm.
-         */
-        void pairwiseRedPrimal (int i, int d);
+          /**
+           * Finds the shortest non-zero vector using norm `norm`. Returns `true`
+           * upon success. Uses the algorithm of Dieter \cite rDIE75a&thinsp;
+           * given in Knuth \cite rKNU98a&thinsp;.
+           */
+          bool redDieter (NormType norm);
 
-        /**
-         * Performs pairwise reductions, trying to reduce every other vector of
-         * the *dual* basis by adding multiples of the \f$i\f$-th vector. That
-         * may change the \f$i\f$-th vector in the primal basis. Each such dual
-         * reduction is actually performed only if that does not increase the
-         * length of vector \f$i\f$ in the primal basis. Always uses the
-         * Euclidean norm.
-         */
-        void pairwiseRedDual (int i);
+          /**
+           * Performs a LLL (Lenstra-Lenstra-Lovasz) basis reduction up to
+           * dimension `dim` with coefficient `fact`, which must be smaller than
+           * 1. If `fact` is closer to 1, the basis will be (typically) "more
+           * reduced", but that will require more work. The reduction algorithm
+           * is applied until `maxcpt` successful transformations have been done.
+           * Always uses the Euclidean norm.
+           */
+          void redLLL (double fact, long maxcpt, int dim);
 
-        /**
-         * Returns the length of the shortest basis vector in the lattice.
-         */
-        Dbl getMinLength () {
-          if (m_lat->getNorm() == L2NORM)
-            return sqrt(m_lMin2);
-          else return m_lMin; }
+          /**
+           * \copydoc redLLL(double, long, int)
+           * This version is implemented in the NTL Library with approximate
+           * number with arbitrary precision. The precision can be given. See
+           * Const.h for further information.
+           */
+          void redLLLNTL(double fact = 0.99999, 
+              PrecisionType precision = QUADRUPLE, int dim = 0);
 
-        /**
-         * Returns the length of the longest basis vector in the lattice.
-         * Used in Beyer Test.
-         */
-        Dbl getMaxLength () {
-          if (m_lat->getNorm() == L2NORM)
-            return sqrt(m_lat->getVecNorm(m_lat->getDim() - 1));
-          else return m_lat->getVecNorm(m_lat->getDim() - 1); }
+          /**
+           * \copydoc redLLL(double, long, int)
+           * This version is implemented in the NTL Library with exact number
+           * (arbitrary precision RR)
+           */
+          void redLLLNTLExact(double fact);
 
-        /**
-         * Sets the lower bound on the square length of the shortest vector in
-         * dimension \f$i\f$ to \f$V[i]\f$, for \f$i\f$ going from `dim1` to
-         * `dim2`.
-         */
-        void setBoundL2 (const DblVec & V, int dim1, int dim2);
+          /**
+           * Perform the BKZ (Block-Korkine-Zolotarev) basis reduction with the
+           * the coefficient `fact` and a block size `Blocksize`. The precision
+           * can be given. See Const.h for further information.
+           */
+          void redBKZ(double fact = 0.999999, long blocksize = 10,
+              PrecisionType precision = QUADRUPLE, int dim = 0);
 
-        /**
-         * Debug function that print the primal and dual bases.
-         */
-        void trace (char *mess);
 
-        IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> getIntLatticeBasis ()
-        { return *m_lat; }
 
-      private:
+          /**
+           * Reduces the current basis to a Minkowski reduced basis with respect
+           * to the Euclidean norm, assuming that the first \f$d\f$ vectors are
+           * already reduced and sorted. If `MaxNodesBB` is exceeded during one
+           * of the branch-and-bound step, the method aborts and returns `false`.
+           * Otherwise it returns `true`, the basis is reduced and sorted by
+           * vector lengths (the shortest vector is `V[0]` and the longest is
+           * <tt>V[Dim-1]</tt>).
+           */
+          bool reductMinkowski (int d);
 
-        /**
-         * Lattice on which the reduction will be performed.
-         */
-        IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>* m_lat;
+          /**
+           * Performs pairwise reductions. This method tries to reduce each basis
+           * vector with index larger than \f$d\f$ and distinct from \f$i\f$ by
+           * adding to it a multiple of the \f$i\f$-th vector. Always uses the
+           * Euclidean norm.
+           */
+          void pairwiseRedPrimal (int i, int d);
 
-        /**
-         * Permutes the \f$i^{th}\f$ and the \f$j^{th}\f$ line, and the
-         * \f$i^{th}\f$ and the \f$j^{th}\f$ column of the scalar product’s
-         * matrix.
-         */
-        void permuteGramVD (int i, int j, int n);
+          /**
+           * Performs pairwise reductions, trying to reduce every other vector of
+           * the *dual* basis by adding multiples of the \f$i\f$-th vector. That
+           * may change the \f$i\f$-th vector in the primal basis. Each such dual
+           * reduction is actually performed only if that does not increase the
+           * length of vector \f$i\f$ in the primal basis. Always uses the
+           * Euclidean norm.
+           */
+          void pairwiseRedDual (int i);
 
-        /**
-         * Recalculates the first \f$n\f$ entries of the \f$j^{th}\f$ column of
-         * the Choleski’s matrix of order 2.
-         */
-        void calculCholeski2LLL (int n, int j);
+          /**
+           * Returns the length of the shortest basis vector in the lattice.
+           */
+          Dbl getMinLength () {
+            if (m_lat->getNorm() == L2NORM)
+              return sqrt(m_lMin2);
+            else return m_lMin; }
 
-        /**
-         * Recalculates the entry (\f$i\f$, \f$j\f$) of the Choleski’s matrix
-         * of order 2.
-         */
-        void calculCholeski2Ele (int i, int j);
-        void miseAJourGramVD (int j);
-        void calculGramVD ();
+          /**
+           * Returns the length of the longest basis vector in the lattice.
+           * Used in Beyer Test.
+           */
+          Dbl getMaxLength () {
+            if (m_lat->getNorm() == L2NORM)
+              return sqrt(m_lat->getVecNorm(m_lat->getDim() - 1));
+            else return m_lat->getVecNorm(m_lat->getDim() - 1); }
 
-        /**
-         * Reduce the Choleski matrix with adding a multiple of the i-th vector
-         * to the j-th vector. It updates the Gram Schmidt matrix
-         */
-        void reductionFaible (int i, int j);
+          /**
+           * Sets the lower bound on the square length of the shortest vector in
+           * dimension \f$i\f$ to \f$V[i]\f$, for \f$i\f$ going from `dim1` to
+           * `dim2`.
+           */
+          void setBoundL2 (const DblVec & V, int dim1, int dim2);
 
-        /**
-         * Lower bound on the length squared of the shortest vector in each
-         * dimension. If any vector of the lattice is shorter than this bound,
-         * we stop the reduction immediately and reject this lattice since its
-         * shortest vector will be even smaller. Used only in Seek
-         */
-        DblVec m_BoundL2;
+          /**
+           * Debug function that print the primal and dual bases.
+           */
+          void trace (char *mess);
 
-        /**
-         * \name Work variables.
-         * @{
-         */
-        BasInt m_bs;
-        BasIntVec m_bv;            // Saves shorter vector in primal basis
-        BasIntVec m_bw;            // Saves shorter vector in dual basis
+          IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
+            RedDbl>* getIntLatticeBasis ()
+            {
+              return m_lat;
+            }
 
-        Dbl m_lMin;          // The norm of the shorter vector in the primal basis
-        // according to the norm considered
-        Dbl m_lMin2;         // The norm of the shorter vector in the primal basis
-        // according to the norm L2
-        Dbl m_ns;
-        DblVec m_nv;
+        private:
 
-        //RedDbl m_rs;
-        RedDblVec m_zLR, m_n2, m_dc2;
-        RedDblMat m_c0, m_c2, m_cho2, m_gramVD;
-        int *m_IC;             // Indices in Cholesky
+          /**
+           * Lattice on which the reduction will be performed.
+           */
+          IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
+            RedDbl>* m_lat;
 
-        std::vector<long> m_zLI;
-        std::vector<long> m_zShort;
-        long m_countNodes;     // Counts number of nodes in the branch-and-bound tree
-        long m_countDieter;    // Counts number of attempts since last successful
-        // Dieter transformation
-        long m_cpt;            // Counts number of successes in pre-reduction
-        // transformations
-        bool m_foundZero;      // = true -> the zero vector has been found
-        // long m_BoundL2Count;   // Number of cases for which the reduction stops
-        // because any vector is shorter than L2 Bound.
-        /**
-         * @}
-         */
-    }; // End class Reducer
+          /** 
+           * Contains specialized implementations of member methods depending on
+           * the types given to the `Reducer` template. This is private for 
+           * because it is possible to call specialized method at an higher 
+           * level.
+           * */
+          struct specReducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
+            RedDbl, RedDblVec, RedDblMat> spec;
+
+          /**
+           * Permutes the \f$i^{th}\f$ and the \f$j^{th}\f$ line, and the
+           * \f$i^{th}\f$ and the \f$j^{th}\f$ column of the scalar product’s
+           * matrix.
+           */
+          void permuteGramVD (int i, int j, int n);
+
+          /**
+           * Recalculates the first \f$n\f$ entries of the \f$j^{th}\f$ column of
+           * the Choleski’s matrix of order 2.
+           */
+          void calculCholeski2LLL (int n, int j);
+
+          /**
+           * Recalculates the entry (\f$i\f$, \f$j\f$) of the Choleski’s matrix
+           * of order 2.
+           */
+          void calculCholeski2Ele (int i, int j);
+          void miseAJourGramVD (int j);
+          void calculGramVD ();
+
+          /**
+           * Reduce the Choleski matrix with adding a multiple of the i-th vector
+           * to the j-th vector. It updates the Gram Schmidt matrix
+           */
+          void reductionFaible (int i, int j);
+
+          /**
+           * Lower bound on the length squared of the shortest vector in each
+           * dimension. If any vector of the lattice is shorter than this bound,
+           * we stop the reduction immediately and reject this lattice since its
+           * shortest vector will be even smaller. Used only in Seek
+           */
+          DblVec m_BoundL2;
+
+          /**
+           * \name Work variables.
+           * @{
+           */
+          BasInt m_bs;
+          BasIntVec m_bv;            // Saves shorter vector in primal basis
+          BasIntVec m_bw;            // Saves shorter vector in dual basis
+
+          Dbl m_lMin;          // The norm of the shorter vector in the primal basis
+          // according to the norm considered
+          Dbl m_lMin2;         // The norm of the shorter vector in the primal basis
+          // according to the norm L2
+          Dbl m_ns;
+          DblVec m_nv;
+
+          //RedDbl m_rs;
+          RedDblVec m_zLR, m_n2, m_dc2;
+          RedDblMat m_c0, m_c2, m_cho2, m_gramVD;
+          int *m_IC;             // Indices in Cholesky
+
+          std::vector<long> m_zLI;
+          std::vector<long> m_zShort;
+          long m_countNodes;     // Counts number of nodes in the branch-and-bound tree
+          long m_countDieter;    // Counts number of attempts since last successful
+          // Dieter transformation
+          long m_cpt;            // Counts number of successes in pre-reduction
+          // transformations
+          bool m_foundZero;      // = true -> the zero vector has been found
+          // long m_BoundL2Count;   // Number of cases for which the reduction stops
+          // because any vector is shorter than L2 Bound.
+          /**
+           * @}
+           */
+
+
+
+      }; // End class Reducer
+
+  //============================================================================
+
+  // Structure specialization
+
+  // Specialization for the case LLXX
+  template<typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec,
+    typename RedDblMat>
+      struct specReducer<long, long, NTL::vector<long>, NTL::matrix<long>, Dbl,
+    DblVec, RedDbl, RedDblVec, RedDblMat> {
+
+      void redLLLNTLExact(Reducer<long, long, NTL::vector<long>,
+          NTL::matrix<long>, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>& red,
+          double fact)
+      {
+        cout << "**** WARNING redLLLNTLExact cannot be used with Double Precision (LLDD)\n";
+        cout << "**** in NTL nor without NTL. LLL reduction is used with our algorithm \n";
+        cout << "which can be slower.";
+        red.redLLL(fact, 1000000, red.getIntLatticeBasis()->getDim ());
+      }
+
+      void redBKZ(Reducer<long, long, NTL::vector<long>, NTL::matrix<long>, 
+          Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>& red, double fact,
+          long blocksize, PrecisionType precision, int dim)
+      {
+        IntLatticeBasis<long, long, NTL::vector<long>, NTL::matrix<long>,
+        Dbl, DblVec, RedDbl> *lattmp = 0;
+        if(dim >0){
+          lattmp = new IntLatticeBasis<long, long, NTL::vector<long>,
+                 NTL::matrix<long>, Dbl, DblVec, RedDbl>(
+                     dim, red.getIntLatticeBasis()->getNorm());
+          lattmp->copyBasis(*red.getIntLatticeBasis(), dim);
+        }
+        else
+          lattmp = red.getIntLatticeBasis();
+        cout << "\n**** WARNING redBKZ cannot be use with long type for integers\n";
+        cout << "**** (LLDD) and requires ZZ type. Instead, LLL reduction is\n";
+        cout << "**** performed with our algorithm which can be much slower.\n";
+        cout << endl;
+        red.redLLL(fact, 1000000, red.getIntLatticeBasis()->getDim ());
+        if (dim>0) delete lattmp; 
+      }
+
+      void redLLLNTL(Reducer<long, long, NTL::vector<long>, NTL::matrix<long>,
+          Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>& red, double fact,
+          PrecisionType precision, int dim)
+      {
+        IntLatticeBasis<long, long, NTL::vector<long>, NTL::matrix<long>, Dbl, 
+        DblVec, RedDbl> *lattmp = 0;
+        if(dim >0){
+          lattmp = new IntLatticeBasis<long, long, NTL::vector<long>,
+                 NTL::matrix<long>, Dbl, DblVec, RedDbl>(
+                     dim, red.getIntLatticeBasis()->getNorm());
+          lattmp->copyBasis(*red.getIntLatticeBasis(), dim);
+        }
+        else
+          lattmp = red.getIntLatticeBasis();
+        cout << "\n**** WARNING redLLLNTL cannot be use with long type for integers\n";
+        cout << "**** (LLDD) and requires ZZ type. Instead, LLL reduction is performed\n";
+        cout << "**** with our algorithm which can be much slower.\n";
+        cout << endl;
+        red.redLLL(fact, 1000000, red.getIntLatticeBasis()->getDim ());
+        if (dim>0) delete lattmp;
+      }
+    };
+
+  // Specialization for the case ZZXX
+  template<typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec,
+    typename RedDblMat>
+      struct specReducer<NTL::ZZ, NTL::ZZ, NTL::vector<NTL::ZZ>, 
+    NTL::matrix<NTL::ZZ>, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat> {
+
+      void redLLLNTLExact(Reducer<NTL::ZZ, NTL::ZZ, NTL::vector<NTL::ZZ>, 
+          NTL::matrix<NTL::ZZ>, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>
+          & red, double fact)
+      {
+        if (red.getIntLatticeBasis()->withDual()) {
+          mat_ZZ U;
+          U.SetDims(red.getIntLatticeBasis()->getBasis().NumRows(), 
+              red.getIntLatticeBasis()->getBasis().NumCols());
+          ZZ det(0);
+          LLL(det, red.getIntLatticeBasis()->getBasis(), U, 99999, 100000);
+          red.getIntLatticeBasis()->getDualBasis() = 
+            transpose(inv(U)) * red.getIntLatticeBasis()->getDualBasis();
+        } else{
+          ZZ det(0);
+          LLL(det, red.getIntLatticeBasis()->getBasis(), 99999, 100000);
+        }
+      }
+
+
+      void redBKZ(Reducer<NTL::ZZ, NTL::ZZ, NTL::vector<NTL::ZZ>,
+          NTL::matrix<NTL::ZZ>, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>& red,
+          double fact, long blocksize, PrecisionType precision, int dim)
+      {
+        IntLatticeBasis<NTL::ZZ, NTL::ZZ, NTL::vector<NTL::ZZ>,
+        NTL::matrix<NTL::ZZ>, Dbl, DblVec, RedDbl> *lattmp = 0;
+        if(dim >0){
+          lattmp = new IntLatticeBasis<NTL::ZZ, NTL::ZZ, NTL::vector<NTL::ZZ>,
+                 NTL::matrix<NTL::ZZ>, Dbl, DblVec, RedDbl>(
+                     dim, red.getIntLatticeBasis()->getNorm());
+          lattmp->copyBasis(*red.getIntLatticeBasis(), dim);
+        }
+        else
+          lattmp = red.getIntLatticeBasis();
+
+        bool withDual = red.getIntLatticeBasis()->withDual();
+        mat_ZZ U;
+        U.SetDims(lattmp->getBasis().size1(), lattmp->getBasis().size2());
+
+        switch(precision){
+          case DOUBLE:
+            NTL::BKZ_FP(lattmp->getBasis(), U, fact, blocksize);
+            break;
+          case QUADRUPLE:
+            NTL::BKZ_QP(lattmp->getBasis(), U, fact, blocksize);
+            break;
+          case EXPONENT:
+            NTL::BKZ_XD(lattmp->getBasis(), U, fact, blocksize);
+            break;
+          case ARBITRARY:
+            NTL::BKZ_RR(lattmp->getBasis(), U, fact, blocksize);
+            break;
+          default:
+            MyExit(1, "BKZ PrecisionType:   NO SUCH CASE");
+        }
+
+        if (withDual)
+          lattmp->getDualBasis() = transpose(inv(U)) * lattmp->getDualBasis();
+
+        red.getIntLatticeBasis()->copyBasis(*lattmp, dim);
+
+        if (dim>0) delete lattmp;
+      }
+
+      void redLLLNTL(Reducer<NTL::ZZ, NTL::ZZ, NTL::vector<NTL::ZZ>,
+          NTL::matrix<NTL::ZZ>, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>& red,
+          double fact, PrecisionType precision, int dim)
+      {
+        IntLatticeBasis<NTL::ZZ, NTL::ZZ, NTL::vector<NTL::ZZ>,
+        NTL::matrix<NTL::ZZ>, Dbl, DblVec, RedDbl> *lattmp = 0;
+        if(dim >0){
+          lattmp = new IntLatticeBasis<NTL::ZZ, NTL::ZZ, NTL::vector<NTL::ZZ>,
+                 NTL::matrix<NTL::ZZ>, Dbl, DblVec, RedDbl>(
+                     dim, red.getIntLatticeBasis()->getNorm());
+          lattmp->copyBasis(*red.getIntLatticeBasis(), dim);
+        }
+        else
+          lattmp = red.getIntLatticeBasis();
+        if(precision == EXACT)
+          red.redLLLNTLExact(fact);
+        else{
+          bool withDual = red.getIntLatticeBasis()->withDual();
+          mat_ZZ U;
+          U.SetDims(lattmp->getBasis().NumRows(), lattmp->getBasis().NumCols());
+
+          switch(precision){
+            case DOUBLE:
+              LLL_FP(lattmp->getBasis(), U, fact, 0, 0);
+              break;
+            case QUADRUPLE:
+              LLL_QP(lattmp->getBasis(), U, fact, 0, 0);
+              break;
+            case EXPONENT:
+              LLL_XD(lattmp->getBasis(), U, fact, 0, 0);
+              break;
+            case ARBITRARY:
+              LLL_RR(lattmp->getBasis(), U, fact, 0, 0);
+              break;
+            case EXACT:
+              break;
+            default:
+              MyExit(1, "LLL PrecisionType:   NO SUCH CASE");
+          }
+
+          if (withDual)
+            lattmp->getDualBasis() = transpose(inv(U)) * lattmp->getDualBasis();
+
+          red.getIntLatticeBasis()->copyBasis(*lattmp, dim);
+
+        }
+        if (dim>0) delete lattmp;
+
+      }
+    };
+
 
   //===========================================================================
 
   // Initialization of non-const static members
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    bool Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::PreRedDieterSV = false;
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    bool Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::PreRedLLLSV = false;
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    bool Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::PreRedLLLRM = false;
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    bool Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::PreRedBKZ = true;
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    long Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::maxNodesBB = 10000000;
-
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      bool Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::PreRedDieterSV = false;
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      bool Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::PreRedLLLSV = false;
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      bool Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::PreRedLLLRM = false;
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      bool Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
+    RedDbl, RedDblVec, RedDblMat>::PreRedBKZ = true;
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      long Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::maxNodesBB = 10000000;
 
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::Reducer (IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> & lat)
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec,
+    RedDblMat>::Reducer (IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl,
+        DblVec, RedDbl> & lat)
     {
       // Squared length of vectors must not overflow max(double)
       m_lat = &lat;
@@ -451,8 +706,12 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::Reducer (const Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat> & red)
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::Reducer (const Reducer<Int, BasInt, BasIntVec,
+        BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat> & red)
     {
       copy (red);
     }
@@ -460,8 +719,13 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat> & Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::operator= (const Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat> & red)
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec,
+    RedDblMat> & Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::operator= (const Reducer<Int, BasInt, BasIntVec,
+        BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat> & red)
     {
       if (this != &red)
         copy (red);
@@ -471,8 +735,12 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::copy (const Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat> & red)
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::copy (const Reducer<Int, BasInt, BasIntVec,
+        BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat> & red)
     {
       m_lat = red.m_lat;
       m_c0 = red.m_c0;
@@ -498,8 +766,11 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::~Reducer ()
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec,
+    RedDblMat>::~Reducer ()
     {
       m_c0.clear();
       m_c2.clear();
@@ -520,8 +791,11 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::setBoundL2 (const DblVec & V, int dim1, int dim2)
+  template<typename Int, typename BasInt, typename BasIntVec, 
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::setBoundL2 (const DblVec & V, int dim1, int dim2)
     {
       m_BoundL2.resize(dim2);
       for (int i = dim1; i < dim2; i++)
@@ -531,12 +805,15 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::permuteGramVD (int i, int j, int n)
-    /*
-     * Permute la i-ieme et la j-ieme ligne, et la i-ieme et j-ieme colonne
-     * de la matrice des produits scalaires.   Pour redLLL.
-     */
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, 
+    RedDblVec, RedDblMat>::permuteGramVD (int i, int j, int n)
+      /*
+       * Permute la i-ieme et la j-ieme ligne, et la i-ieme et j-ieme colonne
+       * de la matrice des produits scalaires.   Pour redLLL.
+       */
     {
       int k;
       for (k = 0; k < n; k++)
@@ -552,12 +829,15 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::calculCholeski2LLL (int n, int j)
-    /*
-     * Recalcule les n premieres entrees de la colonne j de la matrice de
-     * Choleski d'ordre 2.   Pour redLLL.
-     */
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::calculCholeski2LLL (int n, int j)
+      /*
+       * Recalcule les n premieres entrees de la colonne j de la matrice de
+       * Choleski d'ordre 2.   Pour redLLL.
+       */
     {
       m_cho2(0,j) = m_gramVD(0,j);
       for (int i = 1; i <= n; i++) {
@@ -571,9 +851,12 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    inline void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::calculCholeski2Ele (int i, int j)
-    // Recalcule l'entree (i,j) de la matrice de Choleski d'ordre 2
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      inline void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::calculCholeski2Ele (int i, int j)
+      // Recalcule l'entree (i,j) de la matrice de Choleski d'ordre 2
     {
       m_cho2(i,j) = m_gramVD(i,j);
       for (int k = 0; k < i; k++) {
@@ -593,14 +876,17 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    inline void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::calculGramVD ()
-    /*
-       Retourne dans m_gramVD la matrice des produits scalaires m_lat->V[i]*m_lat->V[j].
-       Rem.: m_lat->V.vecNorm ne contient que les m_lat->V[i]*m_lat->V[i].
-       Reviens à faire m_lat->V * transpose(m_lat->V).
-       Utilise pour redLLL.
-       */
+  template<typename Int, typename BasInt, typename BasIntVec, 
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, 
+    typename RedDblVec, typename RedDblMat>
+      inline void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::calculGramVD ()
+      /*
+       * Retourne dans m_gramVD la matrice des produits scalaires m_lat->V[i]*m_lat->V[j].
+       * Rem.: m_lat->V.vecNorm ne contient que les m_lat->V[i]*m_lat->V[i].
+       * Reviens à faire m_lat->V * transpose(m_lat->V).
+       * Utilise pour redLLL.
+       * */
     {
       const int dim = m_lat->getDim ();
 
@@ -617,12 +903,15 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    inline void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::miseAJourGramVD (int j)
-    /*
-     * Recalcule la j-ieme ligne et la j-ieme colonne de la matrice des
-     * produits scalaires.  Pour redLLL.
-     */
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      inline void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::miseAJourGramVD (int j)
+      /*
+       * Recalcule la j-ieme ligne et la j-ieme colonne de la matrice des
+       * produits scalaires.  Pour redLLL.
+       */
     {
       const int dim = m_lat->getDim ();
       for (int i = 0; i < dim; i++) {
@@ -636,14 +925,17 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    bool Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::calculCholeski (RedDblVec & DC2, RedDblMat & C0)
-    /*
-     * Returns in C0 the elements of the upper triangular matrix of the
-     * Choleski decomposition that are above the diagonal. Returns in DC2 the
-     * squared elements of the diagonal. These elements are rescaled by EchVV
-     * when SISquares= true.
-     */
+  template<typename Int, typename BasInt, typename BasIntVec, 
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      bool Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::calculCholeski (RedDblVec & DC2, RedDblMat & C0)
+      /*
+       * Returns in C0 the elements of the upper triangular matrix of the
+       * Choleski decomposition that are above the diagonal. Returns in DC2 the
+       * squared elements of the diagonal. These elements are rescaled by EchVV
+       * when SISquares= true.
+       */
     {
       const int dim = m_lat->getDim ();
 
@@ -725,8 +1017,11 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::trace (char *mess)
+  template<typename Int, typename BasInt, typename BasIntVec, 
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::trace (char *mess)
     {
       cout << endl << "================================= " << mess << endl;
       //cout << "dim = " << m_lat->getDim () << endl;
@@ -741,8 +1036,11 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::pairwiseRedPrimal (int i, int d)
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::pairwiseRedPrimal (int i, int d)
     {
       const int dim = m_lat->getDim ();
       ++m_countDieter;
@@ -810,8 +1108,11 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::pairwiseRedDual (int i)
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::pairwiseRedDual (int i)
     {
       int j;
       const int dim = m_lat->getDim ();
@@ -865,8 +1166,11 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::preRedDieter(int d)
+  template<typename Int, typename BasInt, typename BasIntVec, 
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::preRedDieter(int d)
     {
       long BoundCount;
       const int dim = m_lat->getDim ();
@@ -891,8 +1195,11 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::preRedDieterRandomized (int d, int seed)
+  template<typename Int, typename BasInt, typename BasIntVec, 
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::preRedDieterRandomized (int d, int seed)
     {
       long BoundCount;
       const int dim = m_lat->getDim ();
@@ -925,14 +1232,17 @@ namespace LatticeTester {
    * Reduce the Choleski matrix with adding a multiple of the i-th vector
    * to the j-th vector. It updates the Gram Schmidt matrix
    */
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::reductionFaible (int i, int j)
-    /*
-     * Reduit la matrice de Choleski (d'ordre 2) en ajoutant un multiple du
-     * vecteur i au vecteur j, si possible.  Modifie le vecteur dual W_i en
-     * consequence et remet a jour la matrice des produits scalaires.
-     * Utilise par redLLL.
-     */
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, 
+    typename RedDblVec, typename RedDblMat>
+      void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::reductionFaible (int i, int j)
+      /*
+       * Reduit la matrice de Choleski (d'ordre 2) en ajoutant un multiple du
+       * vecteur i au vecteur j, si possible.  Modifie le vecteur dual W_i en
+       * consequence et remet a jour la matrice des produits scalaires.
+       * Utilise par redLLL.
+       */
     {
       RedDbl cte;
       long cteLI;
@@ -987,164 +1297,191 @@ namespace LatticeTester {
 
 
   //=========================================================================
-
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::redLLLNTLExact(double fact){
-
-#if NTL_TYPES_CODE > 1
-
-      bool withDual = m_lat->withDual();
-      if (withDual) {
-        mat_ZZ U;
-        U.SetDims(m_lat->getBasis().NumRows(), m_lat->getBasis().NumCols());
-        ZZ det(0);
-        LLL(det, m_lat->getBasis(), U, 99999, 100000);
-        m_lat->getDualBasis() = transpose(inv(U)) * m_lat->getDualBasis();
-      } else{
-        ZZ det(0);
-        LLL(det, m_lat->getBasis(), 99999, 100000);
-      }
-
-#else
-
-      cout << "**** WARNING redLLLNTLExact cannot be used with Double Precision (LLDD)\n";
-      cout << "**** in NTL nor without NTL. LLL reduction is used with our algorithm \n";
-      cout << "which can be slower.";
-      redLLL(fact, 1000000, m_lat->getDim ());
-
-#endif
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, 
+    typename RedDblVec, typename RedDblMat>
+      void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::redLLLNTLExact(double fact) {
+      spec.redLLLNTLExact(*this, fact);
     }
-
-
+  /*
+   *    template<typename Int, typename BasInt, typename BasIntVec,
+   *     typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+   *     typename RedDblVec, typename RedDblMat>
+   *    void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+   *    RedDblVec, RedDblMat>::redLLLNTLExact(double fact){
+   *#if NTL_TYPES_CODE > 1
+   *
+   *if (m_lat->withDual()) {
+   *mat_ZZ U;
+   *U.SetDims(m_lat->getBasis().NumRows(), m_lat->getBasis().NumCols());
+   *ZZ det(0);
+   *LLL(det, m_lat->getBasis(), U, 99999, 100000);
+   *m_lat->getDualBasis() = transpose(inv(U)) * m_lat->getDualBasis();
+   *} else{
+   *ZZ det(0);
+   *LLL(det, m_lat->getBasis(), 99999, 100000);
+   *}
+   *
+   *#else
+   *
+   *cout << "**** WARNING redLLLNTLExact cannot be used with Double Precision (LLDD)\n";
+   *cout << "**** in NTL nor without NTL. LLL reduction is used with our algorithm \n";
+   *cout << "which can be slower.";
+   *redLLL(fact, 1000000, m_lat->getDim ());
+   *
+   *#endif
+   *}
+   * */
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::redBKZ(double fact, long blocksize, PrecisionType precision, int dim) {
-
-      IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> *lattmp = 0;
-      if(dim >0){
-        lattmp = new IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>(dim, m_lat->getNorm());
-        lattmp->copyBasis(*m_lat, dim);
-      }
-      else
-        lattmp = m_lat;
-
-#if NTL_TYPES_CODE > 1
-
-      bool withDual = m_lat->withDual();
-      mat_ZZ U;
-      U.SetDims(lattmp->getBasis().size1(), lattmp->getBasis().size2());
-
-      switch(precision){
-        case DOUBLE:
-          NTL::BKZ_FP(lattmp->getBasis(), U, fact, blocksize);
-          break;
-        case QUADRUPLE:
-          NTL::BKZ_QP(lattmp->getBasis(), U, fact, blocksize);
-          break;
-        case EXPONENT:
-          NTL::BKZ_XD(lattmp->getBasis(), U, fact, blocksize);
-          break;
-        case ARBITRARY:
-          NTL::BKZ_RR(lattmp->getBasis(), U, fact, blocksize);
-          break;
-        default:
-          MyExit(1, "BKZ PrecisionType:   NO SUCH CASE");
-      }
-
-      if (withDual)
-        lattmp->getDualBasis() = transpose(inv(U)) * lattmp->getDualBasis();
-
-      m_lat->copyBasis(*lattmp, dim);
-
-#else
-
-      cout << "\n**** WARNING redBKZ cannot be use with long type for integers\n";
-      cout << "**** (LLDD) and requires ZZ type. Instead, LLL reduction is\n";
-      cout << "**** performed with our algorithm which can be much slower.\n";
-      cout << endl;
-      redLLL(fact, 1000000, m_lat->getDim ());
-
-#endif
-
-      if (dim>0)
-        delete lattmp;
-
+  template<typename Int, typename BasInt, typename BasIntVec, 
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::redBKZ(
+        double fact, long blocksize, PrecisionType precision, int dim)
+    {
+      spec.redBKZ(*this, fact, blocksize, precision, dim);
     }
-
+  // This function is impemented in Reducer.cc because it needs to be overloaded
+  /*
+   *    template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
+   *    void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::redBKZ(double fact, long blocksize, PrecisionType precision, int dim) {
+   *
+   *    IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> *lattmp = 0;
+   *    if(dim >0){
+   *    lattmp = new IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>(dim, m_lat->getNorm());
+   *    lattmp->copyBasis(*m_lat, dim);
+   *    }
+   *    else
+   *    lattmp = m_lat;
+   *
+   *#if NTL_TYPES_CODE > 1
+   *
+   *bool withDual = m_lat->withDual();
+   *mat_ZZ U;
+   *U.SetDims(lattmp->getBasis().size1(), lattmp->getBasis().size2());
+   *
+   *switch(precision){
+   *case DOUBLE:
+   *NTL::BKZ_FP(lattmp->getBasis(), U, fact, blocksize);
+   *break;
+   *case QUADRUPLE:
+   *NTL::BKZ_QP(lattmp->getBasis(), U, fact, blocksize);
+   *break;
+   *case EXPONENT:
+   *NTL::BKZ_XD(lattmp->getBasis(), U, fact, blocksize);
+   *break;
+   *case ARBITRARY:
+   *NTL::BKZ_RR(lattmp->getBasis(), U, fact, blocksize);
+   *break;
+   *default:
+   *MyExit(1, "BKZ PrecisionType:   NO SUCH CASE");
+   *}
+   *
+   *if (withDual)
+   *lattmp->getDualBasis() = transpose(inv(U)) * lattmp->getDualBasis();
+   *
+   *m_lat->copyBasis(*lattmp, dim);
+   *
+   *#else
+   *
+   *cout << "\n**** WARNING redBKZ cannot be use with long type for integers\n";
+   *cout << "**** (LLDD) and requires ZZ type. Instead, LLL reduction is\n";
+   *cout << "**** performed with our algorithm which can be much slower.\n";
+   *cout << endl;
+   *redLLL(fact, 1000000, m_lat->getDim ());
+   *
+   *#endif
+   *
+   *if (dim>0) delete lattmp;
+   *
+   *}
+   * */
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::redLLLNTL(double fact, PrecisionType precision, int dim) {
-
-      IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> *lattmp = 0;
-      if(dim >0){
-        lattmp = new IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>(dim, m_lat->getNorm());
-        lattmp->copyBasis(*m_lat, dim);
-      }
-      else
-        lattmp = m_lat;
-
-#if NTL_TYPES_CODE > 1
-
-      if(precision == EXACT)
-        redLLLNTLExact(fact);
-      else{
-        bool withDual = m_lat->withDual();
-        mat_ZZ U;
-        U.SetDims(lattmp->getBasis().NumRows(), lattmp->getBasis().NumCols());
-
-        switch(precision){
-          case DOUBLE:
-            LLL_FP(lattmp->getBasis(), U, fact, 0, 0);
-            break;
-          case QUADRUPLE:
-            LLL_QP(lattmp->getBasis(), U, fact, 0, 0);
-            break;
-          case EXPONENT:
-            LLL_XD(lattmp->getBasis(), U, fact, 0, 0);
-            break;
-          case ARBITRARY:
-            LLL_RR(lattmp->getBasis(), U, fact, 0, 0);
-            break;
-          case EXACT:
-            break;
-          default:
-            MyExit(1, "LLL PrecisionType:   NO SUCH CASE");
-        }
-
-        if (withDual)
-          lattmp->getDualBasis() = transpose(inv(U)) * lattmp->getDualBasis();
-
-        m_lat->copyBasis(*lattmp, dim);
-
-      }
-
-#else
-
-      cout << "\n**** WARNING redLLLNTL cannot be use with long type for integers\n";
-      cout << "**** (LLDD) and requires ZZ type. Instead, LLL reduction is performed\n";
-      cout << "**** with our algorithm which can be much slower.\n";
-      cout << endl;
-      redLLL(fact, 1000000, m_lat->getDim ());
-
-#endif
-
-      if (dim>0)
-        delete lattmp;
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::redLLLNTL(double fact, PrecisionType precision, int dim) {
+      spec.redLLLNTL(*this, fact, precision, dim);
     }
-
+  // This function is impemented in Reducer.cc because it needs to be overloaded
+  /*
+   * template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
+   * void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::redLLLNTL(double fact, PrecisionType precision, int dim) {
+   *   IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> *lattmp = 0;
+   *     if(dim >0){
+   *       lattmp = new IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>(dim, m_lat->getNorm());
+   *       lattmp->copyBasis(*m_lat, dim);
+   *     }
+   *     else
+   *       lattmp = m_lat;
+   *
+   *#if NTL_TYPES_CODE > 1
+   *
+   *     if(precision == EXACT)
+   *       redLLLNTLExact(fact);
+   *     else{
+   *       bool withDual = m_lat->withDual();
+   *       mat_ZZ U;
+   *       U.SetDims(lattmp->getBasis().NumRows(), lattmp->getBasis().NumCols());
+   *
+   *       switch(precision){
+   *         case DOUBLE:
+   *           LLL_FP(lattmp->getBasis(), U, fact, 0, 0);
+   *           break;
+   *         case QUADRUPLE:
+   *           LLL_QP(lattmp->getBasis(), U, fact, 0, 0);
+   *           break;
+   *         case EXPONENT:
+   *           LLL_XD(lattmp->getBasis(), U, fact, 0, 0);
+   *           break;
+   *         case ARBITRARY:
+   *           LLL_RR(lattmp->getBasis(), U, fact, 0, 0);
+   *           break;
+   *         case EXACT:
+   *           break;
+   *         default:
+   *           MyExit(1, "LLL PrecisionType:   NO SUCH CASE");
+   *       }
+   *
+   *       if (withDual)
+   *         lattmp->getDualBasis() = transpose(inv(U)) * lattmp->getDualBasis();
+   *
+   *       m_lat->copyBasis(*lattmp, dim);
+   *
+   *     }
+   *
+   *#else
+   *
+   *     cout << "\n**** WARNING redLLLNTL cannot be use with long type for integers\n";
+   *     cout << "**** (LLDD) and requires ZZ type. Instead, LLL reduction is performed\n";
+   *     cout << "**** with our algorithm which can be much slower.\n";
+   *     cout << endl;
+   *     redLLL(fact, 1000000, m_lat->getDim ());
+   *
+   *#endif
+   *
+   *     if (dim>0) delete lattmp;
+   *   }
+   * */
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::redLLL (double fact, long maxcpt, int Max)
-    /*
-     * Effectue la pre-reduction de B au sens de Lenstra-Lenstra-Lovasz. N'utilise
-     * pas les vecteurs m_lat->getBasis().vecNorm, Wm_lat->getDualBasis().
-     */
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::redLLL (double fact, long maxcpt, int Max)
+      /*
+       * Effectue la pre-reduction de B au sens de Lenstra-Lenstra-Lovasz. N'utilise
+       * pas les vecteurs m_lat->getBasis().vecNorm, Wm_lat->getDualBasis().
+       */
     {
       bool withDual = m_lat->withDual();
       const int REDBAS_e = 40;
@@ -1242,8 +1579,11 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::transformStage3 (std::vector<long> & z, int & k)
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      void Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, 
+    RedDblVec, RedDblMat>::transformStage3 (std::vector<long> & z, int & k)
     {
       int j, i;
       long q;
@@ -1292,9 +1632,13 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    bool Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::tryZ (int j, int i, int Stage, bool & smaller, const BasIntMat & WTemp)
-    // Si m_countNodes > MaxNodes retourne false, sinon retourne true.
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      bool Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::tryZ (int j, int i, int Stage, bool & smaller,
+        const BasIntMat & WTemp)
+      // Si m_countNodes > MaxNodes retourne false, sinon retourne true.
     {
       long max0, min0;
       RedDbl x, dc;
@@ -1472,17 +1816,20 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    bool Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::redBB (int i, int d, int Stage, bool & smaller)
-    /*
-     * Tries to shorten m_lat->getBasis()[i] using branch-and-bound.
-     * Used in Minkowski Reduction.
-     * Stage is 2 or 3.
-     * z[i] = 1 if Stage = 2, z[i] >= 2 if Stage = 3.
-     * Stops and returns false if not finished after examining MaxNodes
-     * nodes in the branch-and-bound tree.  When succeeds, returns true.
-     * Assumes that the norm is Euclidean.
-     */
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      bool Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, 
+    RedDblVec, RedDblMat>::redBB (int i, int d, int Stage, bool & smaller)
+      /*
+       * Tries to shorten m_lat->getBasis()[i] using branch-and-bound.
+       * Used in Minkowski Reduction.
+       * Stage is 2 or 3.
+       * z[i] = 1 if Stage = 2, z[i] >= 2 if Stage = 3.
+       * Stops and returns false if not finished after examining MaxNodes
+       * nodes in the branch-and-bound tree.  When succeeds, returns true.
+       * Assumes that the norm is Euclidean.
+       */
     {
       bool withDual = m_lat->withDual();
       const int dim = m_lat->getDim ();
@@ -1605,16 +1952,19 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    bool Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::tryZ0 (int j, bool & smaller)
-    /*
-     * Procedure recursive implantant le BB pour shortestVector (redBB0).
-     * Si m_countNodes > MaxNodes, retourne false.
-     * Sinon, retourne true: on a trouve le plus court vecteur.
-     * Le carre de la longueur du plus court vecteur a date est dans m_lMin2.
-     * Si j=1 et on trouve un plus court vecteur, on retrouve les zj
-     * correspondants dans m_zShort.
-     */
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      bool Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::tryZ0 (int j, bool & smaller)
+      /*
+       * Procedure recursive implantant le BB pour shortestVector (redBB0).
+       * Si m_countNodes > MaxNodes, retourne false.
+       * Sinon, retourne true: on a trouve le plus court vecteur.
+       * Le carre de la longueur du plus court vecteur a date est dans m_lMin2.
+       * Si j=1 et on trouve un plus court vecteur, on retrouve les zj
+       * correspondants dans m_zShort.
+       */
     {
       /* Note: Pour une implantation non recursive, ces variables devraient
          etre des tableaux indices par j. */
@@ -1761,14 +2111,17 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    bool Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::redBB0 (NormType norm)
-    /*
-     * Finds shortest non-zero vector, using branch-and-bound. Stops and returns
-     * false if not finished after examining MaxNodes nodes in the
-     * branch-and-bound tree.  When succeeds, returns true, and the shortest
-     * vector square length will be in m_lMin2.
-     */
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      bool Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::redBB0 (NormType norm)
+      /*
+       * Finds shortest non-zero vector, using branch-and-bound. Stops and returns
+       * false if not finished after examining MaxNodes nodes in the
+       * branch-and-bound tree.  When succeeds, returns true, and the shortest
+       * vector square length will be in m_lMin2.
+       */
     {
 
       bool withDual = m_lat->withDual();
@@ -1878,8 +2231,11 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    bool Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::reductMinkowski (int d)
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      bool Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::reductMinkowski (int d)
     {
       bool withDual = m_lat->withDual();
       const int dim = m_lat->getDim ();
@@ -1955,9 +2311,12 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    bool Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::shortestVector (NormType norm)
-    // Square length of shortest vector can be recovered in m_lMin2
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      bool Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::shortestVector (NormType norm)
+      // Square length of shortest vector can be recovered in m_lMin2
     {
 
       if (norm != L2NORM) {
@@ -1987,15 +2346,18 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    bool Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::redDieter (NormType norm)
-    /*
-     * Finds shortest non-zero vector with specified norm.
-     * Does not modify the basis.
-     * Stops and returns false if not finished after examining possib.
-     * When succeeds, returns true, and returns length in m_lMin.
-     * Uses the algorithm of Dieter (1975), given in Knuth (1981).
-     */
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      bool Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, 
+    RedDblVec, RedDblMat>::redDieter (NormType norm)
+      /*
+       * Finds shortest non-zero vector with specified norm.
+       * Does not modify the basis.
+       * Stops and returns false if not finished after examining possib.
+       * When succeeds, returns true, and returns length in m_lMin.
+       * Uses the algorithm of Dieter (1975), given in Knuth (1981).
+       */
     {
       if(!m_lat->withDual()){
         cout << "***************************************************\n";
@@ -2071,9 +2433,12 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec, typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec, typename RedDblMat>
-    bool Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::shortestVectorDieter (NormType norm)
-    // Length of shortest vector can be recovered in m_lMin.
+  template<typename Int, typename BasInt, typename BasIntVec,
+    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+    typename RedDblVec, typename RedDblMat>
+      bool Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl,
+    RedDblVec, RedDblMat>::shortestVectorDieter (NormType norm)
+      // Length of shortest vector can be recovered in m_lMin.
     {
       // Perform pre-reductions using L2 norm.
       if (PreRedDieterSV)

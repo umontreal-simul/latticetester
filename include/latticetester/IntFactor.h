@@ -20,8 +20,9 @@
 #include <string>
 #include <iomanip>
 
-#include "latticetester/Types.h"
 #include "latticetester/Const.h"
+
+#include <NTL/ZZ.h>
 
 
 namespace LatticeTester {
@@ -174,7 +175,7 @@ namespace LatticeTester {
       Int NbPrem;
       NbPrem = 2;
       NTL::ZZ LIM;
-      LIM = NTL::conv<ZZ>("4295098369");
+      LIM = NTL::conv<NTL::ZZ>("4295098369");
       //    unsigned int c[200];
       static const std::array<unsigned int, NB_PRIMES> primes =
       {{

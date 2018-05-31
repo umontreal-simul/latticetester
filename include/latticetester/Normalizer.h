@@ -18,7 +18,6 @@
 /* Normalizer.h for ISO C++ */
 #ifndef LATTICETESTER__NORMALIZER_H
 #define LATTICETESTER__NORMALIZER_H
-#include "latticetester/Types.h"
 #include "latticetester/Util.h"
 #include "latticetester/Const.h"
 
@@ -73,7 +72,8 @@ namespace LatticeTester {
          * log density argument. This only works for rank1 lattices, having m points 
          * per unit of volume (m being a prime number), normalized with NormaPalpha.
          */
-        Normalizer (int t, std::string Name, NormType norm = L2NORM, double beta = 1);
+        Normalizer (
+            int t, std::string Name, NormType norm = L2NORM, double beta = 1);
 
         /**
          * Destructor.
@@ -196,8 +196,8 @@ namespace LatticeTester {
   /*-------------------------------------------------------------------------*/
 
   template<typename RedDbl>
-    Normalizer<RedDbl>::Normalizer (RedDbl & logDensity0, int maxDim, std::string name,
-        NormType norm, double beta0) :
+    Normalizer<RedDbl>::Normalizer (RedDbl & logDensity0, int maxDim,
+        std::string name, NormType norm, double beta0) :
       m_name(name), m_norm(norm), m_logDensity(logDensity0), m_maxDim(maxDim),
       m_beta(beta0)
   {
@@ -235,12 +235,19 @@ namespace LatticeTester {
 
       for (int j = 1; j <= m_maxDim; j++) {
         y =  1. / j;
-
-#if NTL_TYPES_CODE == 3
-        x = 0.5 * log (getGamma(j)) + j * logBeta - y * conv<double>(logDensity0);
-#else 
-        x = 0.5 * log (getGamma(j)) + j * logBeta - y * logDensity0;
-#endif
+        if (typeid(RedDbl) != typeid(double)) {
+          // We have to convert to double
+          x = 0.5 * log (
+              getGamma(j)) + j * logBeta - y * NTL::conv<double>(logDensity0);
+        } else {
+          // We suppose we already have NTL::ZZ as integer type
+          x = 0.5 * log (getGamma(j)) + j * logBeta - y * logDensity0;
+        }
+        // #if NTL_TYPES_CODE == 3
+        //         x = 0.5 * log (getGamma(j)) + j * logBeta - y * conv<double>(logDensity0);
+        // #else 
+        //         x = 0.5 * log (getGamma(j)) + j * logBeta - y * logDensity0;
+        // #endif
         //log calculation to handle large values of n
 
         m_bounds[j] = exp(x); 
@@ -313,11 +320,20 @@ the function below. Could be improved.
       double logBeta;
       y = 1./j;
       logBeta = log(m_beta);
-#if NTL_TYPES_CODE == 3
-      x = 0.5 * log (getGamma(j)) + j * logBeta - y * conv<double>(m_logDensity);
-#else
-      x = 0.5 * log (getGamma(j)) + j * logBeta - y * m_logDensity;
-#endif
+      if (typeid(RedDbl) != typeid(double)) {
+        // We have to convert to double
+        x = 0.5 * log (
+            getGamma(j)) + j * logBeta - y * NTL::conv<double>(m_logDensity);
+      } else {
+        // We suppose we already have NTL::ZZ as integer type
+        x = 0.5 * log (getGamma(j)) + j * logBeta - y * m_logDensity;
+      }
+      //log calculation to handle large values of n
+      // #if NTL_TYPES_CODE == 3
+      //       x = 0.5 * log (getGamma(j)) + j * logBeta - y * conv<double>(m_logDensity);
+      // #else
+      //       x = 0.5 * log (getGamma(j)) + j * logBeta - y * m_logDensity;
+      // #endif
       //log calculation to handle large values of n
 
       return exp(x);

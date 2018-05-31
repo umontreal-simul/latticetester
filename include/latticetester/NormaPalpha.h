@@ -91,8 +91,9 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int, typename RedDbl>
-    NormaPalpha<Int, RedDbl>::NormaPalpha (const Int & m, int alpha, int s, NormType norm)
-    : Normalizer<RedDbl> (s, "Palpha", norm, 1.0)
+    NormaPalpha<Int, RedDbl>::NormaPalpha (const Int & m, int alpha, int s,
+        NormType norm):
+      Normalizer<RedDbl> (s, "Palpha", norm, 1.0)
     {
       if (s > this->MAX_DIM)
         throw std::invalid_argument("NormaPalpha:   dimension > MAX_DIM");
@@ -144,7 +145,8 @@ namespace LatticeTester {
       double Term1 = log (MM);
       if (Term1 <= alpha*dim /(alpha - 1)) {
         std::cout << "NormaPalpha::calcBound:" << std::endl;
-        std::cout << "   m < exp(alpha*dim/(alpha - 1)) for dim = " << dim << std::endl;
+        std::cout << "   m < exp(alpha*dim/(alpha - 1)) for dim = " << dim 
+          << std::endl;
         std::cout << "   Assumption required for existence of theoretical calcBound is not validated." << std::endl;
         std::cout << "   Returns -1" << std::endl;
         return -1;

@@ -127,8 +127,9 @@ namespace LatticeTester {
   /*=========================================================================*/
 
   template<typename RedDbl>
-    NormaLaminated<RedDbl>::NormaLaminated (RedDbl & logDensity, int t, double beta)
-    : Normalizer<RedDbl> (logDensity, t, "Laminated", L2NORM, beta)
+    NormaLaminated<RedDbl>::NormaLaminated (RedDbl & logDensity, int t,
+        double beta):
+      Normalizer<RedDbl> (logDensity, t, "Laminated", L2NORM, beta)
     {
       if (t > this->MAX_DIM)
         throw std::invalid_argument("NormaLaminated:   dimension > this->MAX_DIM");

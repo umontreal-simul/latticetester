@@ -121,8 +121,9 @@ namespace LatticeTester {
   /*=========================================================================*/
 
   template<typename RedDbl>
-    NormaMinkowski<RedDbl>::NormaMinkowski (RedDbl & logDensity, int t, double beta)
-    : Normalizer<RedDbl> (logDensity, t, "Minkowski", L2NORM, beta)
+    NormaMinkowski<RedDbl>::NormaMinkowski (RedDbl & logDensity, int t,
+        double beta):
+      Normalizer<RedDbl> (logDensity, t, "Minkowski", L2NORM, beta)
     {
       if (t > this->MAX_DIM)
         throw std::invalid_argument("NormaMinkowski:   dimension > MAX_DIM");

@@ -30,11 +30,9 @@
 // Include LatticeTester Header
 #include "latticetester/Util.h"
 #include "latticetester/Const.h"
-#include "latticetester/Types.h"
 #include "latticetester/IntFactor.h"
 #include "latticetester/IntLatticeBasis.h"
 #include "latticetester/Reducer.h"
-#include "latticetester/Types.h"
 #include "latticetester/ParamReader.h"
 #include "latticetester/LatticeTesterConfig.h"
 #include "latticetester/LatticeAnalysis.h"
@@ -65,7 +63,7 @@ using namespace LatticeTester;
   struct stat buf; // properties of a file or directory
   int status = 0;
 
-  for (int j = 1; j < argc; j++) {
+  for (int j = 2; j < argc; j++) {
     // Do the test for each data file or directory on the command line
 
     stat(argv[j], &buf);
@@ -85,7 +83,7 @@ using namespace LatticeTester;
   struct stat buf; // properties of a file or directory
   int status = 0;
 
-  for (int j = 1; j < argc; j++) {
+  for (int j = 2; j < argc; j++) {
     // Do the test for each data file or directory on the command line
 
     stat(argv[j], &buf);
@@ -105,7 +103,7 @@ using namespace LatticeTester;
   struct stat buf; // properties of a file or directory
   int status = 0;
 
-  for (int j = 1; j < argc; j++) {
+  for (int j = 2; j < argc; j++) {
     // Do the test for each data file or directory on the command line
 
     stat(argv[j], &buf);
@@ -145,7 +143,7 @@ int ZZDD(int argc, char* argv[]) {
   struct stat buf; // properties of a file or directory
   int status = 0;
 
-  for (int j = 1; j < argc; j++) {
+  for (int j = 2; j < argc; j++) {
     // Do the test for each data file or directory on the command line
 
     stat(argv[j], &buf);
@@ -165,7 +163,7 @@ int ZZDD(int argc, char* argv[]) {
   struct stat buf; // properties of a file or directory
   int status = 0;
 
-  for (int j = 1; j < argc; j++) {
+  for (int j = 2; j < argc; j++) {
     // Do the test for each data file or directory on the command line
 
     stat(argv[j], &buf);
@@ -185,7 +183,7 @@ int ZZDD(int argc, char* argv[]) {
   struct stat buf; // properties of a file or directory
   int status = 0;
 
-  for (int j = 1; j < argc; j++) {
+  for (int j = 2; j < argc; j++) {
     // Do the test for each data file or directory on the command line
 
     stat(argv[j], &buf);
@@ -205,7 +203,7 @@ int ZZDD(int argc, char* argv[]) {
   struct stat buf; // properties of a file or directory
   int status = 0;
 
-  for (int j = 1; j < argc; j++) {
+  for (int j = 2; j < argc; j++) {
     // Do the test for each data file or directory on the command line
 
     stat(argv[j], &buf);
@@ -225,7 +223,7 @@ int ZZDD(int argc, char* argv[]) {
   struct stat buf; // properties of a file or directory
   int status = 0;
 
-  for (int j = 1; j < argc; j++) {
+  for (int j = 2; j < argc; j++) {
     // Do the test for each data file or directory on the command line
 
     stat(argv[j], &buf);
@@ -245,7 +243,7 @@ int ZZDD(int argc, char* argv[]) {
   struct stat buf; // properties of a file or directory
   int status = 0;
 
-  for (int j = 1; j < argc; j++) {
+  for (int j = 2; j < argc; j++) {
     // Do the test for each data file or directory on the command line
 
     stat(argv[j], &buf);
@@ -265,7 +263,7 @@ int ZZDD(int argc, char* argv[]) {
   struct stat buf; // properties of a file or directory
   int status = 0;
 
-  for (int j = 1; j < argc; j++) {
+  for (int j = 2; j < argc; j++) {
     // Do the test for each data file or directory on the command line
 
     stat(argv[j], &buf);
@@ -285,7 +283,7 @@ int ZZDD(int argc, char* argv[]) {
   struct stat buf; // properties of a file or directory
   int status = 0;
 
-  for (int j = 1; j < argc; j++) {
+  for (int j = 2; j < argc; j++) {
     // Do the test for each data file or directory on the command line
 
     stat(argv[j], &buf);
@@ -305,7 +303,7 @@ int ZZDD(int argc, char* argv[]) {
   struct stat buf; // properties of a file or directory
   int status = 0;
 
-  for (int j = 1; j < argc; j++) {
+  for (int j = 2; j < argc; j++) {
     // Do the test for each data file or directory on the command line
 
     stat(argv[j], &buf);
@@ -325,7 +323,7 @@ int ZZDD(int argc, char* argv[]) {
   struct stat buf; // properties of a file or directory
   int status = 0;
 
-  for (int j = 1; j < argc; j++) {
+  for (int j = 2; j < argc; j++) {
     // Do the test for each data file or directory on the command line
 
     stat(argv[j], &buf);
@@ -345,7 +343,7 @@ int ZZDD(int argc, char* argv[]) {
   struct stat buf; // properties of a file or directory
   int status = 0;
 
-  for (int j = 1; j < argc; j++) {
+  for (int j = 2; j < argc; j++) {
     // Do the test for each data file or directory on the command line
 
     stat(argv[j], &buf);
@@ -360,12 +358,12 @@ int ZZDD(int argc, char* argv[]) {
   }
   return 1;
 } */
-/* int LLDD(int argc, char* argv[]) {
+int LLDD(int argc, char* argv[]) {
   LatticeAnalysis<long, NTL::vector<long>, NTL::matrix<long>, long, NTL::vector<long>, NTL::matrix<long>, double, NTL::vector<double>, double, NTL::vector<double>, NTL::matrix<double>> latAnalysis;
   struct stat buf; // properties of a file or directory
   int status = 0;
 
-  for (int j = 1; j < argc; j++) {
+  for (int j = 2; j < argc; j++) {
     // Do the test for each data file or directory on the command line
 
     stat(argv[j], &buf);
@@ -379,7 +377,7 @@ int ZZDD(int argc, char* argv[]) {
     }
   }
   return 1;
-} */
+}
 //==============================================================================
 
 int main (int argc, char *argv[])
@@ -397,41 +395,41 @@ int main (int argc, char *argv[])
     return -1;
   }
   //cout << "ARGC " << argc << endl;
-  /*if (strcmp(argv[1], "ZZRR")) {
+  /*if (!strcmp(argv[1], "ZZRR")) {
     return ZZRR(argc, argv);
-  } *//*else if (strcmp(argv[1], "ZZRD")) {
+  } *//*else if (!strcmp(argv[1], "ZZRD")) {
     return ZZRD(argc, argv);
-  }*/ /*else if (strcmp(argv[1], "ZZDR")) {
+  }*/ /*else if (!strcmp(argv[1], "ZZDR")) {
     return ZZDR(argc, argv);
   } *//*else*/ if (!strcmp(argv[1], "ZZDD")) {
     ZZDD(argc, argv);
     std::clock_t end_t = std::clock();
     cout << "Time: " << (double)(end_t-start_t)/CLOCKS_PER_SEC << " sec\n";
-  } /*else if (strcmp(argv[1], "ZLRR")) {
+  } /*else if (!strcmp(argv[1], "ZLRR")) {
     return ZLRR(argc, argv);
-  } *//*else if (strcmp(argv[1], "ZLRD")) {
+  } *//*else if (!strcmp(argv[1], "ZLRD")) {
     return ZLRD(argc, argv);
-  }*/ /*else if (strcmp(argv[1], "ZLDR")) {
+  }*/ /*else if (!strcmp(argv[1], "ZLDR")) {
     return ZLDR(argc, argv);
-  } *//*else if (strcmp(argv[1], "ZLDD")) {
+  } *//*else if (!strcmp(argv[1], "ZLDD")) {
     return ZLDD(argc, argv);
-  } *//*else if (strcmp(argv[1], "LZRR")) {
+  } *//*else if (!strcmp(argv[1], "LZRR")) {
     return LZRR(argc, argv);
-  } *//*else if (strcmp(argv[1], "LZRD")) {
+  } *//*else if (!strcmp(argv[1], "LZRD")) {
     return LZRD(argc, argv);
-  }*//* else if (strcmp(argv[1], "LZDR")) {
+  }*//* else if (!strcmp(argv[1], "LZDR")) {
     return LZDR(argc, argv);
-  }*//* else if (strcmp(argv[1], "LZDD")) {
+  }*//* else if (!strcmp(argv[1], "LZDD")) {
     return LZDD(argc, argv);
-  } *//*else if (strcmp(argv[1], "LLRR")) {
+  } *//*else if (!strcmp(argv[1], "LLRR")) {
     return LLRR(argc, argv);
-  } *//*else if (strcmp(argv[1], "LLRD")) {
+  } *//*else if (!strcmp(argv[1], "LLRD")) {
     return LLRD(argc, argv);
-  }*//* else if (strcmp(argv[1], "LLDR")) {
+  }*//* else if (!strcmp(argv[1], "LLDR")) {
     return LLDR(argc, argv);
-  } *//*else if (strcmp(argv[1], "LLDD")) {
+  } */else if (!strcmp(argv[1], "LLDD")) {
     return LLDD(argc, argv);
-  }*/ else {
+  } else {
     cerr << "No valid type name has been specified\n";
   }
 

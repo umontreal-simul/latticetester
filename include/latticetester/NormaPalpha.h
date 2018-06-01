@@ -55,7 +55,7 @@ namespace LatticeTester {
          */
         double calcBound (int alpha, int s);
 
-        /*
+        /**
          * Preventing the compiler from raising the warning: 
          * ''
          * latticetester/NormaPalpha.h:59:9: warning: 

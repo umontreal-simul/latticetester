@@ -310,7 +310,7 @@ namespace LatticeTester {
           case L2:
             break;
           default:
-            cout << "LatticeAnalysis::initNormalizer:   no such case";
+            std::cout << "LatticeAnalysis::initNormalizer:   no such case";
             exit (2);
         }
       } 
@@ -366,7 +366,7 @@ namespace LatticeTester {
           case L2:
             break;
           default:
-            cout << "LatticeAnalysis::initNormalizer:   no such case";
+            std::cout << "LatticeAnalysis::initNormalizer:   no such case";
             exit (2);
         }
       }
@@ -376,19 +376,19 @@ namespace LatticeTester {
   //===========================================================================
   // Utility functions
 
-  int getDir (string dir, std::vector <string> & files)
+  int getDir (std::string dir, std::vector <std::string> & files)
   {
     DIR *dp;
     struct dirent *dirp;
     if ((dp = opendir (dir.c_str())) == NULL) {
-      cerr << "Directory: " << dir << endl;
+      std::cerr << "Directory: " << dir << std::endl;
       perror ("Couldn't open the directory");
       return errno;
     }
 
     // Does directory name ends with /
     size_t j = dir.rfind('/');
-    string SEP("");
+    std::string SEP("");
     // if not, add one /
     if (dir.size() != (1 + j))
       SEP += "/";
@@ -396,7 +396,7 @@ namespace LatticeTester {
     while ((dirp = readdir (dp)) != NULL) {
       if (0 == fnmatch("*.dat", dirp->d_name, 0))
         // keeps full name including directory name
-        files.push_back (string (dir + SEP + dirp->d_name));
+        files.push_back (std::string (dir + SEP + dirp->d_name));
     }
     closedir (dp);
     return 0;
@@ -404,22 +404,22 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  void eraseExtension (std::vector <string> & files)
+  void eraseExtension (std::vector <std::string> & files)
   {
     for (unsigned int i = 0; i < files.size (); i++) {
       size_t j = files[i].rfind(".dat");
-      if (j != string::npos)
+      if (j != std::string::npos)
         files[i].erase(j);
     }
   }
 
   //===========================================================================
 
-  void printFileNames (std::vector <string> & files)
+  void printFileNames (std::vector <std::string> & files)
   {
-    cout << "----------------------------------------------" << endl;
+    std::cout << "----------------------------------------------" << std::endl;
     for (unsigned int i = 0; i < files.size (); i++) {
-      cout << files[i] << endl;
+      std::cout << files[i] << std::endl;
     }
   }
 
@@ -526,7 +526,7 @@ namespace LatticeTester {
    * case L2:
    * break;
    * default:
-   * cout << "LatticeAnalysis::initNormalizer:   no such case";
+   * std::cout << "LatticeAnalysis::initNormalizer:   no such case";
    * exit (2);
    * }
    * }
@@ -582,9 +582,9 @@ namespace LatticeTester {
           result = m_reducer->shortestVector(m_norm);
           // calculating the Figure of Merit
           if(m_normalizerType == L1 || m_normalizerType == L2) {
-            m_merit = conv<double>(m_reducer->getMinLength());
+            m_merit = NTL::conv<double>(m_reducer->getMinLength());
           } else {
-            m_merit = conv<double>(m_reducer->getMinLength())
+            m_merit = NTL::conv<double>(m_reducer->getMinLength())
               / m_normalizer->getPreComputedBound(m_dim);
           }
           break;
@@ -593,8 +593,8 @@ namespace LatticeTester {
           //Minkowski-reduced matrix
           result = m_reducer->reductMinkowski(0);
           // calculating the Figure of Merit
-          m_merit = conv<double>(m_reducer->getMinLength())
-            /conv<double>(m_reducer->getMaxLength());
+          m_merit = NTL::conv<double>(m_reducer->getMinLength())
+            /NTL::conv<double>(m_reducer->getMaxLength());
           break;
         case PALPHA:
           MyExit(1, "PALPHA:   to be implemented");
@@ -618,18 +618,18 @@ namespace LatticeTester {
       void LatticeAnalysis<Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat,
     Dbl, DblVec, RedDbl, RedDblVec, RedDblMat>::printTestResults ()
     {
-      cout << "\n----------------------------------------------------------" 
-        << endl;
-      cout << "Criterion: " << toStringCriterion(m_criterion) << endl;
-      cout << "Prereduction used: " << toStringPreRed(m_preRed) << endl;
-      cout << "Length of shortest non-zero vector = " 
-        << conv<double>(m_reducer->getMinLength());
-      cout << " (" << toStringNorm(m_norm) << ")" << endl;
-      cout << "Figure of Merit = " << m_merit;
-      cout << " (" << toStringNorma(m_normalizerType) << " normalization)" 
-        << endl;
-      cout << "----------------------------------------------------------\n" 
-        << endl;
+      std::cout << "\n----------------------------------------------------------" 
+        << std::endl;
+      std::cout << "Criterion: " << toStringCriterion(m_criterion) << std::endl;
+      std::cout << "Prereduction used: " << toStringPreRed(m_preRed) << std::endl;
+      std::cout << "Length of shortest non-zero vector = " 
+        << NTL::conv<double>(m_reducer->getMinLength());
+      std::cout << " (" << toStringNorm(m_norm) << ")" << std::endl;
+      std::cout << "Figure of Merit = " << m_merit;
+      std::cout << " (" << toStringNorma(m_normalizerType) << " normalization)" 
+        << std::endl;
+      std::cout << "----------------------------------------------------------\n" 
+        << std::endl;
     }
 
   //===========================================================================
@@ -649,7 +649,7 @@ namespace LatticeTester {
         const char *infile)
     {   
       // parameters reading
-      string fname (infile);
+      std::string fname (infile);
       fname += ".dat";
       ParamReader<Int, IntVec, BasInt, BasIntMat, RedDbl> paramRdr (fname.c_str ());
       fname.clear ();
@@ -692,7 +692,7 @@ namespace LatticeTester {
       rw->writeString(toStringPreRed(m_preRed));
       rw->newLine();
       rw->writeString("Length of shortest non-zero vector = ");
-      rw->writeDouble(conv<double>(m_reducer->getMinLength()));
+      rw->writeDouble(NTL::conv<double>(m_reducer->getMinLength()));
       rw->writeString(" (");
       rw->writeString(toStringNorm(m_norm));
       rw->writeString(")");
@@ -720,8 +720,8 @@ namespace LatticeTester {
     DblVec, RedDbl, RedDblVec, RedDblMat>::doTestFromDirectory (
         const char *dirname)
     {
-      string dir = string (dirname);
-      std::vector <string> files = std::vector <string> ();
+      std::string dir = std::string (dirname);
+      std::vector <std::string> files = std::vector <std::string> ();
 
       getDir (dir, files);
       printFileNames (files);
@@ -744,7 +744,7 @@ namespace LatticeTester {
     RedDblMat>::createLatTestWriter (const char *infile, OutputType ot)
     {
       LatTestWriter<Int, IntMat> *rw = 0;
-      string fname;
+      std::string fname;
 
       switch (ot) {
         case RES:
@@ -757,16 +757,16 @@ namespace LatticeTester {
           fname = infile;
           fname += ".tex";
           //rw = new WriterTex(fname.c_str()); //EB Ne permet pas d'écrire en Tex
-          cerr << "\n*** outputType:   TEX not implemented" << endl;
+          std::cerr << "\n*** outputType:   TEX not implemented" << std::endl;
           return 0;
           break;
 
         case TERMINAL:
-          rw = new LatTestWriterRes<Int, IntMat> (&cout);
+          rw = new LatTestWriterRes<Int, IntMat> (&std::cout);
           break;
 
         default:
-          cerr << "\n*** outputType:   no such case" << endl;
+          std::cerr << "\n*** outputType:   no such case" << std::endl;
           return 0;
       }
       return rw;

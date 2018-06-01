@@ -59,11 +59,11 @@ namespace LatticeTester {
             red.preRedDieter(0);
             break;
           case NOPRERED:
-            cout << "WARNING: no pre-reduction is performed before applying "
+            std::cout << "WARNING: no pre-reduction is performed before applying "
               << "Branch-and-Bound";
-            cout << " procedure. Running time could increase dramaticaly with the"
+            std::cout << " procedure. Running time could increase dramaticaly with the"
               << " matrix dimension.";
-            cout << endl;
+            std::cout << std::endl;
             break;
           default:
             MyExit(1, "LatticeTesterRoutines::ShortestVector:   NO SUCH CASE FOR PreReductionType");
@@ -74,7 +74,7 @@ namespace LatticeTester {
         // red.shortestVector(norm) is a bool set to *true* if the Branch-and-Bound algorithm
         // terminates without any error.
         if (red.shortestVector(norm))
-          return conv<double>(red.getMinLength());
+          return NTL::conv<double>(red.getMinLength());
         else 
           return -1.0;
       }
@@ -187,7 +187,7 @@ namespace LatticeTester {
    *        return -1.0; // the BB procedure didn't terminated well
    *
    *      // normalization step
-  *      merit /= conv<double>(normalizer->getPreComputedBound(dimension));
+  *      merit /= NTL::conv<double>(normalizer->getPreComputedBound(dimension));
   *      delete normalizer;
   *      return merit;
   *    }
@@ -265,7 +265,7 @@ namespace LatticeTester {
                return -1.0; // the BB procedure didn't terminated well
 
              // normalization step
-             merit /= conv<double>(normalizer->getPreComputedBound(dimension));
+             merit /= NTL::conv<double>(normalizer->getPreComputedBound(dimension));
 
              delete normalizer;
              return merit; 
@@ -337,7 +337,7 @@ template<>
              return -1.0; // the BB procedure didn't terminated well
 
            // normalization step
-           merit /= conv<double>(normalizer->getPreComputedBound(dimension));
+           merit /= NTL::conv<double>(normalizer->getPreComputedBound(dimension));
 
            delete normalizer;
            return merit; 
@@ -457,8 +457,8 @@ template<typename Int, typename BasInt, typename BasIntVec,
         basis.updateScalL2Norm (0);
         basis.updateScalL2Norm (dimension-1);
         double x1, x2; // maybe using something else than double (xdouble, RR?)
-        conv (x1, basis.getVecNorm (0));
-        conv (x2, basis.getVecNorm (dimension-1));
+        NTL::conv (x1, basis.getVecNorm (0));
+        NTL::conv (x2, basis.getVecNorm (dimension-1));
         return sqrt(x1 / x2);
       } else 
         return -1.0;

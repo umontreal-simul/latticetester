@@ -670,7 +670,7 @@ namespace LatticeTester {
     RedDbl>::checkDuality ()
     {
       if(!this->m_withDual) {
-        cout << "DO NOT USE IntLatticeBasis::checkDuality without dual"
+        std::cout << "DO NOT USE IntLatticeBasis::checkDuality without dual"
           << std::endl;
         return false;
       }
@@ -684,12 +684,12 @@ namespace LatticeTester {
           ProdScal<Int> (row1, row2, dim, S);
           if (j != i) {
             if (S != 0) {
-              cout << "******  checkDuality failed for V[" << i <<
+              std::cout << "******  checkDuality failed for V[" << i <<
                 "] and W[" << j << "]" << std::endl;
               return false;
             }
           } else if (S != this->m_modulo) {
-            cout << "******  checkDuality failed for i, j = " << i << " , " <<
+            std::cout << "******  checkDuality failed for i, j = " << i << " , " <<
               j << std::endl;
             return false;
           }
@@ -715,7 +715,7 @@ namespace LatticeTester {
       int dim = getDim ();
       for (int i = 0; i < dim; i++){
         if (getVecNorm(i) < 0) {
-          cout << "\n***** ERROR: sort   Negative norm for i = " << i <<
+          std::cout << "\n***** ERROR: sort   Negative norm for i = " << i <<
             ",  dim = " << dim << std::endl;
         }
       }
@@ -738,48 +738,48 @@ namespace LatticeTester {
     void IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
     RedDbl>::write () const
     {
-      cout << "Dim = " << this->m_dim << " \n \n";
+      std::cout << "Dim = " << this->m_dim << " \n \n";
       for (int i = 0; i < this->m_dim; i++) {
-        cout << "  |     ";
+        std::cout << "  |     ";
         for (int j = 0; j < this->m_dim; j++) {
-          cout << std::setprecision (15) << this->m_basis(i,j) << "\t";
+          std::cout << std::setprecision (15) << this->m_basis(i,j) << "\t";
         }
-        cout << "    |";
+        std::cout << "    |";
         if(this->m_withDual){
-          cout <<"  |     ";
+          std::cout <<"  |     ";
           for (int j = 0; j < this->m_dim; j++) {
-            cout << std::setprecision (15) <<
+            std::cout << std::setprecision (15) <<
               this->m_dualbasis(i,j) << "\t";
           }
-          cout << "    |";
+          std::cout << "    |";
         }
-        cout << "\n";
+        std::cout << "\n";
 
       }
-      cout << "\n";
-      cout << "Norm used : " << toStringNorm(this->m_norm) << "\n"
+      std::cout << "\n";
+      std::cout << "Norm used : " << toStringNorm(this->m_norm) << "\n"
         << std::endl;
-      cout << "Norm of each Basis vector : \n";
-      cout << " Primal     ";
+      std::cout << "Norm of each Basis vector : \n";
+      std::cout << " Primal     ";
       if(this->m_withDual)
-        cout << "\t Dual \n";
-      cout << "\n";
+        std::cout << "\t Dual \n";
+      std::cout << "\n";
 
       for (int i = 0; i < this->m_dim; i++) {
-        cout << "   ";
+        std::cout << "   ";
         if (this->m_vecNorm[i] < 0) {
-          cout << "NaN OR Not computed";
+          std::cout << "NaN OR Not computed";
         } else {
-          cout << this->m_vecNorm[i];
+          std::cout << this->m_vecNorm[i];
         }
         if(this->m_withDual){
-          cout << "\t \t \t ";
+          std::cout << "\t \t \t ";
           if (this->m_dualvecNorm[i] < 0)
-            cout << "NaN OR Not computed";
+            std::cout << "NaN OR Not computed";
           else
-            cout << this->m_dualvecNorm[i];
+            std::cout << this->m_dualvecNorm[i];
         }
-        cout << "\n";
+        std::cout << "\n";
       }
     }
 
@@ -787,7 +787,7 @@ namespace LatticeTester {
 
   template<typename Int, typename BasInt, typename BasIntVec, 
     typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    string IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
+    std::string IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
            RedDbl>::toStringBasis () const
     {
       std::ostringstream os;
@@ -817,10 +817,10 @@ namespace LatticeTester {
 
   template<typename Int, typename BasInt, typename BasIntVec, 
     typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    string IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
+    std::string IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
     RedDbl>::toStringDualBasis () const
     {
-      ostringstream os;
+      std::ostringstream os;
       os << "Dual Basis:\n";
       os << "  Dim = " << this->m_dim << " \n";
       for (int i = 0; i < this->m_dim; i++) {

@@ -464,7 +464,7 @@ namespace LatticeTester {
       if (val.empty())
         return;
       std::istringstream in2 (val);
-      conv (m1, m);
+      NTL::conv (m1, m);
       in2 >> m2;
       if (! in2)
         return;
@@ -546,7 +546,7 @@ namespace LatticeTester {
     {
       std::string val;
       getToken(val, ln, pos);
-      conv(field, val.c_str());
+      NTL::conv(field, val.c_str());
     }
 
   //===========================================================================
@@ -558,7 +558,7 @@ namespace LatticeTester {
     {
       std::string val;
       getToken(val, ln, pos);
-      conv(field, val.c_str());
+      NTL::conv(field, val.c_str());
     }
 
   //===========================================================================

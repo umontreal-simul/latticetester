@@ -36,6 +36,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <cstdint>
+
 #include "latticetester/Const.h"
 
 #include "NTL/tools.h"
@@ -1397,14 +1398,14 @@ namespace NTL {
    */
 
   /**
-   * Converts the array of characters (string) `c` into `l`.
+   * Converts the array of characters (string) `c` into an `std::int64_t` `l`.
    */
   inline void conv (std::int64_t & l, const char* c) {
     l = strtol(c, (char **) NULL, 10);
   }
 
   /**
-   * Converts the array of characters (string) `c` into `r`.
+   * Converts the array of characters (string) `c` into a `double` `r`.
    */
   inline void conv (double & r, const char* c) {
     r = strtod(c, (char **) NULL);

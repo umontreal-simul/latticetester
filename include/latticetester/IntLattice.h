@@ -314,7 +314,7 @@ namespace LatticeTester {
     RedDbl>::calcLgVolDual2 (double lgm2)
     {
       int dim = this->getDim();
-      int rmax = min(m_order, dim);
+      int rmax = std::min(m_order, dim);
 
       m_lgVolDual2[1] = lgm2;
       for (int r = 2; r <= rmax; r++)
@@ -352,7 +352,7 @@ namespace LatticeTester {
           m_lgVolDual2[i] = -m_lgVolDual2[i];
       }
       //   for (int i = 1; i <= getMaxDim(); i++)
-      //      cout << " fix  " << m_lgVolDual2[i] << endl;
+      //      std::cout << " fix  " << m_lgVolDual2[i] << endl;
     }
 
   //===========================================================================
@@ -364,7 +364,7 @@ namespace LatticeTester {
         Dbl, DblVec, RedDbl>* lattice, const Coordinates & proj)
     {
       const int dim = this->getDim ();
-      //  cout << "      ESPION_2\n";  getPrimalBasis ().write();
+      //  std::cout << "      ESPION_2\n";  getPrimalBasis ().write();
       int i = 0;
       for (Coordinates::const_iterator iter = proj.begin();
           iter != proj.end(); ++iter) {
@@ -380,14 +380,14 @@ namespace LatticeTester {
       Triangularization<BasIntMat> (lattice->m_dualbasis, lattice->m_basis, dim,
           static_cast<int>(proj.size()), this->m_modulo);
       // lattice->trace("\nESPION_4");
-      /* cout << "  ***** build 2\n";
+      /* std::cout << "  ***** build 2\n";
          lattice->getPrimalBasis ().setNegativeNorm (true);
          lattice->getPrimalBasis ().updateScalL2Norm (1,proj.size());
          lattice->getPrimalBasis ().write();*/
       CalcDual<BasIntMat> (lattice->m_basis, lattice->m_dualbasis,
           static_cast<int>(proj.size()), this->m_modulo);
       /*
-         cout << "  ***** build 3\n";
+         std::cout << "  ***** build 3\n";
          lattice->getDualBasis ().setNegativeNorm (true);
          lattice->getDualBasis ().updateScalL2Norm (1,proj.size());
          lattice->getDualBasis ().write();
@@ -469,7 +469,7 @@ namespace LatticeTester {
           normal = new NormaPalpha<Int, RedDbl> (this->m_modulo, alpha, dim);
           break;
         default:
-          cout << "normalizer:   no such case";
+          std::cout << "normalizer:   no such case";
           exit (2);
       }
       return normal;
@@ -479,7 +479,7 @@ namespace LatticeTester {
 
   template<typename Int, typename BasInt, typename BasIntVec,
     typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-      string IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, 
+      std::string IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, 
     RedDbl>::toStringCoef () const
     {
       assert (0);

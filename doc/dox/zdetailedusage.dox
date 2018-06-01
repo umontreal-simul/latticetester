@@ -1,5 +1,5 @@
 /**
- * \page detailed_usage Detailed usage instructions for the programs
+ * \page detailed_usage Detailed usage instructions
  *
  * *LatticeTester* is built in order to analyse a Lattice based on a set
  * of vectors called *basis*. The main analysis is the Spectral Test

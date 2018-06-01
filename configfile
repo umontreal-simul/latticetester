@@ -217,7 +217,7 @@ SEPARATE_MEMBER_PAGES  = NO
 # uses this value to replace tabs by spaces in code fragments.
 # Minimum value: 1, maximum value: 16, default value: 4.
 
-TAB_SIZE               = 8
+TAB_SIZE               = 2
 
 # This tag can be used to specify a number of aliases that act as commands in
 # the documentation. An alias has the form:
@@ -426,7 +426,7 @@ LOOKUP_CACHE_SIZE      = 0
 # normally produced when WARNINGS is set to YES.
 # The default value is: NO.
 
-EXTRACT_ALL            = NO
+EXTRACT_ALL            = YES
 
 # If the EXTRACT_PRIVATE tag is set to YES, all private members of a class will
 # be included in the documentation.
@@ -874,7 +874,7 @@ EXCLUDE_SYMBOLS        = _fftw* fftw*::allocator*::rebind
 # that contain example code fragments that are included (see the \include
 # command).
 
-EXAMPLE_PATH           =
+EXAMPLE_PATH           = ./include/latticetester
 
 # If the value of the EXAMPLE_PATH tag contains directories, you can use the
 # EXAMPLE_PATTERNS tag to specify one or more wildcard pattern (like *.cpp and
@@ -982,13 +982,13 @@ STRIP_CODE_COMMENTS    = YES
 # function all documented functions referencing it will be listed.
 # The default value is: NO.
 
-REFERENCED_BY_RELATION = YES
+REFERENCED_BY_RELATION = NO
 
 # If the REFERENCES_RELATION tag is set to YES then for each documented function
 # all documented entities called/used by that function will be listed.
 # The default value is: NO.
 
-REFERENCES_RELATION    = YES
+REFERENCES_RELATION    = NO
 
 # If the REFERENCES_LINK_SOURCE tag is set to YES and SOURCE_BROWSER tag is set
 # to YES then the hyperlinks from functions in REFERENCES_RELATION and
@@ -2008,7 +2008,7 @@ PERLMOD_MAKEVAR_PREFIX =
 # C-preprocessor directives found in the sources and include files.
 # The default value is: YES.
 
-ENABLE_PREPROCESSING   = YES
+ENABLE_PREPROCESSING   = NO
 
 # If the MACRO_EXPANSION tag is set to YES, doxygen will expand all macro names
 # in the source code. If set to NO, only conditional compilation will be

@@ -296,7 +296,36 @@ namespace LatticeTester {
     }
 
   /**
-   * \copydoc Quotient(const Int&, const Int&, Int*)
+   * Computes \f$q = a/b\f$ by dropping the fractionnal part, i.e. truncates
+   * towards 0. Example:
+   *
+   * <center>
+   *
+   * <table class="LatSoft-table LatSoft-has-hlines">
+   * <tr class="bt">
+   *   <td class="r bl br">\f$a\f$</td>
+   *   <td class="r bl br">\f$b\f$</td>
+   *   <td class="r bl br">\f$q\f$</td>
+   * </tr><tr class="bt">
+   *   <td class="r bl br">\f$5\f$</td>
+   *   <td class="r bl br">3</td>
+   *   <td class="r bl br">1</td>
+   * </tr><tr>
+   *   <td class="r bl br">\f$-5\f$</td>
+   *   <td class="r bl br">\f$3\f$</td>
+   *   <td class="r bl br">\f$-1\f$</td>
+   * </tr><tr>
+   *   <td class="r bl br">\f$5\f$</td>
+   *   <td class="r bl br">\f$-3\f$</td>
+   *   <td class="r bl br">\f$-1\f$</td>
+   * </tr><tr>
+   *   <td class="r bl br">\f$-5\f$</td>
+   *   <td class="r bl br">\f$-3\f$</td>
+   *   <td class="r bl br">\f$1\f$</td>
+   * </tr>
+   * </table>
+   *
+   * </center>
    */
   inline void Quotient (const NTL::ZZ & a, const NTL::ZZ & b, NTL::ZZ & q)
   {
@@ -364,7 +393,36 @@ namespace LatticeTester {
   }
 
   /**
-   * \copydoc Modulo(const std::int64_t&, const std::int64_t&, std::int64_t&)
+   * Computes the "positive" remainder \f$r = a \bmod b\f$, i.e. such that \f$0
+   * \le r < b\f$. Example:
+   *
+   * <center>
+   *
+   * <table class="LatSoft-table LatSoft-has-hlines">
+   * <tr class="bt">
+   *   <td class="r bl br">\f$a\f$</td>
+   *   <td class="r bl br">\f$b\f$</td>
+   *   <td class="c bl br">\f$r\f$</td>
+   * </tr><tr class="bt">
+   *   <td class="r bl br">\f$5\f$</td>
+   *   <td class="r bl br">3</td>
+   *   <td class="c bl br">2</td>
+   * </tr><tr>
+   *   <td class="r bl br">\f$-5\f$</td>
+   *   <td class="r bl br">\f$3\f$</td>
+   *   <td class="c bl br">\f$1\f$</td>
+   * </tr><tr>
+   *   <td class="r bl br">\f$5\f$</td>
+   *   <td class="r bl br">\f$-3\f$</td>
+   *   <td class="c bl br">\f$2\f$</td>
+   * </tr><tr>
+   *   <td class="r bl br">\f$-5\f$</td>
+   *   <td class="r bl br">\f$-3\f$</td>
+   *   <td class="c bl br">\f$1\f$</td>
+   * </tr>
+   * </table>
+   *
+   * </center>
    */
   inline void Modulo (const NTL::ZZ & a, const NTL::ZZ & b, NTL::ZZ & r)
   {
@@ -432,7 +490,42 @@ namespace LatticeTester {
   }
 
   /**
-   * \copydoc Divide(std::int64_t&, std::int64_t&, const std::int64_t&, const std::int64_t&)
+   * Computes the quotient \f$q = a/b\f$ and remainder \f$r = a \bmod b\f$ by
+   * truncating \f$q\f$ towards 0. The remainder can be negative. One always
+   * has \f$a = qb + r\f$ and \f$|r| < |b|\f$. Example:
+   *
+   * <center>
+   *
+   * <table class="LatSoft-table LatSoft-has-hlines">
+   * <tr class="bt">
+   *   <td class="r bl br">\f$a\f$</td>
+   *   <td class="r bl br">\f$b\f$</td>
+   *   <td class="r bl br">\f$q\f$</td>
+   *   <td class="r bl br">\f$r\f$</td>
+   * </tr><tr class="bt">
+   *   <td class="r bl br">\f$5\f$</td>
+   *   <td class="r bl br">3</td>
+   *   <td class="r bl br">1</td>
+   *   <td class="r bl br">\f$2\f$</td>
+   * </tr><tr>
+   *   <td class="r bl br">\f$-5\f$</td>
+   *   <td class="r bl br">\f$3\f$</td>
+   *   <td class="r bl br">\f$-1\f$</td>
+   *   <td class="r bl br">\f$-2\f$</td>
+   * </tr><tr>
+   *   <td class="r bl br">\f$5\f$</td>
+   *   <td class="r bl br">\f$-3\f$</td>
+   *   <td class="r bl br">\f$-1\f$</td>
+   *   <td class="r bl br">\f$2\f$</td>
+   * </tr><tr>
+   *   <td class="r bl br">\f$-5\f$</td>
+   *   <td class="r bl br">\f$-3\f$</td>
+   *   <td class="r bl br">\f$1\f$</td>
+   *   <td class="r bl br">\f$-2\f$</td>
+   * </tr>
+   * </table>
+   *
+   * </center>
    */
   inline void Divide (NTL::ZZ & q, NTL::ZZ & r, const NTL::ZZ & a,
       const NTL::ZZ & b)
@@ -487,7 +580,8 @@ namespace LatticeTester {
   }
 
   /**
-   * \copydoc DivideRound(const std::int64_t&, const std::int64_t&, std::int64_t&)
+   * Computes \f$a/b\f$, rounds the result to the nearest integer and returns
+   * the result in \f$q\f$.
    */
   inline void DivideRound (const NTL::ZZ & a, const NTL::ZZ & b, NTL::ZZ & q)
   {
@@ -901,7 +995,7 @@ namespace LatticeTester {
       //clear (A);
     }
 
-  // /**
+  // /*
   //  * \copydoc CreateMatr(MMat&, int)
   //  */
   // inline void CreateMatr (MMatP & A, int d)
@@ -920,7 +1014,7 @@ namespace LatticeTester {
       //clear (A);
     }
 
-  // /**
+  // /*
   //  * \copydoc CreateMatr(MMat&, int, int)
   //  */
   // inline void CreateMatr (MMatP & A, int line, int col)

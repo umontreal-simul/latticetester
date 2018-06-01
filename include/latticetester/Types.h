@@ -65,6 +65,7 @@ typedef NTL::vector<double> RVect;
 typedef NTL::matrix<double> RMat;
 typedef zz_pX    PolX; // This appears nowhere
 typedef zz_pE    PolE; // This appears nowhere
+
 #elif NTL_TYPES_CODE == 2
 // the case  "ZZDD"
 
@@ -129,7 +130,6 @@ typedef NTL::matrix<RR> RMat;
 typedef ZZ_pX    PolX;
 typedef ZZ_pE    PolE;
 #endif
-
 
 
 namespace LatticeTester {

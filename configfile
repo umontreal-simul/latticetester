@@ -786,9 +786,9 @@ WARN_LOGFILE           =
 # spaces. See also FILE_PATTERNS and EXTENSION_MAPPING
 # Note: If this tag is empty the current directory is searched.
 
-INPUT                  = \
-     /Users/paulwambergue/UdeM/latticetester/include/latticetester \
-     /Users/paulwambergue/UdeM/latticetester/doc/dox
+INPUT                  = ./doc/dox \
+                         ./include/latticetester \
+                         ./src
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding. Doxygen uses
@@ -814,6 +814,7 @@ INPUT_ENCODING         = UTF-8
 # *.f, *.for, *.tcl, *.vhd, *.vhdl, *.ucf and *.qsf.
 
 FILE_PATTERNS          = *.h \
+                         *.cc \
                          *.dox
 
 # The RECURSIVE tag can be used to specify whether or not subdirectories should
@@ -848,14 +849,14 @@ EXCLUDE_SYMLINKS       = NO
 EXCLUDE_PATTERNS       = 
 
 #IntFactor.h \
-LatTestWriter.h \
-LatTestWriterRes.h \
-LatticeTesterConfig.h \
-ParamReader.h \
-Random.h \
-Util.h \
-ntlwrap.h \
-Num.h
+#LatTestWriter.h \
+#LatTestWriterRes.h \
+#LatticeTesterConfig.h \
+#ParamReader.h \
+#Random.h \
+#Util.h \
+#ntlwrap.h \
+#Num.h
 
 
 # The EXCLUDE_SYMBOLS tag can be used to specify one or more symbol names
@@ -893,7 +894,7 @@ EXAMPLE_RECURSIVE      = NO
 # that contain images that are to be included in the documentation (see the
 # \image command).
 
-IMAGE_PATH             = /Users/paulwambergue/UdeM/latticetester/doc/images
+IMAGE_PATH             = ./doc/images
 
 # The INPUT_FILTER tag can be used to specify a program that doxygen should
 # invoke to filter for each input file. Doxygen will invoke the filter program
@@ -1140,7 +1141,7 @@ HTML_STYLESHEET        =
 # list). For an example see the documentation.
 # This tag requires that the tag GENERATE_HTML is set to YES.
 
-HTML_EXTRA_STYLESHEET  = /Users/paulwambergue/UdeM/latticetester/doc/latsoft.css
+HTML_EXTRA_STYLESHEET  = ./doc/latsoft.css
 
 # The HTML_EXTRA_FILES tag can be used to specify one or more extra images or
 # other source files which should be copied to the HTML output directory. Note

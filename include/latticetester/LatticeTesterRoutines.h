@@ -97,7 +97,14 @@ namespace LatticeTester {
       }
 
 
-  /** This is only a declaration that we will specialize later
+  /**
+   * This function compute the Figure of Merit to a given matrix, according to a
+   * normalization criteria. It first computes the shortest non-zero vector using the
+   * above functions. It then normalizes this value.
+   * Returns -1.0 if there was an error in Branch-and-Bound procedure while calculating
+   * the length of shortest non-zero vector. Return the figure of merit otherwise.
+   */
+  /* This is only a declaration that we will specialize later
    * */
   template<typename Int, typename BasInt, typename BasIntVec, 
     typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, 
@@ -110,252 +117,242 @@ namespace LatticeTester {
   // This is the old implementation
 
   /*
-  template<typename Int, typename BasInt, typename BasIntVec, typename 
-  BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec,
-  typename RedDblMat>
-    double FigureOfMerit(BasIntMat matrix, NormaType normalizerType,
-    PreReductionType preRed = BKZ, PrecisionType doublePrecision = DOUBLE, 
-    double fact = 0.999, int blocksize = 20)
-    {
-      double merit;
-
-      int dimension;
-      if (matrix.size1() != matrix.size2()) {
-        MyExit(1, "LatticeTesterRoutines::ShortestVector:   NEED A SQUARE MATRIX");
-        exit(1); // C'est pas un peu nul ça ?
-      } else 
-        dimension = (int) matrix.size1();
-
-      // creation of the norm and normalizer objects
-      NormType norm;
-      Normalizer<RedDbl>* normalizer;
-
-      // calculation of the log-density of the matrix used to initialize the normalizer
-      RedDbl logDensity;
-      //#if NTL_TYPES_CODE > 1
-      logDensity = - log( abs(NTL::determinant(matrix)) );
-      //#else 
-      // NTL library does not support matrix with double: we then use the boost library
-      boost::numeric::ublas::matrix<std::int64_t>  mat_tmps;
-      mat_tmps.resize(dimension, dimension);
-      for (unsigned int i = 0; i < dimension; i++) {
-        for (unsigned int j = 0; j < dimension; j++) {
-          mat_tmps(i,j) = matrix(i,j);
-        }
-      }
-      logDensity = -log( abs(det_double(mat_tmps)) );
-      //#endif
-
-      // we initialize the norm and normalizer objects according to the normalizerType used
-      switch (normalizerType) {
-        case BESTLAT:
-          norm = L2NORM;
-          normalizer = new NormaBestLat<RedDbl> (logDensity, dimension);
-          break;
-        case LAMINATED:
-          norm = L2NORM;
-          normalizer = new NormaLaminated<RedDbl> (logDensity, dimension);
-          break;
-        case ROGERS:
-          norm = L2NORM;
-          normalizer = new NormaRogers<RedDbl> (logDensity, dimension);
-          break;
-        case MINKOWSKI:
-          norm = L2NORM;
-          normalizer = new NormaMinkowski<RedDbl> (logDensity, dimension);
-          break;
-        case MINKL1:
-          norm = L1NORM;
-          normalizer = new NormaMinkL1<RedDbl> (logDensity, dimension);
-          break;
-        default: //PALPHA_N, NORMA_GENERIC, L1, L2
-          MyExit(1, "LatticeTesterRoutines::FigureOfMerit:   NO SUCH CASE FOR *normalization type*");
-          exit(1);
-      }
-
-      // compute the shortest non-zero vector
-      merit = ShortestVector<Int, BasInt>(matrix, norm, preRed, doublePrecision, fact, blocksize);
-
-      if (merit == -1.0)
-        return -1.0; // the BB procedure didn't terminated well
-
-      // normalization step
-      merit /= conv<double>(normalizer->getPreComputedBound(dimension));
-
-      delete normalizer;
-      return merit; 
-    }
-  */
-
-    /**
-     * This function compute the Figure of Merit to a given matrix, according to a
-     * normalization criteria. It first computes the shortest non-zero vector using the
-     * above functions. It then normalizes this value.
-     * Returns -1.0 if there was an error in Branch-and-Bound procedure while calculating
-     * the length of shortest non-zero vector. Return the figure of merit otherwise.
-     */
-    // LLDD specialization
-    template<>
-    double FigureOfMerit<std::int64_t, std::int64_t, NTL::vector<std::int64_t>, NTL::matrix<std::int64_t>,
-           double, NTL::vector<double>, double, NTL::vector<double>,
-           NTL::matrix<double>>(NTL::matrix<std::int64_t> matrix,
-               NormaType normalizerType, PreReductionType preRed,
-        PrecisionType doublePrecision, double fact, int blocksize)
-    {
-      double merit;
-
-      int dimension;
-      if (matrix.size1() != matrix.size2()) {
-        MyExit(1, "LatticeTesterRoutines::ShortestVector:   NEED A SQUARE MATRIX");
-        exit(1);
-        // C'est pas un peu nul ça ?
-      } else 
-        dimension = (int) matrix.size1();
-
-      // creation of the norm and normalizer objects
-      NormType norm;
-      Normalizer<double>* normalizer;
-
-      // calculation of the log-density of the matrix used to initialize the normalizer
-      double logDensity;
-      // We have to wrap NTL because it does not work with std::int64_t by default
-      NTL::mat_ZZ temp(NTL::INIT_SIZE, dimension, dimension);
-      for (int i = 0; i < dimension; i++) {
-        for (int j = 0; j < dimension; j++){
-          temp[i][j] = matrix(i,j);
-        }
-      }
-      logDensity = -log(abs(NTL::determinant(temp)));
-
-      // we initialize the norm and normalizer objects according to the normalizerType used
-      switch (normalizerType) {
-        case BESTLAT:
-          norm = L2NORM;
-          normalizer = new NormaBestLat<double> (logDensity, dimension);
-          break;
-        case LAMINATED:
-          norm = L2NORM;
-          normalizer = new NormaLaminated<double> (logDensity, dimension);
-          break;
-        case ROGERS:
-          norm = L2NORM;
-          normalizer = new NormaRogers<double> (logDensity, dimension);
-          break;
-        case MINKOWSKI:
-          norm = L2NORM;
-          normalizer = new NormaMinkowski<double> (logDensity, dimension);
-          break;
-        case MINKL1:
-          norm = L1NORM;
-          normalizer = new NormaMinkL1<double> (logDensity, dimension);
-          break;
-        default: //PALPHA_N, NORMA_GENERIC, L1, L2
-          MyExit(1, "LatticeTesterRoutines::FigureOfMerit:   NO SUCH CASE FOR *normalization type*");
-          exit(1);
-      }
-
-      // compute the shortest non-zero vector
-      merit = ShortestVector<std::int64_t, std::int64_t, NTL::vector<std::int64_t>, NTL::matrix<std::int64_t>,
-            double, NTL::vector<double>, double, NTL::vector<double>,
-            NTL::matrix<double>>(matrix, norm, preRed, doublePrecision, fact,
-                blocksize);
-
-      if (merit == -1.0)
-        return -1.0; // the BB procedure didn't terminated well
-
-      // normalization step
-      merit /= conv<double>(normalizer->getPreComputedBound(dimension));
-
-      delete normalizer;
-      return merit; 
-    }
-
-  /**
-   * This function compute the Figure of Merit to a given matrix, according to a
-   * normalization criteria. It first computes the shortest non-zero vector using the
-   * above functions. It then normalizes this value.
-   * Returns -1.0 if there was an error in Branch-and-Bound procedure while calculating
-   * the length of shortest non-zero vector. Return the figure of merit otherwise.
-   */
-  // ZZDD specialization
+   *template<typename Int, typename BasInt, typename BasIntVec, typename 
+   *BasIntMat, typename Dbl, typename DblVec, typename RedDbl, typename RedDblVec,
+   *typename RedDblMat>
+   *  double FigureOfMerit(BasIntMat matrix, NormaType normalizerType,
+   *  PreReductionType preRed = BKZ, PrecisionType doublePrecision = DOUBLE, 
+   *  double fact = 0.999, int blocksize = 20)
+   *  {
+   *    double merit;
+   *
+   *      int dimension;
+   *      if (matrix.size1() != matrix.size2()) {
+   *        MyExit(1, "LatticeTesterRoutines::ShortestVector:   NEED A SQUARE MATRIX");
+   *        exit(1); // C'est pas un peu nul ça ?
+   *      } else 
+   *        dimension = (int) matrix.size1();
+   *
+   *      // creation of the norm and normalizer objects
+   *      NormType norm;
+   *      Normalizer<RedDbl>* normalizer;
+   *
+   *      // calculation of the log-density of the matrix used to initialize the normalizer
+   *      RedDbl logDensity;
+   *      #if NTL_TYPES_CODE > 1
+   *      logDensity = - log( abs(NTL::determinant(matrix)) );
+   *      #else 
+   *      // NTL library does not support matrix with double: we then use the boost library
+   *      boost::numeric::ublas::matrix<std::int64_t>  mat_tmps;
+   *      mat_tmps.resize(dimension, dimension);
+   *      for (unsigned int i = 0; i < dimension; i++) {
+   *        for (unsigned int j = 0; j < dimension; j++) {
+   *          mat_tmps(i,j) = matrix(i,j);
+   *        }
+   *      }
+   *      logDensity = -log( abs(det_double(mat_tmps)) );
+   *      #endif
+   *
+   *      // we initialize the norm and normalizer objects according to the normalizerType used
+   *      switch (normalizerType) {
+   *        case BESTLAT:
+   *          norm = L2NORM;
+   *          normalizer = new NormaBestLat<RedDbl> (logDensity, dimension);
+   *          break;
+   *        case LAMINATED:
+   *          norm = L2NORM;
+   *          normalizer = new NormaLaminated<RedDbl> (logDensity, dimension);
+   *          break;
+   *        case ROGERS:
+   *          norm = L2NORM;
+   *          normalizer = new NormaRogers<RedDbl> (logDensity, dimension);
+   *          break;
+   *        case MINKOWSKI:
+   *          norm = L2NORM;
+   *          normalizer = new NormaMinkowski<RedDbl> (logDensity, dimension);
+   *          break;
+   *        case MINKL1:
+   *          norm = L1NORM;
+   *          normalizer = new NormaMinkL1<RedDbl> (logDensity, dimension);
+   *          break;
+   *        default: //PALPHA_N, NORMA_GENERIC, L1, L2
+   *          MyExit(1, "LatticeTesterRoutines::FigureOfMerit:   NO SUCH CASE FOR *normalization type*");
+   *          exit(1);
+   *      }
+   *
+   *      // compute the shortest non-zero vector
+   *      merit = ShortestVector<Int, BasInt>(matrix, norm, preRed, doublePrecision, fact, blocksize);
+   *
+   *      if (merit == -1.0)
+   *        return -1.0; // the BB procedure didn't terminated well
+   *
+   *      // normalization step
+  *      merit /= conv<double>(normalizer->getPreComputedBound(dimension));
+  *      delete normalizer;
+  *      return merit;
+  *    }
+  *
+  *    */
+  ///\cond
+  // LLDD specialization
   template<>
-    double FigureOfMerit<NTL::ZZ, NTL::ZZ, NTL::vector<NTL::ZZ>,
-           NTL::matrix<NTL::ZZ>, double, NTL::vector<double>, double,
-           NTL::vector<double>, NTL::matrix<double>>(
-               NTL::matrix<NTL::ZZ> matrix, NormaType normalizerType,
-               PreReductionType preRed, PrecisionType doublePrecision,
-               double fact, int blocksize)
-    {
-      double merit;
+  double FigureOfMerit<std::int64_t, std::int64_t, NTL::vector<std::int64_t>,
+         NTL::matrix<std::int64_t>, double, NTL::vector<double>, double,
+         NTL::vector<double>, NTL::matrix<double>> (
+             NTL::matrix<std::int64_t> matrix, NormaType normalizerType,
+             PreReductionType preRed, PrecisionType doublePrecision,
+             double fact, int blocksize) 
+           {
+             double merit;
 
-      int dimension;
-      if (matrix.size1() != matrix.size2()) {
-        MyExit(1, "LatticeTesterRoutines::ShortestVector:   NEED A SQUARE MATRIX");
-        exit(1);
-        // C'est pas un peu nul ça ?
-      } else 
-        dimension = (int) matrix.size1();
+             int dimension;
+             if (matrix.size1() != matrix.size2()) {
+               MyExit(1, "LatticeTesterRoutines::ShortestVector:   NEED A SQUARE MATRIX");
+               exit(1);
+               // C'est pas un peu nul ça ?
+             } else 
+               dimension = (int) matrix.size1();
 
-      // creation of the norm and normalizer objects
-      NormType norm;
-      Normalizer<double>* normalizer;
+             // creation of the norm and normalizer objects
+             NormType norm;
+             Normalizer<double>* normalizer;
 
-      // calculation of the log-density of the matrix used to initialize the normalizer
-      double logDensity;
+             // calculation of the log-density of the matrix used to initialize the normalizer
+             double logDensity;
+             // We have to wrap NTL because it does not work with std::int64_t by default
+             NTL::mat_ZZ temp(NTL::INIT_SIZE, dimension, dimension);
+             for (int i = 0; i < dimension; i++) {
+               for (int j = 0; j < dimension; j++){
+                 temp[i][j] = matrix(i,j);
+               }
+             }
+             logDensity = -log(abs(NTL::determinant(temp)));
 
-      // We suppose we already have NTL::ZZ as integer type
-      logDensity = -log(abs(NTL::determinant(matrix)));
+             // we initialize the norm and normalizer objects according to the normalizerType used
+             switch (normalizerType) {
+               case BESTLAT:
+                 norm = L2NORM;
+                 normalizer = new NormaBestLat<double> (logDensity, dimension);
+                 break;
+               case LAMINATED:
+                 norm = L2NORM;
+                 normalizer = new NormaLaminated<double> (logDensity, dimension);
+                 break;
+               case ROGERS:
+                 norm = L2NORM;
+                 normalizer = new NormaRogers<double> (logDensity, dimension);
+                 break;
+               case MINKOWSKI:
+                 norm = L2NORM;
+                 normalizer = new NormaMinkowski<double> (logDensity, dimension);
+                 break;
+               case MINKL1:
+                 norm = L1NORM;
+                 normalizer = new NormaMinkL1<double> (logDensity, dimension);
+                 break;
+               default: //PALPHA_N, NORMA_GENERIC, L1, L2
+                 MyExit(1, "LatticeTesterRoutines::FigureOfMerit:   NO SUCH CASE FOR *normalization type*");
+                 exit(1);
+             }
 
-      // we initialize the norm and normalizer objects according to the normalizerType used
-      switch (normalizerType) {
-        case BESTLAT:
-          norm = L2NORM;
-          normalizer = new NormaBestLat<double> (logDensity, dimension);
-          break;
-        case LAMINATED:
-          norm = L2NORM;
-          normalizer = new NormaLaminated<double> (logDensity, dimension);
-          break;
-        case ROGERS:
-          norm = L2NORM;
-          normalizer = new NormaRogers<double> (logDensity, dimension);
-          break;
-        case MINKOWSKI:
-          norm = L2NORM;
-          normalizer = new NormaMinkowski<double> (logDensity, dimension);
-          break;
-        case MINKL1:
-          norm = L1NORM;
-          normalizer = new NormaMinkL1<double> (logDensity, dimension);
-          break;
-        default: //PALPHA_N, NORMA_GENERIC, L1, L2
-          MyExit(1, "LatticeTesterRoutines::FigureOfMerit:   NO SUCH CASE FOR *normalization type*");
-          exit(1);
-      }
+             // compute the shortest non-zero vector
+             merit = ShortestVector<std::int64_t, std::int64_t, NTL::vector<std::int64_t>, NTL::matrix<std::int64_t>,
+                   double, NTL::vector<double>, double, NTL::vector<double>,
+                   NTL::matrix<double>>(matrix, norm, preRed, doublePrecision, fact,
+                       blocksize);
 
-      // compute the shortest non-zero vector
-      merit = ShortestVector<NTL::ZZ, NTL::ZZ, NTL::vector<NTL::ZZ>,
-            NTL::matrix<NTL::ZZ>, double, NTL::vector<double>, double,
-            NTL::vector<double>, NTL::matrix<double>>(
-                matrix, norm, preRed, doublePrecision, fact, blocksize);
+             if (merit == -1.0)
+               return -1.0; // the BB procedure didn't terminated well
 
-      if (merit == -1.0)
-        return -1.0; // the BB procedure didn't terminated well
+             // normalization step
+             merit /= conv<double>(normalizer->getPreComputedBound(dimension));
 
-      // normalization step
-      merit /= conv<double>(normalizer->getPreComputedBound(dimension));
+             delete normalizer;
+             return merit; 
+           }
 
-      delete normalizer;
-      return merit; 
-    }
+// ZZDD specialization
+template<>
+  double FigureOfMerit<NTL::ZZ, NTL::ZZ, NTL::vector<NTL::ZZ>,
+         NTL::matrix<NTL::ZZ>, double, NTL::vector<double>, double,
+         NTL::vector<double>, NTL::matrix<double>>(
+             NTL::matrix<NTL::ZZ> matrix, NormaType normalizerType,
+             PreReductionType preRed, PrecisionType doublePrecision,
+             double fact, int blocksize)
+         {
+           double merit;
 
-  /**
-   * Same thing as before but with the possibility to set a different value for
-   * the variable maxNodesBB.
-   */
-  template<typename Int, typename BasInt, typename BasIntVec, 
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, 
-    typename RedDblVec, typename RedDblMat>
+           int dimension;
+           if (matrix.size1() != matrix.size2()) {
+             MyExit(1, "LatticeTesterRoutines::ShortestVector:   NEED A SQUARE MATRIX");
+             exit(1);
+             // C'est pas un peu nul ça ?
+           } else 
+             dimension = (int) matrix.size1();
+
+           // creation of the norm and normalizer objects
+           NormType norm;
+           Normalizer<double>* normalizer;
+
+           // calculation of the log-density of the matrix used to initialize the normalizer
+           double logDensity;
+
+           // We suppose we already have NTL::ZZ as integer type
+           logDensity = -log(abs(NTL::determinant(matrix)));
+
+           // we initialize the norm and normalizer objects according to the normalizerType used
+           switch (normalizerType) {
+             case BESTLAT:
+               norm = L2NORM;
+               normalizer = new NormaBestLat<double> (logDensity, dimension);
+               break;
+             case LAMINATED:
+               norm = L2NORM;
+               normalizer = new NormaLaminated<double> (logDensity, dimension);
+               break;
+             case ROGERS:
+               norm = L2NORM;
+               normalizer = new NormaRogers<double> (logDensity, dimension);
+               break;
+             case MINKOWSKI:
+               norm = L2NORM;
+               normalizer = new NormaMinkowski<double> (logDensity, dimension);
+               break;
+             case MINKL1:
+               norm = L1NORM;
+               normalizer = new NormaMinkL1<double> (logDensity, dimension);
+               break;
+             default: //PALPHA_N, NORMA_GENERIC, L1, L2
+               MyExit(1, "LatticeTesterRoutines::FigureOfMerit:   NO SUCH CASE FOR *normalization type*");
+               exit(1);
+           }
+
+           // compute the shortest non-zero vector
+           merit = ShortestVector<NTL::ZZ, NTL::ZZ, NTL::vector<NTL::ZZ>,
+                 NTL::matrix<NTL::ZZ>, double, NTL::vector<double>, double,
+                 NTL::vector<double>, NTL::matrix<double>>(
+                     matrix, norm, preRed, doublePrecision, fact, blocksize);
+
+           if (merit == -1.0)
+             return -1.0; // the BB procedure didn't terminated well
+
+           // normalization step
+           merit /= conv<double>(normalizer->getPreComputedBound(dimension));
+
+           delete normalizer;
+           return merit; 
+         }
+///\endcond
+
+//===========================================================================
+
+/**
+ * Same thing as before but with the possibility to set a different value for
+ * the variable maxNodesBB.
+ */
+template<typename Int, typename BasInt, typename BasIntVec, 
+  typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, 
+  typename RedDblVec, typename RedDblMat>
     double FigureOfMerit(BasIntMat matrix, NormaType normalizerType, 
         std::int64_t maxNodesBB, PreReductionType preRed = BKZ, 
         PrecisionType doublePrecision = DOUBLE, double fact = 0.999,
@@ -363,20 +360,21 @@ namespace LatticeTester {
     {
       Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, 
       RedDblVec, RedDblMat>::maxNodesBB = maxNodesBB; // setting the number of nodes visited in the BB procedure
-      return FigureOfMerit<Int, BasInt>(
-          matrix, normalizerType, preRed, doublePrecision, fact, blocksize);
+      return FigureOfMerit<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
+             RedDbl, RedDblVec, RedDblMat>(
+                 matrix, normalizerType, preRed, doublePrecision, fact, blocksize);
     }
 
-  /**
-   * This function reduces a basis to a Minkowski-reduced basis. Such basis has strong
-   * properties regarding the length of its vectors but will require a huge running time,
-   * especially when the dimension of the basis increases. Such Minkowski-reduced basis
-   * is usefull, for example, to calculate a Beyer quotient (as implemented in
-   * FigureOfMerit()).
-   */
-  template<typename Int, typename BasInt, typename BasIntVec, 
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, 
-    typename RedDblVec, typename RedDblMat>
+/**
+ * This function reduces a basis to a Minkowski-reduced basis. Such basis has strong
+ * properties regarding the length of its vectors but will require a huge running time,
+ * especially when the dimension of the basis increases. Such Minkowski-reduced basis
+ * is usefull, for example, to calculate a Beyer quotient (as implemented in
+ * FigureOfMerit()).
+ */
+template<typename Int, typename BasInt, typename BasIntVec, 
+  typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, 
+  typename RedDblVec, typename RedDblMat>
     bool MinkowskiReduction(BasIntMat & matrix, PreReductionType preRed = BKZ,
         PrecisionType doublePrecision = DOUBLE, double fact = 0.999, 
         int blocksize = 20)
@@ -405,13 +403,13 @@ namespace LatticeTester {
       return reductionSuccess;
     }
 
-  /**
-   * Same thing as before but with the possibility to set a different value for
-   * the variable maxNodesBB.
-   */
-  template<typename Int, typename BasInt, typename BasIntVec, 
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, 
-    typename RedDblVec, typename RedDblMat>
+/**
+ * Same thing as before but with the possibility to set a different value for
+ * the variable maxNodesBB.
+ */
+template<typename Int, typename BasInt, typename BasIntVec, 
+  typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, 
+  typename RedDblVec, typename RedDblMat>
     bool MinkowskiReduction(BasIntMat & matrix, std::int64_t maxNodesBB, 
         PreReductionType preRed = BKZ, PrecisionType doublePrecision = DOUBLE, 
         double fact = 0.999, int blocksize = 20)
@@ -422,16 +420,16 @@ namespace LatticeTester {
           matrix, preRed, doublePrecision, fact, blocksize);
     }
 
-  /**
-   * This function compute the Figure of Merit to a given matrix, according to the
-   * Beyer criteria. It first computes the Minkowski-reduced basis of the lattice 
-   * and then makes the quotient of shortest over std::int64_test vector.
-   * Returns -1.0 if there was an error in Branch-and-Bound procedure while calculating
-   * the Minkowski-reduced basis. Return the figure of merit otherwise.
-   */
-  template<typename Int, typename BasInt, typename BasIntVec, 
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
-    typename RedDblVec, typename RedDblMat>
+/**
+ * This function compute the Figure of Merit to a given matrix, according to the
+ * Beyer criteria. It first computes the Minkowski-reduced basis of the lattice 
+ * and then makes the quotient of shortest over std::int64_test vector.
+ * Returns -1.0 if there was an error in Branch-and-Bound procedure while calculating
+ * the Minkowski-reduced basis. Return the figure of merit otherwise.
+ */
+template<typename Int, typename BasInt, typename BasIntVec, 
+  typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
+  typename RedDblVec, typename RedDblMat>
     double FigureOfMeritBeyer(BasIntMat matrix, PreReductionType preRed = BKZ,
         PrecisionType doublePrecision = DOUBLE, double fact = 0.999, 
         int blocksize = 20)
@@ -466,13 +464,13 @@ namespace LatticeTester {
         return -1.0;
     }
 
-  /**
-   * Same thing as before but with the possibility to set a different value for
-   * the variable maxNodesBB.
-   */
-  template<typename Int, typename BasInt, typename BasIntVec, 
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, 
-    typename RedDblVec, typename RedDblMat>
+/**
+ * Same thing as before but with the possibility to set a different value for
+ * the variable maxNodesBB.
+ */
+template<typename Int, typename BasInt, typename BasIntVec, 
+  typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, 
+  typename RedDblVec, typename RedDblMat>
     double FigureOfMeritBeyer(BasIntMat matrix, std::int64_t maxNodesBB, 
         PreReductionType preRed = BKZ, PrecisionType doublePrecision = DOUBLE, 
         double fact = 0.999, int blocksize = 20)

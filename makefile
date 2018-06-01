@@ -67,6 +67,7 @@ clean_objects:
 
 clean_bin:
 	rm -rf $(BIN_DIR)
+	rm -rf build
 
 clean_lib:
 	rm -rf $(LIB_DIR)

@@ -270,7 +270,7 @@ namespace LatticeTester {
            * number with arbitrary precision. The precision can be given. See
            * Const.h for further information.
            */
-          void redLLLNTL(double fact = 0.99999, 
+          void redLLLNTL(double fact = 0.999999, 
               PrecisionType precision = QUADRUPLE, int dim = 0);
 
           /**

@@ -29,9 +29,9 @@ software tools, designed to construct and analyze lattice rules and linear gener
 
 * *LatticeTester* provides several tests applied on the lattice structure. In particular
 it implements the Spectral Test given originally by Coveyou and MacPherson \cite rCOV67a
-and improved by Knuth \cite rKNU69a. This test requires an algorithm solving the shortest
+and improved by Knuth \cite rKNU98a. This test requires an algorithm solving the shortest
 vector problem (SVP). *LatticeTester* implements a solution based on a branch and bound
-procedure given originally by Dieter \cite rDIE75a, improved by Knuth \cite rKNU69a
+procedure given originally by Dieter \cite rDIE75a, improved by Knuth \cite rKNU98a
 and then by Fincke and Pohst \cite mFIN85a. The lastest version uses a Cholesky decomposition
 and is precisely implemented in *LatticeTester*. This version can solve SVP for the L2 norm
 as well as for the L1 norm.
@@ -43,7 +43,7 @@ the branch and bound will be performed. Hence, one must perform a basis reductio
 an explosion of the computing time.
 
 An overview of the pre-reductions available in *LatticeTester* can be found in 
-\ref PreRed. Pre-reductions available in *LatticeTester* are:
+at the end of \ref a_intro. Pre-reductions available in *LatticeTester* are:
 
 <dl><dt>Dieter Pre-reduction</dt><dd>given by Dieter in \cite rDIE75a.</dd>
 
@@ -56,7 +56,7 @@ An overview of the pre-reductions available in *LatticeTester* can be found in
 These pre-reductions can be performed in a polynomial time.
 
 The shortest vector given by the branch and bound shall then be compared to an upper
-bound. *LatticeTester* propose several normalization given in \cite mCON88a :
+bound. *LatticeTester* propose several normalization given in \cite mCON99a :
 \todo Make sure this is explained somewhere
 
 <dl><dt><tt>BestLat</tt>:</dt>
@@ -95,7 +95,6 @@ precision for calculations.
 - \subpage detailed_usage
 - \subpage DIY
 - \subpage a_intro
-- \subpage PreRed
 - \subpage aaroutine
 
 

@@ -9,7 +9,7 @@
  *
  * To perform each analysis, the shortest vector of the lattice
  * has to be computed. LatticeTester implements a *Branch and Bound*
- * algorithm according to [CITE KNUTH] which returns the shortest
+ * algorithm according to \cite rKNU98a which returns the shortest
  * vector of the lattice with an exponential time. To reduce this
  * time, the user can precise a prereduction that he wants to
  * use among the following :

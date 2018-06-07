@@ -137,6 +137,11 @@ def build(ctx):
     ctx.recurse('data')    
 
     # ctx.recurse('test')
+<<<<<<< HEAD
+=======
+    # if ctx.env.BUILD_DOCS:
+        # ctx.recurse('doc')
+>>>>>>> f97dd14abe282fc6d1ed79a67c7304377e8da19a
 
 
 # build variants

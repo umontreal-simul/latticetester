@@ -18,6 +18,10 @@ class doxygen(Task.Task):
             for x in outputs:
                 x.sig = Utils.h_file(x.abspath())
             self.outputs = outputs
+<<<<<<< HEAD
+=======
+        self.generator.bld.install_files('${DOCDIR}/html', outputs, cwd=html, relative_trick=True)
+>>>>>>> f97dd14abe282fc6d1ed79a67c7304377e8da19a
 
 def build(ctx):
     if not ctx.env.DOXYGEN:

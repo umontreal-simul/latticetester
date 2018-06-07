@@ -85,16 +85,12 @@ def configure(ctx):
     ctx_check(features='cxx cxxprogram', header_name='gmp.h')
     ctx_check(features='cxx cxxprogram', lib='gmp', uselib_store='GMP')
 
-    # boost_version = (1,57,0)
-    # boost_version_str = '.'.join(str(x) for x in boost_version)
-    # ctx_check(features='cxx',
-    #         msg='Checking for Boost version >= %s' % boost_version_str,
-    #         fragment=
-    #         '#include <boost/version.hpp>\n'
-    #         '#if BOOST_VERSION < %d\n'
-    #         '#error "Boost >= %s is required"\n'
-    #         '#endif' %
-    #         (boost_version[0] * 100000 + boost_version[1] * 100 + boost_version[2], boost_version_str))
+    # Doxygen
+    if ctx.options.build_docs:
+        ctx.env.BUILD_DOCS = True
+        if not ctx.find_program('doxygen', var='DOXYGEN', mandatory=False):
+            ctx.fatal('Doxygen is required for building documentation.\n' +
+                      'Get it from http://www.stack.nl/~dimitri/doxygen/')
 
 
     ctx.version_file('latticetester')
@@ -117,7 +113,6 @@ def configure(ctx):
 
 
 def distclean(ctx):
-    # ctx.recurse('latticetester')
 
     verfile = ctx.path.find_node('VERSION')
     if verfile:
@@ -130,20 +125,18 @@ def build(ctx):
 
     if ctx.variant:
         print("Building variant `%s'" % (ctx.variant,))
-    # if ctx.variant:
-    #     print("Building variant `%s'" % (ctx.variant,))
 
     ctx.recurse('src')
 
     # ctx.recurse('analysis')
     if not hasattr(ctx.options, 'nested') or not ctx.options.nested:
-        ctx.recurse('progs')    
+        ctx.recurse('progs')
+        if ctx.env.BUILD_DOCS:
+            ctx.recurse('doc') 
 
     ctx.recurse('data')    
 
     # ctx.recurse('test')
-    # if ctx.env.BUILD_DOCS:
-    #     ctx.recurse('doc')
 
 
 # build variants

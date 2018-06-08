@@ -22,19 +22,23 @@
 #include <set>
 #include <map>
 #include <iostream>
+
 #include "latticetester/Util.h"
 
 
 namespace LatticeTester {
 
   /**
-   * Set of coordinates.
+   * This is basically a `std::set<std::size_t>`. It also implements an output
+   * and an input operator, but it is useless to have a class for that.
+   * This class is used to store the vector of coordinates used when
+   * computing the projections with lacunary indices.
    */
 
-  class Coordinates : public std::set<size_t> {
+  class Coordinates : public std::set<std::size_t> {
     public:
       /**
-       * Constructs an empty coordinate set.
+       * Constructs an empty set of coordinates.
        */
       Coordinates():
         std::set<value_type>()
@@ -48,8 +52,8 @@ namespace LatticeTester {
     { }
 
       /**
-       * Constructs a coordinate set populated with the values from \c first
-       * (inclusively) to \c last (exclusively).
+       * Constructs a coordinate set populated with the values from `first`
+       * (inclusively) to `last` (exclusively).
        */
       template<typename InputIterator>
         Coordinates(InputIterator first, InputIterator last):
@@ -60,14 +64,14 @@ namespace LatticeTester {
 
   /**
    * \relates Coordinates
-   * Formats the coordinate set \c coords and outputs it to \c os.
+   * Formats the coordinate set `coords` and outputs it to `os`.
    */
 
   std::ostream& operator<< (std::ostream& os, const Coordinates& coords);
 
   /**
    * \relates Coordinates
-   * Reads a formatted coordinate set from \c is.
+   * Reads a formatted coordinate set from `is`.
    *
    * The input must consist of positive integers separated by whitespace and/or by
    * commas, and optionally enclosed in braces.  The ordering is not important.

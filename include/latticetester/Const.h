@@ -19,7 +19,6 @@
  * \file latticetester/Const.h
  *
  * This module contains global constants used in LatticeTester.
- *
  */
 
 #ifndef LATTICETESTER__CONST_H

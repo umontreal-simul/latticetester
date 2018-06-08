@@ -868,12 +868,7 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  void negativeCholeski ()
-  {
-    std::cout << "\n***** Negative diagonal element in Choleski Decomposition\n"
-      << std::endl;
-  }
-
+  void negativeCholeski ();
 
   //=========================================================================
 
@@ -2226,9 +2221,6 @@ namespace LatticeTester {
       }
       return true;
     }
-
-
-
 
   //=========================================================================
 

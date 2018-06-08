@@ -1,5 +1,13 @@
 /**
  * \page detailed_usage Detailed usage instructions
+ * 
+ * \section usage_build Building the executable
+ * 
+ * \section usage_program Using the executable
+ *
+ * \todo Change this so that it takes into account the fact that we only have 
+ * one executable.
+ * Change the formatting to use markdown
  *
  * *LatticeTester* is built in order to analyse a Lattice based on a set
  * of vectors called *basis*. The main analysis is the Spectral Test
@@ -14,16 +22,17 @@
  * time, the user can precise a prereduction that he wants to
  * use among the following :
  *
- * - *Pre-reduction of Dieter* according to [CITE DIETER]. Perform
+ * - *Pre-reduction of Dieter* according to \cite rDIE75a. Perform
  * pair-wise reduction in the primal lattice and the dual lattice
  * in order to reduce each vector of the basis. It is efficient for
  * small dimension (less than 10)
- * - *LLL* according to [CITE LENSTRA and AL.]. It returns a reduced
+ * - *LLL* according to \cite mLEN82a. It returns a reduced
  * basis where its shortest vector \f$x_0\f$ has a fixed approximation
  * of the shortest vector of the basis \f$x\f$ : \f$ \|x\| < \left(
  * \frac{2}{\sqrt{3}} \right)^{n} \|x_{0}\| \f$ where \f$n\f$ is the
  * dimension.
- * - *BKZ* according to [CITE BKZ].
+ * - *BKZ* according to \cite mSCH91a. It strengthens the condition of *LLL*, 
+ * but is more costly to compute. It is efficient in greater dimensions.
  *
  * After one of theses prereductions, the Branch and Bound find the
  * shortest vector of the lattice and returns the wanted figure of
@@ -73,13 +82,12 @@
  *
  * \endlatexonly
  *
- *
  * The data for *LatticeTester* must be placed in a file with extension
- * <tt>".dat"</tt>, according to the format displayed on Figure
- * \link REF__LatticeTester_dat latdata.dat\endlink. The fields in square brackets
- * are optional (depending on the value taken by the first field on the
- * line). The meaning of all data fields is explained below. To run the
- * program, type <tt>&quot;.\\lattest*</tt> &lt;<em>file</em>&gt;<tt>&quot;</tt>, where &lt;*file*&gt;
+ * <tt>".dat"</tt>, according to the format displayed on the figure above. 
+ * The fields in square brackets are optional (depending on the value taken by
+ * the first field on the line). The meaning of all data fields is explained
+ * below. To run the program, type 
+ * <tt>&quot;.\\lattest*</tt> &lt;<em>file</em>&gt;<tt>&quot;</tt>, where &lt;*file*&gt;
  * is the name of the data file, without extension, and <tt>lattest*</tt> is one
  * of the three program : <tt>lattestLLDD</tt>, <tt>lattestZZDD</tt>, <tt>lattestZZRR</tt>. The results will
  * be in a file with the same name, with extension (<tt>".res"</tt> or <tt>".tex"</tt> or <tt>".gen"</tt>)

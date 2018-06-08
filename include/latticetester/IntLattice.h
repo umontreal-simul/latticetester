@@ -19,8 +19,9 @@
 namespace LatticeTester {
 
   /**
-   * \copydoc LatticeTester::IntLatticeBasis
-   * Beside, it contains fonction use in LatticeTester
+   * This class extends IntLatticeBasis with functions to do stuff.
+   *
+   * Order (the order of the MRG recurrence
    */
   template<typename Int, typename BasInt, typename BasIntVec,
     typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
@@ -29,17 +30,15 @@ namespace LatticeTester {
         public:
 
           /**
-           * \copydoc LatticeTester::IntLatticeBasis::IntLatticeBasis (
-           const BasIntMat primalbasis,
-           const BasIntMat dualbasis,
-           const Int modulo,
-           const int dim,
-           NormType norm = L2NORM);
+           * Constructor initializing the primal and the dual basis with the 
+           * identity matrix. The dimension of the lattice is set to `maxDim` 
+           * and the norm used for reduction to `norm`.
            */
           IntLattice (Int modulo, int k, int maxDim, NormType norm = L2NORM);
 
           /**
-           * \copydoc LatticeTester::IntLatticeBasis::IntLatticeBasis (const IntLatticeBasis & Lat)
+           * Copy constructor. The maximal dimension of the created basis is set
+           * equal to `Lat`’s current dimension.
            */
           IntLattice (const IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl,
               DblVec, RedDbl> & Lat);
@@ -72,7 +71,7 @@ namespace LatticeTester {
 
           /**
            * Computes the logarithm of the normalization factor
-           * (<tt>m_lgVolDual2</tt>) in all dimensions \f$\le\f$ `MaxDim` for
+           * (<tt>m_lgVolDual2</tt>) in all dimensions \f$\leq\f$ `MaxDim` for
            * the lattice. `lgm2` is the logarithm in base 2 of \f$m^2\f$.
            */
           void calcLgVolDual2 (double lgm2);
@@ -134,7 +133,7 @@ namespace LatticeTester {
           virtual std::string toStringCoef() const;
 
 
-          //    /**
+          //    /*
           //     * The components of the lattice when it is built out of more than one
           //     * component. When there is only one component, it is unused as the
           //     * parameters are the same as above.
@@ -154,12 +153,12 @@ namespace LatticeTester {
            */
           int m_order;
 
-          /**
+          /*
            * The maximum Dimension for the test
            */
           //int m_maxDim;
 
-          /*
+          /**
            * Represente sur dual along the diagonal?? ERWAN
            */
           double *m_lgVolDual2;

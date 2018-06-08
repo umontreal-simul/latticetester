@@ -30,32 +30,31 @@ namespace LatticeTester {
 
   /**
    * The objects of this class are the "prime" factors in the decomposition of
-   * a positive integer. The class contains functions to determine whether a
-   * number is prime, probably prime or composite. The related class
-   * `IntFactorization` contains the list of "prime" factors. (This class
-   * should be a private nested class inside `IntFactorization`.)
+   * a positive integer.
    *
-   * <div class="LatSoft-bigskip"></div>
+   * The class also contains functions to determine whether a number is prime,
+   * probably prime or composite. These methods can be used externally to test
+   * the primality of an integer, or to test if this factor is prime.
    */
   template<typename Int>
     class IntFactor {
       public:
 
         /**
-         * Constructor for a factor \f$x\f$, with multiplicity `mult` and 
-         * status `stat`.
+         * Constructor for a factor \f$x\f$ of multiplicity `mult` that has a 
+         * PrimeType `stat`
          */
         IntFactor (const Int & x, int mult = 1,
             PrimeType stat = UNKNOWN):
           m_factor (x), m_multiplicity (mult), m_status (stat) {   }
 
         /**
-         * Returns the value of `factor`.
+         * Returns the numeric value of this factor.
          */
         Int getFactor () const { return m_factor; }
 
         /**
-         * Sets the value of `factor` to \f$x\f$.
+         * Sets the value of this factor to \f$x\f$.
          */
         void setFactor (const Int & x) { m_factor = x; }
 
@@ -70,12 +69,12 @@ namespace LatticeTester {
         void setMultiplicity (int m) { m_multiplicity = m; }
 
         /**
-         * Returns the status of this object.
+         * Returns the PrimeType of this object.
          */
         PrimeType getStatus () const { return m_status; }
 
         /**
-         * Sets the status of this object to \f$s\f$.
+         * Sets the PrimeType of this object to \f$s\f$.
          */
         void setStatus (PrimeType s) { m_status = s; }
 
@@ -84,6 +83,10 @@ namespace LatticeTester {
          * divisible by all small primes \f$p\f$ (\f$p < 2^{16}\f$) that are
          * kept in file `prime.dat`. Then applies the Miller-Rabin probability
          * test with \f$k\f$ trials.
+         *
+         * \todo We should have an option to apply something else than a 
+         * probabilistic test. Also, maybe we could store more primes than those
+         * smaller than 2^16.
          */
         static PrimeType isPrime (const Int & y, std::int64_t k);
 

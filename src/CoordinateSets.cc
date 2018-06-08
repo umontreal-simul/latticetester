@@ -54,7 +54,7 @@ namespace LatticeTester { namespace CoordinateSets {
   }
 
 
-  //=========================================================================
+  //===========================================================================
 
   void FromRanges::excludeOrder (Coordinates::size_type order)
   {
@@ -63,10 +63,10 @@ namespace LatticeTester { namespace CoordinateSets {
       m_ranges.erase (it);
   }
 
+  //===========================================================================
 
-  //=========================================================================
-
-  void FromRanges::const_iterator::resetToOrder (const RangeMap::const_iterator& itRange)
+  void FromRanges::const_iterator::resetToOrder (
+      const RangeMap::const_iterator& itRange)
   {
     // empty coordinate set
     m_value.clear ();

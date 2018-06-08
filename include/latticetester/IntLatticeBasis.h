@@ -32,12 +32,20 @@ namespace LatticeTester {
   /**
    * \class IntLatticeBasis
    *
-   * \brief This class represents a Lattice and its basis
+   * This class represents a lattice and its basis and offers tools to do basic 
+   * manipulations on lattice bases.
    *
-   * This class offers tools to manipulate lattice bases. Each lattice is
-   * at least represented by a basis \f$V\f$, a dimension and a Norm.
-   * Users can beside precise the dual lattice \f$W\f$ and the modulo.
-   * In that case, the flag \f$m_withDual\f$ is set to \f$true\f$.
+   * Each lattice is at least represented by a basis \f$V\f$, a dimension and a
+   * norm. The basis will be contained in a matrix of type BasIntMat. The 
+   * dimension \f$d\f$ specifies that \f$V\f$ contains \f$d\f$ vectors in 
+   * \f$\mathbb{Z}^d\f$. The norm is one of the norm of NormType. Users can also 
+   * precise a dual lattice \f$W\f$ and the modulo `m` used for rescaling.
+   *
+   * This class also has methods and attributes that can be used to store and
+   * compute the norms of the basis and dual basis vectors. It can also permute
+   * vectors in the basis or sort them by length and do the corresponding 
+   * changes in the dual. It can also check of the dual \f$W\f$ really is a dual
+   * basis to \f$V\f$.
    */
 
   template<typename Int, typename BasInt, typename BasIntVec,
@@ -46,120 +54,124 @@ namespace LatticeTester {
       public:
 
         /**
-         * Constructor. The primal basis is initialize with identity,
-         * the dimension of the lattice with dim and the Norm used for
-         * reduction with norm.
+         * Constructor initializing the primal basis with the identity matrix.
+         * The dimension of the lattice is set to `dim` and the norm used for
+         * reduction to `norm`.
          */
         IntLatticeBasis (const int dim, NormType norm = L2NORM);
 
         /**
-         * Constructor. The primal basis is initialize with \f$basis\f$,
-         * the dimension of the lattice with dim and the Norm used for
-         * reduction with norm.
+         * Constructor taking all three needed component of an IntLatticeBasis.
+         * The primal basis is initialized with `basis`,
+         * the dimension of the lattice with `dim` and the norm used for
+         * reduction with `norm`.
          */
         IntLatticeBasis (const BasIntMat basis, const int dim,
             NormType norm = L2NORM);
 
         /**
-         * Constructor. The primal basis is initialize with \f$primalbasis\f$,
-         * the dual basis is initualize with \f$dualbasis\f$, the
-         * dimension of the lattice with \f$dim\f$ and the Norm used for
-         * reduction with norm.
+         * Complete constructor. The primal basis is initialized with `primalbasis`,
+         * the dual basis with `dualbasis`, the \f$m\f$ used for rescaling with 
+         * `modulo`, the dimension of the lattice with `dim` and the norm used 
+         * for reduction with `norm`.
          */
         IntLatticeBasis (const BasIntMat primalbasis, const BasIntMat dualbasis,
             const Int modulo, const int dim, NormType norm = L2NORM);
 
         /**
          * Copy constructor. The maximal dimension of the created basis is set
-         * equal to <tt>Lat</tt>’s current dimension.
+         * equal to `Lat`’s current dimension.
          */
         IntLatticeBasis (const IntLatticeBasis<Int, BasInt, BasIntVec,
             BasIntMat, Dbl, DblVec, RedDbl> & Lat);
 
         /**
-         * Destructor
+         * Destructor.
          */
         ~IntLatticeBasis ();
 
         /**
-         * Cleans and releases all the memory allocated for this lattice.
+         * Cleans and releases all the memory allocated to this lattice.
          */
         void kill ();
 
         /**
-         * Copy the lattice
+         * Copy the lattice `lat`, except it's NormType and dimension, into this
+         * object. This does not check if the dimensions match.
          */
         void copyBasis (const IntLatticeBasis<Int, BasInt, BasIntVec,
             BasIntMat, Dbl, DblVec, RedDbl> & lat);
 
         /**
-         * Copy the n first elements of the lattice lat
+         * Copy the n first elements of the lattice `lat` into this object.
+         * The object into which `lat` is copied has to be of dimension n.
          */
         void copyBasis (const IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat,
             Dbl, DblVec, RedDbl> & lat, int n);
 
         /**
-         * Set all the norm of the matrix to -1
+         * Initializes a vector containing the norms of the basis vectors to -1
+         * at all components.
          */
         void initVecNorm ();
 
         /**
-         * Return the basis, a BMat-type matrix
+         * Returns the basis in a BasIntMat-type matrix
          */
         BasIntMat & getBasis () { return m_basis; }
 
         /**
-         * Return the dual basis, a BMat-type Matrix
+         * Returns the dual basis in a BasIntMat-type Matrix
          */
         BasIntMat & getDualBasis () { return m_dualbasis; }
 
         /**
-         * Return the dimension of the lattice, a int type
+         * Returns the dimension of the lattice.
          */
         int getDim () const { return m_dim; }
 
         /**
-         * Return the Norm type used by the lattice
+         * Returns the NormType used by this lattice.
          */
         NormType getNorm () const { return m_norm; }
 
         /**
-         * Return the norm of the i-th line of the basis
+         * Returns the norm of the i-th vector of the basis.
          */
         Dbl getVecNorm (const int & i) { return m_vecNorm[i]; }
 
         /**
-         * Return the norm of each line of the basis
+         * Returns the norm of each vector of the basis.
          */
         DblVec getVecNorm () const { return m_vecNorm; }
 
         /**
-         * Return the norm of the i-th line of the basis
+         * Returns the norm of the i-th vector of the dual basis.
          */
         Dbl getDualVecNorm (const int & i) { return m_dualvecNorm[i]; }
 
         /**
-         * Return the norm of each line of the basis
+         * Returns the norm of each vector of the dual basis.
          */
         DblVec getDualVecNorm () const { return m_dualvecNorm; }
 
         /**
-         * Return the modulo used for the Dual
+         * Returns the `m` used by the dual and for rescaling.
          */
         Int getModulo () const { return m_modulo; }
 
         /**
-         * Set the dimension of the basis
+         * Sets the dimension of the basis to `d`.
          */
         void setDim (const int & d) { if(d>0) m_dim = d;}
 
         /**
-         * Set the norm used by the lattice
+         * Sets the NormType used by this lattice to `norm`.
          */
         void setNorm (const NormType & norm) { m_norm = norm; }
 
         /**
-         * Set the norm i egal to the value of NScal
+         * Sets the norm of the `i`-th component of the basis to `value`.
          */
         void setVecNorm ( const Dbl & value, const int & i)
         {
@@ -167,7 +179,7 @@ namespace LatticeTester {
         }
 
         /**
-         * Set the dual norm i egal to the value of NScal
+         * Sets the norm of the `i`-th component of the dual basis to `value`.
          */
         void setDualVecNorm ( const Dbl & value, const int & i)
         {
@@ -175,143 +187,165 @@ namespace LatticeTester {
         }
 
         /**
-         * Return True if we use Dual.
+         * Returns `true` if a dual has been defined and `false` otherwise.
          */
         bool withDual() { return m_withDual; }
 
         /**
-         * Set the Dual Flag.
+         * Sets the `withDual` flag to `flag`. This flag indicates whether or 
+         * not this IntLatticeBasis contains a dual basis.
          */
         void setDualFlag(bool flag) { m_withDual = flag; }
 
         /**
-         * Get and det m_xx but I don't now what means m_xx
+         * Gets whether or not there is a component at the `i`-th position in
+         * the basis.
+         *
+         * \todo find the real use of m_xx. It is only used in reductMinkowski 
+         * in Reducer and it is set in the function depending on it's parameter.
+         * It is probably very useless
          */
         bool getXX (int i) const { return m_xx[i]; } //???
+
+        /**
+         * Sets `value` at the `i`-th position in an array the basis.
+         */
         void setXX (bool val, int i) { m_xx[i] = val; } //??
 
         /**
-         * Set the norm of all vectors to -1
+         * Sets all the values in the array containing the norms of the basis 
+         * vectors to -1.
          */
         void setNegativeNorm ();
 
         /**
-         * Set the norm of the i-eme vector to -1
+         * Sets the value of the `i`-th component in the array containing the 
+         * norms of the basis vectors to -1.
          */
         void setNegativeNorm (const int & i){ m_vecNorm[i] = -1; }
 
         /**
-         * Set the norm of all vectors of the dual basis to -1
+         * Sets all the values in the array containing the norms of the dual basis 
+         * vectors to -1.
          */
         void setDualNegativeNorm ();
 
         /**
-         * Set the norm of the i-eme vector in the dual Basis to -1
+         * Sets the value of the `i`-th component in the array containing the 
+         * norms of the dual basis vectors to -1.
          */
         void setDualNegativeNorm (const int & i){ m_dualvecNorm[i] = -1; }
 
         /**
-         * Recalculates the norm of each vector in the basis of
-         * the lattice
-         */
+         * Updates the array containing the basis vectors norms by recomputing 
+         * them.
+         * */
         void updateVecNorm ();
 
         /**
-         * Recalculates the norm of each vector in the basis of
-         * the lattice from d to dim
-         */
+         * Updates the array containing the basis vectors norms from the `d`-th 
+         * component to the last by recomputing them.
+         * */
         void updateVecNorm (const int & d);
 
         /**
-         * Recalculates the norm of each vector in the basis of
-         * the lattice
-         */
+         * Updates the array containing the dual basis vectors norms by recomputing 
+         * them.
+         * */
         void updateDualVecNorm ();
 
         /**
-         * Recalculates the norm of each vector in the dual basis of
-         * the lattice from d to dim
-         */
+         * Updates the array containing the dual basis vectors norms from the `d`-th 
+         * component to the last by recomputing them.
+         * */
         void updateDualVecNorm (const int & d);
 
         /**
-         * Updates the norm of vector at dimension `d` using the `L2NORM`.
+         * Updates the `i`-th value of the array containing the norms of the 
+         * basis vectors by recomputing it using the `L2NORM`.
          */
         void updateScalL2Norm (const int i);
 
         /**
-         * Updates the norm of all basis vectors from dimensions `d1` to `d2`
-         * (exclusive) using the `L2NORM`.
+         * Updates the `k1`-th to the `k2-1`-th values of the array containing 
+         * the norms of the basis vectors by recomputing them using the `L2NORM`.
          */
         void updateScalL2Norm (const int k1, const int k2);
 
         /**
-         * Updates the norm of vector in the Dual Basis at dimension `d`
-         * using the `L2NORM`.
+         * Updates the `i`-th value of the array containing the norms of the 
+         * dual basis vectors by recomputing it using the `L2NORM`.
          */
         void updateDualScalL2Norm (const int i);
 
         /**
-         * Updates the norm of all dual basis vectors from dimensions `d1`
-         * to `d2` (exclusive) using the `L2NORM`.
+         * Updates the `k1`-th to the `k2-1`-th values of the array containing 
+         * the norms of the dual basis vectors by recomputing them using the `L2NORM`.
          */
         void updateDualScalL2Norm (const int k1, const int k2);
 
         /**
-         * Exchanges vectors \f$i\f$ and \f$j\f$ in the basis.
+         * Exchanges vectors `i` and `j` in the basis. This also changes the 
+         * dual basis vectors and the arrays containing secondary information
+         * about the two basis (like the norms) accordingly.
          */
         void permute (int i, int j);
 
         /**
-         * Check duality
+         * Returns `true` if the dual basis contained in the object really is 
+         * the dual of the basis, and `false` otherwise. This also returns false
+         * if no dual has been specified.
          */
         bool checkDuality();
 
         /**
-         * Sorts the basis vectors with indices from \f$d\f$ to the dimension
-         * of the basis by increasing length. The dual vectors are permuted
-         * accordingly. Assumes that the lengths of the corresponding basis
-         * vectors are up to date.
+         * Sorts the basis vectors with indices greater of equal to \f$d\f$ by 
+         * increasing length. The dual vectors are permuted accordingly. Assumes 
+         * that the lengths of the corresponding basis vectors are up to date.
          */
         void sort (int d);
 
         /**
-         * Return a string with the primal basis and its norms
+         * Returns a string with the primal basis and its norms.
          */
         std::string toStringBasis() const;
 
         /**
-         * Return a string with the dual basis and its norms
+         * Returns a string with the dual basis and its norms.
          */
         std::string toStringDualBasis() const;
 
         /**
-         * Writes the lattice and the parameters on standard output
+         * Writes the lattice and its parameters on standard output. This prints
+         * the dimension, the norm used, the basis and dual basis vectors and
+         * the basis and dual basis vector norms.
          */
         void write () const;
 
       protected:
 
         /**
-         * Represent the basis of the lattice. BMat is defined in Types.h
-         * This is a matrix where the type of the number can change.
+         * Each row of this matrix represents a vector in the basis of the
+         * lattice.
          */
         BasIntMat m_basis;
 
         /**
-         * Represent the dual basis of the lattice. BMat is defined in Types.h
-         * This is a matrix where the type of the number can change.
+         * Each row of this matrix represents a vector in the dual basis of the
+         * lattice.
          */
         BasIntMat m_dualbasis;
 
 
         /**
-         * The dimension of the space.
+         * The dimension of the lattice. The dimension is both the number of 
+         * vectors in the basis, and the dimension \f$d\f$ of \f$\mathbb{Z}^d\f$
+         * containing the lattice.
          */
         int m_dim;
 
         /**
-         * The norm used in the reduction and for this lattice
+         * The NormType used in the reduction and for this lattice.
          */
         NormType m_norm;
 
@@ -326,12 +360,13 @@ namespace LatticeTester {
         DblVec m_dualvecNorm;
 
         /**
-         * The modulo linked to the m-dual.
+         * The `m` associated to the `m`-dual.
          */
         Int m_modulo;
 
         /**
-         * If m_withDual is true, we can use Dual Basis.
+         * If m_withDual is `true` a dual basis has been specified, otherwise it
+         * is `false`.
          */
         bool m_withDual;
 
@@ -339,7 +374,6 @@ namespace LatticeTester {
          * This table is used in the Minkowski reduction.
          */
         bool *m_xx;
-
 
     }; // class IntLatticeBasis
 

@@ -1,6 +1,7 @@
 /**
  * \page aaroutine Main functions
  *
+ * \todo Is this even useful?
  *
  * We present here the routine functions included in *LatticeTester*.
  * Please, read the Background before using theses functions.

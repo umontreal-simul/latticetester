@@ -45,7 +45,8 @@ namespace NTL
   template <typename T> class vector : public Vec<T>{
     public:
 
-      /** \todo Check if this type is valid or should be reverted to `long`*/
+      /** \todo Check if this type is valid or should be reverted to `long`
+       * */
       typedef std::int64_t size_type;
 
       /**
@@ -211,9 +212,15 @@ namespace NTL
   template <class M>
     class matrix_row : public vector<typename M::value_type> {
       public:
+        /**
+         * Copy constructor? Creates an object that is a copy if `data`.
+         * */
         inline matrix_row(M& data, typename M::size_type i) {
           this->_vec__rep = (typename M::value_type*&) data[i]._vec__rep;
         }
+        /**
+         * Empty constructor.
+         * */
         inline ~matrix_row() {
           this->_vec__rep = 0; /* avoid destruction in parent class */
         }

@@ -30,7 +30,7 @@
 namespace LatticeTester {
 
   /**
-   * Sequences of coordinate sets.
+   * A classes containing multiple sets of coordinates.
    *
    * These can be used to specify a set of projections of lattices or point sets.
    * The classes in this namespace are iterable but are not containers, so they
@@ -40,7 +40,22 @@ namespace LatticeTester {
   namespace CoordinateSets {
 
     /**
-     * Implementation of CoordinateSets for coordinates within a given range.
+     * A CoordinateSets for coordinates within a given range.
+     * This contains ways to build all subsets of coordinates of a given size
+     * in an interval \f$\{\mathtt{minCoord}, \dots, \mathtt{maxCoord}\}\f$.
+     * The intended usage of this class is to generate subsets of different 
+     * orders for a single interval.
+     * 
+     * This class keeps a map of intervals indiced with the order that will be
+     * used to generate subsets from them. This means that this class only keeps
+     * one interval for each order.
+     * 
+     * When you iterate through this class, it generates the next subset of 
+     * coordinates in the interval associated with the current order. If there 
+     * is none left, it moves on to the next order and starts generating subsets
+     * from the interval associated with this order. It is not possible to 
+     * generate coordinate sets of the same order for different intervals with 
+     * the same instance of this class.
      */
     class FromRanges {
 
@@ -65,22 +80,29 @@ namespace LatticeTester {
 
         /**
          * Include all subsets \f$\mathfrak u\f$ of
-         * \f$\{\mathtt{minCoord}, \dots, \mathtt{maxCoord}\}\f$ of order
+         * \f$\{\mathtt{minCoord}, \dots, \mathtt{maxCoord}\}\f$ of `order`
          * \f$|\mathfrak u| = \mathtt{order}\f$.
          * For example, calling \c includeOrder(3, 1, 5) causes all 3-tuples over
          * coordinates \f$1, \dots, 5\f$ to be included.
-         * If \c order is \c 0 (corresponding to the empty set),
-         * \c minCoord and \c maxCoord are ignored.
-         * Except for the case where \c order = 0, an exception is thrown if
+         * If `order = 0` (corresponding to the empty set),
+         * `minCoord` and `maxCoord` are ignored.
+         * 
+         * Except for the case where `order = 0`, an exception is thrown if
          * \f$\mathtt{maxCoord} < \mathtt{minCoord} + \mathtt{order} - 1\f$.
+         *
+         * If the object already contains an interval for size `order`,
+         * this interval is overwritten by the new one.
          */
         void includeOrder (Coordinates::size_type order,
             Coordinates::value_type minCoord,
             Coordinates::value_type maxCoord);
 
         /**
-         * Excludes coordinate sets \f$\mathfrak u\f$ of order
-         * \f$|\mathfrak u| = \mathtt{order}\f$.
+         * Removes the element associated with `order` from the list of 
+         * of intervals to generate from. This means that no coordinate set
+         * \f$\mathfrak u\f$ of order \f$|\mathfrak u| = \mathtt{order}\f$ will
+         * be returned by the iterator until a new interval is given to the 
+         * object for this order.
          */
         void excludeOrder (Coordinates::size_type order);
 
@@ -88,9 +110,15 @@ namespace LatticeTester {
         typedef std::pair<Coordinates::value_type, Coordinates::value_type> Range;
         typedef std::map<Coordinates::size_type, Range> RangeMap;
 
+        // Why is there a private getter?
         const RangeMap& ranges() const { return m_ranges; }
 
       public:
+        /**
+         * An iterator class used internaly by the `FromRange` class. Given an
+         * object of this class, it is possible to cycle through the element it 
+         * contains with the increment (`++`) or decrement (`--`) operators.
+         * */
         class const_iterator : public boost::iterators::iterator_facade<const_iterator,
         const Coordinates, // value
         boost::iterators::forward_traversal_tag> // traversal
@@ -98,14 +126,25 @@ namespace LatticeTester {
         public:
           struct end_tag {};
 
+          /**
+           * Constructor for an iterator at the begining of the list of sets that
+           * `seq` contains.
+           * */
           explicit const_iterator(const FromRanges& seq):
             m_seq(&seq), m_atEnd(false)
         { resetToOrder (m_seq->ranges().begin()); }
 
+          /**
+           * Constructor for an iterator at the end of the list of sets that
+           * `seq` contains.
+           * */
           const_iterator(const FromRanges& seq, end_tag):
             m_seq(&seq), m_atEnd(true) // end
         {}
 
+          /**
+           * Empty FromRange::const_iterator constructor
+           * */
           const_iterator():
             m_seq(nullptr), m_atEnd(false)
         { }
@@ -113,17 +152,32 @@ namespace LatticeTester {
         private:
           friend class boost::iterators::iterator_core_access;
 
+          /**
+           * The iterator advances of one value. It generates a new subset of
+           * coordinates and stores it in m_value that can be accessed with 
+           * deference().
+           * */
           void increment();
 
+          /**
+           * Compares this instance with `other`, returning true if they are 
+           * associated with the same FromRange object and if 
+           * */
           bool equal(const const_iterator& other) const
           { 
             return m_seq == other.m_seq 
               && (other.m_atEnd ? m_atEnd : m_value == other.m_value);
           }
 
+          /**
+           * Returns the coordinates set at which the iterator is.
+           * */
           const Coordinates& dereference() const
           { return m_value; }
 
+          /**
+           * Resets the iterator at the beginning of order.
+           * */
           void resetToOrder (const RangeMap::const_iterator& it);
 
         private:
@@ -131,16 +185,19 @@ namespace LatticeTester {
           bool m_atEnd;
           Coordinates m_value;
 
-      }; // end cons_iterator class
+      }; // end FromRanges::const_iterator class
 
         /**
-         * Returns an iterator pointing to the first element in the seq.
+         * Returns a const_iterator pointing to the first element in the sequence
+         * of coordinates sets that the object contains. It can then be used to
+         * cycle through all the sets with `++`.
          */
         const_iterator begin() const
         { return const_iterator(*this); }
 
         /**
-         * Returns an iterator pointing past the last element in the seq.
+         * Returns a const_iterator pointing past the last element in the seq. 
+         * It can then be used to cycle through all the sets with `--`.
          */
         const_iterator end() const
         { return const_iterator(*this, typename const_iterator::end_tag{}); }
@@ -153,32 +210,46 @@ namespace LatticeTester {
 
     /**
      * This class implements CoordinateSets for any set of coordinates.
-     * It is more powerful than the class Range, but
-     * slightly slower (by 15--20\,\% according to empirical tests).
+     * It is more powerful than the class FromRange, but
+     * slightly slower (by 15--20% according to empirical tests).
      */
     class Subsets {
 
-      /**
-       * Constructs a set of all subsets of \c coords with minimum and maximum
-       * cardinality specified by \c minOrder and \c maxOrder.
-       * For example, to select  all 1, 2, and 3-tuples over coordinates 2, 4, 6,
-       * one may use the declaration <tt>Subsets tousens(ens, 1, 3)</tt>,
-       * where  set <tt>ens</tt> is \{2,4,6\}; this gives the sets
-       * <tt>tousens = {{2}, {4}, {6}, {2, 4}, {2, 6}, {4, 6}, {2, 4, 6}}</tt>.
-       */
       public:
+      /**
+       * Constructs a set of all subsets of `coords` with minimum and maximum
+       * cardinality specified by `minOrder` and `maxOrder`.
+       * For example, to select  all 1, 2, and 3-tuples over coordinates 2, 4, 6,
+       * one may use the declaration `Subsets tousens(ens, 1, 3)`,
+       * where  set `ens` is `{2,4,6}`; this gives the sets
+       * `tousens = {{2}, {4}, {6}, {2, 4}, {2, 6}, {4, 6}, {2, 4, 6}}`.
+       */
         Subsets (const Coordinates & coords,
             Coordinates::size_type minOrder,
             Coordinates::size_type maxOrder);
 
+        /**
+         * Returns the coordinates, as passed to the constructor \ref
+         * Subsets(const Coordinates&,Coordinates::size_type,Coordinates::size_type)
+         * */
         const Coordinates& coords() const { return  m_coords; }
+        /**
+         * Returns `minOrder`, as passed to the constructor \ref
+         * Subsets(const Coordinates&,Coordinates::size_type,Coordinates::size_type)
+         * */
         Coordinates::size_type minOrder() const { return m_minOrder; }
+        /**
+         * Returns `maxOrder`, as passed to the constructor \ref
+         * Subsets(const Coordinates&,Coordinates::size_type,Coordinates::size_type)
+         * */
         Coordinates::size_type maxOrder() const { return m_maxOrder; }
 
       public:
         /**
-         * Iterator
-         */
+         * An iterator class used internaly by the `Subsets` class. Given an
+         * object of this class, it is possible to cycle through the element it 
+         * contains with the increment (`++`) or decrement (`--`) operators.
+         * */
         class const_iterator : public boost::iterators::iterator_facade<const_iterator,
         const Coordinates, // value
         boost::iterators::forward_traversal_tag> // traversal
@@ -186,14 +257,25 @@ namespace LatticeTester {
         public:
           struct end_tag {};
 
+          /**
+           * Constructor for an iterator at the begining of the list of sets that
+           * `seq` contains.
+           * */
           explicit const_iterator(const Subsets& seq):
             m_seq(&seq), m_atEnd(false)
         { resetToOrder (m_seq->minOrder()); }
 
+          /**
+           * Constructor for an iterator at the end of the list of sets that
+           * `seq` contains.
+           * */
           const_iterator(const Subsets& seq, end_tag):
             m_seq(&seq), m_atEnd(true) // end
         {}
 
+          /**
+           * Empty constructor.
+           * */
           const_iterator():
             m_seq(nullptr), m_atEnd(false)
         { }
@@ -201,14 +283,29 @@ namespace LatticeTester {
         private:
           friend class boost::iterators::iterator_core_access;
 
+          /**
+           * The iterator advances of one value. It generates a new subset of
+           * coordinates and stores it in m_value that can be accessed with 
+           * deference().
+           * */
           void increment();
 
+          /**
+           * Compares this instance with `other`, returning true if they are 
+           * associated with the same FromRange object and if 
+           * */
           bool equal(const const_iterator& other) const
           { return m_seq == other.m_seq && (other.m_atEnd ? m_atEnd : m_value == other.m_value); }
 
+          /**
+           * Returns the coordinates set at which the iterator is.
+           * */
           const Coordinates& dereference() const
           { return m_value; }
 
+          /**
+           * Resets the iterator at the beginning of order.
+           * */
           void resetToOrder (Coordinates::size_type order);
 
         private:
@@ -216,16 +313,16 @@ namespace LatticeTester {
           bool m_atEnd;
           Coordinates m_value;
 
-      }; // end const_iterator class
+      }; // end Subsets::const_iterator class
 
         /**
-         * Returns an iterator pointing to the first element in the seq.
+         * Returns an iterator pointing to the first element of `*this`.
          */
         const_iterator begin() const
         { return const_iterator(*this); }
 
         /**
-         * Returns an iterator pointing past the last element in the seq.
+         * Returns an iterator pointing past the last element of `*this`.
          */
         const_iterator end() const
         { return const_iterator(*this, typename const_iterator::end_tag{}); }

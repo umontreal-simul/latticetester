@@ -1,6 +1,10 @@
 /*!
 
-\mainpage LatticeTester Manual
+\if NESTED_PROJECT
+\page latticetesterNested Lattice Tester Manual
+\else
+\mainpage Lattice Tester Manual
+\endif
 
 # Overview
 
@@ -96,8 +100,6 @@ precision for calculations.
 - \subpage DIY
 - \subpage a_intro
 - \subpage aaroutine
-
-
 
 
 */

@@ -16,7 +16,3 @@
 // limitations under the License.
 
 #include "latticetester/NormaMinkowski.h"
-
-int main() {
-  return 0;
-}

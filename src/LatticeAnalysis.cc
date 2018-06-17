@@ -16,7 +16,3 @@
 // limitations under the License.
 
 #include "latticetester/LatticeAnalysis.h"
-
-int main() {
-  return 0;
-}

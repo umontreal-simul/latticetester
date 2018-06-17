@@ -19,9 +19,20 @@
 namespace LatticeTester {
 
   /**
-   * This class extends IntLatticeBasis with functions to do stuff.
+   * This class is a skeleton for the implementation of different types of 
+   * lattices of arbitrary rank.
+   * \todo define rank of a lattice in the intro
+   * 
+   * This class contains a method to compute lattices of projections of 
+   * \f$\{x_i\}_{ 0 \leq i}\f$, a method to exchange the basis and the dual 
+   * basis, and a virtual method that can be implemented in subclasses to 
+   * recompute the basis for different dimensions.
    *
-   * Order (the order of the MRG recurrence
+   * A lattice of rank \f$k\f$ with integer vectors modulo \f$m\f$ contains
+   * \f$m^k\f$ distinct vectors. This number, the density, can then be used to 
+   * compute bounds on the spectral test. This class implements methods to 
+   * compute \f$ \log_2(m^{2i}) \f$ for \f$ 1 \leq i \leq k \f$ to help with the 
+   * computation of such bounds. 
    */
   template<typename Int, typename BasInt, typename BasIntVec,
     typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
@@ -33,18 +44,25 @@ namespace LatticeTester {
            * Constructor initializing the primal and the dual basis with the 
            * identity matrix. The dimension of the lattice is set to `maxDim` 
            * and the norm used for reduction to `norm`.
+           * @param modulo The modulo of the integer coordinates
+           * @param k The rank of the lattice to be constructed
+           * @param maxDim The maximal dimension for which this lattice can be
+           * expanded/tested (?)
+           * @param norm The norm to use in for reduction
            */
           IntLattice (Int modulo, int k, int maxDim, NormType norm = L2NORM);
 
           /**
-           * Copy constructor. The maximal dimension of the created basis is set
-           * equal to `Lat`’s current dimension.
+           * Copy constructor that makes a copy of `Lat`. The maximal dimension 
+           * of the created basis is set equal to `Lat`’s current dimension.
            */
           IntLattice (const IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl,
               DblVec, RedDbl> & Lat);
 
           /**
-           * Same as assignment operator above.
+           * Copies `lattice` into this object. This should be equivalent to
+           * the creation of a new IntLattice using the copy constructor with
+           * `lattice` as an argument.
            */
           void copy (const IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl,
               DblVec, RedDbl> & lattice);
@@ -55,17 +73,28 @@ namespace LatticeTester {
           virtual ~IntLattice ();
 
           /**
-           * Init the matrix
+           * Allocates space to vectors used internally. This should probably be
+           * private or protected because it should not be needed to call it 
+           * directly (the constructors and copy already call it.
            */
           void init ();
 
           /**
-           * Return the order of the matrix
+           * This is the order of the underlying MRG. The problem is that the 
+           * lattice is not necessarily associated with a MRG anymore. The 
+           * solution probably is to change this so that it is now the rank
+           * because a MRG of order k spans a lattice of rank k. (See the lattice
+           * construction in Pierre's book)
            */
           int getOrder() const { return m_order; }
 
           /**
-           * Increment the dimension of the element of the lattice
+           * Increments the dimension of the basis and dual basis vectors by 
+           * one. This initializes the added components to `0` and does not 
+           * compute the value taken by the added components and vector. It also
+           * resets vectors containing the norms. The implementation in this
+           * class is meant to be overriden by subclasses and probably should 
+           * not be used.
            */
           virtual void incDim ();
 
@@ -123,7 +152,7 @@ namespace LatticeTester {
            */
           virtual void setLac (const Lacunary<BasInt, BasIntVec> &) 
           {
-            LatticeTester::MyExit(1, "IntLattice.setLac is empty"); 
+            MyExit(1, "IntLattice.setLac is empty"); 
           }
 
           /**
@@ -171,7 +200,8 @@ namespace LatticeTester {
           /**
            * Use to save the dual basis and the basis in some works.
            */
-          BasIntMat m_wSI, m_vSI;
+          BasIntMat m_wSI;
+          BasIntMat m_vSI;
 
           /**
            * Working Variables use in MRGLattice.h
@@ -284,7 +314,7 @@ namespace LatticeTester {
         lattmp (*this);
       int dim = this->getDim();
 
-      //std::int64_t sizemat = m_basis.size1();
+      // std::int64_t sizemat = m_basis.size1();
       // declared as an "unused variable" by the compiler
 
       this->m_basis.resize(dim+1, dim+1);

@@ -208,7 +208,7 @@ namespace LatticeTester {
         bool getXX (int i) const { return m_xx[i]; } //???
 
         /**
-         * Sets `value` at the `i`-th position in an array the basis.
+         * Sets `value` at the `i`-th position in the array xx.
          */
         void setXX (bool val, int i) { m_xx[i] = val; } //??
 

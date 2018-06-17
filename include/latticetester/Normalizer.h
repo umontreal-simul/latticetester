@@ -18,6 +18,7 @@
 /* Normalizer.h for ISO C++ */
 #ifndef LATTICETESTER__NORMALIZER_H
 #define LATTICETESTER__NORMALIZER_H
+
 #include "latticetester/Util.h"
 #include "latticetester/Const.h"
 

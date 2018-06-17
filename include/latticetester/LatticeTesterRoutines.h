@@ -3,7 +3,6 @@
 
 #include "latticetester/Const.h"
 #include "latticetester/IntLatticeBasis.h"
-#include "latticetester/LatticeAnalysis.h"
 #include "latticetester/Normalizer.h"
 #include "latticetester/NormaBestLat.h"
 #include "latticetester/NormaLaminated.h"

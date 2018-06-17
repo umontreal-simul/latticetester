@@ -23,9 +23,6 @@
 #include <map>
 #include <iostream>
 
-#include "latticetester/Util.h"
-
-
 namespace LatticeTester {
 
   /**

@@ -18,6 +18,7 @@
 
 #ifndef LATTICETESTER__INTLATTICEBASIS_H
 #define LATTICETESTER__INTLATTICEBASIS_H
+
 #include "latticetester/Const.h"
 #include "latticetester/Util.h"
 #include "latticetester/ntlwrap.h"

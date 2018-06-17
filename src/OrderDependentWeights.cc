@@ -17,6 +17,7 @@
 
 #include "latticetester/OrderDependentWeights.h"
 #include "latticetester/Weights.h"
+#include "latticetester/Util.h"
 
 #include <sstream>
 

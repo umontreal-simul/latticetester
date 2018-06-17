@@ -26,6 +26,7 @@
 
 #ifndef LATTICETESTER__UTIL_H
 #define LATTICETESTER__UTIL_H
+
 #include <string>
 #include <sstream>
 #include <iostream>

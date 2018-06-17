@@ -21,10 +21,11 @@
 #include <set>
 #include <map>
 #include <iostream>
+
 #include <boost/iterator/iterator_facade.hpp>
 #include <boost/iterator/iterator_adaptor.hpp>
 #include <boost/config.hpp>
-#include "latticetester/Util.h"
+
 #include "latticetester/Coordinates.h"
 
 namespace LatticeTester {

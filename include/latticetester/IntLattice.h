@@ -13,7 +13,6 @@
 #include "latticetester/NormaMinkowski.h"
 #include "latticetester/CoordinateSets.h"
 #include "latticetester/Lacunary.h"
-//#include "latticetester/Const.h"
 #include "latticetester/Util.h"
 
 namespace LatticeTester {

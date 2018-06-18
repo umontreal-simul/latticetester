@@ -52,8 +52,7 @@ Pre-reduction available in *LatticeTester* are :
 
 <dt>LLL reduction</dt><dd> given Lenstra, Lenstra and Lovasz in \cite mLEN82a.</dd>
 
-<dt>Block Korkin-Zolotarev (BKZ)</dt><dd> reduction given by Schnorr \cite rSCH87a
-\cite mSCH91a.</dd>
+<dt>Block Korkin-Zolotarev (BKZ)</dt><dd> reduction given by Schnorr \cite mSCH91a.</dd>
 </dl>
 
 These pre-reductions can be perform in a polynomial time.

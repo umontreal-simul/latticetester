@@ -58,6 +58,8 @@ $(PRO_DIR)/%.o:$(PRO_DIR)/%.cc
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 	$(CC) $@ $(STAT_LIBS_PATH) $(STAT_LIBS) $(DYN_LIBS_PATH) $(DYN_LIBS) -o $(BIN_DIR)/$(@:progs/%.o=%) 
 
+doc:
+	doxygen doc/configfile
 #==============================================================================
 clean: clean_objects clean_bin clean_lib
 
@@ -76,3 +78,5 @@ mkdir:
 	mkdir -p bin
 	mkdir -p obj
 	mkdir -p lib
+
+.PHONY: doc

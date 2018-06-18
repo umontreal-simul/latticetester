@@ -549,34 +549,65 @@
  *  performed exactly in this order.
  *
  * \subsubsection prered_LLL LLL pre-reduction
+ *
  * Lenstra, Lenstra, and Lovasz \cite mLEN82a have proposed a popular form of
- * lattice basis reduction known as *LLL reduction*.
- * In a nutshell, for a small \f$\epsilon > 0\f$,
- * we say that a basis is \f$\epsilon\f$-LLL reduced if
+ * lattice basis reduction known as *LLL reduction*. Our software implements/uses
+ * (in most cases we use the NTL implementation) a slightly modified version of
+ * this algorithm presented in \cite mSCH91a.
  *
- * -  It is pairwise reduced;
- * -  for \f$1<i\le t\f$,
- *    \f$\Vert \mathbf{v}_{i+1}(i)\Vert^2 / \Vert \mathbf{v}_i(i)\Vert^2 \ge 1-\epsilon\f$;
+ * Let us recall *Gram-Schmidt orthogonalization*. From the basis 
+ * \f$\{\mathbf{v}_1, \ldots, \mathbf{v}_t\}\f$, we can get an orthogonal basis 
+ * \f$\{\hat{\mathbf{v}}_1, \ldots, \hat{\mathbf{v}}_t\}\f$ by taking
+ * \f[
+ *   \hat{\mathbf{v}}_1 = \mathbf{v}_1, \ \hat{\mathbf{v}}_i = \mathbf{v}_i - 
+ *   \sum_{j=1}^{i-1} \mu_{ij} \hat{\mathbf{v}}_j,\ \mu_{ij} = \frac{\mathbf{v}_i 
+ *   \cdot \hat{\mathbf{v}}_j}{\hat{\mathbf{v}}_j \cdot \hat{\mathbf{v}}_j}
+ * \f]
+ * For a small \f$0 \leq \epsilon < 3/4\f$, we say that a basis is \f$\epsilon\f$-LLL 
+ * reduced if
  *
- * where \f$\mathbf{v}_j(i)\f$ denotes the component of \f$\mathbf{v}_j\f$ which is orthogonal to
- * \f$\mathbf{v}_1,\dots,\mathbf{v}_{i-1}\f$.  Here, "pairwise reduced" means that for any \f$i\not=j\f$,
- * it is not possible to reduce \f$\mathbf{v}_i\f$ by adding to it an integer multiple of \f$\mathbf{v}_j\f$.
+ * 1.  \f$ |\mu_{ij}| \leq 1/2 \f$ for \f$1 \leq j < i \leq t\f$ ;
+ * 2.  for \f$0 < i \leq t-1 \f$,
+ *    \f$1-\epsilon \leq \frac{\Vert \hat{\mathbf{v}}_{i+1} + \mu_{i\,i+1} 
+ *    \hat{\mathbf{v}}_i \Vert^2}{\Vert \hat{\mathbf{v}}_i\Vert^2}\f$;
  *
- * The \f$\epsilon\f$-LLL reduction is weaker than other forms such as
- * Minkowski or Hermite reduction.
- * In particular, it does not guarantee that the shortest basis vector is
- * a shortest nonzero lattice vector.
- * On the other hand, when \f$\epsilon\f$ is small, the length of the shortest basis vector
- * is at most slightly larger than the length \f$\ell_t\f$ of a shortest nonzero vector in the lattice,
- * and the lengths of the other basis vectors also not much larger than the shortest possible.
+ * Here, the first condition means that for any \f$i \neq j\f$, it is not 
+ * possible to reduce \f$\mathbf{v}_i\f$ by adding to it an integer multiple of 
+ * \f$\mathbf{v}_j\f$. This is equivalent to one step of pairwise reduction in 
+ * the primal. The second condition means that we want to 
+ * sort the vectors so that \f$\mathbf{v}_i\f$ is the vector with the shortest 
+ * projection on \f$\text{span}(\mathbf{v}_1, \ldots \mathbf{v}_{i-1})\f$ among
+ * \f$\{\mathbf{v}_i, \ldots, \mathbf{v}_{t}\}\f$. Also note that in practice, we 
+ * would like to take \f$0<\epsilon\f$ as small as possible.
+ * 
+ * This algorithm does a very simple `while` loop. From \f$k=2\f$ it performs 
+ * pairwise reduction of \f$\mathbf{v}_k\f$ with \f$ \mathbf{v}_{k-1}, \ldots, 
+ * \mathbf{v}_t\f$ and checks if the condition 2 is verified for \f$i = k-1\f$.
+ * If it is, \f$k\f$ is incremented. If it's not, \f$\mathbf{v}_k\f$ and
+ * \f$\mathbf{v}_{k-1}\f$ are swapped and \f$k\f$ is decremented if it is greater
+ * than 2. Since the version we use has floating point arithmetic, it also has 
+ * a few more steps to account for the possible error. Moreover, this algorithm
+ * can be expanded to take a generating set of more than \f$t\f$ vectors of the 
+ * lattice and still return a reduced basis (the last vectors in the reduced 
+ * basis will be set to \f$\mathbf{0}\f$).
+ *
+ * This particular reduction does not necessarily returns the shortest vector as
+ * \f$\mathbf{v}_1\f$. However, we have that \f$ 1 \leq \Vert \mathbf{v}_1 
+ * \Vert^2 / \ell_t^2 \leq (3/4 - \epsilon)^{1-t}\f$ (\cite mSCH91a) and the 
+ * lengths of the other basis vectors also not much larger than that of 
+ * \f$\mathbf{v}_1\f$ after the reduction.
  *
  * For this reason, an LLL-reduced basis tends to yield a much thinner BB tree.
- * Moreover, an \f$\epsilon\f$-LLL reduction can be performed quickly (in polynomial time for a fixed dimension).
- * It is therefore very effective and useful.
- * Some authors fix \f$\epsilon\f$ at 1/4 \cite mHEL85a \cite mLOV86a, but we prefer much smaller values.
- * In our implementations, we use \f$\epsilon = 10^{-6}\f$ as the default value.
+ * Moreover, an \f$\epsilon\f$-LLL reduction can be performed quickly (it is 
+ * polynomial in the number of dimensions if the arithmetic is exact but could 
+ * cycle indefinitely if \f$\epsilon\f$ is too close to 0 and the precision too
+ * small). It is therefore very effective and useful. Some authors fix 
+ * \f$\epsilon\f$ at 1/4 \cite mHEL85a \cite mLOV86a, but we prefer much smaller
+ * values. In our implementations, we use \f$\epsilon = 10^{-6}\f$ as the 
+ * default value.
  * 
  * \subsubsection prered_BKZ BKZ pre-reduction
+ *
  * The block Korkin-Zolotarev algorithm that we use is the one presented in 
  * \cite mSCH91a (the one used in NTL). It is more costly than LLL, but it 
  * yields better results, leading to an accelerated *Branch and Bound* in some 

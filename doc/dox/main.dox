@@ -1,7 +1,7 @@
 /*!
 
 \if NESTED_PROJECT
-\page latticetesterNested Lattice Tester Manual
+\page latticetester Lattice Tester Manual
 \else
 \mainpage Lattice Tester Manual
 \endif

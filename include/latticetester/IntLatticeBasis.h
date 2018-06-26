@@ -774,22 +774,24 @@ namespace LatticeTester {
     RedDbl>::write () const
     {
       std::cout << "Dim = " << this->m_dim << " \n \n";
+      std::cout << "Primal basis vectors:\n";
       for (int i = 0; i < this->m_dim; i++) {
-        std::cout << "  |     ";
+        std::cout << "[";
         for (int j = 0; j < this->m_dim; j++) {
           std::cout << std::setprecision (15) << this->m_basis(i,j) << "\t";
         }
-        std::cout << "    |";
+        std::cout << "]\n";
+      }
+      std::cout << "\nDual basis vectors:\n";
+      for (int i = 0; i < this->m_dim; i++) {
+        std::cout << "[";
         if(this->m_withDual){
-          std::cout <<"  |     ";
           for (int j = 0; j < this->m_dim; j++) {
             std::cout << std::setprecision (15) <<
               this->m_dualbasis(i,j) << "\t";
           }
-          std::cout << "    |";
+          std::cout << "]\n";
         }
-        std::cout << "\n";
-
       }
       std::cout << "\n";
       std::cout << "Norm used : " << toStringNorm(this->m_norm) << "\n"
@@ -805,14 +807,23 @@ namespace LatticeTester {
         if (this->m_vecNorm[i] < 0) {
           std::cout << "NaN OR Not computed";
         } else {
-          std::cout << this->m_vecNorm[i];
+          if (this->m_norm == L2NORM) {
+            std::cout << NTL::SqrRoot(this->m_vecNorm[i]);
+          } else {
+            std::cout << this->m_vecNorm[i];
+          }
         }
         if(this->m_withDual){
           std::cout << "\t \t \t ";
           if (this->m_dualvecNorm[i] < 0)
             std::cout << "NaN OR Not computed";
-          else
-            std::cout << this->m_dualvecNorm[i];
+          else{
+            if (this->m_norm == L2NORM) {
+              std::cout << NTL::SqrRoot(this->m_dualvecNorm[i]);
+            } else {
+              std::cout << this->m_dualvecNorm[i];
+            }
+          }
         }
         std::cout << "\n";
       }

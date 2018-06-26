@@ -577,8 +577,9 @@
  * the primal. The second condition means that we want to 
  * sort the vectors so that \f$\mathbf{v}_i\f$ is the vector with the shortest 
  * projection on \f$\text{span}(\mathbf{v}_1, \ldots \mathbf{v}_{i-1})\f$ among
- * \f$\{\mathbf{v}_i, \ldots, \mathbf{v}_{t}\}\f$. Also note that in practice, we 
- * would like to take \f$0<\epsilon\f$ as small as possible.
+ * \f$\{\mathbf{v}_i, \ldots, \mathbf{v}_{t}\}\f$ (the condition does not make
+ * sure this is attained, but it is the idea behind it I think). Also note that
+ * in practice, we would like to take \f$0<\epsilon\f$ as small as possible.
  * 
  * This algorithm does a very simple `while` loop. From \f$k=2\f$ it performs 
  * pairwise reduction of \f$\mathbf{v}_k\f$ with \f$ \mathbf{v}_{k-1}, \ldots, 
@@ -613,6 +614,11 @@
  * yields better results, leading to an accelerated *Branch and Bound* in some 
  * cases. This is basically a generalization of the LLL reduction using stronger
  * parameters. 
+ * 
+ * In LLL we want to sort the vectors so that \f$\mathbf{v}_i\f$ is the vector 
+ * with the shortest projection on \f$\text{span}(\mathbf{v}_1, \ldots 
+ * \mathbf{v}_{i-1})\f$ among \f$\{\mathbf{v}_i, \ldots, \mathbf{v}_{t}\}\f$.
+ * BKZ is a stronger algorithm that allows us to get closer to this goal.
  *
  * \subsubsection prered_precision A note on precision
  * We should say a few words on precision. Also, we should advise the user that

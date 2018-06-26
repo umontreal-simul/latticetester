@@ -161,12 +161,15 @@ namespace LatticeTester {
           virtual std::string toStringCoef() const;
 
 
-          //    /*
-          //     * The components of the lattice when it is built out of more than one
-          //     * component. When there is only one component, it is unused as the
-          //     * parameters are the same as above.
-          //     */
-          // //    std::vector<MRGComponent *> comp;
+          // /**
+          // * The components of the lattice when it is built out of more than one
+          // * component. When there is only one component, it is unused as the
+          // * parameters are the same as above.
+          // * \todo Find a way to move this somewhere else. This is currently
+          // * used in LatMRG and should not be here. We keep it because It would 
+          // * be a hassle to correct LatMRG to remove this.
+          // */
+          //std::vector<MRGComponent *> comp;
 
 
         protected:

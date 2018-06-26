@@ -13,7 +13,7 @@
  * \f$\mathcal{P}_\alpha\f$, as well as figures of merit that take normalized versions
  * of these measures over projections of the lattice on subsets of the \f$t\f$ coordinates,
  * and then take a weighted sum or the worst-case over the class of considered projections.
- * *LatticeTester* is used in particular in the *Lattice Builder* and *LatMRG*
+ * *LatticeTester* is used in particular in the *LatNet Builder* and *LatMRG*
  * software tools, designed to construct and analyze lattice rules and linear generators.
  *
  *

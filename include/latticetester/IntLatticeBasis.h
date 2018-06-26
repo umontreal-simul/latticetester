@@ -799,7 +799,7 @@ namespace LatticeTester {
       std::cout << "Norm of each Basis vector : \n";
       std::cout << " Primal     ";
       if(this->m_withDual)
-        std::cout << "\t Dual \n";
+        std::cout << "\t\t\t\t Dual \n";
       std::cout << "\n";
 
       for (int i = 0; i < this->m_dim; i++) {
@@ -808,7 +808,7 @@ namespace LatticeTester {
           std::cout << "NaN OR Not computed";
         } else {
           if (this->m_norm == L2NORM) {
-            std::cout << NTL::SqrRoot(this->m_vecNorm[i]);
+            std::cout << std::sqrt(this->m_vecNorm[i]);
           } else {
             std::cout << this->m_vecNorm[i];
           }
@@ -819,7 +819,7 @@ namespace LatticeTester {
             std::cout << "NaN OR Not computed";
           else{
             if (this->m_norm == L2NORM) {
-              std::cout << NTL::SqrRoot(this->m_dualvecNorm[i]);
+              std::cout << std::sqrt(this->m_dualvecNorm[i]);
             } else {
               std::cout << this->m_dualvecNorm[i];
             }
@@ -827,6 +827,7 @@ namespace LatticeTester {
         }
         std::cout << "\n";
       }
+      std::cout << std::endl;
     }
 
   /*=========================================================================*/

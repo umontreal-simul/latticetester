@@ -756,7 +756,7 @@ namespace LatticeTester {
         field = RES;
       else if (0 == strcasecmp(val.c_str(), "GEN")) {
         field = GEN;
-        MyExit(1, "readOutputType:   GEN case not ready");
+        // MyExit(1, "readOutputType:   GEN case not ready");
       } else if (0 == strcasecmp(val.c_str(), "TEX")) {
         field = TEX;
         MyExit(1, "readOutputType:   TEX case not ready");

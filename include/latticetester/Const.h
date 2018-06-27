@@ -46,10 +46,10 @@ namespace LatticeTester {
    *
    * `TERMINAL`: the results will appear only on the terminal screen.<br>
    * `RES`: the results will be in plain text format and sent to a file with
-   * extension "<tt>.res</tt>".<br>
+   * extension `.res`.<br>
    * `TEX`: the results will be in LaTeX format and sent to a file with extension
-   * "<tt>.tex</tt>".<br>
-   * `GEN`: the results will be sent to a file with extension "<tt>.gen</tt>".
+   * `.tex`.\n
+   * `GEN`: the results will be sent to a file with extension `.gen`.
    */
   enum OutputType { TERMINAL, RES, TEX, GEN };
 

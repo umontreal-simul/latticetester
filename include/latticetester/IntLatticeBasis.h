@@ -774,36 +774,34 @@ namespace LatticeTester {
     RedDbl>::write () const
     {
       std::cout << "Dim = " << this->m_dim << " \n \n";
-      std::cout << "Primal basis vectors:\n";
+      std::cout << std::setprecision(10) << "Primal basis vectors:\n";
       for (int i = 0; i < this->m_dim; i++) {
-        std::cout << "[";
-        for (int j = 0; j < this->m_dim; j++) {
-          std::cout << std::setprecision (15) << this->m_basis(i,j) << "\t";
-        }
-        std::cout << "]\n";
+        std::cout << this->m_basis[i];
+        //for (int j = 0; j < this->m_dim; j++) {
+        //  std::cout <<  this->m_basis(i,j);
+        //}
+        std::cout << "\n";
       }
       std::cout << "\nDual basis vectors:\n";
       for (int i = 0; i < this->m_dim; i++) {
-        std::cout << "[";
         if(this->m_withDual){
-          for (int j = 0; j < this->m_dim; j++) {
-            std::cout << std::setprecision (15) <<
-              this->m_dualbasis(i,j) << "\t";
-          }
-          std::cout << "]\n";
+          std::cout << this->m_dualbasis[i];
+          //for (int j = 0; j < this->m_dim; j++) {
+          //  std::cout << this->m_dualbasis(i,j);
+          //}
+          std::cout << "\n";
         }
       }
       std::cout << "\n";
-      std::cout << "Norm used : " << toStringNorm(this->m_norm) << "\n"
+      std::cout << "Norm used: " << toStringNorm(this->m_norm) << "\n"
         << std::endl;
-      std::cout << "Norm of each Basis vector : \n";
-      std::cout << " Primal     ";
+      std::cout << "Norm of each Basis vector: \n";
+      std::cout << "Primal";
       if(this->m_withDual)
-        std::cout << "\t\t\t\t Dual \n";
+        std::cout << "\t\tDual\n";
       std::cout << "\n";
 
       for (int i = 0; i < this->m_dim; i++) {
-        std::cout << "   ";
         if (this->m_vecNorm[i] < 0) {
           std::cout << "NaN OR Not computed";
         } else {
@@ -813,8 +811,8 @@ namespace LatticeTester {
             std::cout << this->m_vecNorm[i];
           }
         }
+        std::cout << "\t";
         if(this->m_withDual){
-          std::cout << "\t \t \t ";
           if (this->m_dualvecNorm[i] < 0)
             std::cout << "NaN OR Not computed";
           else{

@@ -11,7 +11,7 @@
  * has to be computed. LatticeTester implements a *Branch and Bound*
  * algorithm according to [CITE KNUTH] which returns the shortest
  * vector of the lattice with an exponential time. To reduce this
- * time, the user can precise a prereduction that he wants to
+ * time, the user can precise a prereduction that they want to
  * use among the following :
  *
  * - *Pre-reduction of Dieter* according to [CITE DIETER]. Perform

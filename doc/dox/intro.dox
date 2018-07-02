@@ -213,7 +213,7 @@
  * of this straight line.  A shorter distance between successive points on the line means
  * more points per unit of length on the line, which means that all lattice points are covered
  * by fewer lines per unit of volume, that are farther away from each other.  This is undesirable.
- * pierre {To do: Add an example of this, with a figure.}
+ * pierre {TODO pierre: Add an example of this, with a figure.}
  * That is, for a given lattice density \f$\eta\f$, for good uniformity,
  * we want the shortest nonzero vector to be long.
  * This motivates taking this \f$\mathit{l}\f$ as a measure of uniformity,

@@ -1,14 +1,14 @@
 /*!
 
 \if NESTED_PROJECT
-\page latticetester Lattice Tester Manual
+\page latticetester LatticeTester Manual
 \else
-\mainpage Lattice Tester Manual
+\mainpage LatticeTester Manual
 \endif
 
 # Overview
 
-* *LatticeTester* is a C++ software library and tool to compute theoretical measures
+*LatticeTester* is a C++ software library and tool to compute theoretical measures
 of uniformity (figures of merit) for lattices in the \f$t\f$-dimensional real space \f$\mathbb{R}^t\f$. 
 Such lattices contain \f$\mathbb{Z}^t\f$ as a sublattice or are contained in \f$\mathbb{Z}^t\f$, and
 are encountered for example in quasi-Monte Carlo integration

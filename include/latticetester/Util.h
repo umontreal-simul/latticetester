@@ -38,6 +38,8 @@
 #include <cstdlib>
 #include <cstdint>
 
+#include <type_traits>
+
 #include "latticetester/Const.h"
 
 #include "NTL/tools.h"
@@ -65,37 +67,42 @@ namespace NTL {
     r = strtod(c, (char **) NULL);
   }
 
-  inline void conv(double &x, std::int64_t a)
+  inline std::enable_if<!std::is_same<int64_t, long>::value>::type  conv(double &x, std::int64_t a)
   {
     x = static_cast<double>(a);
   }
 
-  inline void conv(std::int64_t &x, double a)
+  // inline std::enable_if<!std::is_same<int64_t, long>::value, void>::type conv(double &x, std::int64_t a)
+  // {
+  //   x = static_cast<double>(a);
+  // }
+
+  inline std::enable_if<!std::is_same<int64_t, long>::value>::type conv(std::int64_t &x, double a)
   {
     x = static_cast<std::int64_t>(a);
   }
 
-  inline void conv(ZZ &x, std::int64_t a)
+  inline std::enable_if<!std::is_same<int64_t, long>::value>::type conv(ZZ &x, std::int64_t a)
   {
     x = NTL::conv<ZZ>(a);
   }
 
-  inline void conv(std::int64_t &x, ZZ a)
+  inline std::enable_if<!std::is_same<int64_t, long>::value>::type conv(std::int64_t &x, ZZ a)
   {
     x = NTL::conv<std::int64_t>(a);
   }
 
-  inline void conv(long &x, std::int64_t a)
+  inline std::enable_if<!std::is_same<int64_t, long>::value>::type conv(long &x, std::int64_t a)
   {
     x = static_cast<long>(a);
   }
 
-  inline void conv(std::int64_t &x, long a)
+  inline std::enable_if<!std::is_same<int64_t, long>::value>::type conv(std::int64_t &x, long a)
   {
     x = static_cast<std::int64_t>(a);
   }
 
-  inline void conv(std::int64_t &x, std::int64_t a)
+  inline std::enable_if<!std::is_same<int64_t, long>::value>::type conv(std::int64_t &x, std::int64_t a)
   {
     x = a;
   }

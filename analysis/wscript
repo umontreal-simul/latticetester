@@ -11,6 +11,6 @@ def build(ctx):
         includes=[inc_dir, lat_inc_dir],
         lib=ctx.env.LIB_NTL + ctx.env.LIB_GMP + ctx.env.LIB_MYLIB,
         stlib=ctx.env.STLIB_NTL + ctx.env.STLIB_GMP + ctx.env.STLIB_MYLIB,
-        target=('LatTest' + ctx.env.LATTICETESTER_SUFFIX),
-        use=['latticetester' + ctx.env.LATTICETESTER_SUFFIX],
+        target=('LatTest'),
+        use=['latticetester'],
         install_path='${BINDIR}')

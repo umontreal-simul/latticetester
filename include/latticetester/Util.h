@@ -43,6 +43,69 @@
 #include "NTL/tools.h"
 #include "NTL/ZZ.h"
 
+namespace NTL {
+
+  /**
+   * \name Some other compatibility utilities
+   *
+   * @{
+   */
+
+  /**
+   * Converts the array of characters (string) `c` into an `std::int64_t` `l`.
+   */
+  inline void conv (std::int64_t & l, const char* c) {
+    l = strtol(c, (char **) NULL, 10);
+  }
+
+  /**
+   * Converts the array of characters (string) `c` into a `double` `r`.
+   */
+  inline void conv (double & r, const char* c) {
+    r = strtod(c, (char **) NULL);
+  }
+
+  inline void conv(double &x, std::int64_t a)
+  {
+    x = static_cast<double>(a);
+  }
+
+  inline void conv(std::int64_t &x, double a)
+  {
+    x = static_cast<std::int64_t>(a);
+  }
+
+  inline void conv(ZZ &x, std::int64_t a)
+  {
+    x = NTL::conv<ZZ>(a);
+  }
+
+  inline void conv(std::int64_t &x, ZZ a)
+  {
+    x = NTL::conv<std::int64_t>(a);
+  }
+
+  inline void conv(long &x, std::int64_t a)
+  {
+    x = static_cast<long>(a);
+  }
+
+  inline void conv(std::int64_t &x, long a)
+  {
+    x = static_cast<std::int64_t>(a);
+  }
+
+  inline void conv(std::int64_t &x, std::int64_t a)
+  {
+    x = a;
+  }
+
+  /**
+   * @}
+   */
+
+}     // namespace NTL
+
 
 namespace LatticeTester {
 
@@ -807,8 +870,7 @@ namespace LatticeTester {
       Int C;   C = 0;
       for (int i = 0; i < n; i++)
         C += A[i] * B[i];
-      // D = static_cast<Scal>(C); // TODO CHECK
-      NTL::conv<Scal> (D, C);
+      NTL::conv(D, C);
     }
 
 
@@ -1388,35 +1450,5 @@ namespace LatticeTester {
 // }
 
 // #endif
-
-
-
-namespace NTL {
-
-  /**
-   * \name Some other compatibility utilities
-   *
-   * @{
-   */
-
-  /**
-   * Converts the array of characters (string) `c` into an `std::int64_t` `l`.
-   */
-  inline void conv (std::int64_t & l, const char* c) {
-    l = strtol(c, (char **) NULL, 10);
-  }
-
-  /**
-   * Converts the array of characters (string) `c` into a `double` `r`.
-   */
-  inline void conv (double & r, const char* c) {
-    r = strtod(c, (char **) NULL);
-  }
-
-  /**
-   * @}
-   */
-
-}     // namespace NTL
 
 #endif

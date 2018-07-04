@@ -164,7 +164,7 @@ namespace {
 namespace LatticeTester
 {
 
-  long lFactorial (int n)
+  std::int64_t lFactorial (int n)
   {
     if (n < 0 || n > FACT_MAX )
       throw invalid_argument("lFactorial:   n too large");

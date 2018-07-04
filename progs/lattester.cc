@@ -359,7 +359,7 @@ int ZZDD(int argc, char* argv[]) {
   return 1;
 } */
 int LLDD(int argc, char* argv[]) {
-  LatticeAnalysis<long, NTL::vector<long>, NTL::matrix<long>, long, NTL::vector<long>, NTL::matrix<long>, double, NTL::vector<double>, double, NTL::vector<double>, NTL::matrix<double>> latAnalysis;
+  LatticeAnalysis<std::int64_t, NTL::vector<std::int64_t>, NTL::matrix<std::int64_t>, std::int64_t, NTL::vector<std::int64_t>, NTL::matrix<std::int64_t>, double, NTL::vector<double>, double, NTL::vector<double>, NTL::matrix<double>> latAnalysis;
   struct stat buf; // properties of a file or directory
   int status = 0;
 

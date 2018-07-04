@@ -20,7 +20,8 @@
 #include <string>
 #include <iomanip>
 #include <cstdint>
-
+#include <array>
+#include <sstream>
 #include "latticetester/Const.h"
 
 #include <NTL/ZZ.h>

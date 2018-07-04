@@ -58,6 +58,7 @@ namespace LatticeTester
 
   void ParamReader::getLines()
   {
+    std::cout << "hello\n";
     ifstream inFile(m_fileName.c_str());
     if (inFile.fail()) {
       cerr << "An error occurred. Unable to read input file:" <<

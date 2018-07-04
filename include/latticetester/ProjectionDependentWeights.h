@@ -27,107 +27,109 @@
 
 
 namespace LatticeTester {
-/**
- * Projection-dependent weights.
- *
- * The weight for a given projection can be set with #setWeight().
- *
- * Internally, the weights are regrouped by largest coordinate index in
- * different std::map objects.  This is useful for use with CBC.
- */
-class ProjectionDependentWeights : public Weights {
-protected:
+  /**
+   * Projection-dependent weights.
+   *
+   * The weight for a given projection can be set with #setWeight().
+   *
+   * Internally, the weights are regrouped by largest coordinate index in
+   * different std::map objects.  This is useful for use with CBC.
+   */
+  class ProjectionDependentWeights : public Weights {
+    protected:
 
-   typedef std::map<Coordinates, Weight> WeightsMap;
+      typedef std::map<Coordinates, Weight> WeightsMap;
 
-   /// Per-projection weights, regrouped by largest coordinate index.
-   std::vector<WeightsMap> m_weights;
+      /// Per-projection weights, regrouped by largest coordinate index.
+      std::vector<WeightsMap> m_weights;
 
-   /// Used only to return an empty map.
-   static const WeightsMap m_emptyWeights;
+      /// Used only to return an empty map.
+      static const WeightsMap m_emptyWeights;
 
-public:
+    public:
 
-   /**
-    * Constructs projection-dependent weights.
-    */
-   ProjectionDependentWeights();
+      /**
+       * Constructs projection-dependent weights.
+       */
+      ProjectionDependentWeights();
 
-   /**
-    * Destructor.
-    */
-   virtual ~ProjectionDependentWeights()  {}
+      /**
+       * Destructor.
+       */
+      virtual ~ProjectionDependentWeights()  {}
 
-   /**
-    * Copy constructor.
-    */
-   ProjectionDependentWeights (const ProjectionDependentWeights &);
+      /**
+       * Copy constructor.
+       */
+      ProjectionDependentWeights (const ProjectionDependentWeights &);
 
-   virtual std::string name() const { return "projection-dependent"; }
+      virtual std::string name() const { return "projection-dependent"; }
 
-   /**
-    * Returns the weight of the projection specified by \c projection.
-    */
-   virtual Weight getWeight (const Coordinates & projection) const;
+      /**
+       * Returns the weight of the projection specified by \c projection.
+       */
+      virtual Weight getWeight (const Coordinates & projection) const;
 
-   virtual unsigned int getSize () const 
-   { return (unsigned int) m_weights.size(); } 
+      virtual unsigned int getSize () const 
+      { return (unsigned int) m_weights.size(); } 
 
-   /**
-    * Returns a map of weights for all projections whose largest index is \c
-    * largestIndex.
-    */
-   virtual const WeightsMap& getWeightsForLargestIndex(Coordinates::value_type largestIndex) const;
+      /**
+       * Returns a map of weights for all projections whose largest index is \c
+       * largestIndex.
+       */
+      virtual const WeightsMap& getWeightsForLargestIndex(
+          Coordinates::value_type largestIndex) const;
 
 #ifdef WITH_XML
-   /**
-    * Static factory method; create a ProjectionDependentWeights object by
-    * parsing XML data.
-    */
-   static ProjectionDependentWeights* createFromXML (const pugi::xml_node& node);
+      /**
+       * Static factory method; create a ProjectionDependentWeights object by
+       * parsing XML data.
+       */
+      static ProjectionDependentWeights* createFromXML (
+          const pugi::xml_node& node);
 #endif
 
-   /**
-    * Sets the weight of the projection specified by \c projection.
-    */
-   virtual void setWeight (const Coordinates & projection, Weight weight);
+      /**
+       * Sets the weight of the projection specified by \c projection.
+       */
+      virtual void setWeight (const Coordinates & projection, Weight weight);
 
-protected:
-   /// \copydoc LatticeTester::Weights::format()
-   virtual void format(std::ostream& os) const;
+    protected:
+      /// \copydoc LatticeTester::Weights::format()
+      virtual void format(std::ostream& os) const;
 
-   friend std::istream& operator>> (std::istream&, ProjectionDependentWeights&);
-};
+      friend std::istream& operator>> (std::istream&, ProjectionDependentWeights&);
+  };
 
-/**
- * \relates ProjectionDependentWeights
- * Reads formatted projection-dependent weights into the object \c weights.
- *
- * The input should be a sequence of projection-to-weight mappings, of the format:
- * \code
- * <match1>: <weight1>, <match2>: <weight2>, ...
- * \endcode
- * where <tt>\<weight<i>n</i>\></tt> is the weight (a floating point number)
- * associated to the projection-match <tt>\<match<i>n</i>\></tt>, and
- * <tt>\<match<i>n</i>\></tt> is one of:
- * - a set of coordinates, as specified in
- *   #operator>>(std::istream&, LatticeTester::Coordinates&)
- *   to explicitly set the weight for the projection that
- *   correspond to these coordinates;
- * - the string <tt>order <i>m</i></tt> to implicitly set the weights of
- *   projections of order <tt><i>m</i></tt>;
- * - the string \c default to set the default weight for other projections.
- *
- * \remark Comments can be appended to any line after a \c # character.
- *
- * \remark The match-weight pairs can be separated by commas and/or whitespace
- * (including newlines).
- *
- * \remark The colons (\c :) can be replaced with <tt>=\></tt> or <tt>-\></tt>.
- *
- * \sa  #operator>>(std::istream&, LatticeTester::Coordinates&)
- */
-std::istream& operator>> (std::istream& is, ProjectionDependentWeights& weights);
+  /**
+   * \relates ProjectionDependentWeights
+   * Reads formatted projection-dependent weights into the object \c weights.
+   *
+   * The input should be a sequence of projection-to-weight mappings, of the format:
+   * \code
+   * <match1>: <weight1>, <match2>: <weight2>, ...
+   * \endcode
+   * where <tt>\<weight<i>n</i>\></tt> is the weight (a floating point number)
+   * associated to the projection-match <tt>\<match<i>n</i>\></tt>, and
+   * <tt>\<match<i>n</i>\></tt> is one of:
+   * - a set of coordinates, as specified in
+   *   #operator>>(std::istream&, LatticeTester::Coordinates&)
+   *   to explicitly set the weight for the projection that
+   *   correspond to these coordinates;
+   * - the string <tt>order <i>m</i></tt> to implicitly set the weights of
+   *   projections of order <tt><i>m</i></tt>;
+   * - the string \c default to set the default weight for other projections.
+   *
+   * \remark Comments can be appended to any line after a \c # character.
+   *
+   * \remark The match-weight pairs can be separated by commas and/or whitespace
+   * (including newlines).
+   *
+   * \remark The colons (\c :) can be replaced with <tt>=\></tt> or <tt>-\></tt>.
+   *
+   * \sa  #operator>>(std::istream&, LatticeTester::Coordinates&)
+   */
+  std::istream& operator>> (std::istream& is, ProjectionDependentWeights& weights);
 
 }
 #endif

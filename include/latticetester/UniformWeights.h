@@ -24,46 +24,46 @@
 
 
 namespace LatticeTester {
-/**
- * This class is used to implement the same weight for all projections. It
- * represents the trivial case of no weight. The weights can all be chosen as
- * 1.
- *
- */
-class UniformWeights : public Weights {
-protected:
+  /**
+   * This class is used to implement the same weight for all projections. It
+   * represents the trivial case of no weight. The weights can all be chosen as
+   * 1.
+   *
+   */
+  class UniformWeights : public Weights {
+    protected:
 
-   Weight m_weight;
+      Weight m_weight;
 
-public:
+    public:
 
-   /**
-    * Constructs uniform weights.
-    *
-    * \param weight     Weight for all projections.
-    */
-   explicit UniformWeights (Weight weight)
-   { m_weight = weight; }
+      /**
+       * Constructs uniform weights.
+       *
+       * \param weight     Weight for all projections.
+       */
+      explicit UniformWeights (Weight weight)
+      { m_weight = weight; }
 
-   /**
-    * Destructor.
-    */
-   virtual ~UniformWeights()
-   { }
+      /**
+       * Destructor.
+       */
+      virtual ~UniformWeights()
+      { }
 
-   /**
-    * Returns the same weight regardless of the specified indices.
-    */
-   virtual Weight getWeight (const Coordinates &) const  { return m_weight; }
+      /**
+       * Returns the same weight regardless of the specified indices.
+       */
+      virtual Weight getWeight (const Coordinates &) const  { return m_weight; }
 
-   virtual std::string name() const { return "uniform"; }
+      virtual std::string name() const { return "uniform"; }
 
-protected:
-   /// \copydoc LatticeTester::Weights::format()
-   virtual void format(std::ostream& os) const {
-      os << "UniformWeights(" << m_weight << ")";
-   }
-};
+    protected:
+      /// \copydoc LatticeTester::Weights::format()
+      virtual void format(std::ostream& os) const {
+        os << "UniformWeights(" << m_weight << ")";
+      }
+  };
 
 }
 

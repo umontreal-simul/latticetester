@@ -26,79 +26,84 @@
 
 
 namespace LatticeTester {
-/**
- * Product weights.
- *
- * The weight of a projection is equal to the product of the individual weights
- * of each coordinate involved.
- */
-class ProductWeights : public Weights {
-protected:
+  /**
+   * Product weights.
+   *
+   * The weight of a projection is equal to the product of the individual weights
+   * of each coordinate involved.
+   */
+  class ProductWeights : public Weights {
+    protected:
 
-   Weight m_defaultWeight;
-   std::vector<Weight> m_weights;
+      Weight m_defaultWeight;
+      std::vector<Weight> m_weights;
 
-public:
+    public:
 
-   /**
-    * Constructs projection-dependent weights with a default weight.
-    *
-    * \param defaultWeight    Default weight.
-    */
-   explicit ProductWeights (Weight defaultWeight = 0.0);
+      /**
+       * Constructs projection-dependent weights with a default weight.
+       *
+       * \param defaultWeight    Default weight.
+       */
+      explicit ProductWeights (Weight defaultWeight = 0.0);
 
-   /**
-    * Destructor.
-    */
-   virtual ~ProductWeights()  {}
+      /**
+       * Destructor.
+       */
+      virtual ~ProductWeights()  {}
 
-   virtual std::string name() const { return "product"; }
+      virtual std::string name() const { return "product"; }
 
-   /**
-    * Returns the weight of the projection specified by \c projection.
-    */
-   virtual Weight getWeight (const Coordinates & projection) const;
+      /**
+       * Returns the weight of the projection specified by \c projection.
+       */
+      virtual Weight getWeight (const Coordinates & projection) const;
 
-   /**
-    * Returns the weight associated to the given coordinate.
-    */
-   virtual Weight getWeightForCoordinate (Coordinates::size_type coordinate) const  {
-      return coordinate < m_weights.size() ? m_weights[coordinate] : m_defaultWeight; }
+      /**
+       * Returns the weight associated to the given coordinate.
+       */
+      virtual Weight getWeightForCoordinate (
+          Coordinates::size_type coordinate) const
+      {
+        return coordinate < m_weights.size() ?
+          m_weights[coordinate] : m_defaultWeight;
+      }
 
-   /**
-    * Sets the weight for the coordinate specified by \c coordinate.
-    */
-   virtual void setWeightForCoordinate (Coordinates::size_type coordinate, Weight weight);
+      /**
+       * Sets the weight for the coordinate specified by \c coordinate.
+       */
+      virtual void setWeightForCoordinate (
+          Coordinates::size_type coordinate, Weight weight);
 
-   /**
-    * Sets the default weight of all coordinates for which a weight
-    * has not been set explicitly set using #setWeightForCoordinate().
-    */
-   virtual void setDefaultWeight (Weight weight)
-   { m_defaultWeight = weight; }
+      /**
+       * Sets the default weight of all coordinates for which a weight
+       * has not been set explicitly set using #setWeightForCoordinate().
+       */
+      virtual void setDefaultWeight (Weight weight)
+      { m_defaultWeight = weight; }
 
-    virtual const std::vector<Weight>& getWeights() const
-   {
-       return m_weights;
-   }
+      virtual const std::vector<Weight>& getWeights() const
+      {
+        return m_weights;
+      }
 
-   virtual Weight getDefaultWeight() const
-   {
-       return m_defaultWeight;
-   }
+      virtual Weight getDefaultWeight() const
+      {
+        return m_defaultWeight;
+      }
 
 #ifdef WITH_XML
-   /**
-    * Static factory method; create a \c ProductWeights object by
-    * parsing XML data.
-    */
-   static ProductWeights* createFromXML (const pugi::xml_node & node);
+      /**
+       * Static factory method; create a \c ProductWeights object by
+       * parsing XML data.
+       */
+      static ProductWeights* createFromXML (const pugi::xml_node & node);
 #endif
 
-protected:
-   /// \copydoc LatticeTester::Weights::format()
-   virtual void format(std::ostream& os) const;
-};
+    protected:
+      /// \copydoc LatticeTester::Weights::format()
+      virtual void format(std::ostream& os) const;
+  };
 
 }
 

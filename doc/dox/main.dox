@@ -33,20 +33,21 @@ software tools, designed to construct and analyze lattice rules and linear gener
 
 * *LatticeTester* provides several tests applied on the lattice structure. In particular
 it implements the Spectral Test given originally by Coveyou and MacPherson \cite rCOV67a
-and improved by Knuth \cite rKNU69a. This test requires an algorithm solving the shortest
+and improved by Knuth \cite rKNU98a. This test requires an algorithm solving the shortest
 vector problem (SVP). *LatticeTester* implements a solution based on a branch and bound
-procedure given originally by Dieter \cite rDIE75a, improved by Knuth \cite rKNU69a
+procedure given originally by Dieter \cite rDIE75a, improved by Knuth \cite rKNU98a
 and then by Fincke and Pohst \cite mFIN85a. The lastest version uses a Cholesky decomposition
 and is precisely implemented in *LatticeTester*. This version can solve SVP for the L2 norm
 as well as for the L1 norm.
 
 The computing time of the branch and bound procedure depends mostly on the dimension (non-polynomial
 dependency). But it also significantly depends on the length of the vectors in the input basis. 
-Basically, the shortest the vectors (i.e the more the input basis is already reduced), the fastest 
+It turns out that the shortest the input vectors are (i.e the more the input basis is already reduced), the fastest 
 the branch and bound will be performed. Hence, one must perform a basis reduction in advance to prevent
-explodeing of the computing time.
+an explosion of the computing time.
 
-Pre-reduction available in *LatticeTester* are :
+An overview of the pre-reductions available in *LatticeTester* can be found in 
+at the end of \ref a_intro. Pre-reductions available in *LatticeTester* are:
 
 <dl><dt>Dieter Pre-reduction</dt><dd>given by Dieter in \cite rDIE75a.</dd>
 
@@ -55,10 +56,11 @@ Pre-reduction available in *LatticeTester* are :
 <dt>Block Korkin-Zolotarev (BKZ)</dt><dd> reduction given by Schnorr \cite mSCH91a.</dd>
 </dl>
 
-These pre-reductions can be perform in a polynomial time.
+These pre-reductions can be performed in a polynomial time.
 
 The shortest vector given by the branch and bound shall then be compared to an upper
-bound. *LatticeTester* propose several normalization givn in \cite mCON88a :
+bound. *LatticeTester* propose several normalization given in \cite mCON99a :
+\todo Make sure this is explained somewhere
 
 <dl><dt><tt>BestLat</tt>:</dt>
 <dd> The best theoretical bounds on the length of the shortest vector in a lattice,
@@ -84,19 +86,19 @@ Moreover, *LatticeTester* implements a variant of the branch and bound process i
 perform a Minkowski reduction \cite mMIN11a \cite rAFF85a. This reduction is needed for
 computing Beyer-quotient which quantify the uniformity in a lattice.
 
-
 The vast majority - and more specifically LLL and BKZ reduction - of the implementation
 is based on the NTL library developped by Victor Shoup \cite iSHO05a. It is based itself
-on the GNU Multiple Precision Arithmetic Library (GMP) \cite iGMP06a, which allow several
-precision for calculs including an arbitrary precision.
+on the GNU Multiple Precision Arithmetic Library (GMP) \cite iGMP06a, which allow arbitrary
+precision for calculations.
 
-The precision of calcul must be precise before compiling the software.
+
 
 # Manual Outline
 
-- \subpage aaroutine
-- \subpage a_intro
 - \subpage detailed_usage
+- \subpage DIY
+- \subpage a_intro
+- \subpage aaroutine
 
 
 */

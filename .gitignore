@@ -1,5 +1,10 @@
-**/**/*.pyc
-waftools/__pycache__
+.*
+!.gitignore
+*.o
+*.a
+lattester
+*.pyc
+__pycache__
 main.cc
 main.cpp
 latticetester.xcodeproj/

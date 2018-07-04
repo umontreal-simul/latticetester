@@ -25,26 +25,26 @@ using boost::bad_lexical_cast;
 namespace LatticeTester
 {
 
-//===========================================================================
+  //===========================================================================
 
-PODWeights::PODWeights ()
-{
-}
+  PODWeights::PODWeights ()
+  {
+  }
 
-//===========================================================================
+  //===========================================================================
 
-Weight PODWeights::getWeight (const Coordinates& projection) const
-{
-   return m_orderDependentWeights.getWeight(projection) * m_productWeights.getWeight(projection);
-}
+  Weight PODWeights::getWeight (const Coordinates& projection) const
+  {
+    return m_orderDependentWeights.getWeight(projection) * m_productWeights.getWeight(projection);
+  }
 
-//===========================================================================
+  //===========================================================================
 
-void PODWeights::format(std::ostream& os) const
-{
-   using LatticeTester::operator<<;
-   os << "PODWeights(" << m_orderDependentWeights << ", " << m_productWeights << ")";
-}
+  void PODWeights::format(std::ostream& os) const
+  {
+    using LatticeTester::operator<<;
+    os << "PODWeights(" << m_orderDependentWeights << ", " << m_productWeights << ")";
+  }
 
 } // namespace LatticeTester
 
@@ -56,17 +56,17 @@ void PODWeights::format(std::ostream& os) const
 namespace LatticeTester
 {
 
-PODWeights* PODWeights::createFromXML (const pugi::xml_node& root)
-{
-   PODWeights* o = new PODWeights();
+  PODWeights* PODWeights::createFromXML (const pugi::xml_node& root)
+  {
+    PODWeights* o = new PODWeights();
 
-   pugi::xml_node node;
+    pugi::xml_node node;
 
-   try {
+    try {
       // order-dependent weights
       node = root.child("order-dependent");
       if (!node)
-         throw pugi::xml_error(root, "missing <order-dependent> element");
+        throw pugi::xml_error(root, "missing <order-dependent> element");
       OrderDependentWeights* odw = OrderDependentWeights::createFromXML(*node);
       o->m_orderDependentWeights = *odw;
       delete odw;
@@ -74,18 +74,18 @@ PODWeights* PODWeights::createFromXML (const pugi::xml_node& root)
       // product weights
       node = root.child("product");
       if (!node)
-         throw pugi::xml_error(root, "missing <product> element");
+        throw pugi::xml_error(root, "missing <product> element");
       ProductWeights* pw = ProductWeights::createFromXML(*node);
       o->m_productWeights = *pw;
       delete pw;
 
       return o;
-   }
-   catch (bad_lexical_cast& e) {
+    }
+    catch (bad_lexical_cast& e) {
       delete o;
       throw pugi::xml_error(node, e.what());
-   }
-}
+    }
+  }
 
 } // namespace LatticeTester
 #endif

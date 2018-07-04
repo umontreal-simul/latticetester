@@ -26,77 +26,77 @@
 
 
 namespace LatticeTester {
-/**
- * Order-dependent weights.
- *
- * This class implements order dependent  weights.
- * The weight of a projection depends only on the order of the projection,
- * i.e. the dimension of the projection.
- */
-class OrderDependentWeights : public Weights {
-protected:
+  /**
+   * Order-dependent weights.
+   *
+   * This class implements order dependent  weights.
+   * The weight of a projection depends only on the order of the projection,
+   * i.e. the dimension of the projection.
+   */
+  class OrderDependentWeights : public Weights {
+    protected:
 
-   Weight m_defaultWeight;
-   std::vector<Weight> m_weights;
+      Weight m_defaultWeight;
+      std::vector<Weight> m_weights;
 
-public:
+    public:
 
-   /**
-    * Constructs order-dependent weights with default weight.
-    *
-    * \param defaultWeight   Default weight.
-    */
-   explicit OrderDependentWeights (Weight defaultWeight = 0.0);
+      /**
+       * Constructs order-dependent weights with default weight.
+       *
+       * \param defaultWeight   Default weight.
+       */
+      explicit OrderDependentWeights (Weight defaultWeight = 0.0);
 
-   /**
-    * Destructor.
-    */
-   virtual ~OrderDependentWeights()
-   { }
+      /**
+       * Destructor.
+       */
+      virtual ~OrderDependentWeights()
+      { }
 
-    virtual std::string name() const { return "order-dependent"; }
+      virtual std::string name() const { return "order-dependent"; }
 
-   /**
-    * Returns the weight of the projection specified by \c projection.
-    */
-   virtual Weight getWeight (const Coordinates & projection) const;
+      /**
+       * Returns the weight of the projection specified by \c projection.
+       */
+      virtual Weight getWeight (const Coordinates & projection) const;
 
-   /**
-    * Returns the weight associated to the given order.
-    */
-   virtual Weight getWeightForOrder (Coordinates::size_type order) const
-   { return order < m_weights.size() ? m_weights[order] : m_defaultWeight; }
+      /**
+       * Returns the weight associated to the given order.
+       */
+      virtual Weight getWeightForOrder (Coordinates::size_type order) const
+      { return order < m_weights.size() ? m_weights[order] : m_defaultWeight; }
 
-   /**
-    * Sets the weight for the order specified by \c order.
-    */
-   virtual void setWeightForOrder (Coordinates::size_type order, Weight weight);
+      /**
+       * Sets the weight for the order specified by \c order.
+       */
+      virtual void setWeightForOrder (Coordinates::size_type order, Weight weight);
 
-   /**
-    * Sets the default weight of all orders for which a weight
-    * has not been set explicitly set using #setWeightForOrder().
-    */
-   virtual void setDefaultWeight (Weight weight)
-   { m_defaultWeight = weight; }
+      /**
+       * Sets the default weight of all orders for which a weight
+       * has not been set explicitly set using #setWeightForOrder().
+       */
+      virtual void setDefaultWeight (Weight weight)
+      { m_defaultWeight = weight; }
 
-    virtual Weight getDefaultWeight () const 
-   { return m_defaultWeight; } 
+      virtual Weight getDefaultWeight () const 
+      { return m_defaultWeight; } 
 
-    virtual unsigned int getSize () const 
-   { return (unsigned int) m_weights.size(); } 
+      virtual unsigned int getSize () const 
+      { return (unsigned int) m_weights.size(); } 
 
 #ifdef WITH_XML
-   /**
-    * Static factory method; create a \c OrderDependentWeights object by
-    * parsing XML data.
-    */
-   static OrderDependentWeights* createFromXML (const pugi::xml_node & node);
+      /**
+       * Static factory method; create a \c OrderDependentWeights object by
+       * parsing XML data.
+       */
+      static OrderDependentWeights* createFromXML (const pugi::xml_node & node);
 #endif
 
-protected:
-   /// \copydoc LatticeTester::Weights::format()
-   virtual void format(std::ostream& os) const;
-};
+    protected:
+      /// \copydoc LatticeTester::Weights::format()
+      virtual void format(std::ostream& os) const;
+  };
 
 }
 

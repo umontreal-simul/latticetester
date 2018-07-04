@@ -21,53 +21,53 @@ using namespace std;
 
 namespace LatticeTester {
 
-ostream& operator<< (ostream& os, const Coordinates& coords)
-{
-	os << "{";
-	Coordinates::const_iterator it = coords.begin();
-	if (it != coords.end()) {
-		os << *it;
-		while (++it != coords.end())
-	    	os << "," << *it;
-	}
-	os << "}";
-	return os;
-}
+  ostream& operator<< (ostream& os, const Coordinates& coords)
+  {
+    os << "{";
+    Coordinates::const_iterator it = coords.begin();
+    if (it != coords.end()) {
+      os << *it;
+      while (++it != coords.end())
+        os << "," << *it;
+    }
+    os << "}";
+    return os;
+  }
 
-istream& operator>> (istream& is, Coordinates& coords)
-{
-	coords.clear();
+  istream& operator>> (istream& is, Coordinates& coords)
+  {
+    coords.clear();
 
-	string digits = "0123456789";
-	string sep = " \t,";
+    string digits = "0123456789";
+    string sep = " \t,";
 
-	// check if coordinate set is enclosed in braces
-	bool with_braces = false;
-	if (is.peek() == '{') {
-	  is.get();
-	  with_braces = true;
-	}
+    // check if coordinate set is enclosed in braces
+    bool with_braces = false;
+    if (is.peek() == '{') {
+      is.get();
+      with_braces = true;
+    }
 
-	while (true) {
-		if (with_braces && is.peek() == '}') {
-			is.get();
-			break;
-		}
-		if (digits.find(is.peek()) != string::npos) {
-			// digit found
-			Coordinates::value_type val;
-			is >> val;
-			coords.insert(val);
-			continue;
-		}
-		if (sep.find(is.peek()) != string::npos) {
-			// discard separator character
-			is.get();
-			continue;
-		}
-		break;
-	}
-   return is;
-}
+    while (true) {
+      if (with_braces && is.peek() == '}') {
+        is.get();
+        break;
+      }
+      if (digits.find(is.peek()) != string::npos) {
+        // digit found
+        Coordinates::value_type val;
+        is >> val;
+        coords.insert(val);
+        continue;
+      }
+      if (sep.find(is.peek()) != string::npos) {
+        // discard separator character
+        is.get();
+        continue;
+      }
+      break;
+    }
+    return is;
+  }
 
 } // end namespace

@@ -15,11 +15,10 @@ compiler = waftool('compiler')
 deps = waftool('deps')
 
 def options(ctx):
-    # ctx.recurse('latticetester')
     ctx.load('compiler_c compiler_cxx gnu_dirs waf_unit_test')
     ctx.add_option('--link-static', action='store_true', help='statically link with dependencies')
     ctx.add_option('--build-docs', action='store_true', default=False, help='build documentation')
-    # ctx.add_option('--boost', action='store', help='prefix under which Boost is installed')
+    ctx.add_option('--boost', action='store', help='prefix under which Boost is installed')
     ctx.add_option('--ntl', action='store', help='prefix under which NTL is installed')
     ctx.add_option('--gmp', action='store', help='prefix under which GMP is installed')
 
@@ -49,14 +48,19 @@ def configure(ctx):
             ctx.env.append_unique('LINKFLAGS', flags)
 
     # options
-    # if ctx.options.boost:
-    #     deps.add_deps_path(ctx, 'boost', ctx.options.boost)
+    if ctx.options.boost:
+        deps.add_deps_path(ctx, 'boost', ctx.options.boost)
     if ctx.options.ntl:
         deps.add_deps_path(ctx, 'NTL', ctx.options.ntl)
     if ctx.options.gmp:
         deps.add_deps_path(ctx, 'GMP', ctx.options.gmp)
 
     ctx_check = deps.shared_or_static(ctx, ctx.check)
+
+
+    # Boost
+    ctx_check(features='cxx cxxprogram',
+            header_name='boost/config.hpp')
 
     # NTL
     # if ctx.options.ntltypes:  # ntlttypes are now mandatory   
@@ -80,18 +84,19 @@ def configure(ctx):
     ctx.define('LATTICETESTER_VERSION', version_tag)
     ctx.msg("Setting LatticeTester version", version_tag)
 
-    if not hasattr(ctx.options, 'nested') or not ctx.options.nested:
-        # build variants
-        env = ctx.env.derive()
-        env.detach()
+    # definitions of DEBUG and NDEBUG flags: not used in this version
+    # if not hasattr(ctx.options, 'nested') or not ctx.options.nested:
+    #     # build variants
+    #     env = ctx.env.derive()
+    #     env.detach()
 
-        # release (default)
-        ctx.env.append_unique('CXXFLAGS', ['-O2'])
-        ctx.define('NDEBUG', 1)
+    #     # release (default)
+    #     ctx.env.append_unique('CXXFLAGS', ['-O2'])
+    #     ctx.define('NDEBUG', 1)
 
-        ctx.setenv('debug', env)
-        ctx.env.append_unique('CXXFLAGS', ['-g'])
-        ctx.define('DEBUG', 1)
+    #     ctx.setenv('debug', env)
+    #     ctx.env.append_unique('CXXFLAGS', ['-g'])
+    #     ctx.define('DEBUG', 1)
 
 
 def distclean(ctx):
@@ -120,9 +125,9 @@ def build(ctx):
     # ctx.recurse('analysis') # probably broken, not used in the current version
 
 
-# build variants
+# # build variants not used in this version
 
-from waflib.Build import BuildContext
-class debug(BuildContext):
-    cmd = 'debug'
-    variant = 'debug'
+# from waflib.Build import BuildContext
+# class debug(BuildContext):
+#     cmd = 'debug'
+#     variant = 'debug'

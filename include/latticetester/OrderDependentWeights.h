@@ -54,7 +54,7 @@ namespace LatticeTester {
       virtual ~OrderDependentWeights()
       { }
 
-      virtual std::string name() const { return "order-dependent"; }
+      // virtual std::string name() const { return "order-dependent"; }
 
       /**
        * Returns the weight of the projection specified by \c projection.

@@ -54,7 +54,7 @@ namespace LatticeTester {
       virtual ~PODWeights()
       { }
 
-      virtual std::string name() const { return "POD"; }
+      // virtual std::string name() const { return "POD"; }
 
       /**
        * Returns the weight of the projection specified by \c projection.

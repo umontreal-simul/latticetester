@@ -53,7 +53,7 @@ namespace LatticeTester {
        */
       virtual Weight getWeight (const Coordinates & projection) const = 0;
 
-      virtual std::string name() const = 0;
+      // virtual std::string name() const = 0;
 
     protected:
       /**

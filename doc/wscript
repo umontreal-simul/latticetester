@@ -21,7 +21,7 @@ class doxygen(Task.Task):
 
 def build(ctx):
     if not ctx.env.DOXYGEN:
-        print('not building documentaion; Doxygen (http://www.stack.nl/~dimitri/doxygen/) is missing')
+        print('not building documentation; Doxygen (http://www.stack.nl/~dimitri/doxygen/) is missing')
         return
 
     ctx.post_mode = Build.POST_LAZY
@@ -33,7 +33,8 @@ def build(ctx):
             target='Doxyfile',
             DOCDIR=ctx.path.abspath(),
             TOPDIR=ctx.top_dir,
-            OUTDIR=doc_dir.abspath())
+            OUTDIR=doc_dir.abspath(),
+            LATTICETESTER_VERSION=ctx.set_version('latticetester'))
 
     # Doxygen
     dox = doxygen(env=ctx.env)

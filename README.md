@@ -144,7 +144,7 @@ These include:
 
 - `lattest`: study lattice properties;
 
-Refer to the user guide (`share/doc/latticetester`) for further detail.
+Refer to the user guide (`http://umontreal-simul.github.io/latticetester/`) for further detail.
 
 **NOTE:** Under Windows, the programs have an additional `.exe` extension.
 

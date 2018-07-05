@@ -1,6 +1,0 @@
-.*
-!.gitignore
-*.pyc
-__pycache__
-build/
-version*

@@ -1,25 +1,6 @@
 # LatticeTester
 _A software package for testing the uniformity of integral lattices in the real space_
 
-*LatticeTester* is a C++ software library and tool to compute theoretical measures
-of uniformity (figures of merit) for lattices in the \f$t\f$-dimensional real space \f$\mathbb{R}^t\f$. 
-Such lattices contain \f$\mathbb{Z}^t\f$ as a sublattice or are contained in \f$\mathbb{Z}^t\f$, and
-are encountered for example in quasi-Monte Carlo integration
-(by lattice rules) and in the analysis of uniform random number generators
-based on linear recurrences modulo a large integer.
-
-Measures of uniformity include: 
-- the length of the shortest non-zero vector in the lattice or in its dual lattice 
-(the spectral test),
-- the Beyer ratio,
-- the \f$\mathcal{P}_\alpha\f$ test, 
-- as well as figures of merit that take normalized versions of these measures over 
-projections of the lattice on subsets of the \f$t\f$ coordinates, and then take a weighted 
-sum or the worst-case over the class of considered projections.
-
-*LatticeTester* is used in particular in the *LatNet Builder* and *LatMRG*
-software tools, designed to construct and analyze lattice rules and linear generators.
-
 ## Compiling
 
 ### Software Dependencies

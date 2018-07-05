@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['coordinatesets',['CoordinateSets',['../d0/d6f/namespaceLatticeTester_1_1CoordinateSets.html',1,'LatticeTester']]],
+  ['latticetester_20manual',['LatticeTester Manual',['../index.html',1,'']]],
+  ['l1',['L1',['../d8/d74/namespaceLatticeTester.html#ab747c1cbb0f5e47fef711b62327a8e90a332e95109d22fc84599da37006a169a5',1,'LatticeTester']]],
+  ['l1norm',['L1NORM',['../d8/d74/namespaceLatticeTester.html#a9770e4d57aa715e249cd7e700c6f37e4a6031a75d242058c5b26d05f510267b41',1,'LatticeTester']]],
+  ['l2',['L2',['../d8/d74/namespaceLatticeTester.html#ab747c1cbb0f5e47fef711b62327a8e90a667cae5b99c4de335199183b63c36821',1,'LatticeTester']]],
+  ['l2norm',['L2NORM',['../d8/d74/namespaceLatticeTester.html#a9770e4d57aa715e249cd7e700c6f37e4a2d8982335f008ef95768bd7ec450d86b',1,'LatticeTester']]],
+  ['lacunary',['Lacunary',['../d8/d3b/classLatticeTester_1_1Lacunary.html',1,'LatticeTester::Lacunary&lt; BasInt, BasIntVec &gt;'],['../d8/d3b/classLatticeTester_1_1Lacunary.html#a827c2d0547c1c973c50b503636475600',1,'LatticeTester::Lacunary::Lacunary(const BasIntVec &amp;C, int t)'],['../d8/d3b/classLatticeTester_1_1Lacunary.html#a1563de6062658e2a2cea97427f7311cd',1,'LatticeTester::Lacunary::Lacunary(int t=0)']]],
+  ['lacunary_2eh',['Lacunary.h',['../d2/d24/Lacunary_8h.html',1,'']]],
+  ['laminated',['LAMINATED',['../d8/d74/namespaceLatticeTester.html#ab747c1cbb0f5e47fef711b62327a8e90ae8842bb9870dacacc65ef1ad46f8fa4b',1,'LatticeTester']]],
+  ['lattestwriter',['LatTestWriter',['../d7/d22/classLatticeTester_1_1LatTestWriter.html',1,'LatticeTester::LatTestWriter&lt; Int, IntMat &gt;'],['../d7/d22/classLatticeTester_1_1LatTestWriter.html#a9718c6d9de174c9b3afc081d04aef7b8',1,'LatticeTester::LatTestWriter::LatTestWriter(const char *fileName)'],['../d7/d22/classLatticeTester_1_1LatTestWriter.html#af6084cf21279b61fe27c4421968e884c',1,'LatticeTester::LatTestWriter::LatTestWriter(std::ostream *stream)']]],
+  ['lattestwriter_2eh',['LatTestWriter.h',['../d0/d84/LatTestWriter_8h.html',1,'']]],
+  ['lattestwriterres',['LatTestWriterRes',['../df/db5/classLatticeTester_1_1LatTestWriterRes.html',1,'LatticeTester::LatTestWriterRes&lt; Int, IntMat &gt;'],['../df/db5/classLatticeTester_1_1LatTestWriterRes.html#ad21c3ac0303078962211e0408537f122',1,'LatticeTester::LatTestWriterRes::LatTestWriterRes(const char *fileName, unsigned int margins=5)'],['../df/db5/classLatticeTester_1_1LatTestWriterRes.html#a5654dee76cb1e0ec37221c3540b0eaa6',1,'LatticeTester::LatTestWriterRes::LatTestWriterRes(std::ostream *stream, unsigned int margins=5)']]],
+  ['lattestwriterres_2eh',['LatTestWriterRes.h',['../de/daa/LatTestWriterRes_8h.html',1,'']]],
+  ['latticeanalysis',['LatticeAnalysis',['../df/d59/classLatticeTester_1_1LatticeAnalysis.html',1,'LatticeTester::LatticeAnalysis&lt; Int, IntVec, IntMat, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat &gt;'],['../df/d59/classLatticeTester_1_1LatticeAnalysis.html#ac8f137d800a279e0cd8f555527e908dd',1,'LatticeTester::LatticeAnalysis::LatticeAnalysis()'],['../df/d59/classLatticeTester_1_1LatticeAnalysis.html#ad726524418e276c11aca8e5d4b365ed3',1,'LatticeTester::LatticeAnalysis::LatticeAnalysis(Reducer&lt; Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat &gt; &amp;reducer, CriterionType criterion, NormaType normaType, PreReductionType preRed, NormType norm, int alpha=0, std::int64_t maxNodesBB=10000000)']]],
+  ['latticeanalysis_2eh',['LatticeAnalysis.h',['../d2/dab/LatticeAnalysis_8h.html',1,'']]],
+  ['latticetester',['LatticeTester',['../d8/d74/namespaceLatticeTester.html',1,'']]],
+  ['latticetesterconfig',['LatticeTesterConfig',['../d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html',1,'LatticeTester::LatticeTesterConfig&lt; Int, BasIntMat &gt;'],['../d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html#a3da14e734beb564723458dc50c393be1',1,'LatticeTester::LatticeTesterConfig::LatticeTesterConfig()']]],
+  ['latticetesterconfig_2eh',['LatticeTesterConfig.h',['../d8/d97/LatticeTesterConfig_8h.html',1,'']]],
+  ['latticetesterroutines_2eh',['LatticeTesterRoutines.h',['../d3/d9a/LatticeTesterRoutines_8h.html',1,'']]],
+  ['lenstrall',['LenstraLL',['../d8/d74/namespaceLatticeTester.html#a191af830e61af769e233e1b03138520eadf669ee499af6a8e1d9a1ed06fa10275',1,'LatticeTester']]],
+  ['lfactorial',['lFactorial',['../d8/d74/namespaceLatticeTester.html#a61a624270d67110531f2dea4c739eff5',1,'LatticeTester']]],
+  ['lg',['Lg',['../d8/d74/namespaceLatticeTester.html#ae12db9335c229d7c60e570dab50ef05b',1,'LatticeTester::Lg(const T &amp;x)'],['../d8/d74/namespaceLatticeTester.html#a12e4b6c931cf0a19642828796b3b3bef',1,'LatticeTester::Lg(std::int64_t x)']]]
+];

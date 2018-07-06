@@ -16,7 +16,7 @@
 // limitations under the License.
 
 /**
- * \file Types.h
+ * \file latticetester/Types.h
  * See the \ref Types "Types" module and \ref DIY
  * */
 /**

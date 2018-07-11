@@ -79,6 +79,16 @@ namespace LatticeTester {
       const ProductWeights& getProductWeights() const
       { return m_productWeights; }
 
+      double getWeightForOrder (Coordinates::size_type order) const
+    {
+        return getOrderDependentWeights().getWeightForOrder(order);
+    }
+
+    double getWeightForCoordinate (Coordinates::size_type coordinate) const
+    {
+        return getProductWeights().getWeightForCoordinate(coordinate);
+    }
+
 #ifdef WITH_XML
       /**
        * Static factory method; create a \c PODWeights object by

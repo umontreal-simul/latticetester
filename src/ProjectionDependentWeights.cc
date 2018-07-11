@@ -67,6 +67,9 @@ namespace LatticeTester
 
   Weight ProjectionDependentWeights::getWeight (const Coordinates& projection) const
   {
+    if (projection.size() == 0){
+      return 0.0;
+    }
     Coordinates::value_type largestIndex = *projection.rbegin();
 
     if (largestIndex < m_weights.size()) {

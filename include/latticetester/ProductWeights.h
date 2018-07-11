@@ -92,6 +92,16 @@ namespace LatticeTester {
         return m_defaultWeight;
       }
 
+    /**
+    * Multiply each weight by a constant.
+    */
+   void multiplyWeights(Weight c){
+       for (auto& w: m_weights){
+           w *= c;
+       }
+       m_defaultWeight *= c;
+   }
+
 #ifdef WITH_XML
       /**
        * Static factory method; create a \c ProductWeights object by

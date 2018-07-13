@@ -63,8 +63,6 @@ namespace LatticeTester {
        */
       ProjectionDependentWeights (const ProjectionDependentWeights &);
 
-      // virtual std::string name() const { return "projection-dependent"; }
-
       /**
        * Returns the weight of the projection specified by \c projection.
        */

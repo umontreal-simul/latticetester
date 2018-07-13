@@ -53,7 +53,14 @@ namespace LatticeTester {
        */
       virtual Weight getWeight (const Coordinates & projection) const = 0;
 
-      // virtual std::string name() const = 0;
+      /**
+       * Returns the interlacing factor of the weights.
+       * This is used to parametrize figures of merit for interlaced digital nets.
+       */ 
+      virtual unsigned int interlacingFactor() const
+      {
+        return 1;
+      }
 
     protected:
       /**

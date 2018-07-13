@@ -52,8 +52,6 @@ namespace LatticeTester {
        */
       virtual ~ProductWeights()  {}
 
-      // virtual std::string name() const { return "product"; }
-
       /**
        * Returns the weight of the projection specified by \c projection.
        */

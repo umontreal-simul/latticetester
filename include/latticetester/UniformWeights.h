@@ -56,8 +56,6 @@ namespace LatticeTester {
        */
       virtual Weight getWeight (const Coordinates &) const  { return m_weight; }
 
-      // virtual std::string name() const { return "uniform"; }
-
     protected:
       /// \copydoc LatticeTester::Weights::format()
       virtual void format(std::ostream& os) const {

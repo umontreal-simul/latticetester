@@ -24,7 +24,7 @@
 #ifndef LATTICETESTER__CONST_H
 #define LATTICETESTER__CONST_H
 #include <string>
-
+#include <array>
 
 namespace LatticeTester {
 
@@ -151,5 +151,9 @@ namespace LatticeTester {
   /**
    * @}
    */
+
+  static constexpr unsigned int NB_PRIMES = 6543;
+  extern const std::array<unsigned int, NB_PRIMES> PRIMES_ARRAY;
+
 }
 #endif

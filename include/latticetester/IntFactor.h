@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
 // LatticeTester
-// Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
 #include <string>
 #include <iomanip>
 #include <cstdint>
-
+#include <sstream>
 #include "latticetester/Const.h"
 
 #include <NTL/ZZ.h>
@@ -168,40 +168,23 @@ namespace LatticeTester {
       return toStringPrime (stat);
     }
 
-
   //===========================================================================
 
   template<typename Int>
     PrimeType IntFactor<Int>::isPrime (const Int & y, std::int64_t k)
     {
-      static constexpr unsigned int NB_PRIMES = 6543;
       // NbPrem has to be instanciated if we use NTL types
       Int NbPrem;
       NbPrem = 2;
       NTL::ZZ LIM;
       LIM = NTL::conv<NTL::ZZ>("4295098369");
-      //    unsigned int c[200];
-      static const std::array<unsigned int, NB_PRIMES> primes =
-      {{
-#include "../data/prime.dat"
-       }};
-      // std::ifstream in ("../share/latticetester/data/prime.dat"); // contains primes < 2^16
-      //    if (!(in.is_open())) {
-      //       std::cerr << "Error:   cannot open file   prime.dat\n";
-      //       exit(8);
-      //    }
-      //    in.ignore (100, '\n');  // ignore first line = number of primes in file
 
       Int ys = NTL::SqrRoot (y);
-      //    if (ys > 65536)
-      //       ys = 65536;
-      //    // The condition NbPrem < 65536 is necessary because there seems to
-      //    // be a bug in ZZ input: does not detect end-of-file and gives an error.
       unsigned int i = 1;
       while (i < NB_PRIMES && (NbPrem <= ys)) {
         if (y % NbPrem == 0)
           return COMPOSITE;
-        NbPrem = primes[i];
+        NbPrem = PRIMES_ARRAY[i];
         i++;
       }
       if (y <= LIM)

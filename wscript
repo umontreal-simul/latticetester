@@ -10,41 +10,22 @@ import imp
 def waftool(name):
     return imp.load_module('waf_' + name, *imp.find_module(name, ['./waftools', './latticetester/waftools']))
 
-NUMTYPES = {'LLDD': 1, 'ZZDD': 2, 'ZZRR': 3}
-
 version = waftool('version')
 compiler = waftool('compiler')
 deps = waftool('deps')
 
 def options(ctx):
-    # ctx.recurse('latticetester')
     ctx.load('compiler_c compiler_cxx gnu_dirs waf_unit_test')
     ctx.add_option('--link-static', action='store_true', help='statically link with dependencies')
     ctx.add_option('--build-docs', action='store_true', default=False, help='build documentation')
-    # ctx.add_option('--boost', action='store', help='prefix under which Boost is installed')
+    ctx.add_option('--boost', action='store', help='prefix under which Boost is installed')
     ctx.add_option('--ntl', action='store', help='prefix under which NTL is installed')
-    ctx.add_option('--ntltypes', action='store', help='set NTL integer/real types: {}'.format(', '.join(NUMTYPES)))
     ctx.add_option('--gmp', action='store', help='prefix under which GMP is installed')
 
 
 def configure(ctx):
     build_platform = Utils.unversioned_sys_platform()
     ctx.msg("Build platform", build_platform)
-        
-    # detect NTL types
-    if ctx.options.ntltypes in NUMTYPES:
-        ctx.define('WITH_NTL', 1)
-        ctx.define('NTL_TYPES_CODE', NUMTYPES[ctx.options.ntltypes])
-        ctx.env.LATTICETESTER_SUFFIX = str(ctx.options.ntltypes)
-    elif ctx.options.ntltypes is None:
-        ctx.fatal('Please specify the NTL number types with --ntltypes (try ./waf --help)')
-        # ctx.env.LATTICETESTER_SUFFIX = ''
-    else:
-        ctx.fatal("invalid NTL number types {}; must be one of: {}".format(ctx.options.ntltypes, ', '.join(NUMTYPES)))
-
-    ctx.msg("Use NTL", ctx.options.ntltypes and "yes" or "no")
-    if ctx.options.ntltypes:
-        ctx.msg("NTL integer/real types", ctx.options.ntltypes)
 
     ctx.load('compiler_c compiler_cxx gnu_dirs waf_unit_test')
     ctx.check(features='cxx', cxxflags='-std=c++14')
@@ -67,14 +48,19 @@ def configure(ctx):
             ctx.env.append_unique('LINKFLAGS', flags)
 
     # options
-    # if ctx.options.boost:
-    #     deps.add_deps_path(ctx, 'boost', ctx.options.boost)
+    if ctx.options.boost:
+        deps.add_deps_path(ctx, 'boost', ctx.options.boost)
     if ctx.options.ntl:
         deps.add_deps_path(ctx, 'NTL', ctx.options.ntl)
     if ctx.options.gmp:
         deps.add_deps_path(ctx, 'GMP', ctx.options.gmp)
 
     ctx_check = deps.shared_or_static(ctx, ctx.check)
+
+
+    # Boost
+    ctx_check(features='cxx cxxprogram',
+            header_name='boost/config.hpp')
 
     # NTL
     # if ctx.options.ntltypes:  # ntlttypes are now mandatory   
@@ -98,18 +84,19 @@ def configure(ctx):
     ctx.define('LATTICETESTER_VERSION', version_tag)
     ctx.msg("Setting LatticeTester version", version_tag)
 
-    if not hasattr(ctx.options, 'nested') or not ctx.options.nested:
-        # build variants
-        env = ctx.env.derive()
-        env.detach()
+    # definitions of DEBUG and NDEBUG flags: not used in this version
+    # if not hasattr(ctx.options, 'nested') or not ctx.options.nested:
+    #     # build variants
+    #     env = ctx.env.derive()
+    #     env.detach()
 
-        # release (default)
-        ctx.env.append_unique('CXXFLAGS', ['-O2'])
-        ctx.define('NDEBUG', 1)
+    #     # release (default)
+    #     ctx.env.append_unique('CXXFLAGS', ['-O2'])
+    #     ctx.define('NDEBUG', 1)
 
-        ctx.setenv('debug', env)
-        ctx.env.append_unique('CXXFLAGS', ['-g'])
-        ctx.define('DEBUG', 1)
+    #     ctx.setenv('debug', env)
+    #     ctx.env.append_unique('CXXFLAGS', ['-g'])
+    #     ctx.define('DEBUG', 1)
 
 
 def distclean(ctx):
@@ -128,7 +115,6 @@ def build(ctx):
 
     ctx.recurse('src')
 
-    # ctx.recurse('analysis')
     if not hasattr(ctx.options, 'nested') or not ctx.options.nested:
         ctx.recurse('progs')
         if ctx.env.BUILD_DOCS:
@@ -136,12 +122,12 @@ def build(ctx):
 
     ctx.recurse('data')    
 
-    # ctx.recurse('test')
+    # ctx.recurse('analysis') # probably broken, not used in the current version
 
 
-# build variants
+# # build variants not used in this version
 
-from waflib.Build import BuildContext
-class debug(BuildContext):
-    cmd = 'debug'
-    variant = 'debug'
+# from waflib.Build import BuildContext
+# class debug(BuildContext):
+#     cmd = 'debug'
+#     variant = 'debug'

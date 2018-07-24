@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
 // LatticeTester
-// Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -38,10 +38,75 @@
 #include <cstdlib>
 #include <cstdint>
 
+#include <type_traits>
+
 #include "latticetester/Const.h"
 
 #include "NTL/tools.h"
 #include "NTL/ZZ.h"
+
+namespace NTL {
+
+  /**
+   * \name Some other compatibility utilities
+   *
+   * @{
+   */
+
+  /**
+   * Converts the array of characters (string) `c` into an `std::int64_t` `l`.
+   */
+  inline void conv (std::int64_t & l, const char* c) {
+    l = strtol(c, (char **) NULL, 10);
+  }
+
+  /**
+   * Converts the array of characters (string) `c` into a `double` `r`.
+   */
+  inline void conv (double & r, const char* c) {
+    r = strtod(c, (char **) NULL);
+  }
+
+  inline void  conv(double &x, long long a)
+  {
+    x = static_cast<double>(a);
+  }
+
+  inline void conv(long long &x, double a)
+  {
+    x = static_cast<long long>(a);
+  }
+
+  inline void conv(ZZ &x, long long a)
+  {
+    x = NTL::conv<ZZ>(a);
+  }
+
+  inline void conv(long long &x, ZZ a)
+  {
+    x = NTL::conv<long long>(a);
+  }
+
+  inline void conv(long &x, long long a)
+  {
+    x = static_cast<long>(a);
+  }
+
+  inline void conv(long long &x, long a)
+  {
+    x = static_cast<long long>(a);
+  }
+
+  inline void conv(long long &x, long long a)
+  {
+    x = a;
+  }
+
+  /**
+   * @}
+   */
+
+}     // namespace NTL
 
 
 namespace LatticeTester {
@@ -807,7 +872,7 @@ namespace LatticeTester {
       Int C;   C = 0;
       for (int i = 0; i < n; i++)
         C += A[i] * B[i];
-      NTL::conv (D, C);
+      NTL::conv(D, C);
     }
 
 
@@ -1387,35 +1452,5 @@ namespace LatticeTester {
 // }
 
 // #endif
-
-
-
-namespace NTL {
-
-  /**
-   * \name Some other compatibility utilities
-   *
-   * @{
-   */
-
-  /**
-   * Converts the array of characters (string) `c` into an `std::int64_t` `l`.
-   */
-  inline void conv (std::int64_t & l, const char* c) {
-    l = strtol(c, (char **) NULL, 10);
-  }
-
-  /**
-   * Converts the array of characters (string) `c` into a `double` `r`.
-   */
-  inline void conv (double & r, const char* c) {
-    r = strtod(c, (char **) NULL);
-  }
-
-  /**
-   * @}
-   */
-
-}     // namespace NTL
 
 #endif

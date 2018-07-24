@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
 // LatticeTester
-// Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ namespace
 namespace LatticeTester
 {
 
-  const long TWO_EXP[64] = {
+  const std::int64_t TWO_EXP[64] = {
     1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768,
     65536, 131072, 262144, 524288, 1048576, 2097152, 4194304, 8388608, 16777216,
     33554432, 67108864, 134217728, 268435456, 536870912, 1073741824, 2147483648,
@@ -72,7 +72,7 @@ namespace LatticeTester
     2251799813685248, 4503599627370496, 9007199254740992, 18014398509481984,
     36028797018963968, 72057594037927936, 144115188075855872, 288230376151711744,
     576460752303423488, 1152921504606846976, 2305843009213693952,
-    (long)4611686018427387904U, (long)9223372036854775808U };
+    (std::int64_t)4611686018427387904U, (std::int64_t)9223372036854775808U };
 
 
 
@@ -131,7 +131,7 @@ namespace LatticeTester
 
   //===========================================================================
 
-  long Factorial(int t)
+  std::int64_t Factorial(int t)
   {
     if (t == 0)
       return 1;
@@ -168,7 +168,7 @@ namespace LatticeTester
   }
 
 
-  unsigned long RandBits (int s)
+  std::uint64_t RandBits (int s)
   {
     return RandValue () >> (64 - s);
   }

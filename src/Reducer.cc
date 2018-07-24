@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
 // LatticeTester
-// Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,11 +16,14 @@
 // limitations under the License.
 
 #include "latticetester/Reducer.h"
+#include <iostream>
 
 namespace LatticeTester{
-  void negativeCholeski ()
+
+void negativeCholeski()
   {
     std::cout << "\n***** Negative diagonal element in Choleski Decomposition\n"
       << std::endl;
   }
+
 }

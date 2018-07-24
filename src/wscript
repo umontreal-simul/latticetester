@@ -8,7 +8,7 @@ def build(ctx):
     ctx(features='cxx cxxstlib',
             source=src_dir.ant_glob('[A-Z]*.cc'),
             includes=[inc_dir],
-            target='latticetester' + ctx.env.LATTICETESTER_SUFFIX,
+            target='latticetester',
             install_path='${LIBDIR}')
 
     ctx.install_files('${INCLUDEDIR}/latticetester', inc_dir.ant_glob('latticetester/*.h'))

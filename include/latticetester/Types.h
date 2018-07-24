@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
 // LatticeTester
-// Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 // limitations under the License.
 
 /**
- * \file Types.h
+ * \file latticetester/Types.h
  * See the \ref Types "Types" module and \ref DIY
  * */
 /**

@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
 // LatticeTester
-// Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -67,6 +67,9 @@ namespace LatticeTester
 
   Weight ProjectionDependentWeights::getWeight (const Coordinates& projection) const
   {
+    if (projection.size() == 0){
+      return 0.0;
+    }
     Coordinates::value_type largestIndex = *projection.rbegin();
 
     if (largestIndex < m_weights.size()) {

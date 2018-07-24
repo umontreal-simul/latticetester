@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
 // LatticeTester
-// Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@
 #ifndef LATTICETESTER__CONST_H
 #define LATTICETESTER__CONST_H
 #include <string>
-
+#include <array>
 
 namespace LatticeTester {
 
@@ -151,5 +151,9 @@ namespace LatticeTester {
   /**
    * @}
    */
+
+  static constexpr unsigned int NB_PRIMES = 6543;
+  extern const std::array<unsigned int, NB_PRIMES> PRIMES_ARRAY;
+
 }
 #endif

@@ -29,14 +29,15 @@ def version_file(ctx, soft_name):
         version += r
 
         ctx.path.make_node('version-' + soft_name + '.txt').write(version)
+        ctx.env.append_unique(soft_name.upper() + "_VERSION", version)
     except:
         pass
 
 @conf
 def set_version(ctx, soft_name):
     """Returns VERSION from environment or by reading the VERSION file"""
-    if 'VERSION-' + soft_name in ctx.env:
-        version = ctx.env['VERSION-' + soft_name]
+    if soft_name.upper() + '_VERSION' in ctx.env:
+        version = ctx.env[soft_name.upper()+'_VERSION'][0]
     else:
         verfile = ctx.path.find_node('version-' + soft_name + '.txt')
         if verfile:

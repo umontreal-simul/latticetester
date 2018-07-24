@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
 // LatticeTester
-// Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -53,7 +53,14 @@ namespace LatticeTester {
        */
       virtual Weight getWeight (const Coordinates & projection) const = 0;
 
-      virtual std::string name() const = 0;
+      /**
+       * Returns the interlacing factor of the weights.
+       * This is used to parametrize figures of merit for interlaced digital nets.
+       */ 
+      virtual unsigned int interlacingFactor() const
+      {
+        return 1;
+      }
 
     protected:
       /**

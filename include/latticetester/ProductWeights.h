@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
 // LatticeTester
-// Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -52,8 +52,6 @@ namespace LatticeTester {
        */
       virtual ~ProductWeights()  {}
 
-      virtual std::string name() const { return "product"; }
-
       /**
        * Returns the weight of the projection specified by \c projection.
        */
@@ -91,6 +89,16 @@ namespace LatticeTester {
       {
         return m_defaultWeight;
       }
+
+    /**
+    * Multiply each weight by a constant.
+    */
+   void multiplyWeights(Weight c){
+       for (auto& w: m_weights){
+           w *= c;
+       }
+       m_defaultWeight *= c;
+   }
 
 #ifdef WITH_XML
       /**

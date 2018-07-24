@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
 // LatticeTester
-// Copyright (C) 2012-2016  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -43,9 +43,9 @@ namespace LatticeTester
 
   //========================================================================
 
-  unsigned long Random::randValue ()
+  std::uint64_t Random::randValue ()
   {
-    unsigned long b;
+    std::uint64_t b;
 
 #ifdef ULONG_64_OUI
     // Générateur LFSR258 de L'Ecuyer
@@ -118,7 +118,7 @@ namespace LatticeTester
 
   //=========================================================================
 
-  unsigned long Random::randBits (int s)
+  uint64_t Random::randBits (int s)
   {
 #ifdef ULONG_64_OUI
     return randValue () >> (64 - s);
@@ -130,7 +130,7 @@ namespace LatticeTester
 
   //=========================================================================
 
-  void Random::setSeed (unsigned long seed)
+  void Random::setSeed (uint64_t seed)
   {
     // Set one high bit = 1 to make sure initial state is valid
     etat1 = seed | 0x40000000;

@@ -49,9 +49,12 @@ namespace LatticeTester {
    * basis to \f$V\f$.
    */
 
-  template<typename Int, typename BasInt, typename BasIntVec,
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
     class IntLatticeBasis {
+      private:
+        typedef NTL::vector<BasInt> BasIntVec;
+        typedef NTL::matrix<BasInt> BasIntMat;
+        typedef NTL::vector<Dbl> DblVec;
       public:
 
         /**
@@ -83,8 +86,7 @@ namespace LatticeTester {
          * Copy constructor. The maximal dimension of the created basis is set
          * equal to `Lat`’s current dimension.
          */
-        IntLatticeBasis (const IntLatticeBasis<Int, BasInt, BasIntVec,
-            BasIntMat, Dbl, DblVec, RedDbl> & Lat);
+        IntLatticeBasis (const IntLatticeBasis<Int, BasInt, Dbl, RedDbl> & Lat);
 
         /**
          * Destructor.
@@ -100,15 +102,14 @@ namespace LatticeTester {
          * Copy the lattice `lat`, except it's NormType and dimension, into this
          * object. This does not check if the dimensions match.
          */
-        void copyBasis (const IntLatticeBasis<Int, BasInt, BasIntVec,
-            BasIntMat, Dbl, DblVec, RedDbl> & lat);
+        void copyBasis (const IntLatticeBasis<Int, BasInt, Dbl, RedDbl> & lat);
 
         /**
          * Copy the n first elements of the lattice `lat` into this object.
          * The object into which `lat` is copied has to be of dimension n.
          */
-        void copyBasis (const IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat,
-            Dbl, DblVec, RedDbl> & lat, int n);
+        void copyBasis (const IntLatticeBasis<Int, BasInt, Dbl, RedDbl> & lat,
+            int n);
 
         /**
          * Initializes a vector containing the norms of the basis vectors to -1
@@ -380,10 +381,9 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec,
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
-    RedDbl>::IntLatticeBasis (const int dim, NormType norm):
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::IntLatticeBasis (const int dim,
+        NormType norm):
       m_dim (dim),
       m_norm (norm),
       m_modulo(0),
@@ -398,11 +398,9 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename BasInt, typename BasIntVec,
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
-    RedDbl>::IntLatticeBasis (const BasIntMat basis, const int dim, 
-        NormType norm):
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::IntLatticeBasis (
+        const BasIntMat basis, const int dim, NormType norm):
       m_basis (basis),
       m_dim (dim),
       m_norm (norm),
@@ -416,16 +414,14 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename Int, typename BasInt, typename BasIntVec,
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
-    RedDbl>::IntLatticeBasis (
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::IntLatticeBasis (
         const BasIntMat primalbasis,
         const BasIntMat dualbasis,
         const Int modulo,
         const int dim,
         NormType norm):
-      IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>(
+      IntLatticeBasis<Int, BasInt, Dbl, RedDbl>(
           primalbasis, dim, norm)
   {
     this->m_dualbasis = dualbasis;
@@ -437,11 +433,9 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename Int, typename BasInt, typename BasIntVec,
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
-    RedDbl>::IntLatticeBasis (const IntLatticeBasis<Int, BasInt, BasIntVec,
-        BasIntMat, Dbl, DblVec, RedDbl> & lat):
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::IntLatticeBasis (
+        const IntLatticeBasis<Int, BasInt, Dbl, RedDbl> & lat):
       m_dim (lat.getDim ()),
       m_norm (lat.getNorm ()),
       m_xx(0)
@@ -451,10 +445,8 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename Int, typename BasInt, typename BasIntVec,
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
-    RedDbl>::~IntLatticeBasis ()
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::~IntLatticeBasis ()
     {
       kill();
       this->m_basis.BasIntMat::clear ();
@@ -465,10 +457,8 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename Int, typename BasInt, typename BasIntVec,
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
-    RedDbl>::kill ()
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    void IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::kill ()
     {
       delete [] this->m_xx;
       this->m_xx = 0;
@@ -476,11 +466,9 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename Int, typename BasInt, typename BasIntVec,
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
-    RedDbl>::copyBasis (const IntLatticeBasis<Int, BasInt, BasIntVec,
-        BasIntMat, Dbl, DblVec, RedDbl> & lat)
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    void IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::copyBasis (
+        const IntLatticeBasis<Int, BasInt, Dbl, RedDbl> & lat)
     {
       //if(m_dim == lat.m_dim)
 
@@ -497,11 +485,9 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename Int, typename BasInt, typename BasIntVec,
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
-    RedDbl>::copyBasis (const IntLatticeBasis<Int, BasInt, BasIntVec, 
-        BasIntMat, Dbl, DblVec, RedDbl> & lat, int n)
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    void IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::copyBasis (
+        const IntLatticeBasis<Int, BasInt, Dbl, RedDbl> & lat, int n)
     {
       if(this->m_dim == n) {
         CopyMatr(this->m_basis, lat.m_basis, n);
@@ -523,10 +509,8 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename Int, typename BasInt, typename BasIntVec, 
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
-    RedDbl>::initVecNorm ()
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    void IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::initVecNorm ()
     {
       this->m_xx = new bool[this->m_dim];
       for(int i = 0; i < this->m_dim; i++){
@@ -538,10 +522,8 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename Int, typename BasInt, typename BasIntVec,
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
-    RedDbl>::setNegativeNorm ()
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    void IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::setNegativeNorm ()
     {
       for (int i = 0; i<this->m_dim; i++){
         this->m_vecNorm[i] = -1;
@@ -550,10 +532,8 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename Int, typename BasInt, typename BasIntVec,
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
-    RedDbl>::setDualNegativeNorm ()
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    void IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::setDualNegativeNorm ()
     {
       for(int i = 0; i < this->m_dim; i++){
         this->m_dualvecNorm[i] = -1;
@@ -562,20 +542,16 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename Int, typename BasInt, typename BasIntVec, 
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
-    RedDbl>::updateVecNorm ()
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    void IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::updateVecNorm ()
     {
       updateVecNorm (0);
     }
 
   /*=========================================================================*/
 
-  template<typename Int, typename BasInt, typename BasIntVec,
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
-    RedDbl>::updateVecNorm (const int & d)
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    void IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::updateVecNorm (const int & d)
     {
       assert (d >= 0);
 
@@ -594,20 +570,16 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename Int, typename BasInt, typename BasIntVec,
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
-    RedDbl>::updateDualVecNorm ()
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    void IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::updateDualVecNorm ()
     {
       updateDualVecNorm (0);
     }
 
   /*=========================================================================*/
 
-  template<typename Int, typename BasInt, typename BasIntVec,
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
-    RedDbl>::updateDualVecNorm (const int & d)
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    void IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::updateDualVecNorm (const int & d)
     {
       assert (d >= 0);
 
@@ -626,10 +598,8 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename Int, typename BasInt, typename BasIntVec, 
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, 
-    RedDbl>::updateScalL2Norm (const int i)
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    void IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::updateScalL2Norm (const int i)
     {
       NTL::matrix_row<BasIntMat> row(this->m_basis, i);
       ProdScal<Int> (row, row, this->m_dim, this->m_vecNorm[i]);
@@ -637,10 +607,9 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename Int, typename BasInt, typename BasIntVec, 
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, 
-    RedDbl>::updateScalL2Norm (const int k1, const int k2)
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    void IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::updateScalL2Norm (
+        const int k1, const int k2)
     {
       for (int i = k1; i < k2; i++) {
         updateScalL2Norm(i);
@@ -649,10 +618,9 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename Int, typename BasInt, typename BasIntVec, 
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, 
-    RedDbl>::updateDualScalL2Norm (const int i)
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    void IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::updateDualScalL2Norm (
+        const int i)
     {
       NTL::matrix_row<BasIntMat> row(this->m_dualbasis, i);
       ProdScal<Int> (row, row, this->m_dim, this->m_dualvecNorm[i]);
@@ -660,10 +628,9 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename Int, typename BasInt, typename BasIntVec, 
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, 
-    RedDbl>::updateDualScalL2Norm (const int k1,
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    void IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::updateDualScalL2Norm (
+        const int k1,
         const int k2)
     {
       for (int i = k1; i < k2; i++) {
@@ -674,10 +641,8 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename Int, typename BasInt, typename BasIntVec, 
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, 
-    RedDbl>::permute (int i, int j)
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    void IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::permute (int i, int j)
     {
       if (i == j)
         return ;
@@ -699,10 +664,8 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename Int, typename BasInt, typename BasIntVec, 
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    bool IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, 
-    RedDbl>::checkDuality ()
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    bool IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::checkDuality ()
     {
       if(!this->m_withDual) {
         std::cout << "DO NOT USE IntLatticeBasis::checkDuality without dual"
@@ -737,10 +700,8 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename Int, typename BasInt, typename BasIntVec, 
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
-    RedDbl>::sort (int d)
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    void IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::sort (int d)
     /*
      * We assume that the square lengths are already updated.
      * This gives flexibility to the user to put something else than
@@ -768,10 +729,8 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename Int, typename BasInt, typename BasIntVec, 
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    void IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
-    RedDbl>::write () const
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    void IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::write () const
     {
       std::cout << "Dim = " << this->m_dim << " \n \n";
       std::cout << std::setprecision(10) << "Primal basis vectors:\n";
@@ -830,10 +789,8 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename Int, typename BasInt, typename BasIntVec, 
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    std::string IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
-           RedDbl>::toStringBasis () const
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    std::string IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::toStringBasis () const
     {
       std::ostringstream os;
       os << "Primal Basis:\n";
@@ -860,10 +817,9 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename Int, typename BasInt, typename BasIntVec, 
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    std::string IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
-    RedDbl>::toStringDualBasis () const
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    std::string IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::toStringDualBasis 
+    () const
     {
       std::ostringstream os;
       os << "Dual Basis:\n";

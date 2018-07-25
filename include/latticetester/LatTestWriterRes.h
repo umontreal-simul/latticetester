@@ -14,8 +14,8 @@ namespace LatticeTester {
    * in plain text format.
    *
    */
-  template<typename Int, typename IntMat>
-    class LatTestWriterRes : public LatTestWriter<Int, IntMat> {
+  template<typename Int>
+    class LatTestWriterRes : public LatTestWriter<Int> {
       public:
 
         /**
@@ -106,10 +106,10 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    LatTestWriterRes<Int, IntMat>::LatTestWriterRes (const char * fileName,
+  template<typename Int>
+    LatTestWriterRes<Int>::LatTestWriterRes (const char * fileName,
         unsigned int margins):
-      LatTestWriter<Int, IntMat> (fileName)
+      LatTestWriter<Int> (fileName)
   {
     m_margins = margins;
   }
@@ -117,9 +117,9 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    LatTestWriterRes<Int, IntMat>::LatTestWriterRes (std::ostream * stream, 
-        unsigned int margins): LatTestWriter<Int, IntMat> (stream)
+  template<typename Int>
+    LatTestWriterRes<Int>::LatTestWriterRes (std::ostream * stream, 
+        unsigned int margins): LatTestWriter<Int> (stream)
   {
     m_margins = margins;
   }
@@ -127,8 +127,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    void LatTestWriterRes<Int, IntMat>::endTabbedSection ()
+  template<typename Int>
+    void LatTestWriterRes<Int>::endTabbedSection ()
     {
       m_prefix = "";
     }
@@ -136,16 +136,16 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    void LatTestWriterRes<Int, IntMat>::addTab ()
+  template<typename Int>
+    void LatTestWriterRes<Int>::addTab ()
     {
       m_prefix += "\t";
     }
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    void LatTestWriterRes<Int, IntMat>::removeTab ()
+  template<typename Int>
+    void LatTestWriterRes<Int>::removeTab ()
     {
       if (m_prefix.length () > 0) {
         m_prefix.erase (m_prefix.length () - 1, 1);
@@ -154,24 +154,24 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    void LatTestWriterRes<Int, IntMat>::clearTab ()
+  template<typename Int>
+    void LatTestWriterRes<Int>::clearTab ()
     {
       m_prefix = "";
     }
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    void LatTestWriterRes<Int, IntMat>::newLine ()
+  template<typename Int>
+    void LatTestWriterRes<Int>::newLine ()
     {
       *this->m_stream << m_prefix << std::endl;
     }
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    void LatTestWriterRes<Int, IntMat>::newParagraph ()
+  template<typename Int>
+    void LatTestWriterRes<Int>::newParagraph ()
     {
       *this->m_stream << std::endl << std::endl;
       endTabbedSection ();
@@ -179,16 +179,16 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    void LatTestWriterRes<Int, IntMat>::writeMathString (const std::string s)
+  template<typename Int>
+    void LatTestWriterRes<Int>::writeMathString (const std::string s)
     {
       *this->m_stream << m_prefix << s;
     }
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    void LatTestWriterRes<Int, IntMat>::writeStandOutMathString (const std::string s)
+  template<typename Int>
+    void LatTestWriterRes<Int>::writeStandOutMathString (const std::string s)
     {
       *this->m_stream << std::endl << "\t" << s << std::endl;
     }

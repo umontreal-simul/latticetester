@@ -18,8 +18,7 @@ namespace LatticeTester {
    */
   template<typename Int, typename IntVec, typename BasInt, typename BasIntVec,
     typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl>
-    class Rank1Lattice: public IntLattice<Int, BasInt, BasIntVec, BasIntMat,
-    Dbl, DblVec, RedDbl> {
+    class Rank1Lattice: public IntLattice<Int, BasInt, Dbl, RedDbl> {
       public:
 
         /**
@@ -86,8 +85,7 @@ namespace LatticeTester {
     Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, 
     RedDbl>::Rank1Lattice (const Int & n, const IntVec & a, int maxDim,
         NormType norm):
-      IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> (
-          n, 1, maxDim, norm)
+      IntLattice<Int, BasInt, Dbl, RedDbl> (n, 1, maxDim, norm)
   {
     this->m_a = a;
     init();
@@ -112,7 +110,7 @@ namespace LatticeTester {
     void Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
     RedDbl>::init()
     {
-      IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>::init();
+      IntLattice<Int, BasInt, Dbl, RedDbl>::init();
       for (int r = 1; r < this->getDim(); r++)
         this->m_lgVolDual2[r] = this->m_lgVolDual2[r - 1];
     }
@@ -143,8 +141,8 @@ namespace LatticeTester {
     Rank1Lattice<Int, IntVec, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, 
     RedDbl>::Rank1Lattice (const Rank1Lattice<Int, IntVec, BasInt, BasIntVec, 
         BasIntMat, Dbl, DblVec, RedDbl> & lat):
-      IntLattice<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl> (
-          lat.m_modulo, lat.getOrder (), lat.getDim (), lat.getNorm ())
+      IntLattice<Int, BasInt, Dbl, RedDbl> (lat.m_modulo, lat.getOrder (),
+          lat.getDim (), lat.getNorm ())
   {
     // MyExit (1, "Rank1Lattice:: constructeur n'est pas terminé " );
     init ();

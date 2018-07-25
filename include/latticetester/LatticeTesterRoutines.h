@@ -22,9 +22,7 @@ namespace LatticeTester {
    * Returns -1.0 if there was an error in Branch-and-Bound procedure. Return the length
    * of the shortest non-zero vector otherwise.
    */
-  template<typename Int, typename BasInt, typename BasIntVec,
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
-    typename RedDblVec, typename RedDblMat>
+  template<typename Int, typename BasInt, typename BasIntMat, typename Dbl, typename RedDbl>
       double ShortestVector(BasIntMat matrix, NormType norm,
           PreReductionType preRed = BKZ, PrecisionType doublePrecision = DOUBLE,
           double fact = 0.999, int blocksize = 20)
@@ -38,10 +36,9 @@ namespace LatticeTester {
           dimension = (int) matrix.size1();
 
         // creating objects needed to perform the test
-        IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>
-          basis (matrix, dimension, norm);
-        Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, 
-          RedDblVec, RedDblMat> red (basis);
+        IntLatticeBasis<Int, BasInt, Dbl, RedDbl> basis (
+            matrix, dimension, norm);
+        Reducer<Int, BasInt, Dbl, RedDbl> red (basis);
 
         // performing pre-reduction
         switch (preRed) {
@@ -79,15 +76,12 @@ namespace LatticeTester {
    * Same thing as before but with the possibility to set a different value for
    * the variable maxNodesBB.
    */
-  template<typename Int, typename BasInt, typename BasIntVec, 
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
-    typename RedDblVec, typename RedDblMat>
+  template<typename Int, typename BasInt, typename BasIntMat, typename Dbl, typename RedDbl>
       double ShortestVector(BasIntMat matrix, NormType norm, std::int64_t maxNodesBB,
           PreReductionType preRed = BKZ, PrecisionType doublePrecision = DOUBLE,
           double fact = 0.999, int blocksize = 20)
       {
-        Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, 
-        RedDblVec, RedDblMat>::maxNodesBB = maxNodesBB; // setting the number of nodes visited in the BB procedure
+        Reducer<Int, BasInt, Dbl, RedDbl>::maxNodesBB = maxNodesBB; // setting the number of nodes visited in the BB procedure
         return ShortestVector<Int, BasInt>(
             matrix, norm, preRed, doublePrecision, fact, blocksize);
       }
@@ -102,9 +96,7 @@ namespace LatticeTester {
    */
   /* This is only a declaration that we will specialize later
    * */
-  template<typename Int, typename BasInt, typename BasIntVec, 
-    typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, 
-    typename RedDblVec, typename RedDblMat>
+  template<typename Int, typename BasInt, typename BasIntMat, typename Dbl, typename RedDbl>
       double FigureOfMerit(BasIntMat matrix, NormaType normalizerType, 
           PreReductionType preRed = BKZ, PrecisionType doublePrecision = DOUBLE,
           double fact = 0.999, int blocksize = 20);
@@ -192,9 +184,8 @@ namespace LatticeTester {
   ///\cond
   // LLDD specialization
   template<>
-  double FigureOfMerit<std::int64_t, std::int64_t, NTL::vector<std::int64_t>,
-         NTL::matrix<std::int64_t>, double, NTL::vector<double>, double,
-         NTL::vector<double>, NTL::matrix<double>> (
+  double FigureOfMerit<std::int64_t, std::int64_t, NTL::matrix<std::int64_t>, 
+         double, double> (
              NTL::matrix<std::int64_t> matrix, NormaType normalizerType,
              PreReductionType preRed, PrecisionType doublePrecision,
              double fact, int blocksize) 
@@ -269,9 +260,7 @@ namespace LatticeTester {
 
 // ZZDD specialization
 template<>
-  double FigureOfMerit<NTL::ZZ, NTL::ZZ, NTL::vector<NTL::ZZ>,
-         NTL::matrix<NTL::ZZ>, double, NTL::vector<double>, double,
-         NTL::vector<double>, NTL::matrix<double>>(
+  double FigureOfMerit<NTL::ZZ, NTL::ZZ, NTL::matrix<NTL::ZZ>, double, double>(
              NTL::matrix<NTL::ZZ> matrix, NormaType normalizerType,
              PreReductionType preRed, PrecisionType doublePrecision,
              double fact, int blocksize)
@@ -346,18 +335,15 @@ template<>
  * Same thing as before but with the possibility to set a different value for
  * the variable maxNodesBB.
  */
-template<typename Int, typename BasInt, typename BasIntVec, 
-  typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, 
-  typename RedDblVec, typename RedDblMat>
+template<typename Int, typename BasInt, typename BasIntMat, typename Dbl,
+  typename RedDbl>
     double FigureOfMerit(BasIntMat matrix, NormaType normalizerType, 
         std::int64_t maxNodesBB, PreReductionType preRed = BKZ, 
         PrecisionType doublePrecision = DOUBLE, double fact = 0.999,
         int blocksize = 20)
     {
-      Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, 
-      RedDblVec, RedDblMat>::maxNodesBB = maxNodesBB; // setting the number of nodes visited in the BB procedure
-      return FigureOfMerit<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec,
-             RedDbl, RedDblVec, RedDblMat>(
+      Reducer<Int, BasInt, Dbl, RedDbl>::maxNodesBB = maxNodesBB; // setting the number of nodes visited in the BB procedure
+      return FigureOfMerit<Int, BasInt, BasIntMat, Dbl, RedDbl>(
                  matrix, normalizerType, preRed, doublePrecision, fact, blocksize);
     }
 
@@ -368,9 +354,8 @@ template<typename Int, typename BasInt, typename BasIntVec,
  * is usefull, for example, to calculate a Beyer quotient (as implemented in
  * FigureOfMerit()).
  */
-template<typename Int, typename BasInt, typename BasIntVec, 
-  typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, 
-  typename RedDblVec, typename RedDblMat>
+template<typename Int, typename BasInt, typename BasIntMat, typename Dbl,
+  typename RedDbl>
     bool MinkowskiReduction(BasIntMat & matrix, PreReductionType preRed = BKZ,
         PrecisionType doublePrecision = DOUBLE, double fact = 0.999, 
         int blocksize = 20)
@@ -384,10 +369,9 @@ template<typename Int, typename BasInt, typename BasIntVec,
         dimension = (int) matrix.size1();
 
       // creating objects needed to perform the test
-      IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>
-        basis (matrix, dimension, L2NORM);
-      Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, 
-        RedDblVec, RedDblMat> red (basis);
+      IntLatticeBasis<Int, BasInt, Dbl, RedDbl> basis (
+          matrix, dimension, L2NORM);
+      Reducer<Int, BasInt, Dbl, RedDbl> red (basis);
 
       // performing pre-reduction
       red.preRedDieter(0);
@@ -403,15 +387,13 @@ template<typename Int, typename BasInt, typename BasIntVec,
  * Same thing as before but with the possibility to set a different value for
  * the variable maxNodesBB.
  */
-template<typename Int, typename BasInt, typename BasIntVec, 
-  typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, 
-  typename RedDblVec, typename RedDblMat>
+template<typename Int, typename BasInt, typename BasIntMat, typename Dbl,
+  typename RedDbl>
     bool MinkowskiReduction(BasIntMat & matrix, std::int64_t maxNodesBB, 
         PreReductionType preRed = BKZ, PrecisionType doublePrecision = DOUBLE, 
         double fact = 0.999, int blocksize = 20)
     {
-      Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, 
-      RedDblVec, RedDblMat>::maxNodesBB = maxNodesBB; // setting the number of nodes visited in the BB procedure
+      Reducer<Int, BasInt, Dbl, RedDbl>::maxNodesBB = maxNodesBB; // setting the number of nodes visited in the BB procedure
       return MinkowskiReduction<Int, BasInt>(
           matrix, preRed, doublePrecision, fact, blocksize);
     }
@@ -423,9 +405,8 @@ template<typename Int, typename BasInt, typename BasIntVec,
  * Returns -1.0 if there was an error in Branch-and-Bound procedure while calculating
  * the Minkowski-reduced basis. Return the figure of merit otherwise.
  */
-template<typename Int, typename BasInt, typename BasIntVec, 
-  typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl,
-  typename RedDblVec, typename RedDblMat>
+template<typename Int, typename BasInt, typename BasIntMat, typename Dbl,
+  typename RedDbl>
     double FigureOfMeritBeyer(BasIntMat matrix, PreReductionType preRed = BKZ,
         PrecisionType doublePrecision = DOUBLE, double fact = 0.999, 
         int blocksize = 20)
@@ -448,8 +429,8 @@ template<typename Int, typename BasInt, typename BasIntVec,
       //m_lat->dualize ();
 
       if (reductionSuccess) {
-        IntLatticeBasis<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl>
-          basis (matrix, dimension, L2NORM);
+        IntLatticeBasis<Int, BasInt, Dbl, RedDbl> basis (
+            matrix, dimension, L2NORM);
         basis.updateScalL2Norm (0);
         basis.updateScalL2Norm (dimension-1);
         double x1, x2; // maybe using something else than double (xdouble, RR?)
@@ -464,15 +445,13 @@ template<typename Int, typename BasInt, typename BasIntVec,
  * Same thing as before but with the possibility to set a different value for
  * the variable maxNodesBB.
  */
-template<typename Int, typename BasInt, typename BasIntVec, 
-  typename BasIntMat, typename Dbl, typename DblVec, typename RedDbl, 
-  typename RedDblVec, typename RedDblMat>
+template<typename Int, typename BasInt, typename BasIntMat, typename Dbl,
+  typename RedDbl>
     double FigureOfMeritBeyer(BasIntMat matrix, std::int64_t maxNodesBB, 
         PreReductionType preRed = BKZ, PrecisionType doublePrecision = DOUBLE, 
         double fact = 0.999, int blocksize = 20)
     {
-      Reducer<Int, BasInt, BasIntVec, BasIntMat, Dbl, DblVec, RedDbl, 
-      RedDblVec, RedDblMat>::maxNodesBB = maxNodesBB; // setting the number of nodes visited in the BB procedure
+      Reducer<Int, BasInt, Dbl, RedDbl>::maxNodesBB = maxNodesBB; // setting the number of nodes visited in the BB procedure
       return FigureOfMeritBeyer<Int, BasInt>(
           matrix, preRed, doublePrecision, fact, blocksize);
     }

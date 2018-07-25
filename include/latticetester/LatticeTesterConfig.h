@@ -5,7 +5,6 @@
 
 #include <cstdint>
 
-
 namespace LatticeTester {
 
   /**

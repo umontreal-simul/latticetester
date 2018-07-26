@@ -271,7 +271,7 @@ typedef NTL::ZZ_pX    PolX;
 typedef NTL::ZZ_pE    PolE;
 #endif
 
-#if NTL_TYPES_CODES
+#if NTL_TYPES_CODE
 
 typedef NTL::vector<MScal> MVect;
 typedef NTL::matrix<MScal> MMat;

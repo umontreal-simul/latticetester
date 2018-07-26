@@ -18,6 +18,7 @@
 #ifndef LATTICETESTER__LACUNARY_H
 #define LATTICETESTER__LACUNARY_H
 #include "latticetester/Util.h"
+#include "latticetester/ntlwrap.h"
 
 #include <string>
 #include <cstdint>
@@ -28,7 +29,7 @@ namespace LatticeTester {
    * This class implements sets of lacunary indices.
    *
    */
-  template<typename BasInt, typename BasIntVec>
+  template<typename BasInt>
     class Lacunary {
       private:
         typedef NTL::vector<BasInt> BasIntVec;

@@ -1,0 +1,3 @@
+[submodule "doc/bib"]
+	path = doc/bib
+	url = https://github.com/umontreal-simul/bibtex-database.git

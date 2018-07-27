@@ -5,7 +5,15 @@ _A software package for testing the uniformity of integral lattices in the real 
 
 This software package allows it's user to calculate various figures of merit 
 such as the normalized spectral test and the Beyer quotient on integral lattices.
-A detailed documentation is available [here](http://umontreal-simul.github.io/latticetester/).
+It also contains classes that can represent such a lattice and that can be used
+to manipulate and reduce it's basis. On the other hand, this program cannot
+compute the basis of a lattice by itself. To do this, depending on your use case,
+you will either need to use external software or to use some of the other
+software available at [https://github.com/umontreal-simul](https://github.com/umontreal-simul),
+namely [LatNet Builder](https://github.com/umontreal-simul/latbuilder) for QMC
+point sets and [LatMRG](https://github.com/umontreal-simul/latmrg) for PRNG
+point sets. A detailed documentation is available 
+[here](http://umontreal-simul.github.io/latticetester/).
 
 ## Compiling
 

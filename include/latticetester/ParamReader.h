@@ -34,10 +34,21 @@
 namespace LatticeTester {
 
   /**
-   * Utility class used to read basic parameter fields in a configuration file.
-   * Lines whose first non-blank character is a <tt>#</tt> are considered as
-   * comments and discarded.
+   * Utility class that can be used to read different kind of data from a file.
+   * This class has to be initialized with a `fileName` to be used. After the 
+   * object is initialized, it is then necessary to read the entire file with
+   * `getLines`. This will make a vector containing all the lines of the file,
+   * removing those with a `#` at the start. There then are many methods 
+   * allowing the conversion of string tokens to various data types by 
+   * specifying a line and a token number. In every line, a token is a string 
+   * delimited by any of these caracters: ` ` (blank), `?`, `!`, `,`, `\t`, and
+   * `\n`. For example, `ReadString(string, 2, 3)` will put the 4th token 
+   * (numerotation starts at 0) of the 3rd line in string.  The user of this 
+   * class has to be aware of the format of the file that will be read.
    *
+   * \remark This class should have proper error management in the `GetToken` 
+   * method because the program curently simply crashes without explanation if 
+   * this class is misued.
    */
   template<typename Int, typename BasInt, typename RedDbl>
     class ParamReader { 
@@ -48,7 +59,7 @@ namespace LatticeTester {
         static const int MAX_WORD_SIZE = 64;
 
         /**
-         * Constructor.
+         * Empty constructor. Allocates space for a word.
          */
         ParamReader();
 
@@ -70,17 +81,6 @@ namespace LatticeTester {
          */
         void getLines();
 
-        /**
-         * Puts into `field` the <tt>pos</tt>-th string token from line `ln`.
-         */
-        void getToken (std::string & field, unsigned int ln, unsigned int pos);
-
-        /**
-         * Splits line `ln` from the file into several string tokens. Separator
-         * characters are defined in function `IsDelim`. Tokens are stored in
-         * vector `tokens`.
-         */
-        int tokenize (std::vector<std::string> & tokens, unsigned int ln);
 
         /**
          * Reads a string from the <tt>pos</tt>-th token of the <tt>ln</tt>-th
@@ -124,7 +124,6 @@ namespace LatticeTester {
          * line into `field`.
          */
         void readDouble (double & field, unsigned int ln, unsigned int pos);
-
 
         /**
          * Reads \f$b\f$, \f$e\f$ and \f$c\f$, starting at the <tt>pos</tt>-th
@@ -247,27 +246,49 @@ namespace LatticeTester {
             unsigned int pos);
 
         /**
-         * Reads the configuration file into `config` for the Beyer and the
-         * spectral tests.
+         * Reads the configuration file into `config` for. This is a preset 
+         * reading order that is used in `LatticeAnalysis` to get data from a
+         * file with the standard format described in `Using the executable`.
          */
         void read (LatticeTesterConfig<Int, BasIntMat> & config);
+
+      protected:
+
+        /**
+         * Puts into `field` the <tt>pos</tt>-th string token from line `ln`.
+         * This is intended to be used by other methods the get a specific 
+         * string token that can then be converted. This method uses `tokenize`
+         * to split the line it has to operate on.
+         */
+        void getToken (std::string & field, unsigned int ln, unsigned int pos);
+
       private:
 
         /**
-         * Internal line buffer.
+         * Internal line buffer that stores every line not starting with a `#`
+         * after `getLines()` has been called.
          */
         std::vector<std::string> m_lines;
 
         /**
-         * The path of the opened file.
+         * The path of the file that this object can read. Note that there are
+         * no methods allowing to modify it in this class so it has to be 
+         * initialized with the constructor.
          */
         std::string m_fileName;
 
         /**
          * Checks if the character `c` is to be considered as a token separator
-         * or not.
+         * or not. This is a method used internally by `tokenize`.
          */
         bool isDelim (char c);
+
+        /**
+         * Splits line `ln` in `m_lines` into several string tokens. This
+         * function calls `isDelim` on every character to split the line at any
+         * of ` ?!,\t\n`. Tokens are stored in vector `tokens`.
+         */
+        int tokenize (std::vector<std::string> & tokens, unsigned int ln);
 
         /**
          * Does nothing for now.
@@ -780,6 +801,9 @@ namespace LatticeTester {
 
   //===========================================================================
 
+  /**
+   * Sets the norm in config depending on it's normalizer.
+   * */
   template<typename Int, typename BasIntMat>
     void initNorm(LatticeTesterConfig<Int, BasIntMat> & config)
     {

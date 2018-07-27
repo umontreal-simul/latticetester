@@ -1,6 +1,7 @@
 # This file contains a few notes on what work has to be done in this repo
 
 ## Urgent work
+- Have examples (usage of most functions on a simple basis)
 - Update the doc to be publishable
 - Choose a license
 
@@ -12,6 +13,4 @@
 ## Design changes
 
 ## Minor changes
-- Change the types used. This means:
-  - Remove usage of int in favor of `std::int64_t` or `std::uint64_t`.
-  - Change `std::int64_t` to `std::uint64_t` in some places.
+- Add the `.bib` files as a submodule to keep them up to date.

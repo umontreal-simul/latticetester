@@ -2,6 +2,7 @@
 
 ## Urgent work
 - Update the doc to be publishable
+- Choose a license
 
 ## New features
 - Test current implementation for supported types combinations

@@ -212,20 +212,12 @@
 #include "NTL/lzz_pEX.h"
 
 typedef std::int64_t              MScal;
-typedef NTL::vector<std::int64_t> MVect;
-typedef NTL::matrix<std::int64_t> MMat;
 typedef zz_p     MScalP; // This appears nowhere
 typedef NTL::vec_zz_p MVectP; // This appears nowhere
 typedef NTL::mat_zz_p MMatP; // This appears only once
 typedef std::int64_t                BScal;
-typedef NTL::vector<std::int64_t>   BVect;
-typedef NTL::matrix<std::int64_t>   BMat;
 typedef double              NScal;
-typedef NTL::vector<double> NVect;
-typedef NTL::matrix<double> NMat; // This appears nowhere
 typedef double              RScal;
-typedef NTL::vector<double> RVect;
-typedef NTL::matrix<double> RMat;
 typedef zz_pX    PolX; // This appears nowhere
 typedef zz_pE    PolE; // This appears nowhere
 
@@ -243,22 +235,15 @@ typedef zz_pE    PolE; // This appears nowhere
 #include "NTL/ZZ_pEX.h"
 
 typedef NTL::ZZ              MScal;
-typedef NTL::vector<NTL::ZZ> MVect;
-typedef NTL::matrix<NTL::ZZ> MMat;
 typedef NTL::ZZ_p     MScalP;
 typedef NTL::vec_ZZ_p MVectP;
 typedef NTL::mat_ZZ_p MMatP;
 typedef NTL::ZZ              BScal;
-typedef NTL::vector<NTL::ZZ> BVect;
-typedef NTL::matrix<NTL::ZZ> BMat;
 typedef double              NScal;
-typedef NTL::vector<double> NVect;
-typedef NTL::matrix<double> NMat;
 typedef double              RScal;
-typedef NTL::vector<double> RVect;
-typedef NTL::matrix<double> RMat;
 typedef NTL::ZZ_pX    PolX;
 typedef NTL::ZZ_pE    PolE;
+
 #elif NTL_TYPES_CODE == 3
 // the case  "ZZRR"
 
@@ -276,22 +261,27 @@ typedef NTL::ZZ_pE    PolE;
 #include "NTL/ZZ_pEX.h"
 
 typedef NTL::ZZ              MScal;
-typedef NTL::vector<NTL::ZZ> MVect;
-typedef NTL::matrix<NTL::ZZ> MMat;
 typedef NTL::ZZ_p     MScalP;
 typedef NTL::vec_ZZ_p MVectP;
 typedef NTL::mat_ZZ_p MMatP;
 typedef NTL::ZZ              BScal;
-typedef NTL::vector<NTL::ZZ> BVect;
-typedef NTL::matrix<NTL::ZZ> BMat;
 typedef NTL::RR              NScal;
-typedef NTL::vector<NTL::RR> NVect;
-typedef NTL::matrix<NTL::RR> NMat;
 typedef NTL::RR              RScal;
-typedef NTL::vector<NTL::RR> RVect;
-typedef NTL::matrix<NTL::RR> RMat;
 typedef NTL::ZZ_pX    PolX;
 typedef NTL::ZZ_pE    PolE;
+#endif
+
+#if NTL_TYPES_CODE
+
+typedef NTL::vector<MScal> MVect;
+typedef NTL::matrix<MScal> MMat;
+typedef NTL::vector<BScal> BVect;
+typedef NTL::matrix<BScal> BMat;
+typedef NTL::vector<NScal> NVect;
+typedef NTL::matrix<NScal> NMat; // This appears nowhere
+typedef NTL::vector<RScal> RVect;
+typedef NTL::matrix<RScal> RMat;
+
 #endif
 
 

@@ -1,3 +1,20 @@
+// This file is part of LatticeTester.
+//
+// LatticeTester
+// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #ifndef LATTESTWRITER_H
 #define LATTESTWRITER_H
 
@@ -16,8 +33,10 @@ namespace LatticeTester {
    * different formats, for instance text or LaTeX.
    *
    */
-  template<typename Int, typename IntMat>
+  template<typename Int>
     class LatTestWriter {
+      private:
+        typedef NTL::matrix<Int> IntMat;
       public:
 
         /**
@@ -144,8 +163,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    LatTestWriter<Int, IntMat>::LatTestWriter(const char* fileName)
+  template<typename Int>
+    LatTestWriter<Int>::LatTestWriter(const char* fileName)
     {
       m_stream = new std::ofstream(fileName);
       //_stream = dynamic_cast<ostream*>(new ofstream(fileName));
@@ -157,8 +176,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    LatTestWriter<Int, IntMat>::LatTestWriter(std::ostream* stream)
+  template<typename Int>
+    LatTestWriter<Int>::LatTestWriter(std::ostream* stream)
     {
       m_stream = stream;
       m_clean = false;
@@ -166,8 +185,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    LatTestWriter<Int, IntMat>::~LatTestWriter()
+  template<typename Int>
+    LatTestWriter<Int>::~LatTestWriter()
     {
       if (m_clean && m_stream) {
         delete m_stream;
@@ -176,40 +195,40 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    void LatTestWriter<Int, IntMat>::writeInt(const int & value)
+  template<typename Int>
+    void LatTestWriter<Int>::writeInt(const int & value)
     {
       *m_stream << value;
     }
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    void LatTestWriter<Int, IntMat>::writeBool(const bool & value)
+  template<typename Int>
+    void LatTestWriter<Int>::writeBool(const bool & value)
     {
       *m_stream << (value ? "true" : "false");
     }
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    void LatTestWriter<Int, IntMat>::writeString(const std::string & value)
+  template<typename Int>
+    void LatTestWriter<Int>::writeString(const std::string & value)
     {
       *m_stream << value;
     }
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    void LatTestWriter<Int, IntMat>::writeIntScal(const Int & value)
+  template<typename Int>
+    void LatTestWriter<Int>::writeIntScal(const Int & value)
     {
       *m_stream << value;
     }
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    void LatTestWriter<Int, IntMat>::writeMMat(const IntMat & A)
+  template<typename Int>
+    void LatTestWriter<Int>::writeMMat(const IntMat & A)
     {
       std::int64_t sizeA = A.size1();
       *m_stream << "   [";
@@ -228,8 +247,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    void LatTestWriter<Int, IntMat>::writeDouble(const double & value)
+  template<typename Int>
+    void LatTestWriter<Int>::writeDouble(const double & value)
     {
       *m_stream << value;
     }

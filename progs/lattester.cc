@@ -129,7 +129,7 @@ using namespace LatticeTester;
   return 1;
 } */
 int ZZDD(int argc, char* argv[]) {
-  LatticeAnalysis<NTL::ZZ, NTL::vector<NTL::ZZ>, NTL::matrix<NTL::ZZ>, NTL::ZZ, NTL::vector<NTL::ZZ>, NTL::matrix<NTL::ZZ>, double, NTL::vector<double>, double, NTL::vector<double>, NTL::matrix<double>> latAnalysis;
+  LatticeAnalysis<NTL::ZZ, NTL::ZZ, double, double> latAnalysis;
   struct stat buf; // properties of a file or directory
   int status = 0;
 
@@ -369,7 +369,7 @@ int ZZDD(int argc, char* argv[]) {
   return 1;
 } */
 int LLDD(int argc, char* argv[]) {
-  LatticeAnalysis<std::int64_t, NTL::vector<std::int64_t>, NTL::matrix<std::int64_t>, std::int64_t, NTL::vector<std::int64_t>, NTL::matrix<std::int64_t>, double, NTL::vector<double>, double, NTL::vector<double>, NTL::matrix<double>> latAnalysis;
+  LatticeAnalysis<std::int64_t, std::int64_t, double, double> latAnalysis;
   struct stat buf; // properties of a file or directory
   int status = 0;
 

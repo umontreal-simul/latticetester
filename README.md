@@ -5,11 +5,12 @@ To update the documentation of *LatticeTester* , run the following commands on y
 ```
 ./waf configure --build-docs
 ./waf build
+rm -r doc/html
 git clone https://github.com/umontreal-simul/latticetester.git doc/html
 cd doc/html
 git checkout -b gh-pages origin/gh-pages
 cd ../..
-mv build/doc/html doc/html
+mv build/doc/html/* doc/html
 cd doc/html
 git status
 git add .

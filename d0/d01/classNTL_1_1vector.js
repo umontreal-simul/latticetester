@@ -9,7 +9,6 @@ var classNTL_1_1vector =
     [ "empty", "d0/d01/classNTL_1_1vector.html#a2eab5d1dd975915f90028397f241d09a", null ],
     [ "max_size", "d0/d01/classNTL_1_1vector.html#ad6e252b8460b90061612ceefb5d27736", null ],
     [ "operator()", "d0/d01/classNTL_1_1vector.html#a0db3e33112e8ca6acf96e121147554b9", null ],
-    [ "operator()", "d0/d01/classNTL_1_1vector.html#aa2c30a2f59f94631ead3a7911568fbb2", null ],
     [ "resize", "d0/d01/classNTL_1_1vector.html#ad794efde1d0c90a70459401f857c2999", null ],
     [ "size", "d0/d01/classNTL_1_1vector.html#a27e58542ea75f8221a479637f1a8fc0c", null ]
 ];

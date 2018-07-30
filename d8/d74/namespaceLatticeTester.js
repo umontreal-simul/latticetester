@@ -25,12 +25,8 @@ var namespaceLatticeTester =
     [ "Random", "dc/d9a/classLatticeTester_1_1Random.html", "dc/d9a/classLatticeTester_1_1Random" ],
     [ "Rank1Lattice", "de/dfe/classLatticeTester_1_1Rank1Lattice.html", "de/dfe/classLatticeTester_1_1Rank1Lattice" ],
     [ "Reducer", "d8/de3/classLatticeTester_1_1Reducer.html", "d8/de3/classLatticeTester_1_1Reducer" ],
-    [ "specLatticeAnalysis", "d7/db1/structLatticeTester_1_1specLatticeAnalysis.html", "d7/db1/structLatticeTester_1_1specLatticeAnalysis" ],
-    [ "specLatticeAnalysis< NTL::ZZ, NTL::vector< NTL::ZZ >, NTL::matrix< NTL::ZZ >, NTL::ZZ, NTL::vector< NTL::ZZ >, NTL::matrix< NTL::ZZ >, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat >", "d8/dae/structLatticeTester_1_1specLatticeAnalysis_3_01NTL_1_1ZZ_00_01NTL_1_1vector_3_01NTL_1_1ZZ_01_4_0b314eacbca9402977ac512954ed1134d.html", "d8/dae/structLatticeTester_1_1specLatticeAnalysis_3_01NTL_1_1ZZ_00_01NTL_1_1vector_3_01NTL_1_1ZZ_01_4_0b314eacbca9402977ac512954ed1134d" ],
-    [ "specLatticeAnalysis< std::int64_t, NTL::vector< std::int64_t >, NTL::matrix< std::int64_t >, std::int64_t, NTL::vector< std::int64_t >, NTL::matrix< std::int64_t >, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat >", "d3/dc7/structLatticeTester_1_1specLatticeAnalysis_3_01std_1_1int64__t_00_01NTL_1_1vector_3_01std_1_1int15e6eb3179468df26ae88275734203ce.html", "d3/dc7/structLatticeTester_1_1specLatticeAnalysis_3_01std_1_1int64__t_00_01NTL_1_1vector_3_01std_1_1int15e6eb3179468df26ae88275734203ce" ],
-    [ "specReducer", "d3/dfd/structLatticeTester_1_1specReducer.html", "d3/dfd/structLatticeTester_1_1specReducer" ],
-    [ "specReducer< NTL::ZZ, NTL::ZZ, NTL::vector< NTL::ZZ >, NTL::matrix< NTL::ZZ >, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat >", "dc/dff/structLatticeTester_1_1specReducer_3_01NTL_1_1ZZ_00_01NTL_1_1ZZ_00_01NTL_1_1vector_3_01NTL_1_1ZZ1dfb05504b0bfb5c91b3d0aa703320b4.html", "dc/dff/structLatticeTester_1_1specReducer_3_01NTL_1_1ZZ_00_01NTL_1_1ZZ_00_01NTL_1_1vector_3_01NTL_1_1ZZ1dfb05504b0bfb5c91b3d0aa703320b4" ],
-    [ "specReducer< std::int64_t, std::int64_t, NTL::vector< std::int64_t >, NTL::matrix< std::int64_t >, Dbl, DblVec, RedDbl, RedDblVec, RedDblMat >", "d1/d18/structLatticeTester_1_1specReducer_3_01std_1_1int64__t_00_01std_1_1int64__t_00_01NTL_1_1vector_3fe33ef71beef4ee2dd816a5506ea1c46.html", "d1/d18/structLatticeTester_1_1specReducer_3_01std_1_1int64__t_00_01std_1_1int64__t_00_01NTL_1_1vector_3fe33ef71beef4ee2dd816a5506ea1c46" ],
+    [ "specLatticeAnalysis", "d7/db1/structLatticeTester_1_1specLatticeAnalysis.html", null ],
+    [ "Types", "d6/df9/classLatticeTester_1_1Types.html", null ],
     [ "UniformWeights", "d7/d89/classLatticeTester_1_1UniformWeights.html", "d7/d89/classLatticeTester_1_1UniformWeights" ],
     [ "Weights", "db/d40/classLatticeTester_1_1Weights.html", "db/d40/classLatticeTester_1_1Weights" ]
 ];

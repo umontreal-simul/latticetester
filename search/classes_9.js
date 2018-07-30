@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['paramreader',['ParamReader',['../da/d47/classLatticeTester_1_1ParamReader.html',1,'LatticeTester']]],
-  ['podweights',['PODWeights',['../d4/de7/classLatticeTester_1_1PODWeights.html',1,'LatticeTester']]],
-  ['productweights',['ProductWeights',['../da/d3e/classLatticeTester_1_1ProductWeights.html',1,'LatticeTester']]],
-  ['projectiondependentweights',['ProjectionDependentWeights',['../d1/db4/classLatticeTester_1_1ProjectionDependentWeights.html',1,'LatticeTester']]]
+  ['random',['Random',['../dc/d9a/classLatticeTester_1_1Random.html',1,'LatticeTester']]],
+  ['rank1lattice',['Rank1Lattice',['../de/dfe/classLatticeTester_1_1Rank1Lattice.html',1,'LatticeTester']]],
+  ['reducer',['Reducer',['../d8/de3/classLatticeTester_1_1Reducer.html',1,'LatticeTester']]]
 ];

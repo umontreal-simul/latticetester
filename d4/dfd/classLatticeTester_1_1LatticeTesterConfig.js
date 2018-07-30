@@ -8,7 +8,6 @@ var classLatticeTester_1_1LatticeTesterConfig =
     [ "basis", "d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html#a088810243db5a6d812246d0f6bf65cd5", null ],
     [ "blocksize", "d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html#a42e7af0e9fbc7559fff2e6636862ae63", null ],
     [ "detailF", "d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html#ab6387144a3f6a8ca5b45f1dd40e130cf", null ],
-    [ "dim", "d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html#aae07e277fa5e056f837037e6bc8d1d2d", null ],
     [ "fact", "d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html#add9128758fb4c3e6cec8059b0b10fa86", null ],
     [ "fileName", "d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html#a18fd673fe0bc2f8753b6a409fa7c3f9b", null ],
     [ "maxNodesBB", "d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html#a4582585f1b602d726c9d3b4c5834b787", null ],

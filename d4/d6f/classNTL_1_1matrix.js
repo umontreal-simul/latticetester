@@ -6,7 +6,6 @@ var classNTL_1_1matrix =
     [ "matrix", "d4/d6f/classNTL_1_1matrix.html#accc96531e7fef556bbc9385321f4c8f6", null ],
     [ "clear", "d4/d6f/classNTL_1_1matrix.html#aebda7ca773598e637b44c29e702b1d19", null ],
     [ "operator()", "d4/d6f/classNTL_1_1matrix.html#a904dcf3e38cb850ea08f0a1234f99ef9", null ],
-    [ "operator()", "d4/d6f/classNTL_1_1matrix.html#ad383779a5349fc34c11f6efd5db11d3f", null ],
     [ "resize", "d4/d6f/classNTL_1_1matrix.html#a31d6bca060ff1cf8172c1b71b30491f1", null ],
     [ "size1", "d4/d6f/classNTL_1_1matrix.html#ac642b4a5afc2a742f30c50467ecf9559", null ],
     [ "size2", "d4/d6f/classNTL_1_1matrix.html#a3c020943f9dced68275092612a89f7ab", null ]

@@ -15,10 +15,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
- * \file latticetester/Types.h
- * See the \ref Types "Types" module and \ref DIY
- * */
 
 #ifndef LATTICETESTER__TYPES_H
 #define LATTICETESTER__TYPES_H
@@ -165,7 +161,7 @@ namespace LatticeTester {
    * typedef NTL::ZZ_pE    PolE;
    * #endif
    * 
-   * #if NTL_TYPES_CODE
+   * #ifdef NTL_TYPES_CODE
    * 
    * typedef NTL::vector<MScal> MVect;
    * typedef NTL::matrix<MScal> MMat;
@@ -180,7 +176,6 @@ namespace LatticeTester {
    * \endcode
    * */
   class Types{
-    Types();
   };
 }
 
@@ -255,7 +250,7 @@ typedef NTL::ZZ_pX    PolX;
 typedef NTL::ZZ_pE    PolE;
 #endif
 
-#if NTL_TYPES_CODE
+#ifdef NTL_TYPES_CODE
 
 typedef NTL::vector<MScal> MVect;
 typedef NTL::matrix<MScal> MMat;

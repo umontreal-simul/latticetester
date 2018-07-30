@@ -12,7 +12,7 @@ you will either need to use external software or to use some of the other
 software available at [https://github.com/umontreal-simul](https://github.com/umontreal-simul),
 namely [LatNet Builder](https://github.com/umontreal-simul/latbuilder) for QMC
 point sets and [LatMRG](https://github.com/umontreal-simul/latmrg) for PRNG
-point sets. A detailed documentation is available 
+point sets. A detailed documentation of *LatticeTester* is available 
 [here](http://umontreal-simul.github.io/latticetester/).
 
 ## Compiling
@@ -35,8 +35,7 @@ the system:
 * [Doxygen](http://www.stack.nl/~dimitri/doxygen/) *(optional for generating
   the documentation)*
 
-You will also need a recent compiler compliant with the C++14 standard. The 
-build is tested with `g++` and `clang++`.
+You will also need a recent compiler compliant with the C++14 standard.
 
 ### Configuring the Build
 

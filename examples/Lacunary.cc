@@ -4,3 +4,10 @@
  * It then uses the Weights module to get a figure of merit based on those
  * projections.
  * */
+
+#include <iostream>
+
+int main() {
+  std::cout << "Hello world!\n";
+  return 0;
+}

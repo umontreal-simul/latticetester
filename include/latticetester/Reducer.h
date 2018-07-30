@@ -34,10 +34,17 @@ namespace LatticeTester {
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
       class Reducer;
 
-  /**
+  /// \cond specReducerDec
+  /*
    * This struct specializes some of the functions in a `Reducer`. This is a
-   * workaround needed implementation wise since you can't specialize member
-   * functions of a class without specializing the whole class.
+   * workaround needed, implementation wise, since you can't specialize member
+   * functions of a class without specializing the whole class. 
+   *
+   * What this does is that this structure contains specific functions of the 
+   * original class Reducer that will act differently depending on the types of
+   * the arguments. Instead of specializing all the methods of Reducer for all 
+   * our use cases (since some of them depend on the type) we can specialize
+   * only this structure.
    * */
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
       struct specReducer {
@@ -47,9 +54,24 @@ namespace LatticeTester {
         void redLLLNTL(Reducer<Int, BasInt, Dbl, RedDbl>& red, double fact,
             PrecisionType precision, int dim);
       };
+  /// \endcond
 
 
   /**
+   * This class implements (or wraps from NTL) all the functions that are
+   * needed to reduce a basis.
+   * For a given lattice basis, stored in an IntLatticeBasis, this class can
+   * reduce it in the sense of Minkowski, as well as find the shortest vector
+   * in the lattice with the Branch-and-Bound algorithm. It is also possible to
+   * use weaker, but much faster, reductions such as Dieter reduction 
+   * \cite rDIE75a, LLL reduction \cite mLEN82a and BKZ reduction \cite mSCH91a.
+   * The theoretical details of these algorithm are presented in \ref a_intro.
+   *
+   * The LLL reduction has been implemented both by us and in NTL, but since we
+   * did not test our algorithm for efficiency, it is recommended to stick with
+   * the NTL implementation wrapped by the methods redLLLNTL and redLLLNTLExact.
+   * Note that redBKZ is also a wrapper for NTL algorithm for BKZ reduction.
+   *
    * For a given lattice, this class implements methods to reduce its basis in
    * the sense of Minkowski and to find the shortest non-zero vector of the
    * lattice using pre-reductions and a branch-and-bound (BB) algorithm
@@ -61,48 +83,20 @@ namespace LatticeTester {
    * flag is given to a Reducer, the duality will be preserve during reduction.
    * Beside, the algorithm BKZ implemented in the NTL Library can be used
    * as a prereduction before the Branch-and-Bound.
+   *
+   * **USAGE DESCRIPTION**
+   * `shortestVector` no pre-red
    */
-
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
       class Reducer {
         private:
+          // Local typedefs for matrix and vector types needed in the class.
           typedef NTL::vector<BasInt> BasIntVec;
           typedef NTL::matrix<BasInt> BasIntMat;
           typedef NTL::vector<Dbl> DblVec;
           typedef NTL::vector<RedDbl> RedDblVec;
           typedef NTL::matrix<RedDbl> RedDblMat;
         public:
-
-          /**
-           * Whenever the number of nodes in the branch-and-bound tree exceeds
-           * <tt>SHORT_DIET</tt> in the method `ShortestVector`, `PreRedDieterSV` is
-           * automatically set to `true` for the next call; otherwise it is set to
-           * `false`.
-           */
-          static const std::int64_t SHORT_DIET = 1000;
-
-          /**
-           * Whenever the number of nodes in the branch-and-bound tree exceeds
-           * <tt>SHORT_LLL</tt> in the method `ShortestVector`, `PreRedLLLSV` is
-           * automatically set to `true` for the next call; otherwise it is set
-           * to `false`.
-           */
-          static const std::int64_t SHORT_LLL = 1000;
-
-          /**
-           * Whenever the number of nodes in the branch-and-bound tree exceeds
-           * <tt>MINK_LLL</tt> in the method <tt>reductMinkowski</tt>,
-           * `PreRedLLLRM` is automatically set to `true` for the next call;
-           * otherwise it is set to `false`.
-           */
-          static const std::int64_t MINK_LLL = 500000;
-
-          /**
-           * Maximum number of transformations in the method `PreRedDieter`.
-           * After <tt>MAX_PRE_RED</tt> successful transformations have been
-           * performed, the prereduction is stopped.
-           */
-          static const std::int64_t MAX_PRE_RED = 1000000;
 
           /**
            * The maximum number of nodes in the branch-and-bound tree when
@@ -124,17 +118,17 @@ namespace LatticeTester {
            * depending on the thresholds `MinkLLL, ShortDiet, ShortLLL` as explained
            * above.
            */
-          static bool PreRedDieterSV;
-          static bool PreRedLLLSV;
+          static bool PreRedDieterSV; // Not used
+          static bool PreRedLLLSV; // Not used
           static bool PreRedLLLRM;
-          static bool PreRedBKZ;
+          static bool PreRedBKZ; // Not used
 
           /**
            * @}
            */
 
           /**
-           * Constructor. Initializes the reducer to work on lattice `lat`.
+           * Constructor that initializes the reducer to work on lattice basis `lat`.
            */
           Reducer (IntLatticeBasis<Int, BasInt, Dbl, RedDbl> & lat);
 
@@ -149,78 +143,41 @@ namespace LatticeTester {
           ~Reducer ();
 
           /**
-           * Assignment operator.
+           * Assignment operator that allows copying `red` into the object by 
+           * usig copy.
            */
           Reducer<Int, BasInt, Dbl, RedDbl> & operator= (
               const Reducer<Int, BasInt, Dbl, RedDbl> & red);
 
           /**
            * Copies the reducer `red` into this object.
-           * \remark **Richard:** Encore utile?
            */
           void copy (const Reducer<Int, BasInt, Dbl, RedDbl> & red);
 
           /**
-           * Method used in `reductMinkowski` to perform a transformation of
-           * stage 3 described in \cite rAFF85a&thinsp;. Also used in
-           * `ShortestVector`. Assumes that \f$\sum_{i=1}^t z_i V_i\f$ is a
-           * short vector that will enter the basis. Tries to reduce some vectors
-           * by looking for indices \f$i < j\f$ such that \f$|z_j| > 1\f$ and
-           * \f$q=\lfloor z_i/z_j\rfloor\not0\f$, and adding \f$q V_i\f$ to
-           * \f$V_j\f$ when this happens. Returns in \f$k\f$ the last index
-           * \f$j\f$ such that \f$|z_j|=1\f$.
-           */
-          void transformStage3 (std::vector<std::int64_t> & z, int & k);
-
-          /**
-           * Finds a Choleski decomposition of the basis. Returns in `C0` the
-           * elements of the upper triangular matrix of the Choleski
-           * decomposition that are above the diagonal. Returns in `DC2` the
-           * squared elements of the diagonal.
-           */
-          bool calculCholeski (RedDblVec & DC2, RedDblMat & C0);
-
-          /**
-           * Tries to find shorter vectors in `reductMinkowski`.
-           */
-          bool tryZ  (int j, int i, int Stage, bool & smaller, 
-              const BasIntMat & WTemp);
-
-          /**
-           * Tries to find a shorter vector in `shortestVector`.
-           */
-          bool tryZ0 (int j, bool & smaller);
-
-          /**
-           * Computes the shortest non-zero vector of this lattice with respect
-           * to norm `norm` using branch-and-bound and the algorithm described in
-           * \cite rLEC97c&thinsp;. The `Norm` member of this object will be
-           * changed to `norm`. If `MaxNodesBB` is exceeded during one of the
-           * branch-and-bounds, the method aborts and returns `false`. Otherwise,
-           * it returns `true`. Uses the pre-reduction algorithms of Dieter and
-           * of Lenstra-Lenstra-Lovasz.
-           * Advice: must perform pre-reduction before using this Branch-and-Bound
-           * method on high dimension basis.
+           * Computes the shortest non-zero vector of the IntLatticeBasis stored
+           * in this object with respect to norm `norm` using branch-and-bound 
+           * and the algorithm described in \cite rLEC97c. The `Norm` member of
+           * this object will be changed to `norm`. If `MaxNodesBB` is exceeded
+           * during one of the branch-and-bounds, the method aborts and returns
+           * `false`. Otherwise, it returns `true`. If the reduction was
+           * successful, the new reduced basis can be accessed as desired via
+           * getIntLatticeBasis().
+           *
+           * It is strongly recommended to use some kind of pre-reduction before
+           * using this method. We suggest redLLLNTL that should be god for most
+           * use cases, but redBKZ can sometimes git better results. None of the
+           * Dieter pre-reduction should be called before calling this, unless
+           * the user's intention is to benchmark the different methods in his
+           * use case.
            */
           bool shortestVector (NormType norm);
 
-          /**
-           * Similar to `ShortestVector` but uses the algorithm of Dieter
-           * \cite rDIE75a, \cite rKNU98a&thinsp;.
-           */
-          bool shortestVectorDieter (NormType norm);
-
-          /**
-           * Tries to shorten the vectors of the primal basis using
-           * branch-and-bound, in `reductMinkowski`.
-           */
-          bool redBB (int i, int d, int Stage, bool & smaller);
-
-          /**
-           * Tries to shorten the smallest vector of the primal basis using
-           * branch-and-bound, in `ShortestVector`.
-           */
-          bool redBB0 (NormType norm);
+          /* Marc-Antoine: This should be removed because its implementation
+           * does basically nothing and pre-red is separate from B&B now.
+           *
+           * bool shortestVectorDieter (NormType norm);
+           * */
 
           /**
            * Performs the reductions of the preceding two methods using
@@ -361,6 +318,49 @@ namespace LatticeTester {
           struct specReducer<Int, BasInt, Dbl, RedDbl> spec;
 
           /**
+           * Method used in `reductMinkowski` to perform a transformation of
+           * stage 3 described in \cite rAFF85a. It is also used in
+           * `ShortestVector`. Assumes that \f$\sum_{i=1}^t z_i V_i\f$ is a
+           * short vector that will enter the basis. Tries to reduce some vectors
+           * by looking for indices \f$i < j\f$ such that \f$|z_j| > 1\f$ and
+           * \f$q=\lfloor z_i/z_j\rfloor\not0\f$, and adding \f$q V_i\f$ to
+           * \f$V_j\f$ when this happens. Returns in \f$k\f$ the last index
+           * \f$j\f$ such that \f$|z_j|=1\f$.
+           */
+          void transformStage3 (std::vector<std::int64_t> & z, int & k);
+
+          /**
+           * Tries to shorten the vectors of the primal basis using
+           * branch-and-bound, in `reductMinkowski`.
+           */
+          bool redBB (int i, int d, int Stage, bool & smaller);
+
+          /**
+           * Tries to shorten the smallest vector of the primal basis using
+           * branch-and-bound, in `ShortestVector`.
+           */
+          bool redBB0 (NormType norm);
+
+          /**
+           * Tries to find shorter vectors in `reductMinkowski`.
+           */
+          bool tryZ  (int j, int i, int Stage, bool & smaller, 
+              const BasIntMat & WTemp);
+
+          /**
+           * Tries to find a shorter vector in `shortestVector`.
+           */
+          bool tryZ0 (int j, bool & smaller);
+
+          /**
+           * Finds a Choleski decomposition of the basis. Returns in `C0` the
+           * elements of the upper triangular matrix of the Choleski
+           * decomposition that are above the diagonal. Returns in `DC2` the
+           * squared elements of the diagonal.
+           */
+          bool calculCholeski (RedDblVec & DC2, RedDblMat & C0);
+
+          /**
            * Permutes the \f$i^{th}\f$ and the \f$j^{th}\f$ line, and the
            * \f$i^{th}\f$ and the \f$j^{th}\f$ column of the scalar product’s
            * matrix.
@@ -396,8 +396,38 @@ namespace LatticeTester {
           DblVec m_BoundL2;
 
           /**
-           * \name Work variables.
-           * @{
+           * Whenever the number of nodes in the branch-and-bound tree exceeds
+           * <tt>SHORT_DIET</tt> in the method `ShortestVector`, `PreRedDieterSV` is
+           * automatically set to `true` for the next call; otherwise it is set to
+           * `false`.
+           */
+          static const std::int64_t SHORT_DIET = 1000;
+
+          /**
+           * Whenever the number of nodes in the branch-and-bound tree exceeds
+           * <tt>SHORT_LLL</tt> in the method `ShortestVector`, `PreRedLLLSV` is
+           * automatically set to `true` for the next call; otherwise it is set
+           * to `false`.
+           */
+          static const std::int64_t SHORT_LLL = 1000;
+
+          /**
+           * Whenever the number of nodes in the branch-and-bound tree exceeds
+           * <tt>MINK_LLL</tt> in the method <tt>reductMinkowski</tt>,
+           * `PreRedLLLRM` is automatically set to `true` for the next call;
+           * otherwise it is set to `false`.
+           */
+          static const std::int64_t MINK_LLL = 500000;
+
+          /**
+           * Maximum number of transformations in the method `PreRedDieter`.
+           * After <tt>MAX_PRE_RED</tt> successful transformations have been
+           * performed, the prereduction is stopped.
+           */
+          static const std::int64_t MAX_PRE_RED = 1000000;
+
+          /*
+           * Work variables.
            */
           BasInt m_bs;
           BasIntVec m_bv;            // Saves shorter vector in primal basis
@@ -425,9 +455,6 @@ namespace LatticeTester {
           bool m_foundZero;      // = true -> the zero vector has been found
           // std::int64_t m_BoundL2Count;   // Number of cases for which the reduction stops
           // because any vector is shorter than L2 Bound.
-          /**
-           * @}
-           */
 
 
 
@@ -435,6 +462,7 @@ namespace LatticeTester {
 
   //============================================================================
 
+  /// \cond specReducerSpec
   // Structure specialization
 
   // Specialization for the case LLXX
@@ -599,6 +627,7 @@ namespace LatticeTester {
 
       }
     };
+  /// \endcond
 
 
   //===========================================================================
@@ -2298,27 +2327,33 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      bool Reducer<Int, BasInt, Dbl, RedDbl>::shortestVectorDieter (
-          NormType norm)
-      // Length of shortest vector can be recovered in m_lMin.
-    {
-      // Perform pre-reductions using L2 norm.
-      if (PreRedDieterSV)
-        preRedDieter (0);
-      if (PreRedLLLSV)
-        redLLL (0.999999, 1000000, m_lat->getDim ());
-
-      // Find the shortest vector for the selected norm.
-      bool ok = redDieter (norm);
-      if (m_countNodes > SHORT_DIET)
-        PreRedDieterSV = true;
-      if (m_countNodes > SHORT_LLL)
-        PreRedLLLSV = true;
-      // UpdateVVWW (0);
-      // m_lat->getBasis().Sort (0);
-      return ok;
-    }
+  /* This method's implementation has not been finished and I have no idea what
+   * its purpose is. I think it should be removed anyway, because B&B is now 
+   * independent from pre-reductions.
+   * Marc-Antoine
+   *
+   *  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+   *      bool Reducer<Int, BasInt, Dbl, RedDbl>::shortestVectorDieter (
+   *          NormType norm)
+   *      // Length of shortest vector can be recovered in m_lMin.
+   *    {
+   *      // Perform pre-reductions using L2 norm.
+   *      if (PreRedDieterSV)
+   *        preRedDieter (0);
+   *      if (PreRedLLLSV)
+   *        redLLL (0.999999, 1000000, m_lat->getDim ());
+   *
+   *      // Find the shortest vector for the selected norm.
+   *      bool ok = redDieter (norm);
+   *      if (m_countNodes > SHORT_DIET)
+   *        PreRedDieterSV = true;
+   *      if (m_countNodes > SHORT_LLL)
+   *        PreRedLLLSV = true;
+   *      // UpdateVVWW (0);
+   *      // m_lat->getBasis().Sort (0);
+   *      return ok;
+   *    }
+   * */
 
 }     // namespace LatticeTester
 #endif // REDUCER_H

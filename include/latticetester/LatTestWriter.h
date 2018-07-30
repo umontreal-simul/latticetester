@@ -27,7 +27,7 @@
 namespace LatticeTester {
 
   /**
-   * This is the abstract class that does the writing of basic elements
+   * This is an abstract class that does the writing of basic elements
    * (<tt>string</tt>’s, <tt>int</tt>’s, <tt>double</tt>’s, etc.) into a file
    * or into an `ostream`. Derived classes must be implemented to write in
    * different formats, for instance text or LaTeX.

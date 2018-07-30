@@ -1,0 +1,29 @@
+#!/usr/bin/env python
+# coding: utf-8
+
+def build(ctx):
+    src_dir = ctx.path.parent.find_dir('examples/')
+    inc_dir = ctx.path.find_dir('../include')
+    
+    for src in ctx.path.ant_glob('*.cc'):
+        ctx(features='cxx cxxprogram',
+                source=src,
+                includes=[inc_dir],
+                lib=ctx.env.LIB_NTL + ctx.env.LIB_GMP,
+                stlib=ctx.env.STLIB_NTL + ctx.env.STLIB_GMP,
+                target=src.name[:-3],
+                use=['latticetester'],
+                install_path='examples')
+
+    for src in ctx.path.ant_glob('build/examples/*.o'):
+        ctx(rule='rm ${SRC}',
+                source=src,
+                target=src.name[:],
+                use=src.name[:-6] + 'cc',
+                install_path='examples')
+        
+    for src in ctx.path.ant_glob('*.dat'):
+        ctx(rule='cp ${SRC} ${TGT}',
+                source=src,
+                target=src.name[:],
+                install_path='examples')

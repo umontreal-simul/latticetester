@@ -19,6 +19,7 @@
 #define PARAMREADER_H
 #include "NTL/ZZ.h"
 
+#include "latticetester/ntlwrap.h"
 #include "latticetester/Util.h"
 #include "latticetester/Const.h"
 #include "latticetester/LatticeTesterConfig.h"
@@ -150,8 +151,10 @@ namespace LatticeTester {
         void readBScal (BasInt & field, unsigned int ln, int pos);
 
         /**
-         * Reads a `BMat` from the <tt>pos</tt>-th token of the <tt>ln</tt>-th
-         * line into `field`.
+         * Reads a square `BMat` of size `numPos*numPos` from the 
+         * <tt>pos</tt>-th token of the <tt>ln</tt>-th line into `field`. The 
+         * lines in the matrix will be read from the subsequent lines in the 
+         * file, starting from token at the position `pos`.
          */
         void readBMat (BasIntMat & fields, unsigned int & ln, unsigned int pos,
             unsigned int numPos);
@@ -362,7 +365,7 @@ namespace LatticeTester {
       tokens.reserve(20);
       tokens.clear();
 
-      tokenize(tokens, ln - 1);
+      tokenize(tokens, ln);
       if (pos > tokens.size()) {
         std::cerr << "Warning: position " << pos << " exceeds number of params at line "
           << ln << std::endl;
@@ -833,7 +836,7 @@ namespace LatticeTester {
         LatticeTesterConfig<Int, BasIntMat> & config)
     {
       getLines ();
-      unsigned int ln = 1;
+      unsigned int ln = 0;
 
       readCriterionType (config.test, ln, 0);
 

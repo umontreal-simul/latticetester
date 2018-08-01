@@ -36,7 +36,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-templates-24</span>
+   &#160;<span id="projectnumber">0.1.0-26</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -96,7 +96,7 @@ $(document).ready(function(){initNavTree('df/db5/classLatticeTester_1_1LatTestWr
 </div><!--header-->
 <div class="contents">
 
-<p>This class implements the <code>Writer</code> abstract class to write basic elements in plain text format.  
+<p>This class is a simple implementation of the <code><a class="el" href="../../d7/d22/classLatticeTester_1_1LatTestWriter.html" title="This is an abstract class that represents an interface to Writer classes. ">LatTestWriter</a></code> abstract class to write in plain text format on the stream.  
  <a href="../../df/db5/classLatticeTester_1_1LatTestWriterRes.html#details">More...</a></p>
 
 <p><code>#include &lt;latticetester/LatTestWriterRes.h&gt;</code></p>
@@ -150,10 +150,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="separator:ace6716d66d1613873fd24edc62d31fd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classLatticeTester_1_1LatTestWriter"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classLatticeTester_1_1LatTestWriter')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d7/d22/classLatticeTester_1_1LatTestWriter.html">LatticeTester::LatTestWriter&lt; Int &gt;</a></td></tr>
 <tr class="memitem:a7d21b3f6f180bfb7afb355422651e8fb inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d22/classLatticeTester_1_1LatTestWriter.html#a7d21b3f6f180bfb7afb355422651e8fb">LatTestWriter</a> (const char *fileName)</td></tr>
-<tr class="memdesc:a7d21b3f6f180bfb7afb355422651e8fb inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="../../d7/d22/classLatticeTester_1_1LatTestWriter.html#a7d21b3f6f180bfb7afb355422651e8fb">More...</a><br /></td></tr>
+<tr class="memdesc:a7d21b3f6f180bfb7afb355422651e8fb inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor that opens a <code>Writer</code> to write in the file <code>filename</code>.  <a href="../../d7/d22/classLatticeTester_1_1LatTestWriter.html#a7d21b3f6f180bfb7afb355422651e8fb">More...</a><br /></td></tr>
 <tr class="separator:a7d21b3f6f180bfb7afb355422651e8fb inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af033cd365f12765ea481f9d8c6e34780 inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d22/classLatticeTester_1_1LatTestWriter.html#af033cd365f12765ea481f9d8c6e34780">LatTestWriter</a> (std::ostream *stream)</td></tr>
-<tr class="memdesc:af033cd365f12765ea481f9d8c6e34780 inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="../../d7/d22/classLatticeTester_1_1LatTestWriter.html#af033cd365f12765ea481f9d8c6e34780">More...</a><br /></td></tr>
+<tr class="memdesc:af033cd365f12765ea481f9d8c6e34780 inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor that opens a <code>Writer</code> to write directly in an <code>ostream</code>.  <a href="../../d7/d22/classLatticeTester_1_1LatTestWriter.html#af033cd365f12765ea481f9d8c6e34780">More...</a><br /></td></tr>
 <tr class="separator:af033cd365f12765ea481f9d8c6e34780 inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cb593d95f24ed3a32b0a003f0cc8287 inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="memItemLeft" align="right" valign="top"><a id="a5cb593d95f24ed3a32b0a003f0cc8287"></a>
 virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d22/classLatticeTester_1_1LatTestWriter.html#a5cb593d95f24ed3a32b0a003f0cc8287">~LatTestWriter</a> ()</td></tr>
@@ -161,30 +161,30 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href=".
 <tr class="separator:a5cb593d95f24ed3a32b0a003f0cc8287 inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af289d892aedd5ea680b772fa03ba8a35 inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="memItemLeft" align="right" valign="top"><a id="af289d892aedd5ea680b772fa03ba8a35"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d22/classLatticeTester_1_1LatTestWriter.html#af289d892aedd5ea680b772fa03ba8a35">writeBool</a> (const bool &amp;value)</td></tr>
-<tr class="memdesc:af289d892aedd5ea680b772fa03ba8a35 inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a <code>bool</code>. <br /></td></tr>
+<tr class="memdesc:af289d892aedd5ea680b772fa03ba8a35 inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a <code>bool</code> on the stream. <br /></td></tr>
 <tr class="separator:af289d892aedd5ea680b772fa03ba8a35 inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab5a0125908104ee37600dd6b32a3f602 inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="memItemLeft" align="right" valign="top"><a id="ab5a0125908104ee37600dd6b32a3f602"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d22/classLatticeTester_1_1LatTestWriter.html#ab5a0125908104ee37600dd6b32a3f602">writeInt</a> (const int &amp;value)</td></tr>
-<tr class="memdesc:ab5a0125908104ee37600dd6b32a3f602 inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes an <code>int</code>. <br /></td></tr>
+<tr class="memdesc:ab5a0125908104ee37600dd6b32a3f602 inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes an <code>int</code> on the stream. <br /></td></tr>
 <tr class="separator:ab5a0125908104ee37600dd6b32a3f602 inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad71c451a4cfbd931978fc9b24dac05f3 inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="memItemLeft" align="right" valign="top"><a id="ad71c451a4cfbd931978fc9b24dac05f3"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d22/classLatticeTester_1_1LatTestWriter.html#ad71c451a4cfbd931978fc9b24dac05f3">writeString</a> (const std::string &amp;value)</td></tr>
-<tr class="memdesc:ad71c451a4cfbd931978fc9b24dac05f3 inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a <code>string</code>. <br /></td></tr>
+<tr class="memdesc:ad71c451a4cfbd931978fc9b24dac05f3 inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a <code>string</code> on the stream. <br /></td></tr>
 <tr class="separator:ad71c451a4cfbd931978fc9b24dac05f3 inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a464e93c6ce65f63a86d62f48c5e5770c inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="memItemLeft" align="right" valign="top"><a id="a464e93c6ce65f63a86d62f48c5e5770c"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d22/classLatticeTester_1_1LatTestWriter.html#a464e93c6ce65f63a86d62f48c5e5770c">writeDouble</a> (const double &amp;value)</td></tr>
-<tr class="memdesc:a464e93c6ce65f63a86d62f48c5e5770c inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a <code>double</code>. <br /></td></tr>
+<tr class="memdesc:a464e93c6ce65f63a86d62f48c5e5770c inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a <code>double</code> on the stream. <br /></td></tr>
 <tr class="separator:a464e93c6ce65f63a86d62f48c5e5770c inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a62fbec9925d1f1f915a9ad7a1e18dc inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="memItemLeft" align="right" valign="top"><a id="a9a62fbec9925d1f1f915a9ad7a1e18dc"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d22/classLatticeTester_1_1LatTestWriter.html#a9a62fbec9925d1f1f915a9ad7a1e18dc">writeIntScal</a> (const Int &amp;value)</td></tr>
-<tr class="memdesc:a9a62fbec9925d1f1f915a9ad7a1e18dc inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a <code>IntScal</code>. <br /></td></tr>
+<tr class="memdesc:a9a62fbec9925d1f1f915a9ad7a1e18dc inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a <code>IntScal</code> on the stream. <br /></td></tr>
 <tr class="separator:a9a62fbec9925d1f1f915a9ad7a1e18dc inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a63bb24509d8bbcabf2607b244341d2a5 inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="memItemLeft" align="right" valign="top"><a id="a63bb24509d8bbcabf2607b244341d2a5"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d22/classLatticeTester_1_1LatTestWriter.html#a63bb24509d8bbcabf2607b244341d2a5">writeMMat</a> (const <a class="el" href="../../d4/d6f/classNTL_1_1matrix.html">IntMat</a> &amp;A)</td></tr>
-<tr class="memdesc:a63bb24509d8bbcabf2607b244341d2a5 inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a <code>IntMat</code>. <br /></td></tr>
+<tr class="memdesc:a63bb24509d8bbcabf2607b244341d2a5 inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a <code>IntMat</code> on the stream. <br /></td></tr>
 <tr class="separator:a63bb24509d8bbcabf2607b244341d2a5 inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a00293c573a48031ff1da3451a20ee5ee inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="memItemLeft" align="right" valign="top">virtual std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/d22/classLatticeTester_1_1LatTestWriter.html#a00293c573a48031ff1da3451a20ee5ee">getStream</a> ()</td></tr>
-<tr class="memdesc:a00293c573a48031ff1da3451a20ee5ee inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes a formatted table.  <a href="../../d7/d22/classLatticeTester_1_1LatTestWriter.html#a00293c573a48031ff1da3451a20ee5ee">More...</a><br /></td></tr>
+<tr class="memdesc:a00293c573a48031ff1da3451a20ee5ee inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the stream on which this object writes.  <a href="../../d7/d22/classLatticeTester_1_1LatTestWriter.html#a00293c573a48031ff1da3451a20ee5ee">More...</a><br /></td></tr>
 <tr class="separator:a00293c573a48031ff1da3451a20ee5ee inherit pub_methods_classLatticeTester_1_1LatTestWriter"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="inherited"></a>
@@ -199,7 +199,7 @@ std::ostream *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" 
 <div class="textblock"><h3>template&lt;typename Int&gt;<br />
 class LatticeTester::LatTestWriterRes&lt; Int &gt;</h3>
 
-<p>This class implements the <code>Writer</code> abstract class to write basic elements in plain text format. </p>
+<p>This class is a simple implementation of the <code><a class="el" href="../../d7/d22/classLatticeTester_1_1LatTestWriter.html" title="This is an abstract class that represents an interface to Writer classes. ">LatTestWriter</a></code> abstract class to write in plain text format on the stream. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a4d32d425c8b038408b30a2434365833e"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a4d32d425c8b038408b30a2434365833e">&#9670;&nbsp;</a></span>LatTestWriterRes()</h2>
@@ -243,7 +243,7 @@ template&lt;typename Int &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a></li><li class="navelem"><a class="el" href="../../df/db5/classLatticeTester_1_1LatTestWriterRes.html">LatTestWriterRes</a></li>
-    <li class="footer">Generated on Mon Jul 30 2018 16:10:36 for Lattice Tester Manual by
+    <li class="footer">Generated on Wed Aug 1 2018 12:11:59 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

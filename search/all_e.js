@@ -1,7 +1,5 @@
 var searchData=
 [
-  ['pairwisereddual',['pairwiseRedDual',['../d8/de3/classLatticeTester_1_1Reducer.html#aa588accfaf34f85bbd5bbe5a60a69c51',1,'LatticeTester::Reducer']]],
-  ['pairwiseredprimal',['pairwiseRedPrimal',['../d8/de3/classLatticeTester_1_1Reducer.html#aa98bc6c4c0180cc1f9d451d61f289d57',1,'LatticeTester::Reducer']]],
   ['paramreader',['ParamReader',['../da/d47/classLatticeTester_1_1ParamReader.html',1,'LatticeTester::ParamReader&lt; Int, BasInt, RedDbl &gt;'],['../da/d47/classLatticeTester_1_1ParamReader.html#ab1842c427910a1aef0bf6d27d84a2674',1,'LatticeTester::ParamReader::ParamReader()'],['../da/d47/classLatticeTester_1_1ParamReader.html#a9a49414cd82b97a2791433ab69f571db',1,'LatticeTester::ParamReader::ParamReader(std::string fileName)']]],
   ['permute',['permute',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a666ed5b323f58f8d4c9dcace46aeddec',1,'LatticeTester::IntLatticeBasis']]],
   ['podweights',['PODWeights',['../d4/de7/classLatticeTester_1_1PODWeights.html',1,'LatticeTester::PODWeights'],['../d4/de7/classLatticeTester_1_1PODWeights.html#aaf422185afef3a59ab69a91f694f0234',1,'LatticeTester::PODWeights::PODWeights()']]],
@@ -9,8 +7,6 @@ var searchData=
   ['power2',['power2',['../d8/d74/namespaceLatticeTester.html#afee3ffd9833b68af2a314e6b3c30641f',1,'LatticeTester::power2(std::int64_t &amp;z, std::int64_t i)'],['../d8/d74/namespaceLatticeTester.html#ab1dc3cf1db9f995cbf5bec7430e81393',1,'LatticeTester::power2(NTL::ZZ &amp;z, std::int64_t i)']]],
   ['precision',['precision',['../d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html#a2ccf00bcd1015e20a2bad6545b136055',1,'LatticeTester::LatticeTesterConfig']]],
   ['precisiontype',['PrecisionType',['../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2',1,'LatticeTester']]],
-  ['prereddieter',['preRedDieter',['../d8/de3/classLatticeTester_1_1Reducer.html#a9a5b086ba333d80df55920936cad5a7e',1,'LatticeTester::Reducer']]],
-  ['prereddieterrandomized',['preRedDieterRandomized',['../d8/de3/classLatticeTester_1_1Reducer.html#a129f97f6a2c464e4dbdd900753ba49f4',1,'LatticeTester::Reducer']]],
   ['prereduction',['prereduction',['../d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html#a7574c8718bac488e285cc70c54b3cd2c',1,'LatticeTester::LatticeTesterConfig']]],
   ['prereductiontype',['PreReductionType',['../d8/d74/namespaceLatticeTester.html#a191af830e61af769e233e1b03138520e',1,'LatticeTester']]],
   ['primetype',['PrimeType',['../d8/d74/namespaceLatticeTester.html#a9b64954fb374b16e1fe991e435501d65',1,'LatticeTester']]],

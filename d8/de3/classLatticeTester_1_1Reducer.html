@@ -36,7 +36,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-templates-24</span>
+   &#160;<span id="projectnumber">0.1.0-26</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -127,51 +127,42 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../.
 <tr class="memitem:a6b907a63eadf3cda2839a3865883e68f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#a6b907a63eadf3cda2839a3865883e68f">shortestVector</a> (<a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9770e4d57aa715e249cd7e700c6f37e4">NormType</a> norm)</td></tr>
 <tr class="memdesc:a6b907a63eadf3cda2839a3865883e68f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the shortest non-zero vector of the <a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html" title="This class represents a lattice and its basis and offers tools to do basic manipulations on lattice b...">IntLatticeBasis</a> stored in this object with respect to norm <code>norm</code> using branch-and-bound and the algorithm described in <a class="el" href="../../d0/de3/citelist.html#CITEREF_rLEC97c">[13]</a>.  <a href="#a6b907a63eadf3cda2839a3865883e68f">More...</a><br /></td></tr>
 <tr class="separator:a6b907a63eadf3cda2839a3865883e68f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a5b086ba333d80df55920936cad5a7e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#a9a5b086ba333d80df55920936cad5a7e">preRedDieter</a> (int d)</td></tr>
-<tr class="memdesc:a9a5b086ba333d80df55920936cad5a7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs the reductions of the preceding two methods using cyclically all values of \(i\) (only for \(i &gt; d\) in the latter case) and stops after either <code>MaxPreRed</code> successful transformations have been achieved or no further reduction is possible.  <a href="#a9a5b086ba333d80df55920936cad5a7e">More...</a><br /></td></tr>
-<tr class="separator:a9a5b086ba333d80df55920936cad5a7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a129f97f6a2c464e4dbdd900753ba49f4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#a129f97f6a2c464e4dbdd900753ba49f4">preRedDieterRandomized</a> (int d, int seed)</td></tr>
-<tr class="memdesc:a129f97f6a2c464e4dbdd900753ba49f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs the reductions of the preceding two methods using cyclically all values of \(i\) (only for \(i &gt; d\) in the latter case) and stops after either <code>MaxPreRed</code> successful transformations have been achieved or no further reduction is possible.  <a href="#a129f97f6a2c464e4dbdd900753ba49f4">More...</a><br /></td></tr>
-<tr class="separator:a129f97f6a2c464e4dbdd900753ba49f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a538ca17f09eee1f34935eef8ca0e515a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#a538ca17f09eee1f34935eef8ca0e515a">redDieter</a> (<a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9770e4d57aa715e249cd7e700c6f37e4">NormType</a> norm)</td></tr>
-<tr class="memdesc:a538ca17f09eee1f34935eef8ca0e515a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Finds the shortest non-zero vector using norm <code>norm</code>.  <a href="#a538ca17f09eee1f34935eef8ca0e515a">More...</a><br /></td></tr>
-<tr class="separator:a538ca17f09eee1f34935eef8ca0e515a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a276b6fe37503f03eaaf70ab0ccaf37eb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#a276b6fe37503f03eaaf70ab0ccaf37eb">redDieter</a> (int d)</td></tr>
+<tr class="memdesc:a276b6fe37503f03eaaf70ab0ccaf37eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method performs pairwise reduction sequentially on all vectors of the basis whose indice is greater of equal to <code>d</code>.  <a href="#a276b6fe37503f03eaaf70ab0ccaf37eb">More...</a><br /></td></tr>
+<tr class="separator:a276b6fe37503f03eaaf70ab0ccaf37eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab537ec135b4da2665f3081d9d82ae577"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#ab537ec135b4da2665f3081d9d82ae577">redDieterRandomized</a> (int d, int seed)</td></tr>
+<tr class="memdesc:ab537ec135b4da2665f3081d9d82ae577"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method does the same thing as <a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#a276b6fe37503f03eaaf70ab0ccaf37eb" title="This method performs pairwise reduction sequentially on all vectors of the basis whose indice is grea...">redDieter(int)</a> but the choice of vectors on which to perform pairwise reduction is randomized.  <a href="#ab537ec135b4da2665f3081d9d82ae577">More...</a><br /></td></tr>
+<tr class="separator:ab537ec135b4da2665f3081d9d82ae577"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1d5517bc4d39ecadd50a4b0fc3086443"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#a1d5517bc4d39ecadd50a4b0fc3086443">redLLL</a> (double fact, std::int64_t maxcpt, int dim)</td></tr>
-<tr class="memdesc:a1d5517bc4d39ecadd50a4b0fc3086443"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a LLL (Lenstra-Lenstra-Lovasz) basis reduction up to dimension <code>dim</code> with coefficient <code>fact</code>, which must be smaller than.  <a href="#a1d5517bc4d39ecadd50a4b0fc3086443">More...</a><br /></td></tr>
+<tr class="memdesc:a1d5517bc4d39ecadd50a4b0fc3086443"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a LLL (Lenstra-Lenstra-Lovasz) basis reduction for the first <code>dim</code> vector of the basis with coefficient <code>fact</code>.  <a href="#a1d5517bc4d39ecadd50a4b0fc3086443">More...</a><br /></td></tr>
 <tr class="separator:a1d5517bc4d39ecadd50a4b0fc3086443"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c0792ad9a42d12dd69248c0e20b4544"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#a9c0792ad9a42d12dd69248c0e20b4544">redLLLNTL</a> (double fact=0.999999, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">PrecisionType</a> precision=QUADRUPLE, int dim=0)</td></tr>
-<tr class="memdesc:a9c0792ad9a42d12dd69248c0e20b4544"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a LLL (Lenstra-Lenstra-Lovasz) basis reduction up to dimension <code>dim</code> with coefficient <code>fact</code>, which must be smaller than.  <a href="#a9c0792ad9a42d12dd69248c0e20b4544">More...</a><br /></td></tr>
+<tr class="memdesc:a9c0792ad9a42d12dd69248c0e20b4544"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> implementation of the floating point version of the LLL reduction algorithm presented in <a class="el" href="../../d0/de3/citelist.html#CITEREF_mSCH91a">[25]</a>.  <a href="#a9c0792ad9a42d12dd69248c0e20b4544">More...</a><br /></td></tr>
 <tr class="separator:a9c0792ad9a42d12dd69248c0e20b4544"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a935c4f896a9187132dc1b4da22a62108"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#a935c4f896a9187132dc1b4da22a62108">redLLLNTLExact</a> (double fact)</td></tr>
-<tr class="memdesc:a935c4f896a9187132dc1b4da22a62108"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a LLL (Lenstra-Lenstra-Lovasz) basis reduction up to dimension <code>dim</code> with coefficient <code>fact</code>, which must be smaller than.  <a href="#a935c4f896a9187132dc1b4da22a62108">More...</a><br /></td></tr>
+<tr class="memdesc:a935c4f896a9187132dc1b4da22a62108"><td class="mdescLeft">&#160;</td><td class="mdescRight">Marc-Antoine: I do not think what is stated bellow is exact.  <a href="#a935c4f896a9187132dc1b4da22a62108">More...</a><br /></td></tr>
 <tr class="separator:a935c4f896a9187132dc1b4da22a62108"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3976273ae6a66d009ac9a14625d016c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#ad3976273ae6a66d009ac9a14625d016c">redBKZ</a> (double fact=0.999999, std::int64_t blocksize=10, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">PrecisionType</a> precision=QUADRUPLE, int dim=0)</td></tr>
-<tr class="memdesc:ad3976273ae6a66d009ac9a14625d016c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Perform the BKZ (Block-Korkine-Zolotarev) basis reduction with the the coefficient <code>fact</code> and a block size <code>Blocksize</code>.  <a href="#ad3976273ae6a66d009ac9a14625d016c">More...</a><br /></td></tr>
+<tr class="memdesc:ad3976273ae6a66d009ac9a14625d016c"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> implementation of the floating point version of the BKZ reduction algorithm presented in <a class="el" href="../../d0/de3/citelist.html#CITEREF_mSCH91a">[25]</a>.  <a href="#ad3976273ae6a66d009ac9a14625d016c">More...</a><br /></td></tr>
 <tr class="separator:ad3976273ae6a66d009ac9a14625d016c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaeb99bbb4d5945d278572f35a638f8c9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#aaeb99bbb4d5945d278572f35a638f8c9">reductMinkowski</a> (int d)</td></tr>
 <tr class="memdesc:aaeb99bbb4d5945d278572f35a638f8c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reduces the current basis to a Minkowski reduced basis with respect to the Euclidean norm, assuming that the first \(d\) vectors are already reduced and sorted.  <a href="#aaeb99bbb4d5945d278572f35a638f8c9">More...</a><br /></td></tr>
 <tr class="separator:aaeb99bbb4d5945d278572f35a638f8c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa98bc6c4c0180cc1f9d451d61f289d57"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#aa98bc6c4c0180cc1f9d451d61f289d57">pairwiseRedPrimal</a> (int i, int d)</td></tr>
-<tr class="memdesc:aa98bc6c4c0180cc1f9d451d61f289d57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs pairwise reductions.  <a href="#aa98bc6c4c0180cc1f9d451d61f289d57">More...</a><br /></td></tr>
-<tr class="separator:aa98bc6c4c0180cc1f9d451d61f289d57"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa588accfaf34f85bbd5bbe5a60a69c51"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#aa588accfaf34f85bbd5bbe5a60a69c51">pairwiseRedDual</a> (int i)</td></tr>
-<tr class="memdesc:aa588accfaf34f85bbd5bbe5a60a69c51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs pairwise reductions, trying to reduce every other vector of the <em>dual</em> basis by adding multiples of the \(i\)-th vector.  <a href="#aa588accfaf34f85bbd5bbe5a60a69c51">More...</a><br /></td></tr>
-<tr class="separator:aa588accfaf34f85bbd5bbe5a60a69c51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aabb5c4adb586ba0a805ab0a570ba7cee"><td class="memItemLeft" align="right" valign="top"><a id="aabb5c4adb586ba0a805ab0a570ba7cee"></a>
 Dbl&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#aabb5c4adb586ba0a805ab0a570ba7cee">getMinLength</a> ()</td></tr>
 <tr class="memdesc:aabb5c4adb586ba0a805ab0a570ba7cee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the length of the shortest basis vector in the lattice. <br /></td></tr>
 <tr class="separator:aabb5c4adb586ba0a805ab0a570ba7cee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1428587e47787b13b68a9b5a843cc090"><td class="memItemLeft" align="right" valign="top">Dbl&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#a1428587e47787b13b68a9b5a843cc090">getMaxLength</a> ()</td></tr>
-<tr class="memdesc:a1428587e47787b13b68a9b5a843cc090"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the length of the std::int64_test basis vector in the lattice.  <a href="#a1428587e47787b13b68a9b5a843cc090">More...</a><br /></td></tr>
+<tr class="memitem:a1428587e47787b13b68a9b5a843cc090"><td class="memItemLeft" align="right" valign="top"><a id="a1428587e47787b13b68a9b5a843cc090"></a>
+Dbl&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#a1428587e47787b13b68a9b5a843cc090">getMaxLength</a> ()</td></tr>
+<tr class="memdesc:a1428587e47787b13b68a9b5a843cc090"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the length of the longest basis vector in the lattice. <br /></td></tr>
 <tr class="separator:a1428587e47787b13b68a9b5a843cc090"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad20dd87ca85cf906e59d430c6a16bada"><td class="memItemLeft" align="right" valign="top"><a id="ad20dd87ca85cf906e59d430c6a16bada"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#ad20dd87ca85cf906e59d430c6a16bada">setBoundL2</a> (const <a class="el" href="../../d0/d01/classNTL_1_1vector.html">DblVec</a> &amp;V, int dim1, int dim2)</td></tr>
-<tr class="memdesc:ad20dd87ca85cf906e59d430c6a16bada"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the lower bound on the square length of the shortest vector in dimension \(i\) to \(V[i]\), for \(i\) going from <code>dim1</code> to <code>dim2</code>. <br /></td></tr>
+<tr class="memitem:ad20dd87ca85cf906e59d430c6a16bada"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#ad20dd87ca85cf906e59d430c6a16bada">setBoundL2</a> (const <a class="el" href="../../d0/d01/classNTL_1_1vector.html">DblVec</a> &amp;V, int dim1, int dim2)</td></tr>
+<tr class="memdesc:ad20dd87ca85cf906e59d430c6a16bada"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets a bound on the square length of the shortest vector in the lattice in dimensions from <code>dim1+1</code> to <code>dim2</code>.  <a href="#ad20dd87ca85cf906e59d430c6a16bada">More...</a><br /></td></tr>
 <tr class="separator:ad20dd87ca85cf906e59d430c6a16bada"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad9eae81a4e715c955faf89364495ca15"><td class="memItemLeft" align="right" valign="top"><a id="ad9eae81a4e715c955faf89364495ca15"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#ad9eae81a4e715c955faf89364495ca15">trace</a> (char *mess)</td></tr>
-<tr class="memdesc:ad9eae81a4e715c955faf89364495ca15"><td class="mdescLeft">&#160;</td><td class="mdescRight">Debug function that print the primal and dual bases. <br /></td></tr>
-<tr class="separator:ad9eae81a4e715c955faf89364495ca15"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab86ec0263ba84e309cc4345ffd98b883"><td class="memItemLeft" align="right" valign="top"><a id="ab86ec0263ba84e309cc4345ffd98b883"></a>
+<a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html">IntLatticeBasis</a>&lt; Int, BasInt, Dbl, RedDbl &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#ab86ec0263ba84e309cc4345ffd98b883">getIntLatticeBasis</a> ()</td></tr>
+<tr class="memdesc:ab86ec0263ba84e309cc4345ffd98b883"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the basis of this object is working on. <br /></td></tr>
+<tr class="separator:ab86ec0263ba84e309cc4345ffd98b883"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
 Static Public Attributes</h2></td></tr>
@@ -179,8 +170,9 @@ Static Public Attributes</h2></td></tr>
 <tr class="memdesc:aaa22d19b9ee0d71ca7e174e15d776073"><td class="mdescLeft">&#160;</td><td class="mdescRight">The maximum number of nodes in the branch-and-bound tree when calling <code>ShortestVector</code> or <code>reductMinkowski</code>.  <a href="#aaa22d19b9ee0d71ca7e174e15d776073">More...</a><br /></td></tr>
 <tr class="separator:aaa22d19b9ee0d71ca7e174e15d776073"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Pre-reduction flags</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p>These boolean variables indicate which type of pre-reduction is to be performed for <code>ShortestVector</code> (SV) and for <code>reductMinkowski</code> (RM).</p>
-<p><code>Dieter</code> means the pairwise pre-reduction as in the method <code>PreRedDieter</code>. <code>LLL</code> means the LLL reduction of Lenstra, Lenstra, and Lovász. The variable <code>PreRedDieterSV</code> is originally set to <code>true</code> and the two others are originally set to <code>false</code>. These variables are reset automatically depending on the thresholds <code>MinkLLL, ShortDiet, ShortLLL</code> as explained above. </p>
+<tr><td colspan="2"><div class="groupText"><p><b>Marc-Antoine</b>: it is very possible that we can remove those variables.</p>
+<p>We just have to make sure that reductMinkowski does not need them (in fact I think reductMinkowski has to be reviewed).</p>
+<p>These boolean variables indicate which type of pre-reduction is to be performed for <code>ShortestVector</code> (SV) and for <code>reductMinkowski</code> (RM). <code>Dieter</code> means the pairwise pre-reduction as in the method <code>PreRedDieter</code>. <code>LLL</code> means the LLL reduction of Lenstra, Lenstra, and Lovász. The variable <code>PreRedDieterSV</code> is originally set to <code>true</code> and the two others are originally set to <code>false</code>. These variables are reset automatically depending on the thresholds <code>MinkLLL, ShortDiet, ShortLLL</code> as explained above. </p>
 </div></td></tr>
 <tr class="memitem:ac0f0ead52a364ac804f9769769bc9ce1"><td class="memItemLeft" align="right" valign="top"><a id="ac0f0ead52a364ac804f9769769bc9ce1"></a>
 static bool&#160;</td><td class="memItemRight" valign="bottom"><b>PreRedDieterSV</b> = false</td></tr>
@@ -202,151 +194,8 @@ class LatticeTester::Reducer&lt; Int, BasInt, Dbl, RedDbl &gt;</h3>
 <p>This class implements (or wraps from <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a>) all the functions that are needed to reduce a basis. </p>
 <p>For a given lattice basis, stored in an <a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html" title="This class represents a lattice and its basis and offers tools to do basic manipulations on lattice b...">IntLatticeBasis</a>, this class can reduce it in the sense of Minkowski, as well as find the shortest vector in the lattice with the Branch-and-Bound algorithm. It is also possible to use weaker, but much faster, reductions such as Dieter reduction <a class="el" href="../../d0/de3/citelist.html#CITEREF_rDIE75a">[4]</a>, LLL reduction <a class="el" href="../../d0/de3/citelist.html#CITEREF_mLEN82a">[20]</a> and BKZ reduction <a class="el" href="../../d0/de3/citelist.html#CITEREF_mSCH91a">[25]</a>. The theoretical details of these algorithm are presented in <a class="el" href="../../da/d18/a_intro.html">Background</a>.</p>
 <p>The LLL reduction has been implemented both by us and in <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a>, but since we did not test our algorithm for efficiency, it is recommended to stick with the <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> implementation wrapped by the methods redLLLNTL and redLLLNTLExact. Note that redBKZ is also a wrapper for <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> algorithm for BKZ reduction.</p>
-<p>For a given lattice, this class implements methods to reduce its basis in the sense of Minkowski and to find the shortest non-zero vector of the lattice using pre-reductions and a branch-and-bound (BB) algorithm <a class="el" href="../../d0/de3/citelist.html#CITEREF_rLEC97c">[13]</a>&thinsp;. It also implements the method of Lenstra, Lenstra and Lovasz (LLL) <a class="el" href="../../d0/de3/citelist.html#CITEREF_mLEN82a">[20]</a>&thinsp; as well as the method of Dieter <a class="el" href="../../d0/de3/citelist.html#CITEREF_rDIE75a">[4]</a>&thinsp; to reduce a lattice basis. The Minkowski, LLL and Branch-and-bound Reduction do not need the dual lattice. Nonetheless, if a <a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html" title="This class represents a lattice and its basis and offers tools to do basic manipulations on lattice b...">IntLatticeBasis</a> object with a true with-dual flag is given to a <a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html" title="This class implements (or wraps from NTL) all the functions that are needed to reduce a basis...">Reducer</a>, the duality will be preserve during reduction. Beside, the algorithm BKZ implemented in the <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> Library can be used as a prereduction before the Branch-and-Bound.</p>
-<p><b>USAGE DESCRIPTION</b> <code>shortestVector</code> no pre-red </p>
+<p>To use this class, it suffices to create an instance of it by passing a <code><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html" title="This class represents a lattice and its basis and offers tools to do basic manipulations on lattice b...">IntLatticeBasis</a></code> to the constructor. You can then simply call the methods and the <code><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html" title="This class represents a lattice and its basis and offers tools to do basic manipulations on lattice b...">IntLatticeBasis</a></code> passed to the <a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html" title="This class implements (or wraps from NTL) all the functions that are needed to reduce a basis...">Reducer</a> will be modified since it is stored as a pointer. You should note that the methods to compute the shortest vector apply no pre-reduction. In a real context, you should always reduce the basis separately with LLL or BKZ reduction before searching for the shortest vector since it reduces drastically the size of the branch-and-bound search. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a1428587e47787b13b68a9b5a843cc090"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1428587e47787b13b68a9b5a843cc090">&#9670;&nbsp;</a></span>getMaxLength()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Dbl <a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html">LatticeTester::Reducer</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::getMaxLength </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns the length of the std::int64_test basis vector in the lattice. </p>
-<p>Used in Beyer Test. </p>
-
-</div>
-</div>
-<a id="aa588accfaf34f85bbd5bbe5a60a69c51"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa588accfaf34f85bbd5bbe5a60a69c51">&#9670;&nbsp;</a></span>pairwiseRedDual()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html">LatticeTester::Reducer</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::pairwiseRedDual </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>i</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Performs pairwise reductions, trying to reduce every other vector of the <em>dual</em> basis by adding multiples of the \(i\)-th vector. </p>
-<p>That may change the \(i\)-th vector in the primal basis. Each such dual reduction is actually performed only if that does not increase the length of vector \(i\) in the primal basis. Always uses the Euclidean norm. </p>
-
-</div>
-</div>
-<a id="aa98bc6c4c0180cc1f9d451d61f289d57"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa98bc6c4c0180cc1f9d451d61f289d57">&#9670;&nbsp;</a></span>pairwiseRedPrimal()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html">LatticeTester::Reducer</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::pairwiseRedPrimal </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>i</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>d</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Performs pairwise reductions. </p>
-<p>This method tries to reduce each basis vector with index larger than \(d\) and distinct from \(i\) by adding to it a multiple of the \(i\)-th vector. Always uses the Euclidean norm. </p>
-
-</div>
-</div>
-<a id="a9a5b086ba333d80df55920936cad5a7e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a5b086ba333d80df55920936cad5a7e">&#9670;&nbsp;</a></span>preRedDieter()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html">LatticeTester::Reducer</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::preRedDieter </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>d</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Performs the reductions of the preceding two methods using cyclically all values of \(i\) (only for \(i &gt; d\) in the latter case) and stops after either <code>MaxPreRed</code> successful transformations have been achieved or no further reduction is possible. </p>
-<p>Always use the Euclidean norm. </p>
-
-</div>
-</div>
-<a id="a129f97f6a2c464e4dbdd900753ba49f4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a129f97f6a2c464e4dbdd900753ba49f4">&#9670;&nbsp;</a></span>preRedDieterRandomized()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">void <a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html">LatticeTester::Reducer</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::preRedDieterRandomized </td>
-          <td>(</td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>d</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>seed</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Performs the reductions of the preceding two methods using cyclically all values of \(i\) (only for \(i &gt; d\) in the latter case) and stops after either <code>MaxPreRed</code> successful transformations have been achieved or no further reduction is possible. </p>
-<p>Always use the Euclidean norm. The choice of i is randomized. </p>
-
-</div>
-</div>
 <a id="ad3976273ae6a66d009ac9a14625d016c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad3976273ae6a66d009ac9a14625d016c">&#9670;&nbsp;</a></span>redBKZ()</h2>
 
@@ -387,13 +236,14 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
       </table>
 </div><div class="memdoc">
 
-<p>Perform the BKZ (Block-Korkine-Zolotarev) basis reduction with the the coefficient <code>fact</code> and a block size <code>Blocksize</code>. </p>
-<p>The precision can be given. See <a class="el" href="../../db/da7/Const_8h.html" title="This module contains global constants used in LatticeTester. ">Const.h</a> for further information. </p>
+<p>This is the <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> implementation of the floating point version of the BKZ reduction algorithm presented in <a class="el" href="../../d0/de3/citelist.html#CITEREF_mSCH91a">[25]</a>. </p>
+<p><code>1/2 &lt; fact &lt; 1</code> is a number that specifies the strenght of the condition on the basis, closer to 1 meaning a stronger condition. <code>precision</code> specifies the size of the floating point numbers the algorithm will use. <a class="el" href="../../db/da7/Const_8h.html" title="This module contains global constants used in LatticeTester. ">Const.h</a> provides a list of the possible values, but their description is done in the module LLL of <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a>. <code>dim</code> is the number of vectors on which to apply the reduction (zero being the entire basis). <code>blocksize</code> is the size of the blocks of the reduction in the BKZ reduction condition. Roughly, larger blocks mean a stronger condition. A <code>blocksize</code> of 2 is equivalent to LLL reduction.</p>
+<p>There should not really be a reason to change the default parameters suggested in this function. It is nonetheless possible to be in a situation where they do not work. In the occurence of poor quality results, it might be necessary to choose a better <code>precision</code>. Also, in a few rare cases, it is possible that fact be "too close to 1" and that the algorithm takes too much time. A user whishing to get a faster execution at the cost of condition strenght could also choose a smaller <code>blocksize</code>. </p>
 
 </div>
 </div>
-<a id="a538ca17f09eee1f34935eef8ca0e515a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a538ca17f09eee1f34935eef8ca0e515a">&#9670;&nbsp;</a></span>redDieter()</h2>
+<a id="a276b6fe37503f03eaaf70ab0ccaf37eb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a276b6fe37503f03eaaf70ab0ccaf37eb">&#9670;&nbsp;</a></span>redDieter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -401,17 +251,50 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
       <table class="memname">
         <tr>
-          <td class="memname">bool <a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html">LatticeTester::Reducer</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::redDieter </td>
+          <td class="memname">void <a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html">LatticeTester::Reducer</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::redDieter </td>
           <td>(</td>
-          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9770e4d57aa715e249cd7e700c6f37e4">NormType</a>&#160;</td>
-          <td class="paramname"><em>norm</em></td><td>)</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>d</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
 </div><div class="memdoc">
 
-<p>Finds the shortest non-zero vector using norm <code>norm</code>. </p>
-<p>Returns <code>true</code> upon success. Uses the algorithm of Dieter <a class="el" href="../../d0/de3/citelist.html#CITEREF_rDIE75a">[4]</a>&thinsp; given in Knuth <a class="el" href="../../d0/de3/citelist.html#CITEREF_rKNU98a">[12]</a>&thinsp;. </p>
+<p>This method performs pairwise reduction sequentially on all vectors of the basis whose indice is greater of equal to <code>d</code>. </p>
+<p>Normalement, cette méthode devrait implémenter l'algorithme de Dieter en se basant sur Knuth, mais là ça ne fait que de réductions par paires et ça arrête après un certain nombre d'itérations qui ne font rien. Il faudrait vérifier que soit : c'est parfaitement ce que l'algorithme fait ou bien sinon il faudrait changer cet algorithme pour faire la bonne chose. </p>
+
+</div>
+</div>
+<a id="ab537ec135b4da2665f3081d9d82ae577"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab537ec135b4da2665f3081d9d82ae577">&#9670;&nbsp;</a></span>redDieterRandomized()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html">LatticeTester::Reducer</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::redDieterRandomized </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>d</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>seed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This method does the same thing as <a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#a276b6fe37503f03eaaf70ab0ccaf37eb" title="This method performs pairwise reduction sequentially on all vectors of the basis whose indice is grea...">redDieter(int)</a> but the choice of vectors on which to perform pairwise reduction is randomized. </p>
+<p>On a le même problème que dans redDieter, c'est-à-dire que ce n'est pas clair que ça fait exactement l'algorithme que l'on dit que ça fait dans la doc. </p>
 
 </div>
 </div>
@@ -449,11 +332,9 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
       </table>
 </div><div class="memdoc">
 
-<p>Performs a LLL (Lenstra-Lenstra-Lovasz) basis reduction up to dimension <code>dim</code> with coefficient <code>fact</code>, which must be smaller than. </p>
-<ol type="1">
-<li>If <code>fact</code> is closer to 1, the basis will be (typically) "more
-reduced", but that will require more work. The reduction algorithm is applied until <code>maxcpt</code> successful transformations have been done. Always uses the Euclidean norm. </li>
-</ol>
+<p>Performs a LLL (Lenstra-Lenstra-Lovasz) basis reduction for the first <code>dim</code> vector of the basis with coefficient <code>fact</code>. </p>
+<p><code>fact</code> is a floating point number between 1/4(?) and 1 that specifies the algorithm's tolerance to floating point arithmetic error. has to be between 1/2 and 1. If <code>fact</code> is closer to 1, the basis will be (typically) "more reduced" as the algorithm will enforce a tighter condition on the basis, but that will require more work. The reduction algorithm is applied until <code>maxcpt</code> successful transformations have been done, or until the basis is correctly reduced.</p>
+<p>This algorithm is an implementation of the LLL reduction algorithm made in our lab. It is not recommended to use it because it has not been tested extensively for distribution. Instead, it is recommended to use (in the case that you wanted to use the LLL reduction algorithm) the redLLLNTL method. This implementation always uses the Euclidean norm. </p>
 
 </div>
 </div>
@@ -491,11 +372,9 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
       </table>
 </div><div class="memdoc">
 
-<p>Performs a LLL (Lenstra-Lenstra-Lovasz) basis reduction up to dimension <code>dim</code> with coefficient <code>fact</code>, which must be smaller than. </p>
-<ol type="1">
-<li>If <code>fact</code> is closer to 1, the basis will be (typically) "more
-reduced", but that will require more work. The reduction algorithm is applied until <code>maxcpt</code> successful transformations have been done. Always uses the Euclidean norm. This version is implemented in the <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> Library with approximate number with arbitrary precision. The precision can be given. See <a class="el" href="../../db/da7/Const_8h.html" title="This module contains global constants used in LatticeTester. ">Const.h</a> for further information. </li>
-</ol>
+<p>This is the <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> implementation of the floating point version of the LLL reduction algorithm presented in <a class="el" href="../../d0/de3/citelist.html#CITEREF_mSCH91a">[25]</a>. </p>
+<p><code>1/2 &lt; fact &lt; 1</code> is a number that specifies the strenght of the condition on the basis, closer to 1 meaning a stronger condition. <code>precision</code> specifies the size of the floating point numbers the algorithm will use. <a class="el" href="../../db/da7/Const_8h.html" title="This module contains global constants used in LatticeTester. ">Const.h</a> provides a list of the possible values, but their description is done in the module LLL of <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a>. <code>dim</code> is the number of vectors on which to apply the reduction (zero being the entire basis).</p>
+<p>There should not really be a reason to change the default parameters suggested in this function. It is nonetheless possible to be in a situation where they do not work. In the occurence of poor quality results, it might be necessary to choose a better <code>precision</code>. Also, in a few rare cases, it is possible that fact be "too close to 1" and that the algorithm takes too much time. </p>
 
 </div>
 </div>
@@ -517,11 +396,9 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
       </table>
 </div><div class="memdoc">
 
-<p>Performs a LLL (Lenstra-Lenstra-Lovasz) basis reduction up to dimension <code>dim</code> with coefficient <code>fact</code>, which must be smaller than. </p>
-<ol type="1">
-<li>If <code>fact</code> is closer to 1, the basis will be (typically) "more
-reduced", but that will require more work. The reduction algorithm is applied until <code>maxcpt</code> successful transformations have been done. Always uses the Euclidean norm. This version is implemented in the <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> Library with exact number (arbitrary precision RR) </li>
-</ol>
+<p>Marc-Antoine: I do not think what is stated bellow is exact. </p>
+<p>I think <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> exact implementation is about the exact algorith that verifies a slightly different condition.</p>
+<p>This version is implemented in the <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> Library with exact number (arbitrary precision RR) </p>
 
 </div>
 </div>
@@ -548,6 +425,45 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 
 </div>
 </div>
+<a id="ad20dd87ca85cf906e59d430c6a16bada"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad20dd87ca85cf906e59d430c6a16bada">&#9670;&nbsp;</a></span>setBoundL2()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html">LatticeTester::Reducer</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::setBoundL2 </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d0/d01/classNTL_1_1vector.html">DblVec</a> &amp;&#160;</td>
+          <td class="paramname"><em>V</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>dim1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>dim2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sets a bound on the square length of the shortest vector in the lattice in dimensions from <code>dim1+1</code> to <code>dim2</code>. </p>
+<p><code>V[i]</code> has to contain a lower bound on the square of the lenght of the shortest vector in the lattice in dimension <code>i+1</code>. Such a bound, if it is set, will be used during during the Branch-and-Bound step when searching the sortest vector of a lattice. If the Branch-and-Bound proves that the shortest vector of the lattice is smaller than the bound, the algorithm will stop. This is usefull in the case where the user is searching for a good lattice with the spectral test since this can cut off some work. </p>
+
+</div>
+</div>
 <a id="a6b907a63eadf3cda2839a3865883e68f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6b907a63eadf3cda2839a3865883e68f">&#9670;&nbsp;</a></span>shortestVector()</h2>
 
@@ -567,7 +483,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 </div><div class="memdoc">
 
 <p>Computes the shortest non-zero vector of the <a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html" title="This class represents a lattice and its basis and offers tools to do basic manipulations on lattice b...">IntLatticeBasis</a> stored in this object with respect to norm <code>norm</code> using branch-and-bound and the algorithm described in <a class="el" href="../../d0/de3/citelist.html#CITEREF_rLEC97c">[13]</a>. </p>
-<p>The <code>Norm</code> member of this object will be changed to <code>norm</code>. If <code>MaxNodesBB</code> is exceeded during one of the branch-and-bounds, the method aborts and returns <code>false</code>. Otherwise, it returns <code>true</code>. If the reduction was successful, the new reduced basis can be accessed as desired via getIntLatticeBasis().</p>
+<p>The <code>Norm</code> member of this object will be changed to <code>norm</code>. If <code>MaxNodesBB</code> is exceeded during one of the branch-and-bounds, the method aborts and returns <code>false</code>. Otherwise, it returns <code>true</code>. If the reduction was successful, the new reduced basis can be accessed as desired via <a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#ab86ec0263ba84e309cc4345ffd98b883" title="Returns the basis of this object is working on. ">getIntLatticeBasis()</a>.</p>
 <p>It is strongly recommended to use some kind of pre-reduction before using this method. We suggest redLLLNTL that should be god for most use cases, but redBKZ can sometimes git better results. None of the Dieter pre-reduction should be called before calling this, unless the user's intention is to benchmark the different methods in his use case. </p>
 
 </div>
@@ -609,7 +525,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a></li><li class="navelem"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html">Reducer</a></li>
-    <li class="footer">Generated on Mon Jul 30 2018 16:10:36 for Lattice Tester Manual by
+    <li class="footer">Generated on Wed Aug 1 2018 12:11:59 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

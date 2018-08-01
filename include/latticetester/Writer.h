@@ -31,7 +31,7 @@ namespace LatticeTester {
    * That is, this class methods are intended to be used as a way to format an
    * output on an `ostream` or a file. It already implements functions to write
    * basic data types. A subclass of this class **must** be implemented if you
-   * want to use it. LatTestWriterRes offers utilities to print in a file.
+   * want to use it. WriterRes offers utilities to print in a file.
    * Since this class will be overridden, it is possible to implement subclasses
    * to format text for different kind of output such as plain text, \f$\LaTeX\f$
    * or HTML.
@@ -42,7 +42,7 @@ namespace LatticeTester {
    * stream with multiple writers.
    */
   template<typename Int>
-    class LatTestWriter {
+    class Writer {
       private:
         typedef NTL::matrix<Int> IntMat;
       public:
@@ -51,7 +51,7 @@ namespace LatticeTester {
          * Constructor that opens a `Writer` to write in the file `filename`.
          * This will overwrite the file and start printing at the start.
          */
-        LatTestWriter (const char* fileName);
+        Writer (const char* fileName);
 
         /**
          * Constructor that opens a `Writer` to write directly in an `ostream`.
@@ -60,12 +60,12 @@ namespace LatticeTester {
          * of this interface via this constructor to use different printing
          * formats.
          */
-        LatTestWriter (std::ostream* stream);
+        Writer (std::ostream* stream);
 
         /**
          * Destructor.
          */
-        virtual ~LatTestWriter();
+        virtual ~Writer();
 
         /**
          * Begins a tabbed section. In a tabbed section, every newline character
@@ -178,18 +178,6 @@ namespace LatticeTester {
          */
         virtual void writeStandOutMathString (const std::string) = 0;
 
-        /*
-         * Writes a formatted table. A column horizontal alignment can be
-         * modified using the string `alignment`. The first character of the
-         * string is the alignment of the first column, the second character is
-         * the alignment of the second column and so on. Three alignments are
-         * possible for a column: `r` for right alignment, `c` for center
-         * alignment, `l` for left alignment. If nothing is given, or if the
-         * string length is smaller than the number of columns of the table,
-         * then left alignment is used by default for the rest of the columns.
-         */
-        //virtual void writeTable (Table &, const std::string alignment) = 0;
-
         /**
          * Returns the stream on which this object writes. If the stream is a
          * simple `ostream`, this can be used to then print on standard output
@@ -212,12 +200,12 @@ namespace LatticeTester {
          * destruction.
          */
         bool m_clean;
-    }; // class LatTestWriter
+    }; // class Writer
 
   //===========================================================================
 
   template<typename Int>
-    LatTestWriter<Int>::LatTestWriter(const char* fileName)
+    Writer<Int>::Writer(const char* fileName)
     {
       m_stream = new std::ofstream(fileName);
       //_stream = dynamic_cast<ostream*>(new ofstream(fileName));
@@ -230,7 +218,7 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int>
-    LatTestWriter<Int>::LatTestWriter(std::ostream* stream)
+    Writer<Int>::Writer(std::ostream* stream)
     {
       m_stream = stream;
       m_clean = false;
@@ -239,7 +227,7 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int>
-    LatTestWriter<Int>::~LatTestWriter()
+    Writer<Int>::~Writer()
     {
       if (m_clean && m_stream) {
         delete m_stream;
@@ -249,7 +237,7 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int>
-    void LatTestWriter<Int>::writeInt(const int & value)
+    void Writer<Int>::writeInt(const int & value)
     {
       *m_stream << value;
     }
@@ -257,7 +245,7 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int>
-    void LatTestWriter<Int>::writeBool(const bool & value)
+    void Writer<Int>::writeBool(const bool & value)
     {
       *m_stream << (value ? "true" : "false");
     }
@@ -265,7 +253,7 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int>
-    void LatTestWriter<Int>::writeString(const std::string & value)
+    void Writer<Int>::writeString(const std::string & value)
     {
       *m_stream << value;
     }
@@ -273,7 +261,7 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int>
-    void LatTestWriter<Int>::writeIntScal(const Int & value)
+    void Writer<Int>::writeIntScal(const Int & value)
     {
       *m_stream << value;
     }
@@ -281,7 +269,7 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int>
-    void LatTestWriter<Int>::writeMMat(const IntMat & A)
+    void Writer<Int>::writeMMat(const IntMat & A)
     {
       std::int64_t sizeA = A.size1();
       *m_stream << "   [";
@@ -301,7 +289,7 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int>
-    void LatTestWriter<Int>::writeDouble(const double & value)
+    void Writer<Int>::writeDouble(const double & value)
     {
       *m_stream << value;
     }

@@ -36,8 +36,8 @@
 #include "latticetester/NormaPalpha.h"
 #include "latticetester/NormaRogers.h"
 #include "latticetester/Reducer.h"
-#include "latticetester/LatTestWriter.h"
-#include "latticetester/LatTestWriterRes.h"
+#include "latticetester/Writer.h"
+#include "latticetester/WriterRes.h"
 #include "latticetester/LatticeTesterConfig.h"
 #include "latticetester/ParamReader.h"
 
@@ -248,7 +248,7 @@ namespace LatticeTester {
            * Returns a `Writer` created from the input file `infile` and the 
            * given `OutputType`.
            */
-          LatTestWriter<Int>* createLatTestWriter (const char *infile,
+          Writer<Int>* createWriter (const char *infile,
               OutputType ot);
 
           /**
@@ -638,7 +638,7 @@ namespace LatticeTester {
       paramRdr.read (config);
       //config.write();
 
-      LatTestWriter<Int>* rw = createLatTestWriter (infile, config.outputType);
+      Writer<Int>* rw = createWriter (infile, config.outputType);
 
       // creating the Reducer object from input
       IntLatticeBasis<Int, BasInt, Dbl, RedDbl> basis (config.basis,
@@ -712,17 +712,17 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      LatTestWriter<Int>* LatticeAnalysis<Int, BasInt, Dbl, RedDbl>::
-      createLatTestWriter (const char *infile, OutputType ot)
+      Writer<Int>* LatticeAnalysis<Int, BasInt, Dbl, RedDbl>::
+      createWriter (const char *infile, OutputType ot)
     {
-      LatTestWriter<Int> *rw = 0;
+      Writer<Int> *rw = 0;
       std::string fname;
 
       switch (ot) {
         case RES:
           fname = infile;
           fname += ".res";
-          rw = new LatTestWriterRes<Int> (fname.c_str ());
+          rw = new WriterRes<Int> (fname.c_str ());
           break;
 
         case TEX:
@@ -734,7 +734,7 @@ namespace LatticeTester {
           break;
 
         case TERMINAL:
-          rw = new LatTestWriterRes<Int> (&std::cout);
+          rw = new WriterRes<Int> (&std::cout);
           break;
 
         default:

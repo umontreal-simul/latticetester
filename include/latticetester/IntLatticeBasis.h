@@ -31,22 +31,34 @@
 namespace LatticeTester {
 
   /**
-   * \class IntLatticeBasis
-   *
    * This class represents a lattice and its basis and offers tools to do basic 
-   * manipulations on lattice bases.
+   * manipulations on lattice bases. Lattices are always stored rescaled. That
+   * is we only consider lattices with rational coordinates such that `m` is a
+   * lcm for all the denominators in basis coordinates. It is then possible to
+   * represent the lattice in the integers instead of the real numbers by
+   * multiplying all it's vectors by `m`. We call this lattice a rescaled
+   * lattice. In practice, this allows an exact representation of the arithmetic
+   * on the basis. This is usefull in all the usecases of this software.
    *
-   * Each lattice is at least represented by a basis \f$V\f$, a dimension and a
-   * norm. The basis will be contained in a matrix of type BasIntMat. The 
-   * dimension \f$d\f$ specifies that \f$V\f$ contains \f$d\f$ vectors in 
-   * \f$\mathbb{Z}^d\f$. The norm is one of the norm of NormType. Users can also 
-   * precise a dual lattice \f$W\f$ and the modulo `m` used for rescaling.
+   * There are numerous ways to represent a lattice. Depending on the
+   * calculations that need to be done, it is possible to only provide the basis
+   * vectors, the norm and the dimension. There are also fields to provide a
+   * dual basis and an `m` (the variables named `modulo`). Both these fields are
+   * needed for most applications using the dual basis. The dimension \f$d\f$
+   * specifies that the basis contains \f$d\f$ vectors in \f$\mathbb{Z}^d\f$.
+   * The norm is one of the norm of NormType.
    *
    * This class also has methods and attributes that can be used to store and
    * compute the norms of the basis and dual basis vectors. It can also permute
    * vectors in the basis or sort them by length and do the corresponding 
-   * changes in the dual. It can also check of the dual \f$W\f$ really is a dual
-   * basis to \f$V\f$.
+   * changes in the dual. Finally, it can also check if the dual really is a
+   * dual to the primal basis.
+   *
+   * This class is made to be built upon. It only offers the bare basics of what
+   * a user could want to do with a Lattice. It is most likely that the
+   * utilities presented here do not suffice common needs. For a more extensive
+   * representation of a lattice look for the `IntLattice` and the `Rank1Lattice`
+   * classes.
    */
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
@@ -66,9 +78,8 @@ namespace LatticeTester {
 
         /**
          * Constructor taking all three needed component of an IntLatticeBasis.
-         * The primal basis is initialized with `basis`,
-         * the dimension of the lattice with `dim` and the norm used for
-         * reduction with `norm`.
+         * The primal basis is initialized with `basis`, the dimension of the
+         * lattice with `dim` and the norm used for reduction with `norm`.
          */
         IntLatticeBasis (const BasIntMat basis, const int dim,
             NormType norm = L2NORM);
@@ -83,8 +94,7 @@ namespace LatticeTester {
             const Int modulo, const int dim, NormType norm = L2NORM);
 
         /**
-         * Copy constructor. The maximal dimension of the created basis is set
-         * equal to `Lat`’s current dimension.
+         * Copy constructor. This will copy the entirety of Lat into `*this`.
          */
         IntLatticeBasis (const IntLatticeBasis<Int, BasInt, Dbl, RedDbl> & Lat);
 
@@ -105,8 +115,8 @@ namespace LatticeTester {
         void copyBasis (const IntLatticeBasis<Int, BasInt, Dbl, RedDbl> & lat);
 
         /**
-         * Copy the n first elements of the lattice `lat` into this object.
-         * The object into which `lat` is copied has to be of dimension n.
+         * Copy the n first elements of the basis of the lattice `lat` into this
+         * object. The object into which `lat` is copied has to be of dimension n.
          */
         void copyBasis (const IntLatticeBasis<Int, BasInt, Dbl, RedDbl> & lat,
             int n);
@@ -118,17 +128,18 @@ namespace LatticeTester {
         void initVecNorm ();
 
         /**
-         * Returns the basis in a BasIntMat-type matrix
+         * Returns the basis represented in a matrix.
          */
         BasIntMat & getBasis () { return m_basis; }
 
         /**
-         * Returns the dual basis in a BasIntMat-type Matrix
+         * Returns the dual basis represented in a matrix.
          */
         BasIntMat & getDualBasis () { return m_dualbasis; }
 
         /**
-         * Returns the dimension of the lattice.
+         * Returns the dimension of the lattice. (Both the number of vectors in
+         * the basis and the number of coordinates of those vectors.
          */
         int getDim () const { return m_dim; }
 
@@ -143,7 +154,7 @@ namespace LatticeTester {
         Dbl getVecNorm (const int & i) { return m_vecNorm[i]; }
 
         /**
-         * Returns the norm of each vector of the basis.
+         * Returns the norm of each vector of the basis in a vector.
          */
         DblVec getVecNorm () const { return m_vecNorm; }
 
@@ -153,17 +164,21 @@ namespace LatticeTester {
         Dbl getDualVecNorm (const int & i) { return m_dualvecNorm[i]; }
 
         /**
-         * Returns the norm of each vector of the dual basis.
+         * Returns the norm of each vector of the dual basis in a vector.
          */
         DblVec getDualVecNorm () const { return m_dualvecNorm; }
 
         /**
-         * Returns the `m` used by the dual and for rescaling.
+         * Returns the `m` used for rescaling if it has been defined. Returns `0`
+         * otherwise.
          */
         Int getModulo () const { return m_modulo; }
 
         /**
-         * Sets the dimension of the basis to `d`.
+         * Sets the dimension of the basis to `d`. This won't change any of the
+         * vectors of the basis by itself. This method should not be called
+         * directly on an object of this class except in a function specifically
+         * changing the dimension of this object.
          */
         void setDim (const int & d) { if(d>0) m_dim = d;}
 
@@ -173,7 +188,8 @@ namespace LatticeTester {
         void setNorm (const NormType & norm) { m_norm = norm; }
 
         /**
-         * Sets the norm of the `i`-th component of the basis to `value`.
+         * Sets the norm of the `i`-th component of the basis to `value`. The
+         * usage of `updateVecNorm(const int&)` is recommended over this function.
          */
         void setVecNorm ( const Dbl & value, const int & i)
         {
@@ -182,6 +198,7 @@ namespace LatticeTester {
 
         /**
          * Sets the norm of the `i`-th component of the dual basis to `value`.
+         * The usage of `updateDualVecNorm(const int&)` is recommended over this function.
          */
         void setDualVecNorm ( const Dbl & value, const int & i)
         {
@@ -195,7 +212,8 @@ namespace LatticeTester {
 
         /**
          * Sets the `withDual` flag to `flag`. This flag indicates whether or 
-         * not this IntLatticeBasis contains a dual basis.
+         * not this IntLatticeBasis contains a dual basis. It is the flag
+         * returned by `withDual()`.
          */
         void setDualFlag(bool flag) { m_withDual = flag; }
 
@@ -362,7 +380,7 @@ namespace LatticeTester {
         DblVec m_dualvecNorm;
 
         /**
-         * The `m` associated to the `m`-dual.
+         * The `m` used for rescaling the lattice.
          */
         Int m_modulo;
 
@@ -373,7 +391,8 @@ namespace LatticeTester {
         bool m_withDual;
 
         /**
-         * This table is used in the Minkowski reduction.
+         * This table is used in the Minkowski reduction, but it's usage is quite
+         * obscure.
          */
         bool *m_xx;
 
@@ -556,14 +575,12 @@ namespace LatticeTester {
       assert (d >= 0);
 
       for (int i = d; i < this->m_dim; i++) {
-        if (this->m_vecNorm[i] < 0) {
-          NTL::matrix_row<BasIntMat> row(this->m_basis, i);
-          if (this->m_norm == L2NORM) {
-            ProdScal<Int> (row, row, this->m_dim, this->m_vecNorm[i]);
-          } else {
-            CalcNorm <BasIntVec, Dbl> (row, this->m_dim, this->m_vecNorm[i],
-                this->m_norm);
-          }
+        NTL::matrix_row<BasIntMat> row(this->m_basis, i);
+        if (this->m_norm == L2NORM) {
+          ProdScal<Int> (row, row, this->m_dim, this->m_vecNorm[i]);
+        } else {
+          CalcNorm <BasIntVec, Dbl> (row, this->m_dim, this->m_vecNorm[i],
+              this->m_norm);
         }
       }
     }
@@ -584,14 +601,12 @@ namespace LatticeTester {
       assert (d >= 0);
 
       for (int i = d; i < this->m_dim; i++) {
-        if (this->m_dualvecNorm[i] < 0) {
-          NTL::matrix_row<BasIntMat> row(this->m_dualbasis, i);
-          if (this->m_norm == L2NORM) {
-            ProdScal<Int> (row, row, this->m_dim, this->m_dualvecNorm[i]);
-          } else {
-            CalcNorm <BasIntVec, Dbl> (row, this->m_dim, this->m_dualvecNorm[i],
-                this->m_norm);
-          }
+        NTL::matrix_row<BasIntMat> row(this->m_dualbasis, i);
+        if (this->m_norm == L2NORM) {
+          ProdScal<Int> (row, row, this->m_dim, this->m_dualvecNorm[i]);
+        } else {
+          CalcNorm <BasIntVec, Dbl> (row, this->m_dim, this->m_dualvecNorm[i],
+              this->m_norm);
         }
       }
     }

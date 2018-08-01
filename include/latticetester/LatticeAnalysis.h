@@ -551,7 +551,7 @@ namespace LatticeTester {
           m_reducer->redLLLNTL(fact, precision);
           break;
         case PreRedDieter:
-          m_reducer->preRedDieter(0);
+          m_reducer->redDieter(0);
           break;
         case NOPRERED:
           break;
@@ -624,7 +624,6 @@ namespace LatticeTester {
    * "poil.dat", then infile is "poil".
    * Data files must always have the extension "dat".
    */
-
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
       int LatticeAnalysis<Int, BasInt, Dbl, RedDbl>::doTestFromInputFile (
         const char *infile)

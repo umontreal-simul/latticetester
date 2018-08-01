@@ -27,9 +27,8 @@
 namespace LatticeTester {
 
   /**
-   * This class implements the `Writer` abstract class to write basic elements
-   * in plain text format.
-   *
+   * This class is a simple implementation of the `LatTestWriter` abstract class
+   * to write in plain text format on the stream.
    */
   template<typename Int>
     class LatTestWriterRes : public LatTestWriter<Int> {
@@ -93,7 +92,7 @@ namespace LatticeTester {
          */
         void writeStandOutMathString (const std::string);
 
-        /**
+        /*
          * Defined in `Writer`.
          */
         //void writeTable (Table & data, const std::string pos);
@@ -112,7 +111,7 @@ namespace LatticeTester {
          */
         std::string m_prefix;
 
-        /**
+        /*
          * Set to `true` if the writer is in a tabbed section, otherwise it is
          * `false`.
          */

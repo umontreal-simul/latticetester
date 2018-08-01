@@ -72,20 +72,14 @@ namespace LatticeTester {
    * the NTL implementation wrapped by the methods redLLLNTL and redLLLNTLExact.
    * Note that redBKZ is also a wrapper for NTL algorithm for BKZ reduction.
    *
-   * For a given lattice, this class implements methods to reduce its basis in
-   * the sense of Minkowski and to find the shortest non-zero vector of the
-   * lattice using pre-reductions and a branch-and-bound (BB) algorithm
-   * \cite rLEC97c&thinsp;. It also implements the method of Lenstra, Lenstra
-   * and Lovasz (LLL) \cite mLEN82a&thinsp; as well as the method of Dieter
-   * \cite rDIE75a&thinsp; to reduce a lattice basis.
-   * The Minkowski, LLL and Branch-and-bound Reduction do not need the dual
-   * lattice. Nonetheless, if a IntLatticeBasis object with a true with-dual
-   * flag is given to a Reducer, the duality will be preserve during reduction.
-   * Beside, the algorithm BKZ implemented in the NTL Library can be used
-   * as a prereduction before the Branch-and-Bound.
-   *
-   * **USAGE DESCRIPTION**
-   * `shortestVector` no pre-red
+   * To use this class, it suffices to create an instance of it by passing a
+   * `IntLatticeBasis` to the constructor. You can then simply call the methods
+   * and the `IntLatticeBasis` passed to the Reducer will be modified since it
+   * is stored as a pointer. You should note that the methods to compute the 
+   * shortest vector apply no pre-reduction. In a real context, you should
+   * always reduce the basis separately with LLL or BKZ reduction before
+   * searching for the shortest vector since it reduces drastically the size of
+   * the branch-and-bound search.
    */
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
       class Reducer {
@@ -108,6 +102,9 @@ namespace LatticeTester {
           /**
            * \name Pre-reduction flags
            * @{
+           * **Marc-Antoine**: it is very possible that we can remove those variables.
+           * We just have to make sure that reductMinkowski does not need them 
+           * (in fact I think reductMinkowski has to be reviewed).
            *
            * These boolean variables indicate which type of pre-reduction is to be
            * performed for `ShortestVector` (SV) and for `reductMinkowski` (RM).
@@ -180,64 +177,117 @@ namespace LatticeTester {
            * */
 
           /**
-           * Performs the reductions of the preceding two methods using
-           * cyclically all values of \f$i\f$ (only for \f$i > d\f$ in the latter
-           * case) and stops after either `MaxPreRed` successful transformations
-           * have been achieved or no further reduction is possible. Always use
-           * the Euclidean norm.
+           * This method performs pairwise reduction sequentially on all vectors
+           * of the basis whose indice is greater of equal to `d`.
+           *
+           * Normalement, cette méthode devrait implémenter l'algorithme de Dieter
+           * en se basant sur Knuth, mais là ça ne fait que de réductions par 
+           * paires et ça arrête après un certain nombre d'itérations qui ne font rien.
+           * Il faudrait vérifier que soit : c'est parfaitement ce que l'algorithme
+           * fait ou bien sinon il faudrait changer cet algorithme pour faire la
+           * bonne chose.
            */
-          void preRedDieter (int d);
+          void redDieter (int d);
 
 
           /**
-           * \copydoc preRedDieter(int)
-           * The choice of i is randomized.
+           * This method does the same thing as redDieter(int) but the choice of
+           * vectors on which to perform pairwise reduction is randomized.
+           *
+           * On a le même problème que dans redDieter, c'est-à-dire que ce n'est
+           * pas clair que ça fait exactement l'algorithme que l'on dit que ça 
+           * fait dans la doc.
            */
-          void preRedDieterRandomized (int d, int seed);
+          void redDieterRandomized (int d, int seed);
 
-
-          /**
+          /* Marc-Antoine: This function does not change the basis, so I don't 
+           * see why it would be of any use.
+           *
            * Finds the shortest non-zero vector using norm `norm`. Returns `true`
-           * upon success. Uses the algorithm of Dieter \cite rDIE75a&thinsp;
-           * given in Knuth \cite rKNU98a&thinsp;.
+           * upon success. Uses the algorithm of Dieter \cite rDIE75a
+           * given in Knuth \cite rKNU98a.
+           * bool redDieter (NormType norm);
            */
-          bool redDieter (NormType norm);
 
           /**
-           * Performs a LLL (Lenstra-Lenstra-Lovasz) basis reduction up to
-           * dimension `dim` with coefficient `fact`, which must be smaller than
-           * 1. If `fact` is closer to 1, the basis will be (typically) "more
-           * reduced", but that will require more work. The reduction algorithm
-           * is applied until `maxcpt` successful transformations have been done.
-           * Always uses the Euclidean norm.
+           * Performs a LLL (Lenstra-Lenstra-Lovasz) basis reduction for the 
+           * first `dim` vector of the basis with coefficient `fact`.
+           * `fact` is a floating point number between 1/4(?) and 1 that
+           * specifies the algorithm's tolerance to floating point arithmetic
+           * error. has to be between 1/2 and 1. If `fact` is closer to 1,
+           * the basis will be (typically) "more reduced" as the
+           * algorithm will enforce a tighter condition on the basis,
+           * but that will require more work. The reduction algorithm is
+           * applied until `maxcpt` successful transformations have been done,
+           * or until the basis is correctly reduced.
+           * 
+           * This algorithm is an implementation of the LLL reduction
+           * algorithm made in our lab. It is not recommended to use it because
+           * it has not been tested extensively for distribution. Instead, it
+           * is recommended to use (in the case that you wanted to use the LLL
+           * reduction algorithm) the redLLLNTL method. This implementation
+           * always uses the Euclidean norm.
            */
           void redLLL (double fact, std::int64_t maxcpt, int dim);
 
           /**
-           * \copydoc redLLL(double, std::int64_t, int)
-           * This version is implemented in the NTL Library with approximate
-           * number with arbitrary precision. The precision can be given. See
-           * Const.h for further information.
+           * This is the NTL implementation of the floating point version of the
+           * LLL reduction algorithm presented in \cite mSCH91a.
+           * 
+           * `1/2 < fact < 1` is a number that specifies the strenght of the 
+           * condition on the basis, closer to 1 meaning a stronger condition.
+           * `precision` specifies the size of the floating point numbers the 
+           * algorithm will use. Const.h provides a list of the possible values,
+           * but their description is done in the module LLL of NTL. `dim` 
+           * is the number of vectors on which to apply the reduction (zero being
+           * the entire basis).
+           *
+           * There should not really be a reason to change the default
+           * parameters suggested in this function. It is nonetheless possible
+           * to be in a situation where they do not work. In the occurence of 
+           * poor quality results, it might be necessary to choose a better
+           * `precision`. Also, in a few rare cases, it is possible that fact 
+           * be "too close to 1" and that the algorithm takes too much time.
            */
           void redLLLNTL(double fact = 0.999999, 
               PrecisionType precision = QUADRUPLE, int dim = 0);
 
           /**
-           * \copydoc redLLL(double, std::int64_t, int)
+           * Marc-Antoine: I do not think what is stated bellow is exact.
+           * I think NTL exact implementation is about the exact algorith that
+           * verifies a slightly different condition.
+           *
            * This version is implemented in the NTL Library with exact number
            * (arbitrary precision RR)
            */
           void redLLLNTLExact(double fact);
 
           /**
-           * Perform the BKZ (Block-Korkine-Zolotarev) basis reduction with the
-           * the coefficient `fact` and a block size `Blocksize`. The precision
-           * can be given. See Const.h for further information.
+           * This is the NTL implementation of the floating point version of the
+           * BKZ reduction algorithm presented in \cite mSCH91a.
+           * 
+           * `1/2 < fact < 1` is a number that specifies the strenght of the 
+           * condition on the basis, closer to 1 meaning a stronger condition.
+           * `precision` specifies the size of the floating point numbers the 
+           * algorithm will use. Const.h provides a list of the possible values,
+           * but their description is done in the module LLL of NTL. `dim` 
+           * is the number of vectors on which to apply the reduction (zero being
+           * the entire basis). `blocksize` is the size of the blocks of the
+           * reduction in the BKZ reduction condition. Roughly, larger blocks
+           * mean a stronger condition. A `blocksize` of 2 is equivalent to LLL
+           * reduction.
+           *
+           * There should not really be a reason to change the default
+           * parameters suggested in this function. It is nonetheless possible
+           * to be in a situation where they do not work. In the occurence of 
+           * poor quality results, it might be necessary to choose a better
+           * `precision`. Also, in a few rare cases, it is possible that fact 
+           * be "too close to 1" and that the algorithm takes too much time.
+           * A user whishing to get a faster execution at the cost of condition
+           * strenght could also choose a smaller `blocksize`.
            */
           void redBKZ(double fact = 0.999999, std::int64_t blocksize = 10,
               PrecisionType precision = QUADRUPLE, int dim = 0);
-
-
 
           /**
            * Reduces the current basis to a Minkowski reduced basis with respect
@@ -251,24 +301,6 @@ namespace LatticeTester {
           bool reductMinkowski (int d);
 
           /**
-           * Performs pairwise reductions. This method tries to reduce each basis
-           * vector with index larger than \f$d\f$ and distinct from \f$i\f$ by
-           * adding to it a multiple of the \f$i\f$-th vector. Always uses the
-           * Euclidean norm.
-           */
-          void pairwiseRedPrimal (int i, int d);
-
-          /**
-           * Performs pairwise reductions, trying to reduce every other vector of
-           * the *dual* basis by adding multiples of the \f$i\f$-th vector. That
-           * may change the \f$i\f$-th vector in the primal basis. Each such dual
-           * reduction is actually performed only if that does not increase the
-           * length of vector \f$i\f$ in the primal basis. Always uses the
-           * Euclidean norm.
-           */
-          void pairwiseRedDual (int i);
-
-          /**
            * Returns the length of the shortest basis vector in the lattice.
            */
           Dbl getMinLength () {
@@ -277,8 +309,7 @@ namespace LatticeTester {
             else return m_lMin; }
 
           /**
-           * Returns the length of the std::int64_test basis vector in the lattice.
-           * Used in Beyer Test.
+           * Returns the length of the longest basis vector in the lattice.
            */
           Dbl getMaxLength () {
             if (m_lat->getNorm() == L2NORM)
@@ -286,17 +317,22 @@ namespace LatticeTester {
             else return m_lat->getVecNorm(m_lat->getDim() - 1); }
 
           /**
-           * Sets the lower bound on the square length of the shortest vector in
-           * dimension \f$i\f$ to \f$V[i]\f$, for \f$i\f$ going from `dim1` to
-           * `dim2`.
+           * Sets a bound on the square length of the shortest vector in the 
+           * lattice in dimensions from `dim1+1` to `dim2`. `V[i]` has to 
+           * contain a lower bound on the square of the lenght of the shortest
+           * vector in the lattice in dimension `i+1`. Such a bound, if it is
+           * set, will be used during during the Branch-and-Bound step when
+           * searching the sortest vector of a lattice. If the Branch-and-Bound
+           * proves that the shortest vector of the lattice is smaller than the
+           * bound, the algorithm will stop. This is usefull in the case where
+           * the user is searching for a good lattice with the spectral test
+           * since this can cut off some work.
            */
           void setBoundL2 (const DblVec & V, int dim1, int dim2);
 
           /**
-           * Debug function that print the primal and dual bases.
-           */
-          void trace (char *mess);
-
+           * Returns the basis of this object is working on.
+           * */
           IntLatticeBasis<Int, BasInt, Dbl, RedDbl>* getIntLatticeBasis ()
             {
               return m_lat;
@@ -328,6 +364,24 @@ namespace LatticeTester {
            * \f$j\f$ such that \f$|z_j|=1\f$.
            */
           void transformStage3 (std::vector<std::int64_t> & z, int & k);
+
+          /**
+           * Performs pairwise reductions. This method tries to reduce each basis
+           * vector with index larger than \f$d\f$ and distinct from \f$i\f$ by
+           * adding to it a multiple of the \f$i\f$-th vector. Always uses the
+           * Euclidean norm.
+           */
+          void pairwiseRedPrimal (int i, int d);
+
+          /**
+           * Performs pairwise reductions, trying to reduce every other vector of
+           * the *dual* basis by adding multiples of the \f$i\f$-th vector. That
+           * may change the \f$i\f$-th vector in the primal basis. Each such dual
+           * reduction is actually performed only if that does not increase the
+           * length of vector \f$i\f$ in the primal basis. Always uses the
+           * Euclidean norm.
+           */
+          void pairwiseRedDual (int i);
 
           /**
            * Tries to shorten the vectors of the primal basis using
@@ -456,7 +510,10 @@ namespace LatticeTester {
           // std::int64_t m_BoundL2Count;   // Number of cases for which the reduction stops
           // because any vector is shorter than L2 Bound.
 
-
+          /**
+           * Debug function that print the primal and dual bases.
+           */
+          void trace (char *mess);
 
       }; // End class Reducer
 
@@ -1105,7 +1162,7 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      void Reducer<Int, BasInt, Dbl, RedDbl>::preRedDieter(int d)
+      void Reducer<Int, BasInt, Dbl, RedDbl>::redDieter(int d)
     {
       std::int64_t BoundCount;
       const int dim = m_lat->getDim ();
@@ -1131,7 +1188,7 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      void Reducer<Int, BasInt, Dbl, RedDbl>::preRedDieterRandomized (int d,
+      void Reducer<Int, BasInt, Dbl, RedDbl>::redDieterRandomized (int d,
           int seed)
     {
       std::int64_t BoundCount;
@@ -2156,7 +2213,7 @@ namespace LatticeTester {
         found = false; 
 
         do {
-          preRedDieter (d);
+          redDieter (d);
 
           m_lat->setNegativeNorm(d);
           m_lat->updateVecNorm (d);
@@ -2243,87 +2300,87 @@ namespace LatticeTester {
 
   //=========================================================================
 
-  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      bool Reducer<Int, BasInt, Dbl, RedDbl>::redDieter (NormType norm)
-      /*
-       * Finds shortest non-zero vector with specified norm.
-       * Does not modify the basis.
-       * Stops and returns false if not finished after examining possib.
-       * When succeeds, returns true, and returns length in m_lMin.
-       * Uses the algorithm of Dieter (1975), given in Knuth (1981).
-       */
-    {
-      if(!m_lat->withDual()){
-        std::cout << "***************************************************\n";
-        std::cout << "Dieter Reduction needs the Dual. Evaluation Aborted\n";
-        std::cout << "***************************************************\n" << std::endl;
-        return false;
-      }
-      const int dim = m_lat->getDim ();
-      int k;
-      RedDbl x;
-      DblVec supz, z;
-
-      supz.resize (dim);
-      z.resize (dim);
-
-      /* Compute the bounds in eq.(7) of Dieter (1975). */
-      /* For this, VV and WW temporarily hold the vector norms. */
-      m_lat->setNegativeNorm();
-      m_lat->setDualNegativeNorm();
-      m_lat->updateVecNorm ();
-      m_lat->updateDualVecNorm ();
-      m_lat->sort (0);
-
-      // Basis is now sorted according to the desired norm.
-      NTL::conv (m_lMin, m_lat->getVecNorm (0));
-      m_lMin2 = m_lMin * m_lMin;
-      Dbl temp1, temp2;
-      for (k = 0; k < dim; k++)
-      {
-        NTL::conv (temp1, m_lMin);
-        NTL::conv (temp2, m_lat->getModulo ());
-        supz[k] =
-          1.0E-9 + m_lat->getDualVecNorm (k) * temp1 / temp2;
-        z[k] = 0;
-      }
-
-      // Algorithm given in Knuth (1981).  Memoire de F. Blouin, p. 25.
-      m_countNodes = 0;
-      for (k = 0; k < dim; k++)
-        m_bv[k] = 0;
-
-      k = dim-1;
-      while (k >= 0)
-      {
-        if (z[k] < supz[k]) {
-          ++z[k];
-          NTL::matrix_row<BasIntMat> row1(m_lat->getBasis(), k);
-          ModifVect (m_bv, row1, 1, dim);
-          while (k < dim-1) {
-            ++k;
-            z[k] = -supz[k];
-            NTL::matrix_row<BasIntMat> row2(m_lat->getBasis(), k);
-            ModifVect (m_bv, row2, 2 * z[k], dim);
-          }
-          CalcNorm <BasIntVec, RedDbl> (m_bv, dim, x, norm);
-          if (x < m_lMin) {
-            NTL::conv (m_lMin, x);
-          }
-        } else
-          --k;
-      }
-      if (norm == L2NORM)
-        m_lMin2 = m_lMin * m_lMin;
-
-      m_lat->setNegativeNorm ();
-      m_lat->setDualNegativeNorm ();
-
-      supz.clear ();
-      z.clear ();
-
-      return true;
-    }
+  /*
+   *  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+   *      bool Reducer<Int, BasInt, Dbl, RedDbl>::redDieter (NormType norm)
+   *       * Finds shortest non-zero vector with specified norm.
+   *       * Does not modify the basis.
+   *       * Stops and returns false if not finished after examining possib.
+   *       * When succeeds, returns true, and returns length in m_lMin.
+   *       * Uses the algorithm of Dieter (1975), given in Knuth (1981).
+   *    {
+   *      if(!m_lat->withDual()){
+   *        std::cout << "***************************************************\n";
+   *        std::cout << "Dieter Reduction needs the Dual. Evaluation Aborted\n";
+   *        std::cout << "***************************************************\n" << std::endl;
+   *        return false;
+   *      }
+   *      const int dim = m_lat->getDim ();
+   *      int k;
+   *      RedDbl x;
+   *      DblVec supz, z;
+   *
+   *      supz.resize (dim);
+   *      z.resize (dim);
+   *
+   *      // Compute the bounds in eq.(7) of Dieter (1975).
+   *      // For this, VV and WW temporarily hold the vector norms.
+   *      m_lat->setNegativeNorm();
+   *      m_lat->setDualNegativeNorm();
+   *      m_lat->updateVecNorm ();
+   *      m_lat->updateDualVecNorm ();
+   *      m_lat->sort (0);
+   *
+   *      // Basis is now sorted according to the desired norm.
+   *      NTL::conv (m_lMin, m_lat->getVecNorm (0));
+   *      m_lMin2 = m_lMin * m_lMin;
+   *      Dbl temp1, temp2;
+   *      NTL::conv (temp1, m_lMin);
+   *      NTL::conv (temp2, m_lat->getModulo ());
+   *      for (k = 0; k < dim; k++)
+   *      {
+   *        supz[k] =
+   *          1.0E-9 + m_lat->getDualVecNorm (k) * temp1 / temp2;
+   *        z[k] = 0;
+   *      }
+   *
+   *      // Algorithm given in Knuth (1981).  Memoire de F. Blouin, p. 25.
+   *      m_countNodes = 0;
+   *      for (k = 0; k < dim; k++)
+   *        m_bv[k] = 0;
+   *
+   *      k = dim-1;
+   *      while (k >= 0)
+   *      {
+   *        if (z[k] < supz[k]) {
+   *          ++z[k];
+   *          NTL::matrix_row<BasIntMat> row1(m_lat->getBasis(), k);
+   *          ModifVect (m_bv, row1, 1, dim);
+   *          while (k < dim-1) {
+   *            ++k;
+   *            z[k] = -supz[k];
+   *            NTL::matrix_row<BasIntMat> row2(m_lat->getBasis(), k);
+   *            ModifVect (m_bv, row2, 2 * z[k], dim);
+   *          }
+   *          CalcNorm <BasIntVec, RedDbl> (m_bv, dim, x, norm);
+   *          if (x < m_lMin) {
+   *            NTL::conv (m_lMin, x);
+   *          }
+   *        } else
+   *          --k;
+   *      }
+   *      if (norm == L2NORM)
+   *        m_lMin2 = m_lMin * m_lMin;
+   *
+   *      m_lat->setNegativeNorm ();
+   *      m_lat->setDualNegativeNorm ();
+   *
+   *      supz.clear ();
+   *      z.clear ();
+   *
+   *      return true;
+   *    }
+   */
 
   //=========================================================================
 

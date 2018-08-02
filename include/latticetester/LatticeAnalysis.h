@@ -48,6 +48,7 @@ namespace LatticeTester {
       class LatticeAnalysis;
 
   /**
+   * \cond
    * This structure specializes certain members of LatticeAnalysis. 
    * \todo Render this struct invisible outside of this file with an unnamed 
    * namespace or something like that.
@@ -57,6 +58,7 @@ namespace LatticeTester {
         void initNormalizer(LatticeAnalysis<Int, BasInt, Dbl, RedDbl>& latanal,
             NormaType norma, int alpha);
       };
+  /// \endcond
 
   /**
    * This class gathers other classes of LatticeTester to create an object
@@ -262,6 +264,7 @@ namespace LatticeTester {
 
   // specLatticeAnalysis specialization
 
+  ///\cond
   // LLXX case specialization
   template<typename Dbl, typename RedDbl>
       struct specLatticeAnalysis<std::int64_t, std::int64_t, Dbl, RedDbl> {
@@ -374,6 +377,7 @@ namespace LatticeTester {
         }
       }
     };
+  /// \endcond
 
 
   //===========================================================================
@@ -440,9 +444,9 @@ namespace LatticeTester {
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
       LatticeAnalysis<Int, BasInt, Dbl, RedDbl>::LatticeAnalysis (
-          Reducer<Int, BasInt, Dbl, RedDbl> 
-        & reducer, CriterionType criterion, NormaType normaType,
-        PreReductionType preRed, NormType norm, int alpha, std::int64_t maxNodesBB)
+          Reducer<Int, BasInt, Dbl, RedDbl> & reducer, CriterionType criterion,
+          NormaType normaType, PreReductionType preRed, NormType norm,
+          int alpha, std::int64_t maxNodesBB)
     {
       m_reducer = &reducer;
       m_criterion = criterion;

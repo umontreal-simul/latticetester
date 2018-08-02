@@ -41,7 +41,6 @@ namespace LatticeTester {
    * used as normalizer since it simply sets all normalization constants to 1.
    * This is necessary because the tests compare the normalized values of the
    * merit when searching for good lattices.
-   *
    */
   template<typename RedDbl>
     class Normalizer {

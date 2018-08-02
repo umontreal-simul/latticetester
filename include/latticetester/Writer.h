@@ -49,7 +49,9 @@ namespace LatticeTester {
 
         /**
          * Constructor that opens a `Writer` to write in the file `filename`.
-         * This will overwrite the file and start printing at the start.
+         * This will overwrite the file and start printing at the start. The
+         * program will make/ovewrite a file in the working directory from which
+         * the program was called.
          */
         Writer (const char* fileName);
 
@@ -107,6 +109,14 @@ namespace LatticeTester {
          * This is a pure virtual method that has no implementation.
          */
         virtual void clearTab() = 0;
+
+        /**
+         * After this is called, newlines in tabbed sections will use the
+         * default amount of tabs and spaces of the class.
+         * 
+         * This is a pure virtual method that has no implementation.
+         */
+        virtual void defaultTab() = 0;
 
         /**
          * Starts a new line and adds the right amount of tabs if in a tabbed 

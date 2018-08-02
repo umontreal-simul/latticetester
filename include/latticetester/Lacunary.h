@@ -102,6 +102,7 @@ namespace LatticeTester {
          * …,\f$ <tt>m_dim</tt>.
          */
         BasIntVec m_lac;
+
     }; // End class Lacunary
 
   /*=========================================================================*/

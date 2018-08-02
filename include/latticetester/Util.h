@@ -1182,8 +1182,6 @@ namespace LatticeTester {
    * Computation, Volume 65, Number 213, bottom of page 199.
    * 
    */
-
-
   template <typename Matr, typename Int>
     void Triangularization (Matr & W, Matr & V, int lin, int col,
         const Int & m)

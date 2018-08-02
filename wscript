@@ -110,18 +110,25 @@ def distclean(ctx):
 
 def build(ctx):
 
+    ctx.add_group('group1')
+    ctx.add_group('group2')
+
     if ctx.variant:
         print("Building variant `%s'" % (ctx.variant,))
 
+    ctx.set_group('group1')
     ctx.recurse('src')
+    ctx.recurse('data')    
 
+    ctx.set_group('group2')
+    ctx.recurse('examples')
+
+    ctx.add_group('group6')
+    ctx.set_group('group6')
     if not hasattr(ctx.options, 'nested') or not ctx.options.nested:
         ctx.recurse('progs')
         if ctx.env.BUILD_DOCS:
             ctx.recurse('doc') 
-
-    ctx.recurse('data')    
-    ctx.recurse('examples')
 
     # ctx.recurse('analysis') # probably broken, not used in the current version
 

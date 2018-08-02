@@ -128,6 +128,13 @@ namespace LatticeTester {
         void initVecNorm ();
 
         /**
+         * Tries to add a dual basis to this lattice with the general function
+         * `CalcDual` in Util.h for `m=modulo`. Returns `true` if the operation
+         * succeeded and `false` if no dual has been found for `modulo`
+         * */
+        bool initDual (Int modulo);
+
+        /**
          * Returns the basis represented in a matrix.
          */
         BasIntMat & getBasis () { return m_basis; }
@@ -538,6 +545,36 @@ namespace LatticeTester {
       }
     }
 
+  /*=========================================================================*/
+
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    bool IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::initDual (Int modulo){
+      // If the dual exists, we look if it is with the right modulo
+      // If not, we recalculate it.
+      if (m_withDual) {
+        if (checkDuality()) {
+          if (modulo == m_modulo) return true;
+        }
+        m_modulo = modulo;
+        CalcDual<BasIntMat, Int>(m_basis, m_dualbasis, m_dim, modulo);
+        if (checkDuality()) return true;
+        else return false;
+      } else {
+        // If the dual doesn't exist, we create the fields needed for it and
+        // we calculate it.
+        m_withDual = true;
+        m_dualbasis.resize(m_dim, m_dim);
+        m_modulo = modulo;
+        CalcDual<BasIntMat, Int>(m_basis, m_dualbasis, m_dim, modulo);
+
+        // Initializing the vector for the norms
+        m_dualvecNorm.resize(m_dim);
+        setDualNegativeNorm();
+
+        if (checkDuality()) return true;
+        else return false;
+      }
+    }
 
   /*=========================================================================*/
 

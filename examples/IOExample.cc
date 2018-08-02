@@ -1,5 +1,6 @@
 /**
  * This example uses the LatticeTester API to read and print from/to files.
+ * This does a really simple usage of the ParamReader and the WriterRes classes.
  * */
 #define NTL_TYPES_CODE 2
 
@@ -9,12 +10,13 @@
 #include "latticetester/Types.h"
 #include "latticetester/Reducer.h"
 #include "latticetester/IntLatticeBasis.h"
+#include "latticetester/WriterRes.h"
 
 using namespace LatticeTester;
 
 int main() {
   // Creating a Reader for file `44matrixEx`.
-  ParamReader<MScal, BScal, RScal> reader("examples/44matrixEx.dat");
+  ParamReader<MScal, BScal, RScal> reader("build/examples/44matrixEx.dat");
   // Storing all the lines in `44matrixEx`
   reader.getLines();
   /* To use a reader, you simply need, once you've called getLines(), to have
@@ -28,8 +30,10 @@ int main() {
   BMat matrix(4,4); // The "recipient"
   unsigned int ln = 0; // The line counter
   reader.readBMat(matrix, ln, 0, 4);
-  // Printing the matrix to see if it reading it was successful.
-  std::cout << "We read matrix:\n" <<matrix << std::endl;
+
+  // We want to save the results of the reductions to a file, rather than to the
+  // standard output.
+  WriterRes<MScal> writer("build/examples/IOExample.out");
 
   // Creating an IntLatticeBasis with the matrix we just read as a basis (it is
   // non-singular)
@@ -39,6 +43,11 @@ int main() {
   // We can evaluate and print the lenght of the vectors of this basis
   lat_basis.updateVecNorm();
   lat_basis.sort(0);
+  // Writing in the file
+  writer.writeString("The basis and the vector norms before reductions:");
+  writer.newLine();
+  writer.writeString(lat_basis.toStringBasis());
+  // Writing the same thing on standard output
   std::cout << "The basis and the vector norms before reductions:\n" <<
     lat_basis.toStringBasis();
 
@@ -48,6 +57,11 @@ int main() {
   red.redDieter(0);
   lat_basis.updateVecNorm();
   lat_basis.sort(0);
+  // Writing in the file
+  writer.writeString("The basis and the vector norms after Dieter reduction:");
+  writer.newLine();
+  writer.writeString(lat_basis.toStringBasis());
+  // Writing the same thing on standard output
   std::cout << "The basis and the vector norms after Dieter reduction:\n" <<
     lat_basis.toStringBasis();
 
@@ -58,6 +72,11 @@ int main() {
   red.redLLLNTL();
   lat_basis.updateVecNorm();
   lat_basis.sort(0);
+  // Writing in the file
+  writer.writeString("The basis and the vector norms after LLL reduction:");
+  writer.newLine();
+  writer.writeString(lat_basis.toStringBasis());
+  // Writing the same thing on standard output
   std::cout << "The basis and the vector norms after LLL reduction:\n" <<
     lat_basis.toStringBasis();
 
@@ -69,14 +88,24 @@ int main() {
   red.redBKZ();
   lat_basis.updateVecNorm();
   lat_basis.sort(0);
+  // Writing in the file
+  writer.writeString("The basis and the vector norms after BKZ reduction:");
+  writer.newLine();
+  writer.writeString(lat_basis.toStringBasis());
+  // Writing the same thing on standard output
   std::cout << "The basis and the vector norms after BKZ reduction:\n" <<
     lat_basis.toStringBasis();
 
   // Let's get the shortest vector to see how far we are with the reductions
   if (red.shortestVector(L2NORM)) {
+    // Writing in the file
+    writer.writeString("The basis and the vector norms with the shortest vector:");
+    writer.newLine();
+    writer.writeString(lat_basis.toStringBasis());
+    // Writing the same thing on standard output
     std::cout << "The basis and the vector norms with the shortest vector:\n" <<
       lat_basis.toStringBasis();
   }
-
+  
   return 0;
 }

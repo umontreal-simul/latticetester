@@ -4,7 +4,11 @@
 def build(ctx):
     src_dir = ctx.path.parent.find_dir('examples/')
     inc_dir = ctx.path.find_dir('../include')
+    ctx.add_group('group3')
+    ctx.add_group('group4')
+    ctx.add_group('group5')
     
+    ctx.set_group('group3')
     for src in ctx.path.ant_glob('*.cc'):
         ctx(features='cxx cxxprogram',
                 source=src,
@@ -15,6 +19,7 @@ def build(ctx):
                 use=['latticetester'],
                 install_path='examples')
 
+    ctx.set_group('group4')
     for src in ctx.path.ant_glob('build/examples/*.o'):
         ctx(rule='rm ${SRC}',
                 source=src,
@@ -22,6 +27,7 @@ def build(ctx):
                 use=src.name[:-6] + 'cc',
                 install_path='examples')
         
+    ctx.set_group('group5')
     for src in ctx.path.ant_glob('*.dat'):
         ctx(rule='cp ${SRC} ${TGT}',
                 source=src,

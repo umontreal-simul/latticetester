@@ -28,77 +28,97 @@ namespace LatticeTester {
 
   /**
    * This class is a simple implementation of the `Writer` abstract class
-   * to write in plain text format on the stream.
+   * to write in plain text format on the stream. This class defines no other
+   * method than the interface and can be viewed as an example to what the
+   * `Writer` interface is intended to be.
    */
   template<typename Int>
     class WriterRes : public Writer<Int> {
       public:
 
         /**
-         * Constructor. Opens the writer to write in file `fileName`. `margins` 
-         * is the number of white spaces that will be used as a margin inside a 
-         * table’s cell when printing a table.
+         * Constructor that opens the writer to write at the beginning of file
+         * `fileName`.
          */
-        WriterRes (const char* fileName, unsigned int margins = 5);
+        WriterRes (const char* fileName);
 
         /**
-         * Same as above, except that the writer is opened to write directly
-         * into `stream`.
+         * Constructor that will use `stream` as an output stream. This will
+         * make the writer start writing at the end of the stream.
          */
-        WriterRes (std::ostream* stream, unsigned int margins = 5);
+        WriterRes (std::ostream* stream);
 
         /**
-         * Defined in `Writer`.
+         * Implementation of the method defined in `Writer`. In this class, by
+         * default, a tabbed section has 2 spaces at the beginning of lines.
+         * Calling this methods resets the prefix of tabbed sections to the
+         * default.
          */
-        void beginTabbedSection() {}
+        void beginTabbedSection();
 
         /**
-         * Defined in `Writer`.
+         * Implementation of the method defined in `Writer`.
          */
         void endTabbedSection();
 
         /**
-         * Defined in `Writer`.
+         * Implementation of the method defined in `Writer`. This adds 2 spaces
+         * to the prefix of tabbed sections.
          */
         void addTab();
 
         /**
-         * Defined in `Writer`.
+         * Implementation of the method defined in `Writer`. This removes 2
+         * spaces to the prefix of tabbed sections.
          */
         void removeTab();
 
         /**
-         * Defined in `Writer`.
+         * Implementation of the method defined in `Writer`. This sets the
+         * prefix of tabbed sections to an empty string.
          */
         void clearTab();
 
         /**
-         * Defined in `Writer`.
+         * Implementation of the method defined in `Writer`. This sets the
+         * prefix of tabbed sections to a string with 2 spaces.
+         */
+        void defaultTab();
+
+        /**
+         * Implementation of the method defined in `Writer`. Prints a newline
+         * character and the prefix of a tabbed section if a the writer is in
+         * a tabbed section.
          */
         void newLine();
 
         /**
-         * Defined in `Writer`.
+         * Implementation of the method defined in `Writer`. Prints 2 newline
+         * characters and ends the tabbed section if the program is in a tabbed
+         * section.
          */
         void newParagraph();
 
         /**
-         * Defined in `Writer`.
+         * Implementation of the method defined in `Writer`. This writes the
+         * string passed as an argument to the output string.
          */
         void writeMathString (const std::string);
 
         /**
-         * Defined in `Writer`.
+         * Implementation of the method defined in `Writer`. This writes the 
+         * string passed as argument in a tabbed section with a newline
+         * character before and after.
          */
         void writeStandOutMathString (const std::string);
 
-      private:
+      protected:
 
         /**
-         * The number of white space used as a margin in a table’s cell when
-         * printing.
-         */
-        unsigned int m_margins;
+         * Indicates if we currently are in a tabbed section. The methods of
+         * this class will print m_prefix at each newline if m_isTabbed is `true`.
+         * */
+        bool m_isTabbed = false;
 
         /**
          * Used to remember the state of the tabs and white spaces needed to
@@ -111,29 +131,35 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int>
-    WriterRes<Int>::WriterRes (const char * fileName, unsigned int margins):
+    WriterRes<Int>::WriterRes (const char * fileName):
       Writer<Int> (fileName)
-  {
-    m_margins = margins;
-  }
+  { }
 
 
   //===========================================================================
 
   template<typename Int>
-    WriterRes<Int>::WriterRes (std::ostream * stream, unsigned int margins):
+    WriterRes<Int>::WriterRes (std::ostream * stream):
       Writer<Int> (stream)
-  {
-    m_margins = margins;
-  }
+  { }
 
 
   //===========================================================================
 
+  template<typename Int>
+    void WriterRes<Int>::beginTabbedSection ()
+    {
+      m_prefix = "  ";
+      m_isTabbed = true;
+    }
+
+
+  //===========================================================================
   template<typename Int>
     void WriterRes<Int>::endTabbedSection ()
     {
       m_prefix = "";
+      m_isTabbed = false;
     }
 
 
@@ -142,7 +168,9 @@ namespace LatticeTester {
   template<typename Int>
     void WriterRes<Int>::addTab ()
     {
-      m_prefix += "\t";
+      if (m_isTabbed) {
+        m_prefix += "  ";
+      }
     }
 
   //===========================================================================
@@ -150,8 +178,10 @@ namespace LatticeTester {
   template<typename Int>
     void WriterRes<Int>::removeTab ()
     {
-      if (m_prefix.length () > 0) {
-        m_prefix.erase (m_prefix.length () - 1, 1);
+      if (m_isTabbed) {
+        if (m_prefix.length () > 0) {
+          m_prefix.erase (m_prefix.length () - 1, 2);
+        }
       }
     }
 
@@ -160,7 +190,19 @@ namespace LatticeTester {
   template<typename Int>
     void WriterRes<Int>::clearTab ()
     {
-      m_prefix = "";
+      if (m_isTabbed) {
+        m_prefix = "";
+      }
+    }
+
+  //===========================================================================
+
+  template<typename Int>
+    void WriterRes<Int>::defaultTab ()
+    {
+      if (m_isTabbed) {
+        m_prefix = "  ";
+      }
     }
 
   //===========================================================================
@@ -168,7 +210,10 @@ namespace LatticeTester {
   template<typename Int>
     void WriterRes<Int>::newLine ()
     {
-      *this->m_stream << m_prefix << std::endl;
+      *this->m_stream << std::endl;
+      if (m_isTabbed) {
+        *this->m_stream << m_prefix;
+      }
     }
 
   //===========================================================================
@@ -176,8 +221,9 @@ namespace LatticeTester {
   template<typename Int>
     void WriterRes<Int>::newParagraph ()
     {
-      *this->m_stream << std::endl << std::endl;
       endTabbedSection ();
+      newLine();
+      newLine();
     }
 
   //===========================================================================
@@ -185,7 +231,7 @@ namespace LatticeTester {
   template<typename Int>
     void WriterRes<Int>::writeMathString (const std::string s)
     {
-      *this->m_stream << m_prefix << s;
+      *this->m_stream << s;
     }
 
   //===========================================================================
@@ -193,7 +239,11 @@ namespace LatticeTester {
   template<typename Int>
     void WriterRes<Int>::writeStandOutMathString (const std::string s)
     {
-      *this->m_stream << std::endl << "\t" << s << std::endl;
+      beginTabbedSection();
+      newLine();
+      *this->m_stream << s;
+      endTabbedSection();
+      newLine();
     }
 
 } // End namespace LatticeTester

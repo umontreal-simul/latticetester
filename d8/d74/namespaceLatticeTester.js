@@ -6,8 +6,6 @@ var namespaceLatticeTester =
     [ "IntLattice", "d6/dc0/classLatticeTester_1_1IntLattice.html", "d6/dc0/classLatticeTester_1_1IntLattice" ],
     [ "IntLatticeBasis", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html", "d1/d89/classLatticeTester_1_1IntLatticeBasis" ],
     [ "Lacunary", "d8/d3b/classLatticeTester_1_1Lacunary.html", "d8/d3b/classLatticeTester_1_1Lacunary" ],
-    [ "LatTestWriter", "d7/d22/classLatticeTester_1_1LatTestWriter.html", "d7/d22/classLatticeTester_1_1LatTestWriter" ],
-    [ "LatTestWriterRes", "df/db5/classLatticeTester_1_1LatTestWriterRes.html", "df/db5/classLatticeTester_1_1LatTestWriterRes" ],
     [ "LatticeAnalysis", "df/d59/classLatticeTester_1_1LatticeAnalysis.html", "df/d59/classLatticeTester_1_1LatticeAnalysis" ],
     [ "LatticeTesterConfig", "d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html", "d4/dfd/classLatticeTester_1_1LatticeTesterConfig" ],
     [ "NormaBestLat", "d1/d24/classLatticeTester_1_1NormaBestLat.html", "d1/d24/classLatticeTester_1_1NormaBestLat" ],
@@ -25,8 +23,9 @@ var namespaceLatticeTester =
     [ "Random", "dc/d9a/classLatticeTester_1_1Random.html", "dc/d9a/classLatticeTester_1_1Random" ],
     [ "Rank1Lattice", "de/dfe/classLatticeTester_1_1Rank1Lattice.html", "de/dfe/classLatticeTester_1_1Rank1Lattice" ],
     [ "Reducer", "d8/de3/classLatticeTester_1_1Reducer.html", "d8/de3/classLatticeTester_1_1Reducer" ],
-    [ "specLatticeAnalysis", "d7/db1/structLatticeTester_1_1specLatticeAnalysis.html", null ],
     [ "Types", "d6/df9/classLatticeTester_1_1Types.html", null ],
     [ "UniformWeights", "d7/d89/classLatticeTester_1_1UniformWeights.html", "d7/d89/classLatticeTester_1_1UniformWeights" ],
-    [ "Weights", "db/d40/classLatticeTester_1_1Weights.html", "db/d40/classLatticeTester_1_1Weights" ]
+    [ "Weights", "db/d40/classLatticeTester_1_1Weights.html", "db/d40/classLatticeTester_1_1Weights" ],
+    [ "Writer", "d4/dc5/classLatticeTester_1_1Writer.html", "d4/dc5/classLatticeTester_1_1Writer" ],
+    [ "WriterRes", "d2/d30/classLatticeTester_1_1WriterRes.html", "d2/d30/classLatticeTester_1_1WriterRes" ]
 ];

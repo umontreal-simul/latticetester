@@ -12,9 +12,6 @@ var hierarchy =
       ] ]
     ] ],
     [ "LatticeTester::Lacunary< BasInt >", "d8/d3b/classLatticeTester_1_1Lacunary.html", null ],
-    [ "LatticeTester::LatTestWriter< Int >", "d7/d22/classLatticeTester_1_1LatTestWriter.html", [
-      [ "LatticeTester::LatTestWriterRes< Int >", "df/db5/classLatticeTester_1_1LatTestWriterRes.html", null ]
-    ] ],
     [ "LatticeTester::LatticeAnalysis< Int, BasInt, Dbl, RedDbl >", "df/d59/classLatticeTester_1_1LatticeAnalysis.html", null ],
     [ "LatticeTester::LatticeTesterConfig< Int, BasIntMat >", "d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html", null ],
     [ "LatticeTester::Normalizer< RedDbl >", "d0/dc8/classLatticeTester_1_1Normalizer.html", [
@@ -28,7 +25,6 @@ var hierarchy =
     [ "LatticeTester::ParamReader< Int, BasInt, RedDbl >", "da/d47/classLatticeTester_1_1ParamReader.html", null ],
     [ "LatticeTester::Random", "dc/d9a/classLatticeTester_1_1Random.html", null ],
     [ "LatticeTester::Reducer< Int, BasInt, Dbl, RedDbl >", "d8/de3/classLatticeTester_1_1Reducer.html", null ],
-    [ "LatticeTester::specLatticeAnalysis< Int, BasInt, Dbl, RedDbl >", "d7/db1/structLatticeTester_1_1specLatticeAnalysis.html", null ],
     [ "LatticeTester::Types", "d6/df9/classLatticeTester_1_1Types.html", null ],
     [ "LatticeTester::Weights", "db/d40/classLatticeTester_1_1Weights.html", [
       [ "LatticeTester::OrderDependentWeights", "d3/d01/classLatticeTester_1_1OrderDependentWeights.html", null ],
@@ -36,6 +32,9 @@ var hierarchy =
       [ "LatticeTester::ProductWeights", "da/d3e/classLatticeTester_1_1ProductWeights.html", null ],
       [ "LatticeTester::ProjectionDependentWeights", "d1/db4/classLatticeTester_1_1ProjectionDependentWeights.html", null ],
       [ "LatticeTester::UniformWeights", "d7/d89/classLatticeTester_1_1UniformWeights.html", null ]
+    ] ],
+    [ "LatticeTester::Writer< Int >", "d4/dc5/classLatticeTester_1_1Writer.html", [
+      [ "LatticeTester::WriterRes< Int >", "d2/d30/classLatticeTester_1_1WriterRes.html", null ]
     ] ],
     [ "NTL::matrix< BasInt >", "d4/d6f/classNTL_1_1matrix.html", null ],
     [ "NTL::matrix< RedDbl >", "d4/d6f/classNTL_1_1matrix.html", null ],

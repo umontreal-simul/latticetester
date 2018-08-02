@@ -36,7 +36,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-26</span>
+   &#160;<span id="projectnumber">0.1.0-work-29</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -135,9 +135,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad6e252b8460b90061612ceefb5d27736"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/d01/classNTL_1_1vector.html#aa4ce7dc750065f6413002e22a47b8a07">size_type</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d01/classNTL_1_1vector.html#ad6e252b8460b90061612ceefb5d27736">max_size</a> () const</td></tr>
 <tr class="memdesc:ad6e252b8460b90061612ceefb5d27736"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of allocated and initialized elements in the vector.  <a href="#ad6e252b8460b90061612ceefb5d27736">More...</a><br /></td></tr>
 <tr class="separator:ad6e252b8460b90061612ceefb5d27736"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2eab5d1dd975915f90028397f241d09a"><td class="memItemLeft" align="right" valign="top"><a id="a2eab5d1dd975915f90028397f241d09a"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d01/classNTL_1_1vector.html#a2eab5d1dd975915f90028397f241d09a">empty</a> () const</td></tr>
-<tr class="memdesc:a2eab5d1dd975915f90028397f241d09a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if the vector has length 0 and <code>false</code> otherwise. <br /></td></tr>
+<tr class="memitem:a2eab5d1dd975915f90028397f241d09a"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d01/classNTL_1_1vector.html#a2eab5d1dd975915f90028397f241d09a">empty</a> () const</td></tr>
+<tr class="memdesc:a2eab5d1dd975915f90028397f241d09a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if the vector has length 0 and <code>false</code> otherwise.  <a href="#a2eab5d1dd975915f90028397f241d09a">More...</a><br /></td></tr>
 <tr class="separator:a2eab5d1dd975915f90028397f241d09a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0db3e33112e8ca6acf96e121147554b9"><td class="memItemLeft" align="right" valign="top">const T &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d01/classNTL_1_1vector.html#a0db3e33112e8ca6acf96e121147554b9">operator()</a> (<a class="el" href="../../d0/d01/classNTL_1_1vector.html#aa4ce7dc750065f6413002e22a47b8a07">size_type</a> i) const</td></tr>
 <tr class="memdesc:a0db3e33112e8ca6acf96e121147554b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change in the indexation reference for () operator to start from 0.  <a href="#a0db3e33112e8ca6acf96e121147554b9">More...</a><br /></td></tr>
@@ -163,7 +162,7 @@ template&lt;typename T&gt; </div>
         </tr>
       </table>
 </div><div class="memdoc">
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000011">Todo:</a></b></dt><dd>Check if this type is valid or should be reverted to <code>long</code> </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000010">Todo:</a></b></dt><dd>Check if this type is valid or should be reverted to <code>long</code> </dd></dl>
 
 </div>
 </div>
@@ -331,6 +330,35 @@ template&lt;typename T&gt; </div>
 
 </div>
 </div>
+<a id="a2eab5d1dd975915f90028397f241d09a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2eab5d1dd975915f90028397f241d09a">&#9670;&nbsp;</a></span>empty()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool <a class="el" href="../../d0/d01/classNTL_1_1vector.html">NTL::vector</a>&lt; T &gt;::empty </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns <code>true</code> if the vector has length 0 and <code>false</code> otherwise. </p>
+
+</div>
+</div>
 <a id="ad6e252b8460b90061612ceefb5d27736"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ad6e252b8460b90061612ceefb5d27736">&#9670;&nbsp;</a></span>max_size()</h2>
 
@@ -467,7 +495,7 @@ template&lt;typename T&gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d2/d5a/namespaceNTL.html">NTL</a></li><li class="navelem"><a class="el" href="../../d0/d01/classNTL_1_1vector.html">vector</a></li>
-    <li class="footer">Generated on Wed Aug 1 2018 12:11:59 for Lattice Tester Manual by
+    <li class="footer">Generated on Thu Aug 2 2018 15:57:10 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

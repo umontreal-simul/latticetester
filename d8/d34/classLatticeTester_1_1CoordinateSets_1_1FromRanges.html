@@ -36,7 +36,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-26</span>
+   &#160;<span id="projectnumber">0.1.0-work-29</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -113,9 +113,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6556ec5599dce5d32eb6265f0924b99c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d34/classLatticeTester_1_1CoordinateSets_1_1FromRanges.html#a6556ec5599dce5d32eb6265f0924b99c">FromRanges</a> (Coordinates::size_type minOrder, Coordinates::size_type maxOrder, Coordinates::value_type minCoord, Coordinates::value_type maxCoord)</td></tr>
 <tr class="memdesc:a6556ec5599dce5d32eb6265f0924b99c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a set of all subsets of \(\{\mathtt{minCoord}, \dots, \mathtt{maxCoord}\}\) with minimum and maximum cardinality specified by <code>minOrder</code> and <code>maxOrder</code>.  <a href="#a6556ec5599dce5d32eb6265f0924b99c">More...</a><br /></td></tr>
 <tr class="separator:a6556ec5599dce5d32eb6265f0924b99c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af2d7114bcd6c8fec85f3cfae1dc19810"><td class="memItemLeft" align="right" valign="top"><a id="af2d7114bcd6c8fec85f3cfae1dc19810"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d34/classLatticeTester_1_1CoordinateSets_1_1FromRanges.html#af2d7114bcd6c8fec85f3cfae1dc19810">FromRanges</a> ()</td></tr>
-<tr class="memdesc:af2d7114bcd6c8fec85f3cfae1dc19810"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an empty set of coordinate sets. <br /></td></tr>
+<tr class="memitem:af2d7114bcd6c8fec85f3cfae1dc19810"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d34/classLatticeTester_1_1CoordinateSets_1_1FromRanges.html#af2d7114bcd6c8fec85f3cfae1dc19810">FromRanges</a> ()</td></tr>
+<tr class="memdesc:af2d7114bcd6c8fec85f3cfae1dc19810"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs an empty set of coordinate sets.  <a href="#af2d7114bcd6c8fec85f3cfae1dc19810">More...</a><br /></td></tr>
 <tr class="separator:af2d7114bcd6c8fec85f3cfae1dc19810"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3850ac33c6780297a0c052f236f2afa7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d34/classLatticeTester_1_1CoordinateSets_1_1FromRanges.html#a3850ac33c6780297a0c052f236f2afa7">includeOrder</a> (Coordinates::size_type order, Coordinates::value_type minCoord, Coordinates::value_type maxCoord)</td></tr>
 <tr class="memdesc:a3850ac33c6780297a0c052f236f2afa7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Include all subsets \(\mathfrak u\) of \(\{\mathtt{minCoord}, \dots, \mathtt{maxCoord}\}\) of <code>order</code> \(|\mathfrak u| = \mathtt{order}\).  <a href="#a3850ac33c6780297a0c052f236f2afa7">More...</a><br /></td></tr>
@@ -137,7 +136,7 @@ Public Member Functions</h2></td></tr>
 <p>When you iterate through this class, it generates the next subset of coordinates in the interval associated with the current order. If there is none left, it moves on to the next order and starts generating subsets from the interval associated with this order. It is not possible to generate coordinate sets of the same order for different intervals with the same instance of this class. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a6556ec5599dce5d32eb6265f0924b99c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6556ec5599dce5d32eb6265f0924b99c">&#9670;&nbsp;</a></span>FromRanges()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6556ec5599dce5d32eb6265f0924b99c">&#9670;&nbsp;</a></span>FromRanges() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -176,6 +175,25 @@ Public Member Functions</h2></td></tr>
 
 <p>Constructs a set of all subsets of \(\{\mathtt{minCoord}, \dots, \mathtt{maxCoord}\}\) with minimum and maximum cardinality specified by <code>minOrder</code> and <code>maxOrder</code>. </p>
 <p>For example, to select all 1, 2, and 3-tuples over coordinates 2, 3, 4, one may use the declaration <code><a class="el" href="../../d8/d34/classLatticeTester_1_1CoordinateSets_1_1FromRanges.html" title="A CoordinateSets for coordinates within a given range. ">FromRanges</a> range(1, 3, 2, 4)</code>; this gives the sets <code>range = {{2}, {3}, {4}, {2, 3}, {2, 4}, {3, 4}, {2, 3, 4}}</code>. </p>
+
+</div>
+</div>
+<a id="af2d7114bcd6c8fec85f3cfae1dc19810"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2d7114bcd6c8fec85f3cfae1dc19810">&#9670;&nbsp;</a></span>FromRanges() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">LatticeTester::CoordinateSets::FromRanges::FromRanges </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructs an empty set of coordinate sets. </p>
 
 </div>
 </div>
@@ -306,7 +324,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a></li><li class="navelem"><a class="el" href="../../d0/d6f/namespaceLatticeTester_1_1CoordinateSets.html">CoordinateSets</a></li><li class="navelem"><a class="el" href="../../d8/d34/classLatticeTester_1_1CoordinateSets_1_1FromRanges.html">FromRanges</a></li>
-    <li class="footer">Generated on Wed Aug 1 2018 12:11:59 for Lattice Tester Manual by
+    <li class="footer">Generated on Thu Aug 2 2018 15:57:10 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

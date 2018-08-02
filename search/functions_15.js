@@ -2,12 +2,14 @@ var searchData=
 [
   ['withdual',['withDual',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#adad5256ecd1222f5953f080fff737a02',1,'LatticeTester::IntLatticeBasis']]],
   ['write',['write',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a50bb85839ddba692cfff69307568c73b',1,'LatticeTester::IntLatticeBasis::write()'],['../d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html#a970fe1a68a97a8097a7bc4e1888ea9c6',1,'LatticeTester::LatticeTesterConfig::write()']]],
-  ['writebool',['writeBool',['../d7/d22/classLatticeTester_1_1LatTestWriter.html#af289d892aedd5ea680b772fa03ba8a35',1,'LatticeTester::LatTestWriter']]],
-  ['writedouble',['writeDouble',['../d7/d22/classLatticeTester_1_1LatTestWriter.html#a464e93c6ce65f63a86d62f48c5e5770c',1,'LatticeTester::LatTestWriter']]],
-  ['writeint',['writeInt',['../d7/d22/classLatticeTester_1_1LatTestWriter.html#ab5a0125908104ee37600dd6b32a3f602',1,'LatticeTester::LatTestWriter']]],
-  ['writeintscal',['writeIntScal',['../d7/d22/classLatticeTester_1_1LatTestWriter.html#a9a62fbec9925d1f1f915a9ad7a1e18dc',1,'LatticeTester::LatTestWriter']]],
-  ['writemathstring',['writeMathString',['../d7/d22/classLatticeTester_1_1LatTestWriter.html#a01ba14f25d8445855b3fe577d60bc783',1,'LatticeTester::LatTestWriter::writeMathString()'],['../df/db5/classLatticeTester_1_1LatTestWriterRes.html#abeef145e100aecca30bc3fd3a9c2ec18',1,'LatticeTester::LatTestWriterRes::writeMathString()']]],
-  ['writemmat',['writeMMat',['../d7/d22/classLatticeTester_1_1LatTestWriter.html#a63bb24509d8bbcabf2607b244341d2a5',1,'LatticeTester::LatTestWriter']]],
-  ['writestandoutmathstring',['writeStandOutMathString',['../d7/d22/classLatticeTester_1_1LatTestWriter.html#a4bbce3e734c09c00f00979e05465be5a',1,'LatticeTester::LatTestWriter::writeStandOutMathString()'],['../df/db5/classLatticeTester_1_1LatTestWriterRes.html#ace6716d66d1613873fd24edc62d31fd5',1,'LatticeTester::LatTestWriterRes::writeStandOutMathString()']]],
-  ['writestring',['writeString',['../d7/d22/classLatticeTester_1_1LatTestWriter.html#ad71c451a4cfbd931978fc9b24dac05f3',1,'LatticeTester::LatTestWriter']]]
+  ['writebool',['writeBool',['../d4/dc5/classLatticeTester_1_1Writer.html#a0b191bf4848aa96a00385850d13999b4',1,'LatticeTester::Writer']]],
+  ['writedouble',['writeDouble',['../d4/dc5/classLatticeTester_1_1Writer.html#afe5f397a20f2d1550aa99f2ab4adfbf3',1,'LatticeTester::Writer']]],
+  ['writeint',['writeInt',['../d4/dc5/classLatticeTester_1_1Writer.html#aa2771c74cb8367dfdb1022bcc0e49af9',1,'LatticeTester::Writer']]],
+  ['writeintscal',['writeIntScal',['../d4/dc5/classLatticeTester_1_1Writer.html#a655b59c3b00319d97abad616fa649be0',1,'LatticeTester::Writer']]],
+  ['writemathstring',['writeMathString',['../d4/dc5/classLatticeTester_1_1Writer.html#a6a800702acbf4433e003aa7b923d4dff',1,'LatticeTester::Writer::writeMathString()'],['../d2/d30/classLatticeTester_1_1WriterRes.html#a43be38b40b3b20420469e08a13ca5512',1,'LatticeTester::WriterRes::writeMathString()']]],
+  ['writemmat',['writeMMat',['../d4/dc5/classLatticeTester_1_1Writer.html#a0b51448a23614cbff1249c84369735f3',1,'LatticeTester::Writer']]],
+  ['writer',['Writer',['../d4/dc5/classLatticeTester_1_1Writer.html#ada0c7c4fe74fa3593bba368aebd6c2f6',1,'LatticeTester::Writer::Writer(const char *fileName)'],['../d4/dc5/classLatticeTester_1_1Writer.html#a6f7e274585916a9c3ee420743a86caf7',1,'LatticeTester::Writer::Writer(std::ostream *stream)']]],
+  ['writerres',['WriterRes',['../d2/d30/classLatticeTester_1_1WriterRes.html#a7bcf012f3ec3909356528cfe037b6c45',1,'LatticeTester::WriterRes::WriterRes(const char *fileName)'],['../d2/d30/classLatticeTester_1_1WriterRes.html#ae74069cc50ac887ffae9dec78bfc3968',1,'LatticeTester::WriterRes::WriterRes(std::ostream *stream)']]],
+  ['writestandoutmathstring',['writeStandOutMathString',['../d4/dc5/classLatticeTester_1_1Writer.html#a8665f22d5d3fdfbfb976fbbd6def7907',1,'LatticeTester::Writer::writeStandOutMathString()'],['../d2/d30/classLatticeTester_1_1WriterRes.html#ab455034da790841d33dadd35f005b226',1,'LatticeTester::WriterRes::writeStandOutMathString()']]],
+  ['writestring',['writeString',['../d4/dc5/classLatticeTester_1_1Writer.html#a6321a5dffd4b07f24776e5bd3da4f043',1,'LatticeTester::Writer']]]
 ];

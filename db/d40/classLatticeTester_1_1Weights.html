@@ -36,7 +36,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-26</span>
+   &#160;<span id="projectnumber">0.1.0-work-29</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -107,13 +107,11 @@ $(document).ready(function(){initNavTree('db/d40/classLatticeTester_1_1Weights.h
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ad5354a36601505921210464c17bcc45a"><td class="memItemLeft" align="right" valign="top"><a id="ad5354a36601505921210464c17bcc45a"></a>
-virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d40/classLatticeTester_1_1Weights.html#ad5354a36601505921210464c17bcc45a">~Weights</a> ()</td></tr>
-<tr class="memdesc:ad5354a36601505921210464c17bcc45a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor. <br /></td></tr>
+<tr class="memitem:ad5354a36601505921210464c17bcc45a"><td class="memItemLeft" align="right" valign="top">virtual&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d40/classLatticeTester_1_1Weights.html#ad5354a36601505921210464c17bcc45a">~Weights</a> ()</td></tr>
+<tr class="memdesc:ad5354a36601505921210464c17bcc45a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#ad5354a36601505921210464c17bcc45a">More...</a><br /></td></tr>
 <tr class="separator:ad5354a36601505921210464c17bcc45a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a36b5b64d0859da432b61d44f6df74ca1"><td class="memItemLeft" align="right" valign="top"><a id="a36b5b64d0859da432b61d44f6df74ca1"></a>
-virtual <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a951f7e7b03767aa0971dde55f9d328ec">Weight</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d40/classLatticeTester_1_1Weights.html#a36b5b64d0859da432b61d44f6df74ca1">getWeight</a> (const <a class="el" href="../../d9/dd3/classLatticeTester_1_1Coordinates.html">Coordinates</a> &amp;projection) const =0</td></tr>
-<tr class="memdesc:a36b5b64d0859da432b61d44f6df74ca1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the weight of the projection specified by <code>projection</code>. <br /></td></tr>
+<tr class="memitem:a36b5b64d0859da432b61d44f6df74ca1"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a951f7e7b03767aa0971dde55f9d328ec">Weight</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d40/classLatticeTester_1_1Weights.html#a36b5b64d0859da432b61d44f6df74ca1">getWeight</a> (const <a class="el" href="../../d9/dd3/classLatticeTester_1_1Coordinates.html">Coordinates</a> &amp;projection) const =0</td></tr>
+<tr class="memdesc:a36b5b64d0859da432b61d44f6df74ca1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the weight of the projection specified by <code>projection</code>.  <a href="#a36b5b64d0859da432b61d44f6df74ca1">More...</a><br /></td></tr>
 <tr class="separator:a36b5b64d0859da432b61d44f6df74ca1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a35f2557cc361d8e2084615fcf4e7530f"><td class="memItemLeft" align="right" valign="top">virtual unsigned int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../db/d40/classLatticeTester_1_1Weights.html#a35f2557cc361d8e2084615fcf4e7530f">interlacingFactor</a> () const</td></tr>
 <tr class="memdesc:a35f2557cc361d8e2084615fcf4e7530f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the interlacing factor of the weights.  <a href="#a35f2557cc361d8e2084615fcf4e7530f">More...</a><br /></td></tr>
@@ -135,7 +133,35 @@ Related Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Abstract weights class. </p>
 <p>This abstract class is the basis for different kinds of weights used to accentuate the importance given to some projections when computing figures of merit for lattices or point sets. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="ad5354a36601505921210464c17bcc45a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5354a36601505921210464c17bcc45a">&#9670;&nbsp;</a></span>~Weights()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual LatticeTester::Weights::~Weights </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Destructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
 <a id="af65093620c85fe29056af60dc689b143"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af65093620c85fe29056af60dc689b143">&#9670;&nbsp;</a></span>format()</h2>
 
@@ -164,6 +190,36 @@ Related Functions</h2></td></tr>
 <dl class="section remark"><dt>Remarks</dt><dd>Deriving classes should identify themselves in the output. </dd></dl>
 
 <p>Implemented in <a class="el" href="../../da/d3e/classLatticeTester_1_1ProductWeights.html#aa82d16295499b63bf584577a97ec2aa8">LatticeTester::ProductWeights</a>, <a class="el" href="../../d4/de7/classLatticeTester_1_1PODWeights.html#afc641011daa61164f87fbf213de9b4a1">LatticeTester::PODWeights</a>, <a class="el" href="../../d1/db4/classLatticeTester_1_1ProjectionDependentWeights.html#a0d85bc09ac7bcb3132947f65b5b74f2a">LatticeTester::ProjectionDependentWeights</a>, <a class="el" href="../../d3/d01/classLatticeTester_1_1OrderDependentWeights.html#a5e039ab546eb7e7d8b4bf57155445d88">LatticeTester::OrderDependentWeights</a>, and <a class="el" href="../../d7/d89/classLatticeTester_1_1UniformWeights.html#ad64872ecd305c070d0160add794d5767">LatticeTester::UniformWeights</a>.</p>
+
+</div>
+</div>
+<a id="a36b5b64d0859da432b61d44f6df74ca1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a36b5b64d0859da432b61d44f6df74ca1">&#9670;&nbsp;</a></span>getWeight()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a951f7e7b03767aa0971dde55f9d328ec">Weight</a> LatticeTester::Weights::getWeight </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d9/dd3/classLatticeTester_1_1Coordinates.html">Coordinates</a> &amp;&#160;</td>
+          <td class="paramname"><em>projection</em></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the weight of the projection specified by <code>projection</code>. </p>
+
+<p>Implemented in <a class="el" href="../../d1/db4/classLatticeTester_1_1ProjectionDependentWeights.html#a9d4ebde0051f51259fe0b3a88701486e">LatticeTester::ProjectionDependentWeights</a>, <a class="el" href="../../d3/d01/classLatticeTester_1_1OrderDependentWeights.html#aac324e154254f2876fce8dce84cb8e31">LatticeTester::OrderDependentWeights</a>, <a class="el" href="../../d4/de7/classLatticeTester_1_1PODWeights.html#aac9ba10cba4104e655999b4be0bbc7e8">LatticeTester::PODWeights</a>, <a class="el" href="../../da/d3e/classLatticeTester_1_1ProductWeights.html#ab0c5a1465c30d8c656ae82bfbdf32497">LatticeTester::ProductWeights</a>, and <a class="el" href="../../d7/d89/classLatticeTester_1_1UniformWeights.html#abc1634f1a1f3e2506be9ed157b906b6f">LatticeTester::UniformWeights</a>.</p>
 
 </div>
 </div>
@@ -242,7 +298,7 @@ Related Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a></li><li class="navelem"><a class="el" href="../../db/d40/classLatticeTester_1_1Weights.html">Weights</a></li>
-    <li class="footer">Generated on Wed Aug 1 2018 12:11:59 for Lattice Tester Manual by
+    <li class="footer">Generated on Thu Aug 2 2018 15:57:10 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

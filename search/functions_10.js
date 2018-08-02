@@ -35,7 +35,7 @@ var searchData=
   ['redlllntlexact',['redLLLNTLExact',['../d8/de3/classLatticeTester_1_1Reducer.html#a935c4f896a9187132dc1b4da22a62108',1,'LatticeTester::Reducer']]],
   ['reducer',['Reducer',['../d8/de3/classLatticeTester_1_1Reducer.html#a86a400ff9d403eecb6a5efb9b305ffdb',1,'LatticeTester::Reducer::Reducer(IntLatticeBasis&lt; Int, BasInt, Dbl, RedDbl &gt; &amp;lat)'],['../d8/de3/classLatticeTester_1_1Reducer.html#a0e1b607954fc6e40fdb06ff36eb7f837',1,'LatticeTester::Reducer::Reducer(const Reducer&lt; Int, BasInt, Dbl, RedDbl &gt; &amp;red)']]],
   ['reductminkowski',['reductMinkowski',['../d8/de3/classLatticeTester_1_1Reducer.html#aaeb99bbb4d5945d278572f35a638f8c9',1,'LatticeTester::Reducer']]],
-  ['removetab',['removeTab',['../d7/d22/classLatticeTester_1_1LatTestWriter.html#a697dce030ca92e0d82a2d2a64db0b1e4',1,'LatticeTester::LatTestWriter::removeTab()'],['../df/db5/classLatticeTester_1_1LatTestWriterRes.html#adbc72214d15a3779ee5699366ff43c7d',1,'LatticeTester::LatTestWriterRes::removeTab()']]],
+  ['removetab',['removeTab',['../d4/dc5/classLatticeTester_1_1Writer.html#a1aec9e76d39bef0449070618cc1d8d1d',1,'LatticeTester::Writer::removeTab()'],['../d2/d30/classLatticeTester_1_1WriterRes.html#a89ff0f6229643ed39d01139f2cbfe043',1,'LatticeTester::WriterRes::removeTab()']]],
   ['resize',['resize',['../d0/d01/classNTL_1_1vector.html#ad794efde1d0c90a70459401f857c2999',1,'NTL::vector::resize()'],['../d4/d6f/classNTL_1_1matrix.html#a31d6bca060ff1cf8172c1b71b30491f1',1,'NTL::matrix::resize()']]],
   ['round',['Round',['../d8/d74/namespaceLatticeTester.html#a15f15a1453b578cb49b2e3deda5a200d',1,'LatticeTester']]]
 ];

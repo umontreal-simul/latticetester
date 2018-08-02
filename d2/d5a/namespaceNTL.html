@@ -36,7 +36,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-26</span>
+   &#160;<span id="projectnumber">0.1.0-work-29</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -113,13 +113,11 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Some other compatibility utilities</div></td></tr>
-<tr class="memitem:a07b6d8586b6a40e65a3bee1608d3e389"><td class="memItemLeft" align="right" valign="top"><a id="a07b6d8586b6a40e65a3bee1608d3e389"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d5a/namespaceNTL.html#a07b6d8586b6a40e65a3bee1608d3e389">conv</a> (std::int64_t &amp;l, const char *c)</td></tr>
-<tr class="memdesc:a07b6d8586b6a40e65a3bee1608d3e389"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the array of characters (string) <code>c</code> into an <code>std::int64_t</code> <code>l</code>. <br /></td></tr>
+<tr class="memitem:a07b6d8586b6a40e65a3bee1608d3e389"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d5a/namespaceNTL.html#a07b6d8586b6a40e65a3bee1608d3e389">conv</a> (std::int64_t &amp;l, const char *c)</td></tr>
+<tr class="memdesc:a07b6d8586b6a40e65a3bee1608d3e389"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the array of characters (string) <code>c</code> into an <code>std::int64_t</code> <code>l</code>.  <a href="#a07b6d8586b6a40e65a3bee1608d3e389">More...</a><br /></td></tr>
 <tr class="separator:a07b6d8586b6a40e65a3bee1608d3e389"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7ccb62fcab3fca4d4cf9c2b55061e63f"><td class="memItemLeft" align="right" valign="top"><a id="a7ccb62fcab3fca4d4cf9c2b55061e63f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d5a/namespaceNTL.html#a7ccb62fcab3fca4d4cf9c2b55061e63f">conv</a> (double &amp;r, const char *c)</td></tr>
-<tr class="memdesc:a7ccb62fcab3fca4d4cf9c2b55061e63f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the array of characters (string) <code>c</code> into a <code>double</code> <code>r</code>. <br /></td></tr>
+<tr class="memitem:a7ccb62fcab3fca4d4cf9c2b55061e63f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d5a/namespaceNTL.html#a7ccb62fcab3fca4d4cf9c2b55061e63f">conv</a> (double &amp;r, const char *c)</td></tr>
+<tr class="memdesc:a7ccb62fcab3fca4d4cf9c2b55061e63f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the array of characters (string) <code>c</code> into a <code>double</code> <code>r</code>.  <a href="#a7ccb62fcab3fca4d4cf9c2b55061e63f">More...</a><br /></td></tr>
 <tr class="separator:a7ccb62fcab3fca4d4cf9c2b55061e63f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab050c8acfe68df985d447688b4caf01"><td class="memItemLeft" align="right" valign="top"><a id="aab050c8acfe68df985d447688b4caf01"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>conv</b> (double &amp;x, long long a)</td></tr>
@@ -147,13 +145,90 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>conv</b> (long long &
 <div class="textblock"><p>This module contains extensions of certain classes in <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a>. </p>
 <p>It was previously necessary because <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> and boost (an old dependency) did not use the same function names and indices.</p>
 <p>This name conversion was meant to have the same function names in boost and <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> and allows us to have <a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace. ">LatticeTester</a> work with either boost library or <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> library depending on preprocessing statements. </p>
-</div></div><!-- contents -->
+</div><h2 class="groupheader">Function Documentation</h2>
+<a id="a07b6d8586b6a40e65a3bee1608d3e389"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07b6d8586b6a40e65a3bee1608d3e389">&#9670;&nbsp;</a></span>conv() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NTL::conv </td>
+          <td>(</td>
+          <td class="paramtype">std::int64_t &amp;&#160;</td>
+          <td class="paramname"><em>l</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>c</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Converts the array of characters (string) <code>c</code> into an <code>std::int64_t</code> <code>l</code>. </p>
+
+</div>
+</div>
+<a id="a7ccb62fcab3fca4d4cf9c2b55061e63f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ccb62fcab3fca4d4cf9c2b55061e63f">&#9670;&nbsp;</a></span>conv() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NTL::conv </td>
+          <td>(</td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>r</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const char *&#160;</td>
+          <td class="paramname"><em>c</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Converts the array of characters (string) <code>c</code> into a <code>double</code> <code>r</code>. </p>
+
+</div>
+</div>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d2/d5a/namespaceNTL.html">NTL</a></li>
-    <li class="footer">Generated on Wed Aug 1 2018 12:11:59 for Lattice Tester Manual by
+    <li class="footer">Generated on Thu Aug 2 2018 15:57:10 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

@@ -7,6 +7,8 @@
  * them.
  * */
 
+#define NTL_TYPES_CODE 2
+
 #include <iostream>
 
 // To read the matrix we will use in this example
@@ -19,6 +21,11 @@
 // Normalization for the spectral test with L1NORM
 #include "latticetester/NormaMinkL1.h"
 
+#include "latticetester/Types.h"
+#include "latticetester/IntLatticeBasis.h"
+#include "latticetester/Reducer.h"
+
+using namespace LatticeTester;
 int main() {
   // Creating a Reader for file `44matrixEx`.
   ParamReader<MScal, BScal, RScal> reader("build/examples/44matrixEx.dat");
@@ -53,6 +60,6 @@ int main() {
   // We now instanciate the different Normalization modules and print the
   // "different" results (the results won't actually be different because the
   // bound is exact in dimension 4 and all the modules have the same).
-  NormaRogers<RScal> 
+  //NormaRogers<RScal>
   return 0;
 }

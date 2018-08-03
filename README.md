@@ -1,6 +1,20 @@
 # LatticeTester
 _A software package for testing the uniformity of integral lattices in the real space_
 
+## Documentation
+
+This software package allows it's user to calculate various figures of merit 
+such as the normalized spectral test and the Beyer quotient on integral lattices.
+It also contains classes that can represent such a lattice and that can be used
+to manipulate and reduce it's basis. On the other hand, this program cannot
+compute the basis of a lattice by itself. To do this, depending on your use case,
+you will either need to use external software or to use some of the other
+software available at [https://github.com/umontreal-simul](https://github.com/umontreal-simul),
+namely [LatNet Builder](https://github.com/umontreal-simul/latbuilder) for QMC
+point sets and [LatMRG](https://github.com/umontreal-simul/latmrg) for PRNG
+point sets. A detailed documentation of *LatticeTester* is available 
+[here](http://umontreal-simul.github.io/latticetester/).
+
 ## Compiling
 
 ### Software Dependencies
@@ -8,15 +22,15 @@ _A software package for testing the uniformity of integral lattices in the real 
 Compiling *LatticeTester* requires the following softwares to be installed on
 the system:
 
-* [Python](https://conda.io/docs/user-guide/install/download.html)
 * [Boost C++ Libraries](http://www.boost.org/) 1.57.0 or later
   <small>
   Installation instructions (**section 5 is important**):
-  [for Linux / MacOS](http://www.boost.org/doc/libs/release/more/getting_started/unix-variants.html),
-  [for Microsoft Windows](http://www.boost.org/doc/libs/release/more/getting_started/windows.html)
+  - [for Linux / MacOS](http://www.boost.org/doc/libs/release/more/getting_started/unix-variants.html)
+  - [for Microsoft Windows](http://www.boost.org/doc/libs/release/more/getting_started/windows.html)
   </small>
 * [NTL](http://www.shoup.net/ntl/index.html) 10.4.0 or later
-* [GMP](http://www.shoup.net/ntl/index.html) compatible version with your NTL installation
+* [GMP](https://gmplib.org/) compatible version with your NTL installation
+* [Python](https://www.python.org/) *(Needed by waf to build the program)*
 * [Git](http://git-scm.com/) *(optional for downloading the source code)*
 * [Doxygen](http://www.stack.nl/~dimitri/doxygen/) *(optional for generating
   the documentation)*
@@ -27,10 +41,9 @@ You will also need a recent compiler compliant with the C++14 standard.
 
 *LatticeTester* relies on the
 [waf meta build system](https://code.google.com/p/waf/) for configuring and
-compiling the software source.
-Waf is included in the *LatticeTester* source tree, but it depends on
-[Python](http://python.org/download), which must be available on the system
-on which *LatticeTester* is to be compiled.
+compiling the software source. Waf is included in the *LatticeTester* source 
+tree, but it depends on [Python](http://python.org/download), which must be 
+available on the system on which *LatticeTester* is to be compiled.
 
 The commands below should work verbatim under Linux and MacOS systems.
 **Microsoft Windows** users should replace every instance of `./waf` 
@@ -54,55 +67,59 @@ Try:
 	./waf --help
 
 to see the various commands and options.
-The most relevant options include `--out` to specify the directory in which the
-files created during the build process will be placed, `--prefix` to specify
-the directory under which you wish to install the LatNet Builder software
-**once it is compiled**, and `--boost`, `--ntl` and `--gmp` to specify the directories
-under which Boost, NTL, GMP and FFTW were installed, if not under standard system
-directories.  First, the project must be configured with:
 
-	./waf configure --prefix $HOME/latticetestersoft
+There are 7 options that you might want/need to use:
+- `--out /path/to/build/location` allows you to specify in which directory the
+  build process will operate. The default is `./build`. You will need permission
+  to write in that directory.
+- `--prefix /path/to/installation/location` allows you to specify in which 
+  directory you would like to install *LatticeTester* after it's compilation.
+  The default is `/usr/local` on Linux (waf's default). You will need permission
+  to write in that directory.
+- `--ntl /path/to/NTL` allows you to specify the location of your NTL 
+  installation. You will only need this flag if waf doesn't find your NTL
+  installation automatically.
+- `--boost /path/to/boost` allows you to specify the location of your boost 
+  installation. You will only need this flag if waf doesn't find your boost
+  installation automatically.
+- `--gmp /path/to/gmp` allows you to specify the location of your gmp
+  installation. You will only need this flag if waf doesn't find your gmp
+  installation automatically.
+- `--build-docs` waf will build the documentation if this flag is specified and 
+  will not build it if it is omitted.
+- `--link-static` if this flag is specified, the compiler will link all the 
+  libraries statically to the executable program. This might be practical if
+  you installed NTL and/or Boost in non standard paths.
 
-with `$HOME/latticetestersoft` replaced with the directory into which you wish to install
-*LatticeTester*.
-Here, `$HOME` will expand to your own home directory; you can specify any other
-directory to which you have permissions for write access, e.g., with `--prefix
-/tmp/latticetestersoft`.
+First, the project must be configured with:
 
-If Boost, NTL, and GMP are not part of the standard system installation and were
+	./waf configure --needed --flags
+
+For example, if Boost, NTL, and GMP are not part of the standard system installation and were
 manually installed under, say, the `/opt/boost`, `/opt/ntl`, and `/opt/gmp` directories —
-which means that `/opt/boost`, `/opt/ntl` and `/opt/gmp` and both contain subdirectories named
+which means that `/opt/boost`, `/opt/ntl` and `/opt/gmp` all contain subdirectories named
 `include` and `lib` — the following command indicates `waf` where to find these
 two libraries:
 
-  ./waf configure --prefix $HOME/latnetsoft --boost /opt/boost configure --link-static
-
-The following options can also be added to `./waf configure`:
-
-- `--out`: directory in which the files created during the build process will
-  be placed;
-- `--prefix`: directory under which the *LatticeTester* software will be installed after
-  compilation;
-- `--boost`: directory under which the Boost libraries are installed;
-- `--ntl`: directory under which the NTL library is installed;
-
-
-The `--link-static` option suggested above will cause the 
-libraries to be linked statically to the executable program, which may be
-desirable especially if these are not installed in standard locations.
+        ./waf configure --boost /opt/boost --ntl /opt/ntl --gmp /opt/gmp
 
 It is possible to set the `CXX` environment variable to the path to a specific
-C++ compiler to be used to build LatNet Builder, before running the `waf
+C++ compiler to be used to build LatticeTester, before running the `waf
 configure` command.
 
-The above `waf configure` commands configures `waf` for a minimal build,
-without documentation.  The documentation can be built by
+A simple 
+    ./waf configure
+command should be enough to configure `waf` for a minimal build,
+without documentation. The documentation can be built by
 appending the `--build-docs` option to `waf configure`, if
   [Doxygen](http://www.stack.nl/~dimitri/doxygen/) is available on the system.
 
 Errors will be reported if required software components cannot be found.  In
 that case, you should check the dependencies installation paths.
 
+If a UNIX shell is available, it is also possible to run the simple `configure.sh`
+script with `./configure.sh` to avoid typing the configure command by hand 
+(that is especially usefull if you have a few flags to include).
 
 ### Building and Installing
 
@@ -120,12 +137,13 @@ with:
 
 ## Running LatticeTester
 
-The *LatticeTester* executable can be found in the `bin` subdirectory, under the installation prefix.
-These include:
+The *LatticeTester* executable can be found in the `bin` subdirectory, under 
+the installation prefix. These include:
 
 - `lattest`: study lattice properties;
 
-Refer to the user guide (`http://umontreal-simul.github.io/latticetester/`) for further detail.
+Refer to the [user guide](http://umontreal-simul.github.io/latticetester/) for 
+further detail.
 
 **NOTE:** Under Windows, the programs have an additional `.exe` extension.
 

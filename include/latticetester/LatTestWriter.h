@@ -1,3 +1,20 @@
+// This file is part of LatticeTester.
+//
+// LatticeTester
+// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 #ifndef LATTESTWRITER_H
 #define LATTESTWRITER_H
 
@@ -10,23 +27,38 @@
 namespace LatticeTester {
 
   /**
-   * This is the abstract class that does the writing of basic elements
-   * (<tt>string</tt>’s, <tt>int</tt>’s, <tt>double</tt>’s, etc.) into a file
-   * or into an `ostream`. Derived classes must be implemented to write in
-   * different formats, for instance text or LaTeX.
+   * This is an abstract class that represents an interface to `Writer` classes.
+   * That is, this class methods are intended to be used as a way to format an
+   * output on an `ostream` or a file. It already implements functions to write
+   * basic data types. A subclass of this class **must** be implemented if you
+   * want to use it. LatTestWriterRes offers utilities to print in a file.
+   * Since this class will be overridden, it is possible to implement subclasses
+   * to format text for different kind of output such as plain text, \f$\LaTeX\f$
+   * or HTML.
    *
+   * If this class is used on a file, it will automatically print at the start
+   * of the file and overwrite it. But if a stream is passed to this object, it
+   * will not be modified. That means that it is possible to write on a single
+   * stream with multiple writers.
    */
-  template<typename Int, typename IntMat>
+  template<typename Int>
     class LatTestWriter {
+      private:
+        typedef NTL::matrix<Int> IntMat;
       public:
 
         /**
-         * Constructor. Opens a `Writer` to write in the file `filename`.
+         * Constructor that opens a `Writer` to write in the file `filename`.
+         * This will overwrite the file and start printing at the start.
          */
         LatTestWriter (const char* fileName);
 
         /**
-         * Constructor. Opens a `Writer` to write directly in an `ostream`.
+         * Constructor that opens a `Writer` to write directly in an `ostream`.
+         * This will not change the `stream` object. That means that it is
+         * possible to create a stream and pass it to different implementations
+         * of this interface via this constructor to use different printing
+         * formats.
          */
         LatTestWriter (std::ostream* stream);
 
@@ -36,83 +68,117 @@ namespace LatticeTester {
         virtual ~LatTestWriter();
 
         /**
-         * Begins a tabbed section. In a tabbed section, every element is
-         * aligned at a tab start.
+         * Begins a tabbed section. In a tabbed section, every newline character
+         * is followed by a series of whitespace or tab characters such that the
+         * first non-blank characters of the lines in this section are aligned.
+         * The amount of tabs in the begginning of the section can be modified
+         * with the addTab(), removeTab() and clearTab() methods.
+         *
+         * This is a pure virtual method that has no implementation.
          */
         virtual void beginTabbedSection() = 0;
 
         /**
          * Ends a tabbed section.
+         * 
+         * This is a pure virtual method that has no implementation.
          */
         virtual void endTabbedSection() = 0;
 
         /**
-         * Advances the tab start once.
+         * After this is called, newlines in tabbed sections will have an
+         * additional tab.
+         * 
+         * This is a pure virtual method that has no implementation.
          */
         virtual void addTab() = 0;
 
         /**
-         * Moves back the tab start once.
+         * After this is called, newlines in tabbed sections will have one less
+         * tab.
+         * 
+         * This is a pure virtual method that has no implementation.
          */
         virtual void removeTab() = 0;
 
         /**
-         * Resets the tab start to the beginning of the line.
+         * After this is called, newlines in tabbed sections will have no tab.
+         * 
+         * This is a pure virtual method that has no implementation.
          */
         virtual void clearTab() = 0;
 
         /**
-         * Starts a new line. If in a tabbed section, the new line starts at
-         * the current tab start position.
+         * Starts a new line and adds the right amount of tabs if in a tabbed 
+         * section.
+         * 
+         * This is a pure virtual method that has no implementation.
          */
         virtual void newLine() = 0;
 
         /**
-         * Starts a new paragraph. Ends automaticaly a tabbed section.
+         * Starts a new paragraph. Automatically ends the tabbed section if the
+         * writer was in one.
+         * 
+         * This is a pure virtual method that has no implementation.
          */
         virtual void newParagraph() = 0;
 
         /**
-         * Writes a `bool`.
+         * Writes a `bool` on the stream.
          */
         virtual void writeBool (const bool & value);
 
         /**
-         * Writes an `int`.
+         * Writes an `int` on the stream.
          */
         virtual void writeInt (const int & value);
 
         /**
-         * Writes a `string`.
+         * Writes a `string` on the stream.
          */
         virtual void writeString (const std::string & value);
 
         /**
-         * Writes a `double`.
+         * Writes a `double` on the stream.
          */
         virtual void writeDouble (const double & value);
 
         /**
-         * Writes a `IntScal`.
+         * Writes a `IntScal` on the stream.
          */
         virtual void writeIntScal (const Int & value);
 
         /**
-         * Writes a `IntMat`.
+         * Writes a `IntMat` on the stream.
          */
         virtual void writeMMat(const IntMat & A);
 
         /**
-         * Writes a `string` in a mathematical format using LaTeX notation.
+         * Writes a `string` that is formated and in LaTeX math mode. This can
+         * be used to print mathemetical formulas in a standardised format.
+         *
+         * This method can be implemented in various way. For example, it is
+         * possible to have it print with or without the LaTeX $ signs.
+         * 
+         * This is a pure virtual method that has no implementation.
          */
         virtual void writeMathString (const std::string) = 0;
 
         /**
-         * Writes a `string` just as in an `equation` environment in LaTeX.
+         * Writes a `string` that is formated and in LaTeX math mode with a
+         * newline after and before the string. This can be used to print
+         * mathemetical formulas in a standardised format.
+         * 
+         * This method can be implemented in various way. For example, it is
+         * possible to have it print with or without the LaTeX \\equation
+         * delimiters.
+         * 
+         * This is a pure virtual method that has no implementation.
          */
         virtual void writeStandOutMathString (const std::string) = 0;
 
-        /**
+        /*
          * Writes a formatted table. A column horizontal alignment can be
          * modified using the string `alignment`. The first character of the
          * string is the alignment of the first column, the second character is
@@ -124,6 +190,12 @@ namespace LatticeTester {
          */
         //virtual void writeTable (Table &, const std::string alignment) = 0;
 
+        /**
+         * Returns the stream on which this object writes. If the stream is a
+         * simple `ostream`, this can be used to then print on standard output
+         * for example. If this is a file. It can be possible to used different
+         * writers in succession.
+         * */
         virtual std::ostream& getStream() { return *m_stream; }
 
       protected:
@@ -136,7 +208,7 @@ namespace LatticeTester {
       private:
 
         /**
-         * Set to `true` if this object needs to clean <tt>_stream</tt> upon
+         * Set to `true` if this object needs to clean <tt>m_stream</tt> upon
          * destruction.
          */
         bool m_clean;
@@ -144,8 +216,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    LatTestWriter<Int, IntMat>::LatTestWriter(const char* fileName)
+  template<typename Int>
+    LatTestWriter<Int>::LatTestWriter(const char* fileName)
     {
       m_stream = new std::ofstream(fileName);
       //_stream = dynamic_cast<ostream*>(new ofstream(fileName));
@@ -157,8 +229,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    LatTestWriter<Int, IntMat>::LatTestWriter(std::ostream* stream)
+  template<typename Int>
+    LatTestWriter<Int>::LatTestWriter(std::ostream* stream)
     {
       m_stream = stream;
       m_clean = false;
@@ -166,8 +238,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    LatTestWriter<Int, IntMat>::~LatTestWriter()
+  template<typename Int>
+    LatTestWriter<Int>::~LatTestWriter()
     {
       if (m_clean && m_stream) {
         delete m_stream;
@@ -176,40 +248,40 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    void LatTestWriter<Int, IntMat>::writeInt(const int & value)
+  template<typename Int>
+    void LatTestWriter<Int>::writeInt(const int & value)
     {
       *m_stream << value;
     }
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    void LatTestWriter<Int, IntMat>::writeBool(const bool & value)
+  template<typename Int>
+    void LatTestWriter<Int>::writeBool(const bool & value)
     {
       *m_stream << (value ? "true" : "false");
     }
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    void LatTestWriter<Int, IntMat>::writeString(const std::string & value)
+  template<typename Int>
+    void LatTestWriter<Int>::writeString(const std::string & value)
     {
       *m_stream << value;
     }
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    void LatTestWriter<Int, IntMat>::writeIntScal(const Int & value)
+  template<typename Int>
+    void LatTestWriter<Int>::writeIntScal(const Int & value)
     {
       *m_stream << value;
     }
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    void LatTestWriter<Int, IntMat>::writeMMat(const IntMat & A)
+  template<typename Int>
+    void LatTestWriter<Int>::writeMMat(const IntMat & A)
     {
       std::int64_t sizeA = A.size1();
       *m_stream << "   [";
@@ -228,8 +300,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename IntMat>
-    void LatTestWriter<Int, IntMat>::writeDouble(const double & value)
+  template<typename Int>
+    void LatTestWriter<Int>::writeDouble(const double & value)
     {
       *m_stream << value;
     }

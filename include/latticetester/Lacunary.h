@@ -18,6 +18,7 @@
 #ifndef LATTICETESTER__LACUNARY_H
 #define LATTICETESTER__LACUNARY_H
 #include "latticetester/Util.h"
+#include "latticetester/ntlwrap.h"
 
 #include <string>
 #include <cstdint>
@@ -28,8 +29,10 @@ namespace LatticeTester {
    * This class implements sets of lacunary indices.
    *
    */
-  template<typename BasInt, typename BasIntVec>
+  template<typename BasInt>
     class Lacunary {
+      private:
+        typedef NTL::vector<BasInt> BasIntVec;
       public:
 
         /**
@@ -103,8 +106,8 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename BasInt, typename BasIntVec>
-    std::string Lacunary<BasInt, BasIntVec>::toString () const
+  template<typename BasInt>
+    std::string Lacunary<BasInt>::toString () const
     {
       std::ostringstream out;
       out << "dim = " << m_dim;
@@ -119,8 +122,8 @@ namespace LatticeTester {
   /*=========================================================================*/
 
 
-  template<typename BasInt, typename BasIntVec>
-    bool Lacunary<BasInt, BasIntVec>::calcIndicesStreams (int s, int w, 
+  template<typename BasInt>
+    bool Lacunary<BasInt>::calcIndicesStreams (int s, int w, 
         int & minDim, int maxDim, int order)
     {
       if (w == 0) {

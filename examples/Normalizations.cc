@@ -60,6 +60,17 @@ int main() {
   // We now instanciate the different Normalization modules and print the
   // "different" results (the results won't actually be different because the
   // bound is exact in dimension 4 and all the modules have the same).
-  //NormaRogers<RScal>
+  RScal log_density=abs(log(NTL::determinant(matrix)));
+  // As described in Normalizer.h, we need to create a pointer to a Normalizer
+  // object and dynamically allocate memory/objects to it.
+  Normalizer<RScal>* norma = new NormaBestLat<RScal>(log_density, 4);
+  std::cout << "Spectral test with NormaBestLat normalizer: " <<
+    shortest / norma->getPreComputedBound(4) << std::endl;
+  delete norma;
+  norma = new NormaLaminated<RScal>(log_density, 4);
+  std::cout << "Spectral test with NormaLaminated normalizer: " <<
+    shortest / norma->getPreComputedBound(4) << std::endl;
+  delete norma;
+  // The same thing could also be done with NormaRogers and NormaMinkowski
   return 0;
 }

@@ -25,13 +25,34 @@
 namespace LatticeTester {
 
   /**
-   * This class implements theoretical bounds on the length of the shortest
-   * nonzero vector in a lattice, based on the densest sphere packing in
-   * *laminated* lattices. The length of vectors is computed using the
-   * \f${\mathcal{L}}_2\f$ norm. The bounding lengths, for a lattice containing
-   * \f$n\f$ points per unit volume in dimension \f$t\f$, are given by 
-   * \f$\ell_t^* = \gamma_t^{1/2} n^{-1/t}\f$ for, where the \f$\gamma_t\f$ are
-   * the lattice constants for the best *laminated* lattices \cite mCON99a&thinsp;.
+   * This class implements upper bounds on the lenght of the shortest nonzero
+   * vector in a lattice. To obtain these bounds, this class contains hard-coded
+   * values of an approximation of the Hermite's constant \f$\gamma_s\f$ with
+   * the density of the laminated lattice of dimension `s`. These Hermite's
+   * constants are stored in a table accessible via the getGamma(int) const
+   * method.
+   *
+   * A laminated lattice in dimension `s` is, roughly speaking, the densest
+   * possible packing of a laminated lattice of dimension `s-1` with copies of
+   * itself. These lattices are not always the densest lattices available, but
+   * are a more instinctive construction of a dense lattice. In \cite mCON99a,
+   * Table 6.1 gives the determinant \f$\lambda_s\f$ that can be used to recover
+   * the center density \f$\delta_s = \lambda_s^{-1/2}\f$ of the densest
+   * laminated lattice in dimension \f$s\f$.
+   * From there, we get
+   * \f[
+   *    \gamma_s = 4 \delta_s^{2/s}.
+   * \f]
+   * The number \f$\gamma_n\f$ is the number returned by calling `getGamma(n)`.
+   * The init() method of this class inherited from `Normalizer` computes the
+   * upper bound on the shortest non-zero vector of the lattice as
+   * \f[
+   *    \gamma_s^{1/2} n^{-1/s}.
+   * \f]
+   * Here \f$n = \exp(\text{logDensity})\f$ is the density of the lattice to be
+   * analyzed passed as an argument to the constructor of this object.
+   *
+   * This class is to be used with the L2NORM (the Euclidian norm) exclusively.
    * Note this class stores the log value of the density to handle larger values.
    */
   template<typename RedDbl>
@@ -39,16 +60,25 @@ namespace LatticeTester {
       public:
 
         /**
-         * Constructor for the bounds obtained for laminated lattices. The lattices
-         * have \f$Density\f$ points per unit volume, in all dimensions \f$\le t\f$. The bias
-         * factor `beta` \f$= \beta\f$ gives more weight to some of the dimensions. 
-         * Restriction: \f$t \le48\f$.
+         * Constructor for this class. Suppose we want to use this normalizer
+         * on a lattice with it's basis in the lines of \f$V\f$ of dimension
+         * \f$t\f$. We can call this constructor as `NormaLaminated(abs(det(V)), t)`.
+         * getPreComputedBound(t) will then return an upper bound on the
+         * lenght of the shortest non-zero vector in dimension `t`. In the case
+         * where the lattice also has the same density in lower dimensions than
+         * `t`, pre-computed bounds will also be available.
+         *
+         * The bias factor `beta` gives more or less weight to some of the
+         * dimensions (see Normalizer for details). It is recommended to keep it
+         * at its default value because its usage is deprecated.
+         * 
+         * There is a restriction for `t` to be \f$\le48\f$.
          */
         NormaLaminated (RedDbl & logDensity, int t, double beta = 1);
 
         /**
-         * Returns the value of the lattice constant \f$\gamma_j\f$ in
-         * dimension \f$j\f$.
+         * Returns the value of the bound on the Hermite's constant \f$\gamma_j\f$
+         * in dimension \f$j\f$.
          */
         double getGamma (int j) const;
       private:

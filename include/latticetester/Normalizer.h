@@ -30,50 +30,108 @@ namespace LatticeTester {
 
   /**
    * Classes which inherit from this base class are used in implementing bounds
-   * on the length of the shortest nonzero vector in a lattice
-   * \cite mCON99a&thinsp;. These bounds are used to normalize the length of
-   * the shortest vectors. Tight lower bounds are available for all dimensions
-   * for many important cases. In most cases, the \f${\mathcal{L}}_2\f$ norm is
-   * used to compute the length of vectors.
+   * on the length of the shortest nonzero vector in a lattice.
    *
-   * For some figures of merit, no useful bounds are known to normalize the
-   * length of the shortest vector. In these cases, this base class will be
-   * used as normalizer since it simply sets all normalization constants to 1.
-   * This is necessary because the tests compare the normalized values of the
-   * merit when searching for good lattices.
+   * Given a lattice in dimension \f$t\f$, it is possible to center
+   * non-interlapping spheres of radius \f$ d_t \f$ where \f$ d_t \f$ is the
+   * lenght of the shortest vector in the lattice. It turns out that the
+   * proportion of the space covered by these spheres can be used as a figure of
+   * merit for both the dual and the primal lattice. Suppose \f$ V \f$ contains
+   * the basis of the lattice in its lines. Then the density of the lattice is
+   * defined by \f$ |\text{det}(V)| \f$ (this determinant is the volume/area contained
+   * in the smallest parallelotope that we can fit between the points of the
+   * lattice) it also is the number of points that the (not rescalled) lattice
+   * will have in \f$[0,1)^t\f$. It is easy to see that the amount of space that
+   * will be covered by the spheres is
+   * \f[
+   *    \frac{\text{Volume of an }n\text{-sphere of radius }d_n}{\text{Density of the lattice}}.
+   * \f]
+   * There are known upper bounds on the greatest proportion of the space that
+   * can be covered in that way \cite mCON99a. If we divide the proportion of
+   * the space covered in the current lattice by such an upper bound, the number
+   * obtained is what we call **normalized**. This means that the number we will
+   * get will be somewhere between 0 and 1 and that it can be used to compare the
+   * distribution of the points of the lattice with the points of other lattices.
+   * Having a value closer to 1 means a more evenly distributed lattice in some
+   * way (see the section on the figures of merit to see which tests use this in
+   * the intro). This class is intended as an interface to implement such
+   * bounds. It is possible that subclasses of this one implement bounds for a
+   * different interpretation of this problem, please look at their documentation
+   * before using them. The bounds also sometimes use different norms.
+   *
+   * This base classe initializes the bounds at 1 and can be used if no
+   * normalization can be done, or has to be done. This can be usefull in a few
+   * implementations if there is a switch at runtime to instanciate a
+   * `Normalizer` subclass because there will be no need to duplicate the code
+   * for the case with no normalization.
+   *
+   * To create a subclass of this one, it is important to implement the
+   * getGamma(int) const, getBound(int) const and init() methods and to call
+   * the init() method in the constructor to pre-compute the bounds this class
+   * will use for normalization.
+   *
+   * To instanciate this class or its subclasses, the usage of the copy
+   * constructor or of the assignment = is prohibited by the fact that these
+   * methods are private. The prefered usage for this class is to declare a
+   * pointer to a Normalizer and to instanciate subclasses with dynamically 
+   * allocated memory:
+   * \code{.cpp}
+   * Normalizer<RScal>* norma;
+   * norma = new NormaBestLat<RScal>(logDensity, t);
+   * delete norma;
+   * \endcode
    */
   template<typename RedDbl>
     class Normalizer {
 
       public:
+        /**
+         * The maximum dimension of the lattices for which this class can give
+         * an upper bound.
+         * */
         static const int MAX_DIM = 48;
 
         /**
-         * Constructor for the bounds. Deals with lattices having
-         * \f$n\f$ points per unit volume, in all dimensions \f$\le t\f$. `Name` is
-         * the name of the Normalizer. The bias factor `beta` \f$= \beta\f$ gives
-         * more weight to some of the dimensions: taking \f$\beta< 1\f$ inflates the
-         * figure of merit by \f$(1/\beta)^t\f$, thus weakening the requirements for
-         * large \f$t\f$ in a worst-case figure of merit. One normally uses
-         * \f$\beta= 1\f$.
+         * Complete constructor for a `Normalizer`. This will create a
+         * normalizer for lattices with a density of \f$\exp(\text{logDensity})\f$
+         * in all dimensions \f$\leq t\f$. Ususally, such a normalizer will
+         * return bounds that take into a account the density. `Name` allows the
+         * user to give a name to a normalizer object. This name will be printed
+         * by the ToString() method. It serves no purpose implementation-wise,
+         * but this can be usefull while debugging code. `norm` is the NormType
+         * that will be used by this object. It cannot be changed. The usage of
+         * `beta` is deprecated. This is a bias factor that can be usefull in
+         * the case where a figure of merit with numerous projections is
+         * computed. It can be used to give more weight to the first dimensions
+         * by taking \f$\beta< 1\f$. It inflates the figures of merit by
+         * \f$(1/\beta)^t\f$, thus weakening the requirements for good results
+         * in large dimensions in a worst-case figure of merit. One normally
+         * uses \f$\beta= 1\f$.
+         *
          * Note that the log value of the density is stored (instead of the density 
          * itself) so it is easier to manipulate really large values of density.
          *
          * \remark **Richard:** Je crois que ce facteur `beta` devrait
          * disparaître car des poids beaucoup plus généraux sont maintenant
          * implantés dans les classes `*Weights`.
+         * **Marc-Antoine:** Je crois que le design de cette classe est à
+         * repenser. Il est probablement intéressant de considérer la logDensity
+         * en tableaux parce que dans certaines applications la densité change
+         * en fonction de la dimension.
          */
-
         Normalizer (RedDbl & logDensity, int t, std::string Name,
             NormType norm = L2NORM, double beta = 1);
 
         /**
-         * Constructor only used by the NormaPalpha class. It doesn't take any
-         * log density argument. This only works for rank1 lattices, having m points 
-         * per unit of volume (m being a prime number), normalized with NormaPalpha.
+         * Constructor that does not take the density as an argument. The fields
+         * are essentially the same as for Normalizer(RedDbl, int, std::string,
+         * NormType, double)
+         *
+         * This is only used in the case of rank 1 lattices in the NormaPalpha
+         * class with a prime density.
          */
-        Normalizer (
-            int t, std::string Name, NormType norm = L2NORM, double beta = 1);
+        Normalizer (int t, std::string Name, NormType norm = L2NORM,
+            double beta = 1);
 
         /**
          * Destructor.
@@ -82,14 +140,16 @@ namespace LatticeTester {
         { delete [] m_bounds; }
 
         /**
-         * Initializes the bounds on the length of the shortest vector. The
-         * lattices have \f$Density\f$ points per unit volume and the bias factor 
-         * is `beta` for all dimensions \f$j\le\f$ `maxDim`.
+         * This is a method that will initialize the bounds this normalizer can
+         * return. This will change the `logDensity` and the `beta` variables
+         * that are stored in this object. This will compute bounds for all
+         * dimensions smaller than `t` (the parameter passed to the constructors)
+         * that can be retrived with the getPreComputedBounds(int) method.
          */
         virtual void init (RedDbl & logDensity, double beta);
 
         /**
-         * Returns this object as a string.
+         * Returns a string that describes this object.
          */
         std::string ToString () const;
 
@@ -118,26 +178,28 @@ namespace LatticeTester {
         { m_norm = norm; }
 
         /**
-         * Returns the maximal dimension for this object.
+         * Returns the maximal dimension for this object. This is the `t`
+         * parameter of the constructors.
          */
         int getDim () const
         { return m_maxDim; }
 
         /**
-         * Returns the bound on the length of the shortest nonzero vector in
-         * dimension \f$j\f$ as computed in Normalizer::init.
+         * Returns the bound for dimension `j` as computed in Normalizer::init().
          */
         double getPreComputedBound (int j) const;
 
         /**
          * Calculates and returns the bound on the length of the shortest nonzero vector in
-         * dimension \f$j\f$.
+         * dimension `j`.
          */
-        double getBound (int j) const;
+        virtual double getBound (int j) const;
 
         /**
-         * Returns the value of the lattice constant \f$\gamma_j\f$ in
-         * dimension \f$j\f$. For this base class, always returns 1.
+         * Returns the value of a lattice constant \f$\gamma\f$ in
+         * dimension \f$j\f$. These constants can be used by subclasses to
+         * implement the init() and the getBound(int) const methods. For this base
+         * class, always returns 1.
          */
         virtual double getGamma (int j) const;
 
@@ -159,19 +221,21 @@ namespace LatticeTester {
         RedDbl m_logDensity;
 
         /**
-         * Only elements 1 to <tt>m_maxDim</tt> (inclusive) of arrays are
-         * defined.
+         * Only elements 1 to <tt>m_maxDim</tt> (inclusive) of m_bounds bellow
+         * will be pre-computed. This stores the `t` parameter of the constructors.
          */
         int m_maxDim;
 
         /**
-         * Beta factor.
+         * Beta factor used to give more or less importance to some of the
+         * dimensions.
          */
         double m_beta;
 
         /**
          * Contains the bounds on the length of the shortest nonzero vector in
-         * the lattice in each dimension.
+         * the lattice in each dimension. This array is initialized by the init()
+         * method, and it's values are returned with getPreComputedBound(int).
          */
         double *m_bounds;
 
@@ -189,11 +253,6 @@ namespace LatticeTester {
     }; // End class Normalizer
 
   //===========================================================================
-
-  // template<typename RedDbl>
-  //   const int Normalizer<RedDbl>::MAX_DIM;
-
-  /*-------------------------------------------------------------------------*/
 
   template<typename RedDbl>
     Normalizer<RedDbl>::Normalizer (RedDbl & logDensity0, int maxDim,
@@ -295,13 +354,13 @@ namespace LatticeTester {
       return m_bounds[j];
 
       /*
-remark: 
-in the init method, the bounds are pre-computed for the dimensions of
-the projection, and are accessible throw this function. But in the code
-a call to function getBound (below) is made. This means the pre-computed
-bounds are not used and the bounds are calculated again at each step with 
-the function below. Could be improved.
-*/
+       * remark: 
+       * in the init method, the bounds are pre-computed for the dimensions of
+       * the projection, and are accessible throw this function. But in the code
+       * a call to function getBound (below) is made. This means the pre-computed
+       * bounds are not used and the bounds are calculated again at each step with 
+       * the function below. Could be improved.
+       */
     }
 
   /*-------------------------------------------------------------------------*/

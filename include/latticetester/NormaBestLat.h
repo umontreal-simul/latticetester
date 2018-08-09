@@ -25,13 +25,27 @@
 namespace LatticeTester {
 
   /**
-   * This class implements the *best* theoretical bounds on the length of the
-   * shortest nonzero vector in a lattice, based on the densest sphere packing
-   * in lattices. The length of a vector is computed using the \f${\mathcal{L}}_2\f$
-   * norm. The bounding lengths for a lattice containing \f$n\f$ points per 
-   * unit volume in dimension \f$t\f$, are given by 
-   * \f$\ell_t^* = \gamma_t^{1/2} n^{-1/t}\f$, where the \f$\gamma_t\f$ are 
-   * the lattice constants for the *best* known lattices \cite mCON99a&thinsp;.
+   * This class implements upper bounds on the lenght of the shortest nonzero
+   * vector in a lattice. To obtain these bounds, this class contains hard-coded
+   * values of an approximation of the Hermite's constant \f$\gamma_s\f$ with
+   * the density of the highest density lattices known as of \cite mCON99a.
+   * These Hermite's constants are stored in a table accessible via the
+   * getGamma(int) const method. In \cite mCON99a, Table I.1(a) gives the center
+   * density \f$\delta_s\f$ of the densest known packings in dimension \f$s\f$.
+   * We then have that
+   * \f[
+   *    \gamma_s = 4 \delta_s^{2/s}.
+   * \f]
+   * The number \f$\gamma_n\f$ is the number returned by calling `getGamma(n)`.
+   * The init() method of this class inherited from `Normalizer` computes the
+   * upper bound on the shortest non-zero vector of the lattice as
+   * \f[
+   *    \gamma_s^{1/2} n^{-1/s}.
+   * \f]
+   * Here \f$n = \exp(\text{logDensity})\f$ is the density of the lattice to be
+   * analyzed passed as an argument to the constructor of this object.
+   *
+   * This class is to be used with the L2NORM (the Euclidian norm) exclusively.
    * Note this class stores the log value of the density to handle larger values.
    */
   template<typename RedDbl>
@@ -39,16 +53,25 @@ namespace LatticeTester {
       public:
 
         /**
-         * Constructor for the best bounds obtained for lattices. The lattices have
-         * \f$Density\f$ points per unit volume, for all dimensions \f$\le t\f$. The bias 
-         * factor `beta` \f$= \beta\f$ gives more weight to some of the dimensions. 
-         * Restriction: \f$t \le48\f$.
+         * Constructor for this class. Suppose we want to use this normalizer
+         * on a lattice with it's basis in the lines of \f$V\f$ of dimension
+         * \f$t\f$. We can call this constructor as `NormaBestLat(abs(det(V)), t)`.
+         * getPreComputedBound(t) will then return an upper bound on the
+         * lenght of the shortest non-zero vector in dimension `t`. In the case
+         * where the lattice also has the same density in lower dimensions than
+         * `t`, pre-computed bounds will also be available.
+         *
+         * The bias factor `beta` gives more or less weight to some of the
+         * dimensions (see Normalizer for details). It is recommended to keep it
+         * at its default value because its usage is deprecated.
+         * 
+         * There is a restriction for `t` to be \f$\le48\f$.
          */
         NormaBestLat (RedDbl & logDensity, int t, double beta = 1);
 
         /**
-         * Returns the value of the lattice constant \f$\gamma_j\f$ in
-         * dimension \f$j\f$.
+         * Returns the value of the bound on the Hermite's constant \f$\gamma_j\f$
+         * in dimension \f$j\f$.
          */
         double getGamma (int j) const;
       private:

@@ -25,23 +25,55 @@
 namespace LatticeTester {
 
   /**
-   * This class implements the *Rogers* bounds on the density of sphere
-   * packing. The length of vectors is computed using the
-   * \f${\mathcal{L}}_2\f$ norm. The bounding lengths, for a lattice containing
-   * \f$n\f$ points per unit volume in dimension \f$t\f$, are given by
-   * \f$\ell_t^* = \gamma_t^{1/2} n^{-1/t}\f$, where the \f$\gamma_t\f$ are
-   * the *Rogers* lattice constants.
+   * This class implements upper bounds on the lenght of the shortest nonzero
+   * vector in a lattice. To obtain these bounds, this class contains hard-coded
+   * values of an approximation of the Hermite's constants \f$\gamma_s\f$
+   * calculated with Rogers's bound. These Hermite's constants are stored in a
+   * table accessible via the getGamma(int) const method.
+   *
+   * Rogers bound has been introduced by Rogers in The Packing of Equal Spheres
+   * in 1958 (citation to add in bibliography). This is a classical bound that
+   * is implemented mainly for historical reasons. For thighter bounds, please
+   * use NormaBestBound. Note that, since the value of \f$\gamma_n\f$ is known
+   * exactly for \f$n \leq 8\f$, the Hermite's constant for these \f$n\f$ are
+   * **not** upper bounds.
+   * 
+   * \todo Explain how this is calculated
+   *
+   * From there, we get
+   * \f[
+   *    \gamma_s = 4 \delta_s^{2/s}.
+   * \f]
+   * The number \f$\gamma_n\f$ is the number returned by calling `getGamma(n)`.
+   * The init() method of this class inherited from `Normalizer` computes the
+   * upper bound on the shortest non-zero vector of the lattice as
+   * \f[
+   *    \gamma_s^{1/2} n^{-1/s}.
+   * \f]
+   * Here \f$n = \exp(\text{logDensity})\f$ is the density of the lattice to be
+   * analyzed passed as an argument to the constructor of this object.
+   *
+   * This class is to be used with the L2NORM (the Euclidian norm) exclusively.
+   * Note this class stores the log value of the density to handle larger values.
    */
   template<typename RedDbl>
     class NormaRogers : public Normalizer<RedDbl> {
       public:
 
         /**
-         * Constructor for the Rogers bounds. The lattices have \f$n\f$ points per
-         * unit volume, in all dimensions \f$\le t\f$. The bias factor `beta`
-         * \f$= \beta\f$ gives more weight to some of the dimensions.
-         * Note this class stores the log value of the density to handle larger values.
-         * There is no restriction on the dimension \f$t\f$ which can be larger than 48.
+         * Constructor for this class. Suppose we want to use this normalizer
+         * on a lattice with it's basis in the lines of \f$V\f$ of dimension
+         * \f$t\f$. We can call this constructor as `NormaRogers(abs(det(V)), t)`.
+         * getPreComputedBound(t) will then return an upper bound on the
+         * lenght of the shortest non-zero vector in dimension `t`. In the case
+         * where the lattice also has the same density in lower dimensions than
+         * `t`, pre-computed bounds will also be available.
+         *
+         * The bias factor `beta` gives more or less weight to some of the
+         * dimensions (see Normalizer for details). It is recommended to keep it
+         * at its default value because its usage is deprecated.
+         * 
+         * There is a restriction for `t` to be \f$\le48\f$.
          */
         NormaRogers (RedDbl & logDensity, int t, double beta = 1);
 
@@ -51,8 +83,8 @@ namespace LatticeTester {
         ~NormaRogers();
 
         /**
-         * Returns the value of the Rogers lattice constant \f$\gamma_j\f$ in
-         * dimension \f$j\f$.
+         * Returns the value of the bound on the Hermite's constant \f$\gamma_j\f$
+         * in dimension \f$j\f$.
          */
         double getGamma (int j) const;
       private:
@@ -78,6 +110,8 @@ namespace LatticeTester {
   //===========================================================================
 
   /**
+   * This is not all the story, this has to be updated.
+   *
    * These Rogers gamma constants are calculated as defined in 
    * Conway and Sloane book (Sphere packing, Lattices and groups) : 
    *    - equation (47) page 20 of chapter 1
@@ -154,10 +188,10 @@ namespace LatticeTester {
       r = 4 * exp2(2 * r / dimr);
 
       /*
-remark: 
-Why "r = 4 * ..." and not "r = 2 * ..." as described in Pierre's 
-course IFT6561 page 273 ?
-*/
+       * remark: 
+       * Why "r = 4 * ..." and not "r = 2 * ..." as described in Pierre's 
+       * course IFT6561 page 273 ?
+       */
 
       return r;
     }
@@ -176,9 +210,6 @@ course IFT6561 page 273 ?
         t0 = this->MAX_DIM;
       for (int i = 0; i <= t0; i++)
         m_gamma[i] = m_gamma0[i];
-      for (int i = t0 + 1; i <= t; i++)
-        m_gamma[i] = calcGamma(i);
-
       for (int i = t0 + 1; i <= t; i++)
         m_gamma[i] = calcGamma(i);
 

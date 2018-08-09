@@ -8,6 +8,7 @@ var namespaceLatticeTester =
     [ "Lacunary", "d8/d3b/classLatticeTester_1_1Lacunary.html", "d8/d3b/classLatticeTester_1_1Lacunary" ],
     [ "LatticeAnalysis", "df/d59/classLatticeTester_1_1LatticeAnalysis.html", "df/d59/classLatticeTester_1_1LatticeAnalysis" ],
     [ "LatticeTesterConfig", "d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html", "d4/dfd/classLatticeTester_1_1LatticeTesterConfig" ],
+    [ "NormaBestBound", "df/de5/classLatticeTester_1_1NormaBestBound.html", "df/de5/classLatticeTester_1_1NormaBestBound" ],
     [ "NormaBestLat", "d1/d24/classLatticeTester_1_1NormaBestLat.html", "d1/d24/classLatticeTester_1_1NormaBestLat" ],
     [ "NormaLaminated", "dd/d0f/classLatticeTester_1_1NormaLaminated.html", "dd/d0f/classLatticeTester_1_1NormaLaminated" ],
     [ "Normalizer", "d0/dc8/classLatticeTester_1_1Normalizer.html", "d0/dc8/classLatticeTester_1_1Normalizer" ],

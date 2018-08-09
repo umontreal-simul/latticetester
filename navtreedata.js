@@ -35,7 +35,7 @@ var NAVTREEINDEX =
 [
 "annotated.html",
 "d4/de7/classLatticeTester_1_1PODWeights.html#aaf422185afef3a59ab69a91f694f0234",
-"functions.html"
+"df/de5/classLatticeTester_1_1NormaBestBound.html#af7a93463ad2a84d2768eafc379c13dca"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

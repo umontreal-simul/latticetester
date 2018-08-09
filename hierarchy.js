@@ -15,6 +15,7 @@ var hierarchy =
     [ "LatticeTester::LatticeAnalysis< Int, BasInt, Dbl, RedDbl >", "df/d59/classLatticeTester_1_1LatticeAnalysis.html", null ],
     [ "LatticeTester::LatticeTesterConfig< Int, BasIntMat >", "d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html", null ],
     [ "LatticeTester::Normalizer< RedDbl >", "d0/dc8/classLatticeTester_1_1Normalizer.html", [
+      [ "LatticeTester::NormaBestBound< RedDbl >", "df/de5/classLatticeTester_1_1NormaBestBound.html", null ],
       [ "LatticeTester::NormaBestLat< RedDbl >", "d1/d24/classLatticeTester_1_1NormaBestLat.html", null ],
       [ "LatticeTester::NormaLaminated< RedDbl >", "dd/d0f/classLatticeTester_1_1NormaLaminated.html", null ],
       [ "LatticeTester::NormaMinkL1< RedDbl >", "d8/d4c/classLatticeTester_1_1NormaMinkL1.html", null ],

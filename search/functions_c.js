@@ -2,6 +2,7 @@ var searchData=
 [
   ['newline',['newLine',['../d4/dc5/classLatticeTester_1_1Writer.html#ad12c6fabbc4c6135f0fd6409fc5b017c',1,'LatticeTester::Writer::newLine()'],['../d2/d30/classLatticeTester_1_1WriterRes.html#a2e4ccd289a048759199424a371ec2cb5',1,'LatticeTester::WriterRes::newLine()']]],
   ['newparagraph',['newParagraph',['../d4/dc5/classLatticeTester_1_1Writer.html#afefd2866bad293913c9dbaf6520234b5',1,'LatticeTester::Writer::newParagraph()'],['../d2/d30/classLatticeTester_1_1WriterRes.html#a3f6295f5687f63b8d7d7c780ed21b752',1,'LatticeTester::WriterRes::newParagraph()']]],
+  ['normabestbound',['NormaBestBound',['../df/de5/classLatticeTester_1_1NormaBestBound.html#af7a93463ad2a84d2768eafc379c13dca',1,'LatticeTester::NormaBestBound']]],
   ['normabestlat',['NormaBestLat',['../d1/d24/classLatticeTester_1_1NormaBestLat.html#a5ac1e41466a11d39854fb4a6113f6fa2',1,'LatticeTester::NormaBestLat']]],
   ['normalaminated',['NormaLaminated',['../dd/d0f/classLatticeTester_1_1NormaLaminated.html#aed455e3ec6f0e7a42dc9fcf930187f00',1,'LatticeTester::NormaLaminated']]],
   ['normalizer',['Normalizer',['../d0/dc8/classLatticeTester_1_1Normalizer.html#a644f8cde449fcabe1a5b4425f1920590',1,'LatticeTester::Normalizer::Normalizer(RedDbl &amp;logDensity, int t, std::string Name, NormType norm=L2NORM, double beta=1)'],['../d0/dc8/classLatticeTester_1_1Normalizer.html#ab7b99d7fa95559d3e6c7bace1d9cc06e',1,'LatticeTester::Normalizer::Normalizer(int t, std::string Name, NormType norm=L2NORM, double beta=1)']]],

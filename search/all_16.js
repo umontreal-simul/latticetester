@@ -6,6 +6,7 @@ var searchData=
   ['_7elatticeanalysis',['~LatticeAnalysis',['../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a2109e3f2cb6ed0a3b4c597ff7d2ffdf1',1,'LatticeTester::LatticeAnalysis']]],
   ['_7elatticetesterconfig',['~LatticeTesterConfig',['../d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html#ade7c106687e5200b7d812f2d6bd16124',1,'LatticeTester::LatticeTesterConfig']]],
   ['_7ematrix_5frow',['~matrix_row',['../df/d79/classNTL_1_1matrix__row.html#a9a15e2004c4f3312e19c7a2777b5e324',1,'NTL::matrix_row']]],
+  ['_7enormabestbound',['~NormaBestBound',['../df/de5/classLatticeTester_1_1NormaBestBound.html#a9a10d0b58ca46f4093a715b2a184324d',1,'LatticeTester::NormaBestBound']]],
   ['_7enormalizer',['~Normalizer',['../d0/dc8/classLatticeTester_1_1Normalizer.html#adbce21ee38d3ac7527531e3a22f51c30',1,'LatticeTester::Normalizer']]],
   ['_7enormaminkl1',['~NormaMinkL1',['../d8/d4c/classLatticeTester_1_1NormaMinkL1.html#a5db5eff30c9dcd222dd78abaff7d2b9f',1,'LatticeTester::NormaMinkL1']]],
   ['_7enormarogers',['~NormaRogers',['../d1/d30/classLatticeTester_1_1NormaRogers.html#ad8ca50d0a0ae0fd6b730290afb602329',1,'LatticeTester::NormaRogers']]],

@@ -25,6 +25,7 @@ var searchData=
   ['m_5fwithdual',['m_withDual',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a48a4a45de571178a9706e343fda32fe5',1,'LatticeTester::IntLatticeBasis']]],
   ['m_5fwsi',['m_wSI',['../d6/dc0/classLatticeTester_1_1IntLattice.html#a57f80c9dded11962656466c30bfc9d44',1,'LatticeTester::IntLattice']]],
   ['m_5fxx',['m_xx',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a4a8b175dcbf921b70d77fa66fcfd4517',1,'LatticeTester::IntLatticeBasis']]],
+  ['max_5fdim',['MAX_DIM',['../d0/dc8/classLatticeTester_1_1Normalizer.html#ad18c89fadfe729390fe13dce325aa4b1',1,'LatticeTester::Normalizer']]],
   ['max_5flong_5fdouble',['MAX_LONG_DOUBLE',['../d8/d74/namespaceLatticeTester.html#ac9adbd421a1148216c8eac1b7d96a5b8',1,'LatticeTester']]],
   ['maxnodesbb',['maxNodesBB',['../d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html#a4582585f1b602d726c9d3b4c5834b787',1,'LatticeTester::LatticeTesterConfig::maxNodesBB()'],['../d8/de3/classLatticeTester_1_1Reducer.html#aaa22d19b9ee0d71ca7e174e15d776073',1,'LatticeTester::Reducer::maxNodesBB()']]],
   ['modulo',['modulo',['../d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html#a01baf658db57d133fdec72ef5cd990e3',1,'LatticeTester::LatticeTesterConfig']]]

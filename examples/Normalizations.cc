@@ -71,6 +71,7 @@ int main() {
   std::cout << "Spectral test with NormaLaminated normalizer: " <<
     shortest / norma->getPreComputedBound(4) << std::endl;
   delete norma;
-  // The same thing could also be done with NormaRogers and NormaMinkowski
+  // The same thing could also be done with NormaRogers, NormaMinkowski and
+  // NormaBestBound
   return 0;
 }

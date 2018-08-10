@@ -81,7 +81,7 @@ namespace LatticeTester {
    * test.<br>
    * `PALPHA`: the figure of merit is based on \f$P_{\alpha}\f$.<br>
    * <tt>BOUND_JS</tt>: the figure of merit is based on
-   * the Joe-Sinescu bound \cite rSIN08a&thinsp;.
+   * the Joe-Sinescu bound \cite rSIN08a&thinsp;.<br>
    */
   enum CriterionType { SPECTRAL, BEYER, PALPHA, BOUND_JS };
 

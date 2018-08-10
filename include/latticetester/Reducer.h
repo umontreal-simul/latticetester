@@ -271,8 +271,8 @@ namespace LatticeTester {
            * `precision` specifies the size of the floating point numbers the 
            * algorithm will use. Const.h provides a list of the possible values,
            * but their description is done in the module LLL of NTL. `dim` 
-           * is the number of vectors on which to apply the reduction (zero being
-           * the entire basis). `blocksize` is the size of the blocks of the
+           * is the number of vectors on which to apply the reduction with zero being
+           * the entire basis. `blocksize` is the size of the blocks of the
            * reduction in the BKZ reduction condition. Roughly, larger blocks
            * mean a stronger condition. A `blocksize` of 2 is equivalent to LLL
            * reduction.

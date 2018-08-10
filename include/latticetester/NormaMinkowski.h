@@ -25,6 +25,8 @@
 namespace LatticeTester {
 
   /**
+   * \todo What is this?
+   *
    * This class implements *Minkowski*’s theoretical bounds on the length of
    * the shortest nonzero vector in a lattice. The length of a vector is
    * computed using the \f${\mathcal{L}}_2\f$ norm. The bounding lengths, for a

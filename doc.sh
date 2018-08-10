@@ -11,7 +11,6 @@ git checkout -b gh-pages origin/gh-pages
 cd ../..
 cp -r build/doc/html/* doc/html
 cd doc/html
-read
 git add .
 git commit -m 'Update to documentation'
 git push

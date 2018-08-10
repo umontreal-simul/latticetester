@@ -36,7 +36,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-work-30</span>
+   &#160;<span id="projectnumber">0.1.0-work-31</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -137,6 +137,9 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <li>m_bounds
 : <a class="el" href="d0/dc8/classLatticeTester_1_1Normalizer.html#a3663b7471c1d0ce4c38af8d51d8ef21e">LatticeTester::Normalizer&lt; RedDbl &gt;</a>
 </li>
+<li>m_criterion
+: <a class="el" href="df/d59/classLatticeTester_1_1LatticeAnalysis.html#aa402aa6dc73f4207e3af0461bb0b004d">LatticeTester::LatticeAnalysis&lt; Int, BasInt, Dbl, RedDbl &gt;</a>
+</li>
 <li>m_dim
 : <a class="el" href="d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a52accf778795f21b455bb24b1bce376d">LatticeTester::IntLatticeBasis&lt; Int, BasInt, Dbl, RedDbl &gt;</a>
 </li>
@@ -164,6 +167,12 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <li>m_maxDim
 : <a class="el" href="d0/dc8/classLatticeTester_1_1Normalizer.html#a1a36bbb83eb37b916d6865852f660eb5">LatticeTester::Normalizer&lt; RedDbl &gt;</a>
 </li>
+<li>m_maxNodesBB
+: <a class="el" href="df/d59/classLatticeTester_1_1LatticeAnalysis.html#ade73e3c08867ad8a4de3f6228d8e04dd">LatticeTester::LatticeAnalysis&lt; Int, BasInt, Dbl, RedDbl &gt;</a>
+</li>
+<li>m_merit
+: <a class="el" href="df/d59/classLatticeTester_1_1LatticeAnalysis.html#a9ab2c58a0f7a2852fd829e6addee7335">LatticeTester::LatticeAnalysis&lt; Int, BasInt, Dbl, RedDbl &gt;</a>
+</li>
 <li>m_modulo
 : <a class="el" href="d1/d89/classLatticeTester_1_1IntLatticeBasis.html#ae3b09065d08c3c65c38c9d2700dae470">LatticeTester::IntLatticeBasis&lt; Int, BasInt, Dbl, RedDbl &gt;</a>
 </li>
@@ -172,13 +181,26 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 </li>
 <li>m_norm
 : <a class="el" href="d1/d89/classLatticeTester_1_1IntLatticeBasis.html#afec063bcd01dc6db5c9c8d507635ad65">LatticeTester::IntLatticeBasis&lt; Int, BasInt, Dbl, RedDbl &gt;</a>
+, <a class="el" href="df/d59/classLatticeTester_1_1LatticeAnalysis.html#a65f257f2b0b5e216dba95cb866c66a69">LatticeTester::LatticeAnalysis&lt; Int, BasInt, Dbl, RedDbl &gt;</a>
 , <a class="el" href="d0/dc8/classLatticeTester_1_1Normalizer.html#a5a5b43da1dad92b8c70eda1247c89b22">LatticeTester::Normalizer&lt; RedDbl &gt;</a>
+</li>
+<li>m_normalizer
+: <a class="el" href="df/d59/classLatticeTester_1_1LatticeAnalysis.html#aae6ad4fc90a9b571db0a83b016f3831d">LatticeTester::LatticeAnalysis&lt; Int, BasInt, Dbl, RedDbl &gt;</a>
+</li>
+<li>m_normalizerType
+: <a class="el" href="df/d59/classLatticeTester_1_1LatticeAnalysis.html#a4aec8aa98e527a5f7f022ba43389c546">LatticeTester::LatticeAnalysis&lt; Int, BasInt, Dbl, RedDbl &gt;</a>
 </li>
 <li>m_order
 : <a class="el" href="d6/dc0/classLatticeTester_1_1IntLattice.html#a40dd1adade2b732238310bd0aad5adf4">LatticeTester::IntLattice&lt; Int, BasInt, Dbl, RedDbl &gt;</a>
 </li>
 <li>m_prefix
 : <a class="el" href="d2/d30/classLatticeTester_1_1WriterRes.html#ab19610ba3015307c9b12f6c3b2461b98">LatticeTester::WriterRes&lt; Int &gt;</a>
+</li>
+<li>m_preRed
+: <a class="el" href="df/d59/classLatticeTester_1_1LatticeAnalysis.html#aa652bd2f127a6732e5659b6b3078d1e4">LatticeTester::LatticeAnalysis&lt; Int, BasInt, Dbl, RedDbl &gt;</a>
+</li>
+<li>m_reducer
+: <a class="el" href="df/d59/classLatticeTester_1_1LatticeAnalysis.html#a98e0571a191895a1a1484be216c69bbd">LatticeTester::LatticeAnalysis&lt; Int, BasInt, Dbl, RedDbl &gt;</a>
 </li>
 <li>m_stream
 : <a class="el" href="d4/dc5/classLatticeTester_1_1Writer.html#a301cbc8cbad551a8dfac75beae4bcaa4">LatticeTester::Writer&lt; Int &gt;</a>
@@ -258,7 +280,7 @@ $(document).ready(function(){initNavTree('functions_vars.html','');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Aug 9 2018 13:33:13 for Lattice Tester Manual by
+    <li class="footer">Generated on Fri Aug 10 2018 19:17:44 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

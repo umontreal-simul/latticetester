@@ -36,7 +36,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-work-30</span>
+   &#160;<span id="projectnumber">0.1.0-work-31</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -426,7 +426,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 </div><div class="memdoc">
 
 <p>This is the <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> implementation of the floating point version of the BKZ reduction algorithm presented in <a class="el" href="../../d0/de3/citelist.html#CITEREF_mSCH91a">[25]</a>. </p>
-<p><code>1/2 &lt; fact &lt; 1</code> is a number that specifies the strenght of the condition on the basis, closer to 1 meaning a stronger condition. <code>precision</code> specifies the size of the floating point numbers the algorithm will use. <a class="el" href="../../db/da7/Const_8h.html" title="This module contains global constants used in LatticeTester. ">Const.h</a> provides a list of the possible values, but their description is done in the module LLL of <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a>. <code>dim</code> is the number of vectors on which to apply the reduction (zero being the entire basis). <code>blocksize</code> is the size of the blocks of the reduction in the BKZ reduction condition. Roughly, larger blocks mean a stronger condition. A <code>blocksize</code> of 2 is equivalent to LLL reduction.</p>
+<p><code>1/2 &lt; fact &lt; 1</code> is a number that specifies the strenght of the condition on the basis, closer to 1 meaning a stronger condition. <code>precision</code> specifies the size of the floating point numbers the algorithm will use. <a class="el" href="../../db/da7/Const_8h.html" title="This module contains global constants used in LatticeTester. ">Const.h</a> provides a list of the possible values, but their description is done in the module LLL of <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a>. <code>dim</code> is the number of vectors on which to apply the reduction with zero being the entire basis. <code>blocksize</code> is the size of the blocks of the reduction in the BKZ reduction condition. Roughly, larger blocks mean a stronger condition. A <code>blocksize</code> of 2 is equivalent to LLL reduction.</p>
 <p>There should not really be a reason to change the default parameters suggested in this function. It is nonetheless possible to be in a situation where they do not work. In the occurence of poor quality results, it might be necessary to choose a better <code>precision</code>. Also, in a few rare cases, it is possible that fact be "too close to 1" and that the algorithm takes too much time. A user whishing to get a faster execution at the cost of condition strenght could also choose a smaller <code>blocksize</code>. </p>
 
 </div>
@@ -714,7 +714,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a></li><li class="navelem"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html">Reducer</a></li>
-    <li class="footer">Generated on Thu Aug 9 2018 13:33:13 for Lattice Tester Manual by
+    <li class="footer">Generated on Fri Aug 10 2018 19:17:44 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

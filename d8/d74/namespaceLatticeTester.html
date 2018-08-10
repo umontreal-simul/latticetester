@@ -36,7 +36,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-work-30</span>
+   &#160;<span id="projectnumber">0.1.0-work-31</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -127,7 +127,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class implements sets of lacunary indices.  <a href="../../d8/d3b/classLatticeTester_1_1Lacunary.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html">LatticeAnalysis</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class gathers other classes of <a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace. ">LatticeTester</a> to create an object performing tests on lattices.  <a href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Objects of this class can perform various tests on lattices.  <a href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html">LatticeTesterConfig</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class is used to save the configuration of a lattice test.  <a href="../../d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html#details">More...</a><br /></td></tr>
@@ -148,7 +148,6 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class implements theoretical bounds on the length of the shortest nonzero vector in a lattice, based on the densest sphere packing in space.  <a href="../../d8/d4c/classLatticeTester_1_1NormaMinkL1.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/d36/classLatticeTester_1_1NormaMinkowski.html">NormaMinkowski</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class implements *Minkowski*’s theoretical bounds on the length of the shortest nonzero vector in a lattice.  <a href="../../d9/d36/classLatticeTester_1_1NormaMinkowski.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d6e/classLatticeTester_1_1NormaPalpha.html">NormaPalpha</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class implements theoretical bounds on the values of \(P_{\alpha}\) for a lattice (see class <code>Palpha</code>).  <a href="../../d8/d6e/classLatticeTester_1_1NormaPalpha.html#details">More...</a><br /></td></tr>
@@ -231,38 +230,6 @@ Enumerations</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a14ffc84b470dfb03f7105b232cec39a1"><td class="memTemplParams" colspan="2">template&lt;typename Int , typename BasInt , typename BasIntMat , typename Dbl , typename RedDbl &gt; </td></tr>
-<tr class="memitem:a14ffc84b470dfb03f7105b232cec39a1"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a14ffc84b470dfb03f7105b232cec39a1">ShortestVector</a> (BasIntMat matrix, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9770e4d57aa715e249cd7e700c6f37e4">NormType</a> norm, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a191af830e61af769e233e1b03138520e">PreReductionType</a> preRed=BKZ, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">PrecisionType</a> doublePrecision=DOUBLE, double fact=0.999, int blocksize=20)</td></tr>
-<tr class="memdesc:a14ffc84b470dfb03f7105b232cec39a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function allows computation of the shortest non-zero vector in a lattice, according to the selected norm.  <a href="#a14ffc84b470dfb03f7105b232cec39a1">More...</a><br /></td></tr>
-<tr class="separator:a14ffc84b470dfb03f7105b232cec39a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2bd47798df149becb393bf34941f1712"><td class="memTemplParams" colspan="2">template&lt;typename Int , typename BasInt , typename BasIntMat , typename Dbl , typename RedDbl &gt; </td></tr>
-<tr class="memitem:a2bd47798df149becb393bf34941f1712"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a2bd47798df149becb393bf34941f1712">ShortestVector</a> (BasIntMat matrix, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9770e4d57aa715e249cd7e700c6f37e4">NormType</a> norm, std::int64_t maxNodesBB, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a191af830e61af769e233e1b03138520e">PreReductionType</a> preRed=BKZ, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">PrecisionType</a> doublePrecision=DOUBLE, double fact=0.999, int blocksize=20)</td></tr>
-<tr class="memdesc:a2bd47798df149becb393bf34941f1712"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same thing as before but with the possibility to set a different value for the variable maxNodesBB.  <a href="#a2bd47798df149becb393bf34941f1712">More...</a><br /></td></tr>
-<tr class="separator:a2bd47798df149becb393bf34941f1712"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0315802d7f789ba576dbab54e9b7ebc"><td class="memTemplParams" colspan="2">template&lt;typename Int , typename BasInt , typename BasIntMat , typename Dbl , typename RedDbl &gt; </td></tr>
-<tr class="memitem:aa0315802d7f789ba576dbab54e9b7ebc"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#aa0315802d7f789ba576dbab54e9b7ebc">FigureOfMerit</a> (BasIntMat matrix, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab747c1cbb0f5e47fef711b62327a8e90">NormaType</a> normalizerType, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a191af830e61af769e233e1b03138520e">PreReductionType</a> preRed=BKZ, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">PrecisionType</a> doublePrecision=DOUBLE, double fact=0.999, int blocksize=20)</td></tr>
-<tr class="memdesc:aa0315802d7f789ba576dbab54e9b7ebc"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function compute the Figure of Merit to a given matrix, according to a normalization criteria.  <a href="#aa0315802d7f789ba576dbab54e9b7ebc">More...</a><br /></td></tr>
-<tr class="separator:aa0315802d7f789ba576dbab54e9b7ebc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a754d3aa33908b5eea68d0d448b83305a"><td class="memTemplParams" colspan="2">template&lt;typename Int , typename BasInt , typename BasIntMat , typename Dbl , typename RedDbl &gt; </td></tr>
-<tr class="memitem:a754d3aa33908b5eea68d0d448b83305a"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a754d3aa33908b5eea68d0d448b83305a">FigureOfMerit</a> (BasIntMat matrix, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab747c1cbb0f5e47fef711b62327a8e90">NormaType</a> normalizerType, std::int64_t maxNodesBB, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a191af830e61af769e233e1b03138520e">PreReductionType</a> preRed=BKZ, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">PrecisionType</a> doublePrecision=DOUBLE, double fact=0.999, int blocksize=20)</td></tr>
-<tr class="memdesc:a754d3aa33908b5eea68d0d448b83305a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same thing as before but with the possibility to set a different value for the variable maxNodesBB.  <a href="#a754d3aa33908b5eea68d0d448b83305a">More...</a><br /></td></tr>
-<tr class="separator:a754d3aa33908b5eea68d0d448b83305a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa671528908af203438e7969df2b35eae"><td class="memTemplParams" colspan="2">template&lt;typename Int , typename BasInt , typename BasIntMat , typename Dbl , typename RedDbl &gt; </td></tr>
-<tr class="memitem:aa671528908af203438e7969df2b35eae"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#aa671528908af203438e7969df2b35eae">MinkowskiReduction</a> (BasIntMat &amp;matrix, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a191af830e61af769e233e1b03138520e">PreReductionType</a> preRed=BKZ, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">PrecisionType</a> doublePrecision=DOUBLE, double fact=0.999, int blocksize=20)</td></tr>
-<tr class="memdesc:aa671528908af203438e7969df2b35eae"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function reduces a basis to a Minkowski-reduced basis.  <a href="#aa671528908af203438e7969df2b35eae">More...</a><br /></td></tr>
-<tr class="separator:aa671528908af203438e7969df2b35eae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade8cd4e6df666fe0456558fa295a37ac"><td class="memTemplParams" colspan="2">template&lt;typename Int , typename BasInt , typename BasIntMat , typename Dbl , typename RedDbl &gt; </td></tr>
-<tr class="memitem:ade8cd4e6df666fe0456558fa295a37ac"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ade8cd4e6df666fe0456558fa295a37ac">MinkowskiReduction</a> (BasIntMat &amp;matrix, std::int64_t maxNodesBB, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a191af830e61af769e233e1b03138520e">PreReductionType</a> preRed=BKZ, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">PrecisionType</a> doublePrecision=DOUBLE, double fact=0.999, int blocksize=20)</td></tr>
-<tr class="memdesc:ade8cd4e6df666fe0456558fa295a37ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same thing as before but with the possibility to set a different value for the variable maxNodesBB.  <a href="#ade8cd4e6df666fe0456558fa295a37ac">More...</a><br /></td></tr>
-<tr class="separator:ade8cd4e6df666fe0456558fa295a37ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa15e63c629906c3f418221828a4fae37"><td class="memTemplParams" colspan="2">template&lt;typename Int , typename BasInt , typename BasIntMat , typename Dbl , typename RedDbl &gt; </td></tr>
-<tr class="memitem:aa15e63c629906c3f418221828a4fae37"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#aa15e63c629906c3f418221828a4fae37">FigureOfMeritBeyer</a> (BasIntMat matrix, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a191af830e61af769e233e1b03138520e">PreReductionType</a> preRed=BKZ, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">PrecisionType</a> doublePrecision=DOUBLE, double fact=0.999, int blocksize=20)</td></tr>
-<tr class="memdesc:aa15e63c629906c3f418221828a4fae37"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function compute the Figure of Merit to a given matrix, according to the Beyer criteria.  <a href="#aa15e63c629906c3f418221828a4fae37">More...</a><br /></td></tr>
-<tr class="separator:aa15e63c629906c3f418221828a4fae37"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab66cb03d376399e369a7dd1e3a25e6b9"><td class="memTemplParams" colspan="2">template&lt;typename Int , typename BasInt , typename BasIntMat , typename Dbl , typename RedDbl &gt; </td></tr>
-<tr class="memitem:ab66cb03d376399e369a7dd1e3a25e6b9"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab66cb03d376399e369a7dd1e3a25e6b9">FigureOfMeritBeyer</a> (BasIntMat matrix, std::int64_t maxNodesBB, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a191af830e61af769e233e1b03138520e">PreReductionType</a> preRed=BKZ, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">PrecisionType</a> doublePrecision=DOUBLE, double fact=0.999, int blocksize=20)</td></tr>
-<tr class="memdesc:ab66cb03d376399e369a7dd1e3a25e6b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Same thing as before but with the possibility to set a different value for the variable maxNodesBB.  <a href="#ab66cb03d376399e369a7dd1e3a25e6b9">More...</a><br /></td></tr>
-<tr class="separator:ab66cb03d376399e369a7dd1e3a25e6b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61a624270d67110531f2dea4c739eff5"><td class="memItemLeft" align="right" valign="top">std::int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a61a624270d67110531f2dea4c739eff5">lFactorial</a> (int t)</td></tr>
 <tr class="memdesc:a61a624270d67110531f2dea4c739eff5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates \(t!\), the factorial of \(t\).  <a href="#a61a624270d67110531f2dea4c739eff5">More...</a><br /></td></tr>
 <tr class="separator:a61a624270d67110531f2dea4c739eff5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -660,7 +627,8 @@ Variables</h2></td></tr>
 <p><code>BEYER</code>: the figure of merit is the Beyer quotient \(Q_T\).<br />
  <code>SPECTRAL</code>: the figure of merit \(S_T\) is based on the spectral test.<br />
  <code>PALPHA</code>: the figure of merit is based on \(P_{\alpha}\).<br />
- <code>BOUND_JS</code>: the figure of merit is based on the Joe-Sinescu bound <a class="el" href="../../d0/de3/citelist.html#CITEREF_rSIN08a">[27]</a>&thinsp;. </p>
+ <code>BOUND_JS</code>: the figure of merit is based on the Joe-Sinescu bound <a class="el" href="../../d0/de3/citelist.html#CITEREF_rSIN08a">[27]</a>&thinsp;.<br />
+ </p>
 
 </div>
 </div>
@@ -2111,232 +2079,6 @@ template&lt;typename Int &gt; </div>
 
 </div>
 </div>
-<a id="aa0315802d7f789ba576dbab54e9b7ebc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa0315802d7f789ba576dbab54e9b7ebc">&#9670;&nbsp;</a></span>FigureOfMerit() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename BasIntMat , typename Dbl , typename RedDbl &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">double LatticeTester::FigureOfMerit </td>
-          <td>(</td>
-          <td class="paramtype">BasIntMat&#160;</td>
-          <td class="paramname"><em>matrix</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab747c1cbb0f5e47fef711b62327a8e90">NormaType</a>&#160;</td>
-          <td class="paramname"><em>normalizerType</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a191af830e61af769e233e1b03138520e">PreReductionType</a>&#160;</td>
-          <td class="paramname"><em>preRed</em> = <code>BKZ</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">PrecisionType</a>&#160;</td>
-          <td class="paramname"><em>doublePrecision</em> = <code>DOUBLE</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>fact</em> = <code>0.999</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>blocksize</em> = <code>20</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>This function compute the Figure of Merit to a given matrix, according to a normalization criteria. </p>
-<p>It first computes the shortest non-zero vector using the above functions. It then normalizes this value. Returns -1.0 if there was an error in Branch-and-Bound procedure while calculating the length of shortest non-zero vector. Return the figure of merit otherwise. </p>
-
-</div>
-</div>
-<a id="a754d3aa33908b5eea68d0d448b83305a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a754d3aa33908b5eea68d0d448b83305a">&#9670;&nbsp;</a></span>FigureOfMerit() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename BasIntMat , typename Dbl , typename RedDbl &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">double LatticeTester::FigureOfMerit </td>
-          <td>(</td>
-          <td class="paramtype">BasIntMat&#160;</td>
-          <td class="paramname"><em>matrix</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab747c1cbb0f5e47fef711b62327a8e90">NormaType</a>&#160;</td>
-          <td class="paramname"><em>normalizerType</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::int64_t&#160;</td>
-          <td class="paramname"><em>maxNodesBB</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a191af830e61af769e233e1b03138520e">PreReductionType</a>&#160;</td>
-          <td class="paramname"><em>preRed</em> = <code>BKZ</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">PrecisionType</a>&#160;</td>
-          <td class="paramname"><em>doublePrecision</em> = <code>DOUBLE</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>fact</em> = <code>0.999</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>blocksize</em> = <code>20</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Same thing as before but with the possibility to set a different value for the variable maxNodesBB. </p>
-
-</div>
-</div>
-<a id="aa15e63c629906c3f418221828a4fae37"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa15e63c629906c3f418221828a4fae37">&#9670;&nbsp;</a></span>FigureOfMeritBeyer() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename BasIntMat , typename Dbl , typename RedDbl &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">double LatticeTester::FigureOfMeritBeyer </td>
-          <td>(</td>
-          <td class="paramtype">BasIntMat&#160;</td>
-          <td class="paramname"><em>matrix</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a191af830e61af769e233e1b03138520e">PreReductionType</a>&#160;</td>
-          <td class="paramname"><em>preRed</em> = <code>BKZ</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">PrecisionType</a>&#160;</td>
-          <td class="paramname"><em>doublePrecision</em> = <code>DOUBLE</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>fact</em> = <code>0.999</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>blocksize</em> = <code>20</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>This function compute the Figure of Merit to a given matrix, according to the Beyer criteria. </p>
-<p>It first computes the Minkowski-reduced basis of the lattice and then makes the quotient of shortest over std::int64_test vector. Returns -1.0 if there was an error in Branch-and-Bound procedure while calculating the Minkowski-reduced basis. Return the figure of merit otherwise. </p>
-
-</div>
-</div>
-<a id="ab66cb03d376399e369a7dd1e3a25e6b9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab66cb03d376399e369a7dd1e3a25e6b9">&#9670;&nbsp;</a></span>FigureOfMeritBeyer() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename BasIntMat , typename Dbl , typename RedDbl &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">double LatticeTester::FigureOfMeritBeyer </td>
-          <td>(</td>
-          <td class="paramtype">BasIntMat&#160;</td>
-          <td class="paramname"><em>matrix</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::int64_t&#160;</td>
-          <td class="paramname"><em>maxNodesBB</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a191af830e61af769e233e1b03138520e">PreReductionType</a>&#160;</td>
-          <td class="paramname"><em>preRed</em> = <code>BKZ</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">PrecisionType</a>&#160;</td>
-          <td class="paramname"><em>doublePrecision</em> = <code>DOUBLE</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>fact</em> = <code>0.999</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>blocksize</em> = <code>20</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Same thing as before but with the possibility to set a different value for the variable maxNodesBB. </p>
-
-</div>
-</div>
 <a id="a0bb56e7569fb24800973df89d757f2fd"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0bb56e7569fb24800973df89d757f2fd">&#9670;&nbsp;</a></span>FourierC1()</h2>
 
@@ -2722,113 +2464,6 @@ template&lt;typename T &gt; </div>
 </div><div class="memdoc">
 
 <p>Logarithm of \(x\) in base 2. </p>
-
-</div>
-</div>
-<a id="aa671528908af203438e7969df2b35eae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa671528908af203438e7969df2b35eae">&#9670;&nbsp;</a></span>MinkowskiReduction() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename BasIntMat , typename Dbl , typename RedDbl &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">bool LatticeTester::MinkowskiReduction </td>
-          <td>(</td>
-          <td class="paramtype">BasIntMat &amp;&#160;</td>
-          <td class="paramname"><em>matrix</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a191af830e61af769e233e1b03138520e">PreReductionType</a>&#160;</td>
-          <td class="paramname"><em>preRed</em> = <code>BKZ</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">PrecisionType</a>&#160;</td>
-          <td class="paramname"><em>doublePrecision</em> = <code>DOUBLE</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>fact</em> = <code>0.999</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>blocksize</em> = <code>20</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>This function reduces a basis to a Minkowski-reduced basis. </p>
-<p>Such basis has strong properties regarding the length of its vectors but will require a huge running time, especially when the dimension of the basis increases. Such Minkowski-reduced basis is usefull, for example, to calculate a Beyer quotient (as implemented in <a class="el" href="../../d8/d74/namespaceLatticeTester.html#aa0315802d7f789ba576dbab54e9b7ebc" title="This function compute the Figure of Merit to a given matrix, according to a normalization criteria...">FigureOfMerit()</a>). </p>
-
-</div>
-</div>
-<a id="ade8cd4e6df666fe0456558fa295a37ac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ade8cd4e6df666fe0456558fa295a37ac">&#9670;&nbsp;</a></span>MinkowskiReduction() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename BasIntMat , typename Dbl , typename RedDbl &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">bool LatticeTester::MinkowskiReduction </td>
-          <td>(</td>
-          <td class="paramtype">BasIntMat &amp;&#160;</td>
-          <td class="paramname"><em>matrix</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::int64_t&#160;</td>
-          <td class="paramname"><em>maxNodesBB</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a191af830e61af769e233e1b03138520e">PreReductionType</a>&#160;</td>
-          <td class="paramname"><em>preRed</em> = <code>BKZ</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">PrecisionType</a>&#160;</td>
-          <td class="paramname"><em>doublePrecision</em> = <code>DOUBLE</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>fact</em> = <code>0.999</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>blocksize</em> = <code>20</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Same thing as before but with the possibility to set a different value for the variable maxNodesBB. </p>
 
 </div>
 </div>
@@ -3774,125 +3409,6 @@ template&lt;typename Vect &gt; </div>
 
 </div>
 </div>
-<a id="a14ffc84b470dfb03f7105b232cec39a1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a14ffc84b470dfb03f7105b232cec39a1">&#9670;&nbsp;</a></span>ShortestVector() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename BasIntMat , typename Dbl , typename RedDbl &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">double LatticeTester::ShortestVector </td>
-          <td>(</td>
-          <td class="paramtype">BasIntMat&#160;</td>
-          <td class="paramname"><em>matrix</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9770e4d57aa715e249cd7e700c6f37e4">NormType</a>&#160;</td>
-          <td class="paramname"><em>norm</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a191af830e61af769e233e1b03138520e">PreReductionType</a>&#160;</td>
-          <td class="paramname"><em>preRed</em> = <code>BKZ</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">PrecisionType</a>&#160;</td>
-          <td class="paramname"><em>doublePrecision</em> = <code>DOUBLE</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>fact</em> = <code>0.999</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>blocksize</em> = <code>20</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>This function allows computation of the shortest non-zero vector in a lattice, according to the selected norm. </p>
-<p>Many parameters can bet set by the user, otherwise the function work with default values. Returns -1.0 if there was an error in Branch-and-Bound procedure. Return the length of the shortest non-zero vector otherwise. </p>
-
-</div>
-</div>
-<a id="a2bd47798df149becb393bf34941f1712"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2bd47798df149becb393bf34941f1712">&#9670;&nbsp;</a></span>ShortestVector() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename BasIntMat , typename Dbl , typename RedDbl &gt; </div>
-      <table class="memname">
-        <tr>
-          <td class="memname">double LatticeTester::ShortestVector </td>
-          <td>(</td>
-          <td class="paramtype">BasIntMat&#160;</td>
-          <td class="paramname"><em>matrix</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9770e4d57aa715e249cd7e700c6f37e4">NormType</a>&#160;</td>
-          <td class="paramname"><em>norm</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::int64_t&#160;</td>
-          <td class="paramname"><em>maxNodesBB</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a191af830e61af769e233e1b03138520e">PreReductionType</a>&#160;</td>
-          <td class="paramname"><em>preRed</em> = <code>BKZ</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">PrecisionType</a>&#160;</td>
-          <td class="paramname"><em>doublePrecision</em> = <code>DOUBLE</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>fact</em> = <code>0.999</code>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>blocksize</em> = <code>20</code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Same thing as before but with the possibility to set a different value for the variable maxNodesBB. </p>
-
-</div>
-</div>
 <a id="a59016f13e4470ad17683b1cfeb70153c"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a59016f13e4470ad17683b1cfeb70153c">&#9670;&nbsp;</a></span>sign()</h2>
 
@@ -4245,7 +3761,7 @@ template&lt;typename Matr , typename Int &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a></li>
-    <li class="footer">Generated on Thu Aug 9 2018 13:33:12 for Lattice Tester Manual by
+    <li class="footer">Generated on Fri Aug 10 2018 19:17:44 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

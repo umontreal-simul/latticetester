@@ -36,7 +36,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-work-30</span>
+   &#160;<span id="projectnumber">0.1.0-work-31</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -90,13 +90,15 @@ $(document).ready(function(){initNavTree('df/d59/classLatticeTester_1_1LatticeAn
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="../../de/d3f/classLatticeTester_1_1LatticeAnalysis-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">LatticeTester::LatticeAnalysis&lt; Int, BasInt, Dbl, RedDbl &gt; Class Template Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This class gathers other classes of <a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace. ">LatticeTester</a> to create an object performing tests on lattices.  
+<p>Objects of this class can perform various tests on lattices.  
  <a href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#details">More...</a></p>
 
 <p><code>#include &lt;latticetester/LatticeAnalysis.h&gt;</code></p>
@@ -104,42 +106,101 @@ $(document).ready(function(){initNavTree('df/d59/classLatticeTester_1_1LatticeAn
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:abec5518737b36f9d89274e296927fce7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#abec5518737b36f9d89274e296927fce7">LatticeAnalysis</a> ()</td></tr>
-<tr class="memdesc:abec5518737b36f9d89274e296927fce7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base constructor.  <a href="#abec5518737b36f9d89274e296927fce7">More...</a><br /></td></tr>
+<tr class="memdesc:abec5518737b36f9d89274e296927fce7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Base constructor for the case where the data will come from files.  <a href="#abec5518737b36f9d89274e296927fce7">More...</a><br /></td></tr>
 <tr class="separator:abec5518737b36f9d89274e296927fce7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad54f68534a06f50b8e883dec4d00bafa"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#ad54f68534a06f50b8e883dec4d00bafa">LatticeAnalysis</a> (<a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html">Reducer</a>&lt; Int, BasInt, Dbl, RedDbl &gt; &amp;reducer, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a2cf3c4f4181718b7adc6f5e4513695a0">CriterionType</a> criterion, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab747c1cbb0f5e47fef711b62327a8e90">NormaType</a> normaType, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a191af830e61af769e233e1b03138520e">PreReductionType</a> preRed, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9770e4d57aa715e249cd7e700c6f37e4">NormType</a> norm, int alpha=0, std::int64_t maxNodesBB=10000000)</td></tr>
-<tr class="memdesc:ad54f68534a06f50b8e883dec4d00bafa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#ad54f68534a06f50b8e883dec4d00bafa">More...</a><br /></td></tr>
-<tr class="separator:ad54f68534a06f50b8e883dec4d00bafa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adb3e38ec9051c56456edf879fe4931aa"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#adb3e38ec9051c56456edf879fe4931aa">LatticeAnalysis</a> (<a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html">Reducer</a>&lt; Int, BasInt, Dbl, RedDbl &gt; &amp;reducer, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a2cf3c4f4181718b7adc6f5e4513695a0">CriterionType</a> criterion, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a191af830e61af769e233e1b03138520e">PreReductionType</a> preRed=BKZ, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9770e4d57aa715e249cd7e700c6f37e4">NormType</a> norm=L2NORM, std::int64_t maxNodesBB=10000000, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab747c1cbb0f5e47fef711b62327a8e90">NormaType</a> normaType=NORMA_GENERIC, int alpha=0)</td></tr>
+<tr class="memdesc:adb3e38ec9051c56456edf879fe4931aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor containing all the fields needed to perform a test.  <a href="#adb3e38ec9051c56456edf879fe4931aa">More...</a><br /></td></tr>
+<tr class="separator:adb3e38ec9051c56456edf879fe4931aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2109e3f2cb6ed0a3b4c597ff7d2ffdf1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a2109e3f2cb6ed0a3b4c597ff7d2ffdf1">~LatticeAnalysis</a> ()</td></tr>
 <tr class="memdesc:a2109e3f2cb6ed0a3b4c597ff7d2ffdf1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a2109e3f2cb6ed0a3b4c597ff7d2ffdf1">More...</a><br /></td></tr>
 <tr class="separator:a2109e3f2cb6ed0a3b4c597ff7d2ffdf1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a06e3e98662e5f4365a96f8e383268dd9"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a06e3e98662e5f4365a96f8e383268dd9">doTest</a> (double fact, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">PrecisionType</a> precision, int blocksize=20)</td></tr>
-<tr class="memdesc:a06e3e98662e5f4365a96f8e383268dd9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs the test in dimension <code>dim</code>.  <a href="#a06e3e98662e5f4365a96f8e383268dd9">More...</a><br /></td></tr>
-<tr class="separator:a06e3e98662e5f4365a96f8e383268dd9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d66a8cb4be8acf3a8a209ac37091487"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a0d66a8cb4be8acf3a8a209ac37091487">doTest</a> (double fact=0.999999, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">PrecisionType</a> precision=QUADRUPLE, int blocksize=10)</td></tr>
+<tr class="memdesc:a0d66a8cb4be8acf3a8a209ac37091487"><td class="mdescLeft">&#160;</td><td class="mdescRight">This will perform the tests specified in <code>m_criterion</code> on the basis contained in <code>m_reducer</code>.  <a href="#a0d66a8cb4be8acf3a8a209ac37091487">More...</a><br /></td></tr>
+<tr class="separator:a0d66a8cb4be8acf3a8a209ac37091487"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac245047054519b102a79fdbe73e797d8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#ac245047054519b102a79fdbe73e797d8">printTestResults</a> ()</td></tr>
+<tr class="memdesc:ac245047054519b102a79fdbe73e797d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">This prints the results of the tests in a standard format on standard output.  <a href="#ac245047054519b102a79fdbe73e797d8">More...</a><br /></td></tr>
+<tr class="separator:ac245047054519b102a79fdbe73e797d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80dc121973168ab4a0640890da993ac7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a80dc121973168ab4a0640890da993ac7">doTestFromInputFile</a> (const char *datafile)</td></tr>
 <tr class="memdesc:a80dc121973168ab4a0640890da993ac7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Reads the parameters of the test in input text file <code>datafile</code>; then do the test.  <a href="#a80dc121973168ab4a0640890da993ac7">More...</a><br /></td></tr>
 <tr class="separator:a80dc121973168ab4a0640890da993ac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4ea746678d3ddf687edbfa6d67089b2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#ae4ea746678d3ddf687edbfa6d67089b2">doTestFromDirectory</a> (const char *dirname)</td></tr>
-<tr class="memdesc:ae4ea746678d3ddf687edbfa6d67089b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the method <code>doTest</code> to all the files with extension <code>".dat"</code> in directory named <code>dirname</code>.  <a href="#ae4ea746678d3ddf687edbfa6d67089b2">More...</a><br /></td></tr>
+<tr class="memdesc:ae4ea746678d3ddf687edbfa6d67089b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Applies the method <code>doTestFromInputFile</code> to all the files with extension <code>".dat"</code> in directory named <code>dirname</code>.  <a href="#ae4ea746678d3ddf687edbfa6d67089b2">More...</a><br /></td></tr>
 <tr class="separator:ae4ea746678d3ddf687edbfa6d67089b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af7b71e5b5f2dff7310410f78888804db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#af7b71e5b5f2dff7310410f78888804db">initNormalizer</a> (<a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab747c1cbb0f5e47fef711b62327a8e90">NormaType</a> norma, int alpha=0)</td></tr>
-<tr class="memdesc:af7b71e5b5f2dff7310410f78888804db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize m_normalizer to a pointer on a normalizer object of type norma.  <a href="#af7b71e5b5f2dff7310410f78888804db">More...</a><br /></td></tr>
+<tr class="memdesc:af7b71e5b5f2dff7310410f78888804db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize <code>m_normalizer</code> to a pointer on a normalizer object of type <code>norma</code>.  <a href="#af7b71e5b5f2dff7310410f78888804db">More...</a><br /></td></tr>
 <tr class="separator:af7b71e5b5f2dff7310410f78888804db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aadf9bee9f6ab93d9911e84e20a463366"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#aadf9bee9f6ab93d9911e84e20a463366">getMerit</a> () const</td></tr>
-<tr class="memdesc:aadf9bee9f6ab93d9911e84e20a463366"><td class="mdescLeft">&#160;</td><td class="mdescRight">Gets the results of the applied test.  <a href="#aadf9bee9f6ab93d9911e84e20a463366">More...</a><br /></td></tr>
-<tr class="separator:aadf9bee9f6ab93d9911e84e20a463366"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75af78095e37e6c305911176ecc30caa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a75af78095e37e6c305911176ecc30caa">setReducer</a> (<a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html">Reducer</a>&lt; Int, BasInt, Dbl, RedDbl &gt; &amp;red)</td></tr>
-<tr class="memdesc:a75af78095e37e6c305911176ecc30caa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set functions.  <a href="#a75af78095e37e6c305911176ecc30caa">More...</a><br /></td></tr>
+<tr class="memdesc:a75af78095e37e6c305911176ecc30caa"><td class="mdescLeft">&#160;</td><td class="mdescRight">This will set <code>m_reducer</code> to point to <code>red</code>.  <a href="#a75af78095e37e6c305911176ecc30caa">More...</a><br /></td></tr>
 <tr class="separator:a75af78095e37e6c305911176ecc30caa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac877281202947da7fc28324ca4c61448"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#ac877281202947da7fc28324ca4c61448">getDim</a> ()</td></tr>
-<tr class="memdesc:ac877281202947da7fc28324ca4c61448"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get functions.  <a href="#ac877281202947da7fc28324ca4c61448">More...</a><br /></td></tr>
-<tr class="separator:ac877281202947da7fc28324ca4c61448"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0debb821e811014de0b189cdc2594548"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a0debb821e811014de0b189cdc2594548">setCriterion</a> (<a class="el" href="../../d8/d74/namespaceLatticeTester.html#a2cf3c4f4181718b7adc6f5e4513695a0">CriterionType</a> criterion)</td></tr>
+<tr class="memdesc:a0debb821e811014de0b189cdc2594548"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets <code>m_criterion</code> to <code>criterion</code>.  <a href="#a0debb821e811014de0b189cdc2594548">More...</a><br /></td></tr>
+<tr class="separator:a0debb821e811014de0b189cdc2594548"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af963cfecb2766c3df189e567676ab62e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#af963cfecb2766c3df189e567676ab62e">setPreReduction</a> (<a class="el" href="../../d8/d74/namespaceLatticeTester.html#a191af830e61af769e233e1b03138520e">PreReductionType</a> preRed)</td></tr>
+<tr class="memdesc:af963cfecb2766c3df189e567676ab62e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets <code>m_preRed</code> to <code>preRed</code>.  <a href="#af963cfecb2766c3df189e567676ab62e">More...</a><br /></td></tr>
+<tr class="separator:af963cfecb2766c3df189e567676ab62e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a036ba1f11e6e91de96d9e15e12d9692c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a036ba1f11e6e91de96d9e15e12d9692c">setNorm</a> (<a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9770e4d57aa715e249cd7e700c6f37e4">NormType</a> norm)</td></tr>
+<tr class="memdesc:a036ba1f11e6e91de96d9e15e12d9692c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets <code>m_norm</code> to <code>norm</code>.  <a href="#a036ba1f11e6e91de96d9e15e12d9692c">More...</a><br /></td></tr>
+<tr class="separator:a036ba1f11e6e91de96d9e15e12d9692c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fc0539cd051f00ce329117b903736f3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a1fc0539cd051f00ce329117b903736f3">setMaxNodesBB</a> (std::int64_t maxNodesBB)</td></tr>
+<tr class="memdesc:a1fc0539cd051f00ce329117b903736f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets <code>m_maxNodesBB</code> to <code>maxNodesBB</code>.  <a href="#a1fc0539cd051f00ce329117b903736f3">More...</a><br /></td></tr>
+<tr class="separator:a1fc0539cd051f00ce329117b903736f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9272bb34d3d5ce694f348b9f50cbb67"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html">Reducer</a>&lt; Int, BasInt, Dbl, RedDbl &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#ae9272bb34d3d5ce694f348b9f50cbb67">getReducer</a> ()</td></tr>
+<tr class="memdesc:ae9272bb34d3d5ce694f348b9f50cbb67"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to the reducer used for the analysis.  <a href="#ae9272bb34d3d5ce694f348b9f50cbb67">More...</a><br /></td></tr>
+<tr class="separator:ae9272bb34d3d5ce694f348b9f50cbb67"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aadf9bee9f6ab93d9911e84e20a463366"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#aadf9bee9f6ab93d9911e84e20a463366">getMerit</a> () const</td></tr>
+<tr class="memdesc:aadf9bee9f6ab93d9911e84e20a463366"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the figure of merit calculated by <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a0d66a8cb4be8acf3a8a209ac37091487" title="This will perform the tests specified in m_criterion on the basis contained in m_reducer. ">doTest()</a> as a <code>double</code>  <a href="#aadf9bee9f6ab93d9911e84e20a463366">More...</a><br /></td></tr>
+<tr class="separator:aadf9bee9f6ab93d9911e84e20a463366"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a2239d3bd45728d24b3bfa99d95658323"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a2239d3bd45728d24b3bfa99d95658323">setNormalizerType</a> (<a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab747c1cbb0f5e47fef711b62327a8e90">NormaType</a> normalizerType)</td></tr>
+<tr class="memdesc:a2239d3bd45728d24b3bfa99d95658323"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets <code>m_normalizerType</code> to <code>normalizerType</code>.  <a href="#a2239d3bd45728d24b3bfa99d95658323">More...</a><br /></td></tr>
+<tr class="separator:a2239d3bd45728d24b3bfa99d95658323"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7fc469559cc21cbc26a900a9710976b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#ab7fc469559cc21cbc26a900a9710976b">setNormalizer</a> (<a class="el" href="../../d0/dc8/classLatticeTester_1_1Normalizer.html">Normalizer</a>&lt; RedDbl &gt; *normalizer)</td></tr>
+<tr class="memdesc:ab7fc469559cc21cbc26a900a9710976b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deallocates the memory allocated to <code>m_normalizer</code> and makes it point to <code>normalizer</code>.  <a href="#ab7fc469559cc21cbc26a900a9710976b">More...</a><br /></td></tr>
+<tr class="separator:ab7fc469559cc21cbc26a900a9710976b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9eae98f287e6a74e15f5f45aa9a0657a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/dc8/classLatticeTester_1_1Normalizer.html">Normalizer</a>&lt; RedDbl &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a9eae98f287e6a74e15f5f45aa9a0657a">getNormalizer</a> ()</td></tr>
+<tr class="memdesc:a9eae98f287e6a74e15f5f45aa9a0657a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a pointer to the normalizer used in this class.  <a href="#a9eae98f287e6a74e15f5f45aa9a0657a">More...</a><br /></td></tr>
+<tr class="separator:a9eae98f287e6a74e15f5f45aa9a0657a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a98e0571a191895a1a1484be216c69bbd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html">Reducer</a>&lt; Int, BasInt, Dbl, RedDbl &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a98e0571a191895a1a1484be216c69bbd">m_reducer</a></td></tr>
+<tr class="memdesc:a98e0571a191895a1a1484be216c69bbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the reducer class used to perform pre-reductions and Branch-and-Bound.  <a href="#a98e0571a191895a1a1484be216c69bbd">More...</a><br /></td></tr>
+<tr class="separator:a98e0571a191895a1a1484be216c69bbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa652bd2f127a6732e5659b6b3078d1e4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a191af830e61af769e233e1b03138520e">PreReductionType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#aa652bd2f127a6732e5659b6b3078d1e4">m_preRed</a></td></tr>
+<tr class="memdesc:aa652bd2f127a6732e5659b6b3078d1e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of pre-reduction that will be used before the Branch-and-Bound.  <a href="#aa652bd2f127a6732e5659b6b3078d1e4">More...</a><br /></td></tr>
+<tr class="separator:aa652bd2f127a6732e5659b6b3078d1e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa402aa6dc73f4207e3af0461bb0b004d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a2cf3c4f4181718b7adc6f5e4513695a0">CriterionType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#aa402aa6dc73f4207e3af0461bb0b004d">m_criterion</a></td></tr>
+<tr class="memdesc:aa402aa6dc73f4207e3af0461bb0b004d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of test applied on the basis.  <a href="#aa402aa6dc73f4207e3af0461bb0b004d">More...</a><br /></td></tr>
+<tr class="separator:aa402aa6dc73f4207e3af0461bb0b004d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae6ad4fc90a9b571db0a83b016f3831d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/dc8/classLatticeTester_1_1Normalizer.html">Normalizer</a>&lt; RedDbl &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#aae6ad4fc90a9b571db0a83b016f3831d">m_normalizer</a></td></tr>
+<tr class="memdesc:aae6ad4fc90a9b571db0a83b016f3831d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pointer to the <a class="el" href="../../d0/dc8/classLatticeTester_1_1Normalizer.html" title="Classes which inherit from this base class are used in implementing bounds on the length of the short...">Normalizer</a> class used to normalize the results.  <a href="#aae6ad4fc90a9b571db0a83b016f3831d">More...</a><br /></td></tr>
+<tr class="separator:aae6ad4fc90a9b571db0a83b016f3831d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4aec8aa98e527a5f7f022ba43389c546"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab747c1cbb0f5e47fef711b62327a8e90">NormaType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a4aec8aa98e527a5f7f022ba43389c546">m_normalizerType</a></td></tr>
+<tr class="memdesc:a4aec8aa98e527a5f7f022ba43389c546"><td class="mdescLeft">&#160;</td><td class="mdescRight">Type of normalization chosen for the test.  <a href="#a4aec8aa98e527a5f7f022ba43389c546">More...</a><br /></td></tr>
+<tr class="separator:a4aec8aa98e527a5f7f022ba43389c546"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a65f257f2b0b5e216dba95cb866c66a69"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9770e4d57aa715e249cd7e700c6f37e4">NormType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a65f257f2b0b5e216dba95cb866c66a69">m_norm</a></td></tr>
+<tr class="memdesc:a65f257f2b0b5e216dba95cb866c66a69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Norm used to evaluate the vector lengths in the reduction and pre-reduction.  <a href="#a65f257f2b0b5e216dba95cb866c66a69">More...</a><br /></td></tr>
+<tr class="separator:a65f257f2b0b5e216dba95cb866c66a69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ab2c58a0f7a2852fd829e6addee7335"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a9ab2c58a0f7a2852fd829e6addee7335">m_merit</a></td></tr>
+<tr class="memdesc:a9ab2c58a0f7a2852fd829e6addee7335"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains the results of the test.  <a href="#a9ab2c58a0f7a2852fd829e6addee7335">More...</a><br /></td></tr>
+<tr class="separator:a9ab2c58a0f7a2852fd829e6addee7335"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade73e3c08867ad8a4de3f6228d8e04dd"><td class="memItemLeft" align="right" valign="top">std::int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#ade73e3c08867ad8a4de3f6228d8e04dd">m_maxNodesBB</a></td></tr>
+<tr class="memdesc:ade73e3c08867ad8a4de3f6228d8e04dd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains the maximum number of nodes visited in the Branch-and-Bound procedure.  <a href="#ade73e3c08867ad8a4de3f6228d8e04dd">More...</a><br /></td></tr>
+<tr class="separator:ade73e3c08867ad8a4de3f6228d8e04dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt;<br />
 class LatticeTester::LatticeAnalysis&lt; Int, BasInt, Dbl, RedDbl &gt;</h3>
 
-<p>This class gathers other classes of <a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace. ">LatticeTester</a> to create an object performing tests on lattices. </p>
-<p>These tests are applied on lattices to assess their structural properties and their qualities with respect to different criteria. Included are well-known tests such as the <em>spectral</em> test, the <em>Beyer</em> test, the \(P_{\alpha}\) test. The corresponding figures of merit for the lattice are the length of the shortest vector in the lattice computed with different norms, the Beyer quotient, or the \(P_{\alpha}\) criterion. For the standard spectral test, the figure of merit is based on the length of the shortest non-zero vector in the lattice, using the \({\mathcal{L}}_2\) norm to compute the length of vectors, and the inverse of this length gives the maximal distance between successive hyperplanes covering all the points in the <em>primal</em> lattice. If one computes the length of the shortest non-zero vector in the <em>dual</em> lattice using the \({\mathcal{L}}_1\) norm, one obtains the minimal number of hyperplanes covering all the points of the <em>primal</em> lattice. </p>
+<p>Objects of this class can perform various tests on lattices. </p>
+<p>There are two intended usages of this class.</p><ul>
+<li>The first one is the one used in the <b>lattest</b> executable, it is to simply pass a directory name (resp. a file name) to the program to perform the tests specified in the <code>.dat</code> files in the directory (resp. the file itself).</li>
+<li>The other possibility is to instanciate all the needed fields of the class independently and to call the <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a0d66a8cb4be8acf3a8a209ac37091487" title="This will perform the tests specified in m_criterion on the basis contained in m_reducer. ">doTest()</a> method. This approach is more flexible and allows easy implementation of small scripts.</li>
+</ul>
+<p>The tests consist on the computation of one of the figures of merit enumerated in CriterionType. If the user intend to simply reduce a lattice basis, he should look into the <a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html" title="This class implements (or wraps from NTL) all the functions that are needed to reduce a basis...">Reducer</a> module since it offers much more flexibility. This class curently only implements the spectral and the Beyer test.</p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000010">Todo:</a></b></dt><dd>implement \(\mathcal{P}_\alpha\) and implement the other one liste in the enum.</dd></dl>
+<p>To use this class it is imperative to instanciate a <a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html" title="This class implements (or wraps from NTL) all the functions that are needed to reduce a basis...">Reducer</a> object with the basis of the lattice to analyse. After that, you have to pass, either by the constructor or by the various methods available, all the parameters necessary to do a test (these are listed under the empty constructor). Finally, you simply have to call the <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a0d66a8cb4be8acf3a8a209ac37091487" title="This will perform the tests specified in m_criterion on the basis contained in m_reducer. ">doTest()</a> method and the <code>m_merit</code> field will contain the figure of merit that was asked for. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="abec5518737b36f9d89274e296927fce7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abec5518737b36f9d89274e296927fce7">&#9670;&nbsp;</a></span>LatticeAnalysis() <span class="overload">[1/2]</span></h2>
@@ -158,13 +219,20 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
       </table>
 </div><div class="memdoc">
 
-<p>Base constructor. </p>
-<p>The test will be applied on <code>lattice</code>, with the selected <code>normalizer</code>. </p>
+<p>Base constructor for the case where the data will come from files. </p>
+<p>In that case, the fields of the class will be instanciated when read. This constructor can also be used to create a default object for the class that will be populated one field at a time by the user.</p>
+<p>If the user choose to fill by hand the fields that are needed, he needs to fill the following fields:</p><ul>
+<li><code>m_reducer</code> with a valid reducer containing a basis.</li>
+<li><code>m_criterion</code> with the criterion for the figure of merit he wants</li>
+<li><code>m_preRed</code> with one of the pre-reduction strategies.</li>
+<li><code>m_norm</code> with one of the norms for which the selected test has been implemented.</li>
+<li><code>m_normalizer</code> and <code>m_normalizerType</code> to describe the normalizer to use. To do that, one should use the <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#af7b71e5b5f2dff7310410f78888804db" title="Initialize m_normalizer to a pointer on a normalizer object of type norma. ">initNormalizer()</a> method that does dynamic memory management. </li>
+</ul>
 
 </div>
 </div>
-<a id="ad54f68534a06f50b8e883dec4d00bafa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad54f68534a06f50b8e883dec4d00bafa">&#9670;&nbsp;</a></span>LatticeAnalysis() <span class="overload">[2/2]</span></h2>
+<a id="adb3e38ec9051c56456edf879fe4931aa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adb3e38ec9051c56456edf879fe4931aa">&#9670;&nbsp;</a></span>LatticeAnalysis() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -186,32 +254,32 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab747c1cbb0f5e47fef711b62327a8e90">NormaType</a>&#160;</td>
-          <td class="paramname"><em>normaType</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a191af830e61af769e233e1b03138520e">PreReductionType</a>&#160;</td>
-          <td class="paramname"><em>preRed</em>, </td>
+          <td class="paramname"><em>preRed</em> = <code>BKZ</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9770e4d57aa715e249cd7e700c6f37e4">NormType</a>&#160;</td>
-          <td class="paramname"><em>norm</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>alpha</em> = <code>0</code>, </td>
+          <td class="paramname"><em>norm</em> = <code>L2NORM</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::int64_t&#160;</td>
-          <td class="paramname"><em>maxNodesBB</em> = <code>10000000</code>&#160;</td>
+          <td class="paramname"><em>maxNodesBB</em> = <code>10000000</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab747c1cbb0f5e47fef711b62327a8e90">NormaType</a>&#160;</td>
+          <td class="paramname"><em>normaType</em> = <code>NORMA_GENERIC</code>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>alpha</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -221,8 +289,16 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
       </table>
 </div><div class="memdoc">
 
-<p>Constructor. </p>
-<p>The test will be applied on <code>lattice</code>, with the selected <code>normalizer</code> and <code>criterion</code>. </p>
+<p>Constructor containing all the fields needed to perform a test. </p>
+<ul>
+<li><code>reducer</code> is the reducer that will be used to perform the tests. It will be stored as a pointer, so the object can be retrieved even after the tests have been done. Also note that the reducer contains the basis and that all interactions with the lattice basis will be done through this object.</li>
+<li><code>criterion</code> is the criterion for which the tests will be applied. For the various options, see the CriterionType enum.</li>
+<li><code>preRed</code> is the chose of pre-reduction algorithm. See PreReductionType for a list of option.</li>
+<li><code>norm</code> is the norm that will be used to compute the different vector lengths in the algorithms. For a list of options, look at NormType.</li>
+<li><code>MaxNodesBB</code> is the maximum number of nodes that the program will use when doing the branch-and-bound algorithm to find the shortest vector.</li>
+<li><code>normaType</code> is the normalization type to be used. See NormaType for a list of options.</li>
+<li><code>alpha</code> is the \(\alpha\) parameter for the \(\mathcal{P}_\alpha\) test. As of now, this test is not implemented. </li>
+</ul>
 
 </div>
 </div>
@@ -244,12 +320,13 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 </div><div class="memdoc">
 
 <p>Destructor. </p>
+<p>This will deallocate memory to <code>m_normalizer</code> if it is not null. </p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a06e3e98662e5f4365a96f8e383268dd9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a06e3e98662e5f4365a96f8e383268dd9">&#9670;&nbsp;</a></span>doTest()</h2>
+<a id="a0d66a8cb4be8acf3a8a209ac37091487"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d66a8cb4be8acf3a8a209ac37091487">&#9670;&nbsp;</a></span>doTest()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -260,19 +337,19 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
           <td class="memname">bool <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html">LatticeTester::LatticeAnalysis</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::doTest </td>
           <td>(</td>
           <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>fact</em>, </td>
+          <td class="paramname"><em>fact</em> = <code>0.999999</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">PrecisionType</a>&#160;</td>
-          <td class="paramname"><em>precision</em>, </td>
+          <td class="paramname"><em>precision</em> = <code>QUADRUPLE</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>blocksize</em> = <code>20</code>&#160;</td>
+          <td class="paramname"><em>blocksize</em> = <code>10</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -282,8 +359,11 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
       </table>
 </div><div class="memdoc">
 
-<p>Performs the test in dimension <code>dim</code>. </p>
-<p>The method returns <code>false</code> if the test was interrupted for any reason before completion, and it returns <code>true</code> upon success. The result of the test is kept in <code>m_merit</code>. </p>
+<p>This will perform the tests specified in <code>m_criterion</code> on the basis contained in <code>m_reducer</code>. </p>
+<p>Before searching for the shortest vector or performing Minkowski reduction, it will use the reduction in <code>m_preRed</code>. Depending on the criterion, this will calculate a figure of merit normalized with <code>m_normalizer</code> or simply a figure of merit that is not standardized and store it in <code>m_merit</code>.</p>
+<p>This method will return <code>true</code> upon completion if the test has been successful, and <code>false</code> if there has been some kind of problem in the execution.</p>
+<p>To access the results of the test, it is mandatory to call <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#aadf9bee9f6ab93d9911e84e20a463366" title="Returns the figure of merit calculated by doTest() as a double ">getMerit() const </a>before calling this method again.</p>
+<p>The parameters of this method are used by the pre-reduction algorithms if BKZ or LLL pre-reduction has been choosen. Most of the time, there will be no need to touch them. If you want to modify them, please look at the redBKZ and redLLLNTL methods in <a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html" title="This class implements (or wraps from NTL) all the functions that are needed to reduce a basis...">Reducer</a>. </p>
 
 </div>
 </div>
@@ -305,8 +385,8 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
       </table>
 </div><div class="memdoc">
 
-<p>Applies the method <code>doTest</code> to all the files with extension <code>".dat"</code> in directory named <code>dirname</code>. </p>
-<p>Returns 0 if all the tests completed successfully; returns a non-zero integer if there was an error. </p>
+<p>Applies the method <code>doTestFromInputFile</code> to all the files with extension <code>".dat"</code> in directory named <code>dirname</code>. </p>
+<p>Returns 0 if all the tests completed successfully; returns a non-zero integer if there was an error. Even if there is an error with one of the files, this method will try to do the tests on all the files. </p>
 
 </div>
 </div>
@@ -329,36 +409,9 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 </div><div class="memdoc">
 
 <p>Reads the parameters of the test in input text file <code>datafile</code>; then do the test. </p>
-<p>The data file must always have the extension <code>".dat"</code>, but must be given as argument here <em>without extension</em>. For example, if the data file is named <code>myLattice.dat</code>, then the method must be called as <code>doTest("myLattice")</code>. Returns 0 if the test completed successfully; returns a negative integer if there was an error. </p>
-
-</div>
-</div>
-<a id="ac877281202947da7fc28324ca4c61448"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac877281202947da7fc28324ca4c61448">&#9670;&nbsp;</a></span>getDim()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">int <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html">LatticeTester::LatticeAnalysis</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::getDim </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Get functions. </p>
+<p>The format of the data file must be as presented in <a class="el" href="../../d4/d4e/detailed_usage.html">Detailed usage instructions</a>.</p>
+<p>The data file must always have the extension ".dat", but must be given as argument here <em>without extension</em>. For example, if the data file is named <code>myLattice.dat</code>, then the method must be called as <code>doTest("myLattice")</code>.</p>
+<p>This method returns 0 if the test completed successfully and returns a negative integer if there was an error. </p>
 
 </div>
 </div>
@@ -387,7 +440,66 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 </table>
 </div><div class="memdoc">
 
-<p>Gets the results of the applied test. </p>
+<p>Returns the figure of merit calculated by <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a0d66a8cb4be8acf3a8a209ac37091487" title="This will perform the tests specified in m_criterion on the basis contained in m_reducer. ">doTest()</a> as a <code>double</code> </p>
+
+</div>
+</div>
+<a id="a9eae98f287e6a74e15f5f45aa9a0657a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9eae98f287e6a74e15f5f45aa9a0657a">&#9670;&nbsp;</a></span>getNormalizer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d0/dc8/classLatticeTester_1_1Normalizer.html">Normalizer</a>&lt;RedDbl&gt;* <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html">LatticeTester::LatticeAnalysis</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::getNormalizer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a pointer to the normalizer used in this class. </p>
+<p>Using this is unsafe because methods of this class might deallocate the memory emplacement this pointer points to and this will point to garbage. </p>
+
+</div>
+</div>
+<a id="ae9272bb34d3d5ce694f348b9f50cbb67"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9272bb34d3d5ce694f348b9f50cbb67">&#9670;&nbsp;</a></span>getReducer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html">Reducer</a>&lt;Int, BasInt, Dbl, RedDbl&gt;* <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html">LatticeTester::LatticeAnalysis</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::getReducer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns a pointer to the reducer used for the analysis. </p>
 
 </div>
 </div>
@@ -419,7 +531,216 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
       </table>
 </div><div class="memdoc">
 
-<p>Initialize m_normalizer to a pointer on a normalizer object of type norma. </p>
+<p>Initialize <code>m_normalizer</code> to a pointer on a normalizer object of type <code>norma</code>. </p>
+<p>This will set <code>m_normalizerType</code> to <code>norma</code>, deallocate memory of <code>m_normalizer</code> (if it is not null) and make <code>m_normalizer</code> point to a new dynamically allocated normalizer of type <code>norma</code>. </p>
+
+</div>
+</div>
+<a id="ac245047054519b102a79fdbe73e797d8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac245047054519b102a79fdbe73e797d8">&#9670;&nbsp;</a></span>printTestResults()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html">LatticeTester::LatticeAnalysis</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::printTestResults </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>This prints the results of the tests in a standard format on standard output. </p>
+<p>This will print the criterion and the pre-reduction used, the length of the shortest vector, the figure of merit obtained and the normalizer used. </p>
+
+</div>
+</div>
+<a id="a0debb821e811014de0b189cdc2594548"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0debb821e811014de0b189cdc2594548">&#9670;&nbsp;</a></span>setCriterion()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html">LatticeTester::LatticeAnalysis</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::setCriterion </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a2cf3c4f4181718b7adc6f5e4513695a0">CriterionType</a>&#160;</td>
+          <td class="paramname"><em>criterion</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets <code>m_criterion</code> to <code>criterion</code>. </p>
+<p>This changes the critertion for the test. </p>
+
+</div>
+</div>
+<a id="a1fc0539cd051f00ce329117b903736f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fc0539cd051f00ce329117b903736f3">&#9670;&nbsp;</a></span>setMaxNodesBB()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html">LatticeTester::LatticeAnalysis</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::setMaxNodesBB </td>
+          <td>(</td>
+          <td class="paramtype">std::int64_t&#160;</td>
+          <td class="paramname"><em>maxNodesBB</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets <code>m_maxNodesBB</code> to <code>maxNodesBB</code>. </p>
+<p>This changes the maximum number of nodes there can be in the branch and bound tree when doing the shortest vector problem. </p>
+
+</div>
+</div>
+<a id="a036ba1f11e6e91de96d9e15e12d9692c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a036ba1f11e6e91de96d9e15e12d9692c">&#9670;&nbsp;</a></span>setNorm()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html">LatticeTester::LatticeAnalysis</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::setNorm </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9770e4d57aa715e249cd7e700c6f37e4">NormType</a>&#160;</td>
+          <td class="paramname"><em>norm</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets <code>m_norm</code> to <code>norm</code>. </p>
+<p>This changes the norm used in the reduction for the test. </p>
+
+</div>
+</div>
+<a id="ab7fc469559cc21cbc26a900a9710976b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7fc469559cc21cbc26a900a9710976b">&#9670;&nbsp;</a></span>setNormalizer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html">LatticeTester::LatticeAnalysis</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::setNormalizer </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d0/dc8/classLatticeTester_1_1Normalizer.html">Normalizer</a>&lt; RedDbl &gt; *&#160;</td>
+          <td class="paramname"><em>normalizer</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Deallocates the memory allocated to <code>m_normalizer</code> and makes it point to <code>normalizer</code>. </p>
+<p>Since this method calls a delete on <code>m_normalizer</code>, it is advisable to never call it directly and to let <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#af7b71e5b5f2dff7310410f78888804db" title="Initialize m_normalizer to a pointer on a normalizer object of type norma. ">initNormalizer()</a> manage the memory. </p>
+
+</div>
+</div>
+<a id="a2239d3bd45728d24b3bfa99d95658323"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2239d3bd45728d24b3bfa99d95658323">&#9670;&nbsp;</a></span>setNormalizerType()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html">LatticeTester::LatticeAnalysis</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::setNormalizerType </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab747c1cbb0f5e47fef711b62327a8e90">NormaType</a>&#160;</td>
+          <td class="paramname"><em>normalizerType</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets <code>m_normalizerType</code> to <code>normalizerType</code>. </p>
+<p>There should be no need to call this method directly because <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#af7b71e5b5f2dff7310410f78888804db" title="Initialize m_normalizer to a pointer on a normalizer object of type norma. ">initNormalizer()</a> calls it. </p>
+
+</div>
+</div>
+<a id="af963cfecb2766c3df189e567676ab62e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af963cfecb2766c3df189e567676ab62e">&#9670;&nbsp;</a></span>setPreReduction()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html">LatticeTester::LatticeAnalysis</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::setPreReduction </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a191af830e61af769e233e1b03138520e">PreReductionType</a>&#160;</td>
+          <td class="paramname"><em>preRed</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets <code>m_preRed</code> to <code>preRed</code>. </p>
+<p>This changes the pre-reduction for the test. </p>
 
 </div>
 </div>
@@ -449,7 +770,219 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 </table>
 </div><div class="memdoc">
 
-<p>Set functions. </p>
+<p>This will set <code>m_reducer</code> to point to <code>red</code>. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="aa402aa6dc73f4207e3af0461bb0b004d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa402aa6dc73f4207e3af0461bb0b004d">&#9670;&nbsp;</a></span>m_criterion</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a2cf3c4f4181718b7adc6f5e4513695a0">CriterionType</a> <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html">LatticeTester::LatticeAnalysis</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::m_criterion</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Type of test applied on the basis. </p>
+
+</div>
+</div>
+<a id="ade73e3c08867ad8a4de3f6228d8e04dd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ade73e3c08867ad8a4de3f6228d8e04dd">&#9670;&nbsp;</a></span>m_maxNodesBB</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::int64_t <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html">LatticeTester::LatticeAnalysis</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::m_maxNodesBB</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Contains the maximum number of nodes visited in the Branch-and-Bound procedure. </p>
+
+</div>
+</div>
+<a id="a9ab2c58a0f7a2852fd829e6addee7335"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ab2c58a0f7a2852fd829e6addee7335">&#9670;&nbsp;</a></span>m_merit</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">double <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html">LatticeTester::LatticeAnalysis</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::m_merit</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Contains the results of the test. </p>
+<p>You can get this after <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a0d66a8cb4be8acf3a8a209ac37091487" title="This will perform the tests specified in m_criterion on the basis contained in m_reducer. ">doTest()</a> has been called use the <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#aadf9bee9f6ab93d9911e84e20a463366" title="Returns the figure of merit calculated by doTest() as a double ">getMerit() const </a>method. </p>
+
+</div>
+</div>
+<a id="a65f257f2b0b5e216dba95cb866c66a69"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65f257f2b0b5e216dba95cb866c66a69">&#9670;&nbsp;</a></span>m_norm</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9770e4d57aa715e249cd7e700c6f37e4">NormType</a> <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html">LatticeTester::LatticeAnalysis</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::m_norm</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Norm used to evaluate the vector lengths in the reduction and pre-reduction. </p>
+
+</div>
+</div>
+<a id="aae6ad4fc90a9b571db0a83b016f3831d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae6ad4fc90a9b571db0a83b016f3831d">&#9670;&nbsp;</a></span>m_normalizer</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d0/dc8/classLatticeTester_1_1Normalizer.html">Normalizer</a>&lt;RedDbl&gt;* <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html">LatticeTester::LatticeAnalysis</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::m_normalizer</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pointer to the <a class="el" href="../../d0/dc8/classLatticeTester_1_1Normalizer.html" title="Classes which inherit from this base class are used in implementing bounds on the length of the short...">Normalizer</a> class used to normalize the results. </p>
+<p>To interract with this data field, you should only use the <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html#af7b71e5b5f2dff7310410f78888804db" title="Initialize m_normalizer to a pointer on a normalizer object of type norma. ">initNormalizer()</a> method. </p>
+
+</div>
+</div>
+<a id="a4aec8aa98e527a5f7f022ba43389c546"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4aec8aa98e527a5f7f022ba43389c546">&#9670;&nbsp;</a></span>m_normalizerType</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab747c1cbb0f5e47fef711b62327a8e90">NormaType</a> <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html">LatticeTester::LatticeAnalysis</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::m_normalizerType</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Type of normalization chosen for the test. </p>
+
+</div>
+</div>
+<a id="aa652bd2f127a6732e5659b6b3078d1e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa652bd2f127a6732e5659b6b3078d1e4">&#9670;&nbsp;</a></span>m_preRed</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a191af830e61af769e233e1b03138520e">PreReductionType</a> <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html">LatticeTester::LatticeAnalysis</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::m_preRed</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Type of pre-reduction that will be used before the Branch-and-Bound. </p>
+
+</div>
+</div>
+<a id="a98e0571a191895a1a1484be216c69bbd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98e0571a191895a1a1484be216c69bbd">&#9670;&nbsp;</a></span>m_reducer</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html">Reducer</a>&lt;Int, BasInt, Dbl, RedDbl&gt;* <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html">LatticeTester::LatticeAnalysis</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::m_reducer</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Pointer to the reducer class used to perform pre-reductions and Branch-and-Bound. </p>
+<p>The object this points to also contains the basis on which the tests are applied. </p>
 
 </div>
 </div>
@@ -462,7 +995,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a></li><li class="navelem"><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html">LatticeAnalysis</a></li>
-    <li class="footer">Generated on Thu Aug 9 2018 13:33:12 for Lattice Tester Manual by
+    <li class="footer">Generated on Fri Aug 10 2018 19:17:44 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

@@ -2,10 +2,16 @@
 
 ## Urgent work
 - Have examples (usage of most functions on a simple basis)
+  - One on lacunary indices
+  - One on basis/dual basis construction
 - Update the doc to be publishable
+  - Finish documentation on a few classes
+  - Re-read what has been done to fit with the pdf guide.
 - Choose a license
+- Implement upper bounds as in cohn and elkies
 
 ## New features
+- Implement the P_alpha calculation
 - Test current implementation for supported types combinations
 - Make sure everything that is advertised in the manual is implemented
 - Implement a test suite to look for bugs
@@ -13,17 +19,17 @@
 ## Design changes
 
 ## Minor changes
-- Add the `.bib` files as a submodule to keep them up to date.
 
 # Questions
-- Quelle est la pertinence d'avoir les normalisations dans LatticeTester sachant
-que
-  - LatNetBuilder n'utilise pas les normalisations de LatticeTester
-  - Aucun test n'est implémenté directement dans LatticeTester?
-- Cela soulève également la question: est-ce que le test spectral devrait plutôt
-être implémenté dans LatticeTester plutôt que dans LatMRG?
-  - Si oui, alors LatticeTester devient un vrai petit programme en soit
-  - Si non, LatticeTester est vraiment simplement une librairie avec des
-  algorithmes de réduction et de manipulation de lattices.
 - D'où viennent les algorithmes pour calculer le dual? Ou bien les bases avec
 des indices manquants?
+- Il faut que je m'inscrive
+- Le calcul des bornes de Rogers ne vient pas de l'article de 1959 parce que le
+terme avec les log donne quelque chose de négatif pour les valeurs que l'on
+considère. C'est vraiment de l'article de 58, mais il faut arriver à calculer le truc...
+
+# Notes personnelles
+- Est-ce que LatticeTester devrait avoir des classes pour supporter les réseaux
+qui ne sont pas générés par une bases de n vecteur en n dimensions (présentement
+le logiciel supporte seulement les matrices de base carrées).
+  - R: Probablement

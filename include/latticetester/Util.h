@@ -49,54 +49,85 @@ namespace NTL {
 
   /**
    * \name Some other compatibility utilities
-   *
    * @{
+   * These functions perform convertions between different types. Most of them
+   * do not really need explainations, but sometimes a specific logic is used
+   * when doing the convertion.
+   * 
+   * \todo Maybe some of this can be rewritten as templates. This could be
+   * usefull because it is easy to see how this bit of code could not work with
+   * certain compilators.
    */
 
   /**
-   * Converts the array of characters (string) `c` into an `std::int64_t` `l`.
+   * Converts the array of characters (string) `c` into an `std::int64_t` `l`
+   * using the strtol() function of cstdlib.h.
    */
   inline void conv (std::int64_t & l, const char* c) {
     l = strtol(c, (char **) NULL, 10);
   }
 
   /**
-   * Converts the array of characters (string) `c` into a `double` `r`.
+   * Converts the array of characters (string) `c` into a `double` `r` using the
+   * strtod() function of cstdlib.h.
    */
   inline void conv (double & r, const char* c) {
     r = strtod(c, (char **) NULL);
   }
 
+  /**
+   * Converts a `long long` to a `double.
+   * */
   inline void  conv(double &x, long long a)
   {
     x = static_cast<double>(a);
   }
 
+  /**
+   * Converts a `double` to a `long long`. This truncates the decimals of a.
+   * */
   inline void conv(long long &x, double a)
   {
     x = static_cast<long long>(a);
   }
 
+  /**
+   * Converts a `long long` to a `NTL::ZZ`.
+   * */
   inline void conv(ZZ &x, long long a)
   {
     x = NTL::conv<ZZ>(a);
   }
 
+  /**
+   * Converts a `NTL::ZZ` to a `long long`. This will truncate a if it has to
+   * many digits.
+   * */
   inline void conv(long long &x, ZZ a)
   {
     x = NTL::conv<long long>(a);
   }
 
+  /**
+   * Converts a `long long` to a `long`. This will truncate a if it has to
+   * many digits.
+   * */
   inline void conv(long &x, long long a)
   {
     x = static_cast<long>(a);
   }
 
+  /**
+   * Converts a `long` to a `long long`.
+   * */
   inline void conv(long long &x, long a)
   {
     x = static_cast<long long>(a);
   }
 
+  /**
+   * Since both are of the same type, this assigns a to x.
+   * */
   inline void conv(long long &x, long long a)
   {
     x = a;
@@ -126,7 +157,9 @@ namespace LatticeTester {
   extern const std::int64_t TWO_EXP[];
 
   /**
-   * Swaps the values of `x` and `y`.
+   * Takes references to two variables of a generic type and swaps their
+   * content. This uses the assignment operator, so it might not always work
+   * well if this operator's implementation is not thorough.
    */
   template <typename T>
     inline void swap9 (T & x, T & y) { T t = x; x = y; y = t; } // WARNING: can we rename this?
@@ -135,79 +168,51 @@ namespace LatticeTester {
    * \name Random numbers
    *
    * @{
+   * All the functions of this module use LFSR258 as an underlying source for
+   * pseudo-random numbers. A free (as in freedom) implementation of this
+   * generator can be found at http://simul.iro.umontreal.ca/ as well as the
+   * article presenting it. All the functions generating some sort of random
+   * number will advance an integer version of LFSR258 by one state and output
+   * a transformation of the state to give a double, an int or bits.
    */
   /**
-   * Returns a random number in \f$[0, 1)\f$. The number has 53 random bits.
+   * Returns a random number in \f$[0, 1)\f$. The number will have 53
+   * pseudo-random bits.
    */
   double RandU01();
 
   /**
-   * Return a random integer in \f$[i, j]\f$. Numbers \f$i\f$ and \f$j\f$ can
-   * occur. Restriction: \f$i < j\f$.
+   * Return a uniform pseudo-random integer in \f$[i, j]\f$. Note that the
+   * numbers \f$i\f$ and \f$j\f$ are part of the possible output. It is
+   * important that \f$i < j\f$ because the underlying arithmetic uses unsigned
+   * integers to store j-i+1 and that will be undefined behavior.
+   *
+   * \todo For some reason, this only uses the first 62 bits of the generator. Why?
    */
   int RandInt (int i, int j);
 
   /**
-   * Returns random blocks of \f$s\f$ bits (\f$s\f$-bit integers).
+   * Returns the first s pseudo-random bits of the underlying RNG in the form of
+   * a s-bit integer. It is imperative that \f$1 \leq s \leq 64\f$ because
+   * the RNG is 64 bits wide.
    */
   std::uint64_t RandBits (int s);
 
   /**
-   * Sets the seed of the generator. If not called, a default seed will be
+   * Sets the seed of the generator. Because of the constraints on the state,
+   * `seed` has to be \f$ > 2\f$. If this is never called, a default seed will be
    * used.
    */
   void SetSeed (std::uint64_t seed);
-
-
-  /**
-   * Returns 1 if \f$x\f$ is odd, and 0 otherwise.
-   */
-  inline std::int64_t IsOdd (const std::int64_t & x) {
-    return x & 1;
-  }
-
-  /**
-   * Return `true` if \f$x = 0\f$.
-   */
-  inline bool IsZero (const std::int64_t & x)
-  {
-    return x == 0;
-  }
-
-  /**
-   * Sets \f$x\f$ to 0.
-   */
-  inline void clear (double & x) { x = 0; }
-
-  /**
-   * Sets \f$x\f$ to 0.
-   */
-  inline void clear (std::int64_t & x) { x = 0; }
-
-  /**
-   * Sets \f$x\f$ to 1.
-   */
-  inline void set9 (std::int64_t & x)
-  {
-    x = 1;
-  }
-
-  /**
-   * Sets \f$x\f$ to 1.
-   */
-  inline void set9 (NTL::ZZ & x)
-  {
-    NTL::set(x);
-  }
-
   /**
    * @}
    */
 
   /**
    * \name Mathematical functions
-   *
    * @{
+   * These are basic wrapper and overloads to common mathematical functions
+   * such as logarithm, exponentiation, and square-root.
    */
 
   /**
@@ -244,16 +249,7 @@ namespace LatticeTester {
   }
 
   /**
-   * Returns \f$\sqrt{x}\f$.
-   * \remark **Richard:** Cette fonction est-elle encore utilisée?
-   */
-  inline double SqrRoot (double x)
-  {
-    return sqrt (x);
-  }
-
-  /**
-   * Logarithm of \f$x\f$ in base 2.
+   * Returns the logarithm of \f$x\f$ in base 2.
    */
   template <typename T>
     inline double Lg (const T & x)
@@ -262,7 +258,7 @@ namespace LatticeTester {
     }
 
   /**
-   * Logarithm of \f$x\f$ in base 2.
+   * Returns the logarithm of \f$x\f$ in base 2.
    */
   inline double Lg (std::int64_t x)
   {
@@ -270,7 +266,7 @@ namespace LatticeTester {
   }
 
   /**
-   * Returns the absolute value.
+   * Returns the absolute value of \f$x\f$.
    */
   template <typename Scal>
     inline Scal abs (Scal x)
@@ -279,8 +275,8 @@ namespace LatticeTester {
     }
 
   /**
-   * Returns 1, 0 or \f$-1\f$ depending on whether \f$x> 0\f$, \f$x= 0\f$ or
-   * \f$x< 0\f$ respectively.
+   * Returns the sign of `x`. The sign is 1 if `x>0`, 0 if `x==0` and -1 if 
+   * `x<0`.
    */
   template <typename T>
     inline std::int64_t sign (const T & x)
@@ -289,7 +285,8 @@ namespace LatticeTester {
     }
 
   /**
-   * Rounds to the nearest integer value.
+   * Returns the value of x rounded to the NEAREST integer value. (This does not
+   * truncate the integer value as is usual in computer arithmetic.)
    */
   template <typename Real>
     inline Real Round (Real x)
@@ -298,7 +295,8 @@ namespace LatticeTester {
     }
 
   /**
-   * Calculates \f$t!\f$, the factorial of \f$t\f$.
+   * Calculates \f$t!\f$, the factorial of \f$t\f$ and returns it as an
+   * std::int64_t.
    */
   std::int64_t Factorial (int t);
 
@@ -306,14 +304,9 @@ namespace LatticeTester {
    * @}
    */
 
-
   /**
-   * \name Division and remainder
+   * \name Division and modular arithmetic
    *
-   * For negative operands, the `/` and <tt>%</tt> operators do not give the
-   * same results for NTL large integers `ZZ` and for primitive types `int` and
-   * `std::int64_t`. The negative quotient differs by 1 and the remainder also differs.
-   * Thus the following small `inline` functions for division and remainder.
    * \remark **Richard:** Pour certaines fonctions, les résultats sont mis dans
    * les premiers arguments de la fonction pour être compatible avec NTL; pour
    * d’autres, ils sont mis dans les derniers arguments pour être compatible
@@ -322,11 +315,30 @@ namespace LatticeTester {
    * qu’elles suivent toutes la même convention que NTL.
    *
    * @{
+   * This module offers function to perform division and find remainders in a
+   * standard way. These functions are usefull in the case where one wants to do
+   * divisions or find remainders of operations with negative operands. The
+   * reason is that NTL and primitive types do not use the same logic when doing
+   * calculations on negative numbers.
+   *
+   * Basically, NTL will always floor a division and C++ will always truncate a
+   * division (which effectively means the floor function is replaced by a roof
+   * function if the answer is a negative number). When calculating the
+   * remainder of x/y, both apply the same logic but get a different result
+   * because they do not do the same division. In both representations, we have
+   * that
+   * \f[
+   *    y\cdot(x/y) + x%y = x.
+   * \f]
+   * It turns out that, with negative values, NTL will return an integer with
+   * the same sign as y where C++ will return an integer of opposite sign
+   * (but both will return the same number modulo y).
    */
 
   /**
-   * Computes \f$q = a/b\f$ by dropping the fractionnal part, i.e. truncates
-   * towards 0. Example:
+   * Computes a/b, truncates the fractionnal part and puts the result in q.
+   * This function is overloaded to work as specified on NTL::ZZ integers.
+   * Example:
    *
    * <center>
    *
@@ -363,36 +375,10 @@ namespace LatticeTester {
     }
 
   /**
-   * Computes \f$q = a/b\f$ by dropping the fractionnal part, i.e. truncates
-   * towards 0. Example:
-   *
-   * <center>
-   *
-   * <table class="LatSoft-table LatSoft-has-hlines">
-   * <tr class="bt">
-   *   <td class="r bl br">\f$a\f$</td>
-   *   <td class="r bl br">\f$b\f$</td>
-   *   <td class="r bl br">\f$q\f$</td>
-   * </tr><tr class="bt">
-   *   <td class="r bl br">\f$5\f$</td>
-   *   <td class="r bl br">3</td>
-   *   <td class="r bl br">1</td>
-   * </tr><tr>
-   *   <td class="r bl br">\f$-5\f$</td>
-   *   <td class="r bl br">\f$3\f$</td>
-   *   <td class="r bl br">\f$-1\f$</td>
-   * </tr><tr>
-   *   <td class="r bl br">\f$5\f$</td>
-   *   <td class="r bl br">\f$-3\f$</td>
-   *   <td class="r bl br">\f$-1\f$</td>
-   * </tr><tr>
-   *   <td class="r bl br">\f$-5\f$</td>
-   *   <td class="r bl br">\f$-3\f$</td>
-   *   <td class="r bl br">\f$1\f$</td>
-   * </tr>
-   * </table>
-   *
-   * </center>
+   * \cond
+   * Computes a/b, truncates the fractionnal part and puts it in q.
+   * This is an overload of Quotient(const Int&, const Int&, Int&)
+   * for the case where we have NTL::ZZ arguments.
    */
   inline void Quotient (const NTL::ZZ & a, const NTL::ZZ & b, NTL::ZZ & q)
   {
@@ -401,12 +387,17 @@ namespace LatticeTester {
     if (q < 0 && r != 0)
       ++q;
   }
+  /// \endcond
 
+  /**
+   * Computes the remainder of a/b and stores its positive equivalent mod b in
+   * r. This works with std::int64_t, NTL::ZZ and real valued numbers.
+   * */
   template <typename Real>
     inline void Modulo (const Real & a, const Real & b, Real & r)
     {
-      std::cout << "Modulo Real non testé" << std::endl;
-      exit(1);
+      //std::cout << "Modulo Real non testé" << std::endl;
+      //exit(1);
       r = fmod (a, b);
       if (r < 0) {
         if (b < 0)
@@ -417,8 +408,9 @@ namespace LatticeTester {
     }
 
   /**
-   * Computes the "positive" remainder \f$r = a \bmod b\f$, i.e. such that \f$0
-   * \le r < b\f$. Example:
+   * \cond
+   * Computes the positive remainder of a/b and stores it in r.
+   * After calling this function you will have that \f$0 \le r < b\f$. Example:
    *
    * <center>
    *
@@ -460,43 +452,19 @@ namespace LatticeTester {
   }
 
   /**
-   * Computes the "positive" remainder \f$r = a \bmod b\f$, i.e. such that \f$0
-   * \le r < b\f$. Example:
-   *
-   * <center>
-   *
-   * <table class="LatSoft-table LatSoft-has-hlines">
-   * <tr class="bt">
-   *   <td class="r bl br">\f$a\f$</td>
-   *   <td class="r bl br">\f$b\f$</td>
-   *   <td class="c bl br">\f$r\f$</td>
-   * </tr><tr class="bt">
-   *   <td class="r bl br">\f$5\f$</td>
-   *   <td class="r bl br">3</td>
-   *   <td class="c bl br">2</td>
-   * </tr><tr>
-   *   <td class="r bl br">\f$-5\f$</td>
-   *   <td class="r bl br">\f$3\f$</td>
-   *   <td class="c bl br">\f$1\f$</td>
-   * </tr><tr>
-   *   <td class="r bl br">\f$5\f$</td>
-   *   <td class="r bl br">\f$-3\f$</td>
-   *   <td class="c bl br">\f$2\f$</td>
-   * </tr><tr>
-   *   <td class="r bl br">\f$-5\f$</td>
-   *   <td class="r bl br">\f$-3\f$</td>
-   *   <td class="c bl br">\f$1\f$</td>
-   * </tr>
-   * </table>
-   *
-   * </center>
+   * Computes the positive remainder of a/b and stores it in r.
+   * After calling this function you will have that \f$0 \le r < b\f$. This is
+   * the same thing as Modulo(const std::int64_t& ,const std::int64_t&, std::int64_t&)
+   * but for NTL types.
    */
   inline void Modulo (const NTL::ZZ & a, const NTL::ZZ & b, NTL::ZZ & r)
   {
     r = a % b;
+    // if r < 0, we know that b < 0 because of the way NTL works
     if (r < 0)
       r -= b;
   }
+  /// \endcond
 
   /**
    * Computes the quotient \f$q = a/b\f$ and remainder \f$r = a
@@ -512,6 +480,7 @@ namespace LatticeTester {
     }
 
   /**
+   * \cond
    * Computes the quotient \f$q = a/b\f$ and remainder \f$r = a \bmod b\f$ by
    * truncating \f$q\f$ towards 0. The remainder can be negative. One always
    * has \f$a = qb + r\f$ and \f$|r| < |b|\f$. Example:
@@ -549,7 +518,8 @@ namespace LatticeTester {
    *
    * </center>
    */
-  inline void Divide (std::int64_t & q, std::int64_t & r, const std::int64_t & a, const std::int64_t & b)
+  inline void Divide (std::int64_t & q, std::int64_t & r,
+      const std::int64_t & a, const std::int64_t & b)
   {
     ldiv_t z = ldiv (a, b);
     q = z.quot;      // q = a / b;
@@ -603,14 +573,7 @@ namespace LatticeTester {
       r -= b;
     }
   }
-
-  /**
-   * Integer division: \f$a = b/d\f$.
-   */
-  inline void div (std::int64_t & a, const std::int64_t & b, const std::int64_t & d)
-  {
-    a = b/d;
-  }
+  /// \endcond
 
   /**
    * Computes \f$a/b\f$, rounds the result to the nearest integer and returns
@@ -624,6 +587,7 @@ namespace LatticeTester {
     }
 
   /**
+   * \cond
    * Computes \f$a/b\f$, rounds the result to the nearest integer and returns
    * the result in \f$q\f$.
    */
@@ -666,11 +630,11 @@ namespace LatticeTester {
     if (s)
       q = -q;
   }
+  /// \endcond
 
   /**
-   * Returns the value of the greatest common divisor of \f$a\f$ and \f$b\f$.
-   * \remark **Richard:** Il y a déjà des fonctions GCD dans NTL, pour les
-   * `std::int64_t` et les `ZZ` (voir fichier ZZ.h)
+   * Returns the value of the greatest common divisor of \f$a\f$ and \f$b\f$ by
+   * using Stein's binary GCD algorithm.
    */
   std::int64_t gcd (std::int64_t a, std::int64_t b);
 
@@ -1407,6 +1371,58 @@ namespace LatticeTester {
       return out;
     }
 
+
+  /**
+   * @}
+   */
+
+  /**
+   * \name Miscellaneous functions
+   * @{
+   * These are the other functions implemented in this module, that have various
+   * usage in our implementation.
+   * */
+  
+  /**
+   * Tests if `x` is odd and returns 1 if it is odd, and 0 if it is even.
+   */
+  inline std::int64_t IsOdd (const std::int64_t & x) {
+    return x & 1;
+  }
+
+  /**
+   * Returns the `bool` resulting of the statement `x == 0`.
+   */
+  inline bool IsZero (const std::int64_t & x)
+  {
+    return x == 0;
+  }
+
+  /**
+   * Sets \f$x\f$ to 0.
+   */
+  inline void clear (double & x) { x = 0; }
+
+  /**
+   * Sets \f$x\f$ to 0.
+   */
+  inline void clear (std::int64_t & x) { x = 0; }
+
+  /**
+   * Sets \f$x\f$ to 1.
+   */
+  inline void set9 (std::int64_t & x)
+  {
+    x = 1;
+  }
+
+  /**
+   * Sets \f$x\f$ to 1.
+   */
+  inline void set9 (NTL::ZZ & x)
+  {
+    NTL::set(x);
+  }
 
   /**
    * @}

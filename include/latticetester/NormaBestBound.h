@@ -84,64 +84,64 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  /**
-   * These Rogers gamma constants are calculated as defined in 
-   * Conway and Sloane book (Sphere packing, Lattices and groups) : 
-   *    - equation (47) page 20 of chapter 1
-   *    - table 1.2 page 15 of chapter 1
+  /*
+   * Values 1 through 36 are calculated from the article "A Conceptual
+   * Breakthrough in sphere packing" from Henry Cohn (2016). They are computed
+   * by taking gamma[n] = 4 * ( bound / V_n )^(n/2) where V_n is the volume of
+   * an n dimensional sphere of radius 1.
    */
   template<typename RedDbl>
           const double NormaBestBound<RedDbl>::m_gamma[ ] =
   {
-    /* GamBestBound[0] = */    1.,
-    /* GamBestBound[1] = */    1.,
-    /* GamBestBound[2] = */    1.,
-    /* GamBestBound[3] = */    1.,
-    /* GamBestBound[4] = */    1.,
-    /* GamBestBound[5] = */    1.,
-    /* GamBestBound[6] = */    1.,
-    /* GamBestBound[7] = */    1.,
-    /* GamBestBound[8] = */    1.,
-    /* GamBestBound[9] = */    1.,
-    /* GamBestBound[10] = */    1.,
-    /* GamBestBound[11] = */    1.,
-    /* GamBestBound[12] = */    1.,
-    /* GamBestBound[13] = */    1.,
-    /* GamBestBound[14] = */    1.,
-    /* GamBestBound[15] = */    1.,
-    /* GamBestBound[16] = */    1.,
-    /* GamBestBound[17] = */    1.,
-    /* GamBestBound[18] = */    1.,
-    /* GamBestBound[19] = */    1.,
-    /* GamBestBound[20] = */    1.,
-    /* GamBestBound[21] = */    1.,
-    /* GamBestBound[22] = */    1.,
-    /* GamBestBound[23] = */    1.,
-    /* GamBestBound[24] = */    1.,
-    /* GamBestBound[25] = */    1.,
-    /* GamBestBound[26] = */    1.,
-    /* GamBestBound[27] = */    1.,
-    /* GamBestBound[28] = */    1.,
-    /* GamBestBound[29] = */    1.,
-    /* GamBestBound[30] = */    1.,
-    /* GamBestBound[31] = */    1.,
-    /* GamBestBound[32] = */    1.,
-    /* GamBestBound[33] = */    1.,
-    /* GamBestBound[34] = */    1.,
-    /* GamBestBound[35] = */    1.,
-    /* GamBestBound[36] = */    1.,
-    /* GamBestBound[37] = */    1.,
-    /* GamBestBound[38] = */    1.,
-    /* GamBestBound[39] = */    1.,
-    /* GamBestBound[40] = */    1.,
-    /* GamBestBound[41] = */    1.,
-    /* GamBestBound[42] = */    1.,
-    /* GamBestBound[43] = */    1.,
-    /* GamBestBound[44] = */    1.,
-    /* GamBestBound[45] = */    1.,
-    /* GamBestBound[46] = */    1.,
-    /* GamBestBound[47] = */    1.,
-    /* GamBestBound[48] = */    1.
+    /* GammaBestBound[0] = */     0.0,
+    /* GammaBestBound[1] = */     1.0,
+    /* GammaBestBound[2] = */     1.1547005395033834,
+    /* GammaBestBound[3] = */     1.304077209522991,
+    /* GammaBestBound[4] = */     1.4491512970689033,
+    /* GammaBestBound[5] = */     1.5907345457787878,
+    /* GammaBestBound[6] = */     1.7294425778558589,
+    /* GammaBestBound[7] = */     1.8657438977611798,
+    /* GammaBestBound[8] = */     2.0000000001950413,
+    /* GammaBestBound[9] = */     2.1324942979385826,
+    /* GammaBestBound[10] = */    2.263452600069123,
+    /* GammaBestBound[11] = */    2.3930576417841327,
+    /* GammaBestBound[12] = */    2.5214594724429005,
+    /* GammaBestBound[13] = */    2.6487829527745377,
+    /* GammaBestBound[14] = */    2.7751332142995158,
+    /* GammaBestBound[15] = */    2.9005997190604442,
+    /* GammaBestBound[16] = */    3.025259312863684,
+    /* GammaBestBound[17] = */    3.149178557041412,
+    /* GammaBestBound[18] = */    3.2724155399984154,
+    /* GammaBestBound[19] = */    3.395021298677218,
+    /* GammaBestBound[20] = */    3.517040950462465,
+    /* GammaBestBound[21] = */    3.6385145917472883,
+    /* GammaBestBound[22] = */    3.7594780693416627,
+    /* GammaBestBound[23] = */    3.8799635383208293,
+    /* GammaBestBound[24] = */    4.000000015650443,
+    /* GammaBestBound[25] = */    4.119613703661868,
+    /* GammaBestBound[26] = */    4.238828491527929,
+    /* GammaBestBound[27] = */    4.357666099112316,
+    /* GammaBestBound[28] = */    4.476146404322391,
+    /* GammaBestBound[29] = */    4.594287637369152,
+    /* GammaBestBound[30] = */    4.7121065670603075,
+    /* GammaBestBound[31] = */    4.8296186570429365,
+    /* GammaBestBound[32] = */    4.94683820125262,
+    /* GammaBestBound[33] = */    5.063778445850659,
+    /* GammaBestBound[34] = */    5.180451691100012,
+    /* GammaBestBound[35] = */    5.296869382898868,
+    /* GammaBestBound[36] = */    5.413042186941963,
+    /* GammaBestBound[37] = */    5.7020718581143,
+    /* GammaBestBound[38] = */    5.8255656070255,
+    /* GammaBestBound[39] = */    5.9489276473284,
+    /* GammaBestBound[40] = */    6.0721635670068,
+    /* GammaBestBound[41] = */    6.1952785955803,
+    /* GammaBestBound[42] = */    6.3182776348,
+    /* GammaBestBound[43] = */    6.4411652860615,
+    /* GammaBestBound[44] = */    6.5639458749555,
+    /* GammaBestBound[45] = */    6.6866234733141,
+    /* GammaBestBound[46] = */    6.8092019190592,
+    /* GammaBestBound[47] = */    6.9316848341156,
+    /* GammaBestBound[48] = */    7.0540756406128
   };
 
 

@@ -6,8 +6,15 @@
  * */
 
 #include <iostream>
+#include "NTL/ZZ.h"
 
 int main() {
-  std::cout << "Hello world!\n";
+  NTL::ZZ x(-10);
+  NTL::ZZ y(3);
+  std::cout << x/y << std::endl;
+  std::cout << -10/3 << std::endl;
+  std::cout << x%y << std::endl;
+  std::cout << (-x)%(-y) << std::endl;
+  std::cout << -10%3 << std::endl;
   return 0;
 }

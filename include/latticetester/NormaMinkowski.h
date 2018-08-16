@@ -25,10 +25,12 @@
 namespace LatticeTester {
 
   /**
-   * \todo What is this?
+   * \todo Look with Pierre to see if this still has any use/why it is implemented.
+   * There is no real use of a lower bound, except to exclude very bad lattices.
+   * Unless this bound is really hard to obtain?
    *
-   * This class implements *Minkowski*’s theoretical bounds on the length of
-   * the shortest nonzero vector in a lattice. The length of a vector is
+   * This class implements Minkowski’s theoretical **LOWER** bound on the length
+   * of the shortest non-zero vector in a lattice. The length of a vector is
    * computed using the \f${\mathcal{L}}_2\f$ norm. The bounding lengths, for a
    * lattice containing \f$n\f$ points per unit volume in dimension \f$t\f$, 
    * are given by \f$\ell_t^* = \gamma_t^{1/2} n^{-1/t}\f$, where the 
@@ -64,19 +66,22 @@ namespace LatticeTester {
 
   //===========================================================================
 
+  /*
+   * This is (2/V_n)^(2/n) which seems wrong.
+   * */
   template<typename RedDbl>
     const double NormaMinkowski<RedDbl>::m_gamma[ ] =
     {
-      /* GamMinkowski[0] = */    0.00000000000000,
-      /* GamMinkowski[1] = */    0.00000000000000,
-      /* GamMinkowski[2] = */    1.04719756392815,
-      /* GamMinkowski[3] = */    0.69062814882789,
-      /* GamMinkowski[4] = */    0.66230588438641,
-      /* GamMinkowski[5] = */    0.68895682802115,
-      /* GamMinkowski[6] = */    0.73293650323622,
-      /* GamMinkowski[7] = */    0.78407967437680,
-      /* GamMinkowski[8] = */    0.83869147754813,
-      /* GamMinkowski[9] = */    0.89517405737802,
+      /* GamMinkowski[0] = */     0.00000000000000,
+      /* GamMinkowski[1] = */     0.00000000000000,
+      /* GamMinkowski[2] = */     1.04719756392815,
+      /* GamMinkowski[3] = */     0.69062814882789,
+      /* GamMinkowski[4] = */     0.66230588438641,
+      /* GamMinkowski[5] = */     0.68895682802115,
+      /* GamMinkowski[6] = */     0.73293650323622,
+      /* GamMinkowski[7] = */     0.78407967437680,
+      /* GamMinkowski[8] = */     0.83869147754813,
+      /* GamMinkowski[9] = */     0.89517405737802,
       /* GamMinkowski[10] = */    0.95274948000853,
       /* GamMinkowski[11] = */    1.01100354118401,
       /* GamMinkowski[12] = */    1.06969923726369,

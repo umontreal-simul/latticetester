@@ -31,14 +31,15 @@ namespace
 #define NORM52  2.22044604925031308e-16   // 1 / 2^52
 
 
-  unsigned long etat1 = GERME,
+  std::uint64_t etat1 = GERME,
                 etat2 = GERME, etat3 = GERME, etat4 = GERME, etat5 = GERME;
 
 
-  // What generator is this???
-  unsigned long RandValue ()
+  // This is the integer version of LFSR258 available at
+  // http://simul.iro.umontreal.ca/ 
+  std::uint64_t RandValue ()
   {
-    unsigned long b;
+    std::uint64_t b;
 
     b = ((etat1 << 1) ^ etat1) >> 53;
     etat1 = ((etat1 & 18446744073709551614UL) << 10) ^ b;
@@ -79,7 +80,7 @@ namespace LatticeTester
   //============================================================================
   // binary GCD from wikipedia
 
-  long gcd (long u, long v)
+  std::int64_t gcd (std::int64_t u, std::int64_t v)
   {
     int shift;
     if (u < 0) u = -u;
@@ -89,18 +90,20 @@ namespace LatticeTester
     if (u == 0 || v == 0)
       return u | v;
 
-    /* Let shift := lg K, where K is the greatest power of 2 dividing both u
-       and v. */
+    /* (u | v) & 1 is 1 if u or v is odd. This divides u and v by two while
+     * both are even and stores the number of divisions in shift.*/
     for (shift = 0; ((u | v) & 1) == 0; ++shift) {
       u >>= 1;
       v >>= 1;
     }
 
+    // Since at most one of u and v is even we can divide u by two if it is
     while ((u & 1) == 0)
       u >>= 1;
 
-    // From here on, u is always odd.
+    // From now on, u is always odd.
     do {
+      // We make v odd too since u is odd and gcd(u,v) = gcd(u,v/2) if v is even
       while ((v & 1) == 0)     // Loop X
         v >>= 1;
 
@@ -133,10 +136,10 @@ namespace LatticeTester
 
   std::int64_t Factorial(int t)
   {
-    if (t == 0)
+    if (t == 0 || t == 1)
       return 1;
     long fact = 1;
-    for (int i = 1;i <= t;i++) {
+    for (int i = 2;i <= t;i++) {
       fact *= i;
     }
     return fact;
@@ -146,22 +149,31 @@ namespace LatticeTester
   //===========================================================================
   // Générateur LFSR258 de L'Ecuyer
 
-  int RandInt (int i, int j)
+  std::int64_t RandInt (std::int64_t i, std::int64_t j)
   {
-    unsigned long d = j-i+1;
-    unsigned long q = 0x4000000000000000L / d;
-    unsigned long r = 0x4000000000000000L % d;
-    unsigned long v = 0x4000000000000000L - r;
-    unsigned long res;
+    // The range covered by the interval
+    std::uint64_t d = j-i+1;
+    // Gap between numbers of the output. That is, if we generate a number
+    // in (0,q) we will get i and in [q,2q) we will get i+1 and so on.
+    std::uint64_t q = 0x4000000000000000L / d;
+    // These two numbers make a correction to avoid a bias. Basically if we want
+    // to generate an integers with the inverse density, we need to select each
+    // integer with the same probaility q. Because of the rounding in
+    // integer division d*q is not always 1. What we have instead is that q*v=d.
+    // Because of that, we do not want to consider RandValue() bigger than v.
+    std::uint64_t r = 0x4000000000000000L % d;
+    std::uint64_t v = 0x4000000000000000L - r;
+    std::uint64_t res;
 
     do {
       res = RandValue() >> 2;
     } while (res >= v);
 
-    return i + (int) (res / q);
+    return i + (std::uint64_t) (res / q);
   }
 
-
+  // Cuts the last bits of LFSR258 64 bits int and converts it to a double
+  // precision number
   double RandU01()
   {
     return NORM53 * (RandValue() >> 11);
@@ -173,18 +185,18 @@ namespace LatticeTester
     return RandValue () >> (64 - s);
   }
 
-
-  void SetSeed (unsigned long seed)  {
+  void SetSeed (std::uint64_t seed)  {
     // Choose one bit = 1 to make sure initial state is valid
-    etat1 = seed | 0x40000000;
-    etat3 = seed | 0x40000000;
-    /* // Valid initial state
-       etat1 = seed[0] | 2;
-       etat2 = seed[1] | 512;
-       etat3 = seed[2] | 4096;
-       etat4 = seed[3] | 131072;
-       etat5 = seed[4] | 8388608;
-       */
+    /*
+     * etat1 = seed | 0x40000000;
+     * etat3 = seed | 0x40000000;
+     */
+    // Making sure the seed is valid
+    etat1 = seed | 2;
+    etat2 = seed | 512;
+    etat3 = seed | 4096;
+    etat4 = seed | 131072;
+    etat5 = seed | 8388608;
   }
 
 

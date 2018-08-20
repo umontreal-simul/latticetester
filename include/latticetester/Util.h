@@ -376,9 +376,7 @@ namespace LatticeTester {
 
   /**
    * \cond
-   * Computes a/b, truncates the fractionnal part and puts it in q.
-   * This is an overload of Quotient(const Int&, const Int&, Int&)
-   * for the case where we have NTL::ZZ arguments.
+   * This is the NTL overload of the Quotient function.
    */
   inline void Quotient (const NTL::ZZ & a, const NTL::ZZ & b, NTL::ZZ & q)
   {
@@ -409,36 +407,7 @@ namespace LatticeTester {
 
   /**
    * \cond
-   * Computes the positive remainder of a/b and stores it in r.
-   * After calling this function you will have that \f$0 \le r < b\f$. Example:
-   *
-   * <center>
-   *
-   * <table class="LatSoft-table LatSoft-has-hlines">
-   * <tr class="bt">
-   *   <td class="r bl br">\f$a\f$</td>
-   *   <td class="r bl br">\f$b\f$</td>
-   *   <td class="c bl br">\f$r\f$</td>
-   * </tr><tr class="bt">
-   *   <td class="r bl br">\f$5\f$</td>
-   *   <td class="r bl br">3</td>
-   *   <td class="c bl br">2</td>
-   * </tr><tr>
-   *   <td class="r bl br">\f$-5\f$</td>
-   *   <td class="r bl br">\f$3\f$</td>
-   *   <td class="c bl br">\f$1\f$</td>
-   * </tr><tr>
-   *   <td class="r bl br">\f$5\f$</td>
-   *   <td class="r bl br">\f$-3\f$</td>
-   *   <td class="c bl br">\f$2\f$</td>
-   * </tr><tr>
-   *   <td class="r bl br">\f$-5\f$</td>
-   *   <td class="r bl br">\f$-3\f$</td>
-   *   <td class="c bl br">\f$1\f$</td>
-   * </tr>
-   * </table>
-   *
-   * </center>
+   * This is the overload of the Modulo function to work with std::int64_t ints.
    */
   inline void Modulo (const std::int64_t & a, const std::int64_t & b, std::int64_t & r)
   {
@@ -452,10 +421,7 @@ namespace LatticeTester {
   }
 
   /**
-   * Computes the positive remainder of a/b and stores it in r.
-   * After calling this function you will have that \f$0 \le r < b\f$. This is
-   * the same thing as Modulo(const std::int64_t& ,const std::int64_t&, std::int64_t&)
-   * but for NTL types.
+   * This is the overload of the Modulo function to work with NTL:ZZ.
    */
   inline void Modulo (const NTL::ZZ & a, const NTL::ZZ & b, NTL::ZZ & r)
   {
@@ -469,7 +435,41 @@ namespace LatticeTester {
   /**
    * Computes the quotient \f$q = a/b\f$ and remainder \f$r = a
    * \bmod b\f$. Truncates \f$q\f$ to the nearest integer towards 0. One always
-   * has \f$a = qb + r\f$ and \f$|r| < |b|\f$.
+   * has \f$a = qb + r\f$ and \f$|r| < |b|\f$. This works with std::int64_t,
+   * NTL::ZZ and real numbers.
+   *
+   * <center>
+   *
+   * <table class="LatSoft-table LatSoft-has-hlines">
+   * <tr class="bt">
+   *   <td class="r bl br">\f$a\f$</td>
+   *   <td class="r bl br">\f$b\f$</td>
+   *   <td class="r bl br">\f$q\f$</td>
+   *   <td class="r bl br">\f$r\f$</td>
+   * </tr><tr class="bt">
+   *   <td class="r bl br">\f$5\f$</td>
+   *   <td class="r bl br">3</td>
+   *   <td class="r bl br">1</td>
+   *   <td class="r bl br">\f$2\f$</td>
+   * </tr><tr>
+   *   <td class="r bl br">\f$-5\f$</td>
+   *   <td class="r bl br">\f$3\f$</td>
+   *   <td class="r bl br">\f$-1\f$</td>
+   *   <td class="r bl br">\f$-2\f$</td>
+   * </tr><tr>
+   *   <td class="r bl br">\f$5\f$</td>
+   *   <td class="r bl br">\f$-3\f$</td>
+   *   <td class="r bl br">\f$-1\f$</td>
+   *   <td class="r bl br">\f$2\f$</td>
+   * </tr><tr>
+   *   <td class="r bl br">\f$-5\f$</td>
+   *   <td class="r bl br">\f$-3\f$</td>
+   *   <td class="r bl br">\f$1\f$</td>
+   *   <td class="r bl br">\f$-2\f$</td>
+   * </tr>
+   * </table>
+   *
+   * </center>
    */
   template <typename Real>
     inline void Divide (Real & q, Real & r, const Real & a, const Real & b)
@@ -481,42 +481,7 @@ namespace LatticeTester {
 
   /**
    * \cond
-   * Computes the quotient \f$q = a/b\f$ and remainder \f$r = a \bmod b\f$ by
-   * truncating \f$q\f$ towards 0. The remainder can be negative. One always
-   * has \f$a = qb + r\f$ and \f$|r| < |b|\f$. Example:
-   *
-   * <center>
-   *
-   * <table class="LatSoft-table LatSoft-has-hlines">
-   * <tr class="bt">
-   *   <td class="r bl br">\f$a\f$</td>
-   *   <td class="r bl br">\f$b\f$</td>
-   *   <td class="r bl br">\f$q\f$</td>
-   *   <td class="r bl br">\f$r\f$</td>
-   * </tr><tr class="bt">
-   *   <td class="r bl br">\f$5\f$</td>
-   *   <td class="r bl br">3</td>
-   *   <td class="r bl br">1</td>
-   *   <td class="r bl br">\f$2\f$</td>
-   * </tr><tr>
-   *   <td class="r bl br">\f$-5\f$</td>
-   *   <td class="r bl br">\f$3\f$</td>
-   *   <td class="r bl br">\f$-1\f$</td>
-   *   <td class="r bl br">\f$-2\f$</td>
-   * </tr><tr>
-   *   <td class="r bl br">\f$5\f$</td>
-   *   <td class="r bl br">\f$-3\f$</td>
-   *   <td class="r bl br">\f$-1\f$</td>
-   *   <td class="r bl br">\f$2\f$</td>
-   * </tr><tr>
-   *   <td class="r bl br">\f$-5\f$</td>
-   *   <td class="r bl br">\f$-3\f$</td>
-   *   <td class="r bl br">\f$1\f$</td>
-   *   <td class="r bl br">\f$-2\f$</td>
-   * </tr>
-   * </table>
-   *
-   * </center>
+   * This is the overload of the Divide function for std::int64_t.
    */
   inline void Divide (std::int64_t & q, std::int64_t & r,
       const std::int64_t & a, const std::int64_t & b)
@@ -527,42 +492,7 @@ namespace LatticeTester {
   }
 
   /**
-   * Computes the quotient \f$q = a/b\f$ and remainder \f$r = a \bmod b\f$ by
-   * truncating \f$q\f$ towards 0. The remainder can be negative. One always
-   * has \f$a = qb + r\f$ and \f$|r| < |b|\f$. Example:
-   *
-   * <center>
-   *
-   * <table class="LatSoft-table LatSoft-has-hlines">
-   * <tr class="bt">
-   *   <td class="r bl br">\f$a\f$</td>
-   *   <td class="r bl br">\f$b\f$</td>
-   *   <td class="r bl br">\f$q\f$</td>
-   *   <td class="r bl br">\f$r\f$</td>
-   * </tr><tr class="bt">
-   *   <td class="r bl br">\f$5\f$</td>
-   *   <td class="r bl br">3</td>
-   *   <td class="r bl br">1</td>
-   *   <td class="r bl br">\f$2\f$</td>
-   * </tr><tr>
-   *   <td class="r bl br">\f$-5\f$</td>
-   *   <td class="r bl br">\f$3\f$</td>
-   *   <td class="r bl br">\f$-1\f$</td>
-   *   <td class="r bl br">\f$-2\f$</td>
-   * </tr><tr>
-   *   <td class="r bl br">\f$5\f$</td>
-   *   <td class="r bl br">\f$-3\f$</td>
-   *   <td class="r bl br">\f$-1\f$</td>
-   *   <td class="r bl br">\f$2\f$</td>
-   * </tr><tr>
-   *   <td class="r bl br">\f$-5\f$</td>
-   *   <td class="r bl br">\f$-3\f$</td>
-   *   <td class="r bl br">\f$1\f$</td>
-   *   <td class="r bl br">\f$-2\f$</td>
-   * </tr>
-   * </table>
-   *
-   * </center>
+   * This is the overload of the Divide function for NTL::ZZ.
    */
   inline void Divide (NTL::ZZ & q, NTL::ZZ & r, const NTL::ZZ & a,
       const NTL::ZZ & b)
@@ -577,7 +507,7 @@ namespace LatticeTester {
 
   /**
    * Computes \f$a/b\f$, rounds the result to the nearest integer and returns
-   * the result in \f$q\f$.
+   * the result in \f$q\f$. This works with std::int64_t, NTL::ZZ and real numbers.
    */
   template <typename Real>
     inline void DivideRound (const Real & a, const Real & b, Real & q)
@@ -588,8 +518,7 @@ namespace LatticeTester {
 
   /**
    * \cond
-   * Computes \f$a/b\f$, rounds the result to the nearest integer and returns
-   * the result in \f$q\f$.
+   * This is the overload of the DivideRound function for std::int64_t.
    */
   inline void DivideRound (const std::int64_t & a, const std::int64_t & b, std::int64_t & q)
   {
@@ -611,8 +540,7 @@ namespace LatticeTester {
   }
 
   /**
-   * Computes \f$a/b\f$, rounds the result to the nearest integer and returns
-   * the result in \f$q\f$.
+   * This is the overload of the DivideRound function for NTL::ZZ.
    */
   inline void DivideRound (const NTL::ZZ & a, const NTL::ZZ & b, NTL::ZZ & q)
   {
@@ -639,18 +567,16 @@ namespace LatticeTester {
   std::int64_t gcd (std::int64_t a, std::int64_t b);
 
   /**
-   * For given \f$a\f$ and \f$b\f$, returns the values \f$C\f$, \f$D\f$,
-   * \f$E\f$, \f$F\f$ and \f$G\f$ such that:
+   * This method computes the greater common divisor of `A` and `B` with Euclid's
+   * algorithm. This will store this gcd in `G` and also the linear combination
+   * that permits to get `G` from `A` and `B`. This function should work with
+   * std::int64_t and NTL::ZZ.
+   *
+   * For \f$A\f$ and \f$B\f$ this will assign to \f$C\f$, \f$D\f$, \f$E\f$,
+   * \f$F\f$ and \f$G\f$ values such that:
    * \f{align*}{
-   *    C a + D b
-   *    &
-   *   =
-   *    G = \mbox{GCD } (a,b)
-   *  \\
-   *   E a + F b
-   *    &
-   *   =
-   *    0.
+   *    C a + D b & = G = \mbox{GCD } (a,b)\\
+   *   E a + F b & = 0.
    * \f}
    */
   template<typename Int>
@@ -708,11 +634,18 @@ namespace LatticeTester {
    * \name Vectors
    *
    * @{
+   * These are utilities to manipulate vectors ranging from instanciation to 
+   * scalar product.
+   *
+   * \todo Functions of this section take the size of the input vectors as an
+   * argument with name d. Some of them assume d is the number of components of
+   * the vectors while somme of them assume that d+1 is the number of components
+   * of the vector. We need to uniformize that.
    */
 
   /**
-   * Allocates memory for the vector \f$A\f$ of dimensions \f$d\f$ and
-   * initializes its elements to 0.
+   * Allocates memory to `A` as an array of `Real` of dimension `d` and
+   * initializes its elements to 0. `Real has to be a numeric type.
    */
   template <typename Real>
     inline void CreateVect (Real* & A, int d)
@@ -723,30 +656,33 @@ namespace LatticeTester {
     }
 
   /**
-   * Frees the memory used by the vector \f$A\f$.
+   * Creates the vector `A` of dimensions `d+1` and initializes its
+   * elements to 0. The type `Vect` has to have a `resize(integer_type)` method
+   * that sets the size of the instance to the value of the argument.
+   */
+  template <typename Vect>
+    inline void CreateVect (Vect & A, int d)
+    {
+      A.resize (d+1);
+      for (int i = 0; i < (d+1); i++)
+        A[i] = 0;
+    }
+
+  /**
+   * Frees the memory used by the vector `A`. This calls `delete[]` on `A`
+   * so trying to access `A after using this is unsafe.
    */
   template <typename Real>
     inline void DeleteVect (Real* & A)
     {
       delete[] A;
-      //    A = 0;
+      // A = 0;
     }
 
   /**
-   * Creates the vector \f$A\f$ of dimensions \f$d+1\f$ and initializes its
-   * elements to 0.
-   */
-  template <typename Vect>
-    inline void CreateVect (Vect & A, int d)
-    {
-      A.resize (1 + d);   // Pierre: weird, maybe should be d?
-      for (int i = 0; i < (d+1); i++)
-        A[i] = 0;
-      // aaa clear (A);
-    }
-
-  /**
-   * Frees the memory used by the vector \f$A\f$.
+   * Frees the memory used by the vector `A`, destroying all the elements it
+   * contains. `Vect` type has to have a `clear()` method that deallocates all
+   * the elements in the vector.
    */
   template <typename Vect>
     inline void DeleteVect (Vect & A)
@@ -755,7 +691,7 @@ namespace LatticeTester {
     }
 
   /**
-   * Sets components \f$[0..d-1]\f$ of \f$A\f$ to 0.
+   * Sets the first `d` of `A` to 0.
    */
   template <typename Real>
     inline void SetZero (Real* A, int d)
@@ -765,7 +701,7 @@ namespace LatticeTester {
     }
 
   /**
-   * Sets components \f$[0..d-1]\f$ of \f$A\f$ to 0.
+   * Sets the first `d` components of `A` to 0.
    */
   template <typename Vect>
     inline void SetZero (Vect & A, int d)
@@ -775,7 +711,7 @@ namespace LatticeTester {
     }
 
   /**
-   * Sets all components \f$[0..d]\f$ of \f$A\f$ to the value \f$x\f$.
+   * Sets the first `d` components of `A` to the value `x`.
    */
   template <typename Real>
     inline void SetValue (Real* A, int d, const Real & x)
@@ -785,11 +721,12 @@ namespace LatticeTester {
     }
 
   /**
-   * Prints components \f$[c..d-1]\f$ of vector \f$A\f$ as a string. Components
-   * are separated by string `sep`.
+   * Returns a string containing `A[c]` to `A[d-1]` formated as 
+   * `[A[c]sep...sepA[d-1]]`. In this string, components are separated by string
+   * `sep`. By default, `sep` is just a whitespace character.
    */
   template <typename Vect>
-    std::string toString (const Vect & A, int c, int d, const char* sep)
+    std::string toString (const Vect & A, int c, int d, const char* sep = " ")
     {
       std::ostringstream out;
       out << "[";
@@ -800,39 +737,40 @@ namespace LatticeTester {
     }
 
   /**
-   * Prints components \f$[c..d]\f$ of vector \f$A\f$ as a string.
-   */
-  template <typename Vect>
-    inline std::string toString (const Vect & A, int c, int d)
-    {
-      return toString (A, c, d, "  ");
-    }
-
-  /**
-   * Prints components \f$[0..d-1]\f$ of vector \f$A\f$ as a string.
+   * Returns a string containing the first `d` components of the vector `A` as a
+   * string. Calls toString(const Vect&, int, int, const char*).
    */
   template <typename Vect>
     std::string toString (const Vect & A, int d)
     {
-      std::ostringstream ostr;
-      ostr << "[";
-      for (int i = 0; i < d; i++) {
-        ostr << std::setprecision(2) << std::setw(3) << A[i] <<
-          std::setw(2) << "  ";
-      }
-      ostr << "]";
-      return ostr.str();
+      return toString<Vect>(A, 0, d);
+      /*
+       *  std::ostringstream ostr;
+       *  ostr << "[";
+       *  for (int i = 0; i < d; i++) {
+       *    ostr << std::setprecision(2) << std::setw(3) << A[i] <<
+       *      std::setw(2) << "  ";
+       *  }
+       *  ostr << "]";
+       *  return ostr.str();
+       * */
     }
 
   /**
-   * Computes the scalar product of vectors \f$A\f$ and \f$B\f$, using
-   * components \f$[0..n-1]\f$, and puts the result in \f$D\f$.
+   * Computes the scalar product of vectors `A` and `B` truncated to their `n`
+   * first components, then puts the result in `D`. There is a lot to consider
+   * when passing types to this function. The best for Vect1 to be the same type
+   * as Vect2 and for Scal to be the same as Int, and that those types are the
+   * ones stored in Vect1 and Vect2.
+   * \todo This uses so many types without check about them and also assumes all
+   * those types can be converted to each other without problem... The types
+   * here should be uniformized.
    * THIS DOES NOT SEEM TO BE A VERY SAFE IMPLEMENTATION
    */
   template <typename Int, typename Vect1, typename Vect2, typename Scal>
     inline void ProdScal (const Vect1 & A, const Vect2 & B, int n, Scal & D)
     {
-      // Le produit A[i] * B[i] peut déborder, d'oÃ¹ conv.
+      // Le produit A[i] * B[i] peut déborder, d'où conv.
       Int C;   C = 0;
       for (int i = 0; i < n; i++)
         C += A[i] * B[i];
@@ -842,21 +780,29 @@ namespace LatticeTester {
 
 
   /**
-   * Transforms the polynomial \f$A_0 + A_1x^1 + \cdots+ A_nx^n\f$ into
-   * \f$x^n - A_1x^{n-1} - \cdots- A_n\f$. The result is put in \f$B\f$.
+   * Takes an input vector `A` of dimension `n+1` and fill the vector `B` with
+   * the values `[-A[n] -A[n-1] ... -A[1] 1]`. `B` is assumed to be of dimension
+   * at least `n+1`.
+   *
+   * **OLD DOC**:
+   * Transforms the polynomial \f$ A_0 + A_1x^1 + \cdots + A_nx^n\f$ into
+   * \f$x^n - A_1x^{n-1} - \cdots - A_n\f$. The result is put in `B`.
+   * \todo This function does not do what the old doc says. Check if it causes a
+   * problem where this function is called.
    */
   template<typename IntVec>
     inline void Invert (const IntVec & A, IntVec & B, int n)
     {
       conv(B[n], 1);
       for(int i = 0; i < n; i++){
-        B[i] = -A[n - i -1];
+        B[i] = -A[n - i - 1];
       }
     }
 
   /**
-   * Computes the `norm` norm of vector \f$V\f$, using components \f$[1..n]\f$,
-   * and puts the result in \f$S\f$.
+   * Computes the `norm` norm of vector `V` trunctated to its `n` first
+   * components, and puts the result in `S`. `Scal` has to be a floating point
+   * type.
    */
   template <typename Vect, typename Scal>
     inline void CalcNorm (const Vect & V, int n, Scal & S, NormType norm)
@@ -895,14 +841,13 @@ namespace LatticeTester {
               S *= y;
           }
           break;
-
         default:
           ;
       }
     }
 
   /**
-   * Copies vector \f$B\f$ into vector \f$A\f$ using components \f$[0..n-1]\f$.
+   * Copies the first `n` components of vector `B` into vector `A`.
    */
   template <typename Vect>
     inline void CopyVect (Vect & A, const Vect & B, int n)
@@ -911,8 +856,9 @@ namespace LatticeTester {
     }
 
   /**
-   * Adds vector \f$B\f$ multiplied by \f$x\f$ to vector \f$A\f$ using
-   * components \f$[0..n-1]\f$, and puts the result in \f$A\f$.
+   * Adds the first `n` components of vector `B` multiplied by `x` to first `n`
+   * components of vector `A`. This will modify `A`. This does wierd type
+   * convertion and might not work well if different types are used.
    */
   template <typename Vect1, typename Vect2, typename Scal>
     inline void ModifVect (Vect1 & A, const Vect2 & B, Scal x, int n)
@@ -924,7 +870,7 @@ namespace LatticeTester {
     }
 
   /**
-   * Changes the sign of the components \f$[0..n-1]\f$ of vector \f$A\f$.
+   * Changes the sign (multiplies by -1) the first `n` components of vector `A`.
    */
   template <typename Vect>
     inline void ChangeSign (Vect & A, int n)
@@ -933,15 +879,17 @@ namespace LatticeTester {
     }
 
   /**
-   * Computes the greatest common divisor of \f$V[k],…,V[n-1]\f$.
+   * Computes the greatest common divisor of `V[k],...,V[n-1]`.
    */
   inline std::int64_t GCD2vect (std::vector<std::int64_t> V, int k, int n)
   {
-    int i = k;
+    int i = k + 1;
     std::int64_t r, d, c;
-    d = labs (V[k]);
+    d = abs (V[k]);
     while (d != 1 && i < n) {
-      c = labs (V[i]);
+      c = abs (V[i]);
+      // This does Euclid's algorithm with the current value of the gcd and the
+      // next vector component
       while (c) {
         r = d % c;
         d = c;
@@ -963,13 +911,13 @@ namespace LatticeTester {
    */
 
   /**
-   * Allocates memory for the square matrix \f$A\f$ of dimensions
-   * \f$(d+1)\times(d+1)\f$. Initializes its elements to 0.
+   * Allocates memory to a square matrix `A` of dimensions
+   * \f$d \times d\f$ and initializes its elements to 0.
    */
   template <typename Real>
     inline void CreateMatr (Real** & A, int d)
     {
-      A = new Real *[d];
+      A = new Real*[d];
       for (int i = 0; i < d; i++) {
         A[i] = new Real[d];
         for (int j = 0; j < d; j++)
@@ -977,20 +925,8 @@ namespace LatticeTester {
     }
 
   /**
-   * Frees the memory used by the \f$d\times d\f$ matrix \f$A\f$.
-   */
-  template <typename Real>
-    inline void DeleteMatr (Real** & A, int d)
-    {
-      for (int i = d; i >= 0; --i)
-        delete[] A[i];
-      delete[] A;
-      //   A = 0;
-    }
-
-  /**
-   * Allocates memory for the matrix \f$A\f$ of dimensions (<tt>line</tt>)
-   * \f$\times\f$ (<tt>col</tt>). Initializes its elements to 0.
+   * Allocates memory for the matrix `A` of dimensions \f$\text{line} \times
+   * \text{col}\f$ and initializes its elements to 0.
    */
   template <typename Real>
     inline void CreateMatr (Real** & A, int line, int col)
@@ -1004,7 +940,51 @@ namespace LatticeTester {
     }
 
   /**
-   * Frees the memory used by the matrix \f$A\f$.
+   * Resizes the matrix `A` to a square matrix of dimensions `d \times d`
+   * and re-initializes its elements to 0.
+   */
+  template<typename IntMat>
+    inline void CreateMatr (IntMat& A, int d)
+    {
+      A.resize (d, d);
+      for (int i = 0; i<d; i++) {
+        for (int j = 0; j<d; j++) A[i][j] = 0;
+      }
+      //clear (A);
+    }
+
+  /**
+   * Resizes the matrix `A` to a matrix of dimensions \f$line \times col\f$
+   * and re-initializes its elements to 0.
+   */
+  template<typename IntMat>
+    inline void CreateMatr (IntMat& A, int line, int col)
+    {
+      A.resize(line, col);
+      for (int i = 0; i<line; i++) {
+        for (int j = 0; j<col; j++) A[i][j] = 0;
+      }
+      //clear (A);
+    }
+
+  /**
+   * Frees the memory used by the \f$d \times d\f$ matrix `A`. This will not
+   * free all the memory allocated to `A` if `A` is of greater dimension and it
+   * can cause a memory leak.
+   */
+  template <typename Real>
+    inline void DeleteMatr (Real** & A, int d)
+    {
+      for (int i = d; i >= 0; --i)
+        delete[] A[i];
+      delete[] A;
+      //   A = 0;
+    }
+
+  /**
+   * Frees the memory used by the matrix `A` of dimension \f$\text{line} \times
+   * \text{col}\f$. This will not free all the memory allocated to `A` if `A` is
+   * of greater dimension and it can cause a memory leak.
    */
   template<typename Real>
     inline void DeleteMatr (Real** & A, int line, int col)
@@ -1016,45 +996,8 @@ namespace LatticeTester {
     }
 
   /**
-   * Creates the square matrix \f$A\f$ of dimensions
-   * \f$d\times d\f$ and initializes its elements to 0.
-   */
-  template<typename IntMat>
-    inline void CreateMatr (IntMat& A, int d)
-    {
-      A.resize (d, d);
-      //clear (A);
-    }
-
-  // /*
-  //  * \copydoc CreateMatr(MMat&, int)
-  //  */
-  // inline void CreateMatr (MMatP & A, int d)
-  // {
-  //   A.SetDims (d, d);   clear (A);
-  // }
-
-  /**
-   * Creates the matrix \f$A\f$ of dimensions (<tt>line</tt>)
-   * \f$\times\f$ (<tt>col</tt>). Initializes its elements to 0.
-   */
-  template<typename IntMat>
-    inline void CreateMatr (IntMat& A, int line, int col)
-    {
-      A.resize(line, col);
-      //clear (A);
-    }
-
-  // /*
-  //  * \copydoc CreateMatr(MMat&, int, int)
-  //  */
-  // inline void CreateMatr (MMatP & A, int line, int col)
-  // {
-  //   A.SetDims (line, col);   clear (A);
-  // }
-
-  /**
-   * Deletes the matrix \f$A\f$.
+   * Calls the `clear()` method on `A`. `A` has to have a `clear()` method that
+   * frees the memory allocated to it.
    */
   template<typename IntMat>
     inline void DeleteMatr (IntMat& A)
@@ -1062,16 +1005,10 @@ namespace LatticeTester {
       A.clear ();
     }
 
-  // /**
-  //  * As above.
-  //  */
-  // inline void DeleteMatr (MMatP & A)
-  // {
-  //   A.kill ();
-  // }
-
   /**
-   * Copies matrix \f$B\f$ into matrix \f$A\f$.
+   * Copies the \f$n \times n\f$ submatrix of the first lines and columns
+   * of `B` into matrix `A`. This function does not check for sizes, so `A` and
+   * `B` both have to be at leat \f$n \times n\f$.
    */
   template <typename Matr>
     inline void CopyMatr (Matr & A, const Matr & B, int n)
@@ -1082,7 +1019,9 @@ namespace LatticeTester {
     }
 
   /**
-   * As above.
+   * Copies the \f$\text{line} \times col\f$ submatrix of the first lines and
+   * columns of `B` into matrix `A`. This function does not check for sizes, so
+   * `A` and `B` both have to be at leat \f$line \times col\f$.
    */
   template <typename Matr>
     inline void CopyMatr (Matr & A, const Matr & B, int line, int col)
@@ -1093,9 +1032,9 @@ namespace LatticeTester {
     }
 
   /**
-   * Transforms `mat` into a string. Prints the first \f$d1\f$ rows and
-   * \f$d2\f$ columns. Indices start at 1. Elements with index 0 are not
-   * printed.
+   * Returns a string that is a representation of `mat`. This string will
+   * represent the \f$d1 \times d2\f$ submatrix of the first lines and colums of
+   * `mat`.
    */
   template <typename MatT>
     std::string toStr (const MatT & mat, int d1, int d2)
@@ -1113,15 +1052,16 @@ namespace LatticeTester {
     }
 
   /**
-   * Checks that square matrix \f$A\f$ is upper triangular (modulo \f$m\f$) for
-   * dimensions 1 to `dim`.
+   * Checks that the upper \f$\text{dim} \times \text{dim}\f$ submatrix of `A`
+   * is triangular modulo `m`. This will return `true` if all the elements under
+   * the diagonal are equal to zero modulo `m` and `false` otherwise.
    */
   template <typename Matr, typename Int>
     bool CheckTriangular (const Matr & A, int dim, const Int & m)
     {
       for (int i = 1; i < dim; i++) {
         for (int j = 0; j < i; j++) {
-          if (A(i,j) % m != 0) {
+          if (A[i][j] % m != 0) {
             std::cout << "******  CheckTriangular failed for element A[" << i <<
               "][" << j << "]" << std::endl;
             return false;
@@ -1132,9 +1072,9 @@ namespace LatticeTester {
     }
 
   /**
-   * Performs an integer triangularization operation modulo \f$m\f$ on the
-   * matrix \f$W\f$ to obtain an upper triangular matrix \f$V\f$, dual to
-   * \f$W\f$. However, the matrix \f$W\f$ will be transformed too in order to
+   * Performs an integer triangularization operation modulo `m` on the
+   * matrix `W` to obtain an upper triangular matrix `V`, dual to
+   * `W`. However, the matrix `W` will be transformed too in order to
    * preserve duality. Only the first `lin` lines and the first `col` columns
    * of the matrices will be considered.
    * The main idea is to transform a generating family of vectors into a 
@@ -1144,7 +1084,7 @@ namespace LatticeTester {
    * Refer to the article: R. Couture and P L'Ecuyer, Orbits and lattices for
    * linear random number generators with composite moduli, Mathematics of
    * Computation, Volume 65, Number 213, bottom of page 199.
-   * 
+   * \todo Check the algorithm used here and what it does.
    */
   template <typename Matr, typename Int>
     void Triangularization (Matr & W, Matr & V, int lin, int col,
@@ -1237,13 +1177,16 @@ namespace LatticeTester {
 
 
   /**
-   * Calculates the \f$m\f$-dual of the matrix `A`. The result is placed in the
-   * matrix `B`. Only the first \f$d\f$ lines and columns are considered.
+   * Calculates the `m`-dual of the matrix `A`. The result is placed in the
+   * matrix `B`. Only the first `d` lines and columns are considered.
    *
    * The vectors of the basis (lines of A) need to verify the properties (i), (ii)
    * (iii), (iv) as described in the article: R. Couture and P L'Ecuyer, Orbits 
    * and lattices for linear random number generators with composite moduli, 
    * Mathematics of Computation, Volume 65, Number 213, bottom of page 199.
+   *
+   * \todo Check the algorithm used here and explain how it works and what it
+   * takes for it to work.
    */
 
   template <typename Matr, typename Int>
@@ -1380,11 +1323,12 @@ namespace LatticeTester {
    * \name Miscellaneous functions
    * @{
    * These are the other functions implemented in this module, that have various
-   * usage in our implementation.
+   * usage in this program.
    * */
   
   /**
-   * Tests if `x` is odd and returns 1 if it is odd, and 0 if it is even.
+   * Tests if `x` is odd. Returns 1 if it is odd, and 0 if it is even.
+   * \todo It is useless that this function is implemented. Look if it is removable.
    */
   inline std::int64_t IsOdd (const std::int64_t & x) {
     return x & 1;
@@ -1392,6 +1336,7 @@ namespace LatticeTester {
 
   /**
    * Returns the `bool` resulting of the statement `x == 0`.
+   * \todo It is useless that this function is implemented. Look if it is removable.
    */
   inline bool IsZero (const std::int64_t & x)
   {
@@ -1399,17 +1344,17 @@ namespace LatticeTester {
   }
 
   /**
-   * Sets \f$x\f$ to 0.
+   * Sets `x` to 0.
    */
   inline void clear (double & x) { x = 0; }
 
   /**
-   * Sets \f$x\f$ to 0.
+   * Sets `x` to 0.
    */
   inline void clear (std::int64_t & x) { x = 0; }
 
   /**
-   * Sets \f$x\f$ to 1.
+   * Sets `x` to 1.
    */
   inline void set9 (std::int64_t & x)
   {
@@ -1417,7 +1362,7 @@ namespace LatticeTester {
   }
 
   /**
-   * Sets \f$x\f$ to 1.
+   * Sets `x` to 1.
    */
   inline void set9 (NTL::ZZ & x)
   {
@@ -1429,42 +1374,5 @@ namespace LatticeTester {
    */
 
 }     // namespace LatticeTester
-
-// #if NTL_TYPES_CODE == 1
-
-// #define BOOST_UBLAS_TYPE_CHECK 0
-// #include <boost/numeric/ublas/matrix.hpp>
-// #include <boost/numeric/ublas/lu.hpp>
-
-// /**
-//  * Because NTL cannot compute the determinant of a matrix<double>
-//  * we have to work with boost library which offer a quick implementation
-//  * of the determinant computation. This is used in normalization files
-//  * and in LatticeAnalysis.
-//  */
-//   template<typename ValType>
-// ValType det_double(const boost::numeric::ublas::matrix<ValType>& matrix)
-// {
-//   // create a working copy of the input
-//   boost::numeric::ublas::matrix<ValType> mLu(matrix);
-//   boost::numeric::ublas::permutation_matrix<std::size_t> pivots(matrix.size1());
-
-//   auto isSingular = boost::numeric::ublas::lu_factorize(mLu, pivots);
-//   if (isSingular)
-//     return static_cast<ValType>(0);
-
-//   ValType det = static_cast<ValType>(1);
-//   for (std::size_t i = 0; i < pivots.size(); ++i)
-//   {
-//     if (pivots(i) != i)
-//       det *= static_cast<ValType>(-1);
-
-//     det *= mLu(i, i);
-//   }
-
-//   return det;
-// }
-
-// #endif
 
 #endif

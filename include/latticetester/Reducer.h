@@ -1238,9 +1238,9 @@ namespace LatticeTester {
 
       const int dim = m_lat->getDim ();
 
-      if (fabs (cte) < std::numeric_limits<double>::max()) {
+      if (abs (cte) < std::numeric_limits<double>::max()) {
         // On peut representer cte en LONGINT.
-        if (fabs (cte) > 0.5) {
+        if (abs (cte) > 0.5) {
           NTL::conv (cteLI, Round (cte));
           NTL::matrix_row<BasIntMat> row1(m_lat->getBasis(), j);
           NTL::matrix_row<BasIntMat> row2(m_lat->getBasis(), i);
@@ -1256,7 +1256,7 @@ namespace LatticeTester {
 
       } else {
         // On represente cte en double.
-        if (fabs (cte) < std::numeric_limits<long double>::max())
+        if (abs (cte) < std::numeric_limits<long double>::max())
           cte = Round (cte);
         NTL::matrix_row<BasIntMat> row1(m_lat->getBasis(), j);
         NTL::matrix_row<BasIntMat> row2(m_lat->getBasis(), i);
@@ -1507,7 +1507,7 @@ namespace LatticeTester {
           }
           if (h == 0) {
             Cho0ij = m_cho2(0,1) / m_cho2(0,0);
-            if (fabs (Cho0ij) > 0.5) {
+            if (abs (Cho0ij) > 0.5) {
               m_IC[0] = 1;
               m_IC[1] = -1;
               h = 0;
@@ -1567,7 +1567,7 @@ namespace LatticeTester {
       j = dim-1;
       while (z[j] == 0)
         --j;
-      while (labs (z[j]) > 1) {
+      while (abs (z[j]) > 1) {
         i = j - 1;
         while (z[i] == 0)
           --i;

@@ -27,7 +27,6 @@ namespace LatticeTester {
 
   /**
    * This class implements sets of lacunary indices.
-   *
    */
   template<typename BasInt>
     class Lacunary {

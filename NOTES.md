@@ -5,7 +5,7 @@
   - One on lacunary indices
   - One on basis/dual basis construction
 - Update the doc to be publishable
-  - Finish documentation on a few classes
+  - Finish documentation on Weight classes, Lacunary and Rank1Lattice
   - Re-read what has been done to fit with the pdf guide.
 - Choose a license
 - Implement upper bounds as in cohn and elkies

@@ -28,7 +28,6 @@
 #include "latticetester/Num.h"
 #include <cmath>
 #include <stdexcept>
-// #include <boost/math/constants/constants.hpp>
 
 
 // PI
@@ -52,8 +51,6 @@ namespace {
   const double STIERS = 7.0 / 3.0;
   const double QTIERS = 14.0 / 3.0;
   const double CTIERS = 5.0 / 3.0;
-  // const double M_EULER = boost::math::constants::euler<double>();
-  // const double M_PI = boost::math::constants::pi<double>();
 
 
   //=========================================================================
@@ -115,7 +112,6 @@ namespace {
   {
     /* Computes S(x, n) = sum_{h=1}^(n) (cos(2 PI h x))/ h  */
     /* Uses Clenshaw's algorithm as for Chebyshev series    */
-
     long h;
     const double z = 2.0 * cos (2.0 * M_PI * x);
     double c0 = 0, c1 = 0, c2;
@@ -168,7 +164,7 @@ namespace LatticeTester
   {
     if (n < 0 || n > FACT_MAX )
       throw invalid_argument("lFactorial:   n too large");
-    long y = larr_Factorials[n];
+    std::int64_t y = larr_Factorials[n];
     if (y < 0)
       throw overflow_error("lFactorial:   long too small");
     return y;

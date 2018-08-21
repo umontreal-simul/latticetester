@@ -20,8 +20,6 @@
  * \file latticetester/Num.h
  *
  * This module implements a few useful mathematical functions.
- *
- *
  */
 
 #ifndef LATTICETESTER__NUM_H
@@ -32,7 +30,8 @@
 namespace LatticeTester {
 
   /**
-   * Calculates \f$t!\f$, the factorial of \f$t\f$.
+   * Calculates \f$t!\f$, the factorial of \f$t\f$. Might throw if `t` is too
+   * large or if std::int64_t can't contain the factorial asked for.
    */
   std::int64_t lFactorial (int t);
 

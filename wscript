@@ -130,6 +130,9 @@ def build(ctx):
         if ctx.env.BUILD_DOCS:
             ctx.recurse('doc') 
 
+    ctx.recurse('data')    
+    # ctx.recurse('examples')
+
     # ctx.recurse('analysis') # probably broken, not used in the current version
 
 

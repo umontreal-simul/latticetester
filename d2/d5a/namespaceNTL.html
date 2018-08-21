@@ -36,7 +36,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-work-31</span>
+   &#160;<span id="projectnumber">0.1.0-work-40</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -113,32 +113,36 @@ Classes</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Some other compatibility utilities</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p>These functions perform convertions between different types.</p>
+<p>Most of them do not really need explainations, but sometimes a specific logic is used when doing the convertion.</p>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000015">Todo:</a></b></dt><dd>Maybe some of this can be rewritten as templates. This could be usefull because it is easy to see how this bit of code could not work with certain compilators. </dd></dl>
+</div></td></tr>
 <tr class="memitem:a07b6d8586b6a40e65a3bee1608d3e389"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d5a/namespaceNTL.html#a07b6d8586b6a40e65a3bee1608d3e389">conv</a> (std::int64_t &amp;l, const char *c)</td></tr>
-<tr class="memdesc:a07b6d8586b6a40e65a3bee1608d3e389"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the array of characters (string) <code>c</code> into an <code>std::int64_t</code> <code>l</code>.  <a href="#a07b6d8586b6a40e65a3bee1608d3e389">More...</a><br /></td></tr>
+<tr class="memdesc:a07b6d8586b6a40e65a3bee1608d3e389"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the array of characters (string) <code>c</code> into an <code>std::int64_t</code> <code>l</code> using the strtol() function of cstdlib.h.  <a href="#a07b6d8586b6a40e65a3bee1608d3e389">More...</a><br /></td></tr>
 <tr class="separator:a07b6d8586b6a40e65a3bee1608d3e389"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7ccb62fcab3fca4d4cf9c2b55061e63f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d5a/namespaceNTL.html#a7ccb62fcab3fca4d4cf9c2b55061e63f">conv</a> (double &amp;r, const char *c)</td></tr>
-<tr class="memdesc:a7ccb62fcab3fca4d4cf9c2b55061e63f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the array of characters (string) <code>c</code> into a <code>double</code> <code>r</code>.  <a href="#a7ccb62fcab3fca4d4cf9c2b55061e63f">More...</a><br /></td></tr>
+<tr class="memdesc:a7ccb62fcab3fca4d4cf9c2b55061e63f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the array of characters (string) <code>c</code> into a <code>double</code> <code>r</code> using the strtod() function of cstdlib.h.  <a href="#a7ccb62fcab3fca4d4cf9c2b55061e63f">More...</a><br /></td></tr>
 <tr class="separator:a7ccb62fcab3fca4d4cf9c2b55061e63f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aab050c8acfe68df985d447688b4caf01"><td class="memItemLeft" align="right" valign="top"><a id="aab050c8acfe68df985d447688b4caf01"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>conv</b> (double &amp;x, long long a)</td></tr>
+<tr class="memitem:aab050c8acfe68df985d447688b4caf01"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d5a/namespaceNTL.html#aab050c8acfe68df985d447688b4caf01">conv</a> (double &amp;x, long long a)</td></tr>
+<tr class="memdesc:aab050c8acfe68df985d447688b4caf01"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a <code>long long</code> to a `double.  <a href="#aab050c8acfe68df985d447688b4caf01">More...</a><br /></td></tr>
 <tr class="separator:aab050c8acfe68df985d447688b4caf01"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a162c2ee8ba1b8012a445261182e88a33"><td class="memItemLeft" align="right" valign="top"><a id="a162c2ee8ba1b8012a445261182e88a33"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>conv</b> (long long &amp;x, double a)</td></tr>
+<tr class="memitem:a162c2ee8ba1b8012a445261182e88a33"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d5a/namespaceNTL.html#a162c2ee8ba1b8012a445261182e88a33">conv</a> (long long &amp;x, double a)</td></tr>
+<tr class="memdesc:a162c2ee8ba1b8012a445261182e88a33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a <code>double</code> to a <code>long long</code>.  <a href="#a162c2ee8ba1b8012a445261182e88a33">More...</a><br /></td></tr>
 <tr class="separator:a162c2ee8ba1b8012a445261182e88a33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5340312b93e5f15c73ba9f48c5a7094f"><td class="memItemLeft" align="right" valign="top"><a id="a5340312b93e5f15c73ba9f48c5a7094f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>conv</b> (ZZ &amp;x, long long a)</td></tr>
+<tr class="memitem:a5340312b93e5f15c73ba9f48c5a7094f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d5a/namespaceNTL.html#a5340312b93e5f15c73ba9f48c5a7094f">conv</a> (ZZ &amp;x, long long a)</td></tr>
+<tr class="memdesc:a5340312b93e5f15c73ba9f48c5a7094f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a <code>long long</code> to a <code>NTL::ZZ</code>.  <a href="#a5340312b93e5f15c73ba9f48c5a7094f">More...</a><br /></td></tr>
 <tr class="separator:a5340312b93e5f15c73ba9f48c5a7094f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60f1cd4e70855fdb49dad81e63160855"><td class="memItemLeft" align="right" valign="top"><a id="a60f1cd4e70855fdb49dad81e63160855"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>conv</b> (long long &amp;x, ZZ a)</td></tr>
+<tr class="memitem:a60f1cd4e70855fdb49dad81e63160855"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d5a/namespaceNTL.html#a60f1cd4e70855fdb49dad81e63160855">conv</a> (long long &amp;x, ZZ a)</td></tr>
+<tr class="memdesc:a60f1cd4e70855fdb49dad81e63160855"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a <code>NTL::ZZ</code> to a <code>long long</code>.  <a href="#a60f1cd4e70855fdb49dad81e63160855">More...</a><br /></td></tr>
 <tr class="separator:a60f1cd4e70855fdb49dad81e63160855"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a81bcfb9554ad894c4be611c04b8f7b61"><td class="memItemLeft" align="right" valign="top"><a id="a81bcfb9554ad894c4be611c04b8f7b61"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>conv</b> (long &amp;x, long long a)</td></tr>
+<tr class="memitem:a81bcfb9554ad894c4be611c04b8f7b61"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d5a/namespaceNTL.html#a81bcfb9554ad894c4be611c04b8f7b61">conv</a> (long &amp;x, long long a)</td></tr>
+<tr class="memdesc:a81bcfb9554ad894c4be611c04b8f7b61"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a <code>long long</code> to a <code>long</code>.  <a href="#a81bcfb9554ad894c4be611c04b8f7b61">More...</a><br /></td></tr>
 <tr class="separator:a81bcfb9554ad894c4be611c04b8f7b61"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60f1ee83dfb27da95c37b8eee6315079"><td class="memItemLeft" align="right" valign="top"><a id="a60f1ee83dfb27da95c37b8eee6315079"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>conv</b> (long long &amp;x, long a)</td></tr>
+<tr class="memitem:a60f1ee83dfb27da95c37b8eee6315079"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d5a/namespaceNTL.html#a60f1ee83dfb27da95c37b8eee6315079">conv</a> (long long &amp;x, long a)</td></tr>
+<tr class="memdesc:a60f1ee83dfb27da95c37b8eee6315079"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts a <code>long</code> to a <code>long long</code>.  <a href="#a60f1ee83dfb27da95c37b8eee6315079">More...</a><br /></td></tr>
 <tr class="separator:a60f1ee83dfb27da95c37b8eee6315079"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a79558a14740eba4a6fa479d7d73bf38b"><td class="memItemLeft" align="right" valign="top"><a id="a79558a14740eba4a6fa479d7d73bf38b"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>conv</b> (long long &amp;x, long long a)</td></tr>
+<tr class="memitem:a79558a14740eba4a6fa479d7d73bf38b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d5a/namespaceNTL.html#a79558a14740eba4a6fa479d7d73bf38b">conv</a> (long long &amp;x, long long a)</td></tr>
+<tr class="memdesc:a79558a14740eba4a6fa479d7d73bf38b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Since both are of the same type, this assigns a to x.  <a href="#a79558a14740eba4a6fa479d7d73bf38b">More...</a><br /></td></tr>
 <tr class="separator:a79558a14740eba4a6fa479d7d73bf38b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -147,7 +151,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>conv</b> (long long &
 <p>This name conversion was meant to have the same function names in boost and <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> and allows us to have <a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace. ">LatticeTester</a> work with either boost library or <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> library depending on preprocessing statements. </p>
 </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a07b6d8586b6a40e65a3bee1608d3e389"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07b6d8586b6a40e65a3bee1608d3e389">&#9670;&nbsp;</a></span>conv() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a07b6d8586b6a40e65a3bee1608d3e389">&#9670;&nbsp;</a></span>conv() <span class="overload">[1/9]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -180,12 +184,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>conv</b> (long long &
 </table>
 </div><div class="memdoc">
 
-<p>Converts the array of characters (string) <code>c</code> into an <code>std::int64_t</code> <code>l</code>. </p>
+<p>Converts the array of characters (string) <code>c</code> into an <code>std::int64_t</code> <code>l</code> using the strtol() function of cstdlib.h. </p>
 
 </div>
 </div>
 <a id="a7ccb62fcab3fca4d4cf9c2b55061e63f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7ccb62fcab3fca4d4cf9c2b55061e63f">&#9670;&nbsp;</a></span>conv() <span class="overload">[2/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ccb62fcab3fca4d4cf9c2b55061e63f">&#9670;&nbsp;</a></span>conv() <span class="overload">[2/9]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -218,7 +222,276 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>conv</b> (long long &
 </table>
 </div><div class="memdoc">
 
-<p>Converts the array of characters (string) <code>c</code> into a <code>double</code> <code>r</code>. </p>
+<p>Converts the array of characters (string) <code>c</code> into a <code>double</code> <code>r</code> using the strtod() function of cstdlib.h. </p>
+
+</div>
+</div>
+<a id="aab050c8acfe68df985d447688b4caf01"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab050c8acfe68df985d447688b4caf01">&#9670;&nbsp;</a></span>conv() <span class="overload">[3/9]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NTL::conv </td>
+          <td>(</td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long long&#160;</td>
+          <td class="paramname"><em>a</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Converts a <code>long long</code> to a `double. </p>
+
+</div>
+</div>
+<a id="a162c2ee8ba1b8012a445261182e88a33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a162c2ee8ba1b8012a445261182e88a33">&#9670;&nbsp;</a></span>conv() <span class="overload">[4/9]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NTL::conv </td>
+          <td>(</td>
+          <td class="paramtype">long long &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">double&#160;</td>
+          <td class="paramname"><em>a</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Converts a <code>double</code> to a <code>long long</code>. </p>
+<p>This truncates the decimals of a. </p>
+
+</div>
+</div>
+<a id="a5340312b93e5f15c73ba9f48c5a7094f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5340312b93e5f15c73ba9f48c5a7094f">&#9670;&nbsp;</a></span>conv() <span class="overload">[5/9]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NTL::conv </td>
+          <td>(</td>
+          <td class="paramtype">ZZ &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long long&#160;</td>
+          <td class="paramname"><em>a</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Converts a <code>long long</code> to a <code>NTL::ZZ</code>. </p>
+
+</div>
+</div>
+<a id="a60f1cd4e70855fdb49dad81e63160855"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60f1cd4e70855fdb49dad81e63160855">&#9670;&nbsp;</a></span>conv() <span class="overload">[6/9]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NTL::conv </td>
+          <td>(</td>
+          <td class="paramtype">long long &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ZZ&#160;</td>
+          <td class="paramname"><em>a</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Converts a <code>NTL::ZZ</code> to a <code>long long</code>. </p>
+<p>This will truncate a if it has to many digits. </p>
+
+</div>
+</div>
+<a id="a81bcfb9554ad894c4be611c04b8f7b61"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81bcfb9554ad894c4be611c04b8f7b61">&#9670;&nbsp;</a></span>conv() <span class="overload">[7/9]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NTL::conv </td>
+          <td>(</td>
+          <td class="paramtype">long &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long long&#160;</td>
+          <td class="paramname"><em>a</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Converts a <code>long long</code> to a <code>long</code>. </p>
+<p>This will truncate a if it has to many digits. </p>
+
+</div>
+</div>
+<a id="a60f1ee83dfb27da95c37b8eee6315079"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60f1ee83dfb27da95c37b8eee6315079">&#9670;&nbsp;</a></span>conv() <span class="overload">[8/9]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NTL::conv </td>
+          <td>(</td>
+          <td class="paramtype">long long &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>a</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Converts a <code>long</code> to a <code>long long</code>. </p>
+
+</div>
+</div>
+<a id="a79558a14740eba4a6fa479d7d73bf38b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a79558a14740eba4a6fa479d7d73bf38b">&#9670;&nbsp;</a></span>conv() <span class="overload">[9/9]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NTL::conv </td>
+          <td>(</td>
+          <td class="paramtype">long long &amp;&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long long&#160;</td>
+          <td class="paramname"><em>a</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Since both are of the same type, this assigns a to x. </p>
 
 </div>
 </div>
@@ -228,7 +501,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>conv</b> (long long &
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d2/d5a/namespaceNTL.html">NTL</a></li>
-    <li class="footer">Generated on Fri Aug 10 2018 19:17:44 for Lattice Tester Manual by
+    <li class="footer">Generated on Tue Aug 21 2018 11:14:43 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

@@ -1,7 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"d4/de7/classLatticeTester_1_1PODWeights.html#aaf422185afef3a59ab69a91f694f0234":[4,0,0,18,0],
-"d4/de7/classLatticeTester_1_1PODWeights.html#adf26a37f4935e813b6d8216497e78c93":[4,0,0,18,4],
 "d4/de7/classLatticeTester_1_1PODWeights.html#afc641011daa61164f87fbf213de9b4a1":[4,0,0,18,2],
 "d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html":[4,0,0,7],
 "d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html#a01baf658db57d133fdec72ef5cd990e3":[4,0,0,7,11],
@@ -113,8 +111,8 @@ var NAVTREEINDEX1 =
 "d8/d6e/classLatticeTester_1_1NormaPalpha.html#a696a88eb13799c3a7952413810f22474":[4,0,0,14,2],
 "d8/d6e/classLatticeTester_1_1NormaPalpha.html#a71b1d07fd1b5b3f27a63de516c6c55bd":[4,0,0,14,3],
 "d8/d6e/classLatticeTester_1_1NormaPalpha.html#ae2d9a6a833d73c03b94b424f923a07b8":[4,0,0,14,1],
-"d8/d74/namespaceLatticeTester.html":[3,0,0],
 "d8/d74/namespaceLatticeTester.html":[4,0,0],
+"d8/d74/namespaceLatticeTester.html":[3,0,0],
 "d8/daf/classLatticeTester_1_1CoordinateSets_1_1FromRanges_1_1const__iterator.html":[4,0,0,0,1,0],
 "d8/daf/classLatticeTester_1_1CoordinateSets_1_1FromRanges_1_1const__iterator.html#a28f1afc58f17492448cf1b92e231703b":[4,0,0,0,1,0,1],
 "d8/daf/classLatticeTester_1_1CoordinateSets_1_1FromRanges_1_1const__iterator.html#a6d4198f9f4a4ca0a531803e9c25c9230":[4,0,0,0,1,0,0],
@@ -249,5 +247,7 @@ var NAVTREEINDEX1 =
 "df/d59/classLatticeTester_1_1LatticeAnalysis.html#a9eae98f287e6a74e15f5f45aa9a0657a":[4,0,0,6,7],
 "df/d59/classLatticeTester_1_1LatticeAnalysis.html#aa402aa6dc73f4207e3af0461bb0b004d":[4,0,0,6,18],
 "df/d59/classLatticeTester_1_1LatticeAnalysis.html#aa652bd2f127a6732e5659b6b3078d1e4":[4,0,0,6,24],
-"df/d59/classLatticeTester_1_1LatticeAnalysis.html#aadf9bee9f6ab93d9911e84e20a463366":[4,0,0,6,6]
+"df/d59/classLatticeTester_1_1LatticeAnalysis.html#aadf9bee9f6ab93d9911e84e20a463366":[4,0,0,6,6],
+"df/d59/classLatticeTester_1_1LatticeAnalysis.html#aae6ad4fc90a9b571db0a83b016f3831d":[4,0,0,6,22],
+"df/d59/classLatticeTester_1_1LatticeAnalysis.html#ab7fc469559cc21cbc26a900a9710976b":[4,0,0,6,14]
 };

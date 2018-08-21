@@ -34,8 +34,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"d4/de7/classLatticeTester_1_1PODWeights.html#aaf422185afef3a59ab69a91f694f0234",
-"df/d59/classLatticeTester_1_1LatticeAnalysis.html#aae6ad4fc90a9b571db0a83b016f3831d"
+"d4/de7/classLatticeTester_1_1PODWeights.html#afc641011daa61164f87fbf213de9b4a1",
+"df/d59/classLatticeTester_1_1LatticeAnalysis.html#abec5518737b36f9d89274e296927fce7"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

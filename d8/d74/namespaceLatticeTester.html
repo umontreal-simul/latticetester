@@ -36,7 +36,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-work-31</span>
+   &#160;<span id="projectnumber">0.1.0-work-40</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -266,7 +266,7 @@ Functions</h2></td></tr>
 <tr class="separator:ae5744c76f19028a3bd469d318108dd5e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad4d16fed8fda92252dc423db28136932"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ad4d16fed8fda92252dc423db28136932"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ad4d16fed8fda92252dc423db28136932">swap9</a> (T &amp;x, T &amp;y)</td></tr>
-<tr class="memdesc:ad4d16fed8fda92252dc423db28136932"><td class="mdescLeft">&#160;</td><td class="mdescRight">Swaps the values of <code>x</code> and <code>y</code>.  <a href="#ad4d16fed8fda92252dc423db28136932">More...</a><br /></td></tr>
+<tr class="memdesc:ad4d16fed8fda92252dc423db28136932"><td class="mdescLeft">&#160;</td><td class="mdescRight">Takes references to two variables of a generic type and swaps their content.  <a href="#ad4d16fed8fda92252dc423db28136932">More...</a><br /></td></tr>
 <tr class="separator:ad4d16fed8fda92252dc423db28136932"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a42956b9be5474c04704701d5aba906cc"><td class="memTemplParams" colspan="2">template&lt;class K , class T , class C , class A &gt; </td></tr>
 <tr class="memitem:a42956b9be5474c04704701d5aba906cc"><td class="memTemplItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a42956b9be5474c04704701d5aba906cc">operator&lt;&lt;</a> (std::ostream &amp;out, const std::map&lt; K, T, C, A &gt; &amp;x)</td></tr>
@@ -313,37 +313,24 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>toStringOutput
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>toStringPrecision</b> (<a class="el" href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">PrecisionType</a>)</td></tr>
 <tr class="separator:a139260fd72d3392ffac14fede81a693d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Random numbers</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p>All the functions of this module use LFSR258 as an underlying source for pseudo-random numbers.</p>
+<p>A free (as in freedom) implementation of this generator can be found at <a href="http://simul.iro.umontreal.ca/">http://simul.iro.umontreal.ca/</a> as well as the article presenting it. All the functions generating some sort of random number will advance an integer version of LFSR258 by one state and output a transformation of the state to give a double, an int or bits. </p>
+</div></td></tr>
 <tr class="memitem:abba336d3a5abb22b8367ddfa37a713e4"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#abba336d3a5abb22b8367ddfa37a713e4">RandU01</a> ()</td></tr>
 <tr class="memdesc:abba336d3a5abb22b8367ddfa37a713e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a random number in \([0, 1)\).  <a href="#abba336d3a5abb22b8367ddfa37a713e4">More...</a><br /></td></tr>
 <tr class="separator:abba336d3a5abb22b8367ddfa37a713e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8e829d77e42c8dbabc8f6e37eca2a714"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a8e829d77e42c8dbabc8f6e37eca2a714">RandInt</a> (int i, int j)</td></tr>
-<tr class="memdesc:a8e829d77e42c8dbabc8f6e37eca2a714"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a random integer in \([i, j]\).  <a href="#a8e829d77e42c8dbabc8f6e37eca2a714">More...</a><br /></td></tr>
+<tr class="memdesc:a8e829d77e42c8dbabc8f6e37eca2a714"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return a uniform pseudo-random integer in \([i, j]\).  <a href="#a8e829d77e42c8dbabc8f6e37eca2a714">More...</a><br /></td></tr>
 <tr class="separator:a8e829d77e42c8dbabc8f6e37eca2a714"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a56b8827c239bd1293eacd356e5cbe3b2"><td class="memItemLeft" align="right" valign="top">std::uint64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a56b8827c239bd1293eacd356e5cbe3b2">RandBits</a> (int s)</td></tr>
-<tr class="memdesc:a56b8827c239bd1293eacd356e5cbe3b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns random blocks of \(s\) bits ( \(s\)-bit integers).  <a href="#a56b8827c239bd1293eacd356e5cbe3b2">More...</a><br /></td></tr>
+<tr class="memdesc:a56b8827c239bd1293eacd356e5cbe3b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the first s pseudo-random bits of the underlying RNG in the form of a s-bit integer.  <a href="#a56b8827c239bd1293eacd356e5cbe3b2">More...</a><br /></td></tr>
 <tr class="separator:a56b8827c239bd1293eacd356e5cbe3b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a68bc6b1e81a03d09ea07fa9efed658"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a1a68bc6b1e81a03d09ea07fa9efed658">SetSeed</a> (std::uint64_t seed)</td></tr>
 <tr class="memdesc:a1a68bc6b1e81a03d09ea07fa9efed658"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the seed of the generator.  <a href="#a1a68bc6b1e81a03d09ea07fa9efed658">More...</a><br /></td></tr>
 <tr class="separator:a1a68bc6b1e81a03d09ea07fa9efed658"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa332228978921670954fc35afb8d7440"><td class="memItemLeft" align="right" valign="top">std::int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#aa332228978921670954fc35afb8d7440">IsOdd</a> (const std::int64_t &amp;x)</td></tr>
-<tr class="memdesc:aa332228978921670954fc35afb8d7440"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns 1 if \(x\) is odd, and 0 otherwise.  <a href="#aa332228978921670954fc35afb8d7440">More...</a><br /></td></tr>
-<tr class="separator:aa332228978921670954fc35afb8d7440"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1cfdf172615c09b6a677ff935621632d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a1cfdf172615c09b6a677ff935621632d">IsZero</a> (const std::int64_t &amp;x)</td></tr>
-<tr class="memdesc:a1cfdf172615c09b6a677ff935621632d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return <code>true</code> if \(x = 0\).  <a href="#a1cfdf172615c09b6a677ff935621632d">More...</a><br /></td></tr>
-<tr class="separator:a1cfdf172615c09b6a677ff935621632d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6fd74c4ea41ec1c1030a621dc788845"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab6fd74c4ea41ec1c1030a621dc788845">clear</a> (double &amp;x)</td></tr>
-<tr class="memdesc:ab6fd74c4ea41ec1c1030a621dc788845"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets \(x\) to 0.  <a href="#ab6fd74c4ea41ec1c1030a621dc788845">More...</a><br /></td></tr>
-<tr class="separator:ab6fd74c4ea41ec1c1030a621dc788845"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9738859ae42e8f85791ebb56705aa227"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9738859ae42e8f85791ebb56705aa227">clear</a> (std::int64_t &amp;x)</td></tr>
-<tr class="memdesc:a9738859ae42e8f85791ebb56705aa227"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets \(x\) to 0.  <a href="#a9738859ae42e8f85791ebb56705aa227">More...</a><br /></td></tr>
-<tr class="separator:a9738859ae42e8f85791ebb56705aa227"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8196a81e178fdb095a0deaf8b0803614"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a8196a81e178fdb095a0deaf8b0803614">set9</a> (std::int64_t &amp;x)</td></tr>
-<tr class="memdesc:a8196a81e178fdb095a0deaf8b0803614"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets \(x\) to 1.  <a href="#a8196a81e178fdb095a0deaf8b0803614">More...</a><br /></td></tr>
-<tr class="separator:a8196a81e178fdb095a0deaf8b0803614"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad378d927159f2724975f6d1264daf8e4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ad378d927159f2724975f6d1264daf8e4">set9</a> (NTL::ZZ &amp;x)</td></tr>
-<tr class="memdesc:ad378d927159f2724975f6d1264daf8e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets \(x\) to 1.  <a href="#ad378d927159f2724975f6d1264daf8e4">More...</a><br /></td></tr>
-<tr class="separator:ad378d927159f2724975f6d1264daf8e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Mathematical functions</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p>These are basic wrapper and overloads to common mathematical functions such as logarithm, exponentiation, and square-root. </p>
+</div></td></tr>
 <tr class="memitem:aa1b3094c46a9f69a9f1bbdcf29320886"><td class="memItemLeft" align="right" valign="top">std::int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#aa1b3094c46a9f69a9f1bbdcf29320886">power</a> (std::int64_t p, std::int64_t i)</td></tr>
 <tr class="memdesc:aa1b3094c46a9f69a9f1bbdcf29320886"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns \(p^i\).  <a href="#aa1b3094c46a9f69a9f1bbdcf29320886">More...</a><br /></td></tr>
 <tr class="separator:aa1b3094c46a9f69a9f1bbdcf29320886"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -356,210 +343,204 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>toStringPrecis
 <tr class="memitem:a9abb8da9fdc5fa2c37d44165f8660aaf"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9abb8da9fdc5fa2c37d44165f8660aaf">mysqrt</a> (double x)</td></tr>
 <tr class="memdesc:a9abb8da9fdc5fa2c37d44165f8660aaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns \(\sqrt{x}\) for \(x\ge0\), and \(-1\) for \(x &lt; 0\).  <a href="#a9abb8da9fdc5fa2c37d44165f8660aaf">More...</a><br /></td></tr>
 <tr class="separator:a9abb8da9fdc5fa2c37d44165f8660aaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac57f48ff79454c1d449bc309bebdcbdc"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ac57f48ff79454c1d449bc309bebdcbdc">SqrRoot</a> (double x)</td></tr>
-<tr class="memdesc:ac57f48ff79454c1d449bc309bebdcbdc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns \(\sqrt{x}\).  <a href="#ac57f48ff79454c1d449bc309bebdcbdc">More...</a><br /></td></tr>
-<tr class="separator:ac57f48ff79454c1d449bc309bebdcbdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae12db9335c229d7c60e570dab50ef05b"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ae12db9335c229d7c60e570dab50ef05b"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ae12db9335c229d7c60e570dab50ef05b">Lg</a> (const T &amp;x)</td></tr>
-<tr class="memdesc:ae12db9335c229d7c60e570dab50ef05b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logarithm of \(x\) in base 2.  <a href="#ae12db9335c229d7c60e570dab50ef05b">More...</a><br /></td></tr>
+<tr class="memdesc:ae12db9335c229d7c60e570dab50ef05b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the logarithm of \(x\) in base 2.  <a href="#ae12db9335c229d7c60e570dab50ef05b">More...</a><br /></td></tr>
 <tr class="separator:ae12db9335c229d7c60e570dab50ef05b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a12e4b6c931cf0a19642828796b3b3bef"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a12e4b6c931cf0a19642828796b3b3bef">Lg</a> (std::int64_t x)</td></tr>
-<tr class="memdesc:a12e4b6c931cf0a19642828796b3b3bef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Logarithm of \(x\) in base 2.  <a href="#a12e4b6c931cf0a19642828796b3b3bef">More...</a><br /></td></tr>
+<tr class="memdesc:a12e4b6c931cf0a19642828796b3b3bef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the logarithm of \(x\) in base 2.  <a href="#a12e4b6c931cf0a19642828796b3b3bef">More...</a><br /></td></tr>
 <tr class="separator:a12e4b6c931cf0a19642828796b3b3bef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67e0668a966fb5fa3e22fc1ffa6d59ed"><td class="memTemplParams" colspan="2">template&lt;typename Scal &gt; </td></tr>
 <tr class="memitem:a67e0668a966fb5fa3e22fc1ffa6d59ed"><td class="memTemplItemLeft" align="right" valign="top">Scal&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a67e0668a966fb5fa3e22fc1ffa6d59ed">abs</a> (Scal x)</td></tr>
-<tr class="memdesc:a67e0668a966fb5fa3e22fc1ffa6d59ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the absolute value.  <a href="#a67e0668a966fb5fa3e22fc1ffa6d59ed">More...</a><br /></td></tr>
+<tr class="memdesc:a67e0668a966fb5fa3e22fc1ffa6d59ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the absolute value of \(x\).  <a href="#a67e0668a966fb5fa3e22fc1ffa6d59ed">More...</a><br /></td></tr>
 <tr class="separator:a67e0668a966fb5fa3e22fc1ffa6d59ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a59016f13e4470ad17683b1cfeb70153c"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:a59016f13e4470ad17683b1cfeb70153c"><td class="memTemplItemLeft" align="right" valign="top">std::int64_t&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a59016f13e4470ad17683b1cfeb70153c">sign</a> (const T &amp;x)</td></tr>
-<tr class="memdesc:a59016f13e4470ad17683b1cfeb70153c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns 1, 0 or \(-1\) depending on whether \(x&gt; 0\), \(x= 0\) or \(x&lt; 0\) respectively.  <a href="#a59016f13e4470ad17683b1cfeb70153c">More...</a><br /></td></tr>
+<tr class="memdesc:a59016f13e4470ad17683b1cfeb70153c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the sign of <code>x</code>.  <a href="#a59016f13e4470ad17683b1cfeb70153c">More...</a><br /></td></tr>
 <tr class="separator:a59016f13e4470ad17683b1cfeb70153c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15f15a1453b578cb49b2e3deda5a200d"><td class="memTemplParams" colspan="2">template&lt;typename Real &gt; </td></tr>
 <tr class="memitem:a15f15a1453b578cb49b2e3deda5a200d"><td class="memTemplItemLeft" align="right" valign="top">Real&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a15f15a1453b578cb49b2e3deda5a200d">Round</a> (Real x)</td></tr>
-<tr class="memdesc:a15f15a1453b578cb49b2e3deda5a200d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Rounds to the nearest integer value.  <a href="#a15f15a1453b578cb49b2e3deda5a200d">More...</a><br /></td></tr>
+<tr class="memdesc:a15f15a1453b578cb49b2e3deda5a200d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value of x rounded to the NEAREST integer value.  <a href="#a15f15a1453b578cb49b2e3deda5a200d">More...</a><br /></td></tr>
 <tr class="separator:a15f15a1453b578cb49b2e3deda5a200d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a10b9b920d83981962589ceb0d16d6d08"><td class="memItemLeft" align="right" valign="top">std::int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a10b9b920d83981962589ceb0d16d6d08">Factorial</a> (int t)</td></tr>
-<tr class="memdesc:a10b9b920d83981962589ceb0d16d6d08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates \(t!\), the factorial of \(t\).  <a href="#a10b9b920d83981962589ceb0d16d6d08">More...</a><br /></td></tr>
+<tr class="memdesc:a10b9b920d83981962589ceb0d16d6d08"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates \(t!\), the factorial of \(t\) and returns it as an std::int64_t.  <a href="#a10b9b920d83981962589ceb0d16d6d08">More...</a><br /></td></tr>
 <tr class="separator:a10b9b920d83981962589ceb0d16d6d08"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Division and remainder</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p>For negative operands, the <code>/</code> and <code>%</code> operators do not give the same results for <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> large integers <code>ZZ</code> and for primitive types <code>int</code> and <code>std::int64_t</code>.</p>
-<p>The negative quotient differs by 1 and the remainder also differs. Thus the following small <code>inline</code> functions for division and remainder. </p><dl class="section remark"><dt>Remarks</dt><dd><b>Richard:</b> Pour certaines fonctions, les résultats sont mis dans les premiers arguments de la fonction pour être compatible avec <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a>; pour d’autres, ils sont mis dans les derniers arguments pour être compatible avec notre ancienne version de LatMRG en Modula-2. Plutôt détestable. Je crois qu’il faudra un jour réarranger les arguments des fonctions pour qu’elles suivent toutes la même convention que <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a>. </dd></dl>
+<tr><td colspan="2"><div class="groupHeader">Division and modular arithmetic</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><dl class="section remark"><dt>Remarks</dt><dd><b>Richard:</b> Pour certaines fonctions, les résultats sont mis dans les premiers arguments de la fonction pour être compatible avec <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a>; pour d’autres, ils sont mis dans les derniers arguments pour être compatible avec notre ancienne version de LatMRG en Modula-2. Plutôt détestable. Je crois qu’il faudra un jour réarranger les arguments des fonctions pour qu’elles suivent toutes la même convention que <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a>.</dd></dl>
+<p>This module offers function to perform division and find remainders in a standard way. These functions are usefull in the case where one wants to do divisions or find remainders of operations with negative operands. The reason is that <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> and primitive types do not use the same logic when doing calculations on negative numbers.</p>
+<p>Basically, <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> will always floor a division and C++ will always truncate a division (which effectively means the floor function is replaced by a roof function if the answer is a negative number). When calculating the remainder of x/y, both apply the same logic but get a different result because they do not do the same division. In both representations, we have that </p><p class="formulaDsp">
+\[ y\cdot(x/y) + x%y = x. \]
+</p>
+<p> It turns out that, with negative values, <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> will return an integer with the same sign as y where C++ will return an integer of opposite sign (but both will return the same number modulo y). </p>
 </div></td></tr>
 <tr class="memitem:aa9056e4da6e74d83c6061650caf9e59f"><td class="memTemplParams" colspan="2">template&lt;typename Int &gt; </td></tr>
 <tr class="memitem:aa9056e4da6e74d83c6061650caf9e59f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#aa9056e4da6e74d83c6061650caf9e59f">Quotient</a> (const Int &amp;a, const Int &amp;b, Int &amp;q)</td></tr>
-<tr class="memdesc:aa9056e4da6e74d83c6061650caf9e59f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes \(q = a/b\) by dropping the fractionnal part, i.e.  <a href="#aa9056e4da6e74d83c6061650caf9e59f">More...</a><br /></td></tr>
+<tr class="memdesc:aa9056e4da6e74d83c6061650caf9e59f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes a/b, truncates the fractionnal part and puts the result in q.  <a href="#aa9056e4da6e74d83c6061650caf9e59f">More...</a><br /></td></tr>
 <tr class="separator:aa9056e4da6e74d83c6061650caf9e59f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7c40ca56dbbbaeeae0b5ab38ac83de1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#aa7c40ca56dbbbaeeae0b5ab38ac83de1">Quotient</a> (const NTL::ZZ &amp;a, const NTL::ZZ &amp;b, NTL::ZZ &amp;q)</td></tr>
-<tr class="memdesc:aa7c40ca56dbbbaeeae0b5ab38ac83de1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes \(q = a/b\) by dropping the fractionnal part, i.e.  <a href="#aa7c40ca56dbbbaeeae0b5ab38ac83de1">More...</a><br /></td></tr>
-<tr class="separator:aa7c40ca56dbbbaeeae0b5ab38ac83de1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a33b2ac0aaf5689dbf1f2225dbf14b327"><td class="memTemplParams" colspan="2"><a id="a33b2ac0aaf5689dbf1f2225dbf14b327"></a>
-template&lt;typename Real &gt; </td></tr>
-<tr class="memitem:a33b2ac0aaf5689dbf1f2225dbf14b327"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>Modulo</b> (const Real &amp;a, const Real &amp;b, Real &amp;r)</td></tr>
+<tr class="memitem:a33b2ac0aaf5689dbf1f2225dbf14b327"><td class="memTemplParams" colspan="2">template&lt;typename Real &gt; </td></tr>
+<tr class="memitem:a33b2ac0aaf5689dbf1f2225dbf14b327"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a33b2ac0aaf5689dbf1f2225dbf14b327">Modulo</a> (const Real &amp;a, const Real &amp;b, Real &amp;r)</td></tr>
+<tr class="memdesc:a33b2ac0aaf5689dbf1f2225dbf14b327"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the remainder of a/b and stores its positive equivalent mod b in r.  <a href="#a33b2ac0aaf5689dbf1f2225dbf14b327">More...</a><br /></td></tr>
 <tr class="separator:a33b2ac0aaf5689dbf1f2225dbf14b327"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab3fd3ae7e7a02590cc97b3f3f28e0638"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab3fd3ae7e7a02590cc97b3f3f28e0638">Modulo</a> (const std::int64_t &amp;a, const std::int64_t &amp;b, std::int64_t &amp;r)</td></tr>
-<tr class="memdesc:ab3fd3ae7e7a02590cc97b3f3f28e0638"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the "positive" remainder \(r = a \bmod b\), i.e.  <a href="#ab3fd3ae7e7a02590cc97b3f3f28e0638">More...</a><br /></td></tr>
-<tr class="separator:ab3fd3ae7e7a02590cc97b3f3f28e0638"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37596db3ece874abb24b32cab2873e33"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a37596db3ece874abb24b32cab2873e33">Modulo</a> (const NTL::ZZ &amp;a, const NTL::ZZ &amp;b, NTL::ZZ &amp;r)</td></tr>
-<tr class="memdesc:a37596db3ece874abb24b32cab2873e33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the "positive" remainder \(r = a \bmod b\), i.e.  <a href="#a37596db3ece874abb24b32cab2873e33">More...</a><br /></td></tr>
-<tr class="separator:a37596db3ece874abb24b32cab2873e33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeccbd231b4002cadbaac0157871f5570"><td class="memTemplParams" colspan="2">template&lt;typename Real &gt; </td></tr>
 <tr class="memitem:aeccbd231b4002cadbaac0157871f5570"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#aeccbd231b4002cadbaac0157871f5570">Divide</a> (Real &amp;q, Real &amp;r, const Real &amp;a, const Real &amp;b)</td></tr>
 <tr class="memdesc:aeccbd231b4002cadbaac0157871f5570"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the quotient \(q = a/b\) and remainder \(r = a \bmod b\).  <a href="#aeccbd231b4002cadbaac0157871f5570">More...</a><br /></td></tr>
 <tr class="separator:aeccbd231b4002cadbaac0157871f5570"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a96e86545bb8987e61e30693e09a60113"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a96e86545bb8987e61e30693e09a60113">Divide</a> (std::int64_t &amp;q, std::int64_t &amp;r, const std::int64_t &amp;a, const std::int64_t &amp;b)</td></tr>
-<tr class="memdesc:a96e86545bb8987e61e30693e09a60113"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the quotient \(q = a/b\) and remainder \(r = a \bmod b\) by truncating \(q\) towards 0.  <a href="#a96e86545bb8987e61e30693e09a60113">More...</a><br /></td></tr>
-<tr class="separator:a96e86545bb8987e61e30693e09a60113"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab299b8335f9a690fad8b7838db6678ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab299b8335f9a690fad8b7838db6678ad">Divide</a> (NTL::ZZ &amp;q, NTL::ZZ &amp;r, const NTL::ZZ &amp;a, const NTL::ZZ &amp;b)</td></tr>
-<tr class="memdesc:ab299b8335f9a690fad8b7838db6678ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the quotient \(q = a/b\) and remainder \(r = a \bmod b\) by truncating \(q\) towards 0.  <a href="#ab299b8335f9a690fad8b7838db6678ad">More...</a><br /></td></tr>
-<tr class="separator:ab299b8335f9a690fad8b7838db6678ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a756f03c94dc21f7dbf6aad8cb6f9f4c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a756f03c94dc21f7dbf6aad8cb6f9f4c1">div</a> (std::int64_t &amp;a, const std::int64_t &amp;b, const std::int64_t &amp;d)</td></tr>
-<tr class="memdesc:a756f03c94dc21f7dbf6aad8cb6f9f4c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Integer division: \(a = b/d\).  <a href="#a756f03c94dc21f7dbf6aad8cb6f9f4c1">More...</a><br /></td></tr>
-<tr class="separator:a756f03c94dc21f7dbf6aad8cb6f9f4c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a76b74332cd4ded85d51dc6020b930772"><td class="memTemplParams" colspan="2">template&lt;typename Real &gt; </td></tr>
 <tr class="memitem:a76b74332cd4ded85d51dc6020b930772"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a76b74332cd4ded85d51dc6020b930772">DivideRound</a> (const Real &amp;a, const Real &amp;b, Real &amp;q)</td></tr>
 <tr class="memdesc:a76b74332cd4ded85d51dc6020b930772"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes \(a/b\), rounds the result to the nearest integer and returns the result in \(q\).  <a href="#a76b74332cd4ded85d51dc6020b930772">More...</a><br /></td></tr>
 <tr class="separator:a76b74332cd4ded85d51dc6020b930772"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a731a1477c8a8f0bb66d862e9ab07eccd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a731a1477c8a8f0bb66d862e9ab07eccd">DivideRound</a> (const std::int64_t &amp;a, const std::int64_t &amp;b, std::int64_t &amp;q)</td></tr>
-<tr class="memdesc:a731a1477c8a8f0bb66d862e9ab07eccd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes \(a/b\), rounds the result to the nearest integer and returns the result in \(q\).  <a href="#a731a1477c8a8f0bb66d862e9ab07eccd">More...</a><br /></td></tr>
-<tr class="separator:a731a1477c8a8f0bb66d862e9ab07eccd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a29eec1640aff38a01eea3be0e4438522"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a29eec1640aff38a01eea3be0e4438522">DivideRound</a> (const NTL::ZZ &amp;a, const NTL::ZZ &amp;b, NTL::ZZ &amp;q)</td></tr>
-<tr class="memdesc:a29eec1640aff38a01eea3be0e4438522"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes \(a/b\), rounds the result to the nearest integer and returns the result in \(q\).  <a href="#a29eec1640aff38a01eea3be0e4438522">More...</a><br /></td></tr>
-<tr class="separator:a29eec1640aff38a01eea3be0e4438522"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a14db19d396c104b730dd5ea23a7752b5"><td class="memItemLeft" align="right" valign="top">std::int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a14db19d396c104b730dd5ea23a7752b5">gcd</a> (std::int64_t a, std::int64_t b)</td></tr>
-<tr class="memdesc:a14db19d396c104b730dd5ea23a7752b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value of the greatest common divisor of \(a\) and \(b\).  <a href="#a14db19d396c104b730dd5ea23a7752b5">More...</a><br /></td></tr>
+<tr class="memdesc:a14db19d396c104b730dd5ea23a7752b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the value of the greatest common divisor of \(a\) and \(b\) by using Stein's binary GCD algorithm.  <a href="#a14db19d396c104b730dd5ea23a7752b5">More...</a><br /></td></tr>
 <tr class="separator:a14db19d396c104b730dd5ea23a7752b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abfe3d98ab5a4c91cac2ef0fa59ec897d"><td class="memTemplParams" colspan="2">template&lt;typename Int &gt; </td></tr>
 <tr class="memitem:abfe3d98ab5a4c91cac2ef0fa59ec897d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#abfe3d98ab5a4c91cac2ef0fa59ec897d">Euclide</a> (const Int &amp;A, const Int &amp;B, Int &amp;C, Int &amp;D, Int &amp;E, Int &amp;F, Int &amp;G)</td></tr>
-<tr class="memdesc:abfe3d98ab5a4c91cac2ef0fa59ec897d"><td class="mdescLeft">&#160;</td><td class="mdescRight">For given \(a\) and \(b\), returns the values \(C\), \(D\), \(E\), \(F\) and \(G\) such that: </p><p class="formulaDsp">
-\begin{align*} C a + D b &amp; = G = \mbox{GCD } (a,b) \\ E a + F b &amp; = 0. \end{align*}
-</p>
-<p>.  <a href="#abfe3d98ab5a4c91cac2ef0fa59ec897d">More...</a><br /></td></tr>
+<tr class="memdesc:abfe3d98ab5a4c91cac2ef0fa59ec897d"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method computes the greater common divisor of <code>A</code> and <code>B</code> with Euclid's algorithm.  <a href="#abfe3d98ab5a4c91cac2ef0fa59ec897d">More...</a><br /></td></tr>
 <tr class="separator:abfe3d98ab5a4c91cac2ef0fa59ec897d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Vectors</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p>These are utilities to manipulate vectors ranging from instanciation to scalar product.</p>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000017">Todo:</a></b></dt><dd>Functions of this section take the size of the input vectors as an argument with name d. Some of them assume d is the number of components of the vectors while somme of them assume that d+1 is the number of components of the vector. We need to uniformize that. </dd></dl>
+</div></td></tr>
 <tr class="memitem:a2256248f03b45f7125a46a05c49b8836"><td class="memTemplParams" colspan="2">template&lt;typename Real &gt; </td></tr>
 <tr class="memitem:a2256248f03b45f7125a46a05c49b8836"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a2256248f03b45f7125a46a05c49b8836">CreateVect</a> (Real *&amp;A, int d)</td></tr>
-<tr class="memdesc:a2256248f03b45f7125a46a05c49b8836"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates memory for the vector \(A\) of dimensions \(d\) and initializes its elements to 0.  <a href="#a2256248f03b45f7125a46a05c49b8836">More...</a><br /></td></tr>
+<tr class="memdesc:a2256248f03b45f7125a46a05c49b8836"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates memory to <code>A</code> as an array of <code>Real</code> of dimension <code>d</code> and initializes its elements to 0.  <a href="#a2256248f03b45f7125a46a05c49b8836">More...</a><br /></td></tr>
 <tr class="separator:a2256248f03b45f7125a46a05c49b8836"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3290d1c59f58412753021d37fd9059c3"><td class="memTemplParams" colspan="2">template&lt;typename Real &gt; </td></tr>
-<tr class="memitem:a3290d1c59f58412753021d37fd9059c3"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a3290d1c59f58412753021d37fd9059c3">DeleteVect</a> (Real *&amp;A)</td></tr>
-<tr class="memdesc:a3290d1c59f58412753021d37fd9059c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees the memory used by the vector \(A\).  <a href="#a3290d1c59f58412753021d37fd9059c3">More...</a><br /></td></tr>
-<tr class="separator:a3290d1c59f58412753021d37fd9059c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1b8b3b162c15420c29f622c74452ab5f"><td class="memTemplParams" colspan="2">template&lt;typename Vect &gt; </td></tr>
 <tr class="memitem:a1b8b3b162c15420c29f622c74452ab5f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a1b8b3b162c15420c29f622c74452ab5f">CreateVect</a> (Vect &amp;A, int d)</td></tr>
-<tr class="memdesc:a1b8b3b162c15420c29f622c74452ab5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the vector \(A\) of dimensions \(d+1\) and initializes its elements to 0.  <a href="#a1b8b3b162c15420c29f622c74452ab5f">More...</a><br /></td></tr>
+<tr class="memdesc:a1b8b3b162c15420c29f622c74452ab5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the vector <code>A</code> of dimensions <code>d+1</code> and initializes its elements to 0.  <a href="#a1b8b3b162c15420c29f622c74452ab5f">More...</a><br /></td></tr>
 <tr class="separator:a1b8b3b162c15420c29f622c74452ab5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3290d1c59f58412753021d37fd9059c3"><td class="memTemplParams" colspan="2">template&lt;typename Real &gt; </td></tr>
+<tr class="memitem:a3290d1c59f58412753021d37fd9059c3"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a3290d1c59f58412753021d37fd9059c3">DeleteVect</a> (Real *&amp;A)</td></tr>
+<tr class="memdesc:a3290d1c59f58412753021d37fd9059c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees the memory used by the vector <code>A</code>.  <a href="#a3290d1c59f58412753021d37fd9059c3">More...</a><br /></td></tr>
+<tr class="separator:a3290d1c59f58412753021d37fd9059c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a74b9ac2e545b1a8e3febffe458488898"><td class="memTemplParams" colspan="2">template&lt;typename Vect &gt; </td></tr>
 <tr class="memitem:a74b9ac2e545b1a8e3febffe458488898"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a74b9ac2e545b1a8e3febffe458488898">DeleteVect</a> (Vect &amp;A)</td></tr>
-<tr class="memdesc:a74b9ac2e545b1a8e3febffe458488898"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees the memory used by the vector \(A\).  <a href="#a74b9ac2e545b1a8e3febffe458488898">More...</a><br /></td></tr>
+<tr class="memdesc:a74b9ac2e545b1a8e3febffe458488898"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees the memory used by the vector <code>A</code>, destroying all the elements it contains.  <a href="#a74b9ac2e545b1a8e3febffe458488898">More...</a><br /></td></tr>
 <tr class="separator:a74b9ac2e545b1a8e3febffe458488898"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80ff1882a1a3efdc5265695e4827bda5"><td class="memTemplParams" colspan="2">template&lt;typename Real &gt; </td></tr>
 <tr class="memitem:a80ff1882a1a3efdc5265695e4827bda5"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a80ff1882a1a3efdc5265695e4827bda5">SetZero</a> (Real *A, int d)</td></tr>
-<tr class="memdesc:a80ff1882a1a3efdc5265695e4827bda5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets components \([0..d-1]\) of \(A\) to 0.  <a href="#a80ff1882a1a3efdc5265695e4827bda5">More...</a><br /></td></tr>
+<tr class="memdesc:a80ff1882a1a3efdc5265695e4827bda5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the first <code>d</code> of <code>A</code> to 0.  <a href="#a80ff1882a1a3efdc5265695e4827bda5">More...</a><br /></td></tr>
 <tr class="separator:a80ff1882a1a3efdc5265695e4827bda5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3ae135eb75ddb3c6cb8f452afc34cf18"><td class="memTemplParams" colspan="2">template&lt;typename Vect &gt; </td></tr>
 <tr class="memitem:a3ae135eb75ddb3c6cb8f452afc34cf18"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a3ae135eb75ddb3c6cb8f452afc34cf18">SetZero</a> (Vect &amp;A, int d)</td></tr>
-<tr class="memdesc:a3ae135eb75ddb3c6cb8f452afc34cf18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets components \([0..d-1]\) of \(A\) to 0.  <a href="#a3ae135eb75ddb3c6cb8f452afc34cf18">More...</a><br /></td></tr>
+<tr class="memdesc:a3ae135eb75ddb3c6cb8f452afc34cf18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the first <code>d</code> components of <code>A</code> to 0.  <a href="#a3ae135eb75ddb3c6cb8f452afc34cf18">More...</a><br /></td></tr>
 <tr class="separator:a3ae135eb75ddb3c6cb8f452afc34cf18"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a07e941416f7b2402d15045a459e4196e"><td class="memTemplParams" colspan="2">template&lt;typename Real &gt; </td></tr>
 <tr class="memitem:a07e941416f7b2402d15045a459e4196e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a07e941416f7b2402d15045a459e4196e">SetValue</a> (Real *A, int d, const Real &amp;x)</td></tr>
-<tr class="memdesc:a07e941416f7b2402d15045a459e4196e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets all components \([0..d]\) of \(A\) to the value \(x\).  <a href="#a07e941416f7b2402d15045a459e4196e">More...</a><br /></td></tr>
+<tr class="memdesc:a07e941416f7b2402d15045a459e4196e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the first <code>d</code> components of <code>A</code> to the value <code>x</code>.  <a href="#a07e941416f7b2402d15045a459e4196e">More...</a><br /></td></tr>
 <tr class="separator:a07e941416f7b2402d15045a459e4196e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0ab3cd721290c62bbed850fac763aa9"><td class="memTemplParams" colspan="2">template&lt;typename Vect &gt; </td></tr>
-<tr class="memitem:ac0ab3cd721290c62bbed850fac763aa9"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ac0ab3cd721290c62bbed850fac763aa9">toString</a> (const Vect &amp;A, int c, int d, const char *sep)</td></tr>
-<tr class="memdesc:ac0ab3cd721290c62bbed850fac763aa9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints components \([c..d-1]\) of vector \(A\) as a string.  <a href="#ac0ab3cd721290c62bbed850fac763aa9">More...</a><br /></td></tr>
-<tr class="separator:ac0ab3cd721290c62bbed850fac763aa9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f5337d95017557ef829bacfe9336d8c"><td class="memTemplParams" colspan="2">template&lt;typename Vect &gt; </td></tr>
-<tr class="memitem:a7f5337d95017557ef829bacfe9336d8c"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a7f5337d95017557ef829bacfe9336d8c">toString</a> (const Vect &amp;A, int c, int d)</td></tr>
-<tr class="memdesc:a7f5337d95017557ef829bacfe9336d8c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints components \([c..d]\) of vector \(A\) as a string.  <a href="#a7f5337d95017557ef829bacfe9336d8c">More...</a><br /></td></tr>
-<tr class="separator:a7f5337d95017557ef829bacfe9336d8c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c8c9d98d5ebd8cb7d73cec8a8e93c13"><td class="memTemplParams" colspan="2">template&lt;typename Vect &gt; </td></tr>
+<tr class="memitem:a8c8c9d98d5ebd8cb7d73cec8a8e93c13"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a8c8c9d98d5ebd8cb7d73cec8a8e93c13">toString</a> (const Vect &amp;A, int c, int d, const char *sep=&quot; &quot;)</td></tr>
+<tr class="memdesc:a8c8c9d98d5ebd8cb7d73cec8a8e93c13"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string containing <code>A[c]</code> to <code>A[d-1]</code> formated as <code>[A[c]sep...sepA[d-1]]</code>.  <a href="#a8c8c9d98d5ebd8cb7d73cec8a8e93c13">More...</a><br /></td></tr>
+<tr class="separator:a8c8c9d98d5ebd8cb7d73cec8a8e93c13"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a994e5f949c8b1315d0324e7826240d"><td class="memTemplParams" colspan="2">template&lt;typename Vect &gt; </td></tr>
 <tr class="memitem:a0a994e5f949c8b1315d0324e7826240d"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a0a994e5f949c8b1315d0324e7826240d">toString</a> (const Vect &amp;A, int d)</td></tr>
-<tr class="memdesc:a0a994e5f949c8b1315d0324e7826240d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prints components \([0..d-1]\) of vector \(A\) as a string.  <a href="#a0a994e5f949c8b1315d0324e7826240d">More...</a><br /></td></tr>
+<tr class="memdesc:a0a994e5f949c8b1315d0324e7826240d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string containing the first <code>d</code> components of the vector <code>A</code> as a string.  <a href="#a0a994e5f949c8b1315d0324e7826240d">More...</a><br /></td></tr>
 <tr class="separator:a0a994e5f949c8b1315d0324e7826240d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a53d8462179e4ca773d33843c15c77afc"><td class="memTemplParams" colspan="2">template&lt;typename Int , typename Vect1 , typename Vect2 , typename Scal &gt; </td></tr>
 <tr class="memitem:a53d8462179e4ca773d33843c15c77afc"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a53d8462179e4ca773d33843c15c77afc">ProdScal</a> (const Vect1 &amp;A, const Vect2 &amp;B, int n, Scal &amp;D)</td></tr>
-<tr class="memdesc:a53d8462179e4ca773d33843c15c77afc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the scalar product of vectors \(A\) and \(B\), using components \([0..n-1]\), and puts the result in \(D\).  <a href="#a53d8462179e4ca773d33843c15c77afc">More...</a><br /></td></tr>
+<tr class="memdesc:a53d8462179e4ca773d33843c15c77afc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the scalar product of vectors <code>A</code> and <code>B</code> truncated to their <code>n</code> first components, then puts the result in <code>D</code>.  <a href="#a53d8462179e4ca773d33843c15c77afc">More...</a><br /></td></tr>
 <tr class="separator:a53d8462179e4ca773d33843c15c77afc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8380e2ebec791f472a3634348bc0e22a"><td class="memTemplParams" colspan="2">template&lt;typename IntVec &gt; </td></tr>
 <tr class="memitem:a8380e2ebec791f472a3634348bc0e22a"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a8380e2ebec791f472a3634348bc0e22a">Invert</a> (const IntVec &amp;A, IntVec &amp;B, int n)</td></tr>
-<tr class="memdesc:a8380e2ebec791f472a3634348bc0e22a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms the polynomial \(A_0 + A_1x^1 + \cdots+ A_nx^n\) into \(x^n - A_1x^{n-1} - \cdots- A_n\).  <a href="#a8380e2ebec791f472a3634348bc0e22a">More...</a><br /></td></tr>
+<tr class="memdesc:a8380e2ebec791f472a3634348bc0e22a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Takes an input vector <code>A</code> of dimension <code>n+1</code> and fill the vector <code>B</code> with the values `[-A[n] -A[n-1] ...  <a href="#a8380e2ebec791f472a3634348bc0e22a">More...</a><br /></td></tr>
 <tr class="separator:a8380e2ebec791f472a3634348bc0e22a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7022d363aa696d09b59c9499745466a6"><td class="memTemplParams" colspan="2">template&lt;typename Vect , typename Scal &gt; </td></tr>
 <tr class="memitem:a7022d363aa696d09b59c9499745466a6"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a7022d363aa696d09b59c9499745466a6">CalcNorm</a> (const Vect &amp;V, int n, Scal &amp;S, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9770e4d57aa715e249cd7e700c6f37e4">NormType</a> norm)</td></tr>
-<tr class="memdesc:a7022d363aa696d09b59c9499745466a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the <code>norm</code> norm of vector \(V\), using components \([1..n]\), and puts the result in \(S\).  <a href="#a7022d363aa696d09b59c9499745466a6">More...</a><br /></td></tr>
+<tr class="memdesc:a7022d363aa696d09b59c9499745466a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the <code>norm</code> norm of vector <code>V</code> trunctated to its <code>n</code> first components, and puts the result in <code>S</code>.  <a href="#a7022d363aa696d09b59c9499745466a6">More...</a><br /></td></tr>
 <tr class="separator:a7022d363aa696d09b59c9499745466a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada47b56ab96c49d7508b9379d0134472"><td class="memTemplParams" colspan="2">template&lt;typename Vect &gt; </td></tr>
 <tr class="memitem:ada47b56ab96c49d7508b9379d0134472"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ada47b56ab96c49d7508b9379d0134472">CopyVect</a> (Vect &amp;A, const Vect &amp;B, int n)</td></tr>
-<tr class="memdesc:ada47b56ab96c49d7508b9379d0134472"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies vector \(B\) into vector \(A\) using components \([0..n-1]\).  <a href="#ada47b56ab96c49d7508b9379d0134472">More...</a><br /></td></tr>
+<tr class="memdesc:ada47b56ab96c49d7508b9379d0134472"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the first <code>n</code> components of vector <code>B</code> into vector <code>A</code>.  <a href="#ada47b56ab96c49d7508b9379d0134472">More...</a><br /></td></tr>
 <tr class="separator:ada47b56ab96c49d7508b9379d0134472"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad43d2de9716e712790093eff2c12631f"><td class="memTemplParams" colspan="2">template&lt;typename Vect1 , typename Vect2 , typename Scal &gt; </td></tr>
 <tr class="memitem:ad43d2de9716e712790093eff2c12631f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ad43d2de9716e712790093eff2c12631f">ModifVect</a> (Vect1 &amp;A, const Vect2 &amp;B, Scal x, int n)</td></tr>
-<tr class="memdesc:ad43d2de9716e712790093eff2c12631f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds vector \(B\) multiplied by \(x\) to vector \(A\) using components \([0..n-1]\), and puts the result in \(A\).  <a href="#ad43d2de9716e712790093eff2c12631f">More...</a><br /></td></tr>
+<tr class="memdesc:ad43d2de9716e712790093eff2c12631f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds the first <code>n</code> components of vector <code>B</code> multiplied by <code>x</code> to first <code>n</code> components of vector <code>A</code>.  <a href="#ad43d2de9716e712790093eff2c12631f">More...</a><br /></td></tr>
 <tr class="separator:ad43d2de9716e712790093eff2c12631f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a127802e517a91268330bad9930e5a5f4"><td class="memTemplParams" colspan="2">template&lt;typename Vect &gt; </td></tr>
 <tr class="memitem:a127802e517a91268330bad9930e5a5f4"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a127802e517a91268330bad9930e5a5f4">ChangeSign</a> (Vect &amp;A, int n)</td></tr>
-<tr class="memdesc:a127802e517a91268330bad9930e5a5f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes the sign of the components \([0..n-1]\) of vector \(A\).  <a href="#a127802e517a91268330bad9930e5a5f4">More...</a><br /></td></tr>
+<tr class="memdesc:a127802e517a91268330bad9930e5a5f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Changes the sign (multiplies by -1) the first <code>n</code> components of vector <code>A</code>.  <a href="#a127802e517a91268330bad9930e5a5f4">More...</a><br /></td></tr>
 <tr class="separator:a127802e517a91268330bad9930e5a5f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adf2df72413bf638fb96e4a4d0e078828"><td class="memItemLeft" align="right" valign="top">std::int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#adf2df72413bf638fb96e4a4d0e078828">GCD2vect</a> (std::vector&lt; std::int64_t &gt; V, int k, int n)</td></tr>
-<tr class="memdesc:adf2df72413bf638fb96e4a4d0e078828"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the greatest common divisor of \(V[k],…,V[n-1]\).  <a href="#adf2df72413bf638fb96e4a4d0e078828">More...</a><br /></td></tr>
+<tr class="memdesc:adf2df72413bf638fb96e4a4d0e078828"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes the greatest common divisor of <code>V[k],...,V[n-1]</code>.  <a href="#adf2df72413bf638fb96e4a4d0e078828">More...</a><br /></td></tr>
 <tr class="separator:adf2df72413bf638fb96e4a4d0e078828"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Matrices</div></td></tr>
 <tr class="memitem:ac21669d8af13d92327accdc26e9444ad"><td class="memTemplParams" colspan="2">template&lt;typename Real &gt; </td></tr>
 <tr class="memitem:ac21669d8af13d92327accdc26e9444ad"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ac21669d8af13d92327accdc26e9444ad">CreateMatr</a> (Real **&amp;A, int d)</td></tr>
-<tr class="memdesc:ac21669d8af13d92327accdc26e9444ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates memory for the square matrix \(A\) of dimensions \((d+1)\times(d+1)\).  <a href="#ac21669d8af13d92327accdc26e9444ad">More...</a><br /></td></tr>
+<tr class="memdesc:ac21669d8af13d92327accdc26e9444ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates memory to a square matrix <code>A</code> of dimensions \(d \times d\) and initializes its elements to 0.  <a href="#ac21669d8af13d92327accdc26e9444ad">More...</a><br /></td></tr>
 <tr class="separator:ac21669d8af13d92327accdc26e9444ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a229c9368d745b9c4cae68c1b65e0e39c"><td class="memTemplParams" colspan="2">template&lt;typename Real &gt; </td></tr>
-<tr class="memitem:a229c9368d745b9c4cae68c1b65e0e39c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a229c9368d745b9c4cae68c1b65e0e39c">DeleteMatr</a> (Real **&amp;A, int d)</td></tr>
-<tr class="memdesc:a229c9368d745b9c4cae68c1b65e0e39c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees the memory used by the \(d\times d\) matrix \(A\).  <a href="#a229c9368d745b9c4cae68c1b65e0e39c">More...</a><br /></td></tr>
-<tr class="separator:a229c9368d745b9c4cae68c1b65e0e39c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adfafd877b46442cc4b215448f25ccd7e"><td class="memTemplParams" colspan="2">template&lt;typename Real &gt; </td></tr>
 <tr class="memitem:adfafd877b46442cc4b215448f25ccd7e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#adfafd877b46442cc4b215448f25ccd7e">CreateMatr</a> (Real **&amp;A, int line, int col)</td></tr>
-<tr class="memdesc:adfafd877b46442cc4b215448f25ccd7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates memory for the matrix \(A\) of dimensions (<code>line</code>) \(\times\) (<code>col</code>).  <a href="#adfafd877b46442cc4b215448f25ccd7e">More...</a><br /></td></tr>
+<tr class="memdesc:adfafd877b46442cc4b215448f25ccd7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates memory for the matrix <code>A</code> of dimensions \(\text{line} \times \text{col}\) and initializes its elements to 0.  <a href="#adfafd877b46442cc4b215448f25ccd7e">More...</a><br /></td></tr>
 <tr class="separator:adfafd877b46442cc4b215448f25ccd7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c884b60a0c4ee06455bf1c8e1819d35"><td class="memTemplParams" colspan="2">template&lt;typename Real &gt; </td></tr>
-<tr class="memitem:a0c884b60a0c4ee06455bf1c8e1819d35"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a0c884b60a0c4ee06455bf1c8e1819d35">DeleteMatr</a> (Real **&amp;A, int line, int col)</td></tr>
-<tr class="memdesc:a0c884b60a0c4ee06455bf1c8e1819d35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees the memory used by the matrix \(A\).  <a href="#a0c884b60a0c4ee06455bf1c8e1819d35">More...</a><br /></td></tr>
-<tr class="separator:a0c884b60a0c4ee06455bf1c8e1819d35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5af883014a948b37a49d69f729db70f1"><td class="memTemplParams" colspan="2">template&lt;typename IntMat &gt; </td></tr>
 <tr class="memitem:a5af883014a948b37a49d69f729db70f1"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a5af883014a948b37a49d69f729db70f1">CreateMatr</a> (IntMat &amp;A, int d)</td></tr>
-<tr class="memdesc:a5af883014a948b37a49d69f729db70f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the square matrix \(A\) of dimensions \(d\times d\) and initializes its elements to 0.  <a href="#a5af883014a948b37a49d69f729db70f1">More...</a><br /></td></tr>
+<tr class="memdesc:a5af883014a948b37a49d69f729db70f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resizes the matrix <code>A</code> to a square matrix of dimensions <code>d \times d</code> and re-initializes its elements to 0.  <a href="#a5af883014a948b37a49d69f729db70f1">More...</a><br /></td></tr>
 <tr class="separator:a5af883014a948b37a49d69f729db70f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a75474ce5f96fabf95eff6824df3d6f3d"><td class="memTemplParams" colspan="2">template&lt;typename IntMat &gt; </td></tr>
 <tr class="memitem:a75474ce5f96fabf95eff6824df3d6f3d"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a75474ce5f96fabf95eff6824df3d6f3d">CreateMatr</a> (IntMat &amp;A, int line, int col)</td></tr>
-<tr class="memdesc:a75474ce5f96fabf95eff6824df3d6f3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates the matrix \(A\) of dimensions (<code>line</code>) \(\times\) (<code>col</code>).  <a href="#a75474ce5f96fabf95eff6824df3d6f3d">More...</a><br /></td></tr>
+<tr class="memdesc:a75474ce5f96fabf95eff6824df3d6f3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Resizes the matrix <code>A</code> to a matrix of dimensions \(line \times col\) and re-initializes its elements to 0.  <a href="#a75474ce5f96fabf95eff6824df3d6f3d">More...</a><br /></td></tr>
 <tr class="separator:a75474ce5f96fabf95eff6824df3d6f3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a229c9368d745b9c4cae68c1b65e0e39c"><td class="memTemplParams" colspan="2">template&lt;typename Real &gt; </td></tr>
+<tr class="memitem:a229c9368d745b9c4cae68c1b65e0e39c"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a229c9368d745b9c4cae68c1b65e0e39c">DeleteMatr</a> (Real **&amp;A, int d)</td></tr>
+<tr class="memdesc:a229c9368d745b9c4cae68c1b65e0e39c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees the memory used by the \(d \times d\) matrix <code>A</code>.  <a href="#a229c9368d745b9c4cae68c1b65e0e39c">More...</a><br /></td></tr>
+<tr class="separator:a229c9368d745b9c4cae68c1b65e0e39c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c884b60a0c4ee06455bf1c8e1819d35"><td class="memTemplParams" colspan="2">template&lt;typename Real &gt; </td></tr>
+<tr class="memitem:a0c884b60a0c4ee06455bf1c8e1819d35"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a0c884b60a0c4ee06455bf1c8e1819d35">DeleteMatr</a> (Real **&amp;A, int line, int col)</td></tr>
+<tr class="memdesc:a0c884b60a0c4ee06455bf1c8e1819d35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees the memory used by the matrix <code>A</code> of dimension \(\text{line} \times \text{col}\).  <a href="#a0c884b60a0c4ee06455bf1c8e1819d35">More...</a><br /></td></tr>
+<tr class="separator:a0c884b60a0c4ee06455bf1c8e1819d35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f66d14fcb15c8a2e358b9ab5e08b524"><td class="memTemplParams" colspan="2">template&lt;typename IntMat &gt; </td></tr>
 <tr class="memitem:a0f66d14fcb15c8a2e358b9ab5e08b524"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a0f66d14fcb15c8a2e358b9ab5e08b524">DeleteMatr</a> (IntMat &amp;A)</td></tr>
-<tr class="memdesc:a0f66d14fcb15c8a2e358b9ab5e08b524"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes the matrix \(A\).  <a href="#a0f66d14fcb15c8a2e358b9ab5e08b524">More...</a><br /></td></tr>
+<tr class="memdesc:a0f66d14fcb15c8a2e358b9ab5e08b524"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls the <code><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab6fd74c4ea41ec1c1030a621dc788845" title="Sets x to 0. ">clear()</a></code> method on <code>A</code>.  <a href="#a0f66d14fcb15c8a2e358b9ab5e08b524">More...</a><br /></td></tr>
 <tr class="separator:a0f66d14fcb15c8a2e358b9ab5e08b524"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac81709c183b536ab80b83384314457f"><td class="memTemplParams" colspan="2">template&lt;typename Matr &gt; </td></tr>
 <tr class="memitem:aac81709c183b536ab80b83384314457f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#aac81709c183b536ab80b83384314457f">CopyMatr</a> (Matr &amp;A, const Matr &amp;B, int n)</td></tr>
-<tr class="memdesc:aac81709c183b536ab80b83384314457f"><td class="mdescLeft">&#160;</td><td class="mdescRight">As above.  <a href="#aac81709c183b536ab80b83384314457f">More...</a><br /></td></tr>
+<tr class="memdesc:aac81709c183b536ab80b83384314457f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the \(n \times n\) submatrix of the first lines and columns of <code>B</code> into matrix <code>A</code>.  <a href="#aac81709c183b536ab80b83384314457f">More...</a><br /></td></tr>
 <tr class="separator:aac81709c183b536ab80b83384314457f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8f32e22915b91e8c763f35b62c1039d9"><td class="memTemplParams" colspan="2">template&lt;typename Matr &gt; </td></tr>
 <tr class="memitem:a8f32e22915b91e8c763f35b62c1039d9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a8f32e22915b91e8c763f35b62c1039d9">CopyMatr</a> (Matr &amp;A, const Matr &amp;B, int line, int col)</td></tr>
-<tr class="memdesc:a8f32e22915b91e8c763f35b62c1039d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">As above.  <a href="#a8f32e22915b91e8c763f35b62c1039d9">More...</a><br /></td></tr>
+<tr class="memdesc:a8f32e22915b91e8c763f35b62c1039d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copies the \(\text{line} \times col\) submatrix of the first lines and columns of <code>B</code> into matrix <code>A</code>.  <a href="#a8f32e22915b91e8c763f35b62c1039d9">More...</a><br /></td></tr>
 <tr class="separator:a8f32e22915b91e8c763f35b62c1039d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1f9c94abf76e8ce25eb60bb6d1bda2e"><td class="memTemplParams" colspan="2">template&lt;typename MatT &gt; </td></tr>
 <tr class="memitem:ab1f9c94abf76e8ce25eb60bb6d1bda2e"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab1f9c94abf76e8ce25eb60bb6d1bda2e">toStr</a> (const MatT &amp;mat, int d1, int d2)</td></tr>
-<tr class="memdesc:ab1f9c94abf76e8ce25eb60bb6d1bda2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms <code>mat</code> into a string.  <a href="#ab1f9c94abf76e8ce25eb60bb6d1bda2e">More...</a><br /></td></tr>
+<tr class="memdesc:ab1f9c94abf76e8ce25eb60bb6d1bda2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string that is a representation of <code>mat</code>.  <a href="#ab1f9c94abf76e8ce25eb60bb6d1bda2e">More...</a><br /></td></tr>
 <tr class="separator:ab1f9c94abf76e8ce25eb60bb6d1bda2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a88ebfbbde75cc3cb82fa92f688d338c6"><td class="memTemplParams" colspan="2">template&lt;typename Matr , typename Int &gt; </td></tr>
 <tr class="memitem:a88ebfbbde75cc3cb82fa92f688d338c6"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a88ebfbbde75cc3cb82fa92f688d338c6">CheckTriangular</a> (const Matr &amp;A, int dim, const Int &amp;m)</td></tr>
-<tr class="memdesc:a88ebfbbde75cc3cb82fa92f688d338c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks that square matrix \(A\) is upper triangular (modulo \(m\)) for dimensions 1 to <code>dim</code>.  <a href="#a88ebfbbde75cc3cb82fa92f688d338c6">More...</a><br /></td></tr>
+<tr class="memdesc:a88ebfbbde75cc3cb82fa92f688d338c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks that the upper \(\text{dim} \times \text{dim}\) submatrix of <code>A</code> is triangular modulo <code>m</code>.  <a href="#a88ebfbbde75cc3cb82fa92f688d338c6">More...</a><br /></td></tr>
 <tr class="separator:a88ebfbbde75cc3cb82fa92f688d338c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa519a1e0589932719c79b73c76bb1093"><td class="memTemplParams" colspan="2">template&lt;typename Matr , typename Int &gt; </td></tr>
 <tr class="memitem:aa519a1e0589932719c79b73c76bb1093"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#aa519a1e0589932719c79b73c76bb1093">Triangularization</a> (Matr &amp;W, Matr &amp;V, int lin, int col, const Int &amp;m)</td></tr>
-<tr class="memdesc:aa519a1e0589932719c79b73c76bb1093"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs an integer triangularization operation modulo \(m\) on the matrix \(W\) to obtain an upper triangular matrix \(V\), dual to \(W\).  <a href="#aa519a1e0589932719c79b73c76bb1093">More...</a><br /></td></tr>
+<tr class="memdesc:aa519a1e0589932719c79b73c76bb1093"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs an integer triangularization operation modulo <code>m</code> on the matrix <code>W</code> to obtain an upper triangular matrix <code>V</code>, dual to <code>W</code>.  <a href="#aa519a1e0589932719c79b73c76bb1093">More...</a><br /></td></tr>
 <tr class="separator:aa519a1e0589932719c79b73c76bb1093"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17df0e6fdb1f11335eaf91f82ee298b0"><td class="memTemplParams" colspan="2">template&lt;typename Matr , typename Int &gt; </td></tr>
 <tr class="memitem:a17df0e6fdb1f11335eaf91f82ee298b0"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a17df0e6fdb1f11335eaf91f82ee298b0">CalcDual</a> (const Matr &amp;A, Matr &amp;B, int d, const Int &amp;m)</td></tr>
-<tr class="memdesc:a17df0e6fdb1f11335eaf91f82ee298b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the \(m\)-dual of the matrix <code>A</code>.  <a href="#a17df0e6fdb1f11335eaf91f82ee298b0">More...</a><br /></td></tr>
+<tr class="memdesc:a17df0e6fdb1f11335eaf91f82ee298b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the <code>m</code>-dual of the matrix <code>A</code>.  <a href="#a17df0e6fdb1f11335eaf91f82ee298b0">More...</a><br /></td></tr>
 <tr class="separator:a17df0e6fdb1f11335eaf91f82ee298b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Debugging functions</div></td></tr>
 <tr class="memitem:a49105dd8e915243488440f570b3951bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a49105dd8e915243488440f570b3951bd">MyExit</a> (int status, std::string msg)</td></tr>
 <tr class="memdesc:a49105dd8e915243488440f570b3951bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Special exit function.  <a href="#a49105dd8e915243488440f570b3951bd">More...</a><br /></td></tr>
 <tr class="separator:a49105dd8e915243488440f570b3951bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Miscellaneous functions</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p>These are the other functions implemented in this module, that have various usage in this program. </p>
+</div></td></tr>
+<tr class="memitem:aa332228978921670954fc35afb8d7440"><td class="memItemLeft" align="right" valign="top">std::int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#aa332228978921670954fc35afb8d7440">IsOdd</a> (const std::int64_t &amp;x)</td></tr>
+<tr class="memdesc:aa332228978921670954fc35afb8d7440"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests if <code>x</code> is odd.  <a href="#aa332228978921670954fc35afb8d7440">More...</a><br /></td></tr>
+<tr class="separator:aa332228978921670954fc35afb8d7440"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cfdf172615c09b6a677ff935621632d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a1cfdf172615c09b6a677ff935621632d">IsZero</a> (const std::int64_t &amp;x)</td></tr>
+<tr class="memdesc:a1cfdf172615c09b6a677ff935621632d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <code>bool</code> resulting of the statement <code>x == 0</code>.  <a href="#a1cfdf172615c09b6a677ff935621632d">More...</a><br /></td></tr>
+<tr class="separator:a1cfdf172615c09b6a677ff935621632d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab6fd74c4ea41ec1c1030a621dc788845"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab6fd74c4ea41ec1c1030a621dc788845">clear</a> (double &amp;x)</td></tr>
+<tr class="memdesc:ab6fd74c4ea41ec1c1030a621dc788845"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets <code>x</code> to 0.  <a href="#ab6fd74c4ea41ec1c1030a621dc788845">More...</a><br /></td></tr>
+<tr class="separator:ab6fd74c4ea41ec1c1030a621dc788845"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9738859ae42e8f85791ebb56705aa227"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9738859ae42e8f85791ebb56705aa227">clear</a> (std::int64_t &amp;x)</td></tr>
+<tr class="memdesc:a9738859ae42e8f85791ebb56705aa227"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets <code>x</code> to 0.  <a href="#a9738859ae42e8f85791ebb56705aa227">More...</a><br /></td></tr>
+<tr class="separator:a9738859ae42e8f85791ebb56705aa227"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8196a81e178fdb095a0deaf8b0803614"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a8196a81e178fdb095a0deaf8b0803614">set9</a> (std::int64_t &amp;x)</td></tr>
+<tr class="memdesc:a8196a81e178fdb095a0deaf8b0803614"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets <code>x</code> to 1.  <a href="#a8196a81e178fdb095a0deaf8b0803614">More...</a><br /></td></tr>
+<tr class="separator:a8196a81e178fdb095a0deaf8b0803614"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad378d927159f2724975f6d1264daf8e4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ad378d927159f2724975f6d1264daf8e4">set9</a> (NTL::ZZ &amp;x)</td></tr>
+<tr class="memdesc:ad378d927159f2724975f6d1264daf8e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets <code>x</code> to 1.  <a href="#ad378d927159f2724975f6d1264daf8e4">More...</a><br /></td></tr>
+<tr class="separator:ad378d927159f2724975f6d1264daf8e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -771,7 +752,7 @@ template&lt;typename Scal &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Returns the absolute value. </p>
+<p>Returns the absolute value of \(x\). </p>
 
 </div>
 </div>
@@ -849,9 +830,10 @@ template&lt;typename Matr , typename Int &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Calculates the \(m\)-dual of the matrix <code>A</code>. </p>
-<p>The result is placed in the matrix <code>B</code>. Only the first \(d\) lines and columns are considered.</p>
-<p>The vectors of the basis (lines of A) need to verify the properties (i), (ii) (iii), (iv) as described in the article: R. Couture and P L'Ecuyer, Orbits and lattices for linear random number generators with composite moduli, Mathematics of Computation, Volume 65, Number 213, bottom of page 199. </p>
+<p>Calculates the <code>m</code>-dual of the matrix <code>A</code>. </p>
+<p>The result is placed in the matrix <code>B</code>. Only the first <code>d</code> lines and columns are considered.</p>
+<p>The vectors of the basis (lines of A) need to verify the properties (i), (ii) (iii), (iv) as described in the article: R. Couture and P L'Ecuyer, Orbits and lattices for linear random number generators with composite moduli, Mathematics of Computation, Volume 65, Number 213, bottom of page 199.</p>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000021">Todo:</a></b></dt><dd>Check the algorithm used here and explain how it works and what it takes for it to work. </dd></dl>
 
 </div>
 </div>
@@ -903,7 +885,8 @@ template&lt;typename Vect , typename Scal &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Computes the <code>norm</code> norm of vector \(V\), using components \([1..n]\), and puts the result in \(S\). </p>
+<p>Computes the <code>norm</code> norm of vector <code>V</code> trunctated to its <code>n</code> first components, and puts the result in <code>S</code>. </p>
+<p><code>Scal</code> has to be a floating point type. </p>
 
 </div>
 </div>
@@ -943,7 +926,7 @@ template&lt;typename Vect &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Changes the sign of the components \([0..n-1]\) of vector \(A\). </p>
+<p>Changes the sign (multiplies by -1) the first <code>n</code> components of vector <code>A</code>. </p>
 
 </div>
 </div>
@@ -981,7 +964,8 @@ template&lt;typename Matr , typename Int &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Checks that square matrix \(A\) is upper triangular (modulo \(m\)) for dimensions 1 to <code>dim</code>. </p>
+<p>Checks that the upper \(\text{dim} \times \text{dim}\) submatrix of <code>A</code> is triangular modulo <code>m</code>. </p>
+<p>This will return <code>true</code> if all the elements under the diagonal are equal to zero modulo <code>m</code> and <code>false</code> otherwise. </p>
 
 </div>
 </div>
@@ -1009,7 +993,7 @@ template&lt;typename Matr , typename Int &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Sets \(x\) to 0. </p>
+<p>Sets <code>x</code> to 0. </p>
 
 </div>
 </div>
@@ -1037,7 +1021,7 @@ template&lt;typename Matr , typename Int &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Sets \(x\) to 0. </p>
+<p>Sets <code>x</code> to 0. </p>
 
 </div>
 </div>
@@ -1083,8 +1067,8 @@ template&lt;typename Matr &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>As above. </p>
-<p>Copies matrix \(B\) into matrix \(A\). </p>
+<p>Copies the \(n \times n\) submatrix of the first lines and columns of <code>B</code> into matrix <code>A</code>. </p>
+<p>This function does not check for sizes, so <code>A</code> and <code>B</code> both have to be at leat \(n \times n\). </p>
 
 </div>
 </div>
@@ -1136,7 +1120,8 @@ template&lt;typename Matr &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>As above. </p>
+<p>Copies the \(\text{line} \times col\) submatrix of the first lines and columns of <code>B</code> into matrix <code>A</code>. </p>
+<p>This function does not check for sizes, so <code>A</code> and <code>B</code> both have to be at leat \(line \times col\). </p>
 
 </div>
 </div>
@@ -1182,7 +1167,7 @@ template&lt;typename Vect &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Copies vector \(B\) into vector \(A\) using components \([0..n-1]\). </p>
+<p>Copies the first <code>n</code> components of vector <code>B</code> into vector <code>A</code>. </p>
 
 </div>
 </div>
@@ -1222,8 +1207,7 @@ template&lt;typename Real &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Allocates memory for the square matrix \(A\) of dimensions \((d+1)\times(d+1)\). </p>
-<p>Initializes its elements to 0. </p>
+<p>Allocates memory to a square matrix <code>A</code> of dimensions \(d \times d\) and initializes its elements to 0. </p>
 
 </div>
 </div>
@@ -1269,8 +1253,7 @@ template&lt;typename Real &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Allocates memory for the matrix \(A\) of dimensions (<code>line</code>) \(\times\) (<code>col</code>). </p>
-<p>Initializes its elements to 0. </p>
+<p>Allocates memory for the matrix <code>A</code> of dimensions \(\text{line} \times \text{col}\) and initializes its elements to 0. </p>
 
 </div>
 </div>
@@ -1310,7 +1293,7 @@ template&lt;typename IntMat &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Creates the square matrix \(A\) of dimensions \(d\times d\) and initializes its elements to 0. </p>
+<p>Resizes the matrix <code>A</code> to a square matrix of dimensions <code>d \times d</code> and re-initializes its elements to 0. </p>
 
 </div>
 </div>
@@ -1356,8 +1339,7 @@ template&lt;typename IntMat &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Creates the matrix \(A\) of dimensions (<code>line</code>) \(\times\) (<code>col</code>). </p>
-<p>Initializes its elements to 0. </p>
+<p>Resizes the matrix <code>A</code> to a matrix of dimensions \(line \times col\) and re-initializes its elements to 0. </p>
 
 </div>
 </div>
@@ -1397,7 +1379,8 @@ template&lt;typename Real &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Allocates memory for the vector \(A\) of dimensions \(d\) and initializes its elements to 0. </p>
+<p>Allocates memory to <code>A</code> as an array of <code>Real</code> of dimension <code>d</code> and initializes its elements to 0. </p>
+<p>`Real has to be a numeric type. </p>
 
 </div>
 </div>
@@ -1437,7 +1420,8 @@ template&lt;typename Vect &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Creates the vector \(A\) of dimensions \(d+1\) and initializes its elements to 0. </p>
+<p>Creates the vector <code>A</code> of dimensions <code>d+1</code> and initializes its elements to 0. </p>
+<p>The type <code>Vect</code> has to have a <code>resize(integer_type)</code> method that sets the size of the instance to the value of the argument. </p>
 
 </div>
 </div>
@@ -1477,7 +1461,8 @@ template&lt;typename Real &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Frees the memory used by the \(d\times d\) matrix \(A\). </p>
+<p>Frees the memory used by the \(d \times d\) matrix <code>A</code>. </p>
+<p>This will not free all the memory allocated to <code>A</code> if <code>A</code> is of greater dimension and it can cause a memory leak. </p>
 
 </div>
 </div>
@@ -1523,7 +1508,8 @@ template&lt;typename Real &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Frees the memory used by the matrix \(A\). </p>
+<p>Frees the memory used by the matrix <code>A</code> of dimension \(\text{line} \times \text{col}\). </p>
+<p>This will not free all the memory allocated to <code>A</code> if <code>A</code> is of greater dimension and it can cause a memory leak. </p>
 
 </div>
 </div>
@@ -1553,7 +1539,8 @@ template&lt;typename IntMat &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Deletes the matrix \(A\). </p>
+<p>Calls the <code><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab6fd74c4ea41ec1c1030a621dc788845" title="Sets x to 0. ">clear()</a></code> method on <code>A</code>. </p>
+<p><code>A</code> has to have a <code><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab6fd74c4ea41ec1c1030a621dc788845" title="Sets x to 0. ">clear()</a></code> method that frees the memory allocated to it. </p>
 
 </div>
 </div>
@@ -1583,7 +1570,8 @@ template&lt;typename Real &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Frees the memory used by the vector \(A\). </p>
+<p>Frees the memory used by the vector <code>A</code>. </p>
+<p>This calls <code>delete[]</code> on <code>A</code> so trying to access `A after using this is unsafe. </p>
 
 </div>
 </div>
@@ -1613,7 +1601,8 @@ template&lt;typename Vect &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Frees the memory used by the vector \(A\). </p>
+<p>Frees the memory used by the vector <code>A</code>, destroying all the elements it contains. </p>
+<p><code>Vect</code> type has to have a <code><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab6fd74c4ea41ec1c1030a621dc788845" title="Sets x to 0. ">clear()</a></code> method that deallocates all the elements in the vector. </p>
 
 </div>
 </div>
@@ -1637,52 +1626,8 @@ template&lt;typename Vect &gt; </div>
 
 </div>
 </div>
-<a id="a756f03c94dc21f7dbf6aad8cb6f9f4c1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a756f03c94dc21f7dbf6aad8cb6f9f4c1">&#9670;&nbsp;</a></span>div()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void LatticeTester::div </td>
-          <td>(</td>
-          <td class="paramtype">std::int64_t &amp;&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::int64_t &amp;&#160;</td>
-          <td class="paramname"><em>b</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::int64_t &amp;&#160;</td>
-          <td class="paramname"><em>d</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Integer division: \(a = b/d\). </p>
-
-</div>
-</div>
 <a id="aeccbd231b4002cadbaac0157871f5570"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeccbd231b4002cadbaac0157871f5570">&#9670;&nbsp;</a></span>Divide() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aeccbd231b4002cadbaac0157871f5570">&#9670;&nbsp;</a></span>Divide()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1730,121 +1675,7 @@ template&lt;typename Real &gt; </div>
 </div><div class="memdoc">
 
 <p>Computes the quotient \(q = a/b\) and remainder \(r = a \bmod b\). </p>
-<p>Truncates \(q\) to the nearest integer towards 0. One always has \(a = qb + r\) and \(|r| &lt; |b|\). </p>
-
-</div>
-</div>
-<a id="a96e86545bb8987e61e30693e09a60113"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a96e86545bb8987e61e30693e09a60113">&#9670;&nbsp;</a></span>Divide() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void LatticeTester::Divide </td>
-          <td>(</td>
-          <td class="paramtype">std::int64_t &amp;&#160;</td>
-          <td class="paramname"><em>q</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::int64_t &amp;&#160;</td>
-          <td class="paramname"><em>r</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::int64_t &amp;&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::int64_t &amp;&#160;</td>
-          <td class="paramname"><em>b</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Computes the quotient \(q = a/b\) and remainder \(r = a \bmod b\) by truncating \(q\) towards 0. </p>
-<p>The remainder can be negative. One always has \(a = qb + r\) and \(|r| &lt; |b|\). Example:</p>
-<center></center><center><table class="LatSoft-table LatSoft-has-hlines">
-<tr class="bt">
-<td class="r bl br">\(a\) </td><td class="r bl br">\(b\) </td><td class="r bl br">\(q\) </td><td class="r bl br">\(r\) </td></tr>
-<tr class="bt">
-<td class="r bl br">\(5\) </td><td class="r bl br">3 </td><td class="r bl br">1 </td><td class="r bl br">\(2\) </td></tr>
-<tr>
-<td class="r bl br">\(-5\) </td><td class="r bl br">\(3\) </td><td class="r bl br">\(-1\) </td><td class="r bl br">\(-2\) </td></tr>
-<tr>
-<td class="r bl br">\(5\) </td><td class="r bl br">\(-3\) </td><td class="r bl br">\(-1\) </td><td class="r bl br">\(2\) </td></tr>
-<tr>
-<td class="r bl br">\(-5\) </td><td class="r bl br">\(-3\) </td><td class="r bl br">\(1\) </td><td class="r bl br">\(-2\)  </td></tr>
-</table>
-</center><center></center> 
-</div>
-</div>
-<a id="ab299b8335f9a690fad8b7838db6678ad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab299b8335f9a690fad8b7838db6678ad">&#9670;&nbsp;</a></span>Divide() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void LatticeTester::Divide </td>
-          <td>(</td>
-          <td class="paramtype">NTL::ZZ &amp;&#160;</td>
-          <td class="paramname"><em>q</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">NTL::ZZ &amp;&#160;</td>
-          <td class="paramname"><em>r</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const NTL::ZZ &amp;&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const NTL::ZZ &amp;&#160;</td>
-          <td class="paramname"><em>b</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Computes the quotient \(q = a/b\) and remainder \(r = a \bmod b\) by truncating \(q\) towards 0. </p>
-<p>The remainder can be negative. One always has \(a = qb + r\) and \(|r| &lt; |b|\). Example:</p>
+<p>Truncates \(q\) to the nearest integer towards 0. One always has \(a = qb + r\) and \(|r| &lt; |b|\). This works with std::int64_t, NTL::ZZ and real numbers.</p>
 <center></center><center><table class="LatSoft-table LatSoft-has-hlines">
 <tr class="bt">
 <td class="r bl br">\(a\) </td><td class="r bl br">\(b\) </td><td class="r bl br">\(q\) </td><td class="r bl br">\(r\) </td></tr>
@@ -1861,7 +1692,7 @@ template&lt;typename Real &gt; </div>
 </div>
 </div>
 <a id="a76b74332cd4ded85d51dc6020b930772"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a76b74332cd4ded85d51dc6020b930772">&#9670;&nbsp;</a></span>DivideRound() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a76b74332cd4ded85d51dc6020b930772">&#9670;&nbsp;</a></span>DivideRound()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1903,94 +1734,7 @@ template&lt;typename Real &gt; </div>
 </div><div class="memdoc">
 
 <p>Computes \(a/b\), rounds the result to the nearest integer and returns the result in \(q\). </p>
-
-</div>
-</div>
-<a id="a731a1477c8a8f0bb66d862e9ab07eccd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a731a1477c8a8f0bb66d862e9ab07eccd">&#9670;&nbsp;</a></span>DivideRound() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void LatticeTester::DivideRound </td>
-          <td>(</td>
-          <td class="paramtype">const std::int64_t &amp;&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::int64_t &amp;&#160;</td>
-          <td class="paramname"><em>b</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::int64_t &amp;&#160;</td>
-          <td class="paramname"><em>q</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Computes \(a/b\), rounds the result to the nearest integer and returns the result in \(q\). </p>
-
-</div>
-</div>
-<a id="a29eec1640aff38a01eea3be0e4438522"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a29eec1640aff38a01eea3be0e4438522">&#9670;&nbsp;</a></span>DivideRound() <span class="overload">[3/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void LatticeTester::DivideRound </td>
-          <td>(</td>
-          <td class="paramtype">const NTL::ZZ &amp;&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const NTL::ZZ &amp;&#160;</td>
-          <td class="paramname"><em>b</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">NTL::ZZ &amp;&#160;</td>
-          <td class="paramname"><em>q</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Computes \(a/b\), rounds the result to the nearest integer and returns the result in \(q\). </p>
+<p>This works with std::int64_t, NTL::ZZ and real numbers. </p>
 
 </div>
 </div>
@@ -2052,11 +1796,12 @@ template&lt;typename Int &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>For given \(a\) and \(b\), returns the values \(C\), \(D\), \(E\), \(F\) and \(G\) such that: </p><p class="formulaDsp">
-\begin{align*} C a + D b &amp; = G = \mbox{GCD } (a,b) \\ E a + F b &amp; = 0. \end{align*}
+<p>This method computes the greater common divisor of <code>A</code> and <code>B</code> with Euclid's algorithm. </p>
+<p>This will store this gcd in <code>G</code> and also the linear combination that permits to get <code>G</code> from <code>A</code> and <code>B</code>. This function should work with std::int64_t and NTL::ZZ.</p>
+<p>For \(A\) and \(B\) this will assign to \(C\), \(D\), \(E\), \(F\) and \(G\) values such that: </p><p class="formulaDsp">
+\begin{align*} C a + D b &amp; = G = \mbox{GCD } (a,b)\\ E a + F b &amp; = 0. \end{align*}
 </p>
-<p>. </p>
-
+ 
 </div>
 </div>
 <a id="a10b9b920d83981962589ceb0d16d6d08"></a>
@@ -2075,7 +1820,7 @@ template&lt;typename Int &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Calculates \(t!\), the factorial of \(t\). </p>
+<p>Calculates \(t!\), the factorial of \(t\) and returns it as an std::int64_t. </p>
 
 </div>
 </div>
@@ -2172,8 +1917,7 @@ template&lt;typename Int &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Returns the value of the greatest common divisor of \(a\) and \(b\). </p>
-<dl class="section remark"><dt>Remarks</dt><dd><b>Richard:</b> Il y a déjà des fonctions GCD dans <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a>, pour les <code>std::int64_t</code> et les <code>ZZ</code> (voir fichier ZZ.h) </dd></dl>
+<p>Returns the value of the greatest common divisor of \(a\) and \(b\) by using Stein's binary GCD algorithm. </p>
 
 </div>
 </div>
@@ -2217,7 +1961,7 @@ template&lt;typename Int &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Computes the greatest common divisor of \(V[k],…,V[n-1]\). </p>
+<p>Computes the greatest common divisor of <code>V[k],...,V[n-1]</code>. </p>
 
 </div>
 </div>
@@ -2328,8 +2072,9 @@ template&lt;typename IntVec &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Transforms the polynomial \(A_0 + A_1x^1 + \cdots+ A_nx^n\) into \(x^n - A_1x^{n-1} - \cdots- A_n\). </p>
-<p>The result is put in \(B\). </p>
+<p>Takes an input vector <code>A</code> of dimension <code>n+1</code> and fill the vector <code>B</code> with the values `[-A[n] -A[n-1] ... </p>
+<p>-A[1] 1]<code>.</code>B<code>is assumed to be of dimension at least</code>n+1`.</p>
+<p><b>OLD DOC</b>: Transforms the polynomial \( A_0 + A_1x^1 + \cdots + A_nx^n\) into \(x^n - A_1x^{n-1} - \cdots - A_n\). The result is put in <code>B</code>. </p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000019">Todo:</a></b></dt><dd>This function does not do what the old doc says. Check if it causes a problem where this function is called. </dd></dl>
 
 </div>
 </div>
@@ -2357,7 +2102,8 @@ template&lt;typename IntVec &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Returns 1 if \(x\) is odd, and 0 otherwise. </p>
+<p>Tests if <code>x</code> is odd. </p>
+<p>Returns 1 if it is odd, and 0 if it is even. </p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000022">Todo:</a></b></dt><dd>It is useless that this function is implemented. Look if it is removable. </dd></dl>
 
 </div>
 </div>
@@ -2385,7 +2131,8 @@ template&lt;typename IntVec &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Return <code>true</code> if \(x = 0\). </p>
+<p>Returns the <code>bool</code> resulting of the statement <code>x == 0</code>. </p>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000023">Todo:</a></b></dt><dd>It is useless that this function is implemented. Look if it is removable. </dd></dl>
 
 </div>
 </div>
@@ -2406,6 +2153,7 @@ template&lt;typename IntVec &gt; </div>
 </div><div class="memdoc">
 
 <p>Calculates \(t!\), the factorial of \(t\). </p>
+<p>Might throw if <code>t</code> is too large or if std::int64_t can't contain the factorial asked for. </p>
 
 </div>
 </div>
@@ -2435,7 +2183,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Logarithm of \(x\) in base 2. </p>
+<p>Returns the logarithm of \(x\) in base 2. </p>
 
 </div>
 </div>
@@ -2463,7 +2211,7 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Logarithm of \(x\) in base 2. </p>
+<p>Returns the logarithm of \(x\) in base 2. </p>
 
 </div>
 </div>
@@ -2515,15 +2263,18 @@ template&lt;typename Vect1 , typename Vect2 , typename Scal &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Adds vector \(B\) multiplied by \(x\) to vector \(A\) using components \([0..n-1]\), and puts the result in \(A\). </p>
+<p>Adds the first <code>n</code> components of vector <code>B</code> multiplied by <code>x</code> to first <code>n</code> components of vector <code>A</code>. </p>
+<p>This will modify <code>A</code>. This does wierd type convertion and might not work well if different types are used. </p>
 
 </div>
 </div>
-<a id="ab3fd3ae7e7a02590cc97b3f3f28e0638"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab3fd3ae7e7a02590cc97b3f3f28e0638">&#9670;&nbsp;</a></span>Modulo() <span class="overload">[1/2]</span></h2>
+<a id="a33b2ac0aaf5689dbf1f2225dbf14b327"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a33b2ac0aaf5689dbf1f2225dbf14b327">&#9670;&nbsp;</a></span>Modulo()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<div class="memtemplate">
+template&lt;typename Real &gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -2531,19 +2282,19 @@ template&lt;typename Vect1 , typename Vect2 , typename Scal &gt; </div>
         <tr>
           <td class="memname">void LatticeTester::Modulo </td>
           <td>(</td>
-          <td class="paramtype">const std::int64_t &amp;&#160;</td>
+          <td class="paramtype">const Real &amp;&#160;</td>
           <td class="paramname"><em>a</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::int64_t &amp;&#160;</td>
+          <td class="paramtype">const Real &amp;&#160;</td>
           <td class="paramname"><em>b</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::int64_t &amp;&#160;</td>
+          <td class="paramtype">Real &amp;&#160;</td>
           <td class="paramname"><em>r</em>&#160;</td>
         </tr>
         <tr>
@@ -2559,78 +2310,9 @@ template&lt;typename Vect1 , typename Vect2 , typename Scal &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Computes the "positive" remainder \(r = a \bmod b\), i.e. </p>
-<p>such that \(0 \le r &lt; b\). Example:</p>
-<center></center><center><table class="LatSoft-table LatSoft-has-hlines">
-<tr class="bt">
-<td class="r bl br">\(a\) </td><td class="r bl br">\(b\) </td><td class="c bl br">\(r\) </td></tr>
-<tr class="bt">
-<td class="r bl br">\(5\) </td><td class="r bl br">3 </td><td class="c bl br">2 </td></tr>
-<tr>
-<td class="r bl br">\(-5\) </td><td class="r bl br">\(3\) </td><td class="c bl br">\(1\) </td></tr>
-<tr>
-<td class="r bl br">\(5\) </td><td class="r bl br">\(-3\) </td><td class="c bl br">\(2\) </td></tr>
-<tr>
-<td class="r bl br">\(-5\) </td><td class="r bl br">\(-3\) </td><td class="c bl br">\(1\)  </td></tr>
-</table>
-</center><center></center> 
-</div>
-</div>
-<a id="a37596db3ece874abb24b32cab2873e33"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a37596db3ece874abb24b32cab2873e33">&#9670;&nbsp;</a></span>Modulo() <span class="overload">[2/2]</span></h2>
+<p>Computes the remainder of a/b and stores its positive equivalent mod b in r. </p>
+<p>This works with std::int64_t, NTL::ZZ and real valued numbers. </p>
 
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void LatticeTester::Modulo </td>
-          <td>(</td>
-          <td class="paramtype">const NTL::ZZ &amp;&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const NTL::ZZ &amp;&#160;</td>
-          <td class="paramname"><em>b</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">NTL::ZZ &amp;&#160;</td>
-          <td class="paramname"><em>r</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Computes the "positive" remainder \(r = a \bmod b\), i.e. </p>
-<p>such that \(0 \le r &lt; b\). Example:</p>
-<center></center><center><table class="LatSoft-table LatSoft-has-hlines">
-<tr class="bt">
-<td class="r bl br">\(a\) </td><td class="r bl br">\(b\) </td><td class="c bl br">\(r\) </td></tr>
-<tr class="bt">
-<td class="r bl br">\(5\) </td><td class="r bl br">3 </td><td class="c bl br">2 </td></tr>
-<tr>
-<td class="r bl br">\(-5\) </td><td class="r bl br">\(3\) </td><td class="c bl br">\(1\) </td></tr>
-<tr>
-<td class="r bl br">\(5\) </td><td class="r bl br">\(-3\) </td><td class="c bl br">\(2\) </td></tr>
-<tr>
-<td class="r bl br">\(-5\) </td><td class="r bl br">\(-3\) </td><td class="c bl br">\(1\)  </td></tr>
-</table>
-</center><center></center> 
 </div>
 </div>
 <a id="a49105dd8e915243488440f570b3951bd"></a>
@@ -2984,13 +2666,13 @@ template&lt;typename Int , typename Vect1 , typename Vect2 , typename Scal &gt; 
 </table>
 </div><div class="memdoc">
 
-<p>Computes the scalar product of vectors \(A\) and \(B\), using components \([0..n-1]\), and puts the result in \(D\). </p>
-<p>THIS DOES NOT SEEM TO BE A VERY SAFE IMPLEMENTATION </p>
+<p>Computes the scalar product of vectors <code>A</code> and <code>B</code> truncated to their <code>n</code> first components, then puts the result in <code>D</code>. </p>
+<p>There is a lot to consider when passing types to this function. The best for Vect1 to be the same type as Vect2 and for Scal to be the same as Int, and that those types are the ones stored in Vect1 and Vect2. </p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000018">Todo:</a></b></dt><dd>This uses so many types without check about them and also assumes all those types can be converted to each other without problem... The types here should be uniformized. THIS DOES NOT SEEM TO BE A VERY SAFE IMPLEMENTATION </dd></dl>
 
 </div>
 </div>
 <a id="aa9056e4da6e74d83c6061650caf9e59f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9056e4da6e74d83c6061650caf9e59f">&#9670;&nbsp;</a></span>Quotient() <span class="overload">[1/2]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9056e4da6e74d83c6061650caf9e59f">&#9670;&nbsp;</a></span>Quotient()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3031,65 +2713,8 @@ template&lt;typename Int &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Computes \(q = a/b\) by dropping the fractionnal part, i.e. </p>
-<p>truncates towards 0. Example:</p>
-<center></center><center><table class="LatSoft-table LatSoft-has-hlines">
-<tr class="bt">
-<td class="r bl br">\(a\) </td><td class="r bl br">\(b\) </td><td class="r bl br">\(q\) </td></tr>
-<tr class="bt">
-<td class="r bl br">\(5\) </td><td class="r bl br">3 </td><td class="r bl br">1 </td></tr>
-<tr>
-<td class="r bl br">\(-5\) </td><td class="r bl br">\(3\) </td><td class="r bl br">\(-1\) </td></tr>
-<tr>
-<td class="r bl br">\(5\) </td><td class="r bl br">\(-3\) </td><td class="r bl br">\(-1\) </td></tr>
-<tr>
-<td class="r bl br">\(-5\) </td><td class="r bl br">\(-3\) </td><td class="r bl br">\(1\)  </td></tr>
-</table>
-</center><center></center> 
-</div>
-</div>
-<a id="aa7c40ca56dbbbaeeae0b5ab38ac83de1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa7c40ca56dbbbaeeae0b5ab38ac83de1">&#9670;&nbsp;</a></span>Quotient() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void LatticeTester::Quotient </td>
-          <td>(</td>
-          <td class="paramtype">const NTL::ZZ &amp;&#160;</td>
-          <td class="paramname"><em>a</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const NTL::ZZ &amp;&#160;</td>
-          <td class="paramname"><em>b</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">NTL::ZZ &amp;&#160;</td>
-          <td class="paramname"><em>q</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Computes \(q = a/b\) by dropping the fractionnal part, i.e. </p>
-<p>truncates towards 0. Example:</p>
+<p>Computes a/b, truncates the fractionnal part and puts the result in q. </p>
+<p>This function is overloaded to work as specified on NTL::ZZ integers. Example:</p>
 <center></center><center><table class="LatSoft-table LatSoft-has-hlines">
 <tr class="bt">
 <td class="r bl br">\(a\) </td><td class="r bl br">\(b\) </td><td class="r bl br">\(q\) </td></tr>
@@ -3121,7 +2746,8 @@ template&lt;typename Int &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Returns random blocks of \(s\) bits ( \(s\)-bit integers). </p>
+<p>Returns the first s pseudo-random bits of the underlying RNG in the form of a s-bit integer. </p>
+<p>It is imperative that \(1 \leq s \leq 64\) because the RNG is 64 bits wide. </p>
 
 </div>
 </div>
@@ -3151,8 +2777,9 @@ template&lt;typename Int &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Return a random integer in \([i, j]\). </p>
-<p>Numbers \(i\) and \(j\) can occur. Restriction: \(i &lt; j\). </p>
+<p>Return a uniform pseudo-random integer in \([i, j]\). </p>
+<p>Note that the numbers \(i\) and \(j\) are part of the possible output. It is important that \(i &lt; j\) because the underlying arithmetic uses unsigned integers to store j-i+1 and that will be undefined behavior.</p>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000016">Todo:</a></b></dt><dd>For some reason, this only uses the first 62 bits of the generator. Why? </dd></dl>
 
 </div>
 </div>
@@ -3172,7 +2799,7 @@ template&lt;typename Int &gt; </div>
 </div><div class="memdoc">
 
 <p>Returns a random number in \([0, 1)\). </p>
-<p>The number has 53 random bits. </p>
+<p>The number will have 53 pseudo-random bits. </p>
 
 </div>
 </div>
@@ -3202,7 +2829,8 @@ template&lt;typename Real &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Rounds to the nearest integer value. </p>
+<p>Returns the value of x rounded to the NEAREST integer value. </p>
+<p>(This does not truncate the integer value as is usual in computer arithmetic.) </p>
 
 </div>
 </div>
@@ -3230,7 +2858,7 @@ template&lt;typename Real &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Sets \(x\) to 1. </p>
+<p>Sets <code>x</code> to 1. </p>
 
 </div>
 </div>
@@ -3258,7 +2886,7 @@ template&lt;typename Real &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Sets \(x\) to 1. </p>
+<p>Sets <code>x</code> to 1. </p>
 
 </div>
 </div>
@@ -3279,7 +2907,7 @@ template&lt;typename Real &gt; </div>
 </div><div class="memdoc">
 
 <p>Sets the seed of the generator. </p>
-<p>If not called, a default seed will be used. </p>
+<p>Because of the constraints on the state, <code>seed</code> has to be \( &gt; 2\). If this is never called, a default seed will be used. </p>
 
 </div>
 </div>
@@ -3325,7 +2953,7 @@ template&lt;typename Real &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Sets all components \([0..d]\) of \(A\) to the value \(x\). </p>
+<p>Sets the first <code>d</code> components of <code>A</code> to the value <code>x</code>. </p>
 
 </div>
 </div>
@@ -3365,7 +2993,7 @@ template&lt;typename Real &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Sets components \([0..d-1]\) of \(A\) to 0. </p>
+<p>Sets the first <code>d</code> of <code>A</code> to 0. </p>
 
 </div>
 </div>
@@ -3405,7 +3033,7 @@ template&lt;typename Vect &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Sets components \([0..d-1]\) of \(A\) to 0. </p>
+<p>Sets the first <code>d</code> components of <code>A</code> to 0. </p>
 
 </div>
 </div>
@@ -3435,36 +3063,8 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Returns 1, 0 or \(-1\) depending on whether \(x&gt; 0\), \(x= 0\) or \(x&lt; 0\) respectively. </p>
-
-</div>
-</div>
-<a id="ac57f48ff79454c1d449bc309bebdcbdc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac57f48ff79454c1d449bc309bebdcbdc">&#9670;&nbsp;</a></span>SqrRoot()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">double LatticeTester::SqrRoot </td>
-          <td>(</td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>x</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns \(\sqrt{x}\). </p>
-<dl class="section remark"><dt>Remarks</dt><dd><b>Richard:</b> Cette fonction est-elle encore utilisée? </dd></dl>
+<p>Returns the sign of <code>x</code>. </p>
+<p>The sign is 1 if <code>x&gt;0</code>, 0 if <code>x==0</code> and -1 if <code>x&lt;0</code>. </p>
 
 </div>
 </div>
@@ -3504,7 +3104,8 @@ template&lt;typename T &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Swaps the values of <code>x</code> and <code>y</code>. </p>
+<p>Takes references to two variables of a generic type and swaps their content. </p>
+<p>This uses the assignment operator, so it might not always work well if this operator's implementation is not thorough. </p>
 
 </div>
 </div>
@@ -3542,13 +3143,13 @@ template&lt;typename MatT &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Transforms <code>mat</code> into a string. </p>
-<p>Prints the first \(d1\) rows and \(d2\) columns. Indices start at 1. Elements with index 0 are not printed. </p>
+<p>Returns a string that is a representation of <code>mat</code>. </p>
+<p>This string will represent the \(d1 \times d2\) submatrix of the first lines and colums of <code>mat</code>. </p>
 
 </div>
 </div>
-<a id="ac0ab3cd721290c62bbed850fac763aa9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0ab3cd721290c62bbed850fac763aa9">&#9670;&nbsp;</a></span>toString() <span class="overload">[1/3]</span></h2>
+<a id="a8c8c9d98d5ebd8cb7d73cec8a8e93c13"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c8c9d98d5ebd8cb7d73cec8a8e93c13">&#9670;&nbsp;</a></span>toString() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3577,7 +3178,7 @@ template&lt;typename Vect &gt; </div>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const char *&#160;</td>
-          <td class="paramname"><em>sep</em>&#160;</td>
+          <td class="paramname"><em>sep</em> = <code>&quot;&#160;&quot;</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -3587,59 +3188,13 @@ template&lt;typename Vect &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Prints components \([c..d-1]\) of vector \(A\) as a string. </p>
-<p>Components are separated by string <code>sep</code>. </p>
-
-</div>
-</div>
-<a id="a7f5337d95017557ef829bacfe9336d8c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f5337d95017557ef829bacfe9336d8c">&#9670;&nbsp;</a></span>toString() <span class="overload">[2/3]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename Vect &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::string LatticeTester::toString </td>
-          <td>(</td>
-          <td class="paramtype">const Vect &amp;&#160;</td>
-          <td class="paramname"><em>A</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>c</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>d</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Prints components \([c..d]\) of vector \(A\) as a string. </p>
+<p>Returns a string containing <code>A[c]</code> to <code>A[d-1]</code> formated as <code>[A[c]sep...sepA[d-1]]</code>. </p>
+<p>In this string, components are separated by string <code>sep</code>. By default, <code>sep</code> is just a whitespace character. </p>
 
 </div>
 </div>
 <a id="a0a994e5f949c8b1315d0324e7826240d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a994e5f949c8b1315d0324e7826240d">&#9670;&nbsp;</a></span>toString() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a0a994e5f949c8b1315d0324e7826240d">&#9670;&nbsp;</a></span>toString() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -3666,7 +3221,8 @@ template&lt;typename Vect &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Prints components \([0..d-1]\) of vector \(A\) as a string. </p>
+<p>Returns a string containing the first <code>d</code> components of the vector <code>A</code> as a string. </p>
+<p>Calls <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a8c8c9d98d5ebd8cb7d73cec8a8e93c13" title="Returns a string containing A[c] to A[d-1] formated as [A[c]sep...sepA[d-1]]. ">toString(const Vect&amp;, int, int, const char*)</a>. </p>
 
 </div>
 </div>
@@ -3716,9 +3272,9 @@ template&lt;typename Matr , typename Int &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Performs an integer triangularization operation modulo \(m\) on the matrix \(W\) to obtain an upper triangular matrix \(V\), dual to \(W\). </p>
-<p>However, the matrix \(W\) will be transformed too in order to preserve duality. Only the first <code>lin</code> lines and the first <code>col</code> columns of the matrices will be considered. The main idea is to transform a generating family of vectors into a basis (removing from the family the vectors that are linear combination of other vectors).</p>
-<p>Refer to the article: R. Couture and P L'Ecuyer, Orbits and lattices for linear random number generators with composite moduli, Mathematics of Computation, Volume 65, Number 213, bottom of page 199. </p>
+<p>Performs an integer triangularization operation modulo <code>m</code> on the matrix <code>W</code> to obtain an upper triangular matrix <code>V</code>, dual to <code>W</code>. </p>
+<p>However, the matrix <code>W</code> will be transformed too in order to preserve duality. Only the first <code>lin</code> lines and the first <code>col</code> columns of the matrices will be considered. The main idea is to transform a generating family of vectors into a basis (removing from the family the vectors that are linear combination of other vectors).</p>
+<p>Refer to the article: R. Couture and P L'Ecuyer, Orbits and lattices for linear random number generators with composite moduli, Mathematics of Computation, Volume 65, Number 213, bottom of page 199. </p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000020">Todo:</a></b></dt><dd>Check the algorithm used here and what it does. </dd></dl>
 
 </div>
 </div>
@@ -3761,7 +3317,7 @@ template&lt;typename Matr , typename Int &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a></li>
-    <li class="footer">Generated on Fri Aug 10 2018 19:17:44 for Lattice Tester Manual by
+    <li class="footer">Generated on Tue Aug 21 2018 11:14:43 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

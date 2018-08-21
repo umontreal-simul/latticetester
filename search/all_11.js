@@ -35,7 +35,6 @@ var searchData=
   ['size2',['size2',['../d4/d6f/classNTL_1_1matrix.html#a3c020943f9dced68275092612a89f7ab',1,'NTL::matrix']]],
   ['size_5ftype',['size_type',['../d0/d01/classNTL_1_1vector.html#aa4ce7dc750065f6413002e22a47b8a07',1,'NTL::vector::size_type()'],['../d4/d6f/classNTL_1_1matrix.html#a13de13e7e0de8829cff40c18d5881a47',1,'NTL::matrix::size_type()']]],
   ['sort',['sort',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a82f6e60a98f1c2cdca32babe73becb87',1,'LatticeTester::IntLatticeBasis']]],
-  ['sqrroot',['SqrRoot',['../d8/d74/namespaceLatticeTester.html#ac57f48ff79454c1d449bc309bebdcbdc',1,'LatticeTester']]],
   ['subsets',['Subsets',['../d8/d6d/classLatticeTester_1_1CoordinateSets_1_1Subsets.html',1,'LatticeTester::CoordinateSets::Subsets'],['../d8/d6d/classLatticeTester_1_1CoordinateSets_1_1Subsets.html#aac137b6289ae3d3513eae1bcb6b16f78',1,'LatticeTester::CoordinateSets::Subsets::Subsets()']]],
   ['swap9',['swap9',['../d8/d74/namespaceLatticeTester.html#ad4d16fed8fda92252dc423db28136932',1,'LatticeTester']]]
 ];

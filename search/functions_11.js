@@ -34,7 +34,6 @@ var searchData=
   ['size1',['size1',['../d4/d6f/classNTL_1_1matrix.html#ac642b4a5afc2a742f30c50467ecf9559',1,'NTL::matrix']]],
   ['size2',['size2',['../d4/d6f/classNTL_1_1matrix.html#a3c020943f9dced68275092612a89f7ab',1,'NTL::matrix']]],
   ['sort',['sort',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a82f6e60a98f1c2cdca32babe73becb87',1,'LatticeTester::IntLatticeBasis']]],
-  ['sqrroot',['SqrRoot',['../d8/d74/namespaceLatticeTester.html#ac57f48ff79454c1d449bc309bebdcbdc',1,'LatticeTester']]],
   ['subsets',['Subsets',['../d8/d6d/classLatticeTester_1_1CoordinateSets_1_1Subsets.html#aac137b6289ae3d3513eae1bcb6b16f78',1,'LatticeTester::CoordinateSets::Subsets']]],
   ['swap9',['swap9',['../d8/d74/namespaceLatticeTester.html#ad4d16fed8fda92252dc423db28136932',1,'LatticeTester']]]
 ];

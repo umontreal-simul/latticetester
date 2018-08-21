@@ -45,7 +45,7 @@ var searchData=
   ['maxorder',['maxOrder',['../d8/d6d/classLatticeTester_1_1CoordinateSets_1_1Subsets.html#a1da2cca150a8e2380008ef64af0545d4',1,'LatticeTester::CoordinateSets::Subsets']]],
   ['minorder',['minOrder',['../d8/d6d/classLatticeTester_1_1CoordinateSets_1_1Subsets.html#a0ae5d84db94d0c904ddd2a28bba0285b',1,'LatticeTester::CoordinateSets::Subsets']]],
   ['modifvect',['ModifVect',['../d8/d74/namespaceLatticeTester.html#ad43d2de9716e712790093eff2c12631f',1,'LatticeTester']]],
-  ['modulo',['modulo',['../d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html#a01baf658db57d133fdec72ef5cd990e3',1,'LatticeTester::LatticeTesterConfig::modulo()'],['../d8/d74/namespaceLatticeTester.html#ab3fd3ae7e7a02590cc97b3f3f28e0638',1,'LatticeTester::Modulo(const std::int64_t &amp;a, const std::int64_t &amp;b, std::int64_t &amp;r)'],['../d8/d74/namespaceLatticeTester.html#a37596db3ece874abb24b32cab2873e33',1,'LatticeTester::Modulo(const NTL::ZZ &amp;a, const NTL::ZZ &amp;b, NTL::ZZ &amp;r)']]],
+  ['modulo',['modulo',['../d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html#a01baf658db57d133fdec72ef5cd990e3',1,'LatticeTester::LatticeTesterConfig::modulo()'],['../d8/d74/namespaceLatticeTester.html#a33b2ac0aaf5689dbf1f2225dbf14b327',1,'LatticeTester::Modulo()']]],
   ['multiplyweights',['multiplyWeights',['../da/d3e/classLatticeTester_1_1ProductWeights.html#a0a82c07a628425656a2c1e7184bda025',1,'LatticeTester::ProductWeights']]],
   ['myexit',['MyExit',['../d8/d74/namespaceLatticeTester.html#a49105dd8e915243488440f570b3951bd',1,'LatticeTester']]],
   ['mysqrt',['mysqrt',['../d8/d74/namespaceLatticeTester.html#a9abb8da9fdc5fa2c37d44165f8660aaf',1,'LatticeTester']]]

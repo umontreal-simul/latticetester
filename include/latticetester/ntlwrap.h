@@ -23,9 +23,6 @@
 
 #include <cstdint>
 
-// The next line has been removed because it makes us use the namespaces std and NTL
-//NTL_CLIENT
-
 /**
  * This module contains extensions of certain classes in NTL. It was previously
  * necessary because NTL and boost (an old dependency) did not use the same 
@@ -34,10 +31,20 @@
  * This name conversion was meant to have the same function names in boost and NTL
  * and allows us to have LatticeTester work with either boost library or NTL library
  * depending on preprocessing statements.
+ *
+ * New functions have been implemented in this module as a way to overload a
+ * few operators and methods of NTL (especially on matrix and vector types) to
+ * the usage of `NTL::Mat<std::uint64_t>` because some basic utilies do not
+ * exist in NTL and we want to support these use cases.
  */
 
 namespace NTL
 {
+  /// Renaming this supported type for convenience.
+  typedef Mat<std::int64_t> Mat_64;
+  /// Renaming this supported type for convenience.
+  typedef Vec<std::int64_t> Vec_64;
+
   /**
    * A subclass of the `NTL::Vec<T>` class. It extends its parent with a few 
    * methods and overloads a few others with more compatible defaults.
@@ -205,6 +212,7 @@ namespace NTL
 
 
 
+
   /**
    * An extension of `NTL::vector<T>` implemented in this module to be used as
    * a matrix row.
@@ -225,6 +233,33 @@ namespace NTL
           this->_vec__rep = 0; /* avoid destruction in parent class */
         }
     };
+
+  //============================================================================
+
+  /**
+   * Transforms `mat` into the identity matrix of dimensions
+   * \f$\text{dim}\times\text{dim}\f$.
+   * */
+  void ident(Mat_64& mat, long dim);
+
+  //============================================================================
+  
+  /**
+   * \name Operator overloads
+   * @{
+   * These are operator overloads for Mat_64 and Vec_64 types. Only the
+   * overloads we currently use are defined.
+   * */
+  Vec_64 operator*(const Vec_64& vec, std::int64_t a);
+  Vec_64 operator*(std::int64_t a, const Vec_64& vec);
+  Vec_64& operator+=(Vec_64& vec1, const Vec_64& vec2);
+  Vec_64& operator-=(Vec_64& vec1, const Vec_64& vec2);
+  Vec_64& operator*=(Vec_64& vec, std::int64_t a);
+  Mat_64& operator*=(Mat_64& mat, std::int64_t a);
+  /**
+   * @}
+   * */
+
 } // End namespace NTL
 
 #endif // __NTLWRAP_H__

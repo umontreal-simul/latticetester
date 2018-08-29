@@ -31,11 +31,11 @@
 namespace LatticeTester {
 
   /**
-   * A classes containing multiple sets of coordinates.
+   * A namespace containing different implementation of sets of coordinates.
    *
    * These can be used to specify a set of projections of lattices or point sets.
    * The classes in this namespace are iterable but are not containers, so they
-   * require very little storage.  They virtually contain objects of type
+   * require very little storage. They virtually contain objects of type
    * LatticeTester::Coordinates.
    */
   namespace CoordinateSets {

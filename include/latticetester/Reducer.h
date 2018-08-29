@@ -228,7 +228,7 @@ namespace LatticeTester {
            * reduction algorithm) the redLLLNTL method. This implementation
            * always uses the Euclidean norm.
            */
-          void redLLL (double fact, std::int64_t maxcpt, int dim);
+          void redLLL (double fact = 0.999999, std::int64_t maxcpt = 1000000000, int dim = 0);
 
           /**
            * This is the NTL implementation of the floating point version of the
@@ -1467,6 +1467,7 @@ namespace LatticeTester {
       std::int64_t cpt;
 
       const int dim = m_lat->getDim ();
+      if (Max == 0) Max = dim;
 
       cpt = 0;
       calculGramVD ();

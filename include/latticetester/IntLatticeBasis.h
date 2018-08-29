@@ -119,7 +119,7 @@ namespace LatticeTester {
          * object. The object into which `lat` is copied has to be of dimension n.
          */
         void copyBasis (const IntLatticeBasis<Int, BasInt, Dbl, RedDbl> & lat,
-            int n);
+            long n);
 
         /**
          * Initializes a vector containing the norms of the basis vectors to -1
@@ -513,7 +513,7 @@ namespace LatticeTester {
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
     void IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::copyBasis (
-        const IntLatticeBasis<Int, BasInt, Dbl, RedDbl> & lat, int n)
+        const IntLatticeBasis<Int, BasInt, Dbl, RedDbl> & lat, long n)
     {
       if(this->m_dim == n) {
         CopyMatr(this->m_basis, lat.m_basis, n);

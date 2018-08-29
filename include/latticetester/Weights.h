@@ -25,6 +25,7 @@
 namespace LatticeTester {
 
   /**
+   * \relates Weights
    * Scalar weight type.
    *
    * \note We could have used \c Weight, but it might be wise to leave this \c
@@ -33,11 +34,20 @@ namespace LatticeTester {
   typedef double Weight;
 
   /**
-   * Abstract weights class.
+   * Abstract class representing Weights for figures of merit. Typically, if one
+   * wants to analyze a lattice, there are multiple figures of merit available.
+   * This class presents an interface to give weights to all those figures of
+   * merit so that a global figure of merit can be calculated as a weighted mean
+   * of many figures of merit.
    *
    * This abstract class is the basis for different kinds of weights used to
-   * accentuate the importance given to some projections when computing
-   * figures of merit for lattices or point sets.
+   * accentuate the importance of some projections when computing
+   * figures of merit for lattices or point sets. For more insight on what can
+   * be done with weights, look what the subclasses implement. These classes are
+   * not used directly by LatticeTester since LatticeTester does not implement
+   * calculations of figure of merit for different projections of a point set.
+   * For example usages, one should look at the LatNetBuilder and the LatMRG
+   * software.
    */
   class Weights {
     public:
@@ -54,8 +64,8 @@ namespace LatticeTester {
       virtual Weight getWeight (const Coordinates & projection) const = 0;
 
       /**
-       * Returns the interlacing factor of the weights.
-       * This is used to parametrize figures of merit for interlaced digital nets.
+       * Returns the interlacing factor of the weights. This is used to
+       * parametrize figures of merit for interlaced digital nets.
        */ 
       virtual unsigned int interlacingFactor() const
       {

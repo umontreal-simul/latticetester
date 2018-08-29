@@ -91,7 +91,7 @@ namespace LatticeTester {
           /**
            * Allocates space to vectors used internally. This should probably be
            * private or protected because it should not be needed to call it 
-           * directly (the constructors and copy already call it.
+           * directly (the constructors and copy already call it).
            */
           void init ();
 
@@ -118,6 +118,7 @@ namespace LatticeTester {
            * Computes the logarithm of the normalization factor
            * (<tt>m_lgVolDual2</tt>) in all dimensions \f$\leq\f$ `MaxDim` for
            * the lattice. `lgm2` is the logarithm in base 2 of \f$m^2\f$.
+           * \todo What is this?
            */
           void calcLgVolDual2 (double lgm2);
 
@@ -149,8 +150,12 @@ namespace LatticeTester {
               const Coordinates & proj);
 
           /**
-           * Builds the basis for the lattice in dimension `d`.
-           * This fonction is implemented in subclasses
+           * Builds the basis for the lattice in dimension `d`. This function is
+           * not implemented for this class because the building strategy will
+           * depend on what kind of lattice is used. If you just want to
+           * generate a basis from a set of generating vector, look into module
+           * **something**.
+           * \todo add a module for basis construction.
            */
           virtual void buildBasis (int d);
 
@@ -203,7 +208,7 @@ namespace LatticeTester {
           /*
            * The maximum Dimension for the test
            */
-          //int m_maxDim;
+          int m_maxDim;
 
           /**
            * Represente sur dual along the diagonal?? ERWAN
@@ -222,7 +227,7 @@ namespace LatticeTester {
           BasIntMat m_vSI;
 
           /**
-           * Working Variables use in MRGLattice.h
+           * Working Variables used in MRGLattice.h
            */
           Int m_t1, m_t2, m_t3;
 

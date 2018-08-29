@@ -1055,16 +1055,25 @@ namespace LatticeTester {
    * Checks that the upper \f$\text{dim} \times \text{dim}\f$ submatrix of `A`
    * is triangular modulo `m`. This will return `true` if all the elements under
    * the diagonal are equal to zero modulo `m` and `false` otherwise.
+   * If `m` is `0`, this function simply verifies that the matrix is triangular.
    */
   template <typename Matr, typename Int>
-    bool CheckTriangular (const Matr & A, int dim, const Int & m)
+    bool CheckTriangular (const Matr & A, long dim, const Int m)
     {
       for (int i = 1; i < dim; i++) {
         for (int j = 0; j < i; j++) {
-          if (A[i][j] % m != 0) {
-            std::cout << "******  CheckTriangular failed for element A[" << i <<
-              "][" << j << "]" << std::endl;
-            return false;
+          if (m != 0) {
+            if (A[i][j] % m != 0) {
+              std::cout << "******  CheckTriangular failed for element A[" << i <<
+                "][" << j << "]" << std::endl;
+              return false;
+            }
+          } else {
+            if (A[i][j] != 0) {
+              std::cout << "******  CheckTriangular failed for element A[" << i <<
+                "][" << j << "]" << std::endl;
+              return false;
+            }
           }
         }
       }

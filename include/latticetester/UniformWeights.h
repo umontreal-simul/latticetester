@@ -28,7 +28,6 @@ namespace LatticeTester {
    * This class is used to implement the same weight for all projections. It
    * represents the trivial case of no weight. The weights can all be chosen as
    * 1.
-   *
    */
   class UniformWeights : public Weights {
     protected:

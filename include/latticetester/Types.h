@@ -191,14 +191,14 @@ namespace LatticeTester {
 #include "NTL/lzz_pEX.h"
 
 typedef std::int64_t              MScal;
-typedef zz_p     MScalP; // This appears nowhere
+typedef NTL::zz_p     MScalP; // This appears nowhere
 typedef NTL::vec_zz_p MVectP; // This appears nowhere
 typedef NTL::mat_zz_p MMatP; // This appears only once
 typedef std::int64_t                BScal;
 typedef double              NScal;
 typedef double              RScal;
-typedef zz_pX    PolX; // This appears nowhere
-typedef zz_pE    PolE; // This appears nowhere
+typedef NTL::zz_pX    PolX; // This appears nowhere
+typedef NTL::zz_pE    PolE; // This appears nowhere
 
 #elif NTL_TYPES_CODE == 2
 // the case  "ZZDD"

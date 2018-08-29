@@ -29,7 +29,8 @@ namespace LatticeTester {
    * This is basically a `std::set<std::size_t>`. It also implements an output
    * and an input operator, but it is useless to have a class for that.
    * This class is used to store the vector of coordinates used when
-   * computing the projections with lacunary indices.
+   * computing the projections with lacunary indices. Objects of this class are
+   * created and returned by the classes in the CoordinateSets namespace.
    */
 
   class Coordinates : public std::set<std::size_t> {

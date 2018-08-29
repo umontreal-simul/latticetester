@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['uniformweights',['UniformWeights',['../d7/d89/classLatticeTester_1_1UniformWeights.html',1,'LatticeTester']]]
+  ['types',['Types',['../d6/df9/classLatticeTester_1_1Types.html',1,'LatticeTester']]]
 ];

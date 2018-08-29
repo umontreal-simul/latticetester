@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['weight',['Weight',['../d8/d74/namespaceLatticeTester.html#a951f7e7b03767aa0971dde55f9d328ec',1,'LatticeTester']]],
+  ['weight',['Weight',['../db/d40/classLatticeTester_1_1Weights.html#a5b53e5716aeadbb040a52c9c8c124c74',1,'LatticeTester::Weights']]],
   ['weights',['Weights',['../db/d40/classLatticeTester_1_1Weights.html',1,'LatticeTester']]],
   ['withdual',['withDual',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#adad5256ecd1222f5953f080fff737a02',1,'LatticeTester::IntLatticeBasis']]],
   ['write',['write',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a50bb85839ddba692cfff69307568c73b',1,'LatticeTester::IntLatticeBasis::write()'],['../d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html#a970fe1a68a97a8097a7bc4e1888ea9c6',1,'LatticeTester::LatticeTesterConfig::write()']]],

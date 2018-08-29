@@ -36,7 +36,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-work-40</span>
+   &#160;<span id="projectnumber">0.1.0-work-41</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -89,7 +89,9 @@ $(document).ready(function(){initNavTree('d2/d5a/namespaceNTL.html','../../');})
 
 <div class="header">
   <div class="summary">
-<a href="#nested-classes">Classes</a>  </div>
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">NTL Namespace Reference</div>  </div>
 </div><!--header-->
@@ -110,12 +112,46 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A subclass of the <code>NTL::Vec&lt;T&gt;</code> class.  <a href="../../d0/d01/classNTL_1_1vector.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a60a94702129d4e1861593e9b065d6977"><td class="memItemLeft" align="right" valign="top">typedef Mat&lt; std::int64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d5a/namespaceNTL.html#a60a94702129d4e1861593e9b065d6977">Mat_64</a></td></tr>
+<tr class="memdesc:a60a94702129d4e1861593e9b065d6977"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renaming this supported type for convenience.  <a href="#a60a94702129d4e1861593e9b065d6977">More...</a><br /></td></tr>
+<tr class="separator:a60a94702129d4e1861593e9b065d6977"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab2c03c6ebdc24ad122abcc86be689c1"><td class="memItemLeft" align="right" valign="top">typedef Vec&lt; std::int64_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d5a/namespaceNTL.html#aab2c03c6ebdc24ad122abcc86be689c1">Vec_64</a></td></tr>
+<tr class="memdesc:aab2c03c6ebdc24ad122abcc86be689c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Renaming this supported type for convenience.  <a href="#aab2c03c6ebdc24ad122abcc86be689c1">More...</a><br /></td></tr>
+<tr class="separator:aab2c03c6ebdc24ad122abcc86be689c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a9601331229d861c7ebf85a53166dca47"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d5a/namespaceNTL.html#a9601331229d861c7ebf85a53166dca47">ident</a> (<a class="el" href="../../d2/d5a/namespaceNTL.html#a60a94702129d4e1861593e9b065d6977">Mat_64</a> &amp;mat, long dim)</td></tr>
+<tr class="memdesc:a9601331229d861c7ebf85a53166dca47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Transforms <code>mat</code> into the identity matrix of dimensions \(\text{dim}\times\text{dim}\).  <a href="#a9601331229d861c7ebf85a53166dca47">More...</a><br /></td></tr>
+<tr class="separator:a9601331229d861c7ebf85a53166dca47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Operator overloads</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p>These are operator overloads for Mat_64 and Vec_64 types.</p>
+<p>Only the overloads we currently use are defined. </p>
+</div></td></tr>
+<tr class="memitem:ab3d98c37520044c4da3012225d7ec249"><td class="memItemLeft" align="right" valign="top"><a id="ab3d98c37520044c4da3012225d7ec249"></a>
+<a class="el" href="../../d2/d5a/namespaceNTL.html#aab2c03c6ebdc24ad122abcc86be689c1">Vec_64</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (const <a class="el" href="../../d2/d5a/namespaceNTL.html#aab2c03c6ebdc24ad122abcc86be689c1">Vec_64</a> &amp;vec, std::int64_t a)</td></tr>
+<tr class="separator:ab3d98c37520044c4da3012225d7ec249"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a525a36bbb22a35206a0bae18b82afa6c"><td class="memItemLeft" align="right" valign="top"><a id="a525a36bbb22a35206a0bae18b82afa6c"></a>
+<a class="el" href="../../d2/d5a/namespaceNTL.html#aab2c03c6ebdc24ad122abcc86be689c1">Vec_64</a>&#160;</td><td class="memItemRight" valign="bottom"><b>operator*</b> (std::int64_t a, const <a class="el" href="../../d2/d5a/namespaceNTL.html#aab2c03c6ebdc24ad122abcc86be689c1">Vec_64</a> &amp;vec)</td></tr>
+<tr class="separator:a525a36bbb22a35206a0bae18b82afa6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6cd04b6caf7e57544932eee9586e4834"><td class="memItemLeft" align="right" valign="top"><a id="a6cd04b6caf7e57544932eee9586e4834"></a>
+<a class="el" href="../../d2/d5a/namespaceNTL.html#aab2c03c6ebdc24ad122abcc86be689c1">Vec_64</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator+=</b> (<a class="el" href="../../d2/d5a/namespaceNTL.html#aab2c03c6ebdc24ad122abcc86be689c1">Vec_64</a> &amp;vec1, const <a class="el" href="../../d2/d5a/namespaceNTL.html#aab2c03c6ebdc24ad122abcc86be689c1">Vec_64</a> &amp;vec2)</td></tr>
+<tr class="separator:a6cd04b6caf7e57544932eee9586e4834"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9bc10c16f726647a7a97a0c67c4d4118"><td class="memItemLeft" align="right" valign="top"><a id="a9bc10c16f726647a7a97a0c67c4d4118"></a>
+<a class="el" href="../../d2/d5a/namespaceNTL.html#aab2c03c6ebdc24ad122abcc86be689c1">Vec_64</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator-=</b> (<a class="el" href="../../d2/d5a/namespaceNTL.html#aab2c03c6ebdc24ad122abcc86be689c1">Vec_64</a> &amp;vec1, const <a class="el" href="../../d2/d5a/namespaceNTL.html#aab2c03c6ebdc24ad122abcc86be689c1">Vec_64</a> &amp;vec2)</td></tr>
+<tr class="separator:a9bc10c16f726647a7a97a0c67c4d4118"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa5535943a984380a32243b91761d853"><td class="memItemLeft" align="right" valign="top"><a id="aaa5535943a984380a32243b91761d853"></a>
+<a class="el" href="../../d2/d5a/namespaceNTL.html#aab2c03c6ebdc24ad122abcc86be689c1">Vec_64</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator*=</b> (<a class="el" href="../../d2/d5a/namespaceNTL.html#aab2c03c6ebdc24ad122abcc86be689c1">Vec_64</a> &amp;vec, std::int64_t a)</td></tr>
+<tr class="separator:aaa5535943a984380a32243b91761d853"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc171f8adead871649fc4281536cd695"><td class="memItemLeft" align="right" valign="top"><a id="acc171f8adead871649fc4281536cd695"></a>
+<a class="el" href="../../d2/d5a/namespaceNTL.html#a60a94702129d4e1861593e9b065d6977">Mat_64</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator*=</b> (<a class="el" href="../../d2/d5a/namespaceNTL.html#a60a94702129d4e1861593e9b065d6977">Mat_64</a> &amp;mat, std::int64_t a)</td></tr>
+<tr class="separator:acc171f8adead871649fc4281536cd695"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Some other compatibility utilities</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p>These functions perform convertions between different types.</p>
 <p>Most of them do not really need explainations, but sometimes a specific logic is used when doing the convertion.</p>
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000015">Todo:</a></b></dt><dd>Maybe some of this can be rewritten as templates. This could be usefull because it is easy to see how this bit of code could not work with certain compilators. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000018">Todo:</a></b></dt><dd>Maybe some of this can be rewritten as templates. This could be usefull because it is easy to see how this bit of code could not work with certain compilators. </dd></dl>
 </div></td></tr>
 <tr class="memitem:a07b6d8586b6a40e65a3bee1608d3e389"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d5a/namespaceNTL.html#a07b6d8586b6a40e65a3bee1608d3e389">conv</a> (std::int64_t &amp;l, const char *c)</td></tr>
 <tr class="memdesc:a07b6d8586b6a40e65a3bee1608d3e389"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the array of characters (string) <code>c</code> into an <code>std::int64_t</code> <code>l</code> using the strtol() function of cstdlib.h.  <a href="#a07b6d8586b6a40e65a3bee1608d3e389">More...</a><br /></td></tr>
@@ -148,8 +184,42 @@ Functions</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This module contains extensions of certain classes in <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a>. </p>
 <p>It was previously necessary because <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> and boost (an old dependency) did not use the same function names and indices.</p>
-<p>This name conversion was meant to have the same function names in boost and <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> and allows us to have <a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace. ">LatticeTester</a> work with either boost library or <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> library depending on preprocessing statements. </p>
-</div><h2 class="groupheader">Function Documentation</h2>
+<p>This name conversion was meant to have the same function names in boost and <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> and allows us to have <a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace. ">LatticeTester</a> work with either boost library or <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> library depending on preprocessing statements.</p>
+<p>New functions have been implemented in this module as a way to overload a few operators and methods of <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> (especially on matrix and vector types) to the usage of <code>NTL::Mat&lt;std::uint64_t&gt;</code> because some basic utilies do not exist in <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> and we want to support these use cases. </p>
+</div><h2 class="groupheader">Typedef Documentation</h2>
+<a id="a60a94702129d4e1861593e9b065d6977"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a60a94702129d4e1861593e9b065d6977">&#9670;&nbsp;</a></span>Mat_64</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef Mat&lt;std::int64_t&gt; <a class="el" href="../../d2/d5a/namespaceNTL.html#a60a94702129d4e1861593e9b065d6977">NTL::Mat_64</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Renaming this supported type for convenience. </p>
+
+</div>
+</div>
+<a id="aab2c03c6ebdc24ad122abcc86be689c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab2c03c6ebdc24ad122abcc86be689c1">&#9670;&nbsp;</a></span>Vec_64</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef Vec&lt;std::int64_t&gt; <a class="el" href="../../d2/d5a/namespaceNTL.html#aab2c03c6ebdc24ad122abcc86be689c1">NTL::Vec_64</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Renaming this supported type for convenience. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Function Documentation</h2>
 <a id="a07b6d8586b6a40e65a3bee1608d3e389"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a07b6d8586b6a40e65a3bee1608d3e389">&#9670;&nbsp;</a></span>conv() <span class="overload">[1/9]</span></h2>
 
@@ -495,13 +565,43 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a9601331229d861c7ebf85a53166dca47"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9601331229d861c7ebf85a53166dca47">&#9670;&nbsp;</a></span>ident()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NTL::ident </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="../../d2/d5a/namespaceNTL.html#a60a94702129d4e1861593e9b065d6977">Mat_64</a> &amp;&#160;</td>
+          <td class="paramname"><em>mat</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">long&#160;</td>
+          <td class="paramname"><em>dim</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Transforms <code>mat</code> into the identity matrix of dimensions \(\text{dim}\times\text{dim}\). </p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d2/d5a/namespaceNTL.html">NTL</a></li>
-    <li class="footer">Generated on Tue Aug 21 2018 11:14:43 for Lattice Tester Manual by
+    <li class="footer">Generated on Wed Aug 29 2018 17:17:23 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

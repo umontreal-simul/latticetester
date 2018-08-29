@@ -2,6 +2,7 @@ var searchData=
 [
   ['gcd',['gcd',['../d8/d74/namespaceLatticeTester.html#a14db19d396c104b730dd5ea23a7752b5',1,'LatticeTester']]],
   ['gcd2vect',['GCD2vect',['../d8/d74/namespaceLatticeTester.html#adf2df72413bf638fb96e4a4d0e078828',1,'LatticeTester']]],
+  ['gcdconstruction',['GCDConstruction',['../d0/d18/classLatticeTester_1_1BasisConstruction.html#af2d87fd90972f750218d516e4fa47596',1,'LatticeTester::BasisConstruction']]],
   ['getalpha',['getAlpha',['../d8/d6e/classLatticeTester_1_1NormaPalpha.html#a696a88eb13799c3a7952413810f22474',1,'LatticeTester::NormaPalpha']]],
   ['getbasis',['getBasis',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a15d64169ed992370253e525c5f88df0b',1,'LatticeTester::IntLatticeBasis']]],
   ['getbound',['getBound',['../d0/dc8/classLatticeTester_1_1Normalizer.html#a5a2cf3ba586fd5b8d99d531668f60898',1,'LatticeTester::Normalizer']]],

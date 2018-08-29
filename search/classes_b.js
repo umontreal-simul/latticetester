@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['types',['Types',['../d6/df9/classLatticeTester_1_1Types.html',1,'LatticeTester']]]
+  ['subsets',['Subsets',['../d8/d6d/classLatticeTester_1_1CoordinateSets_1_1Subsets.html',1,'LatticeTester::CoordinateSets']]]
 ];

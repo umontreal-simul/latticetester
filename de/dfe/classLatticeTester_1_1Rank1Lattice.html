@@ -36,7 +36,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-work-40</span>
+   &#160;<span id="projectnumber">0.1.0-work-41</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -98,7 +98,7 @@ $(document).ready(function(){initNavTree('de/dfe/classLatticeTester_1_1Rank1Latt
 </div><!--header-->
 <div class="contents">
 
-<p>This class implements a general rank 1 lattice basis.  
+<p>This class implements a general rank 1 lattice.  
  <a href="../../de/dfe/classLatticeTester_1_1Rank1Lattice.html#details">More...</a></p>
 
 <p><code>#include &lt;latticetester/Rank1Lattice.h&gt;</code></p>
@@ -107,9 +107,9 @@ $(document).ready(function(){initNavTree('de/dfe/classLatticeTester_1_1Rank1Latt
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9fd941af81e4055a69527890200f1166"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/dfe/classLatticeTester_1_1Rank1Lattice.html#a9fd941af81e4055a69527890200f1166">Rank1Lattice</a> (const Int &amp;n, const <a class="el" href="../../d0/d01/classNTL_1_1vector.html">IntVec</a> &amp;a, int d, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9770e4d57aa715e249cd7e700c6f37e4">LatticeTester::NormType</a> norm=LatticeTester::L2NORM)</td></tr>
-<tr class="memdesc:a9fd941af81e4055a69527890200f1166"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor.  <a href="#a9fd941af81e4055a69527890200f1166">More...</a><br /></td></tr>
-<tr class="separator:a9fd941af81e4055a69527890200f1166"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e1852aae95b01f46a4a7ef299f84d8d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/dfe/classLatticeTester_1_1Rank1Lattice.html#a5e1852aae95b01f46a4a7ef299f84d8d">Rank1Lattice</a> (const Int &amp;m, const <a class="el" href="../../d0/d01/classNTL_1_1vector.html">IntVec</a> &amp;a, int maxDim, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9770e4d57aa715e249cd7e700c6f37e4">LatticeTester::NormType</a> norm=LatticeTester::L2NORM)</td></tr>
+<tr class="memdesc:a5e1852aae95b01f46a4a7ef299f84d8d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Full constructor.  <a href="#a5e1852aae95b01f46a4a7ef299f84d8d">More...</a><br /></td></tr>
+<tr class="separator:a5e1852aae95b01f46a4a7ef299f84d8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a161532e5f5c7f44187a59d18cbb2b7ab"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/dfe/classLatticeTester_1_1Rank1Lattice.html#a161532e5f5c7f44187a59d18cbb2b7ab">Rank1Lattice</a> (const <a class="el" href="../../de/dfe/classLatticeTester_1_1Rank1Lattice.html">Rank1Lattice</a>&lt; Int, BasInt, Dbl, RedDbl &gt; &amp;Lat)</td></tr>
 <tr class="memdesc:a161532e5f5c7f44187a59d18cbb2b7ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="#a161532e5f5c7f44187a59d18cbb2b7ab">More...</a><br /></td></tr>
 <tr class="separator:a161532e5f5c7f44187a59d18cbb2b7ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -120,10 +120,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a274b453eb8b78867b494ed13f559f284"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#a274b453eb8b78867b494ed13f559f284">More...</a><br /></td></tr>
 <tr class="separator:a274b453eb8b78867b494ed13f559f284"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0d17717d737fb62d56d0e63a287249ef"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/dfe/classLatticeTester_1_1Rank1Lattice.html#a0d17717d737fb62d56d0e63a287249ef">toStringCoef</a> () const</td></tr>
-<tr class="memdesc:a0d17717d737fb62d56d0e63a287249ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the vector of multipliers \(a\) as a string.  <a href="#a0d17717d737fb62d56d0e63a287249ef">More...</a><br /></td></tr>
+<tr class="memdesc:a0d17717d737fb62d56d0e63a287249ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the firsts components of the vector of multipliers \(a\) as a string.  <a href="#a0d17717d737fb62d56d0e63a287249ef">More...</a><br /></td></tr>
 <tr class="separator:a0d17717d737fb62d56d0e63a287249ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0a0764d5a14aa4c354d6c763a3420205"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/dfe/classLatticeTester_1_1Rank1Lattice.html#a0a0764d5a14aa4c354d6c763a3420205">buildBasis</a> (int d)</td></tr>
-<tr class="memdesc:a0a0764d5a14aa4c354d6c763a3420205"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds the basis in dimension \(d\).  <a href="#a0a0764d5a14aa4c354d6c763a3420205">More...</a><br /></td></tr>
+<tr class="memdesc:a0a0764d5a14aa4c354d6c763a3420205"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds the basis in dimension <code>d</code>.  <a href="#a0a0764d5a14aa4c354d6c763a3420205">More...</a><br /></td></tr>
 <tr class="separator:a0a0764d5a14aa4c354d6c763a3420205"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad299f05cc3c03540b2cc44e23b13473"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../de/dfe/classLatticeTester_1_1Rank1Lattice.html#aad299f05cc3c03540b2cc44e23b13473">dualize</a> ()</td></tr>
 <tr class="memdesc:aad299f05cc3c03540b2cc44e23b13473"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dualize the matrix.  <a href="#aad299f05cc3c03540b2cc44e23b13473">More...</a><br /></td></tr>
@@ -193,9 +193,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6ff219a27a32b2594c2baad3865163b2 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a6ff219a27a32b2594c2baad3865163b2">copyBasis</a> (const <a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html">IntLatticeBasis</a>&lt; Int, BasInt, Dbl, RedDbl &gt; &amp;lat)</td></tr>
 <tr class="memdesc:a6ff219a27a32b2594c2baad3865163b2 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy the lattice <code>lat</code>, except it's NormType and dimension, into this object.  <a href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a6ff219a27a32b2594c2baad3865163b2">More...</a><br /></td></tr>
 <tr class="separator:a6ff219a27a32b2594c2baad3865163b2 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73e0cb0d59b52f4e6d3944fee39afc29 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a73e0cb0d59b52f4e6d3944fee39afc29">copyBasis</a> (const <a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html">IntLatticeBasis</a>&lt; Int, BasInt, Dbl, RedDbl &gt; &amp;lat, int n)</td></tr>
-<tr class="memdesc:a73e0cb0d59b52f4e6d3944fee39afc29 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy the n first elements of the basis of the lattice <code>lat</code> into this object.  <a href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a73e0cb0d59b52f4e6d3944fee39afc29">More...</a><br /></td></tr>
-<tr class="separator:a73e0cb0d59b52f4e6d3944fee39afc29 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a973c60c8ddd75c14cea87d084bb3e49c inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a973c60c8ddd75c14cea87d084bb3e49c">copyBasis</a> (const <a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html">IntLatticeBasis</a>&lt; Int, BasInt, Dbl, RedDbl &gt; &amp;lat, long n)</td></tr>
+<tr class="memdesc:a973c60c8ddd75c14cea87d084bb3e49c inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy the n first elements of the basis of the lattice <code>lat</code> into this object.  <a href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a973c60c8ddd75c14cea87d084bb3e49c">More...</a><br /></td></tr>
+<tr class="separator:a973c60c8ddd75c14cea87d084bb3e49c inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8f7e8367b54b45bdacae13e04a8399f inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#ae8f7e8367b54b45bdacae13e04a8399f">initVecNorm</a> ()</td></tr>
 <tr class="memdesc:ae8f7e8367b54b45bdacae13e04a8399f inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a vector containing the norms of the basis vectors to -1 at all components.  <a href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#ae8f7e8367b54b45bdacae13e04a8399f">More...</a><br /></td></tr>
 <tr class="separator:ae8f7e8367b54b45bdacae13e04a8399f inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -337,7 +337,7 @@ Protected Attributes</h2></td></tr>
 <tr class="memdesc:a57f80c9dded11962656466c30bfc9d44 inherit pro_attribs_classLatticeTester_1_1IntLattice"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use to save the dual basis and the basis in some works.  <a href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#a57f80c9dded11962656466c30bfc9d44">More...</a><br /></td></tr>
 <tr class="separator:a57f80c9dded11962656466c30bfc9d44 inherit pro_attribs_classLatticeTester_1_1IntLattice"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aad3b58188ac2d910290e5c0803e127f9 inherit pro_attribs_classLatticeTester_1_1IntLattice"><td class="memItemLeft" align="right" valign="top">Int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#aad3b58188ac2d910290e5c0803e127f9">m_t1</a></td></tr>
-<tr class="memdesc:aad3b58188ac2d910290e5c0803e127f9 inherit pro_attribs_classLatticeTester_1_1IntLattice"><td class="mdescLeft">&#160;</td><td class="mdescRight">Working Variables use in MRGLattice.h.  <a href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#aad3b58188ac2d910290e5c0803e127f9">More...</a><br /></td></tr>
+<tr class="memdesc:aad3b58188ac2d910290e5c0803e127f9 inherit pro_attribs_classLatticeTester_1_1IntLattice"><td class="mdescLeft">&#160;</td><td class="mdescRight">Working Variables used in MRGLattice.h.  <a href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#aad3b58188ac2d910290e5c0803e127f9">More...</a><br /></td></tr>
 <tr class="separator:aad3b58188ac2d910290e5c0803e127f9 inherit pro_attribs_classLatticeTester_1_1IntLattice"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pro_attribs_classLatticeTester_1_1IntLatticeBasis"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classLatticeTester_1_1IntLatticeBasis')"><img src="../../closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html">LatticeTester::IntLatticeBasis&lt; Int, BasInt, Dbl, RedDbl &gt;</a></td></tr>
 <tr class="memitem:a195f23f3350c4e413ac6cdce25f8ea1f inherit pro_attribs_classLatticeTester_1_1IntLatticeBasis"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d4/d6f/classNTL_1_1matrix.html">BasIntMat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a195f23f3350c4e413ac6cdce25f8ea1f">m_basis</a></td></tr>
@@ -372,14 +372,19 @@ Protected Attributes</h2></td></tr>
 <div class="textblock"><h3>template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt;<br />
 class LatticeTester::Rank1Lattice&lt; Int, BasInt, Dbl, RedDbl &gt;</h3>
 
-<p>This class implements a general rank 1 lattice basis. </p>
-<p>For the values \(a_1, a_2, …, a_d\) given, the \(d\)-dimensional lattice basis is formed as: </p><p class="formulaDsp">
-\[ \mathbf{b_1} = (a_1, a_2, …, a_d),\quad\mathbf{b_2} = (0, n, 0, …, 0),\quad…, \quad\mathbf{b_d} = (0, …, 0, n) \]
+<p>This class implements a general rank 1 lattice. </p>
+<p>A rank 1 lattice is the lattice \(\mathbb{Z}_m^d\) generated by a recurrence of the form </p><p class="formulaDsp">
+\begin{equation} u_i = (i \mathbf{a} \mod m), \end{equation}
 </p>
-<p> Without loss of generality, one may choose \(a_1 = 1\). </p>
+<p> where \(\mathbf{a} \in \mathbb{Z}_m^d\). It can also be seen as a lattice in \([0,1)^d\) by dividing the coordinates of all the points by \(m\). Given \(\mathbf{a}\), the basis of such a lattice is given, quite simply, by </p><p class="formulaDsp">
+\begin{align*} \mathbf{v}_1 &amp; = a \\ \mathbf{v}_2 &amp; = m \mathbf{e}_2 \\ \vdots &amp; \\ \mathbf{v}_d &amp; = m \mathbf{e}_v \\ \end{align*}
+</p>
+<p> where \(\mathbf{e}_i\) is a vector of 0 with a 1 at the \(i^\text{th}\) coordinate.</p>
+<p>A condition that is most wanted when building a rank 1 lattice is that \(\gcd(a_i, m) = 1,\ \forall 1\leq i \leq d\). If this condition is verified, the lattice covers the same number of points, \(m\), in all its projections. Note that if one searches for such a lattice, it is possible, without loss of generality generality, to assume that \(a_1 = 1\).</p>
+<p>This class implements or reuses the methods of <a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html" title="This class is a skeleton for the implementation of different types of lattices of arbitrary rank...">IntLattice</a>, as well as some new methods to build a basis from a generator. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a9fd941af81e4055a69527890200f1166"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9fd941af81e4055a69527890200f1166">&#9670;&nbsp;</a></span>Rank1Lattice() <span class="overload">[1/2]</span></h2>
+<a id="a5e1852aae95b01f46a4a7ef299f84d8d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e1852aae95b01f46a4a7ef299f84d8d">&#9670;&nbsp;</a></span>Rank1Lattice() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -390,7 +395,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
           <td class="memname"><a class="el" href="../../de/dfe/classLatticeTester_1_1Rank1Lattice.html">LatticeTester::Rank1Lattice</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::<a class="el" href="../../de/dfe/classLatticeTester_1_1Rank1Lattice.html">Rank1Lattice</a> </td>
           <td>(</td>
           <td class="paramtype">const Int &amp;&#160;</td>
-          <td class="paramname"><em>n</em>, </td>
+          <td class="paramname"><em>m</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -402,7 +407,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>d</em>, </td>
+          <td class="paramname"><em>maxDim</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -418,8 +423,12 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
       </table>
 </div><div class="memdoc">
 
-<p>Constructor. </p>
-<p>\(d\) represents the number of multipliers in the array <code>a</code>. </p>
+<p>Full constructor. </p>
+<p>The lattice can be completely described by the generating vector <code>a</code>, the dimension <code>maxDim</code>, and the modulo <code>m</code> since all the points of the lattice can be obtained by taking </p><p class="formulaDsp">
+\[ u_i = (i \mathbf{a} \mod m), \]
+</p>
+<p> with \(\mathbf{a}\) being an assortment of the first components of <code>a</code> (<code>a</code> being a vector of dimension <code>maxDim</code>).</p>
+<p>This initializes all needed internal components (see <code><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html" title="This class is a skeleton for the implementation of different types of lattices of arbitrary rank...">IntLattice</a></code>). In particular, this sets maximal dimension for this object to <code>maxDim</code>. This means that when creating an object of this class, it is important that \(\text{maxDim} \leq \dim(a)\) and ideal that the equality holds. This constructor does not build the basis to allow for more flexibility in the dimension when doing so. </p>
 
 </div>
 </div>
@@ -493,7 +502,8 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 </table>
 </div><div class="memdoc">
 
-<p>Builds the basis in dimension \(d\). </p>
+<p>Builds the basis in dimension <code>d</code>. </p>
+<p><code>d</code> has to be smaller or equal than <code>this-&gt;maxDim()</code> </p>
 
 <p>Reimplemented from <a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#a68235b33d81fc119b2006b3dbbcb426d">LatticeTester::IntLattice&lt; Int, BasInt, Dbl, RedDbl &gt;</a>.</p>
 
@@ -628,7 +638,8 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 </table>
 </div><div class="memdoc">
 
-<p>Returns the vector of multipliers \(a\) as a string. </p>
+<p>Returns the firsts components of the vector of multipliers \(a\) as a string. </p>
+<p>This will print only the a number of components of <code>a</code> corresponding to the current dimension of the lattice. </p>
 
 <p>Reimplemented from <a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#a73ee08245ad247bbf1a98dbd403ee334">LatticeTester::IntLattice&lt; Int, BasInt, Dbl, RedDbl &gt;</a>.</p>
 
@@ -670,7 +681,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a></li><li class="navelem"><a class="el" href="../../de/dfe/classLatticeTester_1_1Rank1Lattice.html">Rank1Lattice</a></li>
-    <li class="footer">Generated on Tue Aug 21 2018 11:14:43 for Lattice Tester Manual by
+    <li class="footer">Generated on Wed Aug 29 2018 17:17:23 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

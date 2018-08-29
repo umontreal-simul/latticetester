@@ -7,7 +7,7 @@ var classLatticeTester_1_1IntLatticeBasis =
     [ "~IntLatticeBasis", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a85998730c386f62d87dfd696322aabed", null ],
     [ "checkDuality", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a3aef5ff1c24b10130431c35f3a19b1e0", null ],
     [ "copyBasis", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a6ff219a27a32b2594c2baad3865163b2", null ],
-    [ "copyBasis", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a73e0cb0d59b52f4e6d3944fee39afc29", null ],
+    [ "copyBasis", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a973c60c8ddd75c14cea87d084bb3e49c", null ],
     [ "getBasis", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a15d64169ed992370253e525c5f88df0b", null ],
     [ "getDim", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a1a71891fb880e94aa3eaf111f877cddc", null ],
     [ "getDualBasis", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a9ae64b73dbc9f248cf2e3083ca3ccc3c", null ],

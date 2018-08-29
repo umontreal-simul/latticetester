@@ -1,6 +1,7 @@
 var namespaceLatticeTester =
 [
     [ "CoordinateSets", "d0/d6f/namespaceLatticeTester_1_1CoordinateSets.html", "d0/d6f/namespaceLatticeTester_1_1CoordinateSets" ],
+    [ "BasisConstruction", "d0/d18/classLatticeTester_1_1BasisConstruction.html", "d0/d18/classLatticeTester_1_1BasisConstruction" ],
     [ "Coordinates", "d9/dd3/classLatticeTester_1_1Coordinates.html", "d9/dd3/classLatticeTester_1_1Coordinates" ],
     [ "IntFactor", "d6/d95/classLatticeTester_1_1IntFactor.html", "d6/d95/classLatticeTester_1_1IntFactor" ],
     [ "IntLattice", "d6/dc0/classLatticeTester_1_1IntLattice.html", "d6/dc0/classLatticeTester_1_1IntLattice" ],

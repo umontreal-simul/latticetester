@@ -36,7 +36,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-work-40</span>
+   &#160;<span id="projectnumber">0.1.0-work-41</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -127,9 +127,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a6ff219a27a32b2594c2baad3865163b2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a6ff219a27a32b2594c2baad3865163b2">copyBasis</a> (const <a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html">IntLatticeBasis</a>&lt; Int, BasInt, Dbl, RedDbl &gt; &amp;lat)</td></tr>
 <tr class="memdesc:a6ff219a27a32b2594c2baad3865163b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy the lattice <code>lat</code>, except it's NormType and dimension, into this object.  <a href="#a6ff219a27a32b2594c2baad3865163b2">More...</a><br /></td></tr>
 <tr class="separator:a6ff219a27a32b2594c2baad3865163b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73e0cb0d59b52f4e6d3944fee39afc29"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a73e0cb0d59b52f4e6d3944fee39afc29">copyBasis</a> (const <a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html">IntLatticeBasis</a>&lt; Int, BasInt, Dbl, RedDbl &gt; &amp;lat, int n)</td></tr>
-<tr class="memdesc:a73e0cb0d59b52f4e6d3944fee39afc29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy the n first elements of the basis of the lattice <code>lat</code> into this object.  <a href="#a73e0cb0d59b52f4e6d3944fee39afc29">More...</a><br /></td></tr>
-<tr class="separator:a73e0cb0d59b52f4e6d3944fee39afc29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a973c60c8ddd75c14cea87d084bb3e49c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a973c60c8ddd75c14cea87d084bb3e49c">copyBasis</a> (const <a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html">IntLatticeBasis</a>&lt; Int, BasInt, Dbl, RedDbl &gt; &amp;lat, long n)</td></tr>
+<tr class="memdesc:a973c60c8ddd75c14cea87d084bb3e49c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy the n first elements of the basis of the lattice <code>lat</code> into this object.  <a href="#a973c60c8ddd75c14cea87d084bb3e49c">More...</a><br /></td></tr>
+<tr class="separator:a973c60c8ddd75c14cea87d084bb3e49c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae8f7e8367b54b45bdacae13e04a8399f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#ae8f7e8367b54b45bdacae13e04a8399f">initVecNorm</a> ()</td></tr>
 <tr class="memdesc:ae8f7e8367b54b45bdacae13e04a8399f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a vector containing the norms of the basis vectors to -1 at all components.  <a href="#ae8f7e8367b54b45bdacae13e04a8399f">More...</a><br /></td></tr>
 <tr class="separator:ae8f7e8367b54b45bdacae13e04a8399f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -280,7 +280,7 @@ class LatticeTester::IntLatticeBasis&lt; Int, BasInt, Dbl, RedDbl &gt;</h3>
 <p>Lattices are always stored rescaled. That is we only consider lattices with rational coordinates such that <code>m</code> is a lcm for all the denominators in basis coordinates. It is then possible to represent the lattice in the integers instead of the real numbers by multiplying all it's vectors by <code>m</code>. We call this lattice a rescaled lattice. In practice, this allows an exact representation of the arithmetic on the basis. This is usefull in all the usecases of this software.</p>
 <p>There are numerous ways to represent a lattice. Depending on the calculations that need to be done, it is possible to only provide the basis vectors, the norm and the dimension. There are also fields to provide a dual basis and an <code>m</code> (the variables named <code>modulo</code>). Both these fields are needed for most applications using the dual basis. The dimension \(d\) specifies that the basis contains \(d\) vectors in \(\mathbb{Z}^d\). The norm is one of the norm of NormType.</p>
 <p>This class also has methods and attributes that can be used to store and compute the norms of the basis and dual basis vectors. It can also permute vectors in the basis or sort them by length and do the corresponding changes in the dual. Finally, it can also check if the dual really is a dual to the primal basis.</p>
-<p>This class is made to be built upon. It only offers the bare basics of what a user could want to do with a Lattice. It is most likely that the utilities presented here do not suffice common needs. For a more extensive representation of a lattice look for the <code><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html" title="This class is a skeleton for the implementation of different types of lattices of arbitrary rank...">IntLattice</a></code> and the <code><a class="el" href="../../de/dfe/classLatticeTester_1_1Rank1Lattice.html" title="This class implements a general rank 1 lattice basis. ">Rank1Lattice</a></code> classes. </p>
+<p>This class is made to be built upon. It only offers the bare basics of what a user could want to do with a Lattice. It is most likely that the utilities presented here do not suffice common needs. For a more extensive representation of a lattice look for the <code><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html" title="This class is a skeleton for the implementation of different types of lattices of arbitrary rank...">IntLattice</a></code> and the <code><a class="el" href="../../de/dfe/classLatticeTester_1_1Rank1Lattice.html" title="This class implements a general rank 1 lattice. ">Rank1Lattice</a></code> classes. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a1b9f071180fba913123db2c7eb9665c1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1b9f071180fba913123db2c7eb9665c1">&#9670;&nbsp;</a></span>IntLatticeBasis() <span class="overload">[1/4]</span></h2>
@@ -495,8 +495,8 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 
 </div>
 </div>
-<a id="a73e0cb0d59b52f4e6d3944fee39afc29"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a73e0cb0d59b52f4e6d3944fee39afc29">&#9670;&nbsp;</a></span>copyBasis() <span class="overload">[2/2]</span></h2>
+<a id="a973c60c8ddd75c14cea87d084bb3e49c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a973c60c8ddd75c14cea87d084bb3e49c">&#9670;&nbsp;</a></span>copyBasis() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -512,7 +512,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
+          <td class="paramtype">long&#160;</td>
           <td class="paramname"><em>n</em>&#160;</td>
         </tr>
         <tr>
@@ -820,7 +820,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 </div><div class="memdoc">
 
 <p>Gets whether or not there is a component at the <code>i</code>-th position in the basis. </p>
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000009">Todo:</a></b></dt><dd>find the real use of m_xx. It is only used in reductMinkowski in <a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html" title="This class implements (or wraps from NTL) all the functions that are needed to reduce a basis...">Reducer</a> and it is set in the function depending on it's parameter. It is probably very useless </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000012">Todo:</a></b></dt><dd>find the real use of m_xx. It is only used in reductMinkowski in <a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html" title="This class implements (or wraps from NTL) all the functions that are needed to reduce a basis...">Reducer</a> and it is set in the function depending on it's parameter. It is probably very useless </dd></dl>
 
 </div>
 </div>
@@ -1793,7 +1793,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a></li><li class="navelem"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html">IntLatticeBasis</a></li>
-    <li class="footer">Generated on Tue Aug 21 2018 11:14:43 for Lattice Tester Manual by
+    <li class="footer">Generated on Wed Aug 29 2018 17:17:23 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

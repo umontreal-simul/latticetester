@@ -36,7 +36,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-work-40</span>
+   &#160;<span id="projectnumber">0.1.0-work-41</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -134,7 +134,7 @@ Functions</h2></td></tr>
 <tr><td colspan="2"><div class="groupHeader">Some other compatibility utilities</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p>These functions perform convertions between different types.</p>
 <p>Most of them do not really need explainations, but sometimes a specific logic is used when doing the convertion.</p>
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000015">Todo:</a></b></dt><dd>Maybe some of this can be rewritten as templates. This could be usefull because it is easy to see how this bit of code could not work with certain compilators. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000018">Todo:</a></b></dt><dd>Maybe some of this can be rewritten as templates. This could be usefull because it is easy to see how this bit of code could not work with certain compilators. </dd></dl>
 </div></td></tr>
 <tr class="memitem:a07b6d8586b6a40e65a3bee1608d3e389"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d5a/namespaceNTL.html#a07b6d8586b6a40e65a3bee1608d3e389">NTL::conv</a> (std::int64_t &amp;l, const char *c)</td></tr>
 <tr class="memdesc:a07b6d8586b6a40e65a3bee1608d3e389"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the array of characters (string) <code>c</code> into an <code>std::int64_t</code> <code>l</code> using the strtol() function of cstdlib.h.  <a href="../../d2/d5a/namespaceNTL.html#a07b6d8586b6a40e65a3bee1608d3e389">More...</a><br /></td></tr>
@@ -249,7 +249,7 @@ Functions</h2></td></tr>
 <tr class="separator:abfe3d98ab5a4c91cac2ef0fa59ec897d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Vectors</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p>These are utilities to manipulate vectors ranging from instanciation to scalar product.</p>
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000017">Todo:</a></b></dt><dd>Functions of this section take the size of the input vectors as an argument with name d. Some of them assume d is the number of components of the vectors while somme of them assume that d+1 is the number of components of the vector. We need to uniformize that. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000020">Todo:</a></b></dt><dd>Functions of this section take the size of the input vectors as an argument with name d. Some of them assume d is the number of components of the vectors while somme of them assume that d+1 is the number of components of the vector. We need to uniformize that. </dd></dl>
 </div></td></tr>
 <tr class="memitem:a2256248f03b45f7125a46a05c49b8836"><td class="memTemplParams" colspan="2">template&lt;typename Real &gt; </td></tr>
 <tr class="memitem:a2256248f03b45f7125a46a05c49b8836"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a2256248f03b45f7125a46a05c49b8836">LatticeTester::CreateVect</a> (Real *&amp;A, int d)</td></tr>
@@ -355,10 +355,10 @@ Functions</h2></td></tr>
 <tr class="memitem:ab1f9c94abf76e8ce25eb60bb6d1bda2e"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab1f9c94abf76e8ce25eb60bb6d1bda2e">LatticeTester::toStr</a> (const MatT &amp;mat, int d1, int d2)</td></tr>
 <tr class="memdesc:ab1f9c94abf76e8ce25eb60bb6d1bda2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string that is a representation of <code>mat</code>.  <a href="../../d8/d74/namespaceLatticeTester.html#ab1f9c94abf76e8ce25eb60bb6d1bda2e">More...</a><br /></td></tr>
 <tr class="separator:ab1f9c94abf76e8ce25eb60bb6d1bda2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88ebfbbde75cc3cb82fa92f688d338c6"><td class="memTemplParams" colspan="2">template&lt;typename Matr , typename Int &gt; </td></tr>
-<tr class="memitem:a88ebfbbde75cc3cb82fa92f688d338c6"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a88ebfbbde75cc3cb82fa92f688d338c6">LatticeTester::CheckTriangular</a> (const Matr &amp;A, int dim, const Int &amp;m)</td></tr>
-<tr class="memdesc:a88ebfbbde75cc3cb82fa92f688d338c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks that the upper \(\text{dim} \times \text{dim}\) submatrix of <code>A</code> is triangular modulo <code>m</code>.  <a href="../../d8/d74/namespaceLatticeTester.html#a88ebfbbde75cc3cb82fa92f688d338c6">More...</a><br /></td></tr>
-<tr class="separator:a88ebfbbde75cc3cb82fa92f688d338c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5d8cff62df52a09d15ecd49a9c5e2be0"><td class="memTemplParams" colspan="2">template&lt;typename Matr , typename Int &gt; </td></tr>
+<tr class="memitem:a5d8cff62df52a09d15ecd49a9c5e2be0"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a5d8cff62df52a09d15ecd49a9c5e2be0">LatticeTester::CheckTriangular</a> (const Matr &amp;A, long dim, const Int m)</td></tr>
+<tr class="memdesc:a5d8cff62df52a09d15ecd49a9c5e2be0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks that the upper \(\text{dim} \times \text{dim}\) submatrix of <code>A</code> is triangular modulo <code>m</code>.  <a href="../../d8/d74/namespaceLatticeTester.html#a5d8cff62df52a09d15ecd49a9c5e2be0">More...</a><br /></td></tr>
+<tr class="separator:a5d8cff62df52a09d15ecd49a9c5e2be0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa519a1e0589932719c79b73c76bb1093"><td class="memTemplParams" colspan="2">template&lt;typename Matr , typename Int &gt; </td></tr>
 <tr class="memitem:aa519a1e0589932719c79b73c76bb1093"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#aa519a1e0589932719c79b73c76bb1093">LatticeTester::Triangularization</a> (Matr &amp;W, Matr &amp;V, int lin, int col, const Int &amp;m)</td></tr>
 <tr class="memdesc:aa519a1e0589932719c79b73c76bb1093"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs an integer triangularization operation modulo <code>m</code> on the matrix <code>W</code> to obtain an upper triangular matrix <code>V</code>, dual to <code>W</code>.  <a href="../../d8/d74/namespaceLatticeTester.html#aa519a1e0589932719c79b73c76bb1093">More...</a><br /></td></tr>
@@ -410,7 +410,7 @@ Variables</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../dir_d44c64559bbebec7f509842c48db8b23.html">include</a></li><li class="navelem"><a class="el" href="../../dir_8e3d3e3450631fd0c5f22b5c59b9b09f.html">latticetester</a></li><li class="navelem"><a class="el" href="../../d1/dc8/Util_8h.html">Util.h</a></li>
-    <li class="footer">Generated on Tue Aug 21 2018 11:14:43 for Lattice Tester Manual by
+    <li class="footer">Generated on Wed Aug 29 2018 17:17:22 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

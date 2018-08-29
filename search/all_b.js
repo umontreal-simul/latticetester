@@ -34,6 +34,7 @@ var searchData=
   ['m_5fwithdual',['m_withDual',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a48a4a45de571178a9706e343fda32fe5',1,'LatticeTester::IntLatticeBasis']]],
   ['m_5fwsi',['m_wSI',['../d6/dc0/classLatticeTester_1_1IntLattice.html#a57f80c9dded11962656466c30bfc9d44',1,'LatticeTester::IntLattice']]],
   ['m_5fxx',['m_xx',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a4a8b175dcbf921b70d77fa66fcfd4517',1,'LatticeTester::IntLatticeBasis']]],
+  ['mat_5f64',['Mat_64',['../d2/d5a/namespaceNTL.html#a60a94702129d4e1861593e9b065d6977',1,'NTL']]],
   ['matrix',['matrix',['../d4/d6f/classNTL_1_1matrix.html',1,'NTL::matrix&lt; T &gt;'],['../d4/d6f/classNTL_1_1matrix.html#a16f367fc850c9ca39bbbb796971de141',1,'NTL::matrix::matrix()'],['../d4/d6f/classNTL_1_1matrix.html#aafb33f5a0a25d024f9745e4c85f99d99',1,'NTL::matrix::matrix(const Mat&lt; T &gt; &amp;a)'],['../d4/d6f/classNTL_1_1matrix.html#accc96531e7fef556bbc9385321f4c8f6',1,'NTL::matrix::matrix(size_type size1, size_type size2)']]],
   ['matrix_3c_20basint_20_3e',['matrix&lt; BasInt &gt;',['../d4/d6f/classNTL_1_1matrix.html',1,'NTL']]],
   ['matrix_3c_20reddbl_20_3e',['matrix&lt; RedDbl &gt;',['../d4/d6f/classNTL_1_1matrix.html',1,'NTL']]],

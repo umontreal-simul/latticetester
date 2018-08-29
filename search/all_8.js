@@ -1,5 +1,6 @@
 var searchData=
 [
+  ['ident',['ident',['../d2/d5a/namespaceNTL.html#a9601331229d861c7ebf85a53166dca47',1,'NTL']]],
   ['incdim',['incDim',['../d6/dc0/classLatticeTester_1_1IntLattice.html#aeaedcd4d3f21ff6c1d328bfcd924e05a',1,'LatticeTester::IntLattice::incDim()'],['../de/dfe/classLatticeTester_1_1Rank1Lattice.html#a840a0578fc7dbab01c2a6d35b5ccd0fd',1,'LatticeTester::Rank1Lattice::incDim()']]],
   ['includeorder',['includeOrder',['../d8/d34/classLatticeTester_1_1CoordinateSets_1_1FromRanges.html#a3850ac33c6780297a0c052f236f2afa7',1,'LatticeTester::CoordinateSets::FromRanges']]],
   ['init',['init',['../d6/dc0/classLatticeTester_1_1IntLattice.html#a11c725be12a73fbd6a5a402b9fc2031b',1,'LatticeTester::IntLattice::init()'],['../d0/dc8/classLatticeTester_1_1Normalizer.html#a455dc822f63297363c329adad6a0bec7',1,'LatticeTester::Normalizer::init()'],['../d8/d6e/classLatticeTester_1_1NormaPalpha.html#a71b1d07fd1b5b3f27a63de516c6c55bd',1,'LatticeTester::NormaPalpha::init()'],['../de/dfe/classLatticeTester_1_1Rank1Lattice.html#ac56f7281941e5971c4d88f140583f11a',1,'LatticeTester::Rank1Lattice::init()']]],

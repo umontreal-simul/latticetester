@@ -11,7 +11,7 @@ var classLatticeTester_1_1Reducer =
     [ "redBKZ", "d8/de3/classLatticeTester_1_1Reducer.html#ad3976273ae6a66d009ac9a14625d016c", null ],
     [ "redDieter", "d8/de3/classLatticeTester_1_1Reducer.html#a276b6fe37503f03eaaf70ab0ccaf37eb", null ],
     [ "redDieterRandomized", "d8/de3/classLatticeTester_1_1Reducer.html#ab537ec135b4da2665f3081d9d82ae577", null ],
-    [ "redLLL", "d8/de3/classLatticeTester_1_1Reducer.html#a1d5517bc4d39ecadd50a4b0fc3086443", null ],
+    [ "redLLL", "d8/de3/classLatticeTester_1_1Reducer.html#aeb2b0def238a1e1cca4086846b9c1235", null ],
     [ "redLLLNTL", "d8/de3/classLatticeTester_1_1Reducer.html#a9c0792ad9a42d12dd69248c0e20b4544", null ],
     [ "redLLLNTLExact", "d8/de3/classLatticeTester_1_1Reducer.html#a935c4f896a9187132dc1b4da22a62108", null ],
     [ "reductMinkowski", "d8/de3/classLatticeTester_1_1Reducer.html#aaeb99bbb4d5945d278572f35a638f8c9", null ],

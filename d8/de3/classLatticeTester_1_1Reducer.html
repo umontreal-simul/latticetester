@@ -36,7 +36,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-work-40</span>
+   &#160;<span id="projectnumber">0.1.0-work-41</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -128,9 +128,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab537ec135b4da2665f3081d9d82ae577"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#ab537ec135b4da2665f3081d9d82ae577">redDieterRandomized</a> (int d, int seed)</td></tr>
 <tr class="memdesc:ab537ec135b4da2665f3081d9d82ae577"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method does the same thing as <a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#a276b6fe37503f03eaaf70ab0ccaf37eb" title="This method performs pairwise reduction sequentially on all vectors of the basis whose indice is grea...">redDieter(int)</a> but the choice of vectors on which to perform pairwise reduction is randomized.  <a href="#ab537ec135b4da2665f3081d9d82ae577">More...</a><br /></td></tr>
 <tr class="separator:ab537ec135b4da2665f3081d9d82ae577"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d5517bc4d39ecadd50a4b0fc3086443"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#a1d5517bc4d39ecadd50a4b0fc3086443">redLLL</a> (double fact, std::int64_t maxcpt, int dim)</td></tr>
-<tr class="memdesc:a1d5517bc4d39ecadd50a4b0fc3086443"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a LLL (Lenstra-Lenstra-Lovasz) basis reduction for the first <code>dim</code> vector of the basis with coefficient <code>fact</code>.  <a href="#a1d5517bc4d39ecadd50a4b0fc3086443">More...</a><br /></td></tr>
-<tr class="separator:a1d5517bc4d39ecadd50a4b0fc3086443"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aeb2b0def238a1e1cca4086846b9c1235"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#aeb2b0def238a1e1cca4086846b9c1235">redLLL</a> (double fact=0.999999, std::int64_t maxcpt=1000000000, int dim=0)</td></tr>
+<tr class="memdesc:aeb2b0def238a1e1cca4086846b9c1235"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs a LLL (Lenstra-Lenstra-Lovasz) basis reduction for the first <code>dim</code> vector of the basis with coefficient <code>fact</code>.  <a href="#aeb2b0def238a1e1cca4086846b9c1235">More...</a><br /></td></tr>
+<tr class="separator:aeb2b0def238a1e1cca4086846b9c1235"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9c0792ad9a42d12dd69248c0e20b4544"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html#a9c0792ad9a42d12dd69248c0e20b4544">redLLLNTL</a> (double fact=0.999999, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">PrecisionType</a> precision=QUADRUPLE, int dim=0)</td></tr>
 <tr class="memdesc:a9c0792ad9a42d12dd69248c0e20b4544"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> implementation of the floating point version of the LLL reduction algorithm presented in <a class="el" href="../../d0/de3/citelist.html#CITEREF_mSCH91a">[25]</a>.  <a href="#a9c0792ad9a42d12dd69248c0e20b4544">More...</a><br /></td></tr>
 <tr class="separator:a9c0792ad9a42d12dd69248c0e20b4544"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -487,8 +487,8 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 
 </div>
 </div>
-<a id="a1d5517bc4d39ecadd50a4b0fc3086443"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1d5517bc4d39ecadd50a4b0fc3086443">&#9670;&nbsp;</a></span>redLLL()</h2>
+<a id="aeb2b0def238a1e1cca4086846b9c1235"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aeb2b0def238a1e1cca4086846b9c1235">&#9670;&nbsp;</a></span>redLLL()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -499,19 +499,19 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
           <td class="memname">void <a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html">LatticeTester::Reducer</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::redLLL </td>
           <td>(</td>
           <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>fact</em>, </td>
+          <td class="paramname"><em>fact</em> = <code>0.999999</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">std::int64_t&#160;</td>
-          <td class="paramname"><em>maxcpt</em>, </td>
+          <td class="paramname"><em>maxcpt</em> = <code>1000000000</code>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>dim</em>&#160;</td>
+          <td class="paramname"><em>dim</em> = <code>0</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -714,7 +714,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a></li><li class="navelem"><a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html">Reducer</a></li>
-    <li class="footer">Generated on Tue Aug 21 2018 11:14:43 for Lattice Tester Manual by
+    <li class="footer">Generated on Wed Aug 29 2018 17:17:23 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

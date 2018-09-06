@@ -23,8 +23,6 @@
 
 namespace LatticeTester {
   /**
-   *
-   *
    * This class generates random numbers (in fact pseudo-random numbers).
    * The generator used is the 64-bits generator \c LFSR258
    * from L'Ecuyer \cite rLEC99a  with period length near \f$2^{258}\f$
@@ -32,8 +30,6 @@ namespace LatticeTester {
    * from L'Ecuyer \cite rLEC99a  with period length near \f$2^{113}\f$
    * on  32-bits machines. Thus the random numbers generated will be
    * different on 32-bits and 64-bits machines.
-   *
-   *
    */
   class Random {
     public:

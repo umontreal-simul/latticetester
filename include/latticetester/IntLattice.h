@@ -168,12 +168,11 @@ namespace LatticeTester {
               int alpha, bool dualF);
 
           /**
-           * Does nothing is this base class.
+           * A utility method to store a vector of indices with lacunary values
+           * in subclasses of this one. This method has no implementation in
+           * this base class.
            */
-          virtual void setLac (const Lacunary<BasInt> &) 
-          {
-            MyExit(1, "IntLattice.setLac is empty"); 
-          }
+          virtual void setLac (const Lacunary<BasInt> &) = 0;
 
           /**
            * Returns the vector of multipliers (or coefficients) \f$A\f$ as a

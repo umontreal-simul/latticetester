@@ -26,28 +26,43 @@
 namespace LatticeTester {
 
   /**
-   * This class implements sets of lacunary indices.
+   * This class represents a set of indices with lacunary values. This class
+   * stores the values of those indices as a vector, and they can be accessed
+   * via the `[]` operator. There also is a method to construct a set with
+   * values spaced in a certain way. This class is present here to be used with
+   * the subclasses of IntLattice.
+   *
+   * \todo Test the implementation of this class. **Marc-Antoine**: I feel like
+   * the current implementation of this class is obsolete : it contains too few
+   * methods and functions to be of more use than the vector classes.
    */
   template<typename BasInt>
     class Lacunary {
+
       private:
         typedef NTL::vector<BasInt> BasIntVec;
+
       public:
 
         /**
-         * Constructor for a set of \f$t\f$ lacunary indices given in \f$C[j]\f$, for
-         * \f$j = 1, 2, …, t\f$.
+         * Constructor for a set of \f$t\f$ indices given in the vector `C`.
+         * \todo This constructor might not work as intended because BasIntVec
+         * is an NTL::vector type and this function dynamically allocates an
+         * array to it. There is no real reason to do that since there is a
+         * setSize method available.
          */
         Lacunary (const BasIntVec & C, int t)
         {
           m_dim = t; 
-          LatticeTester::CreateVect (m_lac, t);
-          LatticeTester::CopyVect (m_lac, C, t);
+          CreateVect (m_lac, t);
+          CopyVect (m_lac, C, t);
         }
 
         /**
-         * Constructor for a set of \f$t\f$ lacunary indices. The lacunary
-         * indices can be read later by `ReadLac`.
+         * Constructor for an empty set of \f$t\f$ lacunary indices. This
+         * constructor set the value of the indices to `0`. To set indices, one
+         * should use either one `[]` or `getLac`, or the `calcIndicesStreams()`
+         * method.
          */
         explicit Lacunary (int t = 0) 
         {
@@ -61,34 +76,38 @@ namespace LatticeTester {
         ~Lacunary () { LatticeTester::DeleteVect (m_lac); }
 
         /**
-         * Returns the lacunary index <tt>m_lac[j]</tt>.
+         * Returns a reference to the value of <tt>m_lac[i]</tt>. (`m_lac` is
+         * the underlying vector storing the set of indices.)
          */
         BasInt & operator[] (int i) {return m_lac[i];}
 
         /**
-         * Same as above.
+         * Calling the `object.getLac(i)` gives the same result than calling
+         * `object[i]`.
          */
         BasInt & getLac (int i) {return m_lac[i];}
 
         /**
-         * Returns the size of the lacunary set (the number of lacunary
-         * indices).
+         * Returns the size of the set, that is the number of elements in the
+         * vector of indices.
          */
         int getSize () const { return m_dim; }
 
         /**
-         * Computes lacunary indices by groups of \f$s\f$, spaced apart by
-         * \f$2^w\f$. If \f$w=0\f$, this is the case of non-lacunary indices.
-         * If `MinDim` is smaller than `Order`, it is reset to `Order` + 1.
-         * Returns `true` in the lacunary case, and `false` otherwise.
+         * Fills the values of this object with `maxDim` indices starting from
+         * `0` by groups of \f$s\f$, spaced apart by \f$2^w\f$. If \f$w=0\f$,
+         * this is the case of non-lacunary indices. Returns `true` in the
+         * lacunary case, and `false` otherwise.
          */
         bool calcIndicesStreams (int s, int w, int & minDim, int maxDim, 
             int order);
 
         /**
-         * Returns this object as a string.
+         * Returns a string that describes this object. This string will contain
+         * the dimension and all the indices stored.
          */
         std::string toString () const;
+
       private:
 
         /**
@@ -97,8 +116,8 @@ namespace LatticeTester {
         int m_dim;
 
         /**
-         * The set of lacunary indices is <tt>m_lac[j]</tt> for \f$j = 1, 2,
-         * …,\f$ <tt>m_dim</tt>.
+         * The set of lacunary indices is <tt>m_lac[j]</tt> for \f$j = 0, 1,
+         * \ldots,\f$ tt>m_dim</tt>.
          */
         BasIntVec m_lac;
 
@@ -121,20 +140,13 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-
   template<typename BasInt>
-    bool Lacunary<BasInt>::calcIndicesStreams (int s, int w, 
-        int & minDim, int maxDim, int order)
+    bool Lacunary<BasInt>::calcIndicesStreams (int s, int w, int maxDim)
     {
-      if (w == 0) {
-        if (minDim <= order)
-          minDim = order + 1;
-        return false;
-      }
 
       if (m_dim < maxDim) {
-        LatticeTester::DeleteVect (m_lac);
-        LatticeTester::CreateVect (m_lac, maxDim);
+        DeleteVect (m_lac);
+        CreateVect (m_lac, maxDim);
         m_dim = maxDim;
       }
 
@@ -142,17 +154,20 @@ namespace LatticeTester {
       LatticeTester::power2 (t1, (std::int64_t) w);
       BasInt t;
       t = 0;
-      int i = 1;
+      int i = 0;
       while (true) {
         for (int j = 0; j < s; j++) {
-          if (i <= maxDim) {
+          if (i < maxDim) {
             m_lac[i] = t + j;
             i++;
-          } else
+          } else {
+            if (w == 0) return false;
             return true;
+          }
         }
         t += t1;
       }
     }
+
 } // End namespace LatticeTester
 #endif

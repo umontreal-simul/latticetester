@@ -11,7 +11,6 @@
 - Build projections basis and dual basis
 - Benchmark our LLL implementation
 - Check if LLL can be done with all norms.
-- Check if it is possible to remove the switch statements
 
 ## New features
 - Choose a license
@@ -29,7 +28,7 @@ J'ai pensé à ça, et c'est possible de retirer les switch. Il suffit en fait d
 réimplémenter les enum en des classes et créer des sous-classes pour chaque cas
 qui elles-même implémentent les fonctions nécessaires, ce qui nous permet de ne
 pas avoir de switch et qui fait en sorte que tout ce que les switch font se
-décident à la compilation!
+décide à la compilation!
 
 # Notes personnelles
 - Est-ce que LatticeTester devrait avoir des classes pour supporter les réseaux

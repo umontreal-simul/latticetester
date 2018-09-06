@@ -19,8 +19,7 @@
  * \file latticetester/Util.h
  *
  * This module describes various useful functions as well as functions
- * interfacing with NTL.
- *
+ * implementing various interactions with NTL.
  */
 
 

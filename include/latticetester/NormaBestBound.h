@@ -149,7 +149,7 @@ namespace LatticeTester {
 
   template<typename RedDbl>
     NormaBestBound<RedDbl>::NormaBestBound (RedDbl & logDensity, int t, double beta)
-    : Normalizer<RedDbl> (logDensity, t, "Rogers", L2NORM, beta)
+    : Normalizer<RedDbl> (logDensity, t, "Best", L2NORM, beta)
     {
       Normalizer<RedDbl>::init (logDensity, beta);
     }

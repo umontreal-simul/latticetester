@@ -2,17 +2,18 @@
 
 ## Urgent work
 - Have examples (usage of most functions on a simple basis)
-  - One on basis/dual basis construction
   - One on Weights???
 - Update the doc to be publishable
-  - Finish documentation on Weight classes, Lacunary and Rank1Lattice/IntLattice
+  - Finish documentation on Weight classes and Rank1Lattice/IntLattice
   - Re-read what has been done to fit with the pdf guide.
-- Implement upper bounds as in Cohn and Elkies and look for higher dimensions
 - Build projections basis and dual basis
-- Benchmark our LLL implementation
 - Check if LLL can be done with all norms.
+- Can redLLLNTL convert to ZZ if we pass matrix of long type instead of
+  calling our algorithm? We should test which is faster instead of printing a
+  warning.
 
 ## New features
+- Implement upper bounds as in Cohn and Elkies and look for higher dimensions
 - Choose a license
 - Implement the P_alpha calculation
 - Test current implementation for supported types combinations
@@ -35,6 +36,8 @@ décide à la compilation!
 qui ne sont pas générés par une bases de n vecteur en n dimensions (présentement
 le logiciel supporte seulement les matrices de base carrées).
   - R: Probablement
+  - Autre R: À force de travailler avec, je viens de me suis rendu compte qu'on
+    avait pas de dual sur lequel un peut calculer numériquement, alors bon...
 - Est-ce que Lacunary est pertinent dans LatticeTester? Je ne pense pas parce
 que c'est principalement un truc qui est utile pour étudier les MRGs.
   - R: Oui. On peut faire la projection d'un réseau sur certaines de ses

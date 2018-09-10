@@ -154,7 +154,8 @@ namespace LatticeTester {
          * Reads a square `BMat` of size `numPos*numPos` from the 
          * <tt>pos</tt>-th token of the <tt>ln</tt>-th line into `field`. The 
          * lines in the matrix will be read from the subsequent lines in the 
-         * file, starting from token at the position `pos`.
+         * file, starting from token at the position `pos`. `fields` has to be
+         * initialized to the right size.
          */
         void readBMat (BasIntMat & fields, unsigned int & ln, unsigned int pos,
             unsigned int numPos);

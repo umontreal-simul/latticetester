@@ -33,3 +33,9 @@ def build(ctx):
                 source=src,
                 target=src.name[:],
                 install_path='examples')
+
+    for src in ctx.path.ant_glob('*.zip'):
+        ctx(rule='cp ${SRC} ${TGT}',
+                source=src,
+                target=src.name[:],
+                install_path='examples')

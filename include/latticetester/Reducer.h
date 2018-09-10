@@ -538,27 +538,66 @@ namespace LatticeTester {
       void redBKZ(Reducer<std::int64_t, std::int64_t, Dbl, RedDbl>& red,
           double fact, std::int64_t blocksize, PrecisionType precision, int dim)
       {
-        IntLatticeBasis<std::int64_t, std::int64_t, Dbl, RedDbl> *lattmp = 0;
+        /*
+        IntLatticeBasis<NTL::ZZ, NTL::ZZ, Dbl, RedDbl> *lattmp = 0;
         if(dim >0){
-          lattmp = new IntLatticeBasis<std::int64_t, std::int64_t, Dbl, RedDbl>(
+          lattmp = new IntLatticeBasis<NTL::ZZ, NTL::ZZ, Dbl, RedDbl>(
                      dim, red.getIntLatticeBasis()->getNorm());
           lattmp->copyBasis(*red.getIntLatticeBasis(), dim);
         }
         else
           lattmp = red.getIntLatticeBasis();
-        std::cout << "\n**** WARNING redBKZ cannot be use with std::int64_t type for integers\n";
-        std::cout << "**** (LLDD) and requires ZZ type. Instead, LLL reduction is\n";
-        std::cout << "**** performed with our algorithm which can be much slower.\n";
-        std::cout << std::endl;
-        red.redLLL(fact, 1000000, red.getIntLatticeBasis()->getDim ());
-        if (dim>0) delete lattmp; 
+
+        bool withDual = red.getIntLatticeBasis()->withDual();
+        NTL::mat_ZZ U, V;
+        U.SetDims(lattmp->getBasis().size1(), lattmp->getBasis().size2());
+
+        switch(precision){
+          case DOUBLE:
+            NTL::BKZ_FP(lattmp->getBasis(), U, fact, blocksize);
+            break;
+          case QUADRUPLE:
+            NTL::BKZ_QP(lattmp->getBasis(), U, fact, blocksize);
+            break;
+          case EXPONENT:
+            NTL::BKZ_XD(lattmp->getBasis(), U, fact, blocksize);
+            break;
+          case ARBITRARY:
+            NTL::BKZ_RR(lattmp->getBasis(), U, fact, blocksize);
+            break;
+          default:
+            MyExit(1, "BKZ PrecisionType:   NO SUCH CASE");
+        }
+
+        if (withDual)
+          lattmp->getDualBasis() = transpose(inv(U)) * lattmp->getDualBasis();
+
+        red.getIntLatticeBasis()->copyBasis(*lattmp, dim);
+
+        if (dim>0) delete lattmp;
+        */
+        
+          IntLatticeBasis<std::int64_t, std::int64_t, Dbl, RedDbl> *lattmp = 0;
+          if (dim > 0) {
+            lattmp = new IntLatticeBasis<std::int64_t, std::int64_t, Dbl, RedDbl>(
+                       dim, red.getIntLatticeBasis()->getNorm());
+            lattmp->copyBasis(*red.getIntLatticeBasis(), dim);
+          }
+          else
+            lattmp = red.getIntLatticeBasis();
+          std::cout << "\n**** WARNING redBKZ cannot be use with std::int64_t type for integers\n";
+          std::cout << "**** (LLDD) and requires ZZ type. Instead, LLL reduction is\n";
+          std::cout << "**** performed with our algorithm which can be much slower.\n";
+          std::cout << std::endl;
+          red.redLLL(fact, 1000000, red.getIntLatticeBasis()->getDim ());
+          if (dim > 0) delete lattmp; 
       }
 
       void redLLLNTL(Reducer<std::int64_t, std::int64_t, Dbl, RedDbl>& red,
           double fact, PrecisionType precision, int dim)
       {
         IntLatticeBasis<std::int64_t, std::int64_t, Dbl, RedDbl> *lattmp = 0;
-        if(dim >0){
+        if(dim > 0){
           lattmp = new IntLatticeBasis<std::int64_t, std::int64_t, Dbl, RedDbl>(
                      dim, red.getIntLatticeBasis()->getNorm());
           lattmp->copyBasis(*red.getIntLatticeBasis(), dim);

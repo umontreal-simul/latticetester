@@ -43,6 +43,7 @@
 
 #include "NTL/tools.h"
 #include "NTL/ZZ.h"
+#include "NTL/RR.h"
 
 namespace NTL {
 

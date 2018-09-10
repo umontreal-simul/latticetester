@@ -36,7 +36,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-work-41</span>
+   &#160;<span id="projectnumber">0.1.0-work-43</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -94,7 +94,7 @@ $(document).ready(function(){initNavTree('d6/dc0/classLatticeTester_1_1IntLattic
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="../../df/dc0/classLatticeTester_1_1IntLattice-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">LatticeTester::IntLattice&lt; Int, BasInt, Dbl, RedDbl &gt; Class Template Reference</div>  </div>
+<div class="title">LatticeTester::IntLattice&lt; Int, BasInt, Dbl, RedDbl &gt; Class Template Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div>  </div>
 </div><!--header-->
 <div class="contents">
 
@@ -151,9 +151,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2f79484d5159f13819128360474b0358"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d0/dc8/classLatticeTester_1_1Normalizer.html">LatticeTester::Normalizer</a>&lt; RedDbl &gt; *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#a2f79484d5159f13819128360474b0358">getNormalizer</a> (<a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab747c1cbb0f5e47fef711b62327a8e90">NormaType</a> norma, int alpha, bool dualF)</td></tr>
 <tr class="memdesc:a2f79484d5159f13819128360474b0358"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates and returns the normalizer corresponding to criterion <code>norma</code>.  <a href="#a2f79484d5159f13819128360474b0358">More...</a><br /></td></tr>
 <tr class="separator:a2f79484d5159f13819128360474b0358"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19cb5accc931351a384f3039a197974d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#a19cb5accc931351a384f3039a197974d">setLac</a> (const <a class="el" href="../../d8/d3b/classLatticeTester_1_1Lacunary.html">Lacunary</a>&lt; BasInt &gt; &amp;)</td></tr>
-<tr class="memdesc:a19cb5accc931351a384f3039a197974d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Does nothing is this base class.  <a href="#a19cb5accc931351a384f3039a197974d">More...</a><br /></td></tr>
-<tr class="separator:a19cb5accc931351a384f3039a197974d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa57093d00d16046c289b80306c219e62"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#aa57093d00d16046c289b80306c219e62">setLac</a> (const <a class="el" href="../../d8/d3b/classLatticeTester_1_1Lacunary.html">Lacunary</a>&lt; BasInt &gt; &amp;)=0</td></tr>
+<tr class="memdesc:aa57093d00d16046c289b80306c219e62"><td class="mdescLeft">&#160;</td><td class="mdescRight">A utility method to store a vector of indices with lacunary values in subclasses of this one.  <a href="#aa57093d00d16046c289b80306c219e62">More...</a><br /></td></tr>
+<tr class="separator:aa57093d00d16046c289b80306c219e62"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a73ee08245ad247bbf1a98dbd403ee334"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#a73ee08245ad247bbf1a98dbd403ee334">toStringCoef</a> () const</td></tr>
 <tr class="memdesc:a73ee08245ad247bbf1a98dbd403ee334"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the vector of multipliers (or coefficients) \(A\) as a string.  <a href="#a73ee08245ad247bbf1a98dbd403ee334">More...</a><br /></td></tr>
 <tr class="separator:a73ee08245ad247bbf1a98dbd403ee334"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -186,7 +186,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:ae8f7e8367b54b45bdacae13e04a8399f inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a vector containing the norms of the basis vectors to -1 at all components.  <a href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#ae8f7e8367b54b45bdacae13e04a8399f">More...</a><br /></td></tr>
 <tr class="separator:ae8f7e8367b54b45bdacae13e04a8399f inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1745d1614b84b191fa0dbb8175c58000 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a1745d1614b84b191fa0dbb8175c58000">initDual</a> (Int modulo)</td></tr>
-<tr class="memdesc:a1745d1614b84b191fa0dbb8175c58000 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tries to add a dual basis to this lattice with the general function <code>CalcDual</code> in <a class="el" href="../../d1/dc8/Util_8h.html" title="This module describes various useful functions as well as functions interfacing with NTL...">Util.h</a> for <code>m=modulo</code>.  <a href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a1745d1614b84b191fa0dbb8175c58000">More...</a><br /></td></tr>
+<tr class="memdesc:a1745d1614b84b191fa0dbb8175c58000 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tries to add a dual basis to this lattice with the general function <code>CalcDual</code> in <a class="el" href="../../d1/dc8/Util_8h.html" title="This module describes various useful functions as well as functions implementing various interactions...">Util.h</a> for <code>m=modulo</code>.  <a href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a1745d1614b84b191fa0dbb8175c58000">More...</a><br /></td></tr>
 <tr class="separator:a1745d1614b84b191fa0dbb8175c58000 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a15d64169ed992370253e525c5f88df0b inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d4/d6f/classNTL_1_1matrix.html">BasIntMat</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a15d64169ed992370253e525c5f88df0b">getBasis</a> ()</td></tr>
 <tr class="memdesc:a15d64169ed992370253e525c5f88df0b inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the basis represented in a matrix.  <a href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a15d64169ed992370253e525c5f88df0b">More...</a><br /></td></tr>
@@ -801,8 +801,8 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 
 </div>
 </div>
-<a id="a19cb5accc931351a384f3039a197974d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a19cb5accc931351a384f3039a197974d">&#9670;&nbsp;</a></span>setLac()</h2>
+<a id="aa57093d00d16046c289b80306c219e62"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa57093d00d16046c289b80306c219e62">&#9670;&nbsp;</a></span>setLac()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -822,12 +822,13 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Does nothing is this base class. </p>
+<p>A utility method to store a vector of indices with lacunary values in subclasses of this one. </p>
+<p>This method has no implementation in this base class. </p>
 
 </div>
 </div>
@@ -1002,7 +1003,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a></li><li class="navelem"><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html">IntLattice</a></li>
-    <li class="footer">Generated on Wed Aug 29 2018 17:17:23 for Lattice Tester Manual by
+    <li class="footer">Generated on Mon Sep 10 2018 13:22:40 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

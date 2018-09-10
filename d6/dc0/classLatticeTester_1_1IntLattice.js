@@ -15,7 +15,7 @@ var classLatticeTester_1_1IntLattice =
     [ "incDim", "d6/dc0/classLatticeTester_1_1IntLattice.html#aeaedcd4d3f21ff6c1d328bfcd924e05a", null ],
     [ "init", "d6/dc0/classLatticeTester_1_1IntLattice.html#a11c725be12a73fbd6a5a402b9fc2031b", null ],
     [ "kill", "d6/dc0/classLatticeTester_1_1IntLattice.html#abcb9d029e70935a6f883f5bcf6ae5e24", null ],
-    [ "setLac", "d6/dc0/classLatticeTester_1_1IntLattice.html#a19cb5accc931351a384f3039a197974d", null ],
+    [ "setLac", "d6/dc0/classLatticeTester_1_1IntLattice.html#aa57093d00d16046c289b80306c219e62", null ],
     [ "toStringCoef", "d6/dc0/classLatticeTester_1_1IntLattice.html#a73ee08245ad247bbf1a98dbd403ee334", null ],
     [ "m_lgm2", "d6/dc0/classLatticeTester_1_1IntLattice.html#a0b6e9739ac9bd351ada79d3477509ba0", null ],
     [ "m_lgVolDual2", "d6/dc0/classLatticeTester_1_1IntLattice.html#ad5f263f05db85f6b6ae4ec741fb5b0eb", null ],

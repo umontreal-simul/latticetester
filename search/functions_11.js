@@ -9,7 +9,7 @@ var searchData=
   ['setdualnegativenorm',['setDualNegativeNorm',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#af7e1cf42b663484f7e652ac128687659',1,'LatticeTester::IntLatticeBasis::setDualNegativeNorm()'],['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a301e74c39bc556450ffa755b110e4903',1,'LatticeTester::IntLatticeBasis::setDualNegativeNorm(const int &amp;i)']]],
   ['setdualvecnorm',['setDualVecNorm',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a4ee626bcafc762ae00166fc8fe9bb276',1,'LatticeTester::IntLatticeBasis']]],
   ['setfactor',['setFactor',['../d6/d95/classLatticeTester_1_1IntFactor.html#ab2bcbb95e575b2ccae88b20799d7446f',1,'LatticeTester::IntFactor']]],
-  ['setlac',['setLac',['../d6/dc0/classLatticeTester_1_1IntLattice.html#a19cb5accc931351a384f3039a197974d',1,'LatticeTester::IntLattice']]],
+  ['setlac',['setLac',['../d6/dc0/classLatticeTester_1_1IntLattice.html#aa57093d00d16046c289b80306c219e62',1,'LatticeTester::IntLattice']]],
   ['setlogdensity',['setLogDensity',['../d0/dc8/classLatticeTester_1_1Normalizer.html#a57179afb1d2912d93e4b35202241b5ba',1,'LatticeTester::Normalizer']]],
   ['setmaxnodesbb',['setMaxNodesBB',['../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a1fc0539cd051f00ce329117b903736f3',1,'LatticeTester::LatticeAnalysis']]],
   ['setmultiplicity',['setMultiplicity',['../d6/d95/classLatticeTester_1_1IntFactor.html#ac79ea554966fa6d3e9f300e795ae4822',1,'LatticeTester::IntFactor']]],

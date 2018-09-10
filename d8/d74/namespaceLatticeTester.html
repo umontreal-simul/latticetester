@@ -394,7 +394,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>toStringPrecis
 <tr class="separator:abfe3d98ab5a4c91cac2ef0fa59ec897d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Vectors</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p>These are utilities to manipulate vectors ranging from instanciation to scalar product.</p>
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000022">Todo:</a></b></dt><dd>Functions of this section take the size of the input vectors as an argument with name d. Some of them assume d is the number of components of the vectors while somme of them assume that d+1 is the number of components of the vector. We need to uniformize that. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000023">Todo:</a></b></dt><dd>Functions of this section take the size of the input vectors as an argument with name d. Some of them assume d is the number of components of the vectors while somme of them assume that d+1 is the number of components of the vector. We need to uniformize that. </dd></dl>
 </div></td></tr>
 <tr class="memitem:a2256248f03b45f7125a46a05c49b8836"><td class="memTemplParams" colspan="2">template&lt;typename Real &gt; </td></tr>
 <tr class="memitem:a2256248f03b45f7125a46a05c49b8836"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a2256248f03b45f7125a46a05c49b8836">CreateVect</a> (Real *&amp;A, int d)</td></tr>
@@ -811,7 +811,7 @@ template&lt;typename Matr , typename Int &gt; </div>
 <p>Calculates the <code>m</code>-dual of the matrix <code>A</code>. </p>
 <p>The result is placed in the matrix <code>B</code>. Only the first <code>d</code> lines and columns are considered.</p>
 <p>The vectors of the basis (lines of A) need to verify the properties (i), (ii) (iii), (iv) as described in the article: R. Couture and P L'Ecuyer, Orbits and lattices for linear random number generators with composite moduli, Mathematics of Computation, Volume 65, Number 213, bottom of page 199.</p>
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000026">Todo:</a></b></dt><dd>Check the algorithm used here and explain how it works and what it takes for it to work. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000027">Todo:</a></b></dt><dd>Check the algorithm used here and explain how it works and what it takes for it to work. </dd></dl>
 
 </div>
 </div>
@@ -2052,7 +2052,7 @@ template&lt;typename IntVec &gt; </div>
 
 <p>Takes an input vector <code>A</code> of dimension <code>n+1</code> and fill the vector <code>B</code> with the values `[-A[n] -A[n-1] ... </p>
 <p>-A[1] 1]<code>.</code>B<code>is assumed to be of dimension at least</code>n+1`.</p>
-<p><b>OLD DOC</b>: Transforms the polynomial \( A_0 + A_1x^1 + \cdots + A_nx^n\) into \(x^n - A_1x^{n-1} - \cdots - A_n\). The result is put in <code>B</code>. </p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000024">Todo:</a></b></dt><dd>This function does not do what the old doc says. Check if it causes a problem where this function is called. </dd></dl>
+<p><b>OLD DOC</b>: Transforms the polynomial \( A_0 + A_1x^1 + \cdots + A_nx^n\) into \(x^n - A_1x^{n-1} - \cdots - A_n\). The result is put in <code>B</code>. </p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000025">Todo:</a></b></dt><dd>This function does not do what the old doc says. Check if it causes a problem where this function is called. </dd></dl>
 
 </div>
 </div>
@@ -2081,7 +2081,7 @@ template&lt;typename IntVec &gt; </div>
 </div><div class="memdoc">
 
 <p>Tests if <code>x</code> is odd. </p>
-<p>Returns 1 if it is odd, and 0 if it is even. </p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000027">Todo:</a></b></dt><dd>It is useless that this function is implemented. Look if it is removable. </dd></dl>
+<p>Returns 1 if it is odd, and 0 if it is even. </p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000028">Todo:</a></b></dt><dd>It is useless that this function is implemented. Look if it is removable. </dd></dl>
 
 </div>
 </div>
@@ -2110,7 +2110,7 @@ template&lt;typename IntVec &gt; </div>
 </div><div class="memdoc">
 
 <p>Returns the <code>bool</code> resulting of the statement <code>x == 0</code>. </p>
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000028">Todo:</a></b></dt><dd>It is useless that this function is implemented. Look if it is removable. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000029">Todo:</a></b></dt><dd>It is useless that this function is implemented. Look if it is removable. </dd></dl>
 
 </div>
 </div>
@@ -2645,7 +2645,7 @@ template&lt;typename Int , typename Vect1 , typename Vect2 , typename Scal &gt; 
 </div><div class="memdoc">
 
 <p>Computes the scalar product of vectors <code>A</code> and <code>B</code> truncated to their <code>n</code> first components, then puts the result in <code>D</code>. </p>
-<p>There is a lot to consider when passing types to this function. The best for Vect1 to be the same type as Vect2 and for Scal to be the same as Int, and that those types are the ones stored in Vect1 and Vect2. </p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000023">Todo:</a></b></dt><dd>This uses so many types without check about them and also assumes all those types can be converted to each other without problem... The types here should be uniformized. THIS DOES NOT SEEM TO BE A VERY SAFE IMPLEMENTATION </dd></dl>
+<p>There is a lot to consider when passing types to this function. The best for Vect1 to be the same type as Vect2 and for Scal to be the same as Int, and that those types are the ones stored in Vect1 and Vect2. </p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000024">Todo:</a></b></dt><dd>This uses so many types without check about them and also assumes all those types can be converted to each other without problem... The types here should be uniformized. THIS DOES NOT SEEM TO BE A VERY SAFE IMPLEMENTATION </dd></dl>
 
 </div>
 </div>
@@ -2757,7 +2757,7 @@ template&lt;typename Int &gt; </div>
 
 <p>Return a uniform pseudo-random integer in \([i, j]\). </p>
 <p>Note that the numbers \(i\) and \(j\) are part of the possible output. It is important that \(i &lt; j\) because the underlying arithmetic uses unsigned integers to store j-i+1 and that will be undefined behavior.</p>
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000021">Todo:</a></b></dt><dd>For some reason, this only uses the first 62 bits of the generator. Why? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000022">Todo:</a></b></dt><dd>For some reason, this only uses the first 62 bits of the generator. Why? </dd></dl>
 
 </div>
 </div>
@@ -3252,7 +3252,7 @@ template&lt;typename Matr , typename Int &gt; </div>
 
 <p>Performs an integer triangularization operation modulo <code>m</code> on the matrix <code>W</code> to obtain an upper triangular matrix <code>V</code>, dual to <code>W</code>. </p>
 <p>However, the matrix <code>W</code> will be transformed too in order to preserve duality. Only the first <code>lin</code> lines and the first <code>col</code> columns of the matrices will be considered. The main idea is to transform a generating family of vectors into a basis (removing from the family the vectors that are linear combination of other vectors).</p>
-<p>Refer to the article: R. Couture and P L'Ecuyer, Orbits and lattices for linear random number generators with composite moduli, Mathematics of Computation, Volume 65, Number 213, bottom of page 199. </p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000025">Todo:</a></b></dt><dd>Check the algorithm used here and what it does. </dd></dl>
+<p>Refer to the article: R. Couture and P L'Ecuyer, Orbits and lattices for linear random number generators with composite moduli, Mathematics of Computation, Volume 65, Number 213, bottom of page 199. </p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000026">Todo:</a></b></dt><dd>Check the algorithm used here and what it does. </dd></dl>
 
 </div>
 </div>
@@ -3295,7 +3295,7 @@ template&lt;typename Matr , typename Int &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a></li>
-    <li class="footer">Generated on Mon Sep 10 2018 13:22:40 for Lattice Tester Manual by
+    <li class="footer">Generated on Mon Sep 10 2018 16:43:21 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

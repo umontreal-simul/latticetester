@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['main_20functions',['Main functions',['../d4/ddd/aaroutine.html',1,'index']]],
   ['make_20your_20own_20program',['Make your own program',['../d0/d0a/DIY.html',1,'index']]],
   ['m_5fa',['m_a',['../de/dfe/classLatticeTester_1_1Rank1Lattice.html#ac6a7d1f29ed108667b7e24a37ded7c29',1,'LatticeTester::Rank1Lattice']]],
   ['m_5fbasis',['m_basis',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a195f23f3350c4e413ac6cdce25f8ea1f',1,'LatticeTester::IntLatticeBasis']]],

@@ -22,6 +22,5 @@ var index =
           [ "A note on precision", "da/d18/a_intro.html#prered_precision", null ]
         ] ]
       ] ]
-    ] ],
-    [ "Main functions", "d4/ddd/aaroutine.html", null ]
+    ] ]
 ];

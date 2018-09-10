@@ -351,7 +351,7 @@ Protected Attributes</h2></td></tr>
 class LatticeTester::IntLattice&lt; Int, BasInt, Dbl, RedDbl &gt;</h3>
 
 <p>This class is a skeleton for the implementation of different types of lattices of arbitrary rank. </p>
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000008">Todo:</a></b></dt><dd>define rank of a lattice in the intro</dd></dl>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000009">Todo:</a></b></dt><dd>define rank of a lattice in the intro</dd></dl>
 <p>This class contains a method to compute lattices of projections of \(\{x_i\}_{ 0 \leq i}\), a method to exchange the basis and the dual basis, and a virtual method that can be implemented in subclasses to recompute the basis for different dimensions.</p>
 <p>A lattice of rank \(k\) with integer vectors modulo \(m\) contains \(m^k\) distinct vectors. This number, the density, can then be used to compute bounds on the spectral test. This class implements methods to compute \( \log_2(m^{2i}) \) for \( 1 \leq i \leq k \) to help with the computation of such bounds. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -488,7 +488,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 </div><div class="memdoc">
 
 <p>Builds the basis for the lattice in dimension <code>d</code>. </p>
-<p>This function is not implemented for this class because the building strategy will depend on what kind of lattice is used. If you just want to generate a basis from a set of generating vector, look into module <b>something</b>. </p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000010">Todo:</a></b></dt><dd>add a module for basis construction. </dd></dl>
+<p>This function is not implemented for this class because the building strategy will depend on what kind of lattice is used. If you just want to generate a basis from a set of generating vector, look into module <b>something</b>. </p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000011">Todo:</a></b></dt><dd>add a module for basis construction. </dd></dl>
 
 <p>Reimplemented in <a class="el" href="../../de/dfe/classLatticeTester_1_1Rank1Lattice.html#a0a0764d5a14aa4c354d6c763a3420205">LatticeTester::Rank1Lattice&lt; Int, BasInt, Dbl, RedDbl &gt;</a>.</p>
 
@@ -546,7 +546,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 </div><div class="memdoc">
 
 <p>Computes the logarithm of the normalization factor (<code>m_lgVolDual2</code>) in all dimensions \(\leq\) <code>MaxDim</code> for the lattice. </p>
-<p><code>lgm2</code> is the logarithm in base 2 of \(m^2\). </p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000009">Todo:</a></b></dt><dd>What is this? </dd></dl>
+<p><code>lgm2</code> is the logarithm in base 2 of \(m^2\). </p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000010">Todo:</a></b></dt><dd>What is this? </dd></dl>
 
 </div>
 </div>
@@ -796,7 +796,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 </div><div class="memdoc">
 
 <p>The components of the lattice when it is built out of more than one component. </p>
-<p>When there is only one component, it is unused as the parameters are the same as above. </p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000011">Todo:</a></b></dt><dd>Find a way to move this somewhere else. This is currently used in LatMRG and should not be here. We keep it because It would be a hassle to correct LatMRG to remove this. </dd></dl>
+<p>When there is only one component, it is unused as the parameters are the same as above. </p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000012">Todo:</a></b></dt><dd>Find a way to move this somewhere else. This is currently used in LatMRG and should not be here. We keep it because It would be a hassle to correct LatMRG to remove this. </dd></dl>
 <p>Cleans and releases all the memory allocated to this lattice.</p>
 
 </div>
@@ -1003,7 +1003,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a></li><li class="navelem"><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html">IntLattice</a></li>
-    <li class="footer">Generated on Mon Sep 10 2018 13:22:40 for Lattice Tester Manual by
+    <li class="footer">Generated on Mon Sep 10 2018 16:43:21 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

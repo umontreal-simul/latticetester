@@ -172,7 +172,7 @@ namespace LatticeTester {
            * in subclasses of this one. This method has no implementation in
            * this base class.
            */
-          virtual void setLac (const Lacunary<BasInt> &) = 0;
+          virtual void setLac (const Lacunary<BasInt> &) {};
 
           /**
            * Returns the vector of multipliers (or coefficients) \f$A\f$ as a

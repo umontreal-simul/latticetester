@@ -139,6 +139,23 @@ namespace NTL {
 
 }     // namespace NTL
 
+namespace LatticeTester {
+  // Function declaration. We need to declare these function here to be able to
+  // compile, but they will be implemented later in the code.
+  inline std::int64_t IsOdd (const std::int64_t & x);
+
+  inline bool IsZero (const std::int64_t & x);
+
+  inline void clear (double & x);
+
+  inline void clear (std::int64_t & x);
+
+  inline void set9 (std::int64_t & x);
+
+  inline void set9 (NTL::ZZ & x);
+}
+
+
 
 namespace LatticeTester {
 
@@ -1108,13 +1125,13 @@ namespace LatticeTester {
 
         int r = 0;
         while (r < lin-1) {
-          while (IsZero (W(r,j)) && r < lin-1)
+          while (LatticeTester::IsZero (W(r,j)) && r < lin-1)
             ++r;
           if (r < lin-1) {
             int s = r + 1;
-            while (IsZero (W(s,j)) && s < lin-1)
+            while (LatticeTester::IsZero (W(s,j)) && s < lin-1)
               ++s;
-            if (!IsZero (W(s,j))) {
+            if (!LatticeTester::IsZero (W(s,j))) {
 
               Int temp;
               Euclide (W(r,j), W(s,j), T1, T2, T3, T4, temp);
@@ -1157,7 +1174,7 @@ namespace LatticeTester {
             r = s;
           }
         }
-        if (IsZero (W(lin-1,j))) {
+        if (LatticeTester::IsZero (W(lin-1,j))) {
 
           for (int j1 = 0; j1 < col; j1++) {
             if (j1 != j)
@@ -1345,7 +1362,8 @@ namespace LatticeTester {
 
   /**
    * Returns the `bool` resulting of the statement `x == 0`.
-   * \todo It is useless that this function is implemented. Look if it is removable.
+   * This function is implemented to overload functions with the same name in
+   * NTL.
    */
   inline bool IsZero (const std::int64_t & x)
   {

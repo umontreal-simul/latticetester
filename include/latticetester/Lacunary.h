@@ -99,8 +99,7 @@ namespace LatticeTester {
          * this is the case of non-lacunary indices. Returns `true` in the
          * lacunary case, and `false` otherwise.
          */
-        bool calcIndicesStreams (int s, int w, int & minDim, int maxDim, 
-            int order);
+        bool calcIndicesStreams (int s, int w, int maxDim);
 
         /**
          * Returns a string that describes this object. This string will contain

@@ -21,9 +21,9 @@
 #include "latticetester/Weights.h"
 #include <map>
 #include <vector>
-#ifdef WITH_XML
-#include <pugixml.hpp>
-#endif
+// #ifdef WITH_XML
+// #include <pugixml.hpp>
+// #endif
 
 
 namespace LatticeTester {
@@ -78,14 +78,14 @@ namespace LatticeTester {
       virtual const WeightsMap& getWeightsForLargestIndex(
           Coordinates::value_type largestIndex) const;
 
-#ifdef WITH_XML
-      /**
-       * Static factory method; create a ProjectionDependentWeights object by
-       * parsing XML data.
-       */
-      static ProjectionDependentWeights* createFromXML (
-          const pugi::xml_node& node);
-#endif
+// #ifdef WITH_XML
+//       /**
+//        * Static factory method; create a ProjectionDependentWeights object by
+//        * parsing XML data.
+//        */
+//       static ProjectionDependentWeights* createFromXML (
+//           const pugi::xml_node& node);
+// #endif
 
       /**
        * Sets the weight of the projection specified by \c projection.

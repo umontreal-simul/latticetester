@@ -22,9 +22,9 @@
 #include "latticetester/OrderDependentWeights.h"
 #include "latticetester/ProductWeights.h"
 #include <vector>
-#ifdef WITH_XML
-#include <pugixml.hpp>
-#endif
+// #ifdef WITH_XML
+// #include <pugixml.hpp>
+// #endif
 
 
 namespace LatticeTester {
@@ -87,13 +87,13 @@ namespace LatticeTester {
         return getProductWeights().getWeightForCoordinate(coordinate);
     }
 
-#ifdef WITH_XML
-      /**
-       * Static factory method; create a \c PODWeights object by
-       * parsing XML data.
-       */
-      static PODWeights* createFromXML (const pugi::xml_node & node);
-#endif
+// #ifdef WITH_XML
+//       /**
+//        * Static factory method; create a \c PODWeights object by
+//        * parsing XML data.
+//        */
+//       static PODWeights* createFromXML (const pugi::xml_node & node);
+// #endif
 
     protected:
       /// \copydoc LatticeTester::Weights::format()

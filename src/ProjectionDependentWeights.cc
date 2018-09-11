@@ -22,11 +22,11 @@
 #include <cstdlib>
 #include <sstream>
 
-#ifdef WITH_XML
-#include <boost/lexical_cast.hpp>
-using boost::lexical_cast;
-using boost::bad_lexical_cast;
-#endif
+// #ifdef WITH_XML
+// #include <boost/lexical_cast.hpp>
+// using boost::lexical_cast;
+// using boost::bad_lexical_cast;
+// #endif
 
 using namespace std;
 

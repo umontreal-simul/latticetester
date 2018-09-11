@@ -20,9 +20,9 @@
 
 #include "latticetester/Weights.h"
 #include <vector>
-#ifdef WITH_XML
-#include <pugixml.hpp>
-#endif
+// #ifdef WITH_XML
+// #include <pugixml.hpp>
+// #endif
 
 
 namespace LatticeTester {
@@ -83,13 +83,13 @@ namespace LatticeTester {
       virtual unsigned int getSize () const 
       { return (unsigned int) m_weights.size(); } 
 
-#ifdef WITH_XML
-      /**
-       * Static factory method; create a \c OrderDependentWeights object by
-       * parsing XML data.
-       */
-      static OrderDependentWeights* createFromXML (const pugi::xml_node & node);
-#endif
+// #ifdef WITH_XML
+//       /**
+//        * Static factory method; create a \c OrderDependentWeights object by
+//        * parsing XML data.
+//        */
+//       static OrderDependentWeights* createFromXML (const pugi::xml_node & node);
+// #endif
 
     protected:
       /// \copydoc LatticeTester::Weights::format()

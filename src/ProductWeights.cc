@@ -71,47 +71,47 @@ namespace LatticeTester
 
 //===========================================================================
 
-#ifdef WITH_XML
-#include "xmlerror.hpp"
-
-namespace LatticeTester
-{
-
-  ProductWeights* ProductWeights::createFromXML (const pugi::xml_node & root)
-  {
-    ProductWeights* o = new ProductWeights();
-
-    pugi::xml_node node;
-
-    try {
-      // default weight (optional)
-      node = root.child("default").child("weight");
-      if (node)
-        o->setDefaultWeight(lexical_cast<Weight>(node.child_value()));
-
-      // per-coordinate weights
-      for (pugi::xml_node cnode = root.child("coordinate"); cnode; cnode = cnode.next_sibling("coordinate")) {
-        // weight
-        node = cnode.child("weight");
-        if (!node)
-          throw pugi::xml_error(cnode, "missing <weight> element");
-        Weight weight = lexical_cast<Weight>(node.child_value());
-        // coordinate index
-        node = cnode.child("coordinate");
-        if (!node)
-          throw pugi::xml_error(cnode, "missing <coordinate> element");
-        int coordinate = lexical_cast<Weight>(node.child_value());
-        // store weight
-        o->setWeightForCoordinate(coordinate, weight);
-      }
-
-      return o;
-    }
-    catch (bad_lexical_cast& e) {
-      delete o;
-      throw pugi::xml_error(node, e.what());
-    }
-  }
-
-} // namespace LatticeTester
-#endif
+// #ifdef WITH_XML
+// #include "xmlerror.hpp"
+// 
+// namespace LatticeTester
+// {
+// 
+//   ProductWeights* ProductWeights::createFromXML (const pugi::xml_node & root)
+//   {
+//     ProductWeights* o = new ProductWeights();
+// 
+//     pugi::xml_node node;
+// 
+//     try {
+//       // default weight (optional)
+//       node = root.child("default").child("weight");
+//       if (node)
+//         o->setDefaultWeight(lexical_cast<Weight>(node.child_value()));
+// 
+//       // per-coordinate weights
+//       for (pugi::xml_node cnode = root.child("coordinate"); cnode; cnode = cnode.next_sibling("coordinate")) {
+//         // weight
+//         node = cnode.child("weight");
+//         if (!node)
+//           throw pugi::xml_error(cnode, "missing <weight> element");
+//         Weight weight = lexical_cast<Weight>(node.child_value());
+//         // coordinate index
+//         node = cnode.child("coordinate");
+//         if (!node)
+//           throw pugi::xml_error(cnode, "missing <coordinate> element");
+//         int coordinate = lexical_cast<Weight>(node.child_value());
+//         // store weight
+//         o->setWeightForCoordinate(coordinate, weight);
+//       }
+// 
+//       return o;
+//     }
+//     catch (bad_lexical_cast& e) {
+//       delete o;
+//       throw pugi::xml_error(node, e.what());
+//     }
+//   }
+// 
+// } // namespace LatticeTester
+// #endif

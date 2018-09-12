@@ -18,13 +18,8 @@
 #ifndef LATTICETESTER__COORDINATE_SETS_H
 #define LATTICETESTER__COORDINATE_SETS_H
 
-#include <set>
+#include <iterator>
 #include <map>
-#include <iostream>
-
-#include <boost/iterator/iterator_facade.hpp>
-#include <boost/iterator/iterator_adaptor.hpp>
-#include <boost/config.hpp>
 
 #include "latticetester/Coordinates.h"
 
@@ -60,6 +55,15 @@ namespace LatticeTester {
      */
     class FromRanges {
 
+      private:
+        typedef std::pair<Coordinates::value_type, Coordinates::value_type> Range;
+
+        typedef std::map<Coordinates::size_type, Range> RangeMap;
+
+        RangeMap m_ranges; // coordinate range for each order
+
+        const RangeMap& ranges() const {return m_ranges;}
+
       public:
         /**
          * Constructs a set of all subsets of \f$\{\mathtt{minCoord}, \dots,
@@ -70,12 +74,11 @@ namespace LatticeTester {
          * this gives the sets
          * <tt>range = {{2}, {3}, {4}, {2, 3}, {2, 4}, {3, 4}, {2, 3, 4}}</tt>.
          */
-        FromRanges (Coordinates::size_type  minOrder, Coordinates::size_type  maxOrder,
+        FromRanges (Coordinates::size_type minOrder, Coordinates::size_type maxOrder,
             Coordinates::value_type minCoord, Coordinates::value_type maxCoord);
 
         /**
          * Constructs an empty set of coordinate sets.
-         *
          */
         FromRanges();
 
@@ -107,22 +110,13 @@ namespace LatticeTester {
          */
         void excludeOrder (Coordinates::size_type order);
 
-      private:
-        typedef std::pair<Coordinates::value_type, Coordinates::value_type> Range;
-        typedef std::map<Coordinates::size_type, Range> RangeMap;
-
-        // Why is there a private getter?
-        const RangeMap& ranges() const { return m_ranges; }
-
-      public:
         /**
          * An iterator class used internaly by the `FromRange` class. Given an
          * object of this class, it is possible to cycle through the element it 
-         * contains with the increment (`++`) or decrement (`--`) operators.
+         * contains with the increment (`++`) operator.
          * */
-        class const_iterator : public boost::iterators::iterator_facade<const_iterator,
-        const Coordinates, // value
-        boost::iterators::forward_traversal_tag> // traversal
+        class const_iterator : public std::iterator<std::forward_iterator_tag,
+        const Coordinates>
       {
         public:
           struct end_tag {};
@@ -132,58 +126,99 @@ namespace LatticeTester {
            * `seq` contains.
            * */
           explicit const_iterator(const FromRanges& seq):
-            m_seq(&seq), m_atEnd(false)
-        { resetToOrder (m_seq->ranges().begin()); }
+            m_seq(&seq), m_atEnd(false){
+              resetToOrder (m_seq->ranges().begin());
+            }
 
           /**
            * Constructor for an iterator at the end of the list of sets that
            * `seq` contains.
            * */
           const_iterator(const FromRanges& seq, end_tag):
-            m_seq(&seq), m_atEnd(true) // end
-        {}
+            m_seq(&seq), m_atEnd(true) {}
+
+          /**
+           * Copy constructor.
+           * */
+          const_iterator(const const_iterator& other) {
+            this->m_seq = other.m_seq;
+            this->m_atEnd = other.m_atEnd;
+            this->m_value = other.m_value;
+          }
 
           /**
            * Empty FromRange::const_iterator constructor
            * */
-          const_iterator():
-            m_seq(nullptr), m_atEnd(false)
-        { }
-
-        private:
-          friend class boost::iterators::iterator_core_access;
+          const_iterator(): m_seq(nullptr), m_atEnd(false) {}
 
           /**
-           * The iterator advances of one value. It generates a new subset of
-           * coordinates and stores it in m_value that can be accessed with 
-           * deference().
+           * Assignment operator. This copies the left hand side object in the
+           * right hand side one.
            * */
-          void increment();
+          const_iterator& operator=(const const_iterator& other) {
+            this->m_seq = other.m_seq;
+            this->m_atEnd = other.m_atEnd;
+            this->m_value = other.m_value;
+            return *this;
+          }
 
           /**
            * Compares this instance with `other`, returning true if they are 
-           * associated with the same FromRange object and if 
+           * associated with the same FromRange object and if they are at the
+           * same point in their enumeration cycle.
            * */
-          bool equal(const const_iterator& other) const
-          { 
+          bool operator==(const const_iterator& other) {
             return m_seq == other.m_seq 
               && (other.m_atEnd ? m_atEnd : m_value == other.m_value);
           }
 
           /**
-           * Returns the coordinates set at which the iterator is.
+           * Dereference operator, when dereferencing this object, you get the
+           * set of coordinates this iterator points to.
            * */
-          const Coordinates& dereference() const
-          { return m_value; }
+          const Coordinates& operator*() const {
+            return m_value;
+          }
+
 
           /**
-           * Resets the iterator at the beginning of order.
+           * Prefix incrementation operator. Increments this iterator and
+           * returns the iterator in its new state.
+           * */
+          const_iterator& operator++();
+
+          /**
+           * Postfix incrementation operator. Increments this iterator and
+           * returns a copy of the old object.
+           * */
+          const_iterator operator++(int);
+
+        private:
+
+          /**
+           * Resets the iterator at the beginning of the order the iterator `it`
+           * is at. `it` should be one of the states of
+           *  `m_seq->ranges()::const_iterator` because the values this function
+           *  will take to build the first subset will be the one passed by the
+           *  iterator.
            * */
           void resetToOrder (const RangeMap::const_iterator& it);
 
-        private:
+          /**
+           * The FromRanges object through which this iterator cycles.
+           * */
           const FromRanges* m_seq;
+
+          /**
+           * Is true if this iterator is at the end of the sequence and false
+           * otherwise.
+           * */
           bool m_atEnd;
+
+          /**
+           * The coordinates of the current set in the sequence of coordinates
+           * this object contains.
+           * */
           Coordinates m_value;
 
       }; // end FromRanges::const_iterator class
@@ -193,67 +228,64 @@ namespace LatticeTester {
          * of coordinates sets that the object contains. It can then be used to
          * cycle through all the sets with `++`.
          */
-        const_iterator begin() const
-        { return const_iterator(*this); }
+        const_iterator begin() const {
+          return const_iterator(*this);
+        }
 
         /**
          * Returns a const_iterator pointing past the last element in the seq. 
          * It can then be used to cycle through all the sets with `--`.
          */
-        const_iterator end() const
-        { return const_iterator(*this, typename const_iterator::end_tag{}); }
+        const_iterator end() const {
+          return const_iterator(*this, typename const_iterator::end_tag{});
+        }
 
-      private:
-        RangeMap m_ranges; // coordinate range for each order
-
-    }; // end FromRanges class
-
+    }; // End class FromRanges
 
     /**
      * This class implements CoordinateSets for any set of coordinates.
      * It is more powerful than the class FromRange, but
      * slightly slower (by 15--20% according to empirical tests).
+     * \todo **Marc-Antoine**: have an experience context and some real results
+     * to show for that.
      */
     class Subsets {
 
       public:
-      /**
-       * Constructs a set of all subsets of `coords` with minimum and maximum
-       * cardinality specified by `minOrder` and `maxOrder`.
-       * For example, to select  all 1, 2, and 3-tuples over coordinates 2, 4, 6,
-       * one may use the declaration `Subsets tousens(ens, 1, 3)`,
-       * where  set `ens` is `{2,4,6}`; this gives the sets
-       * `tousens = {{2}, {4}, {6}, {2, 4}, {2, 6}, {4, 6}, {2, 4, 6}}`.
-       */
+        /**
+         * Constructs a set of all subsets of `coords` with minimum and maximum
+         * cardinality specified by `minOrder` and `maxOrder`.
+         * For example, to select  all 1, 2, and 3-tuples over coordinates 2, 4, 6,
+         * one may use the declaration `Subsets tousens(ens, 1, 3)`,
+         * where  set `ens` is `{2,4,6}`; this gives the sets
+         * `tousens = {{2}, {4}, {6}, {2, 4}, {2, 6}, {4, 6}, {2, 4, 6}}`.
+         */
         Subsets (const Coordinates & coords,
             Coordinates::size_type minOrder,
             Coordinates::size_type maxOrder);
 
         /**
-         * Returns the coordinates, as passed to the constructor \ref
-         * Subsets(const Coordinates&,Coordinates::size_type,Coordinates::size_type)
+         * Returns the coordinates, as passed to the constructor.
          * */
         const Coordinates& coords() const { return  m_coords; }
+
         /**
-         * Returns `minOrder`, as passed to the constructor \ref
-         * Subsets(const Coordinates&,Coordinates::size_type,Coordinates::size_type)
+         * Returns `minOrder`, as passed to the constructor.
          * */
         Coordinates::size_type minOrder() const { return m_minOrder; }
+
         /**
-         * Returns `maxOrder`, as passed to the constructor \ref
-         * Subsets(const Coordinates&,Coordinates::size_type,Coordinates::size_type)
+         * Returns `maxOrder`, as passed to the constructor.
          * */
         Coordinates::size_type maxOrder() const { return m_maxOrder; }
 
-      public:
         /**
          * An iterator class used internaly by the `Subsets` class. Given an
          * object of this class, it is possible to cycle through the element it 
          * contains with the increment (`++`) or decrement (`--`) operators.
          * */
-        class const_iterator : public boost::iterators::iterator_facade<const_iterator,
-        const Coordinates, // value
-        boost::iterators::forward_traversal_tag> // traversal
+        class const_iterator : public std::iterator<std::forward_iterator_tag,
+        const Coordinates>
       {
         public:
           struct end_tag {};
@@ -263,55 +295,91 @@ namespace LatticeTester {
            * `seq` contains.
            * */
           explicit const_iterator(const Subsets& seq):
-            m_seq(&seq), m_atEnd(false)
-        { resetToOrder (m_seq->minOrder()); }
+            m_seq(&seq), m_atEnd(false){
+              resetToOrder (m_seq->minOrder());
+            }
 
           /**
            * Constructor for an iterator at the end of the list of sets that
            * `seq` contains.
            * */
           const_iterator(const Subsets& seq, end_tag):
-            m_seq(&seq), m_atEnd(true) // end
-        {}
+            m_seq(&seq), m_atEnd(true) {}
 
           /**
-           * Empty constructor.
+           * Copy constructor.
+           * */
+          const_iterator(const const_iterator& other) {
+            this->m_seq = other.m_seq;
+            this->m_atEnd = other.m_atEnd;
+            this->m_value = other.m_value;
+          }
+
+          /**
+           * Default constructor.
            * */
           const_iterator():
-            m_seq(nullptr), m_atEnd(false)
-        { }
+            m_seq(nullptr), m_atEnd(false) {}
 
-        private:
-          friend class boost::iterators::iterator_core_access;
-
-          /**
-           * The iterator advances of one value. It generates a new subset of
-           * coordinates and stores it in m_value that can be accessed with 
-           * deference().
-           * */
-          void increment();
+          const_iterator& operator=(const const_iterator& other) {
+            this->m_seq = other.m_seq;
+            this->m_atEnd = other.m_atEnd;
+            this->m_value = other.m_value;
+            return *this;
+          }
 
           /**
            * Compares this instance with `other`, returning true if they are 
-           * associated with the same FromRange object and if 
+           * associated with the same FromRange object and if they are at the
+           * same point in their enumeration cycle.
            * */
-          bool equal(const const_iterator& other) const
-          { return m_seq == other.m_seq && (other.m_atEnd ? m_atEnd : m_value == other.m_value); }
+          bool operator==(const const_iterator& other) {
+            return m_seq == other.m_seq &&
+              (other.m_atEnd ? m_atEnd : m_value == other.m_value); }
 
           /**
-           * Returns the coordinates set at which the iterator is.
+           * Dereference operator, when dereferencing this object, you get the
+           * set of coordinates this iterator points to.
            * */
-          const Coordinates& dereference() const
-          { return m_value; }
+          const Coordinates& operator*() const {
+            return m_value;
+          }
 
           /**
-           * Resets the iterator at the beginning of order.
+           * Prefix incrementation operator. Increments this iterator and
+           * returns the iterator in its new state.
+           * */
+          const_iterator& operator++();
+
+          /**
+           * Postfix incrementation operator. Increments this iterator and
+           * returns a copy of the old object.
+           * */
+          const_iterator operator++(int);
+
+        private:
+
+          /**
+           * Resets the iterator at the beginning of the enumeration of subsets
+           * of cardinality order.
            * */
           void resetToOrder (Coordinates::size_type order);
 
-        private:
+          /**
+           * The Subsets object through which this iterator cycles.
+           * */
           const Subsets* m_seq;
+
+          /**
+           * Is true if this iterator is at the end of the sequence and false
+           * otherwise.
+           * */
           bool m_atEnd;
+
+          /**
+           * The coordinates of the current set in the sequence of coordinates
+           * this object contains.
+           * */
           Coordinates m_value;
 
       }; // end Subsets::const_iterator class
@@ -319,126 +387,171 @@ namespace LatticeTester {
         /**
          * Returns an iterator pointing to the first element of `*this`.
          */
-        const_iterator begin() const
-        { return const_iterator(*this); }
+        const_iterator begin() const {
+          return const_iterator(*this);
+        }
 
         /**
          * Returns an iterator pointing past the last element of `*this`.
          */
-        const_iterator end() const
-        { return const_iterator(*this, typename const_iterator::end_tag{}); }
+        const_iterator end() const {
+          return const_iterator(*this, typename const_iterator::end_tag{});
+        }
 
       private:
+
         const Coordinates m_coords;
+
         Coordinates::size_type m_minOrder;
+
         Coordinates::size_type m_maxOrder;
 
     }; // end Subsets class
 
-
+    //==========================================================================
 
     /**
-     * This template class wraps any implementation of CoordinateSets and
+     * This template class wraps any implementation of a CoordinateSets and
      * adds a specific coordinate to each coordinate sets.
      *
-     * \tparam BASE Type of coordinate sets that serves as a base.
+     * \tparam BASE Type of coordinate sets that serves as a base. This should
+     * be one of the classes defined in the `CoordinateSets` namespace.
      */
-    template <typename BASE>
-      class AddCoordinate {
+    template <typename BASE> class AddCoordinate {
+
+      public:
+        /**
+         * Constructs a sequence of coordinate sets by adding the coordinate
+         * \c coord to each element in the base sequence \c base.
+         */
+        AddCoordinate (const BASE& base, Coordinates::value_type coord):
+          m_base(base), m_coord(coord) {}
 
         /**
-         * Constructs a set based on <tt>baseSets</tt> by adding coordinate
-         * \c coord to each of the sets in <tt>baseSets</tt>.
-         * Warning: do not use a temporary object as <tt>baseSets</tt>.
+         * Returns the base object used to produce the subsets.
          */
+        const BASE& base() const {
+          return  m_base;
+        }
+
+        /**
+         * Returns the added coordinate.
+         */
+        const Coordinates::value_type& coord() const {
+          return m_coord;
+        }
+
+        /**
+         * An iterator class used internaly by the `AddCoordinate` class.
+         * Given an object of this class, it is possible to cycle through the
+         * element it contains with the increment (`++`) operator.
+         * \todo check to make this behave the same as other iterators defined
+         * in this namespace.
+         * */
+        class const_iterator : public std::iterator<std::forward_iterator_tag,
+        const Coordinates>
+      {
         public:
-          typedef BASE BMat;
+          struct end_tag {};
 
           /**
-           * Constructs a sequence of coordinate sets by adding the coordinate \c coord
-           * to each element in the base sequence \c base.
-           */
-          AddCoordinate (const BMat& base, Coordinates::value_type coord):
-            m_base(base), m_coord(coord)
-        { }
-
-#ifdef BOOST_HAS_RVALUE_REFS
-          AddCoordinate (BMat&& base, Coordinates::value_type coord):
-            m_base(std::move(base)), m_coord(coord)
-        { }
-#endif
+           * Constructor for an iterator at the beginning of the list of sets
+           * that `seq` contains.
+           * */
+          explicit const_iterator(const AddCoordinate& seq):
+            m_seq(&seq) {
+              this->underlying = m_seq->base()->begin();
+              updateValue();
+            }
 
           /**
-           * Returns the base sequence.
-           */
-          const BMat& base() const
-          { return  m_base; }
+           * Constructor for an iterator at the end of the list of sets that
+           * `seq` contains.
+           * */
+          const_iterator(const AddCoordinate& seq, end_tag):
+            const_iterator::iterator_adaptor_(seq.base().end()),
+            m_seq(&seq) {
+              this->underlying = m_seq->base()->end();
+              updateValue();
+            }
 
           /**
-           * Returns the added coordinate.
-           */
-          const Coordinates::value_type& coord() const
-          { return m_coord; }
-
-        public:
-          class const_iterator : public boost::iterators::iterator_adaptor<const_iterator,
-          typename BMat::const_iterator>
-        {
-          public:
-            struct end_tag {};
-
-            explicit const_iterator(const AddCoordinate& seq):
-              const_iterator::iterator_adaptor_(seq.base().begin()),
-              m_seq(&seq)
-          { updateValue(); }
-
-            const_iterator(const AddCoordinate& seq, end_tag):
-              const_iterator::iterator_adaptor_(seq.base().end()),
-              m_seq(&seq)
-          {}
-
-            const_iterator():
-              const_iterator::iterator_adaptor_(),
-              m_seq(nullptr)
-          { }
-
-          private:
-            friend class boost::iterators::iterator_core_access;
-
-            void increment()
-            { ++this->base_reference(); updateValue(); }
-
-            const Coordinates& dereference() const
-            { return m_value; }
-
-            void updateValue()
-            { m_value = *this->base_reference(); m_value.insert(m_seq->coord()); }
-
-          private:
-            const AddCoordinate* m_seq;
-            Coordinates m_value;
-        }; // end iterator_adaptator class
+           * Copy constructor.
+           * */
+          const_iterator(const const_iterator& other) {
+            this->m_seq = other.m_seq;
+            this->m_value = other.m_value;
+          }
 
           /**
-           * Returns an iterator pointing to the first element in the seq.
-           */
-          const_iterator begin() const
-          { return const_iterator(*this); }
+           * Default constructor. Does nothing.
+           * */
+          const_iterator(): m_seq(nullptr) {}
 
           /**
-           * Returns an iterator pointing past the last element in the seq.
-           */
-          const_iterator end() const
-          { return const_iterator(*this, typename const_iterator::end_tag{}); }
+           * Assignment operator. This copies the left hand side object in the
+           * right hand side one.
+           * */
+          const_iterator& operator=(const const_iterator& other) {
+            this->m_seq = other.m_seq;
+            this->m_value = other.m_value;
+            return *this;
+          }
+
+          const_iterator& operator++() {
+            ++(this->underlying());
+            updateValue();
+            return *this;
+          }
+
+          const_iterator operator++(int) {
+            const_iterator old(*this);
+            ++(this->underlying());
+            updateValue();
+            return old;
+          }
+
+          const Coordinates& operator*() const {
+            return m_value;
+          }
 
         private:
-          BMat m_base;
-          Coordinates::value_type m_coord;
 
-      }; // end AddCoordinate class
+          void updateValue() {
+            m_value = *(this->underlying);
+            m_value.insert(m_seq->coord());
+          }
 
+          const AddCoordinate* m_seq;
 
-  } // end CoordinateSets namespace
-} // end LatticeTester namspace
+          typename BASE::const_iterator underlying;
 
-#endif // COORDINATE_SETS_H
+          Coordinates m_value;
+
+      }; // end iterator_adaptator class
+
+        /**
+         * Returns an iterator pointing to the first element in the seq.
+         */
+        const_iterator begin() const {
+          return const_iterator(*this);
+        }
+
+        /**
+         * Returns an iterator pointing past the last element in the seq.
+         */
+        const_iterator end() const {
+          return const_iterator(*this, typename const_iterator::end_tag{});
+        }
+
+      private:
+        BASE m_base;
+
+        Coordinates::value_type m_coord;
+
+    }; // end AddCoordinate class
+  } // End namespace CoordinateSets
+
+} // End namespace LatticeTester
+
+#endif

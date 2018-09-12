@@ -206,50 +206,50 @@ namespace LatticeTester
 
 //===========================================================================
 
-#ifdef WITH_XML
-#include "xmlerror.hpp"
-
-namespace LatticeTester
-{
-
-  ProjectionDependentWeights* ProjectionDependentWeights::createFromXML (const pugi::xml_node& root)
-  {
-    ProjectionDependentWeights* o = new ProjectionDependentWeights();
-
-    pugi::xml_node node;
-
-    try {
-      // per-projection weights
-      for (pugi::xml_node pnode = root.child("projection"); pnode; pnode = pnode.next_sibling("projection")) {
-
-        // weight
-        node = pnode.child("weight");
-        if (!node)
-          throw pugi::xml_error(pnode, "missing <weight> element");
-        Weight weight;
-        weight = lexical_cast<Weight>(node.child_value());
-
-        // coordinates (projection)
-        node = pnode.child("coordinates");
-        if (!node)
-          throw pugi::xml_error(pnode, "missing <coordinates> element");
-
-        // parse coordinate list as projection
-        Coordinates projection;
-        for (node = node.child("coordinate"); node; node = node.next_sibling("coordinate"))
-          projection.insert(lexical_cast<int>(node.child_value()));
-
-        // store projection weight
-        o->setWeight(projection, weight);
-      }
-
-      return o;
-    }
-    catch (bad_lexical_cast& e) {
-      delete o;
-      throw pugi::xml_error(node, e.what());
-    }
-  }
-
-} // namespace
-#endif
+// #ifdef WITH_XML
+// #include "xmlerror.hpp"
+// 
+// namespace LatticeTester
+// {
+// 
+//   ProjectionDependentWeights* ProjectionDependentWeights::createFromXML (const pugi::xml_node& root)
+//   {
+//     ProjectionDependentWeights* o = new ProjectionDependentWeights();
+// 
+//     pugi::xml_node node;
+// 
+//     try {
+//       // per-projection weights
+//       for (pugi::xml_node pnode = root.child("projection"); pnode; pnode = pnode.next_sibling("projection")) {
+// 
+//         // weight
+//         node = pnode.child("weight");
+//         if (!node)
+//           throw pugi::xml_error(pnode, "missing <weight> element");
+//         Weight weight;
+//         weight = lexical_cast<Weight>(node.child_value());
+// 
+//         // coordinates (projection)
+//         node = pnode.child("coordinates");
+//         if (!node)
+//           throw pugi::xml_error(pnode, "missing <coordinates> element");
+// 
+//         // parse coordinate list as projection
+//         Coordinates projection;
+//         for (node = node.child("coordinate"); node; node = node.next_sibling("coordinate"))
+//           projection.insert(lexical_cast<int>(node.child_value()));
+// 
+//         // store projection weight
+//         o->setWeight(projection, weight);
+//       }
+// 
+//       return o;
+//     }
+//     catch (bad_lexical_cast& e) {
+//       delete o;
+//       throw pugi::xml_error(node, e.what());
+//     }
+//   }
+// 
+// } // namespace
+// #endif

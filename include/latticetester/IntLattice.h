@@ -28,7 +28,7 @@
 #include "latticetester/NormaMinkL1.h"
 #include "latticetester/NormaPalpha.h"
 #include "latticetester/NormaMinkowski.h"
-#include "latticetester/CoordinateSets.h"
+#include "latticetester/Coordinates.h"
 #include "latticetester/Lacunary.h"
 #include "latticetester/Util.h"
 

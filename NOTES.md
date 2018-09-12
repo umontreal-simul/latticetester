@@ -10,6 +10,8 @@
 - Check if LLL can be done with all norms.
 - Implement LLL construction/reduction.
 - Look into the B&B algorithm
+- On peut retirer boost pour vrai dans latticetester en changeant des itérateurs
+  par ceux dans std. On le fait?
 
 ## New features
 - Implement upper bounds as in Cohn and Elkies and look for higher dimensions

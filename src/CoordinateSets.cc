@@ -16,7 +16,7 @@
 // limitations under the License.
 
 #include "latticetester/Util.h"
-#include "latticetester/CoordinateSets1.h"
+#include "latticetester/CoordinateSets.h"
 
 namespace LatticeTester {
 

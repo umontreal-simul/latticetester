@@ -173,6 +173,15 @@ namespace LatticeTester {
           }
 
           /**
+           * Compares this instance with `other`, returning false if they are 
+           * associated with the same FromRange object and if they are at the
+           * same point in their enumeration cycle.
+           * */
+          bool operator!=(const const_iterator& other) {
+            return !(*this == other);
+          }
+
+          /**
            * Dereference operator, when dereferencing this object, you get the
            * set of coordinates this iterator points to.
            * */
@@ -330,12 +339,22 @@ namespace LatticeTester {
 
           /**
            * Compares this instance with `other`, returning true if they are 
-           * associated with the same FromRange object and if they are at the
+           * associated with the same Subsets object and if they are at the
            * same point in their enumeration cycle.
            * */
           bool operator==(const const_iterator& other) {
             return m_seq == other.m_seq &&
-              (other.m_atEnd ? m_atEnd : m_value == other.m_value); }
+              (other.m_atEnd ? m_atEnd : m_value == other.m_value);
+          }
+
+          /**
+           * Compares this instance with `other`, returning true if they are 
+           * associated with the same Subsets object and if they are at the
+           * same point in their enumeration cycle.
+           * */
+          bool operator!=(const const_iterator& other) {
+            return !(*this == other);
+          }
 
           /**
            * Dereference operator, when dereferencing this object, you get the
@@ -460,7 +479,7 @@ namespace LatticeTester {
            * */
           explicit const_iterator(const AddCoordinate& seq):
             m_seq(&seq) {
-              this->underlying = m_seq->base()->begin();
+              this->underlying = m_seq->base().begin();
               updateValue();
             }
 
@@ -469,9 +488,8 @@ namespace LatticeTester {
            * `seq` contains.
            * */
           const_iterator(const AddCoordinate& seq, end_tag):
-            const_iterator::iterator_adaptor_(seq.base().end()),
             m_seq(&seq) {
-              this->underlying = m_seq->base()->end();
+              this->underlying = m_seq->base().end();
               updateValue();
             }
 
@@ -498,15 +516,33 @@ namespace LatticeTester {
             return *this;
           }
 
+          /**
+           * Compares this instance with `other`, returning true if they are 
+           * associated with the same AddCoordinate object and if they are at
+           * the same point in their enumeration cycle.
+           * */
+          bool operator==(const const_iterator& other) {
+            return m_seq == other.m_seq && this->underlying == other.underlying;
+          }
+
+          /**
+           * Compares this instance with `other`, returning false if they are 
+           * associated with the same AddCoordinate object and if they are at
+           * the same point in their enumeration cycle.
+           * */
+          bool operator!=(const const_iterator& other) {
+            return !(*this == other);
+          }
+
           const_iterator& operator++() {
-            ++(this->underlying());
+            ++(this->underlying);
             updateValue();
             return *this;
           }
 
           const_iterator operator++(int) {
             const_iterator old(*this);
-            ++(this->underlying());
+            ++(this->underlying);
             updateValue();
             return old;
           }

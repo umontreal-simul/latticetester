@@ -2,6 +2,50 @@
  * \page detailed_usage Detailed usage instructions
  * 
  * \section usage_build Building the executable
+
+ * ## Software Dependencies
+ * 
+ * If you intend on building *LatticeTester* from scratch, the following
+ * software will need to be installed on the system:
+ * 
+ * * [NTL](http://www.shoup.net/ntl/index.html) 10.4.0 or later
+ * * [GMP](https://gmplib.org/) compatible version with your NTL installation
+ * * [Python](https://www.python.org/) *(Needed by waf to build the program)*
+ * * [Git](http://git-scm.com/) *(optional for downloading the source code)*
+ * * [Doxygen](http://www.stack.nl/~dimitri/doxygen/) *(optional for generating
+ *   the documentation)*
+ * 
+ * You will also need a recent compiler compliant with the C++14 standard.
+ * 
+ * ## Acquiring/Building/Installing the program
+ *
+ * This section won't go in depth and explain all the particularities of the
+ * build process. If you are a developper and wish to participate to this
+ * project, please look at the [README](https://github.com/umontreal-simul/latticetester.git)
+ * for more details about the build system.
+ *
+ * The prefered way of getting this software is by downloading it on github
+ * (either via `git clone` or with a `.zip`) and to compile it yourself (for
+ * now). The build process uses the `waf` metabuild system that greatly
+ * streamlines the process.
+ *
+ * To build the project, you simply need to be in the root folder of 
+ * *LatticeTester* and call:
+ * \code
+ * ./waf configure build install
+ * \endcode
+ * or, on Windows,
+ * \code
+ * python waf configure build install
+ * \endcode
+ * If the build process fails, the
+ * README might offer you some insight as to what went wrong.
+ *
+ * The previous command will fetch the environment variables specific to your
+ * system to prepare the compilation, compile the program in a local folder and
+ * place the binaries and header files in a default location depending on your
+ * OS. Depending on your installation path, you might need to specify a path to
+ * you compilier when using the *LatticeTester* library.
  * 
  * \section usage_program Using the executable
  *

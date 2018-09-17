@@ -32,6 +32,97 @@ namespace LatticeTester {
    * The classes in this namespace are iterable but are not containers, so they
    * require very little storage. They virtually contain objects of type
    * LatticeTester::Coordinates.
+   *
+   * \todo present/make a template class for reimplementations so that the
+   * classes in this namespace all work the same (they already do) and can be 
+   * reimplemented easily.
+   * \code
+   * class CoordinateSets {
+   *   class const_iterator: public std::iterator<std::forward_iterator_tag,
+   *     const Coordinates> {
+   *     public:
+   *       struct end_tag {};
+   *
+   *       // Constructor that sets the iterator at the beginning
+   *       explicit const_iterator(const CoordinateSets& seq):
+   *         m_seq(&seq), m_atEnd(false){
+   *           resetToOrder (m_seq->ranges().begin());
+   *       }
+   *
+   *       // Constructor that sets the iterator at the end
+   *       const_iterator(const FromRanges& seq, end_tag):
+   *         m_seq(&seq), m_atEnd(true) {}
+   *
+   *       // Copy constructor.
+   *       const_iterator(const const_iterator& other) {
+   *         this->m_seq = other.m_seq;
+   *         this->m_atEnd = other.m_atEnd;
+   *         this->m_value = other.m_value;
+   *       }
+   *
+   *       // Default constructor that does nothing
+   *       const_iterator(): m_seq(nullptr), m_atEnd(false) {}
+   *
+   *       // Assignment operator. Normally this should do the same as the copy
+   *       // constructor.
+   *       const_iterator& operator=(const const_iterator& other) {
+   *         this->m_seq = other.m_seq;
+   *         this->m_atEnd = other.m_atEnd;
+   *         this->m_value = other.m_value;
+   *         return *this;
+   *       }
+   *
+   *       // Comparison operator.
+   *       bool operator==(const const_iterator& other) {
+   *         return m_seq == other.m_seq 
+   *           && (other.m_atEnd ? m_atEnd : m_value == other.m_value);
+   *       }
+   * 
+   *       // Second comparison operator.
+   *       bool operator!=(const const_iterator& other) {
+   *         return !(*this == other);
+   *       }
+   *
+   *       // dereference operator. This should return the Coordinates this
+   *       // iterator is at.
+   *       const Coordinates& operator*() const {
+   *         return m_value;
+   *       }
+   *
+   *       // This is definitely the operator that should be reimplemented.
+   *       // Prefix increment operator
+   *       const_iterator& operator++();
+   *
+   *       // Same as before
+   *       // Postfix iteration operator
+   *       const_iterator operator++(int);
+   *
+   *     private:
+   *       // Maybe this is not that usefull
+   *       void resetToOrder (const RangeMap::const_iterator& it);
+   *
+   *       // This is the object this iterator iterates over.
+   *       const CoordinateSets* m_seq;
+   *
+   *       // Maybe this is not usefull
+   *       bool m_atEnd;
+   *
+   *       // The set of values the iterator is at
+   *       Coordinates m_value;
+   *   };
+   *
+   *   // Gives an iterator that is at the beginning of the sequence of the
+   *   // object
+   *   const_iterator begin() const {
+   *     return const_iterator(*this);
+   *   }
+   *
+   *   // Gives an iterator that is at the end of the sequence of the object
+   *   const_iterator end() const {
+   *     return const_iterator(*this, typename const_iterator::end_tag{});
+   *   }
+   * }
+   * \endcode
    */
   namespace CoordinateSets {
 
@@ -52,16 +143,22 @@ namespace LatticeTester {
      * from the interval associated with this order. It is not possible to 
      * generate coordinate sets of the same order for different intervals with 
      * the same instance of this class.
-     */
+     * */
     class FromRanges {
 
       private:
+        // Represents a range of integers. The first coordinate is the lower
+        // bound and the second the upper bound.
         typedef std::pair<Coordinates::value_type, Coordinates::value_type> Range;
 
+        // Maps Range objects to a size of subsets.
         typedef std::map<Coordinates::size_type, Range> RangeMap;
 
-        RangeMap m_ranges; // coordinate range for each order
+        // For every size of subsets, this contains the the range of integer
+        // from which the subset can be drawn.
+        RangeMap m_ranges;
 
+        // Having a private getter is not that usefull.
         const RangeMap& ranges() const {return m_ranges;}
 
       public:
@@ -78,7 +175,9 @@ namespace LatticeTester {
             Coordinates::value_type minCoord, Coordinates::value_type maxCoord);
 
         /**
-         * Constructs an empty set of coordinate sets.
+         * Constructs an empty set of coordinate sets. When using this
+         * constructor, it is possible to handpick coordinate sets with the
+         * `includeOrder()` method.
          */
         FromRanges();
 
@@ -243,7 +342,9 @@ namespace LatticeTester {
 
         /**
          * Returns a const_iterator pointing past the last element in the seq. 
-         * It can then be used to cycle through all the sets with `--`.
+         * This iterator cannot be used to cycle through the sets, but it can be
+         * used as a point of comparison to know when you reached the end of an
+         * iterator obtained with `begin()`.
          */
         const_iterator end() const {
           return const_iterator(*this, typename const_iterator::end_tag{});
@@ -252,11 +353,13 @@ namespace LatticeTester {
     }; // End class FromRanges
 
     /**
-     * This class implements CoordinateSets for any set of coordinates.
-     * It is more powerful than the class FromRange, but
-     * slightly slower (by 15--20% according to empirical tests).
-     * \todo **Marc-Antoine**: have an experience context and some real results
-     * to show for that.
+     * This class implements a CoordinateSets that will build all the subsets
+     * of a Coordinates object that are of a cardinality in a certain range.
+     * This is a less flexible class than `FromRanges` but, in the
+     * example `Subsets.cc` it has been slightly faster in our tests.
+     *
+     * \remark it is somewhat hard to build an object of this class, maybe this
+     * could be done in a better way.
      */
     class Subsets {
 
@@ -291,7 +394,7 @@ namespace LatticeTester {
         /**
          * An iterator class used internaly by the `Subsets` class. Given an
          * object of this class, it is possible to cycle through the element it 
-         * contains with the increment (`++`) or decrement (`--`) operators.
+         * contains with the increment (`++`) operator.
          * */
         class const_iterator : public std::iterator<std::forward_iterator_tag,
         const Coordinates>
@@ -330,6 +433,9 @@ namespace LatticeTester {
           const_iterator():
             m_seq(nullptr), m_atEnd(false) {}
 
+          /**
+           * Assignment operator that does the same as the copy constructor.
+           * */
           const_iterator& operator=(const const_iterator& other) {
             this->m_seq = other.m_seq;
             this->m_atEnd = other.m_atEnd;
@@ -348,7 +454,7 @@ namespace LatticeTester {
           }
 
           /**
-           * Compares this instance with `other`, returning true if they are 
+           * Compares this instance with `other`, returning false if they are 
            * associated with the same Subsets object and if they are at the
            * same point in their enumeration cycle.
            * */
@@ -419,10 +525,19 @@ namespace LatticeTester {
 
       private:
 
+        /**
+         * The coordinates from which this object builds subsets.
+         * */
         const Coordinates m_coords;
 
+        /**
+         * The minimal cardinality of the subsets this object will build.
+         * */
         Coordinates::size_type m_minOrder;
 
+        /**
+         * The maximal cardinality of the subsets this object will build.
+         * */
         Coordinates::size_type m_maxOrder;
 
     }; // end Subsets class
@@ -431,10 +546,17 @@ namespace LatticeTester {
 
     /**
      * This template class wraps any implementation of a CoordinateSets and
-     * adds a specific coordinate to each coordinate sets.
+     * adds a specific coordinate to each coordinate sets. When iterating
+     * through the subsets of this class, they won't be order by cardinality
+     * because the sets are generated on the fly and the coordinate is added if
+     * it is not already contained.
      *
      * \tparam BASE Type of coordinate sets that serves as a base. This should
      * be one of the classes defined in the `CoordinateSets` namespace.
+     *
+     * \todo Should this class implement the CoordinateSets template? Because it
+     * would need a few more attributes. This class also needs to be benchmarked
+     * to see how much slower it is (because it will be).
      */
     template <typename BASE> class AddCoordinate {
 
@@ -454,7 +576,7 @@ namespace LatticeTester {
         }
 
         /**
-         * Returns the added coordinate.
+         * Returns the coordinate this object adds.
          */
         const Coordinates::value_type& coord() const {
           return m_coord;
@@ -464,8 +586,11 @@ namespace LatticeTester {
          * An iterator class used internaly by the `AddCoordinate` class.
          * Given an object of this class, it is possible to cycle through the
          * element it contains with the increment (`++`) operator.
-         * \todo check to make this behave the same as other iterators defined
-         * in this namespace.
+         *
+         * Since this iterator is built upon another object, it internally keeps
+         * an iterator that cycles through the sets generated by the
+         * `CoordinateSets` implementation the associated to the `AddCoordinate`
+         * object used for construction.
          * */
         class const_iterator : public std::iterator<std::forward_iterator_tag,
         const Coordinates>
@@ -508,7 +633,7 @@ namespace LatticeTester {
 
           /**
            * Assignment operator. This copies the left hand side object in the
-           * right hand side one.
+           * right hand side object.
            * */
           const_iterator& operator=(const const_iterator& other) {
             this->m_seq = other.m_seq;
@@ -534,12 +659,20 @@ namespace LatticeTester {
             return !(*this == other);
           }
 
+          /**
+           * Prefix increment operator. This increments the underlying subset
+           * and updates `m_value`.
+           * */
           const_iterator& operator++() {
             ++(this->underlying);
             updateValue();
             return *this;
           }
 
+          /**
+           * Postfix increment operator. This increments the underlying subset
+           * and updates `m_value`.
+           * */
           const_iterator operator++(int) {
             const_iterator old(*this);
             ++(this->underlying);
@@ -547,21 +680,38 @@ namespace LatticeTester {
             return old;
           }
 
+          /**
+           * Dereference operator that returns the `Coordinates` this iterator
+           * is at.
+           * */
           const Coordinates& operator*() const {
             return m_value;
           }
 
         private:
-
+          /**
+           * Sets `m_value` to the same set as the underlying iterator and adds
+           * the coordinate to it if it is not already contained.
+           * */
           void updateValue() {
             m_value = *(this->underlying);
             m_value.insert(m_seq->coord());
           }
 
+          /**
+           * Pointer to the `AddCoordinate` object this iterator uses to build
+           * the sets.
+           * */
           const AddCoordinate* m_seq;
 
+          /**
+           * The iterator of the underlying `CoordinateSets`.
+           * */
           typename BASE::const_iterator underlying;
 
+          /**
+           * The current `Coordinates` in the enumeration.
+           * */
           Coordinates m_value;
 
       }; // end iterator_adaptator class
@@ -581,11 +731,18 @@ namespace LatticeTester {
         }
 
       private:
+        /**
+         * The underlying `CoordinateSets` that will be augmented.
+         * */
         BASE m_base;
 
+        /**
+         * The coordinate that will be added.
+         * */
         Coordinates::value_type m_coord;
 
     }; // end AddCoordinate class
+
   } // End namespace CoordinateSets
 
 } // End namespace LatticeTester

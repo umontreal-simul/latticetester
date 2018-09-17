@@ -193,14 +193,13 @@ namespace LatticeTester {
 
     Subsets::const_iterator& Subsets::const_iterator::operator++()
     {
-      if (m_atEnd)
-        return *this;
+      if (m_atEnd) return *this;
 
       // current order
       Coordinates::size_type order = m_value.size();
 
       // maximum index value
-      Coordinates::reverse_iterator ritMaxVal = m_seq->coords().rbegin ();
+      Coordinates::reverse_iterator ritMaxVal = m_seq->coords().rbegin();
 
       // iterator before the min element
       Coordinates::reverse_iterator rend = m_value.rend();
@@ -227,10 +226,10 @@ namespace LatticeTester {
       // make note of the highest index that is below its maximum value (to be
       // incremented)
       Coordinates::const_iterator itNewVal = m_seq->coords().upper_bound (*rit);
-      if (itNewVal == m_seq->coords().end()) {
-        m_atEnd = true;
-        return *this;
-      }
+      //if (itNewVal == m_seq->coords().end()) {
+      //  m_atEnd = true;
+      //  return *this;
+      //}
       // erase all indices that are at their maximum value plus the one to be
       // incremented
       m_value.erase(--rit.base(), rbegin.base());
@@ -247,7 +246,7 @@ namespace LatticeTester {
     {
       Subsets::const_iterator tmp(*this);
       ++(*this);
-        return tmp;
+      return tmp;
     }
 
   } // End namespace CoordinatesSets

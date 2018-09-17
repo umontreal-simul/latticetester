@@ -2,7 +2,7 @@
  * \page detailed_usage Detailed usage instructions
  * 
  * \section usage_build Building the executable
-
+ *
  * ## Software Dependencies
  * 
  * If you intend on building *LatticeTester* from scratch, the following

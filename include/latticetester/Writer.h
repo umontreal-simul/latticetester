@@ -23,6 +23,7 @@
 #include <fstream>
 #include <cstdint>
 
+#include "latticetester/ntlwrap.h"
 
 namespace LatticeTester {
 

@@ -22,10 +22,6 @@ point sets. A detailed documentation of *LatticeTester* is available
 Compiling *LatticeTester* requires the following softwares to be installed on
 the system:
 
-* [Boost C++ Libraries](http://www.boost.org/) 1.57.0 or later.
-  Installation instructions (**section 5 is important**):
-  - [for Linux / MacOS](http://www.boost.org/doc/libs/release/more/getting_started/unix-variants.html)
-  - [for Microsoft Windows](http://www.boost.org/doc/libs/release/more/getting_started/windows.html)
 * [NTL](http://www.shoup.net/ntl/index.html) 10.4.0 or later
 * [GMP](https://gmplib.org/) compatible version with your NTL installation
 * [Python](https://www.python.org/) *(Needed by waf to build the program)*

@@ -17,12 +17,12 @@
 
 #ifndef LATTESTWRITERRES_H
 #define LATTESTWRITERRES_H
-#include "latticetester/Writer.h"
 
 #include <iostream>
 #include <fstream>
 #include <string>
 
+#include "latticetester/Writer.h"
 
 namespace LatticeTester {
 

@@ -9,7 +9,6 @@
 - Build projections basis and dual basis
 - Check if LLL can be done with all norms.
 - Implement LLL construction/reduction.
-- Look into the B&B algorithm
 
 ## New features
 - Implement upper bounds as in Cohn and Elkies and look for higher dimensions
@@ -48,6 +47,16 @@ décide à la compilation!
   warning. This could lead to overflow when converting back, but we should just
   take care and throw exceptions in that case. The algorithm is the same so it
   should overflow anyway if we do not convert and use our implementation.
+- À propos de la borne sur le B&B. J'ai regardé un peu je me demande quel genre
+  de chose rend le calcul de Cholesky instable.
+  - La raison est que si on peut passer à une truc avec Gram-Schmidt, ça va 1)
+    être plus long :il faudra probablement calculer, en plus de
+    l'orthogonalisation, l'inverse d'une matrice (la matrice de passage),
+    2) pas nécessairement être plus stable, ça dépend de ce qui
+    cause de l'instabilité.
+  - Par contre, j'ai pas l'impression que c'est possible. Tout dépend de si on
+    peut faire les opérations sur un ensemble de coordonnées et transformer les
+    bornes à partir de là.
 
 # Notes personnelles
 - Est-ce que LatticeTester devrait avoir des classes pour supporter les réseaux
@@ -64,3 +73,4 @@ que c'est principalement un truc qui est utile pour étudier les MRGs.
 - Le calcul des bornes de Rogers ne vient pas de l'article de 1959 parce que le
 terme avec les log donne quelque chose de négatif pour les valeurs que l'on
 considère. C'est vraiment de l'article de 58, mais il faut arriver à calculer le truc...
+Le calcul dans Conway a été fait par Leech, mais je ne sais pas quel article.

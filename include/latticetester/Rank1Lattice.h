@@ -107,7 +107,7 @@ namespace LatticeTester {
          * Builds the basis in dimension `d`. `d` has to be smaller or equal
          * than `this->maxDim()`
          */
-        void buildBasis (int d);
+        void buildBasis (long d);
 
         /**
          * Dualize the matrix. The matrix entered need to have
@@ -203,7 +203,7 @@ namespace LatticeTester {
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
     void Rank1Lattice<Int, BasInt, Dbl, RedDbl>::incDim ()
     {
-      assert(d <= getMaxDim());
+      assert(1 + this->getDim() <= this->m_maxDim);
       buildBasis (1 + this->getDim ());
       this->setNegativeNorm ();
       this->setDualNegativeNorm ();
@@ -212,9 +212,9 @@ namespace LatticeTester {
   //============================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-    void Rank1Lattice<Int, BasInt, Dbl,RedDbl>::buildBasis (int d)
+    void Rank1Lattice<Int, BasInt, Dbl,RedDbl>::buildBasis (long d)
     {
-      assert(d <= getMaxDim());
+      assert(d <= this->m_maxDim);
       this->setDim (d);
 
       // conv(m_v[1][1], 1);

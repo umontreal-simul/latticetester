@@ -53,10 +53,6 @@ namespace NTL {
    * These functions perform convertions between different types. Most of them
    * do not really need explainations, but sometimes a specific logic is used
    * when doing the convertion.
-   * 
-   * \todo Maybe some of this can be rewritten as templates. This could be
-   * usefull because it is easy to see how this bit of code could not work with
-   * certain compilators.
    */
 
   /**
@@ -135,27 +131,53 @@ namespace NTL {
 
   /**
    * @}
+   * \name Function overloads
+   * @{
+   * These functions are already implemented in NTL for NTL::ZZ or NTL::RR
+   * types, but not for the other standard types we use. These overloads allow
+   * us to make a simple call the the function in the `NTL` namespace without
+   * worrying about types and still have working algorithms.
    */
 
+  /**
+   * Returns the `bool` resulting of the statement `x == 0`. `IsZero` is already
+   * defined for the type `NTL::ZZ` in NTL, but not for `std::int64_t`.
+   */
+  inline bool IsZero (const std::int64_t & x)
+  {
+    return x == 0;
+  }
+
+  /**
+   * Sets `x` to 0.
+   */
+  inline void clear (double & x) { x = 0; }
+
+  /**
+   * Sets `x` to 0.
+   */
+  inline void clear (std::int64_t & x) { x = 0; }
+  
+  /**
+   * Tests if `x` is odd. Returns 1 if it is odd, and 0 if it is even.
+   */
+  inline std::int64_t IsOdd (const std::int64_t & x) {
+    return x & 1;
+  }
+
+  /**
+   * Sets `x` to 1.
+   */
+  inline void set (std::int64_t & x)
+  {
+    x = 1;
+  }
+
+  /**
+   * @}
+   * */
+
 }     // namespace NTL
-
-namespace LatticeTester {
-  // Function declaration. We need to declare these function here to be able to
-  // compile, but they will be implemented later in the code.
-  inline std::int64_t IsOdd (const std::int64_t & x);
-
-  inline bool IsZero (const std::int64_t & x);
-
-  inline void clear (double & x);
-
-  inline void clear (std::int64_t & x);
-
-  inline void set9 (std::int64_t & x);
-
-  inline void set9 (NTL::ZZ & x);
-}
-
-
 
 namespace LatticeTester {
 
@@ -607,23 +629,23 @@ namespace LatticeTester {
       Int X, Y, Z;
       G = A;
       Z = B;
-      set9 (C);
-      clear (D);
-      clear (E);
-      set9 (F);
+      NTL::set (C);
+      NTL::clear (D);
+      NTL::clear (E);
+      NTL::set (F);
 
       //cout << "   Euclide :" << endl;
       //cout << "      inputs: A = " << oldA << ", B = " << oldB << endl;
       //cout << "      values used: A=" << A << ", B=" << B << ", C=" << C << ", D=" << D << ", E=" << E << ", F=" << F << ", G=" << G << ", (X=" << X << ", Y=" << Y << ", Z=" << Z << ")" << endl;
 
-      if (IsZero(A)) {
+      if (NTL::IsZero(A)) {
         swap9<Int>(G, Z);
         swap9<Int>(C, E);
         swap9<Int>(D, F);
         return;
       }
 
-      while (!IsZero(Z)) {
+      while (!NTL::IsZero(Z)) {
         swap9<Int>(G, Z);
         swap9<Int>(C, E);
         swap9<Int>(D, F);
@@ -1125,13 +1147,13 @@ namespace LatticeTester {
 
         int r = 0;
         while (r < lin-1) {
-          while (LatticeTester::IsZero (W(r,j)) && r < lin-1)
+          while (NTL::IsZero (W(r,j)) && r < lin-1)
             ++r;
           if (r < lin-1) {
             int s = r + 1;
-            while (LatticeTester::IsZero (W(s,j)) && s < lin-1)
+            while (NTL::IsZero (W(s,j)) && s < lin-1)
               ++s;
-            if (!LatticeTester::IsZero (W(s,j))) {
+            if (!NTL::IsZero (W(s,j))) {
 
               Int temp;
               Euclide (W(r,j), W(s,j), T1, T2, T3, T4, temp);
@@ -1154,7 +1176,7 @@ namespace LatticeTester {
                  performed properly.
                  */
 
-              clear (W(r,j));
+              NTL::clear (W(r,j));
 
               for (int j1 = j + 1; j1 < col; j1++) {
                 T5 = T1 * W(r,j1);
@@ -1174,18 +1196,18 @@ namespace LatticeTester {
             r = s;
           }
         }
-        if (LatticeTester::IsZero (W(lin-1,j))) {
+        if (NTL::IsZero (W(lin-1,j))) {
 
           for (int j1 = 0; j1 < col; j1++) {
             if (j1 != j)
-              clear (V(j,j1));
+              NTL::clear (V(j,j1));
             else
               V(j,j1) = m;
           }
         } else {
           Euclide (W(lin-1,j), m, T1, T2, T3, T4, V(j,j));
           for (int j1 = 0; j1 < j; j1++)
-            clear (V(j,j1));
+            NTL::clear (V(j,j1));
           for (int j1 = j + 1; j1 < col; j1++) {
             T2 = W(lin-1,j1) * T1;
             Modulo (T2, m, V(j,j1));
@@ -1221,7 +1243,7 @@ namespace LatticeTester {
       for (int i = 0; i < d; i++) {
 
         for (int j = i + 1; j < d; j++)
-          clear (B(i,j));
+          NTL::clear (B(i,j));
 
         // WARNING:
         // Dans l'original, c'est *Quotient* pour Lac et *DivideRound* pour non-Lac ??
@@ -1231,7 +1253,7 @@ namespace LatticeTester {
 
         for (int j = i - 1; j >= 0; j--) {
 
-          clear (B(i,j));
+          NTL::clear (B(i,j));
 
           for (int k = j + 1; k <= i; k++)
             B(i,j) += A(j,k) * B(i,k);
@@ -1339,62 +1361,6 @@ namespace LatticeTester {
       out << "}";
       return out;
     }
-
-
-  /**
-   * @}
-   */
-
-  /**
-   * \name Miscellaneous functions
-   * @{
-   * These are the other functions implemented in this module, that have various
-   * usage in this program.
-   * */
-  
-  /**
-   * Tests if `x` is odd. Returns 1 if it is odd, and 0 if it is even.
-   * \todo It is useless that this function is implemented. Look if it is removable.
-   */
-  inline std::int64_t IsOdd (const std::int64_t & x) {
-    return x & 1;
-  }
-
-  /**
-   * Returns the `bool` resulting of the statement `x == 0`.
-   * This function is implemented to overload functions with the same name in
-   * NTL.
-   */
-  inline bool IsZero (const std::int64_t & x)
-  {
-    return x == 0;
-  }
-
-  /**
-   * Sets `x` to 0.
-   */
-  inline void clear (double & x) { x = 0; }
-
-  /**
-   * Sets `x` to 0.
-   */
-  inline void clear (std::int64_t & x) { x = 0; }
-
-  /**
-   * Sets `x` to 1.
-   */
-  inline void set9 (std::int64_t & x)
-  {
-    x = 1;
-  }
-
-  /**
-   * Sets `x` to 1.
-   */
-  inline void set9 (NTL::ZZ & x)
-  {
-    NTL::set(x);
-  }
 
   /**
    * @}

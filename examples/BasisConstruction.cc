@@ -4,7 +4,7 @@
  *
  * Add an error counter to see if both methods work.
  * */
-#define NTL_TYPES_CODE 1
+#define NTL_TYPES_CODE 2
 
 #include <iostream>
 #include <ctime>
@@ -43,6 +43,7 @@ int main() {
         ln = 1;
         reader.readBMat(matrix3, ln, 0, numlines);
         matrix1 = matrix2 = matrix3;
+        if (NTL::determinant(matrix1) == 0) continue;
 
         // Timing ma first
         tmp = clock();

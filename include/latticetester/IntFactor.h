@@ -17,14 +17,15 @@
 
 #ifndef LATTICETESTER__INTFACTOR_H
 #define LATTICETESTER__INTFACTOR_H
+
 #include <string>
 #include <iomanip>
 #include <cstdint>
 #include <sstream>
+
 #include "latticetester/Const.h"
 
 #include <NTL/ZZ.h>
-
 
 namespace LatticeTester {
 

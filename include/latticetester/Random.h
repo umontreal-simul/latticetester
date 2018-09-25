@@ -20,8 +20,8 @@
 
 #include <cstdint>
 
-
 namespace LatticeTester {
+
   /**
    * This class generates random numbers (in fact pseudo-random numbers).
    * The generator used is the 64-bits generator \c LFSR258

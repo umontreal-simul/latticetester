@@ -19,12 +19,9 @@
 #define LATTICETESTER__PROJECTION_DEPENDENT_WEIGHTS_H
 
 #include "latticetester/Weights.h"
+
 #include <map>
 #include <vector>
-// #ifdef WITH_XML
-// #include <pugixml.hpp>
-// #endif
-
 
 namespace LatticeTester {
   /**

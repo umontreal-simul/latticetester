@@ -32,8 +32,9 @@ namespace LatticeTester {
    * That is, this class methods are intended to be used as a way to format an
    * output on an `ostream` or a file. It already implements functions to write
    * basic data types. A subclass of this class **must** be implemented if you
-   * want to use it. WriterRes offers utilities to print in a file.
-   * Since this class will be overridden, it is possible to implement subclasses
+   * want to use it. `WriterRes` offers utilities to print in a file or on the
+   * command line.
+   * Since this class must be overridden, it is possible to implement subclasses
    * to format text for different kind of output such as plain text, \f$\LaTeX\f$
    * or HTML.
    *

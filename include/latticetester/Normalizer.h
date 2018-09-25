@@ -15,7 +15,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/* Normalizer.h for ISO C++ */
 #ifndef LATTICETESTER__NORMALIZER_H
 #define LATTICETESTER__NORMALIZER_H
 
@@ -24,7 +23,6 @@
 
 #include <cassert>
 #include <string>
-
 
 namespace LatticeTester {
 

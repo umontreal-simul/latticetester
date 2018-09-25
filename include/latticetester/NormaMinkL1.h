@@ -15,12 +15,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/* NormaMinkL1.h for ISO C++ */
 #ifndef LATTICETESTER__NORMAMINKL1_H
 #define LATTICETESTER__NORMAMINKL1_H
-#include "latticetester/Normalizer.h"
-#include <stdexcept>
 
+#include "latticetester/Normalizer.h"
+
+#include <stdexcept>
 
 namespace LatticeTester {
 

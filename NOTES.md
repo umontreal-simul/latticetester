@@ -26,7 +26,21 @@ J'ai pensé à ça, et c'est possible de retirer les switch. Il suffit en fait d
 réimplémenter les enum en des classes et créer des sous-classes pour chaque cas
 qui elles-même implémentent les fonctions nécessaires, ce qui nous permet de ne
 pas avoir de switch et qui fait en sorte que tout ce que les switch font se
-décide à la compilation!
+décide à la compilation! Y'a quelques options pour les switch:
+- Faire un truc vraiment orienté objet. Donc on réimplémente les enums comme des
+  templates et on reimplémente chaque cas dans une classe qui réimplémente le
+  cas particulier de l'enum. Ça voudrait dire qu'il faut déplacer beaucoup de
+  choses. Il faut que les classes qu'on a déjà ne soient pas redondantes, mais
+  malgré tout on risque d'avoir vraiment beaucoup de classes qui se ressemblent
+  dans ce cas.
+- Faire un truc qui est plus fonctionnel. Implémenter chaque enum comme une
+  seule classe avec un des attributs qui est un pointeur de fonction. Ça fait un
+  peu old school, c'est clairement une stratégie plus typique de C, mais en même
+  temps ça permettrait d'éviter d'avoir des tas de classes qui font à peu près
+  la même chose pour réimplémenter une seule fonction. Dans ce cas, il faudrait
+  faire une version plus procédurale des fonctions à réimplémenter pour pouvoir
+  donner le bon pointeur à l'objet. Voir https://stackoverflow.com/questions/1485983/calling-c-class-methods-via-a-function-pointer
+
 - Est-ce qu'on implémente P_alpha? Et globalement, quel traitement est-ce que
   l'on donne aux figures de mérite? Certaines sont implémentées, mais de façon
   primitive. D'un côté ce sont les applications spécifiques qui en ont besoin,

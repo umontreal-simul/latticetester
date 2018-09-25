@@ -17,6 +17,7 @@
 
 #ifndef PARAMREADER_H
 #define PARAMREADER_H
+
 #include "NTL/ZZ.h"
 
 #include "latticetester/ntlwrap.h"
@@ -30,7 +31,6 @@
 #include <fstream>
 #include <sstream>
 #include <cstdint>
-
 
 namespace LatticeTester {
 

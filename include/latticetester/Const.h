@@ -37,12 +37,15 @@ namespace LatticeTester {
    * \f$\Vert X\Vert= |x_1|+\cdots+|x_t|\f$.<br> `L2NORM` corresponds to
    * \f$\Vert X\Vert= (x_1^2+\cdots+x_t^2)^{1/2}\f$.<br> `ZAREMBANORM`
    * corresponds to \f$\Vert X\Vert= \max(1, |x_1|)\cdots\max(1, |x_t|)\f$.
+   *
+   * \todo Maybe just implement a function for each norm and pass these functions?
+   * Otherwise, we could have an abstract class norm with a simple function norm
+   * that is reimplemented.
    */
   enum NormType { SUPNORM = 1, L1NORM = 2, L2NORM = 3, ZAREMBANORM = 4 };
 
   /**
    * Indicates in which form and where the results will be sent.
-   * \anchor REF__Const_co_output
    *
    * `TERMINAL`: the results will appear only on the terminal screen.<br>
    * `RES`: the results will be in plain text format and sent to a file with
@@ -55,14 +58,14 @@ namespace LatticeTester {
 
   /**
    * Indicates in which precision the NTL algorithms will be perfoms :
-   * `FP` -- double
-   * `QP` -- quad_float (quasi quadruple precision)
+   * `DOUBLE` -- double
+   * `QUADRUPLE` -- quad_float (quasi quadruple precision)
    *         this is useful when roundoff errors can cause problems
-   * `XD` -- xdouble (extended exponent doubles)
+   * `EXPONENT` -- xdouble (extended exponent doubles)
    *         this is useful when numbers get too big
-   * `RR` -- RR (arbitrary precision floating point)
-   this is useful for large precision and magnitudes
-   * Generally speaking, the choice FP will be the fastest,
+   * `ARBITRARY` -- RR (arbitrary precision floating point)
+   * this is useful for large precision and magnitudes
+   * Generally speaking, the choice `DOUBLE` will be the fastest,
    * but may be prone to roundoff errors and/or overflow.
    */
   enum PrecisionType { DOUBLE, QUADRUPLE, EXPONENT, ARBITRARY, EXACT };
@@ -70,6 +73,7 @@ namespace LatticeTester {
   /**
    * Indicates whether an integer is prime, probably prime, composite or its
    * status is unknown (or don’t care).
+   * \todo Maybe this should be defined in the IntFactor class
    */
   enum PrimeType { UNKNOWN, PRIME, PROB_PRIME, COMPOSITE };
 
@@ -81,7 +85,7 @@ namespace LatticeTester {
    * test.<br>
    * `PALPHA`: the figure of merit is based on \f$P_{\alpha}\f$.<br>
    * <tt>BOUND_JS</tt>: the figure of merit is based on
-   * the Joe-Sinescu bound \cite rSIN08a&thinsp;.<br>
+   * the Joe-Sinescu bound \cite rSIN08a.<br>
    */
   enum CriterionType { SPECTRAL, BEYER, PALPHA, BOUND_JS };
 

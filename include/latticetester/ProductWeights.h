@@ -20,10 +20,6 @@
 
 #include "latticetester/Weights.h"
 #include <vector>
-// #ifdef WITH_XML
-// #include <pugixml.hpp>
-// #endif
-
 
 namespace LatticeTester {
   /**

@@ -8,12 +8,12 @@
  * If you intend on building *LatticeTester* from scratch, the following
  * software will need to be installed on the system:
  * 
- * * [NTL](http://www.shoup.net/ntl/index.html) 10.4.0 or later
- * * [GMP](https://gmplib.org/) compatible version with your NTL installation
- * * [Python](https://www.python.org/) *(Needed by waf to build the program)*
- * * [Git](http://git-scm.com/) *(optional for downloading the source code)*
- * * [Doxygen](http://www.stack.nl/~dimitri/doxygen/) *(optional for generating
- *   the documentation)*
+ * - [NTL](http://www.shoup.net/ntl/index.html) 10.4.0 or later
+ * - [GMP](https://gmplib.org/) compatible version with your NTL installation
+ * - [Python](https://www.python.org/) <i>(Needed by waf to build the program)</i>
+ * - [Git](http://git-scm.com/) <i>(optional for downloading the source code)</i>
+ * - [Doxygen](http://www.stack.nl/~dimitri/doxygen/) <i>(optional for generating
+ *   the documentation)</i>
  * 
  * You will also need a recent compiler compliant with the C++14 standard.
  * 

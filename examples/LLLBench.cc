@@ -58,7 +58,7 @@
 // We define the numeric types.
 // It is possible to use this example with TYPES 2 and 3. For now 1 calls the
 // same function for both execution and we look forward to change that.
-#define NTL_TYPES_CODE 3
+#define NTL_TYPES_CODE 2
 
 #include <iostream>
 #include <ctime>

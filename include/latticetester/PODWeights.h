@@ -22,10 +22,6 @@
 #include "latticetester/OrderDependentWeights.h"
 #include "latticetester/ProductWeights.h"
 #include <vector>
-// #ifdef WITH_XML
-// #include <pugixml.hpp>
-// #endif
-
 
 namespace LatticeTester {
   /**

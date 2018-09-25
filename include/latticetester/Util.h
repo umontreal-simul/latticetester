@@ -20,6 +20,9 @@
  *
  * This module describes various useful functions as well as functions
  * implementing various interactions with NTL.
+ * \todo Maybe the functions implemented in the NTL namespace should go in
+ * `ntlwrap.h` for the sake of consistency. Otherwise, ntlwrap should be moved
+ * here.
  */
 
 
@@ -40,6 +43,7 @@
 #include <type_traits>
 
 #include "latticetester/Const.h"
+#include "latticetester/ntlwrap.h"
 
 #include "NTL/tools.h"
 #include "NTL/ZZ.h"
@@ -1096,21 +1100,17 @@ namespace LatticeTester {
    * the diagonal are equal to zero modulo `m` and `false` otherwise.
    * If `m` is `0`, this function simply verifies that the matrix is triangular.
    */
-  template <typename Matr, typename Int>
-    bool CheckTriangular (const Matr & A, long dim, const Int m)
+  template <typename Int>
+    bool CheckTriangular (const NTL::matrix<Int> & A, long dim, const Int m)
     {
       for (int i = 1; i < dim; i++) {
         for (int j = 0; j < i; j++) {
           if (m != 0) {
             if (A[i][j] % m != 0) {
-              std::cout << "******  CheckTriangular failed for element A[" << i <<
-                "][" << j << "]" << std::endl;
               return false;
             }
           } else {
             if (A[i][j] != 0) {
-              std::cout << "******  CheckTriangular failed for element A[" << i <<
-                "][" << j << "]" << std::endl;
               return false;
             }
           }
@@ -1120,73 +1120,87 @@ namespace LatticeTester {
     }
 
   /**
-   * Performs an integer triangularization operation modulo `m` on the
-   * matrix `W` to obtain an upper triangular matrix `V`, dual to
-   * `W`. However, the matrix `W` will be transformed too in order to
-   * preserve duality. Only the first `lin` lines and the first `col` columns
-   * of the matrices will be considered.
-   * The main idea is to transform a generating family of vectors into a 
-   * basis (removing from the family the vectors that are linear combination 
-   * of other vectors).
+   * Takes a set of generating vectors in the matrix `W` and iteratively
+   * transforms it into an upper triangular lattice basis into the matrix `V`.
+   * `W` and `V` have to have more lines than `lin` and more columns than `col`
+   * since this algorithm will only operate on the upper `lin*col` matrix of
+   * `W`. All the computations will be done modulo `m`, which means that you
+   * must know a rescalling factor for the vector system to call this function.
+   * After the execution, `W` will be a matrix containing irrelevant information
+   * and `V` will contain an upper triangular basis.
    *
-   * Refer to the article: R. Couture and P L'Ecuyer, Orbits and lattices for
-   * linear random number generators with composite moduli, Mathematics of
-   * Computation, Volume 65, Number 213, bottom of page 199.
-   * \todo Check the algorithm used here and what it does.
+   * For more details please look at \cite rCOU96a. This algorithm basically
+   * implements what is written at the end of the article, that is the matrix
+   * `W` contains the set of vectors that is used and modified at each step to
+   * get a new vector from the basis.
+   *
+   * \todo Benchmark this algorithm. Maybe this is fast, but this is not space
+   * efficient. Maybe something similar could be done in place. This algorithm
+   * should not necessitate the use of `m`.
    */
-  template <typename Matr, typename Int>
-    void Triangularization (Matr & W, Matr & V, int lin, int col,
-        const Int & m)
+  template <typename Int>
+    void Triangularization (NTL::matrix<Int> & W, NTL::matrix<Int> & V, int lin,
+        int col, const Int & m)
     {
-      Int T1, T2, T3, T4, T5, T6, T7, T8;
+      Int T1, T2, T3, T4, T5, T6, T7, T8; // This is really ugly
 
+      // We loop over all columns
       for (int j = 0; j < col; j++) {
 
-        for (int i = 0; i < lin; i++)
-          Modulo (W(i,j), m, W(i,j));
+        // Since this algorithm is mod m, we apply mod m to the elements of 
+        // column j
+        //for (int i = 0; i < lin; i++)
+        //  Modulo (W(i,j), m, W(i,j));
 
         int r = 0;
+
+        // Transforming W to get information on the lattice
         while (r < lin-1) {
+          // We find the first non-zero coefficient in column j of W
           while (NTL::IsZero (W(r,j)) && r < lin-1)
             ++r;
           if (r < lin-1) {
             int s = r + 1;
+            // We find the second non-zero coefficient in column j of W
             while (NTL::IsZero (W(s,j)) && s < lin-1)
               ++s;
+            // If there are two non-zero elements in the column, we make
+            // operations on the lines to put one of them to zero.
             if (!NTL::IsZero (W(s,j))) {
-
               Int temp;
               Euclide (W(r,j), W(s,j), T1, T2, T3, T4, temp);
               W(s,j) = temp;
               /*
-                 -- Remark --
-                 Previously, the call to function Euclide was made with
-                 the following arguments : 
-                 (W(r,j), W(s,j), T1, T2, T3, T4, W(s,j))
-                 But because this function uses references, the result 
-                 was always the same:
-                 W(r,j) = W(r,j)
-                 W(s,j) = W(r,j)
-                 T1 = 0
-                 T2 = 1
-                 T3 = -1
-                 T4 = 1
-                 We then added a temporary variable *temp* so that the
-                 calculation of coefficients T1, T2, T3 and T4 is
-                 performed properly.
-                 */
+               * -- Remark --
+               * Previously, the call to function Euclide was made with
+               * the following arguments : 
+               * (W(r,j), W(s,j), T1, T2, T3, T4, W(s,j))
+               * But because this function uses references, the result 
+               * was always the same:
+               * W(r,j) = W(r,j)
+               * W(s,j) = W(r,j)
+               * T1 = 0
+               * T2 = 1
+               * T3 = -1
+               * T4 = 1
+               * We then added a temporary variable *temp* so that the
+               * calculation of coefficients T1, T2, T3 and T4 is
+               * performed properly.
+               * */
 
               NTL::clear (W(r,j));
 
+              // This operates on the lines of W so that W(s,j)=0 and that
+              // W(r,j)=0.
               for (int j1 = j + 1; j1 < col; j1++) {
                 T5 = T1 * W(r,j1);
                 T6 = T2 * W(s,j1);
                 T7 = T3 * W(r,j1);
                 T8 = T4 * W(s,j1);
                 W(s,j1) = T5 + T6;
-                Modulo (W(s,j1), m, W(s,j1));
+                //Modulo (W(s,j1), m, W(s,j1));
                 W(r,j1) = T7 + T8;
-                Modulo (W(r,j1), m, W(r,j1));
+                //Modulo (W(r,j1), m, W(r,j1));
               }
             } else {
               for (int j1 = j; j1 < col; j1++) {
@@ -1196,8 +1210,13 @@ namespace LatticeTester {
             r = s;
           }
         }
-        if (NTL::IsZero (W(lin-1,j))) {
 
+        // If the last element in column j is 0, then the column is zero.
+        // We now deduce information on line `j` of matrix `V` and build a basis
+        // vector in it.
+        if (NTL::IsZero (W(lin-1,j))) {
+          // iii) if column j of W is 0 then line j of V is the identity vector
+          // (rescaled by m)
           for (int j1 = 0; j1 < col; j1++) {
             if (j1 != j)
               NTL::clear (V(j,j1));
@@ -1205,50 +1224,60 @@ namespace LatticeTester {
               V(j,j1) = m;
           }
         } else {
+          // ii) W_j \neq 0 => V(j,j) | m
           Euclide (W(lin-1,j), m, T1, T2, T3, T4, V(j,j));
+          // i) The first j-1 coordinates of line j of V are 0
           for (int j1 = 0; j1 < j; j1++)
             NTL::clear (V(j,j1));
+
+          // i) can(V_j) = W_j
           for (int j1 = j + 1; j1 < col; j1++) {
             T2 = W(lin-1,j1) * T1;
-            Modulo (T2, m, V(j,j1));
+            //Modulo (T2, m, V(j,j1));
           }
           Quotient (m, V(j,j), T1);
           for (int j1 = j + 1; j1 < col; j1++) {
             W(lin-1,j1) *= T1;
-            Modulo (W(lin-1,j1), m, W(lin-1,j1));
+            //Modulo (W(lin-1,j1), m, W(lin-1,j1));
           }
         }
       }
-
-      //CheckTriangular (V, col, m);
     }
 
 
   /**
-   * Calculates the `m`-dual of the matrix `A`. The result is placed in the
-   * matrix `B`. Only the first `d` lines and columns are considered.
+   * Takes an upper triangular basis `A` and computes a dual lattice basis
+   * modulo `m` to this matrix. For this algorithm to work, `A` as to be upper
+   * triangular and all the coefficients on the diagonal have to divide `m`.
    *
-   * The vectors of the basis (lines of A) need to verify the properties (i), (ii)
-   * (iii), (iv) as described in the article: R. Couture and P L'Ecuyer, Orbits 
-   * and lattices for linear random number generators with composite moduli, 
-   * Mathematics of Computation, Volume 65, Number 213, bottom of page 199.
+   * For `B` to be a `m`-dual to `A`, we have to have that \f$AB^t = mI\f$. It
+   * is quite easy to show that, knowing `A` is upper triangular, `B` will be a
+   * lower triangular matrix with `A(i,i)*B(i,i) = m` for all `i` and
+   * \f$ A_i \cdot B_j = 0\f$ for \f$i\neq j\f$. To get the second condition,
+   * we simply have to recursively take for each line
+   * \f[B_{i,j} = -\frac{1}{A_{j,j}}\sum_{k=j+1}^i A_{j,k} B_{i,k}.\f]
    *
-   * \todo Check the algorithm used here and explain how it works and what it
-   * takes for it to work.
-   */
-
-  template <typename Matr, typename Int>
-    void CalcDual (const Matr & A, Matr & B, int d, const Int & m)
+   * \todo This algorithm should implement a check for its conditions and
+   * transform the basis as needed. This should also compute `m` on the fly.
+   * */
+  template <typename Int>
+    void CalcDual (NTL::matrix<Int> & A, NTL::matrix<Int> & B, int d,
+        Int & m)
     {
+      if (!CheckTriangular(A, d, m)) {
+        Triangularization(A, B, d, d, m);
+        NTL::swap(A, B);
+      }
       for (int i = 0; i < d; i++) {
-
         for (int j = i + 1; j < d; j++)
           NTL::clear (B(i,j));
 
-        // WARNING:
-        // Dans l'original, c'est *Quotient* pour Lac et *DivideRound* pour non-Lac ??
+        if (!NTL::IsZero(m % A(i,i))) {
+          Int gcd = NTL::GCD(m, A(i,i));
+          m *= A(i,i) / gcd;
+          B *= A(i,i) / gcd;
+        }
 
-        //Quotient(m, A(i,i), B(i,i));
         DivideRound (m, A(i,i), B(i,i));
 
         for (int j = i - 1; j >= 0; j--) {
@@ -1261,9 +1290,13 @@ namespace LatticeTester {
           if (B(i,j) != 0)
             B(i,j) = -B(i,j);
 
-          // WARNING:
-          // Dans l'original, c'est *Quotient* pour Lac et *DivideRound* pour non-Lac ??
-          //Quotient(B(i,j), A(j,j), B(i,j));
+
+          if (!NTL::IsZero(B(i,j) % A(j,j))) {
+            Int gcd = NTL::GCD(B(i,j), A(j,j));
+            m *= A(j,j) / gcd;
+            B *= A(j,j) / gcd;
+          }
+
           DivideRound (B(i,j), A(j,j), B(i,j));
         }
 

@@ -15,12 +15,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/* NormaPalpha.h for ISO C++ */
 #ifndef LATTICETESTER__NORMAPALPHA_H
 #define LATTICETESTER__NORMAPALPHA_H
+
 #include "latticetester/Normalizer.h"
 #include "latticetester/IntFactor.h"
-
 
 namespace LatticeTester {
 

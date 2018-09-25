@@ -17,9 +17,9 @@
 
 #ifndef RANK1LATTICE_H
 #define RANK1LATTICE_H
+
 #include "latticetester/Const.h"
 #include "latticetester/IntLattice.h"
-
 
 namespace LatticeTester {
 
@@ -53,11 +53,13 @@ namespace LatticeTester {
    */
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
     class Rank1Lattice: public IntLattice<Int, BasInt, Dbl, RedDbl> {
+
       private:
         typedef NTL::vector<Int> IntVec;
         typedef NTL::vector<BasInt> BasIntVec;
         typedef NTL::matrix<BasInt> BasIntMat;
         typedef NTL::vector<Dbl> DblVec;
+
       public:
 
         /**
@@ -87,7 +89,7 @@ namespace LatticeTester {
 
         /**
          * Assigns `Lat` to this object.
-         */
+        */
         Rank1Lattice & operator= (const Rank1Lattice<Int, BasInt, Dbl, RedDbl>
             & Lat);
 

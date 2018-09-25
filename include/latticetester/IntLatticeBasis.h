@@ -33,12 +33,12 @@ namespace LatticeTester {
   /**
    * This class represents a lattice and its basis and offers tools to do basic 
    * manipulations on lattice bases. Lattices are always stored rescaled. That
-   * is we only consider lattices with rational coordinates such that `m` is a
+   * is, we only consider lattices with rational coordinates such that `m` is a
    * lcm for all the denominators in basis coordinates. It is then possible to
    * represent the lattice in the integers instead of the real numbers by
    * multiplying all it's vectors by `m`. We call this lattice a rescaled
    * lattice. In practice, this allows an exact representation of the arithmetic
-   * on the basis. This is usefull in all the usecases of this software.
+   * on the basis. This is usefull in all the use cases of this software.
    *
    * There are numerous ways to represent a lattice. Depending on the
    * calculations that need to be done, it is possible to only provide the basis
@@ -60,13 +60,15 @@ namespace LatticeTester {
    * representation of a lattice look for the `IntLattice` and the `Rank1Lattice`
    * classes.
    */
-
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
     class IntLatticeBasis {
+
       private:
+        // Forward definition of types to be used in this class.
         typedef NTL::vector<BasInt> BasIntVec;
         typedef NTL::matrix<BasInt> BasIntMat;
         typedef NTL::vector<Dbl> DblVec;
+
       public:
 
         /**
@@ -131,6 +133,7 @@ namespace LatticeTester {
          * Tries to add a dual basis to this lattice with the general function
          * `CalcDual` in Util.h for `m=modulo`. Returns `true` if the operation
          * succeeded and `false` if no dual has been found for `modulo`
+         * \todo This does not work right now.
          * */
         bool initDual (Int modulo);
 

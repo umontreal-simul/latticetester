@@ -19,11 +19,8 @@
 #define LATTICETESTER__ORDER_DEPENDENT_WEIGHTS_H
 
 #include "latticetester/Weights.h"
-#include <vector>
-// #ifdef WITH_XML
-// #include <pugixml.hpp>
-// #endif
 
+#include <vector>
 
 namespace LatticeTester {
   /**

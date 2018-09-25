@@ -17,6 +17,7 @@
 
 #ifndef LATTICETESTER__REDUCER_H
 #define LATTICETESTER__REDUCER_H
+
 #include "NTL/LLL.h"
 
 #include "latticetester/Const.h"
@@ -78,7 +79,7 @@ namespace LatticeTester {
    * is stored as a pointer. You should note that the methods to compute the 
    * shortest vector apply no pre-reduction. In a real context, you should
    * always reduce the basis separately with LLL or BKZ reduction before
-   * searching for the shortest vector since it reduces drastically the size of
+   * searching for the shortest vector since it drastically reduces the size of
    * the branch-and-bound search.
    */
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>

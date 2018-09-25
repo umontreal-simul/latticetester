@@ -62,7 +62,7 @@ Try:
 
 to see the various commands and options.
 
-There are 7 options that you might want/need to use:
+There are 6 options that you might want/need to use:
 - `--out /path/to/build/location` allows you to specify in which directory the
   build process will operate. The default is `./build`. You will need permission
   to write in that directory.
@@ -73,9 +73,6 @@ There are 7 options that you might want/need to use:
 - `--ntl /path/to/NTL` allows you to specify the location of your NTL 
   installation. You will only need this flag if waf doesn't find your NTL
   installation automatically.
-- `--boost /path/to/boost` allows you to specify the location of your boost 
-  installation. You will only need this flag if waf doesn't find your boost
-  installation automatically.
 - `--gmp /path/to/gmp` allows you to specify the location of your gmp
   installation. You will only need this flag if waf doesn't find your gmp
   installation automatically.
@@ -83,19 +80,19 @@ There are 7 options that you might want/need to use:
   will not build it if it is omitted.
 - `--link-static` if this flag is specified, the compiler will link all the 
   libraries statically to the executable program. This might be practical if
-  you installed NTL and/or Boost in non standard paths.
+  you installed NTL in non standard paths.
 
 First, the project must be configured with:
 
 	./waf configure --needed --flags
 
-For example, if Boost, NTL, and GMP are not part of the standard system installation and were
-manually installed under, say, the `/opt/boost`, `/opt/ntl`, and `/opt/gmp` directories —
-which means that `/opt/boost`, `/opt/ntl` and `/opt/gmp` all contain subdirectories named
+For example, if NTL, and GMP are not part of the standard system installation and were
+manually installed under, say, the `/opt/ntl`, and `/opt/gmp` directories —
+which means that `/opt/ntl` and `/opt/gmp` all contain subdirectories named
 `include` and `lib` — the following command indicates `waf` where to find these
 two libraries:
 
-        ./waf configure --boost /opt/boost --ntl /opt/ntl --gmp /opt/gmp
+        ./waf configure --ntl /opt/ntl --gmp /opt/gmp
 
 It is possible to set the `CXX` environment variable to the path to a specific
 C++ compiler to be used to build LatticeTester, before running the `waf
@@ -142,13 +139,13 @@ further detail.
 **NOTE:** Under Windows, the programs have an additional `.exe` extension.
 
 Before executing the lattest program, it may be necessary to inform the dynamic
-linker where to find the Boost, NTL and GMP shared libraries.  Under Linux
+linker where to find the NTL and GMP shared libraries.  Under Linux
 this is done by appending the paths to the `LD_LIBRARY_PATH` environment
 variable, e.g.,
 
-    export LD_LIBRARY_PATH=/opt/boost/lib:/opt/ntl/lib:/opt/gmp/lib:$LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH=/opt/ntl/lib:/opt/gmp/lib:$LD_LIBRARY_PATH
 
 with a Bash-compatible shell.
 
-**Microsoft Windows** users might need to copy the Boost, NTL and GMP DLLs into the
+**Microsoft Windows** users might need to copy the NTL and GMP DLLs into the
 same directory (`$HOME/latticetestersoft/bin`, for example) as the executable programs.

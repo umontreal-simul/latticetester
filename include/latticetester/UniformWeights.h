@@ -19,9 +19,9 @@
 #define LATTICETESTER__UNIFORM_WEIGHTS_H
 
 #include "latticetester/Weights.h"
+
 #include <sstream>
 #include <vector>
-
 
 namespace LatticeTester {
   /**

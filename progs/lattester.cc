@@ -60,11 +60,6 @@
 #include <NTL/matrix.h>
 #include <NTL/LLL.h>
 
-// Include Boost Header
-#include <boost/numeric/ublas/matrix.hpp>
-#include <boost/numeric/ublas/io.hpp>
-#include <boost/progress.hpp>
-
 using namespace std;
 using namespace LatticeTester;
 

@@ -18,7 +18,6 @@ def options(ctx):
     ctx.load('compiler_c compiler_cxx gnu_dirs waf_unit_test')
     ctx.add_option('--link-static', action='store_true', help='statically link with dependencies')
     ctx.add_option('--build-docs', action='store_true', default=False, help='build documentation')
-    ctx.add_option('--boost', action='store', help='prefix under which Boost is installed')
     ctx.add_option('--ntl', action='store', help='prefix under which NTL is installed')
     ctx.add_option('--gmp', action='store', help='prefix under which GMP is installed')
 
@@ -48,19 +47,12 @@ def configure(ctx):
             ctx.env.append_unique('LINKFLAGS', flags)
 
     # options
-    if ctx.options.boost:
-        deps.add_deps_path(ctx, 'boost', ctx.options.boost)
     if ctx.options.ntl:
         deps.add_deps_path(ctx, 'NTL', ctx.options.ntl)
     if ctx.options.gmp:
         deps.add_deps_path(ctx, 'GMP', ctx.options.gmp)
 
     ctx_check = deps.shared_or_static(ctx, ctx.check)
-
-
-    # Boost
-    ctx_check(features='cxx cxxprogram',
-            header_name='boost/config.hpp')
 
     # NTL
     # if ctx.options.ntltypes:  # ntlttypes are now mandatory   

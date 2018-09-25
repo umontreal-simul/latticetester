@@ -26,6 +26,7 @@
 #include "latticetester/LatticeTesterConfig.h"
 
 #include <string>
+#include <cstring>
 #include <vector>
 #include <cassert>
 #include <fstream>

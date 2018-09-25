@@ -23,6 +23,7 @@
 
 #include <cassert>
 #include <string>
+#include <typeinfo>
 
 namespace LatticeTester {
 

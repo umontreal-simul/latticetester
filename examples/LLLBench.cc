@@ -58,7 +58,7 @@
 // We define the numeric types.
 // It is possible to use this example with TYPES 2 and 3. For now 1 calls the
 // same function for both execution and we look forward to change that.
-#define NTL_TYPES_CODE 2
+#define NTL_TYPES_CODE 1
 
 #include <iostream>
 #include <ctime>
@@ -100,7 +100,7 @@ int main() {
   BMat matrix1, matrix2;
   unsigned int ln;
 
-  for (int i = 0; i < 6; i++) {
+  for (int i = 0; i < 2; i++) {
     for (int j = 5; j < 101; j+=5) {
       for (int k = 0; k < 10; k++) {
         // Reader shenanigans
@@ -113,7 +113,7 @@ int main() {
         ln = 1;
         reader.readBMat(matrix1, ln, 0, numlines);
         matrix2 = matrix1;
-        
+
         // We time NTL first
         basis = new IntLatticeBasis<MScal, BScal, NScal, RScal>(matrix2, numlines);
         red = new Reducer<MScal, BScal, NScal, RScal>(*basis);

@@ -31,6 +31,12 @@ namespace LatticeTester {
    * This module should work only with NTL matrices because those are objects
    * aware of their shape. I think that this is important since we use object
    * oriented stuff.
+   *
+   * What is done here seems like very simple linear algebra BUT it is not. The
+   * fact that we operate only on the ring of integers makes it so that these
+   * simple algorithms can become way too slow very rapidly because the numbers
+   * they manipulate grow very fast. This also means that in many cases the
+   * usage of standard `long` type integers will overflow.
    * */
   template<typename BasInt> class BasisConstruction{
 
@@ -129,24 +135,25 @@ namespace LatticeTester {
           //std::cout << "Matrix:\n" << matrix;
         }
       }
-      // We make sure that the coefficients that can be not zero are positive.
+      // We make sure that the coefficients are positive.
       // This is because the algorithms we use work for positive vectors.
-      if (matrix[i][i] < 0) matrix[i] *= -1;
-      for (long j = i-1; j >= 0; j--) {
-        if (matrix[j][i] < 0) {
-          if (-matrix[j][i] > matrix[i][i]){
-            q = -matrix[j][i]/matrix[i][i] + 1;
-            matrix[j] += q * matrix[i];
-          } else {
-            matrix[j] += matrix[i];
-          }
-        }
-      }
+      // if (matrix[i][i] < 0) matrix[i] *= -1;
+      // for (long j = i-1; j >= 0; j--) {
+      //   if (matrix[j][i] < 0) {
+      //     if (-matrix[j][i] > matrix[i][i]){
+      //       q = -matrix[j][i]/matrix[i][i] + 1;
+      //       matrix[j] += q * matrix[i];
+      //     } else {
+      //       matrix[j] += matrix[i];
+      //     }
+      //   }
+      // }
       if (matrix[i][i] != 0) rank++;
     }
     //std::cout << "Matrix before truncating\n" << matrix;
     // We remove zero vectors from the basis.
     matrix.SetDims(rank, cols);
+    //std::cout << matrix << std::endl;
   }
 
   //============================================================================
@@ -161,7 +168,7 @@ namespace LatticeTester {
          BasInt modulo)
   {
     // We first make the matrix triangular. I will change this step.
-    if (! CheckTriangular(matrix, matrix.NumRows(), BasInt(0))) GCDConstruction(matrix);
+    //if (! CheckTriangular(matrix, matrix.NumRows(), BasInt(0))) GCDConstruction(matrix);
     long dim = matrix.NumRows();
     if (dim != matrix.NumCols()) {
       std::cout << "matrix has to be square, but dimensions do not fit.\n";

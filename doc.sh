@@ -2,8 +2,8 @@
 
 # This is a small shell script that automates the documentation update process.
 
-./waf configure --ntl /usr/local --build-docs
-./waf build
+python3 waf configure --ntl /usr/local --build-docs
+python3 waf build
 rm -rf doc/html
 git clone https://github.com/umontreal-simul/latticetester.git doc/html
 cd doc/html

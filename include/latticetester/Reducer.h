@@ -594,24 +594,73 @@ namespace LatticeTester {
           if (dim > 0) delete lattmp; 
       }
 
+      /* This is a test to see if making the program promote to NTL types and
+       * performs NTL LLL reduction is faster than our own LLL.
+       * If it is, we should reimplement our LLL to match what is done in NTL.
+       * */
       void redLLLNTL(Reducer<std::int64_t, std::int64_t, Dbl, RedDbl>& red,
           double fact, PrecisionType precision, int dim)
-      {
-        IntLatticeBasis<std::int64_t, std::int64_t, Dbl, RedDbl> *lattmp = 0;
-        if(dim > 0){
-          lattmp = new IntLatticeBasis<std::int64_t, std::int64_t, Dbl, RedDbl>(
-                     dim, red.getIntLatticeBasis()->getNorm());
-          lattmp->copyBasis(*red.getIntLatticeBasis(), dim);
-        }
-        else
-          lattmp = red.getIntLatticeBasis();
-        std::cout << "\n**** WARNING redLLLNTL cannot be use with std::int64_t type for integers\n";
-        std::cout << "**** (LLDD) and requires ZZ type. Instead, LLL reduction is performed\n";
-        std::cout << "**** with our algorithm which can be much slower.\n";
-        std::cout << std::endl;
-        red.redLLL(fact, 1000000, red.getIntLatticeBasis()->getDim ());
-        if (dim>0) delete lattmp;
-      }
+       {
+         IntLatticeBasis<NTL::ZZ, NTL::ZZ, Dbl, RedDbl> *lattmp = 0;
+         NTL::matrix<std::int64_t> basis = red.getIntLatticeBasis()->getBasis();
+         NTL::mat_ZZ U;
+         U.SetDims(basis.NumRows(), basis.NumCols());
+         for (int i = 0; i < basis.NumRows(); i++) {
+           for (int j = 0; j < basis.NumCols(); j++) {
+             U[i][j] = basis[i][j];
+           }
+         }
+         lattmp = new IntLatticeBasis<NTL::ZZ, NTL::ZZ, Dbl, RedDbl>(U, dim,
+             red.getIntLatticeBasis()->getNorm());
+
+         switch(precision){
+           case DOUBLE:
+             LLL_FP(lattmp->getBasis(), U, fact, 0, 0);
+             break;
+           case QUADRUPLE:
+             LLL_QP(lattmp->getBasis(), U, fact, 0, 0);
+             break;
+           case EXPONENT:
+             LLL_XD(lattmp->getBasis(), U, fact, 0, 0);
+             break;
+           case ARBITRARY:
+             LLL_RR(lattmp->getBasis(), U, fact, 0, 0);
+             break;
+           case EXACT:
+             break;
+           default:
+             MyExit(1, "LLL PrecisionType:   NO SUCH CASE");
+         }
+
+         for (int i = 0; i < basis.NumRows(); i++) {
+           for (int j = 0; j < basis.NumCols(); j++) {
+             red.getIntLatticeBasis()->getBasis()[i][j] = NTL::trunc_long(U[i][j], 64);
+           }
+         }
+         red.getIntLatticeBasis()->updateVecNorm();
+
+         delete lattmp;
+       }
+      /*
+       * void redLLLNTL(Reducer<std::int64_t, std::int64_t, Dbl, RedDbl>& red,
+       *     double fact, PrecisionType precision, int dim)
+       * {
+       *   IntLatticeBasis<std::int64_t, std::int64_t, Dbl, RedDbl> *lattmp = 0;
+       *   if(dim > 0){
+       *     lattmp = new IntLatticeBasis<std::int64_t, std::int64_t, Dbl, RedDbl>(
+       *                dim, red.getIntLatticeBasis()->getNorm());
+       *     lattmp->copyBasis(*red.getIntLatticeBasis(), dim);
+       *   }
+       *   else
+       *     lattmp = red.getIntLatticeBasis();
+       *   std::cout << "\n**** WARNING redLLLNTL cannot be use with std::int64_t type for integers\n";
+       *   std::cout << "**** (LLDD) and requires ZZ type. Instead, LLL reduction is performed\n";
+       *   std::cout << "**** with our algorithm which can be much slower.\n";
+       *   std::cout << std::endl;
+       *   red.redLLL(fact, 1000000, red.getIntLatticeBasis()->getDim ());
+       *   if (dim>0) delete lattmp;
+       * }
+       * */
     };
 
   // Specialization for the case ZZXX

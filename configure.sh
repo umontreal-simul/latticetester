@@ -49,4 +49,4 @@ elif [ $DOCS = "y" -o $DOCS = "Y" ]; then
   DOCS="--build-docs "
 fi
 
-./waf configure$PREFIX$OUT$NTL$BOOST$GMP$STATIC$DOCS
+python3 waf configure$PREFIX$OUT$NTL$BOOST$GMP$STATIC$DOCS

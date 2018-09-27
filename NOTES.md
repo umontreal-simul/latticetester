@@ -1,6 +1,7 @@
 # This file contains a few notes on what work has to be done in this repo
 
 ## Urgent work
+- Check if the generating vectors are still a basis after reduction
 - Have examples (usage of most functions on a simple basis)
   - One on Weights???
 - Update the doc to be publishable

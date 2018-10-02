@@ -67,11 +67,13 @@
 using namespace LatticeTester;
 
 int main() {
-  clock_t ma_basis = 0, cou_basis = 0, ma_dual = 0, cou_dual = 0, tmp;
-  clock_t basis_dim_ma[7], basis_dim_cou[7];
+  clock_t ma_basis = 0, cou_basis = 0, ma_dual = 0, cou_dual = 0, LLL_basis = 0,
+          LLL_dual = 0, tmp;
+  clock_t basis_dim_ma[7], basis_dim_cou[7], basis_dim_LLL[7];
   for (int i = 0; i < 7; i++) {
     basis_dim_ma[i] = 0;
     basis_dim_cou[i] = 0;
+    basis_dim_LLL[i] = 0;
   }
   std::string primes[6] = {"1021", "1048573", "1073741827", "1099511627791",
     "1125899906842597", "18446744073709551629"};
@@ -80,7 +82,7 @@ int main() {
 
   BasisConstruction<BScal> constr;
   BScal m;
-  BMat matrix1, matrix2, matrix3;
+  BMat matrix1, matrix2, matrix3, matrix4;
   int numlines;
   unsigned int ln;
   std::string name;
@@ -95,21 +97,24 @@ int main() {
         matrix1.kill();
         matrix2.kill();
         matrix3.kill();
+        matrix4.kill();
         matrix1.SetDims(numlines, numlines);
         matrix2.SetDims(numlines, numlines);
         matrix3.SetDims(numlines, numlines);
+        matrix4.SetDims(numlines, numlines);
         ln = 1;
-        reader.readBMat(matrix3, ln, 0, numlines);
-        matrix1 = matrix2 = matrix3;
+        reader.readBMat(matrix4, ln, 0, numlines);
+        matrix1 = matrix2 = matrix3 = matrix4;
         if (NTL::determinant(matrix1) == 0) continue;
 
         // Timing ma first
         tmp = clock();
+        m = 1;
         constr.GCDConstruction(matrix1);
         ma_basis += clock() - tmp;
         basis_dim_ma[j/5-1] += clock()-tmp;
         tmp = clock();
-        constr.DualConstruction(matrix1, BScal(1));
+        constr.DualConstruction(matrix1, matrix4, m);
         ma_dual += clock() - tmp;
         matrix1.kill();
         matrix1.SetDims(numlines, numlines);
@@ -121,8 +126,18 @@ int main() {
         cou_basis += clock() - tmp;
         basis_dim_cou[j/5-1] += clock()-tmp;
         tmp = clock();
-        CalcDual(matrix1, matrix2, numlines, m);
+        constr.DualConstruction2(matrix1, matrix4, m);
         cou_dual += clock() - tmp;
+
+        // Timing LLL
+        tmp = clock();
+        m = 1;
+        constr.LLLConstruction(matrix3);
+        LLL_basis += clock() - tmp;
+        basis_dim_LLL[j/5-1] += clock()-tmp;
+        tmp = clock();
+        constr.DualConstruction2(matrix3, matrix4, m);
+        LLL_dual += clock() - tmp;
       }
     }
   }

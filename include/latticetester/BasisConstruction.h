@@ -15,6 +15,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#include "NTL/LLL.h"
+
 #include "latticetester/ntlwrap.h"
 #include "latticetester/Util.h"
 
@@ -56,9 +58,11 @@ namespace LatticeTester {
 
       /**
        * This functions takes a set of generating vectors of a vector space and
-       * finds a basis for this space whilst applying LLL reduction.
+       * finds a basis for this space whilst applying LLL reduction. This is
+       * much faster than applying GCDConstruction, but it doesn't help building
+       * the dual.
        * */
-      void LLLConstruction();
+      void LLLConstruction(BasIntMat& matrix);
 
       /**
        * This function does some kind of Gaussian elimination on
@@ -77,6 +81,9 @@ namespace LatticeTester {
        * After constructing this basis, the algorithm eliminates negative
        * coefficients in the matrix.
        *
+       * WATCH OUT. This function (and building mecanism) are very memory heavy
+       * has the numbers below the diagonal can grow very big.
+       *
        * \todo Give a running time. **Marc-Antoine**: This runs in
        * O(min(row, col)*lg(n)*row + row^2) time I think, but it might be a bit
        * more because we do operations on vectors so we might need to multiply
@@ -94,7 +101,11 @@ namespace LatticeTester {
        * the case of a \f$m\f$-dual computation, we can assume that all the
        * arithmetic is done modulo \f$m\f$ and that \f$m\f$ is prime??
        * */
-      void DualConstruction(BasIntMat& matrix, BasInt modulo = BasInt(0));
+      void DualConstruction(BasIntMat& matrix, BasIntMat& dualMatrix,
+          BasInt& modulo);
+
+      void DualConstruction2(BasIntMat& matrix, BasIntMat& dualMatrix,
+          BasInt& modulo);
 
     private:
 
@@ -113,6 +124,19 @@ namespace LatticeTester {
       BasIntMat m_old;
 
   };
+
+  //============================================================================
+  // Implementation
+
+  template<typename BasInt>
+    void BasisConstruction<BasInt>::LLLConstruction(BasIntMat& matrix){
+      long rank = NTL::LLL_XD(matrix);
+      long num = matrix.NumRows();
+      for (long i = 0; i < rank; i++) {
+        NTL::swap(matrix[i], matrix[num-rank+i]);
+      }
+      matrix.SetDims(rank, matrix.NumCols());
+    }
 
   template<typename BasInt>
     void BasisConstruction<BasInt>::GCDConstruction(BasIntMat& matrix)
@@ -165,10 +189,11 @@ namespace LatticeTester {
    * */
   template<typename BasInt>
     void BasisConstruction<BasInt>::DualConstruction(BasIntMat& matrix,
-         BasInt modulo)
+        BasIntMat& dualMatrix, BasInt& modulo)
   {
-    // We first make the matrix triangular. I will change this step.
-    //if (! CheckTriangular(matrix, matrix.NumRows(), BasInt(0))) GCDConstruction(matrix);
+    // We need to have a triangular basis matrix
+    if (! CheckTriangular(matrix, matrix.NumRows(), modulo))
+      GCDConstruction(matrix);
     long dim = matrix.NumRows();
     if (dim != matrix.NumCols()) {
       std::cout << "matrix has to be square, but dimensions do not fit.\n";
@@ -176,27 +201,78 @@ namespace LatticeTester {
     }
     BasInt m;
     m = 1;
-    BasIntMat result;
-    NTL::ident(result, dim);
+    NTL::ident(dualMatrix, dim);
     BasInt gcd;
     for (long i = dim-1; i>=0; i--) {
       for (long j = i+1; j < dim; j++) {
-        result[i] -= matrix[i][j] * result[j];
+        dualMatrix[i] -= matrix[i][j] * dualMatrix[j];
         matrix[i] -= matrix[i][j] * matrix[j];
       }
       gcd = matrix[i][i];
       for (long j = i; j < dim; j++) {
-        gcd = NTL::GCD(gcd, result[i][j]);
+        gcd = NTL::GCD(gcd, dualMatrix[i][j]);
       }
       gcd = matrix[i][i] / gcd;
       if (gcd != 1) {
-        result *= gcd;
+        dualMatrix *= gcd;
         m *= gcd;
       }
       for (long j = i; j < dim; j++) {
-        result[i][j] /= matrix[i][i];
+        dualMatrix[i][j] /= matrix[i][i];
       }
       matrix[i][i] = 1;
+    }
+  }
+
+  template<typename BasInt>
+    void BasisConstruction<BasInt>::DualConstruction2(BasIntMat& matrix,
+        BasIntMat& dualMatrix, BasInt& modulo)
+  {
+    // We need to have a triangular basis matrix
+    if (! CheckTriangular(matrix, matrix.NumRows(), BasInt(0)))
+      GCDConstruction(matrix);
+    long dim = matrix.NumRows();
+    if (dim != matrix.NumCols()) {
+      std::cout << "matrix has to be square, but dimensions do not fit.\n";
+      return;
+    }
+    if (modulo < 1) {
+      std::cerr << "modulo has to be a positive integer.\n";
+      return;
+    }
+    dualMatrix.SetDims(dim, dim);
+    for (int i = 0; i < dim; i++) {
+      for (int j = i + 1; j < dim; j++)
+        NTL::clear (dualMatrix(i,j));
+
+      if (!NTL::IsZero(matrix(i,i))) {
+        BasInt gcd = NTL::GCD(modulo, matrix(i,i));
+        modulo *= matrix(i,i) / gcd;
+        dualMatrix *= matrix(i,i) / gcd;
+      }
+
+      DivideRound (modulo, matrix(i,i), dualMatrix(i,i));
+
+      for (int j = i - 1; j >= 0; j--) {
+
+        NTL::clear (dualMatrix(i,j));
+
+        for (int k = j + 1; k <= i; k++)
+          dualMatrix(i,j) += matrix(j,k) * dualMatrix(i,k);
+
+        if (dualMatrix(i,j) != 0)
+          dualMatrix(i,j) = -dualMatrix(i,j);
+
+
+        if (!NTL::IsZero(dualMatrix(i,j) % matrix(j,j))) {
+          BasInt gcd = NTL::GCD(dualMatrix(i,j), matrix(j,j));
+          modulo *= matrix(j,j) / gcd;
+          dualMatrix *= matrix(j,j) / gcd;
+        }
+
+        DivideRound (dualMatrix(i,j), matrix(j,j), dualMatrix(i,j));
+      }
+
     }
   }
 

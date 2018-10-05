@@ -2,7 +2,13 @@ var index =
 [
     [ "Detailed usage instructions", "d4/d4e/detailed_usage.html", [
       [ "Building the executable", "d4/d4e/detailed_usage.html#usage_build", null ],
-      [ "Using the executable", "d4/d4e/detailed_usage.html#usage_program", null ]
+      [ "Using the executable", "d4/d4e/detailed_usage.html#usage_program", [
+        [ "Basis Construction", "d4/d4e/detailed_usage.html#Basis", null ],
+        [ "Dual Construction", "d4/d4e/detailed_usage.html#Dual", null ],
+        [ "Lattice Reduction", "d4/d4e/detailed_usage.html#Lattice", null ],
+        [ "Shortest Vector Research", "d4/d4e/detailed_usage.html#Shortest", null ],
+        [ "Figure of Merit Computation", "d4/d4e/detailed_usage.html#Figure", null ]
+      ] ]
     ] ],
     [ "Make your own program", "d0/d0a/DIY.html", null ],
     [ "Background", "da/d18/a_intro.html", [

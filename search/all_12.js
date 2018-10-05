@@ -7,7 +7,7 @@ var searchData=
   ['tostringbasis',['toStringBasis',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a4a205abb7fcd4af3999472be7deed2a2',1,'LatticeTester::IntLatticeBasis']]],
   ['tostringcoef',['toStringCoef',['../d6/dc0/classLatticeTester_1_1IntLattice.html#a73ee08245ad247bbf1a98dbd403ee334',1,'LatticeTester::IntLattice::toStringCoef()'],['../de/dfe/classLatticeTester_1_1Rank1Lattice.html#a0d17717d737fb62d56d0e63a287249ef',1,'LatticeTester::Rank1Lattice::toStringCoef()']]],
   ['tostringdualbasis',['toStringDualBasis',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a67d64d63f2b845edcbe3e702014de0e8',1,'LatticeTester::IntLatticeBasis']]],
-  ['triangularization',['Triangularization',['../d8/d74/namespaceLatticeTester.html#aa519a1e0589932719c79b73c76bb1093',1,'LatticeTester']]],
+  ['triangularization',['Triangularization',['../d8/d74/namespaceLatticeTester.html#a1b998d416a64afe708710620a4b96810',1,'LatticeTester']]],
   ['two_5fexp',['TWO_EXP',['../d8/d74/namespaceLatticeTester.html#ae540464b3215755b9a0ba65ebfba38f8',1,'LatticeTester']]],
   ['types',['Types',['../d6/df9/classLatticeTester_1_1Types.html',1,'LatticeTester']]]
 ];

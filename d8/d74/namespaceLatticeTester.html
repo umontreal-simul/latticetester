@@ -36,7 +36,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-work-43</span>
+   &#160;<span id="projectnumber">0.1.0-work-55</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -111,7 +111,7 @@ Namespaces</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html">BasisConstruction</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>WARNING</b> THIS MODULE IS UNDER CONSTRUCTION.  <a href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">**We need to change the signatures of the methods of this class so that they take <a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html" title="This class represents a lattice and its basis and offers tools to do basic manipulations on lattice b...">IntLatticeBasis</a> objects.  <a href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d9/dd3/classLatticeTester_1_1Coordinates.html">Coordinates</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is basically a <code>std::set&lt;std::size_t&gt;</code>.  <a href="../../d9/dd3/classLatticeTester_1_1Coordinates.html#details">More...</a><br /></td></tr>
@@ -120,7 +120,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The objects of this class are the "prime" factors in the decomposition of a positive integer.  <a href="../../d6/d95/classLatticeTester_1_1IntFactor.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html">IntLattice</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class is a skeleton for the implementation of different types of lattices of arbitrary rank.  <a href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class is a skeleton for the implementation of different types of lattices.  <a href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html">IntLatticeBasis</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class represents a lattice and its basis and offers tools to do basic manipulations on lattice bases.  <a href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#details">More...</a><br /></td></tr>
@@ -205,7 +205,7 @@ Enumerations</h2></td></tr>
 <tr class="memitem:ad78f099c800f4c648134967a45b91058"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ad78f099c800f4c648134967a45b91058">OutputType</a> <tr class="memdesc:ad78f099c800f4c648134967a45b91058"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates in which form and where the results will be sent.  <a href="../../d8/d74/namespaceLatticeTester.html#ad78f099c800f4c648134967a45b91058">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:ad78f099c800f4c648134967a45b91058"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94f96ff406f8b56147a2b7fd96209cb2"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">PrecisionType</a> <tr class="memdesc:a94f96ff406f8b56147a2b7fd96209cb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates in which precision the <a class="el" href="d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> algorithms will be perfoms : <code>FP</code> &ndash; double <code>QP</code> &ndash; quad_float (quasi quadruple precision) this is useful when roundoff errors can cause problems <code>XD</code> &ndash; xdouble (extended exponent doubles) this is useful when numbers get too big <code>RR</code> &ndash; RR (arbitrary precision floating point) this is useful for large precision and magnitudes Generally speaking, the choice FP will be the fastest, but may be prone to roundoff errors and/or overflow.  <a href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">More...</a><br /></td></tr>
+<tr class="memitem:a94f96ff406f8b56147a2b7fd96209cb2"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">PrecisionType</a> <tr class="memdesc:a94f96ff406f8b56147a2b7fd96209cb2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates in which precision the <a class="el" href="d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> algorithms will be perfoms : <code>DOUBLE</code> &ndash; double <code>QUADRUPLE</code> &ndash; quad_float (quasi quadruple precision) this is useful when roundoff errors can cause problems <code>EXPONENT</code> &ndash; xdouble (extended exponent doubles) this is useful when numbers get too big <code>ARBITRARY</code> &ndash; RR (arbitrary precision floating point) this is useful for large precision and magnitudes Generally speaking, the choice <code>DOUBLE</code> will be the fastest, but may be prone to roundoff errors and/or overflow.  <a href="../../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2">More...</a><br /></td></tr>
 </td></tr>
 <tr class="separator:a94f96ff406f8b56147a2b7fd96209cb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9b64954fb374b16e1fe991e435501d65"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9b64954fb374b16e1fe991e435501d65">PrimeType</a> <tr class="memdesc:a9b64954fb374b16e1fe991e435501d65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Indicates whether an integer is prime, probably prime, composite or its status is unknown (or don’t care).  <a href="../../d8/d74/namespaceLatticeTester.html#a9b64954fb374b16e1fe991e435501d65">More...</a><br /></td></tr>
@@ -245,7 +245,7 @@ Functions</h2></td></tr>
 <p> where the symbol \(\sum^\prime\) means that the term with \(j=0\) is excluded from the sum.  <a href="#a3aefa49a034495dcc46721c275f329b0">More...</a><br /></td></tr>
 <tr class="separator:a3aefa49a034495dcc46721c275f329b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0bb56e7569fb24800973df89d757f2fd"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a0bb56e7569fb24800973df89d757f2fd">FourierC1</a> (double x, std::int64_t n)</td></tr>
-<tr class="memdesc:a0bb56e7569fb24800973df89d757f2fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes and returns the value of the series (see <a class="el" href="../../d0/de3/citelist.html#CITEREF_vJOE92b">[11]</a>) </p><p class="formulaDsp">
+<tr class="memdesc:a0bb56e7569fb24800973df89d757f2fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Computes and returns the value of the series (see <a class="el" href="../../d0/de3/citelist.html#CITEREF_vJOE92b">[12]</a>) </p><p class="formulaDsp">
 \[ S(x, n) = \sum_{j=1}^{n} \frac{\cos(2\pi j x)}{j}. \]
 </p>
 <p> Restrictions: \(n&gt;0\) and \(0 \le x \le 1\).  <a href="#a0bb56e7569fb24800973df89d757f2fd">More...</a><br /></td></tr>
@@ -393,8 +393,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>toStringPrecis
 <tr class="memdesc:abfe3d98ab5a4c91cac2ef0fa59ec897d"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method computes the greater common divisor of <code>A</code> and <code>B</code> with Euclid's algorithm.  <a href="#abfe3d98ab5a4c91cac2ef0fa59ec897d">More...</a><br /></td></tr>
 <tr class="separator:abfe3d98ab5a4c91cac2ef0fa59ec897d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Vectors</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p>These are utilities to manipulate vectors ranging from instanciation to scalar product.</p>
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000023">Todo:</a></b></dt><dd>Functions of this section take the size of the input vectors as an argument with name d. Some of them assume d is the number of components of the vectors while somme of them assume that d+1 is the number of components of the vector. We need to uniformize that. </dd></dl>
+<tr><td colspan="2"><div class="groupText"><p>These are utilities to manipulate vectors ranging from instanciation to scalar product. </p>
 </div></td></tr>
 <tr class="memitem:a2256248f03b45f7125a46a05c49b8836"><td class="memTemplParams" colspan="2">template&lt;typename Real &gt; </td></tr>
 <tr class="memitem:a2256248f03b45f7125a46a05c49b8836"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a2256248f03b45f7125a46a05c49b8836">CreateVect</a> (Real *&amp;A, int d)</td></tr>
@@ -486,7 +485,7 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>toStringPrecis
 <tr class="separator:a0c884b60a0c4ee06455bf1c8e1819d35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0f66d14fcb15c8a2e358b9ab5e08b524"><td class="memTemplParams" colspan="2">template&lt;typename IntMat &gt; </td></tr>
 <tr class="memitem:a0f66d14fcb15c8a2e358b9ab5e08b524"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a0f66d14fcb15c8a2e358b9ab5e08b524">DeleteMatr</a> (IntMat &amp;A)</td></tr>
-<tr class="memdesc:a0f66d14fcb15c8a2e358b9ab5e08b524"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls the <code><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab6fd74c4ea41ec1c1030a621dc788845" title="Sets x to 0. ">clear()</a></code> method on <code>A</code>.  <a href="#a0f66d14fcb15c8a2e358b9ab5e08b524">More...</a><br /></td></tr>
+<tr class="memdesc:a0f66d14fcb15c8a2e358b9ab5e08b524"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calls the <code><a class="el" href="../../d2/d5a/namespaceNTL.html#ad8cb07e3a9d3182f488269307cfef6b0" title="Sets x to 0. ">clear()</a></code> method on <code>A</code>.  <a href="#a0f66d14fcb15c8a2e358b9ab5e08b524">More...</a><br /></td></tr>
 <tr class="separator:a0f66d14fcb15c8a2e358b9ab5e08b524"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac81709c183b536ab80b83384314457f"><td class="memTemplParams" colspan="2">template&lt;typename Matr &gt; </td></tr>
 <tr class="memitem:aac81709c183b536ab80b83384314457f"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#aac81709c183b536ab80b83384314457f">CopyMatr</a> (Matr &amp;A, const Matr &amp;B, int n)</td></tr>
@@ -500,43 +499,22 @@ std::string&#160;</td><td class="memItemRight" valign="bottom"><b>toStringPrecis
 <tr class="memitem:ab1f9c94abf76e8ce25eb60bb6d1bda2e"><td class="memTemplItemLeft" align="right" valign="top">std::string&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab1f9c94abf76e8ce25eb60bb6d1bda2e">toStr</a> (const MatT &amp;mat, int d1, int d2)</td></tr>
 <tr class="memdesc:ab1f9c94abf76e8ce25eb60bb6d1bda2e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string that is a representation of <code>mat</code>.  <a href="#ab1f9c94abf76e8ce25eb60bb6d1bda2e">More...</a><br /></td></tr>
 <tr class="separator:ab1f9c94abf76e8ce25eb60bb6d1bda2e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5d8cff62df52a09d15ecd49a9c5e2be0"><td class="memTemplParams" colspan="2">template&lt;typename Matr , typename Int &gt; </td></tr>
-<tr class="memitem:a5d8cff62df52a09d15ecd49a9c5e2be0"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a5d8cff62df52a09d15ecd49a9c5e2be0">CheckTriangular</a> (const Matr &amp;A, long dim, const Int m)</td></tr>
-<tr class="memdesc:a5d8cff62df52a09d15ecd49a9c5e2be0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks that the upper \(\text{dim} \times \text{dim}\) submatrix of <code>A</code> is triangular modulo <code>m</code>.  <a href="#a5d8cff62df52a09d15ecd49a9c5e2be0">More...</a><br /></td></tr>
-<tr class="separator:a5d8cff62df52a09d15ecd49a9c5e2be0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa519a1e0589932719c79b73c76bb1093"><td class="memTemplParams" colspan="2">template&lt;typename Matr , typename Int &gt; </td></tr>
-<tr class="memitem:aa519a1e0589932719c79b73c76bb1093"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#aa519a1e0589932719c79b73c76bb1093">Triangularization</a> (Matr &amp;W, Matr &amp;V, int lin, int col, const Int &amp;m)</td></tr>
-<tr class="memdesc:aa519a1e0589932719c79b73c76bb1093"><td class="mdescLeft">&#160;</td><td class="mdescRight">Performs an integer triangularization operation modulo <code>m</code> on the matrix <code>W</code> to obtain an upper triangular matrix <code>V</code>, dual to <code>W</code>.  <a href="#aa519a1e0589932719c79b73c76bb1093">More...</a><br /></td></tr>
-<tr class="separator:aa519a1e0589932719c79b73c76bb1093"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a17df0e6fdb1f11335eaf91f82ee298b0"><td class="memTemplParams" colspan="2">template&lt;typename Matr , typename Int &gt; </td></tr>
-<tr class="memitem:a17df0e6fdb1f11335eaf91f82ee298b0"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a17df0e6fdb1f11335eaf91f82ee298b0">CalcDual</a> (const Matr &amp;A, Matr &amp;B, int d, const Int &amp;m)</td></tr>
-<tr class="memdesc:a17df0e6fdb1f11335eaf91f82ee298b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Calculates the <code>m</code>-dual of the matrix <code>A</code>.  <a href="#a17df0e6fdb1f11335eaf91f82ee298b0">More...</a><br /></td></tr>
-<tr class="separator:a17df0e6fdb1f11335eaf91f82ee298b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05684550e5a7aa0b7d625024702a966d"><td class="memTemplParams" colspan="2">template&lt;typename Int &gt; </td></tr>
+<tr class="memitem:a05684550e5a7aa0b7d625024702a966d"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a05684550e5a7aa0b7d625024702a966d">CheckTriangular</a> (const <a class="el" href="../../d4/d6f/classNTL_1_1matrix.html">NTL::matrix</a>&lt; Int &gt; &amp;A, long dim, const Int m)</td></tr>
+<tr class="memdesc:a05684550e5a7aa0b7d625024702a966d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Checks that the upper \(\text{dim} \times \text{dim}\) submatrix of <code>A</code> is triangular modulo <code>m</code>.  <a href="#a05684550e5a7aa0b7d625024702a966d">More...</a><br /></td></tr>
+<tr class="separator:a05684550e5a7aa0b7d625024702a966d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b998d416a64afe708710620a4b96810"><td class="memTemplParams" colspan="2">template&lt;typename Int &gt; </td></tr>
+<tr class="memitem:a1b998d416a64afe708710620a4b96810"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a1b998d416a64afe708710620a4b96810">Triangularization</a> (<a class="el" href="../../d4/d6f/classNTL_1_1matrix.html">NTL::matrix</a>&lt; Int &gt; &amp;W, <a class="el" href="../../d4/d6f/classNTL_1_1matrix.html">NTL::matrix</a>&lt; Int &gt; &amp;V, int lin, int col, const Int &amp;m)</td></tr>
+<tr class="memdesc:a1b998d416a64afe708710620a4b96810"><td class="mdescLeft">&#160;</td><td class="mdescRight">Takes a set of generating vectors in the matrix <code>W</code> and iteratively transforms it into an upper triangular lattice basis into the matrix <code>V</code>.  <a href="#a1b998d416a64afe708710620a4b96810">More...</a><br /></td></tr>
+<tr class="separator:a1b998d416a64afe708710620a4b96810"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a127c50e06b3cc677853a45a592ea45ff"><td class="memTemplParams" colspan="2">template&lt;typename Int &gt; </td></tr>
+<tr class="memitem:a127c50e06b3cc677853a45a592ea45ff"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a127c50e06b3cc677853a45a592ea45ff">CalcDual</a> (<a class="el" href="../../d4/d6f/classNTL_1_1matrix.html">NTL::matrix</a>&lt; Int &gt; &amp;A, <a class="el" href="../../d4/d6f/classNTL_1_1matrix.html">NTL::matrix</a>&lt; Int &gt; &amp;B, int d, Int &amp;m)</td></tr>
+<tr class="memdesc:a127c50e06b3cc677853a45a592ea45ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Takes an upper triangular basis <code>A</code> and computes a dual lattice basis modulo <code>m</code> to this matrix.  <a href="#a127c50e06b3cc677853a45a592ea45ff">More...</a><br /></td></tr>
+<tr class="separator:a127c50e06b3cc677853a45a592ea45ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Debugging functions</div></td></tr>
 <tr class="memitem:a49105dd8e915243488440f570b3951bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a49105dd8e915243488440f570b3951bd">MyExit</a> (int status, std::string msg)</td></tr>
 <tr class="memdesc:a49105dd8e915243488440f570b3951bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Special exit function.  <a href="#a49105dd8e915243488440f570b3951bd">More...</a><br /></td></tr>
 <tr class="separator:a49105dd8e915243488440f570b3951bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr><td colspan="2"><div class="groupHeader">Miscellaneous functions</div></td></tr>
-<tr><td colspan="2"><div class="groupText"><p>These are the other functions implemented in this module, that have various usage in this program. </p>
-</div></td></tr>
-<tr class="memitem:aa332228978921670954fc35afb8d7440"><td class="memItemLeft" align="right" valign="top">std::int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#aa332228978921670954fc35afb8d7440">IsOdd</a> (const std::int64_t &amp;x)</td></tr>
-<tr class="memdesc:aa332228978921670954fc35afb8d7440"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests if <code>x</code> is odd.  <a href="#aa332228978921670954fc35afb8d7440">More...</a><br /></td></tr>
-<tr class="separator:aa332228978921670954fc35afb8d7440"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1cfdf172615c09b6a677ff935621632d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a1cfdf172615c09b6a677ff935621632d">IsZero</a> (const std::int64_t &amp;x)</td></tr>
-<tr class="memdesc:a1cfdf172615c09b6a677ff935621632d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <code>bool</code> resulting of the statement <code>x == 0</code>.  <a href="#a1cfdf172615c09b6a677ff935621632d">More...</a><br /></td></tr>
-<tr class="separator:a1cfdf172615c09b6a677ff935621632d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab6fd74c4ea41ec1c1030a621dc788845"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab6fd74c4ea41ec1c1030a621dc788845">clear</a> (double &amp;x)</td></tr>
-<tr class="memdesc:ab6fd74c4ea41ec1c1030a621dc788845"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets <code>x</code> to 0.  <a href="#ab6fd74c4ea41ec1c1030a621dc788845">More...</a><br /></td></tr>
-<tr class="separator:ab6fd74c4ea41ec1c1030a621dc788845"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9738859ae42e8f85791ebb56705aa227"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9738859ae42e8f85791ebb56705aa227">clear</a> (std::int64_t &amp;x)</td></tr>
-<tr class="memdesc:a9738859ae42e8f85791ebb56705aa227"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets <code>x</code> to 0.  <a href="#a9738859ae42e8f85791ebb56705aa227">More...</a><br /></td></tr>
-<tr class="separator:a9738859ae42e8f85791ebb56705aa227"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8196a81e178fdb095a0deaf8b0803614"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a8196a81e178fdb095a0deaf8b0803614">set9</a> (std::int64_t &amp;x)</td></tr>
-<tr class="memdesc:a8196a81e178fdb095a0deaf8b0803614"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets <code>x</code> to 1.  <a href="#a8196a81e178fdb095a0deaf8b0803614">More...</a><br /></td></tr>
-<tr class="separator:a8196a81e178fdb095a0deaf8b0803614"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad378d927159f2724975f6d1264daf8e4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ad378d927159f2724975f6d1264daf8e4">set9</a> (NTL::ZZ &amp;x)</td></tr>
-<tr class="memdesc:ad378d927159f2724975f6d1264daf8e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets <code>x</code> to 1.  <a href="#ad378d927159f2724975f6d1264daf8e4">More...</a><br /></td></tr>
-<tr class="separator:ad378d927159f2724975f6d1264daf8e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
 Variables</h2></td></tr>
@@ -586,7 +564,7 @@ Variables</h2></td></tr>
 <p><code>BEYER</code>: the figure of merit is the Beyer quotient \(Q_T\).<br />
  <code>SPECTRAL</code>: the figure of merit \(S_T\) is based on the spectral test.<br />
  <code>PALPHA</code>: the figure of merit is based on \(P_{\alpha}\).<br />
- <code>BOUND_JS</code>: the figure of merit is based on the Joe-Sinescu bound <a class="el" href="../../d0/de3/citelist.html#CITEREF_rSIN08a">[27]</a>&thinsp;.<br />
+ <code>BOUND_JS</code>: the figure of merit is based on the Joe-Sinescu bound <a class="el" href="../../d0/de3/citelist.html#CITEREF_rSIN08a">[28]</a>.<br />
  </p>
 
 </div>
@@ -631,7 +609,8 @@ Variables</h2></td></tr>
 <p><code>SUPNORM</code> corresponds to \(\Vert X\Vert= \max(|x_1|,…,|x_t|)\).<br />
  <code>L1NORM</code> corresponds to \(\Vert X\Vert= |x_1|+\cdots+|x_t|\).<br />
  <code>L2NORM</code> corresponds to \(\Vert X\Vert= (x_1^2+\cdots+x_t^2)^{1/2}\).<br />
- <code>ZAREMBANORM</code> corresponds to \(\Vert X\Vert= \max(1, |x_1|)\cdots\max(1, |x_t|)\). </p>
+ <code>ZAREMBANORM</code> corresponds to \(\Vert X\Vert= \max(1, |x_1|)\cdots\max(1, |x_t|)\).</p>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000009">Todo:</a></b></dt><dd>Maybe just implement a function for each norm and pass these functions? Otherwise, we could have an abstract class norm with a simple function norm that is reimplemented. </dd></dl>
 
 </div>
 </div>
@@ -648,7 +627,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Indicates in which form and where the results will be sent. </p>
-<p><a class="anchor" id="REF__Const_co_output"></a> <code>TERMINAL</code>: the results will appear only on the terminal screen.<br />
+<p><code>TERMINAL</code>: the results will appear only on the terminal screen.<br />
  <code>RES</code>: the results will be in plain text format and sent to a file with extension <code>.res</code>.<br />
  <code>TEX</code>: the results will be in LaTeX format and sent to a file with extension <code>.tex</code>.<br />
 <code>GEN</code>: the results will be sent to a file with extension <code>.gen</code>. </p>
@@ -667,7 +646,7 @@ Variables</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Indicates in which precision the <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> algorithms will be perfoms : <code>FP</code> &ndash; double <code>QP</code> &ndash; quad_float (quasi quadruple precision) this is useful when roundoff errors can cause problems <code>XD</code> &ndash; xdouble (extended exponent doubles) this is useful when numbers get too big <code>RR</code> &ndash; RR (arbitrary precision floating point) this is useful for large precision and magnitudes Generally speaking, the choice FP will be the fastest, but may be prone to roundoff errors and/or overflow. </p>
+<p>Indicates in which precision the <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> algorithms will be perfoms : <code>DOUBLE</code> &ndash; double <code>QUADRUPLE</code> &ndash; quad_float (quasi quadruple precision) this is useful when roundoff errors can cause problems <code>EXPONENT</code> &ndash; xdouble (extended exponent doubles) this is useful when numbers get too big <code>ARBITRARY</code> &ndash; RR (arbitrary precision floating point) this is useful for large precision and magnitudes Generally speaking, the choice <code>DOUBLE</code> will be the fastest, but may be prone to roundoff errors and/or overflow. </p>
 
 </div>
 </div>
@@ -700,6 +679,7 @@ Variables</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Indicates whether an integer is prime, probably prime, composite or its status is unknown (or don’t care). </p>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000010">Todo:</a></b></dt><dd>Maybe this should be defined in the <a class="el" href="../../d6/d95/classLatticeTester_1_1IntFactor.html" title="The objects of this class are the &quot;prime&quot; factors in the decomposition of a positive integer...">IntFactor</a> class </dd></dl>
 
 </div>
 </div>
@@ -768,24 +748,24 @@ template&lt;typename Scal &gt; </div>
 
 </div>
 </div>
-<a id="a17df0e6fdb1f11335eaf91f82ee298b0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a17df0e6fdb1f11335eaf91f82ee298b0">&#9670;&nbsp;</a></span>CalcDual()</h2>
+<a id="a127c50e06b3cc677853a45a592ea45ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a127c50e06b3cc677853a45a592ea45ff">&#9670;&nbsp;</a></span>CalcDual()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Matr , typename Int &gt; </div>
+template&lt;typename Int &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void LatticeTester::CalcDual </td>
           <td>(</td>
-          <td class="paramtype">const Matr &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d4/d6f/classNTL_1_1matrix.html">NTL::matrix</a>&lt; Int &gt; &amp;&#160;</td>
           <td class="paramname"><em>A</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Matr &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d4/d6f/classNTL_1_1matrix.html">NTL::matrix</a>&lt; Int &gt; &amp;&#160;</td>
           <td class="paramname"><em>B</em>, </td>
         </tr>
         <tr>
@@ -797,7 +777,7 @@ template&lt;typename Matr , typename Int &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const Int &amp;&#160;</td>
+          <td class="paramtype">Int &amp;&#160;</td>
           <td class="paramname"><em>m</em>&#160;</td>
         </tr>
         <tr>
@@ -808,11 +788,12 @@ template&lt;typename Matr , typename Int &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Calculates the <code>m</code>-dual of the matrix <code>A</code>. </p>
-<p>The result is placed in the matrix <code>B</code>. Only the first <code>d</code> lines and columns are considered.</p>
-<p>The vectors of the basis (lines of A) need to verify the properties (i), (ii) (iii), (iv) as described in the article: R. Couture and P L'Ecuyer, Orbits and lattices for linear random number generators with composite moduli, Mathematics of Computation, Volume 65, Number 213, bottom of page 199.</p>
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000027">Todo:</a></b></dt><dd>Check the algorithm used here and explain how it works and what it takes for it to work. </dd></dl>
-
+<p>Takes an upper triangular basis <code>A</code> and computes a dual lattice basis modulo <code>m</code> to this matrix. </p>
+<p>For this algorithm to work, <code>A</code> as to be upper triangular and all the coefficients on the diagonal have to divide <code>m</code>.</p>
+<p>For <code>B</code> to be a <code>m</code>-dual to <code>A</code>, we have to have that \(AB^t = mI\). It is quite easy to show that, knowing <code>A</code> is upper triangular, <code>B</code> will be a lower triangular matrix with <code>A(i,i)*B(i,i) = m</code> for all <code>i</code> and \( A_i \cdot B_j = 0\) for \(i\neq j\). To get the second condition, we simply have to recursively take for each line </p><p class="formulaDsp">
+\[B_{i,j} = -\frac{1}{A_{j,j}}\sum_{k=j+1}^i A_{j,k} B_{i,k}.\]
+</p>
+ 
 </div>
 </div>
 <a id="a7022d363aa696d09b59c9499745466a6"></a>
@@ -908,18 +889,18 @@ template&lt;typename Vect &gt; </div>
 
 </div>
 </div>
-<a id="a5d8cff62df52a09d15ecd49a9c5e2be0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d8cff62df52a09d15ecd49a9c5e2be0">&#9670;&nbsp;</a></span>CheckTriangular()</h2>
+<a id="a05684550e5a7aa0b7d625024702a966d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05684550e5a7aa0b7d625024702a966d">&#9670;&nbsp;</a></span>CheckTriangular()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Matr , typename Int &gt; </div>
+template&lt;typename Int &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">bool LatticeTester::CheckTriangular </td>
           <td>(</td>
-          <td class="paramtype">const Matr &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="../../d4/d6f/classNTL_1_1matrix.html">NTL::matrix</a>&lt; Int &gt; &amp;&#160;</td>
           <td class="paramname"><em>A</em>, </td>
         </tr>
         <tr>
@@ -944,62 +925,6 @@ template&lt;typename Matr , typename Int &gt; </div>
 
 <p>Checks that the upper \(\text{dim} \times \text{dim}\) submatrix of <code>A</code> is triangular modulo <code>m</code>. </p>
 <p>This will return <code>true</code> if all the elements under the diagonal are equal to zero modulo <code>m</code> and <code>false</code> otherwise. If <code>m</code> is <code>0</code>, this function simply verifies that the matrix is triangular. </p>
-
-</div>
-</div>
-<a id="ab6fd74c4ea41ec1c1030a621dc788845"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab6fd74c4ea41ec1c1030a621dc788845">&#9670;&nbsp;</a></span>clear() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void LatticeTester::clear </td>
-          <td>(</td>
-          <td class="paramtype">double &amp;&#160;</td>
-          <td class="paramname"><em>x</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sets <code>x</code> to 0. </p>
-
-</div>
-</div>
-<a id="a9738859ae42e8f85791ebb56705aa227"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9738859ae42e8f85791ebb56705aa227">&#9670;&nbsp;</a></span>clear() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void LatticeTester::clear </td>
-          <td>(</td>
-          <td class="paramtype">std::int64_t &amp;&#160;</td>
-          <td class="paramname"><em>x</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sets <code>x</code> to 0. </p>
 
 </div>
 </div>
@@ -1517,8 +1442,8 @@ template&lt;typename IntMat &gt; </div>
 </table>
 </div><div class="memdoc">
 
-<p>Calls the <code><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab6fd74c4ea41ec1c1030a621dc788845" title="Sets x to 0. ">clear()</a></code> method on <code>A</code>. </p>
-<p><code>A</code> has to have a <code><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab6fd74c4ea41ec1c1030a621dc788845" title="Sets x to 0. ">clear()</a></code> method that frees the memory allocated to it. </p>
+<p>Calls the <code><a class="el" href="../../d2/d5a/namespaceNTL.html#ad8cb07e3a9d3182f488269307cfef6b0" title="Sets x to 0. ">clear()</a></code> method on <code>A</code>. </p>
+<p><code>A</code> has to have a <code><a class="el" href="../../d2/d5a/namespaceNTL.html#ad8cb07e3a9d3182f488269307cfef6b0" title="Sets x to 0. ">clear()</a></code> method that frees the memory allocated to it. </p>
 
 </div>
 </div>
@@ -1580,7 +1505,7 @@ template&lt;typename Vect &gt; </div>
 </div><div class="memdoc">
 
 <p>Frees the memory used by the vector <code>A</code>, destroying all the elements it contains. </p>
-<p><code>Vect</code> type has to have a <code><a class="el" href="../../d8/d74/namespaceLatticeTester.html#ab6fd74c4ea41ec1c1030a621dc788845" title="Sets x to 0. ">clear()</a></code> method that deallocates all the elements in the vector. </p>
+<p><code>Vect</code> type has to have a <code><a class="el" href="../../d2/d5a/namespaceNTL.html#ad8cb07e3a9d3182f488269307cfef6b0" title="Sets x to 0. ">clear()</a></code> method that deallocates all the elements in the vector. </p>
 
 </div>
 </div>
@@ -1828,7 +1753,7 @@ template&lt;typename Int &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Computes and returns the value of the series (see <a class="el" href="../../d0/de3/citelist.html#CITEREF_vJOE92b">[11]</a>) </p><p class="formulaDsp">
+<p>Computes and returns the value of the series (see <a class="el" href="../../d0/de3/citelist.html#CITEREF_vJOE92b">[12]</a>) </p><p class="formulaDsp">
 \[ S(x, n) = \sum_{j=1}^{n} \frac{\cos(2\pi j x)}{j}. \]
 </p>
 <p> Restrictions: \(n&gt;0\) and \(0 \le x \le 1\). </p>
@@ -2052,65 +1977,7 @@ template&lt;typename IntVec &gt; </div>
 
 <p>Takes an input vector <code>A</code> of dimension <code>n+1</code> and fill the vector <code>B</code> with the values `[-A[n] -A[n-1] ... </p>
 <p>-A[1] 1]<code>.</code>B<code>is assumed to be of dimension at least</code>n+1`.</p>
-<p><b>OLD DOC</b>: Transforms the polynomial \( A_0 + A_1x^1 + \cdots + A_nx^n\) into \(x^n - A_1x^{n-1} - \cdots - A_n\). The result is put in <code>B</code>. </p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000025">Todo:</a></b></dt><dd>This function does not do what the old doc says. Check if it causes a problem where this function is called. </dd></dl>
-
-</div>
-</div>
-<a id="aa332228978921670954fc35afb8d7440"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa332228978921670954fc35afb8d7440">&#9670;&nbsp;</a></span>IsOdd()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::int64_t LatticeTester::IsOdd </td>
-          <td>(</td>
-          <td class="paramtype">const std::int64_t &amp;&#160;</td>
-          <td class="paramname"><em>x</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Tests if <code>x</code> is odd. </p>
-<p>Returns 1 if it is odd, and 0 if it is even. </p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000028">Todo:</a></b></dt><dd>It is useless that this function is implemented. Look if it is removable. </dd></dl>
-
-</div>
-</div>
-<a id="a1cfdf172615c09b6a677ff935621632d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1cfdf172615c09b6a677ff935621632d">&#9670;&nbsp;</a></span>IsZero()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool LatticeTester::IsZero </td>
-          <td>(</td>
-          <td class="paramtype">const std::int64_t &amp;&#160;</td>
-          <td class="paramname"><em>x</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Returns the <code>bool</code> resulting of the statement <code>x == 0</code>. </p>
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000029">Todo:</a></b></dt><dd>It is useless that this function is implemented. Look if it is removable. </dd></dl>
+<p><b>OLD DOC</b>: Transforms the polynomial \( A_0 + A_1x^1 + \cdots + A_nx^n\) into \(x^n - A_1x^{n-1} - \cdots - A_n\). The result is put in <code>B</code>. </p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000023">Todo:</a></b></dt><dd>This function does not do what the old doc says. Check if it causes a problem where this function is called. </dd></dl>
 
 </div>
 </div>
@@ -2645,7 +2512,7 @@ template&lt;typename Int , typename Vect1 , typename Vect2 , typename Scal &gt; 
 </div><div class="memdoc">
 
 <p>Computes the scalar product of vectors <code>A</code> and <code>B</code> truncated to their <code>n</code> first components, then puts the result in <code>D</code>. </p>
-<p>There is a lot to consider when passing types to this function. The best for Vect1 to be the same type as Vect2 and for Scal to be the same as Int, and that those types are the ones stored in Vect1 and Vect2. </p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000024">Todo:</a></b></dt><dd>This uses so many types without check about them and also assumes all those types can be converted to each other without problem... The types here should be uniformized. THIS DOES NOT SEEM TO BE A VERY SAFE IMPLEMENTATION </dd></dl>
+<p>There is a lot to consider when passing types to this function. The best for Vect1 to be the same type as Vect2 and for Scal to be the same as Int, and that those types are the ones stored in Vect1 and Vect2. </p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000022">Todo:</a></b></dt><dd>This uses so many types without check about them and also assumes all those types can be converted to each other without problem... The types here should be uniformized. THIS DOES NOT SEEM TO BE A VERY SAFE IMPLEMENTATION </dd></dl>
 
 </div>
 </div>
@@ -2757,7 +2624,7 @@ template&lt;typename Int &gt; </div>
 
 <p>Return a uniform pseudo-random integer in \([i, j]\). </p>
 <p>Note that the numbers \(i\) and \(j\) are part of the possible output. It is important that \(i &lt; j\) because the underlying arithmetic uses unsigned integers to store j-i+1 and that will be undefined behavior.</p>
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000022">Todo:</a></b></dt><dd>For some reason, this only uses the first 62 bits of the generator. Why? </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000021">Todo:</a></b></dt><dd>For some reason, this only uses the first 62 bits of the generator. Why? </dd></dl>
 
 </div>
 </div>
@@ -2809,62 +2676,6 @@ template&lt;typename Real &gt; </div>
 
 <p>Returns the value of x rounded to the NEAREST integer value. </p>
 <p>(This does not truncate the integer value as is usual in computer arithmetic.) </p>
-
-</div>
-</div>
-<a id="a8196a81e178fdb095a0deaf8b0803614"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8196a81e178fdb095a0deaf8b0803614">&#9670;&nbsp;</a></span>set9() <span class="overload">[1/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void LatticeTester::set9 </td>
-          <td>(</td>
-          <td class="paramtype">std::int64_t &amp;&#160;</td>
-          <td class="paramname"><em>x</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sets <code>x</code> to 1. </p>
-
-</div>
-</div>
-<a id="ad378d927159f2724975f6d1264daf8e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad378d927159f2724975f6d1264daf8e4">&#9670;&nbsp;</a></span>set9() <span class="overload">[2/2]</span></h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void LatticeTester::set9 </td>
-          <td>(</td>
-          <td class="paramtype">NTL::ZZ &amp;&#160;</td>
-          <td class="paramname"><em>x</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Sets <code>x</code> to 1. </p>
 
 </div>
 </div>
@@ -3204,24 +3015,24 @@ template&lt;typename Vect &gt; </div>
 
 </div>
 </div>
-<a id="aa519a1e0589932719c79b73c76bb1093"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa519a1e0589932719c79b73c76bb1093">&#9670;&nbsp;</a></span>Triangularization()</h2>
+<a id="a1b998d416a64afe708710620a4b96810"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b998d416a64afe708710620a4b96810">&#9670;&nbsp;</a></span>Triangularization()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Matr , typename Int &gt; </div>
+template&lt;typename Int &gt; </div>
       <table class="memname">
         <tr>
           <td class="memname">void LatticeTester::Triangularization </td>
           <td>(</td>
-          <td class="paramtype">Matr &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d4/d6f/classNTL_1_1matrix.html">NTL::matrix</a>&lt; Int &gt; &amp;&#160;</td>
           <td class="paramname"><em>W</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Matr &amp;&#160;</td>
+          <td class="paramtype"><a class="el" href="../../d4/d6f/classNTL_1_1matrix.html">NTL::matrix</a>&lt; Int &gt; &amp;&#160;</td>
           <td class="paramname"><em>V</em>, </td>
         </tr>
         <tr>
@@ -3250,9 +3061,10 @@ template&lt;typename Matr , typename Int &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>Performs an integer triangularization operation modulo <code>m</code> on the matrix <code>W</code> to obtain an upper triangular matrix <code>V</code>, dual to <code>W</code>. </p>
-<p>However, the matrix <code>W</code> will be transformed too in order to preserve duality. Only the first <code>lin</code> lines and the first <code>col</code> columns of the matrices will be considered. The main idea is to transform a generating family of vectors into a basis (removing from the family the vectors that are linear combination of other vectors).</p>
-<p>Refer to the article: R. Couture and P L'Ecuyer, Orbits and lattices for linear random number generators with composite moduli, Mathematics of Computation, Volume 65, Number 213, bottom of page 199. </p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000026">Todo:</a></b></dt><dd>Check the algorithm used here and what it does. </dd></dl>
+<p>Takes a set of generating vectors in the matrix <code>W</code> and iteratively transforms it into an upper triangular lattice basis into the matrix <code>V</code>. </p>
+<p><code>W</code> and <code>V</code> have to have more lines than <code>lin</code> and more columns than <code>col</code> since this algorithm will only operate on the upper <code>lin*col</code> matrix of <code>W</code>. All the computations will be done modulo <code>m</code>, which means that you must know a rescalling factor for the vector system to call this function. After the execution, <code>W</code> will be a matrix containing irrelevant information and <code>V</code> will contain an upper triangular basis.</p>
+<p>For more details please look at <a class="el" href="../../d0/de3/citelist.html#CITEREF_rCOU96a">[3]</a>. This algorithm basically implements what is written at the end of the article, that is the matrix <code>W</code> contains the set of vectors that is used and modified at each step to get a new vector from the basis.</p>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000024">Todo:</a></b></dt><dd>Benchmark this algorithm. Maybe this is fast, but this is not space efficient. Maybe something similar could be done in place. This algorithm should not necessitate the use of <code>m</code>. </dd></dl>
 
 </div>
 </div>
@@ -3295,7 +3107,7 @@ template&lt;typename Matr , typename Int &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a></li>
-    <li class="footer">Generated on Mon Sep 10 2018 16:43:21 for Lattice Tester Manual by
+    <li class="footer">Generated on Fri Oct 5 2018 16:56:55 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

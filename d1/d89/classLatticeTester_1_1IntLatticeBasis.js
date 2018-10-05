@@ -18,7 +18,6 @@ var classLatticeTester_1_1IntLatticeBasis =
     [ "getVecNorm", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a878fedc00d47a1717c84f8db2674dddf", null ],
     [ "getVecNorm", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a537538c4a3e6dad3cb74869d86f59eeb", null ],
     [ "getXX", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a0d132b7c45dfe36cbfaaad80530659bd", null ],
-    [ "initDual", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a1745d1614b84b191fa0dbb8175c58000", null ],
     [ "initVecNorm", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#ae8f7e8367b54b45bdacae13e04a8399f", null ],
     [ "kill", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#ae41990f7448aa2085e1e32704f091fbd", null ],
     [ "permute", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a666ed5b323f58f8d4c9dcace46aeddec", null ],

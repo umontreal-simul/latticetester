@@ -36,7 +36,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-work-43</span>
+   &#160;<span id="projectnumber">0.1.0-work-55</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -94,150 +94,130 @@ $(document).ready(function(){initNavTree('d4/d4e/detailed_usage.html','../../');
 <div class="contents">
 <div class="textblock"><h1><a class="anchor" id="usage_build"></a>
 Building the executable</h1>
+<h2>Software Dependencies</h2>
+<p>If you intend on building <em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace. ">LatticeTester</a></em> from scratch, the following software will need to be installed on the system:</p>
+<ul>
+<li><a href="http://www.shoup.net/ntl/index.html">NTL</a> 10.4.0 or later</li>
+<li><a href="https://gmplib.org/">GMP</a> compatible version with your <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> installation</li>
+<li><a href="https://www.python.org/">Python</a> <em>(Needed by waf to build the program)</em></li>
+<li><a href="http://git-scm.com/">Git</a> <em>(optional for downloading the source code)</em></li>
+<li><a href="http://www.stack.nl/~dimitri/doxygen/">Doxygen</a> <em>(optional for generating the documentation)</em></li>
+</ul>
+<p>You will also need a recent compiler compliant with the C++14 standard.</p>
+<h2>Acquiring/Building/Installing the program</h2>
+<p>This section won't go in depth and explain all the particularities of the build process. If you are a developper and wish to participate to this project, please look at the <a href="https://github.com/umontreal-simul/latticetester.git">README</a> for more details about the build system.</p>
+<p>The prefered way of getting this software is by downloading it on github (either via <code>git clone</code> or with a <code>.zip</code>) and to compile it yourself (for now). The build process uses the <code>waf</code> metabuild system that greatly streamlines the process.</p>
+<p>To build the project, you simply need to be in the root folder of <em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace. ">LatticeTester</a></em> and call: </p><div class="fragment"><div class="line">./waf configure build install</div></div><!-- fragment --><p> or, on Windows, </p><div class="fragment"><div class="line">python waf configure build install</div></div><!-- fragment --><p> If the build process fails, the README might offer you some insight as to what went wrong. Note that for the installation process to work, you will need the have administrative rights on the installation folder.</p>
+<p>The previous command will fetch the environment variables specific to your system to prepare the compilation, compile the program in a local folder and place the binaries and header files in a default location depending on your OS. Depending on your installation path, you might need to specify a path to you compilier when using the <em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace. ">LatticeTester</a></em> library. After that, the library will be available under the <code>lib</code> folder in the installation path and the executable program under the <code>bin</code> folder as <code><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace. ">LatticeTester</a></code>(<code>.exe</code> on Windows).</p>
 <h1><a class="anchor" id="usage_program"></a>
 Using the executable</h1>
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000001">Todo:</a></b></dt><dd>Change this so that it takes into account the fact that we only have one executable. Change the formatting to use markdown</dd></dl>
-<p><em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace. ">LatticeTester</a></em> is built in order to analyse a Lattice based on a set of vectors called <em>basis</em>. The main analysis is the Spectral Test (with L2 or L1 Norm), but one can also use Beyer Test and the \(\mathcal{P}_\alpha\) test (still in construction) according to a given normalization.</p>
-<p>To perform each analysis, the shortest vector of the lattice has to be computed. <a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace. ">LatticeTester</a> implements a <em>Branch and Bound</em> algorithm according to <a class="el" href="../../d0/de3/citelist.html#CITEREF_rKNU98a">[12]</a> which returns the shortest vector of the lattice with an exponential time. To reduce this time, the user can precise a prereduction that they want to use among the following :</p>
-<ul>
-<li><em>Pre-reduction of Dieter</em> according to <a class="el" href="../../d0/de3/citelist.html#CITEREF_rDIE75a">[4]</a>. Perform pair-wise reduction in the primal lattice and the dual lattice in order to reduce each vector of the basis. It is efficient for small dimension (less than 10)</li>
-<li><em>LLL</em> according to <a class="el" href="../../d0/de3/citelist.html#CITEREF_mLEN82a">[20]</a>. It returns a reduced basis where its shortest vector \(x_0\) has a fixed approximation of the shortest vector of the basis \(x\) : \( \|x\| &lt; \left( \frac{2}{\sqrt{3}} \right)^{n} \|x_{0}\| \) where \(n\) is the dimension.</li>
-<li><em>BKZ</em> according to <a class="el" href="../../d0/de3/citelist.html#CITEREF_mSCH91a">[25]</a>. It strengthens the condition of <em>LLL</em>, but is more costly to compute. It is efficient in greater dimensions.</li>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000001">Todo:</a></b></dt><dd>Update the <a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace. ">LatticeTester</a> executable</dd></dl>
+<p><em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace. ">LatticeTester</a></em> is built in order to analyse a Lattice based on a set of vectors called <em>basis</em> therefore it provides an executable that can be used directly to do so at a small level. This executable is a small program that can read data from a file to perform tests as specified by the user. Through this program, all the problems <em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace. ">LatticeTester</a></em> aims at solving can be addressed, as well as the computation of figures of merit. Although, concerns for the efficiency of <em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace. ">LatticeTester</a></em> have no reason to target the object instanciation, it is recommended that, if you want to perform tests or algorithms on multiple lattices, you make a C++ program using the library instead of sending multiple files to the executable.</p>
+<p>Once the program is compiled, to use it, you simply have to call it from a command line with a filename argument. That file name must have a <code>.dat</code> extension that should not be included when calling the program like </p><div class="fragment"><div class="line">./<a class="code" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a> filename</div></div><!-- fragment --><p> in a POSIX shell. You can specify a directory relative to your current working directory for either of the program and the executable.</p>
+<p>The file must contain, in order:</p><ul>
+<li>A test or computation to be performed</li>
+<li>Parameters for that test/computation</li>
+<li>A matrix that generates or is a basis of that lattice to work on. Each line of this matrix must be a vector of the lattice.</li>
 </ul>
-<p>After one of theses prereductions, the Branch and Bound find the shortest vector of the lattice and returns the wanted figure of merit.</p>
-<center><div class="LatSoft-fbox"><div class="image">
-<img src="../../datafile.png" alt="datafile.png" width="700px"/>
-<div class="caption">
-Data file format for LatticeTester.</div></div>
- <a class="anchor" id="REF__LatticeTester_dat"></a> </div></center><p>The data for <em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace. ">LatticeTester</a></em> must be placed in a file with extension <code>".dat"</code>, according to the format displayed on the figure above. The fields in square brackets are optional (depending on the value taken by the first field on the line). The meaning of all data fields is explained below. To run the program, type <code>&quot;.\lattest*</code> &lt;<em>file</em>&gt;<code>&quot;</code>, where &lt;<em>file</em>&gt; is the name of the data file, without extension, and <code>lattest*</code> is one of the three program : <code>lattestLLDD</code>, <code>lattestZZDD</code>, <code>lattestZZRR</code>. The results will be in a file with the same name, with extension (<code>".res"</code> or <code>".tex"</code> or <code>".gen"</code>) (see <em>OutputType</em> in module <a class="el" href="../../db/da7/Const_8h.html">Const.h</a>).</p>
-<p>Comments may be inserted after data, on the same line, separated from the data by at least one blank. Moreover, any line starting with "#" is considered as a comment and is discarded by the reading program.</p>
-<p>The values of \(m\) in the data file can be given in one of the two following formats:</p>
-<dl>
-<dt>a) </dt>
-<dd>An integer giving the value directly, in base 10. In this case, there <em>must</em> be some other non-numeric text (e.g., a comment) on this data line after the integer.  </dd>
-<dt>b) </dt>
-<dd>Three integers \(x\), \(e\), and \(z\) on the same line, separated by at least one blank. The retained value will be \(x^e+z\) if \(x\ge0\), and \(-(|x|^e+z)\) if \(x&lt;0\). The value of \(e\) must be positive. For example, \((x e z) = (2 5 -1)\) will give 31, while \((x e z) = (-2 5 -1)\) will give \(-31\) (not \(-33\)).  </dd>
-</dl>
-<ul>
-<li>For the program <code>seekLLDD</code>, all these numbers must fit in a <code>long</code>. For larger numbers, one must use the programs <code>seekZZDD</code> or <code>seekZZRR</code>.</li>
+<p>The file format depends on the work you ask from <em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace. ">LatticeTester</a></em>. There is an example available for each case in the folder <code>inputTestFiles</code> in the repository. There are 6 computations possible when calling <em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace. ">LatticeTester</a></em>. In what follows, we present them and explain what each parameter is. Each parameter written in the format <code>parameter &lt;option1, option2, ...&gt;</code> if you need to choose from multiple options or in the format <code>parameter [type]</code> if it is a numeric type. When writing a parameter, you just have to write the choosen option and not the parameter name.</p>
+<h2><a class="anchor" id="Basis"></a>
+Basis Construction</h2>
+<p>This is the simplest case, where the file looks like this. </p><div class="fragment"><div class="line">BASIS</div><div class="line">Method &lt;LLL, GCD&gt;</div><div class="line">Output &lt;RES, TERM&gt;</div><div class="line">NumRows [int] NumCols [int]</div><div class="line">Matrix [NumRows*NumCols <span class="keywordtype">int</span> type array]</div></div><!-- fragment --><ul>
+<li><b>BASIS</b> is the first line indicating the computation to be done. In that case, it means basis construction.</li>
+<li><b>Method</b> is the construction method.<ul>
+<li><b>LLL</b> performs <em>LLL</em> reduction and removes dependent vectors as the basis is constructed. This is the recommanded method.</li>
+<li><b>GCD</b> transforms the matrix in a triangular one while removing unwanted vectors. This method can be unstable on large matrices.</li>
 </ul>
-<h2>Meaning of the data fields</h2>
-<dl>
-<dt><em>Figure of Merit</em>: </dt>
-<dd><p class="startdd">Specifies the merit criterion for ranking the generators for each category. The admissible values of <em>Criterion</em> are:</p>
-<dl>
-<dt><code>Beyer</code>: </dt>
-<dd>means that the program will return the ratio between the norm of shortest vector and the norm of the longest vector in the Minkowski reduced basis.  </dd>
-<dt><code>Spectral</code>: </dt>
-<dd>means that the program will perform a Spectral Test on the lattice It will returns a figure of merit accoding to a certain norm.  </dd>
-</dl>
-<p class="enddd"></p>
-</dd>
-<dt><em>Normalizer</em>: </dt>
-<dd><p class="startdd">If <em>Figure of Merit</em> is <code>Spectral</code>, then <em>Normalizer</em> must appear and it indicates which type of normalization is used in the normalization. The admissible values are :</p>
-<dl>
-<dt><code>BestLat</code>: </dt>
-<dd>means that we use for \(d_t^*\) the value of \(d_t\) that corresponds to the best lattice in dimension \(t\). Only values for \(t\le48\) are known.  </dd>
-<dt><code>Laminated</code>: </dt>
-<dd>means that we use for \(d_t^*\) the value of \(d_t\) that corresponds to the best laminated lattice in dimension \(t\). Only values for \(t\le48\) are known.  </dd>
-<dt><code>Rogers</code>: </dt>
-<dd>means that \(d_t^*\) is obtained from Rogers’ bound.  </dd>
-<dt><code>Minkowski</code>: </dt>
-<dd>means that we use for \(d_t^*\) *Minkowski*’s theoretical bounds on the length of the shortest nonzero vector in a lattice. Only values for \(t\le48\) have been precomputed.  </dd>
-<dt><code>MinkL1</code>: </dt>
-<dd>means that length of vectors is computed using the \({\mathcal{L}}_1\) norm. Here, the length of the shortest nonzero vector gives the minimal number of hyperplanes that cover all the points of the lattice. Only values for \(t\le48\) have been precomputed.  </dd>
-<dt><code>L1</code>: </dt>
-<dd>means that the program will return the shortest vector according to the \({\mathcal{L}}_1\) norm.  </dd>
-<dt><code>L2</code>: </dt>
-<dd>means that the program will return the shortest vector according to the \({\mathcal{L}}_2\) norm.  </dd>
-</dl>
-<p class="enddd"></p>
-</dd>
-<dt><em>Pre-Reduction Type</em>: </dt>
-<dd><p class="startdd">Because of his exponential time which depends on dimension and the basis, the Branch and Bound can not be apply directly on the basis of the lattice. A pre-reduction can be apply before to reduce the computing time, specially in high dimension (more than 10)</p>
-<dl>
-<dt><code>Dieter pre-reduction</code>: </dt>
-<dd><p class="startdd">Performs pair-wise reduction in polynomial time in order to reduce each vector of the basis. It is efficient for small dimension (less than 10) but takes more time for higher dimension and leads to more time for the Branch-and-Bound thereafter.</p>
-<p class="enddd"></p>
-</dd>
-<dt><code>Lenstra and Al.</code>: </dt>
-<dd>Produce a basis in polynomial time where the shortest vector bounds the shortest vector of the lattice.  </dd>
-<dt><code>BKZ</code>: </dt>
-<dd>This reduction is between the Lenstra and Al. pre-reduction and the HKZ reduction where the difinition can be found here : [CITE HKZ]. Some analysis have prooved that, over random lattices, this pre-reduction lead to a shorter time for the Branch and Bound [SEE ANALYSIS]  </dd>
-<dt><code>NOPRERED</code>: </dt>
-<dd>No Prereduction before the Branch-and-Bound. This option can lead to long time for dimension up to 10.  </dd>
-</dl>
-<p>Here is a graph comparing the time for each prereduction.</p>
-<div class="image">
-<img src="../../5.png" alt="5.png" width="700px"/>
-<div class="caption">
-Exemple comparing Branch and Bound computing time (logarithm scaled) fonction of dimension and after different pre-reductions. This test was perform over the same set of random matrix (100 matrix)</div></div>
-<p class="enddd"></p>
-</dd>
-<dt><em>Precision</em>: </dt>
-<dd><p class="startdd">The algorithmes BKZ and Lentra And Al. are implemented in the <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> Library. <a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace. ">LatticeTester</a> use this library and offer the possibility to the user to select the precision in <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> for these algorithm. Generally speaking, the choice FP will be the fastest but may be be prone to roundoff errors and/or overflow.</p>
-<dl>
-<dt><code>Double</code>: </dt>
-<dd>Calculs are performed with double.  </dd>
-<dt><code>Quadruple</code>: </dt>
-<dd>Quasi quadruple precision. This is usefull when roundoff can cause problems.  </dd>
-<dt><code>Exponent</code>: </dt>
-<dd>Extended exponent doubles. Useful when number get too big.  </dd>
-<dt><code>Arbitrary</code>: </dt>
-<dd>Arbitrary precision floating point. This is useful for large precision and magnitudes. But the computing time is higher.  </dd>
-<dt><code>Exact</code>: </dt>
-<dd>Arbitrary precision floating point. This is useful for large precision and magnitudes. But the computing time is higher.  </dd>
-</dl>
-<div class="image">
-<img src="../../2.png" alt="2.png" width="700px"/>
-<div class="caption">
-Exemple comparing Lenstra and Al. pre-reduction computing time (logarithm scaled) fonction of dimension and precision. This test was perform over the same set of random matrix (100 matrix)</div></div>
-<p class="enddd"></p>
-</dd>
-<dt><em>Fact</em>: </dt>
-<dd><p class="startdd">A double value representing \(fact = 1 - \epsilon\) in the BKZ and Lentra And Al. pre-reduction. It must be only precise in the case of BKZ or LenstraLL reduction. The more fact is close to 1, the more pre-reduction will take time but the basis will be more reduced and the branch-and-bound will take less time. </p>
-<div class="image">
-<img src="../../7.png" alt="7.png" width="700px"/>
-<div class="caption">
-Exemple comparing Branch-and-Bound computing time (logarithm scaled) fonction of dimension. Here fact is equal to 0.9999. This test was perform over the same set of random matrix (100 matrix)</div></div>
-<div class="image">
-<img src="../../8.png" alt="8.png" width="700px"/>
-<div class="caption">
-Exemple comparing Branch-and-Bound computing time (logarithm scaled) fonction of dimension. Here fact is equal to 0.5. This test was perform over the same set of random matrix (100 matrix)</div></div>
-<p class="enddd"></p>
-</dd>
-<dt><em>Matrix dimension</em>: </dt>
-<dd><p class="startdd">A int value representing the dimension of the input lattice. The test will be perform only for this dimension. </p>
-<p class="enddd"></p>
-</dd>
-<dt><em>Matrix Coefficients</em>: </dt>
-<dd><p class="startdd">int or ZZ values depending the program <code>&quot;.\lattest*</code>. They must be separed only ba a space and a back space after each line. </p>
-<p class="enddd"></p>
-</dd>
-<dt><em>MaxNodesBB</em>: </dt>
-<dd><p class="startdd">An integer giving the maximum number of nodes to be examined in the branch-and-bound procedure when computing a figure of merit. When that value is exceeded, the branch-and-bound is stopped and the program is ended. </p>
-<p class="enddd"></p>
-</dd>
-<dt><em>Output Form</em>: </dt>
-<dd><p class="startdd">Selects on which output the results will be written. The possible values are <code>(Terminal, RES, TEX)</code>. Lowercases are also allowed.</p>
-<dl>
-<dt><code>Terminal</code>: </dt>
-<dd>the results will be written on the terminal screen.  </dd>
-<dt><code>Res</code>: </dt>
-<dd>the results are sent to a file with the same name as the data file, but with extension <code>.res</code>.  </dd>
-<dt><code>Tex</code>: </dt>
-<dd>the results are written in a file intended for LaTeX, with extension <code>.tex</code>.  </dd>
-</dl>
-<p class="enddd"></p>
-</dd>
-</dl>
+</li>
+<li><b>Output</b> is the output wanted.<ul>
+<li><b>RES</b> means <em>results file</em>. The results will be printed in a file with the same name as the input file with a <code>.res</code> extension.</li>
+<li><b>TERM</b> means <em>terminal</em>. The results will be printed on the command line</li>
+</ul>
+</li>
+<li><b>NumRows</b> and <b>NumCols</b> are integers representing the dimensions of the input matrix</li>
+<li><b>Matrix</b> is a <code>NumRows</code> \(\times\)<code>NumCols</code> matrix where each line represents a vector of the lattice. This matrix does not need to be non-singular or have full rank.</li>
+</ul>
+<h2><a class="anchor" id="Dual"></a>
+Dual Construction</h2>
+<p>In that case, the file will look like this : </p><div class="fragment"><div class="line">DUAL</div><div class="line">Build [bool]</div><div class="line">Output &lt;RES, TERM&gt;</div><div class="line">Dim [int]</div><div class="line">Matrix [Dim*Dim <span class="keywordtype">int</span> type array]</div></div><!-- fragment --><ul>
+<li><b>DUAL</b> is the first line indicating the computation to be done. In that case, it means dual construction.</li>
+<li><b>Output</b> is the output wanted.<ul>
+<li><b>RES</b> means <em>results file</em>. The results will be printed in a file with the same name as the input file with a <code>.res</code> extension.</li>
+<li><b>TERM</b> means <em>terminal</em>. The results will be printed on the command line</li>
+</ul>
+</li>
+<li><b>Dim</b> is the dimension of the input matrix. To build the dual, this matrix has to be square.</li>
+<li><b>Matrix</b> is a <code>Dim</code> \(\times\)<code>Dim</code> matrix where each line represents a vector of the lattice. This matrix must be invertible.</li>
+</ul>
+<h2><a class="anchor" id="Lattice"></a>
+Lattice Reduction</h2>
+<p>In that case, the file will look like this : </p><div class="fragment"><div class="line">REDUCTION</div><div class="line">Method &lt;Dieter, LLL, BKZ, MINK&gt;</div><div class="line">Output &lt;RES, TERM&gt;</div><div class="line">Dim [int]</div><div class="line">Matrix [Dim*Dim <span class="keywordtype">int</span> type array]</div></div><!-- fragment --><ul>
+<li><b>REDUCTION</b> is the first line indicating the computation to be done. In that case, it means lattice reduction.</li>
+<li><b>Method</b> is the method of lattice reduction to use. All the reductions will be performed with the default parameters. If the results are not conclusive because of that, it will be needed to write a short program to change them. For more detail than below on the methods look at the Reducer class.<ul>
+<li><b>DIETER</b> is the pairwise reduction proposed by Dieter. It is the least strong reduction.</li>
+<li><b>LLL</b> is the classic <em>Lenstra-Lenstra-Lovasz</em> reduction. It is fast and efficient. It is a good starting point for most applications needing reduction</li>
+<li><b>BKZ</b> is the block <em>Korkine-Zolotarev</em> reduction. It is a bit stronger than LLL reduction but more costly. It is recommended on applications for which the reduction is critical.</li>
+<li><b>MINK</b> will compute a Minkowski reduced basis. This might be interesting for a few problems. Note that this reduction is quite different from the others and should take much more time.</li>
+</ul>
+</li>
+<li><b>Output</b> is the output wanted.<ul>
+<li><b>RES</b> means <em>results file</em>. The results will be printed in a file with the same name as the input file with a <code>.res</code> extension.</li>
+<li><b>TERM</b> means <em>terminal</em>. The results will be printed on the command line</li>
+</ul>
+</li>
+<li><b>Dim</b> is the dimension of the input matrix. In theory, it is not necessary that this matrix be square, but <em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace. ">LatticeTester</a></em> will not reduce a non-square matrix.</li>
+<li><b>Matrix</b> is a <code>Dim</code> \(\times\)<code>Dim</code> matrix where each line represents a vector of the lattice. This matrix must be invertible.</li>
+</ul>
+<h2><a class="anchor" id="Shortest"></a>
+Shortest Vector Research</h2>
+<p>In that case, the file will look like this : </p><div class="fragment"><div class="line">SHORTEST</div><div class="line">Reduction [bool] Type &lt;Dieter, LLL, BKZ&gt;</div><div class="line">Error [double]</div><div class="line">Output &lt;RES, TERM&gt;</div><div class="line">Dim [int]</div><div class="line">Matrix [Dim*Dim <span class="keywordtype">int</span> type array]</div></div><!-- fragment --><ul>
+<li><b>SHORTEST</b> is the first line indicating the computation to be done. In that case, it means finding the shortest vector</li>
+<li><b>Reduction</b> allows the user to perform a lattice basis reduction prior to the shortest vector research. It is recommended that this flag be set to <code>true</code>.</li>
+<li><b>Type</b> is the type of reduction to use if <em>Reduction</em> is set to <code>true</code>. This field is not needed if <em>Reduction</em> is <code>false</code>. Look at <a class="el" href="../../d4/d4e/detailed_usage.html#Lattice">Lattice Reduction</a> for more details.</li>
+<li><b>Error</b> is a factor indicating the tolerance for error. If error is set to \(\alpha\), the shortest vector returned by this algorithm will have a length that is at most \(1 + \alpha\) times the length of the true shortest vector. This can be set to 0 to obtain the true shortest vector. If this is non-zero, the program will be slower because of the checks that will occur.</li>
+<li><b>Output</b> is the output wanted.<ul>
+<li><b>RES</b> means <em>results file</em>. The results will be printed in a file with the same name as the input file with a <code>.res</code> extension.</li>
+<li><b>TERM</b> means <em>terminal</em>. The results will be printed on the command line</li>
+</ul>
+</li>
+<li><b>Dim</b> is the dimension of the input matrix. In theory, it is not necessary that this matrix be square, but <em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace. ">LatticeTester</a></em> will not accept a non-square matrix for this problem.</li>
+<li><b>Matrix</b> is a <code>Dim</code> \(\times\)<code>Dim</code> matrix where each line represents a vector of the lattice. This matrix must be invertible.</li>
+</ul>
+<h2><a class="anchor" id="Figure"></a>
+Figure of Merit Computation</h2>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000002">Todo:</a></b></dt><dd>multiple norms?</dd></dl>
+<p>In that case, the file will look like this : </p><div class="fragment"><div class="line">MERIT</div><div class="line">Figure &lt;SPECTRAL, BEYER&gt;</div><div class="line">Normalizer &lt;NONE, BESTBOUND, BESTLAT, LAMINATED, MINK&gt;</div><div class="line">Reduction [bool] Type &lt;Dieter, LLL, BKZ&gt; </div><div class="line">Output &lt;RES, TERM&gt;</div><div class="line">Dim [int]</div><div class="line">Matrix [Dim*Dim <span class="keywordtype">int</span> type array]</div></div><!-- fragment --><ul>
+<li><b>MERIT</b> is the first line indicating the computation to be done. In that case, it means computing a figure of merit.</li>
+<li><b>Figure</b> is the figure of merit to compute.<ul>
+<li><b>SPECTRAL</b> stands for <em>spectral test</em>. This will compute the shortest vector in the lattice and return a normalized value depending on its length.</li>
+<li><b>BEYER</b> stands for <em>Beyer</em> quotient. This will find a Minkowski reduced basis and compute the ratio between the longest and the shortest vector in this basis.</li>
+</ul>
+</li>
+<li><b>Normalizer</b> is an option to allow the normalization of the figure of merit so that it can be compared with the value from other lattices.<ul>
+<li><b>NONE</b> no normalization is done. This will return the length of the shortest vector for the spectral test. This is what should be used for the Beyer quotient.</li>
+<li><b>BESTBOUND</b> is the best upper bound for the length of the shortest vector in a lattice based on what is in the litterature.</li>
+<li><b>BESTLAT</b> is an "upper" bound on the length of the shortest vector in a lattice based on the densest lattice known. This is the recommended option.</li>
+<li><b>LAMINATED</b> is an upper bound on the length of the shortest vector in a lattice based on the densest laminated lattice known.</li>
+<li><b>MINK</b> is Minkowski's LOWER bound on the shortest vector in a lattice.</li>
+</ul>
+</li>
+<li><b>Reduction</b> allows the user to perform a lattice basis reduction prior to other computations. It is recommended that this flag be set to <code>true</code>.</li>
+<li><b>Type</b> is the type of reduction to use if <em>Reduction</em> is set to <code>true</code>. This field is not needed if <em>Reduction</em> is <code>false</code>. Look at <a class="el" href="../../d4/d4e/detailed_usage.html#Lattice">Lattice Reduction</a> for more details.</li>
+<li><b>Output</b> is the output wanted.<ul>
+<li><b>RES</b> means <em>results file</em>. The results will be printed in a file with the same name as the input file with a <code>.res</code> extension.</li>
+<li><b>TERM</b> means <em>terminal</em>. The results will be printed on the command line</li>
+</ul>
+</li>
+<li><b>Dim</b> is the dimension of the input matrix. In theory, it is not necessary that this matrix be square, but <em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace. ">LatticeTester</a></em> will not reduce a non-square matrix.</li>
+<li><b>Matrix</b> is a <code>Dim</code> \(\times\)<code>Dim</code> matrix where each line represents a vector of the lattice. This matrix must be invertible. </li>
+</ul>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../index.html">LatticeTester Manual</a></li>
-    <li class="footer">Generated on Mon Sep 10 2018 16:43:21 for Lattice Tester Manual by
+    <li class="footer">Generated on Fri Oct 5 2018 16:56:55 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

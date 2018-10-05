@@ -36,7 +36,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-work-43</span>
+   &#160;<span id="projectnumber">0.1.0-work-55</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -96,12 +96,12 @@ $(document).ready(function(){initNavTree('d7/de4/classLatticeTester_1_1Coordinat
 </div><!--header-->
 <div class="contents">
 
-<p>An iterator class used internaly by the <code><a class="el" href="../../d8/d6d/classLatticeTester_1_1CoordinateSets_1_1Subsets.html" title="This class implements CoordinateSets for any set of coordinates. ">Subsets</a></code> class.  
+<p>An iterator class used internaly by the <code><a class="el" href="../../d8/d6d/classLatticeTester_1_1CoordinateSets_1_1Subsets.html" title="This class implements a CoordinateSets that will build all the subsets of a Coordinates object that a...">Subsets</a></code> class.  
  <a href="../../d7/de4/classLatticeTester_1_1CoordinateSets_1_1Subsets_1_1const__iterator.html#details">More...</a></p>
 
 <p><code>#include &lt;latticetester/CoordinateSets.h&gt;</code></p>
 
-<p>Inherits iterator_facade&lt; const_iterator, const Coordinates, boost::iterators::forward_traversal_tag &gt;.</p>
+<p>Inherits iterator&lt; std::forward_iterator_tag, const Coordinates &gt;.</p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -111,16 +111,37 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa248a3b6bcbbcdaa6e6a52c3bb56f4f8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/de4/classLatticeTester_1_1CoordinateSets_1_1Subsets_1_1const__iterator.html#aa248a3b6bcbbcdaa6e6a52c3bb56f4f8">const_iterator</a> (const <a class="el" href="../../d8/d6d/classLatticeTester_1_1CoordinateSets_1_1Subsets.html">Subsets</a> &amp;seq, end_tag)</td></tr>
 <tr class="memdesc:aa248a3b6bcbbcdaa6e6a52c3bb56f4f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor for an iterator at the end of the list of sets that <code>seq</code> contains.  <a href="#aa248a3b6bcbbcdaa6e6a52c3bb56f4f8">More...</a><br /></td></tr>
 <tr class="separator:aa248a3b6bcbbcdaa6e6a52c3bb56f4f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8336fd546620e81c18435186a37f561"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/de4/classLatticeTester_1_1CoordinateSets_1_1Subsets_1_1const__iterator.html#ad8336fd546620e81c18435186a37f561">const_iterator</a> (const <a class="el" href="../../d7/de4/classLatticeTester_1_1CoordinateSets_1_1Subsets_1_1const__iterator.html">const_iterator</a> &amp;other)</td></tr>
+<tr class="memdesc:ad8336fd546620e81c18435186a37f561"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor.  <a href="#ad8336fd546620e81c18435186a37f561">More...</a><br /></td></tr>
+<tr class="separator:ad8336fd546620e81c18435186a37f561"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aaaa839ea5404c450cd5c512ecea25e10"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/de4/classLatticeTester_1_1CoordinateSets_1_1Subsets_1_1const__iterator.html#aaaa839ea5404c450cd5c512ecea25e10">const_iterator</a> ()</td></tr>
-<tr class="memdesc:aaaa839ea5404c450cd5c512ecea25e10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Empty constructor.  <a href="#aaaa839ea5404c450cd5c512ecea25e10">More...</a><br /></td></tr>
+<tr class="memdesc:aaaa839ea5404c450cd5c512ecea25e10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="#aaaa839ea5404c450cd5c512ecea25e10">More...</a><br /></td></tr>
 <tr class="separator:aaaa839ea5404c450cd5c512ecea25e10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d2ada36b0ac3cc4e0946cc71489c694"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d7/de4/classLatticeTester_1_1CoordinateSets_1_1Subsets_1_1const__iterator.html">const_iterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/de4/classLatticeTester_1_1CoordinateSets_1_1Subsets_1_1const__iterator.html#a7d2ada36b0ac3cc4e0946cc71489c694">operator=</a> (const <a class="el" href="../../d7/de4/classLatticeTester_1_1CoordinateSets_1_1Subsets_1_1const__iterator.html">const_iterator</a> &amp;other)</td></tr>
+<tr class="memdesc:a7d2ada36b0ac3cc4e0946cc71489c694"><td class="mdescLeft">&#160;</td><td class="mdescRight">Assignment operator that does the same as the copy constructor.  <a href="#a7d2ada36b0ac3cc4e0946cc71489c694">More...</a><br /></td></tr>
+<tr class="separator:a7d2ada36b0ac3cc4e0946cc71489c694"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af64620682a3746f061db48324c05342f"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/de4/classLatticeTester_1_1CoordinateSets_1_1Subsets_1_1const__iterator.html#af64620682a3746f061db48324c05342f">operator==</a> (const <a class="el" href="../../d7/de4/classLatticeTester_1_1CoordinateSets_1_1Subsets_1_1const__iterator.html">const_iterator</a> &amp;other)</td></tr>
+<tr class="memdesc:af64620682a3746f061db48324c05342f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares this instance with <code>other</code>, returning true if they are associated with the same <a class="el" href="../../d8/d6d/classLatticeTester_1_1CoordinateSets_1_1Subsets.html" title="This class implements a CoordinateSets that will build all the subsets of a Coordinates object that a...">Subsets</a> object and if they are at the same point in their enumeration cycle.  <a href="#af64620682a3746f061db48324c05342f">More...</a><br /></td></tr>
+<tr class="separator:af64620682a3746f061db48324c05342f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a561d8dfaed656fc2b052e1ae24547455"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/de4/classLatticeTester_1_1CoordinateSets_1_1Subsets_1_1const__iterator.html#a561d8dfaed656fc2b052e1ae24547455">operator!=</a> (const <a class="el" href="../../d7/de4/classLatticeTester_1_1CoordinateSets_1_1Subsets_1_1const__iterator.html">const_iterator</a> &amp;other)</td></tr>
+<tr class="memdesc:a561d8dfaed656fc2b052e1ae24547455"><td class="mdescLeft">&#160;</td><td class="mdescRight">Compares this instance with <code>other</code>, returning false if they are associated with the same <a class="el" href="../../d8/d6d/classLatticeTester_1_1CoordinateSets_1_1Subsets.html" title="This class implements a CoordinateSets that will build all the subsets of a Coordinates object that a...">Subsets</a> object and if they are at the same point in their enumeration cycle.  <a href="#a561d8dfaed656fc2b052e1ae24547455">More...</a><br /></td></tr>
+<tr class="separator:a561d8dfaed656fc2b052e1ae24547455"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab764cfa9c8b72d75245244f65fe5e3ca"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="../../d9/dd3/classLatticeTester_1_1Coordinates.html">Coordinates</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/de4/classLatticeTester_1_1CoordinateSets_1_1Subsets_1_1const__iterator.html#ab764cfa9c8b72d75245244f65fe5e3ca">operator*</a> () const</td></tr>
+<tr class="memdesc:ab764cfa9c8b72d75245244f65fe5e3ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dereference operator, when dereferencing this object, you get the set of coordinates this iterator points to.  <a href="#ab764cfa9c8b72d75245244f65fe5e3ca">More...</a><br /></td></tr>
+<tr class="separator:ab764cfa9c8b72d75245244f65fe5e3ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b050084f2b14ca792d6aa7eb8418ce5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d7/de4/classLatticeTester_1_1CoordinateSets_1_1Subsets_1_1const__iterator.html">const_iterator</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/de4/classLatticeTester_1_1CoordinateSets_1_1Subsets_1_1const__iterator.html#a6b050084f2b14ca792d6aa7eb8418ce5">operator++</a> ()</td></tr>
+<tr class="memdesc:a6b050084f2b14ca792d6aa7eb8418ce5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prefix incrementation operator.  <a href="#a6b050084f2b14ca792d6aa7eb8418ce5">More...</a><br /></td></tr>
+<tr class="separator:a6b050084f2b14ca792d6aa7eb8418ce5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40f255eece5207744945e7f697bf4472"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d7/de4/classLatticeTester_1_1CoordinateSets_1_1Subsets_1_1const__iterator.html">const_iterator</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d7/de4/classLatticeTester_1_1CoordinateSets_1_1Subsets_1_1const__iterator.html#a40f255eece5207744945e7f697bf4472">operator++</a> (int)</td></tr>
+<tr class="memdesc:a40f255eece5207744945e7f697bf4472"><td class="mdescLeft">&#160;</td><td class="mdescRight">Postfix incrementation operator.  <a href="#a40f255eece5207744945e7f697bf4472">More...</a><br /></td></tr>
+<tr class="separator:a40f255eece5207744945e7f697bf4472"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>An iterator class used internaly by the <code><a class="el" href="../../d8/d6d/classLatticeTester_1_1CoordinateSets_1_1Subsets.html" title="This class implements CoordinateSets for any set of coordinates. ">Subsets</a></code> class. </p>
-<p>Given an object of this class, it is possible to cycle through the element it contains with the increment (<code>++</code>) or decrement (<code>--</code>) operators. </p>
+<div class="textblock"><p>An iterator class used internaly by the <code><a class="el" href="../../d8/d6d/classLatticeTester_1_1CoordinateSets_1_1Subsets.html" title="This class implements a CoordinateSets that will build all the subsets of a Coordinates object that a...">Subsets</a></code> class. </p>
+<p>Given an object of this class, it is possible to cycle through the element it contains with the increment (<code>++</code>) operator. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a6090821137fa30842584e15d177d8fc4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6090821137fa30842584e15d177d8fc4">&#9670;&nbsp;</a></span>const_iterator() <span class="overload">[1/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a6090821137fa30842584e15d177d8fc4">&#9670;&nbsp;</a></span>const_iterator() <span class="overload">[1/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -148,7 +169,7 @@ Public Member Functions</h2></td></tr>
 </div>
 </div>
 <a id="aa248a3b6bcbbcdaa6e6a52c3bb56f4f8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa248a3b6bcbbcdaa6e6a52c3bb56f4f8">&#9670;&nbsp;</a></span>const_iterator() <span class="overload">[2/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aa248a3b6bcbbcdaa6e6a52c3bb56f4f8">&#9670;&nbsp;</a></span>const_iterator() <span class="overload">[2/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -185,8 +206,36 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="ad8336fd546620e81c18435186a37f561"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8336fd546620e81c18435186a37f561">&#9670;&nbsp;</a></span>const_iterator() <span class="overload">[3/4]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">LatticeTester::CoordinateSets::Subsets::const_iterator::const_iterator </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d7/de4/classLatticeTester_1_1CoordinateSets_1_1Subsets_1_1const__iterator.html">const_iterator</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Copy constructor. </p>
+
+</div>
+</div>
 <a id="aaaa839ea5404c450cd5c512ecea25e10"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaaa839ea5404c450cd5c512ecea25e10">&#9670;&nbsp;</a></span>const_iterator() <span class="overload">[3/3]</span></h2>
+<h2 class="memtitle"><span class="permalink"><a href="#aaaa839ea5404c450cd5c512ecea25e10">&#9670;&nbsp;</a></span>const_iterator() <span class="overload">[4/4]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -208,7 +257,160 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>Empty constructor. </p>
+<p>Default constructor. </p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a561d8dfaed656fc2b052e1ae24547455"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a561d8dfaed656fc2b052e1ae24547455">&#9670;&nbsp;</a></span>operator!=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool LatticeTester::CoordinateSets::Subsets::const_iterator::operator!= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d7/de4/classLatticeTester_1_1CoordinateSets_1_1Subsets_1_1const__iterator.html">const_iterator</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compares this instance with <code>other</code>, returning false if they are associated with the same <a class="el" href="../../d8/d6d/classLatticeTester_1_1CoordinateSets_1_1Subsets.html" title="This class implements a CoordinateSets that will build all the subsets of a Coordinates object that a...">Subsets</a> object and if they are at the same point in their enumeration cycle. </p>
+
+</div>
+</div>
+<a id="ab764cfa9c8b72d75245244f65fe5e3ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab764cfa9c8b72d75245244f65fe5e3ca">&#9670;&nbsp;</a></span>operator*()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">const <a class="el" href="../../d9/dd3/classLatticeTester_1_1Coordinates.html">Coordinates</a>&amp; LatticeTester::CoordinateSets::Subsets::const_iterator::operator* </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Dereference operator, when dereferencing this object, you get the set of coordinates this iterator points to. </p>
+
+</div>
+</div>
+<a id="a6b050084f2b14ca792d6aa7eb8418ce5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6b050084f2b14ca792d6aa7eb8418ce5">&#9670;&nbsp;</a></span>operator++() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d7/de4/classLatticeTester_1_1CoordinateSets_1_1Subsets_1_1const__iterator.html">Subsets::const_iterator</a> &amp; LatticeTester::CoordinateSets::Subsets::const_iterator::operator++ </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Prefix incrementation operator. </p>
+<p>Increments this iterator and returns the iterator in its new state. </p>
+
+</div>
+</div>
+<a id="a40f255eece5207744945e7f697bf4472"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a40f255eece5207744945e7f697bf4472">&#9670;&nbsp;</a></span>operator++() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d7/de4/classLatticeTester_1_1CoordinateSets_1_1Subsets_1_1const__iterator.html">Subsets::const_iterator</a> LatticeTester::CoordinateSets::Subsets::const_iterator::operator++ </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Postfix incrementation operator. </p>
+<p>Increments this iterator and returns a copy of the old object. </p>
+
+</div>
+</div>
+<a id="a7d2ada36b0ac3cc4e0946cc71489c694"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7d2ada36b0ac3cc4e0946cc71489c694">&#9670;&nbsp;</a></span>operator=()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="../../d7/de4/classLatticeTester_1_1CoordinateSets_1_1Subsets_1_1const__iterator.html">const_iterator</a>&amp; LatticeTester::CoordinateSets::Subsets::const_iterator::operator= </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d7/de4/classLatticeTester_1_1CoordinateSets_1_1Subsets_1_1const__iterator.html">const_iterator</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Assignment operator that does the same as the copy constructor. </p>
+
+</div>
+</div>
+<a id="af64620682a3746f061db48324c05342f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af64620682a3746f061db48324c05342f">&#9670;&nbsp;</a></span>operator==()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool LatticeTester::CoordinateSets::Subsets::const_iterator::operator== </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="../../d7/de4/classLatticeTester_1_1CoordinateSets_1_1Subsets_1_1const__iterator.html">const_iterator</a> &amp;&#160;</td>
+          <td class="paramname"><em>other</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Compares this instance with <code>other</code>, returning true if they are associated with the same <a class="el" href="../../d8/d6d/classLatticeTester_1_1CoordinateSets_1_1Subsets.html" title="This class implements a CoordinateSets that will build all the subsets of a Coordinates object that a...">Subsets</a> object and if they are at the same point in their enumeration cycle. </p>
 
 </div>
 </div>
@@ -222,7 +424,7 @@ Public Member Functions</h2></td></tr>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a></li><li class="navelem"><a class="el" href="../../d0/d6f/namespaceLatticeTester_1_1CoordinateSets.html">CoordinateSets</a></li><li class="navelem"><a class="el" href="../../d8/d6d/classLatticeTester_1_1CoordinateSets_1_1Subsets.html">Subsets</a></li><li class="navelem"><a class="el" href="../../d7/de4/classLatticeTester_1_1CoordinateSets_1_1Subsets_1_1const__iterator.html">const_iterator</a></li>
-    <li class="footer">Generated on Mon Sep 10 2018 16:43:21 for Lattice Tester Manual by
+    <li class="footer">Generated on Fri Oct 5 2018 16:56:56 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

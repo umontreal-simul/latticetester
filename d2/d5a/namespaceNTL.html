@@ -36,7 +36,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-work-43</span>
+   &#160;<span id="projectnumber">0.1.0-work-55</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -150,8 +150,7 @@ Functions</h2></td></tr>
 <tr class="separator:acc171f8adead871649fc4281536cd695"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr><td colspan="2"><div class="groupHeader">Some other compatibility utilities</div></td></tr>
 <tr><td colspan="2"><div class="groupText"><p>These functions perform convertions between different types.</p>
-<p>Most of them do not really need explainations, but sometimes a specific logic is used when doing the convertion.</p>
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000021">Todo:</a></b></dt><dd>Maybe some of this can be rewritten as templates. This could be usefull because it is easy to see how this bit of code could not work with certain compilators. </dd></dl>
+<p>Most of them do not really need explainations, but sometimes a specific logic is used when doing the convertion. </p>
 </div></td></tr>
 <tr class="memitem:a07b6d8586b6a40e65a3bee1608d3e389"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d5a/namespaceNTL.html#a07b6d8586b6a40e65a3bee1608d3e389">conv</a> (std::int64_t &amp;l, const char *c)</td></tr>
 <tr class="memdesc:a07b6d8586b6a40e65a3bee1608d3e389"><td class="mdescLeft">&#160;</td><td class="mdescRight">Converts the array of characters (string) <code>c</code> into an <code>std::int64_t</code> <code>l</code> using the strtol() function of cstdlib.h.  <a href="#a07b6d8586b6a40e65a3bee1608d3e389">More...</a><br /></td></tr>
@@ -180,6 +179,25 @@ Functions</h2></td></tr>
 <tr class="memitem:a79558a14740eba4a6fa479d7d73bf38b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d5a/namespaceNTL.html#a79558a14740eba4a6fa479d7d73bf38b">conv</a> (long long &amp;x, long long a)</td></tr>
 <tr class="memdesc:a79558a14740eba4a6fa479d7d73bf38b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Since both are of the same type, this assigns a to x.  <a href="#a79558a14740eba4a6fa479d7d73bf38b">More...</a><br /></td></tr>
 <tr class="separator:a79558a14740eba4a6fa479d7d73bf38b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr><td colspan="2"><div class="groupHeader">Function overloads</div></td></tr>
+<tr><td colspan="2"><div class="groupText"><p>These functions are already implemented in <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a> for NTL::ZZ or NTL::RR types, but not for the other standard types we use.</p>
+<p>These overloads allow us to make a simple call the the function in the <code><a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a></code> namespace without worrying about types and still have working algorithms. </p>
+</div></td></tr>
+<tr class="memitem:a1629b29c99a1aed8f591c523c9047519"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d5a/namespaceNTL.html#a1629b29c99a1aed8f591c523c9047519">IsZero</a> (const std::int64_t &amp;x)</td></tr>
+<tr class="memdesc:a1629b29c99a1aed8f591c523c9047519"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the <code>bool</code> resulting of the statement <code>x == 0</code>.  <a href="#a1629b29c99a1aed8f591c523c9047519">More...</a><br /></td></tr>
+<tr class="separator:a1629b29c99a1aed8f591c523c9047519"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2deeffef7195d2c3508b7618c6aed677"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d5a/namespaceNTL.html#a2deeffef7195d2c3508b7618c6aed677">clear</a> (double &amp;x)</td></tr>
+<tr class="memdesc:a2deeffef7195d2c3508b7618c6aed677"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets <code>x</code> to 0.  <a href="#a2deeffef7195d2c3508b7618c6aed677">More...</a><br /></td></tr>
+<tr class="separator:a2deeffef7195d2c3508b7618c6aed677"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8cb07e3a9d3182f488269307cfef6b0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d5a/namespaceNTL.html#ad8cb07e3a9d3182f488269307cfef6b0">clear</a> (std::int64_t &amp;x)</td></tr>
+<tr class="memdesc:ad8cb07e3a9d3182f488269307cfef6b0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets <code>x</code> to 0.  <a href="#ad8cb07e3a9d3182f488269307cfef6b0">More...</a><br /></td></tr>
+<tr class="separator:ad8cb07e3a9d3182f488269307cfef6b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09130bf26372f547e7ed646aca78c0be"><td class="memItemLeft" align="right" valign="top">std::int64_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d5a/namespaceNTL.html#a09130bf26372f547e7ed646aca78c0be">IsOdd</a> (const std::int64_t &amp;x)</td></tr>
+<tr class="memdesc:a09130bf26372f547e7ed646aca78c0be"><td class="mdescLeft">&#160;</td><td class="mdescRight">Tests if <code>x</code> is odd.  <a href="#a09130bf26372f547e7ed646aca78c0be">More...</a><br /></td></tr>
+<tr class="separator:a09130bf26372f547e7ed646aca78c0be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a968f8ba311c0012dd1ee4f024ae54e51"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d2/d5a/namespaceNTL.html#a968f8ba311c0012dd1ee4f024ae54e51">set</a> (std::int64_t &amp;x)</td></tr>
+<tr class="memdesc:a968f8ba311c0012dd1ee4f024ae54e51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets <code>x</code> to 1.  <a href="#a968f8ba311c0012dd1ee4f024ae54e51">More...</a><br /></td></tr>
+<tr class="separator:a968f8ba311c0012dd1ee4f024ae54e51"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This module contains extensions of certain classes in <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a>. </p>
@@ -220,6 +238,62 @@ Functions</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a2deeffef7195d2c3508b7618c6aed677"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2deeffef7195d2c3508b7618c6aed677">&#9670;&nbsp;</a></span>clear() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NTL::clear </td>
+          <td>(</td>
+          <td class="paramtype">double &amp;&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets <code>x</code> to 0. </p>
+
+</div>
+</div>
+<a id="ad8cb07e3a9d3182f488269307cfef6b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8cb07e3a9d3182f488269307cfef6b0">&#9670;&nbsp;</a></span>clear() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NTL::clear </td>
+          <td>(</td>
+          <td class="paramtype">std::int64_t &amp;&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets <code>x</code> to 0. </p>
+
+</div>
+</div>
 <a id="a07b6d8586b6a40e65a3bee1608d3e389"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a07b6d8586b6a40e65a3bee1608d3e389">&#9670;&nbsp;</a></span>conv() <span class="overload">[1/9]</span></h2>
 
@@ -595,13 +669,99 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a09130bf26372f547e7ed646aca78c0be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a09130bf26372f547e7ed646aca78c0be">&#9670;&nbsp;</a></span>IsOdd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::int64_t NTL::IsOdd </td>
+          <td>(</td>
+          <td class="paramtype">const std::int64_t &amp;&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Tests if <code>x</code> is odd. </p>
+<p>Returns 1 if it is odd, and 0 if it is even. </p>
+
+</div>
+</div>
+<a id="a1629b29c99a1aed8f591c523c9047519"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1629b29c99a1aed8f591c523c9047519">&#9670;&nbsp;</a></span>IsZero()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool NTL::IsZero </td>
+          <td>(</td>
+          <td class="paramtype">const std::int64_t &amp;&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Returns the <code>bool</code> resulting of the statement <code>x == 0</code>. </p>
+<p><code>IsZero</code> is already defined for the type <code>NTL::ZZ</code> in <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL. ">NTL</a>, but not for <code>std::int64_t</code>. </p>
+
+</div>
+</div>
+<a id="a968f8ba311c0012dd1ee4f024ae54e51"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a968f8ba311c0012dd1ee4f024ae54e51">&#9670;&nbsp;</a></span>set()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NTL::set </td>
+          <td>(</td>
+          <td class="paramtype">std::int64_t &amp;&#160;</td>
+          <td class="paramname"><em>x</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Sets <code>x</code> to 1. </p>
+
+</div>
+</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d2/d5a/namespaceNTL.html">NTL</a></li>
-    <li class="footer">Generated on Mon Sep 10 2018 16:43:21 for Lattice Tester Manual by
+    <li class="footer">Generated on Fri Oct 5 2018 16:56:56 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

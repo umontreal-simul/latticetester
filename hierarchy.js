@@ -2,6 +2,7 @@ var hierarchy =
 [
     [ "LatticeTester::BasisConstruction< BasInt >", "d0/d18/classLatticeTester_1_1BasisConstruction.html", null ],
     [ "LatticeTester::CoordinateSets::AddCoordinate< BASE >", "d7/d31/classLatticeTester_1_1CoordinateSets_1_1AddCoordinate.html", null ],
+    [ "LatticeTester::CoordinateSets::AddCoordinate< BASE >::const_iterator", "df/d75/classLatticeTester_1_1CoordinateSets_1_1AddCoordinate_1_1const__iterator.html", null ],
     [ "LatticeTester::CoordinateSets::FromRanges", "d8/d34/classLatticeTester_1_1CoordinateSets_1_1FromRanges.html", null ],
     [ "LatticeTester::CoordinateSets::FromRanges::const_iterator", "d8/daf/classLatticeTester_1_1CoordinateSets_1_1FromRanges_1_1const__iterator.html", null ],
     [ "LatticeTester::CoordinateSets::Subsets", "d8/d6d/classLatticeTester_1_1CoordinateSets_1_1Subsets.html", null ],

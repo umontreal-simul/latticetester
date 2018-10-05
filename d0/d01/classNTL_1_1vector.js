@@ -1,6 +1,5 @@
 var classNTL_1_1vector =
 [
-    [ "size_type", "d0/d01/classNTL_1_1vector.html#aa4ce7dc750065f6413002e22a47b8a07", null ],
     [ "vector", "d0/d01/classNTL_1_1vector.html#a8237ef23b24c474c24b0486d773febda", null ],
     [ "vector", "d0/d01/classNTL_1_1vector.html#ae2b87f5aff6ceb487128a1e41f46cd63", null ],
     [ "vector", "d0/d01/classNTL_1_1vector.html#aa456524728e5c19e822427c199198d1d", null ],

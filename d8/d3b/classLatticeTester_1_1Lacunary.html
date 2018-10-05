@@ -36,7 +36,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-work-43</span>
+   &#160;<span id="projectnumber">0.1.0-work-55</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -121,9 +121,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a134d0ba52700f80519fccb34ce77dd72"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d3b/classLatticeTester_1_1Lacunary.html#a134d0ba52700f80519fccb34ce77dd72">getSize</a> () const</td></tr>
 <tr class="memdesc:a134d0ba52700f80519fccb34ce77dd72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the size of the set, that is the number of elements in the vector of indices.  <a href="#a134d0ba52700f80519fccb34ce77dd72">More...</a><br /></td></tr>
 <tr class="separator:a134d0ba52700f80519fccb34ce77dd72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a150bd68dd0817fecba5915965d97a236"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d3b/classLatticeTester_1_1Lacunary.html#a150bd68dd0817fecba5915965d97a236">calcIndicesStreams</a> (int s, int w, int &amp;minDim, int maxDim, int order)</td></tr>
-<tr class="memdesc:a150bd68dd0817fecba5915965d97a236"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fills the values of this object with <code>maxDim</code> indices starting from <code>0</code> by groups of \(s\), spaced apart by \(2^w\).  <a href="#a150bd68dd0817fecba5915965d97a236">More...</a><br /></td></tr>
-<tr class="separator:a150bd68dd0817fecba5915965d97a236"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abfa0005744bccda2a6356c1bb8b591d4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d3b/classLatticeTester_1_1Lacunary.html#abfa0005744bccda2a6356c1bb8b591d4">calcIndicesStreams</a> (int s, int w, int maxDim)</td></tr>
+<tr class="memdesc:abfa0005744bccda2a6356c1bb8b591d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fills the values of this object with <code>maxDim</code> indices starting from <code>0</code> by groups of \(s\), spaced apart by \(2^w\).  <a href="#abfa0005744bccda2a6356c1bb8b591d4">More...</a><br /></td></tr>
+<tr class="separator:abfa0005744bccda2a6356c1bb8b591d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2eb21f939706b560c2d8456ca099e791"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/d3b/classLatticeTester_1_1Lacunary.html#a2eb21f939706b560c2d8456ca099e791">toString</a> () const</td></tr>
 <tr class="memdesc:a2eb21f939706b560c2d8456ca099e791"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string that describes this object.  <a href="#a2eb21f939706b560c2d8456ca099e791">More...</a><br /></td></tr>
 <tr class="separator:a2eb21f939706b560c2d8456ca099e791"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -133,8 +133,8 @@ Public Member Functions</h2></td></tr>
 class LatticeTester::Lacunary&lt; BasInt &gt;</h3>
 
 <p>This class represents a set of indices with lacunary values. </p>
-<p>This class stores the values of those indices as a vector, and they can be accessed via the <code>[]</code> operator. There also is a method to construct a set with values spaced in a certain way. This class is present here to be used with the subclasses of <a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html" title="This class is a skeleton for the implementation of different types of lattices of arbitrary rank...">IntLattice</a>.</p>
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000014">Todo:</a></b></dt><dd>Test the implementation of this class. <b>Marc-Antoine</b>: I feel like the current implementation of this class is obsolete : it contains too few methods and functions to be of more use than the vector classes. </dd></dl>
+<p>This class stores the values of those indices as a vector, and they can be accessed via the <code>[]</code> operator. There also is a method to construct a set with values spaced in a certain way. This class is present here to be used with the subclasses of <a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html" title="This class is a skeleton for the implementation of different types of lattices. ">IntLattice</a>.</p>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000017">Todo:</a></b></dt><dd>Test the implementation of this class. <b>Marc-Antoine</b>: I feel like the current implementation of this class is obsolete : it contains too few methods and functions to be of more use than the vector classes. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a8c91ccc16be251a222faa28853849c8f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8c91ccc16be251a222faa28853849c8f">&#9670;&nbsp;</a></span>Lacunary() <span class="overload">[1/2]</span></h2>
@@ -173,7 +173,7 @@ template&lt;typename BasInt &gt; </div>
 </div><div class="memdoc">
 
 <p>Constructor for a set of \(t\) indices given in the vector <code>C</code>. </p>
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000015">Todo:</a></b></dt><dd>This constructor might not work as intended because BasIntVec is an <a class="el" href="../../d0/d01/classNTL_1_1vector.html" title="A subclass of the NTL::Vec&lt;T&gt; class. ">NTL::vector</a> type and this function dynamically allocates an array to it. There is no real reason to do that since there is a setSize method available. </dd></dl>
+<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000018">Todo:</a></b></dt><dd>This constructor might not work as intended because BasIntVec is an <a class="el" href="../../d0/d01/classNTL_1_1vector.html" title="A subclass of the NTL::Vec&lt;T&gt; class. ">NTL::vector</a> type and this function dynamically allocates an array to it. There is no real reason to do that since there is a setSize method available. </dd></dl>
 
 </div>
 </div>
@@ -204,7 +204,7 @@ template&lt;typename BasInt &gt; </div>
 </div><div class="memdoc">
 
 <p>Constructor for an empty set of \(t\) lacunary indices. </p>
-<p>This constructor set the value of the indices to <code>0</code>. To set indices, one should use either one <code>[]</code> or <code>getLac</code>, or the <code><a class="el" href="../../d8/d3b/classLatticeTester_1_1Lacunary.html#a150bd68dd0817fecba5915965d97a236" title="Fills the values of this object with maxDim indices starting from 0 by groups of , spaced apart by . ">calcIndicesStreams()</a></code> method. </p>
+<p>This constructor set the value of the indices to <code>0</code>. To set indices, one should use either one <code>[]</code> or <code>getLac</code>, or the <code><a class="el" href="../../d8/d3b/classLatticeTester_1_1Lacunary.html#abfa0005744bccda2a6356c1bb8b591d4" title="Fills the values of this object with maxDim indices starting from 0 by groups of , spaced apart by . ">calcIndicesStreams()</a></code> method. </p>
 
 </div>
 </div>
@@ -238,8 +238,8 @@ template&lt;typename BasInt &gt; </div>
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a150bd68dd0817fecba5915965d97a236"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a150bd68dd0817fecba5915965d97a236">&#9670;&nbsp;</a></span>calcIndicesStreams()</h2>
+<a id="abfa0005744bccda2a6356c1bb8b591d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abfa0005744bccda2a6356c1bb8b591d4">&#9670;&nbsp;</a></span>calcIndicesStreams()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -261,20 +261,8 @@ template&lt;typename BasInt &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int &amp;&#160;</td>
-          <td class="paramname"><em>minDim</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>maxDim</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>order</em>&#160;</td>
+          <td class="paramname"><em>maxDim</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -410,7 +398,7 @@ template&lt;typename BasInt &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a></li><li class="navelem"><a class="el" href="../../d8/d3b/classLatticeTester_1_1Lacunary.html">Lacunary</a></li>
-    <li class="footer">Generated on Mon Sep 10 2018 16:43:21 for Lattice Tester Manual by
+    <li class="footer">Generated on Fri Oct 5 2018 16:56:55 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

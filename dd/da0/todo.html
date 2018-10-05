@@ -36,7 +36,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-work-43</span>
+   &#160;<span id="projectnumber">0.1.0-work-55</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -93,74 +93,60 @@ $(document).ready(function(){initNavTree('dd/da0/todo.html','../../');});
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><dl class="reflist">
-<dt><a class="anchor" id="_todo000003"></a>Page <a class="el" href="../../da/d18/a_intro.html">Background</a>  </dt>
+<dt><a class="anchor" id="_todo000004"></a>Page <a class="el" href="../../da/d18/a_intro.html">Background</a>  </dt>
 <dd><b>Pierre</b>: Add an example of this, with a figure. </dd>
 <dt><a class="anchor" id="_todo000001"></a>Page <a class="el" href="../../d4/d4e/detailed_usage.html">Detailed usage instructions</a>  </dt>
-<dd>Change this so that it takes into account the fact that we only have one executable. Change the formatting to use markdown </dd>
-<dt><a class="anchor" id="_todo000004"></a>page <a class="el" href="../../index.html">LatticeTester Manual</a>  </dt>
+<dd><p class="startdd">Update the <a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace. ">LatticeTester</a> executable</p>
+<p class="enddd">multiple norms? </p>
+</dd>
+<dt><a class="anchor" id="_todo000005"></a>page <a class="el" href="../../index.html">LatticeTester Manual</a>  </dt>
 <dd><p class="startdd">Include the manual in the repo and give a link to it.</p>
 <p><b>Marc-Antoine</b> The presence of figures of merit computations in <a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace. ">LatticeTester</a> is logical but currently very primitive. Shouldn't we put the tests and various ways to compute figures of merit (including weighted figures of merit for projections) in classes? This could be done whilst cleaning the switch <code>statements</code> so it seems like a logical step.</p>
 <p class="enddd">Have a word on figures of merit if needed. </p>
 </dd>
-<dt><a class="anchor" id="_todo000007"></a>Member <a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html#af2d87fd90972f750218d516e4fa47596">LatticeTester::BasisConstruction&lt; BasInt &gt;::GCDConstruction</a>  (BasIntMat &amp;matrix)</dt>
+<dt><a class="anchor" id="_todo000008"></a>Member <a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html#af2d87fd90972f750218d516e4fa47596">LatticeTester::BasisConstruction&lt; BasInt &gt;::GCDConstruction</a>  (BasIntMat &amp;matrix)</dt>
 <dd>Give a running time. <b>Marc-Antoine</b>: This runs in O(min(row, col)*lg(n)*row + row^2) time I think, but it might be a bit more because we do operations on vectors so we might need to multiply this by col.  </dd>
-<dt><a class="anchor" id="_todo000027"></a>Member <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a17df0e6fdb1f11335eaf91f82ee298b0">LatticeTester::CalcDual</a>  (const Matr &amp;A, Matr &amp;B, int d, const Int &amp;m)</dt>
-<dd>Check the algorithm used here and explain how it works and what it takes for it to work.  </dd>
-<dt><a class="anchor" id="_todo000008"></a>Member <a class="el" href="../../d6/d95/classLatticeTester_1_1IntFactor.html#a961865616d0ca7d7b7081637e08ee258">LatticeTester::IntFactor&lt; Int &gt;::isPrime</a>  (const Int &amp;y, std::int64_t k)</dt>
+<dt><a class="anchor" id="_todo000011"></a>Namespace <a class="el" href="../../d0/d6f/namespaceLatticeTester_1_1CoordinateSets.html">LatticeTester::CoordinateSets</a>  </dt>
+<dd>present/make a template class for reimplementations so that the classes in this namespace all work the same (they already do) and can be reimplemented easily.  </dd>
+<dt><a class="anchor" id="_todo000012"></a>Class <a class="el" href="../../d7/d31/classLatticeTester_1_1CoordinateSets_1_1AddCoordinate.html">LatticeTester::CoordinateSets::AddCoordinate&lt; BASE &gt;</a>  </dt>
+<dd>Should this class implement the <a class="el" href="../../d0/d6f/namespaceLatticeTester_1_1CoordinateSets.html" title="A namespace containing different implementation of sets of coordinates. ">CoordinateSets</a> template? Because it would need a few more attributes. This class also needs to be benchmarked to see how much slower it is (because it will be).  </dd>
+<dt><a class="anchor" id="_todo000013"></a>Member <a class="el" href="../../d6/d95/classLatticeTester_1_1IntFactor.html#a961865616d0ca7d7b7081637e08ee258">LatticeTester::IntFactor&lt; Int &gt;::isPrime</a>  (const Int &amp;y, std::int64_t k)</dt>
 <dd>We should have an option to apply something else than a probabilistic test. Also, maybe we could store more primes than those smaller than 2^16.  </dd>
-<dt><a class="anchor" id="_todo000009"></a>Class <a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html">LatticeTester::IntLattice&lt; Int, BasInt, Dbl, RedDbl &gt;</a>  </dt>
-<dd>define rank of a lattice in the intro </dd>
-<dt><a class="anchor" id="_todo000011"></a>Member <a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#a68235b33d81fc119b2006b3dbbcb426d">LatticeTester::IntLattice&lt; Int, BasInt, Dbl, RedDbl &gt;::buildBasis</a>  (int d)</dt>
-<dd>add a module for basis construction.  </dd>
-<dt><a class="anchor" id="_todo000010"></a>Member <a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#abeecdd1d7ec6d821e502bcb8c9bca6ef">LatticeTester::IntLattice&lt; Int, BasInt, Dbl, RedDbl &gt;::calcLgVolDual2</a>  (double lgm2)</dt>
+<dt><a class="anchor" id="_todo000014"></a>Member <a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#abeecdd1d7ec6d821e502bcb8c9bca6ef">LatticeTester::IntLattice&lt; Int, BasInt, Dbl, RedDbl &gt;::calcLgVolDual2</a>  (double lgm2)</dt>
 <dd>What is this?  </dd>
-<dt><a class="anchor" id="_todo000012"></a>Member <a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#abcb9d029e70935a6f883f5bcf6ae5e24">LatticeTester::IntLattice&lt; Int, BasInt, Dbl, RedDbl &gt;::kill</a>  ()</dt>
+<dt><a class="anchor" id="_todo000015"></a>Member <a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#abcb9d029e70935a6f883f5bcf6ae5e24">LatticeTester::IntLattice&lt; Int, BasInt, Dbl, RedDbl &gt;::kill</a>  ()</dt>
 <dd>Find a way to move this somewhere else. This is currently used in LatMRG and should not be here. We keep it because It would be a hassle to correct LatMRG to remove this.  </dd>
-<dt><a class="anchor" id="_todo000013"></a>Member <a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a0d132b7c45dfe36cbfaaad80530659bd">LatticeTester::IntLatticeBasis&lt; Int, BasInt, Dbl, RedDbl &gt;::getXX</a>  (int i) const</dt>
+<dt><a class="anchor" id="_todo000016"></a>Member <a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a0d132b7c45dfe36cbfaaad80530659bd">LatticeTester::IntLatticeBasis&lt; Int, BasInt, Dbl, RedDbl &gt;::getXX</a>  (int i) const</dt>
 <dd>find the real use of m_xx. It is only used in reductMinkowski in <a class="el" href="../../d8/de3/classLatticeTester_1_1Reducer.html" title="This class implements (or wraps from NTL) all the functions that are needed to reduce a basis...">Reducer</a> and it is set in the function depending on it's parameter. It is probably very useless  </dd>
-<dt><a class="anchor" id="_todo000025"></a>Member <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a8380e2ebec791f472a3634348bc0e22a">LatticeTester::Invert</a>  (const IntVec &amp;A, IntVec &amp;B, int n)</dt>
+<dt><a class="anchor" id="_todo000023"></a>Member <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a8380e2ebec791f472a3634348bc0e22a">LatticeTester::Invert</a>  (const IntVec &amp;A, IntVec &amp;B, int n)</dt>
 <dd>This function does not do what the old doc says. Check if it causes a problem where this function is called.  </dd>
-<dt><a class="anchor" id="_todo000028"></a>Member <a class="el" href="../../d8/d74/namespaceLatticeTester.html#aa332228978921670954fc35afb8d7440">LatticeTester::IsOdd</a>  (const std::int64_t &amp;x)</dt>
-<dd>It is useless that this function is implemented. Look if it is removable.  </dd>
-<dt><a class="anchor" id="_todo000029"></a>Member <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a1cfdf172615c09b6a677ff935621632d">LatticeTester::IsZero</a>  (const std::int64_t &amp;x)</dt>
-<dd>It is useless that this function is implemented. Look if it is removable.  </dd>
-<dt><a class="anchor" id="_todo000014"></a>Class <a class="el" href="../../d8/d3b/classLatticeTester_1_1Lacunary.html">LatticeTester::Lacunary&lt; BasInt &gt;</a>  </dt>
+<dt><a class="anchor" id="_todo000017"></a>Class <a class="el" href="../../d8/d3b/classLatticeTester_1_1Lacunary.html">LatticeTester::Lacunary&lt; BasInt &gt;</a>  </dt>
 <dd>Test the implementation of this class. <b>Marc-Antoine</b>: I feel like the current implementation of this class is obsolete : it contains too few methods and functions to be of more use than the vector classes.  </dd>
-<dt><a class="anchor" id="_todo000015"></a>Member <a class="el" href="../../d8/d3b/classLatticeTester_1_1Lacunary.html#a8c91ccc16be251a222faa28853849c8f">LatticeTester::Lacunary&lt; BasInt &gt;::Lacunary</a>  (const BasIntVec &amp;C, int t)</dt>
+<dt><a class="anchor" id="_todo000018"></a>Member <a class="el" href="../../d8/d3b/classLatticeTester_1_1Lacunary.html#a8c91ccc16be251a222faa28853849c8f">LatticeTester::Lacunary&lt; BasInt &gt;::Lacunary</a>  (const BasIntVec &amp;C, int t)</dt>
 <dd>This constructor might not work as intended because BasIntVec is an <a class="el" href="../../d0/d01/classNTL_1_1vector.html" title="A subclass of the NTL::Vec&lt;T&gt; class. ">NTL::vector</a> type and this function dynamically allocates an array to it. There is no real reason to do that since there is a setSize method available.  </dd>
-<dt><a class="anchor" id="_todo000016"></a>Class <a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html">LatticeTester::LatticeAnalysis&lt; Int, BasInt, Dbl, RedDbl &gt;</a>  </dt>
-<dd>implement \(\mathcal{P}_\alpha\) and implement the other one liste in the enum. </dd>
-<dt><a class="anchor" id="_todo000017"></a>Class <a class="el" href="../../d9/d36/classLatticeTester_1_1NormaMinkowski.html">LatticeTester::NormaMinkowski&lt; RedDbl &gt;</a>  </dt>
+<dt><a class="anchor" id="_todo000019"></a>Class <a class="el" href="../../d9/d36/classLatticeTester_1_1NormaMinkowski.html">LatticeTester::NormaMinkowski&lt; RedDbl &gt;</a>  </dt>
 <dd>Look with Pierre to see if this still has any use/why it is implemented. </dd>
-<dt><a class="anchor" id="_todo000018"></a>Class <a class="el" href="../../d1/d30/classLatticeTester_1_1NormaRogers.html">LatticeTester::NormaRogers&lt; RedDbl &gt;</a>  </dt>
+<dt><a class="anchor" id="_todo000020"></a>Class <a class="el" href="../../d1/d30/classLatticeTester_1_1NormaRogers.html">LatticeTester::NormaRogers&lt; RedDbl &gt;</a>  </dt>
 <dd>Explain how this is calculated </dd>
-<dt><a class="anchor" id="_todo000024"></a>Member <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a53d8462179e4ca773d33843c15c77afc">LatticeTester::ProdScal</a>  (const Vect1 &amp;A, const Vect2 &amp;B, int n, Scal &amp;D)</dt>
+<dt><a class="anchor" id="_todo000009"></a>Member <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9770e4d57aa715e249cd7e700c6f37e4">LatticeTester::NormType</a>  </dt>
+<dd>Maybe just implement a function for each norm and pass these functions? Otherwise, we could have an abstract class norm with a simple function norm that is reimplemented.  </dd>
+<dt><a class="anchor" id="_todo000010"></a>Member <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9b64954fb374b16e1fe991e435501d65">LatticeTester::PrimeType</a>  </dt>
+<dd>Maybe this should be defined in the <a class="el" href="../../d6/d95/classLatticeTester_1_1IntFactor.html" title="The objects of this class are the &quot;prime&quot; factors in the decomposition of a positive integer...">IntFactor</a> class  </dd>
+<dt><a class="anchor" id="_todo000022"></a>Member <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a53d8462179e4ca773d33843c15c77afc">LatticeTester::ProdScal</a>  (const Vect1 &amp;A, const Vect2 &amp;B, int n, Scal &amp;D)</dt>
 <dd>This uses so many types without check about them and also assumes all those types can be converted to each other without problem... The types here should be uniformized. THIS DOES NOT SEEM TO BE A VERY SAFE IMPLEMENTATION  </dd>
-<dt><a class="anchor" id="_todo000022"></a>Member <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a8e829d77e42c8dbabc8f6e37eca2a714">LatticeTester::RandInt</a>  (int i, int j)</dt>
+<dt><a class="anchor" id="_todo000021"></a>Member <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a8e829d77e42c8dbabc8f6e37eca2a714">LatticeTester::RandInt</a>  (int i, int j)</dt>
 <dd>For some reason, this only uses the first 62 bits of the generator. Why?  </dd>
-<dt><a class="anchor" id="_todo000026"></a>Member <a class="el" href="../../d8/d74/namespaceLatticeTester.html#aa519a1e0589932719c79b73c76bb1093">LatticeTester::Triangularization</a>  (Matr &amp;W, Matr &amp;V, int lin, int col, const Int &amp;m)</dt>
-<dd>Check the algorithm used here and what it does.  </dd>
-<dt><a class="anchor" id="_todo000002"></a>Page <a class="el" href="../../d0/d0a/DIY.html">Make your own program</a>  </dt>
-<dd>this </dd>
-<dt><a class="anchor" id="_todo000020"></a>Member <a class="el" href="../../d4/d6f/classNTL_1_1matrix.html#a13de13e7e0de8829cff40c18d5881a47">NTL::matrix&lt; T &gt;::size_type</a>  </dt>
-<dd>Check if this type is valid or should be reverted to <code>long</code>  </dd>
-<dt><a class="anchor" id="_todo000019"></a>Member <a class="el" href="../../d0/d01/classNTL_1_1vector.html#aa4ce7dc750065f6413002e22a47b8a07">NTL::vector&lt; T &gt;::size_type</a>  </dt>
-<dd>Check if this type is valid or should be reverted to <code>long</code>  </dd>
-<dt><a class="anchor" id="_todo000021"></a>Module <a class="el" href="../../d2/d5a/namespaceNTL.html#amgrpadbfda7fb0755e9963d0df5af6369b93">Some other compatibility utilities</a>  </dt>
-<dd>Maybe some of this can be rewritten as templates. This could be usefull because it is easy to see how this bit of code could not work with certain compilators.  </dd>
-<dt><a class="anchor" id="_todo000021"></a>Module <a class="el" href="../../d2/d5a/namespaceNTL.html#amgrpadbfda7fb0755e9963d0df5af6369b93">Some other compatibility utilities</a>  </dt>
-<dd>Maybe some of this can be rewritten as templates. This could be usefull because it is easy to see how this bit of code could not work with certain compilators.  </dd>
-<dt><a class="anchor" id="_todo000023"></a>Module <a class="el" href="../../d8/d74/namespaceLatticeTester.html#amgrpb3f69e461542074d9696ee29ded180a0">Vectors</a>  </dt>
-<dd>Functions of this section take the size of the input vectors as an argument with name d. Some of them assume d is the number of components of the vectors while somme of them assume that d+1 is the number of components of the vector. We need to uniformize that.  </dd>
-<dt><a class="anchor" id="_todo000023"></a>Module <a class="el" href="../../d8/d74/namespaceLatticeTester.html#amgrpb3f69e461542074d9696ee29ded180a0">Vectors</a>  </dt>
-<dd>Functions of this section take the size of the input vectors as an argument with name d. Some of them assume d is the number of components of the vectors while somme of them assume that d+1 is the number of components of the vector. We need to uniformize that. </dd>
+<dt><a class="anchor" id="_todo000024"></a>Member <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a1b998d416a64afe708710620a4b96810">LatticeTester::Triangularization</a>  (NTL::matrix&lt; Int &gt; &amp;W, NTL::matrix&lt; Int &gt; &amp;V, int lin, int col, const Int &amp;m)</dt>
+<dd>Benchmark this algorithm. Maybe this is fast, but this is not space efficient. Maybe something similar could be done in place. This algorithm should not necessitate the use of <code>m</code>.  </dd>
+<dt><a class="anchor" id="_todo000003"></a>Page <a class="el" href="../../d0/d0a/DIY.html">Make your own program</a>  </dt>
+<dd>this</dd>
 </dl>
 </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Mon Sep 10 2018 16:43:21 for Lattice Tester Manual by
+    <li class="footer">Generated on Fri Oct 5 2018 16:56:55 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
   </ul>

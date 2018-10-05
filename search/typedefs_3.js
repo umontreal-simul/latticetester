@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['vec_5f64',['Vec_64',['../d2/d5a/namespaceNTL.html#aab2c03c6ebdc24ad122abcc86be689c1',1,'NTL']]]
+  ['weight',['Weight',['../db/d40/classLatticeTester_1_1Weights.html#a5b53e5716aeadbb040a52c9c8c124c74',1,'LatticeTester::Weights']]]
 ];

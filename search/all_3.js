@@ -11,6 +11,7 @@ var searchData=
   ['dotest',['doTest',['../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a0d66a8cb4be8acf3a8a209ac37091487',1,'LatticeTester::LatticeAnalysis']]],
   ['dotestfromdirectory',['doTestFromDirectory',['../df/d59/classLatticeTester_1_1LatticeAnalysis.html#ae4ea746678d3ddf687edbfa6d67089b2',1,'LatticeTester::LatticeAnalysis']]],
   ['dotestfrominputfile',['doTestFromInputFile',['../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a80dc121973168ab4a0640890da993ac7',1,'LatticeTester::LatticeAnalysis']]],
-  ['dualconstruction',['DualConstruction',['../d0/d18/classLatticeTester_1_1BasisConstruction.html#a2c02cb6ca4b37e62c2a7acff36b1415a',1,'LatticeTester::BasisConstruction']]],
-  ['dualize',['dualize',['../d6/dc0/classLatticeTester_1_1IntLattice.html#a5e1b05159ba762a632273f2d3273ec9e',1,'LatticeTester::IntLattice::dualize()'],['../de/dfe/classLatticeTester_1_1Rank1Lattice.html#aad299f05cc3c03540b2cc44e23b13473',1,'LatticeTester::Rank1Lattice::dualize()']]]
+  ['dualconstruction',['DualConstruction',['../d0/d18/classLatticeTester_1_1BasisConstruction.html#a87a05d339617608f3ad3ba1c47d1acd1',1,'LatticeTester::BasisConstruction']]],
+  ['dualize',['dualize',['../d6/dc0/classLatticeTester_1_1IntLattice.html#a5e1b05159ba762a632273f2d3273ec9e',1,'LatticeTester::IntLattice::dualize()'],['../de/dfe/classLatticeTester_1_1Rank1Lattice.html#aad299f05cc3c03540b2cc44e23b13473',1,'LatticeTester::Rank1Lattice::dualize()']]],
+  ['dualslow',['DualSlow',['../d0/d18/classLatticeTester_1_1BasisConstruction.html#ab486a7a6110df22a049122bb81fb2bf9',1,'LatticeTester::BasisConstruction']]]
 ];

@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['set9',['set9',['../d8/d74/namespaceLatticeTester.html#a8196a81e178fdb095a0deaf8b0803614',1,'LatticeTester::set9(std::int64_t &amp;x)'],['../d8/d74/namespaceLatticeTester.html#ad378d927159f2724975f6d1264daf8e4',1,'LatticeTester::set9(NTL::ZZ &amp;x)']]],
+  ['set',['set',['../d2/d5a/namespaceNTL.html#a968f8ba311c0012dd1ee4f024ae54e51',1,'NTL']]],
   ['setboundl2',['setBoundL2',['../d8/de3/classLatticeTester_1_1Reducer.html#ad20dd87ca85cf906e59d430c6a16bada',1,'LatticeTester::Reducer']]],
   ['setcriterion',['setCriterion',['../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a0debb821e811014de0b189cdc2594548',1,'LatticeTester::LatticeAnalysis']]],
   ['setdefaultweight',['setDefaultWeight',['../d3/d01/classLatticeTester_1_1OrderDependentWeights.html#a1775266deaa8674cc32a0af836712b59',1,'LatticeTester::OrderDependentWeights::setDefaultWeight()'],['../da/d3e/classLatticeTester_1_1ProductWeights.html#afb81e6c243ba338c2e9dd500c1fd5a24',1,'LatticeTester::ProductWeights::setDefaultWeight()']]],
@@ -9,7 +9,7 @@ var searchData=
   ['setdualnegativenorm',['setDualNegativeNorm',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#af7e1cf42b663484f7e652ac128687659',1,'LatticeTester::IntLatticeBasis::setDualNegativeNorm()'],['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a301e74c39bc556450ffa755b110e4903',1,'LatticeTester::IntLatticeBasis::setDualNegativeNorm(const int &amp;i)']]],
   ['setdualvecnorm',['setDualVecNorm',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a4ee626bcafc762ae00166fc8fe9bb276',1,'LatticeTester::IntLatticeBasis']]],
   ['setfactor',['setFactor',['../d6/d95/classLatticeTester_1_1IntFactor.html#ab2bcbb95e575b2ccae88b20799d7446f',1,'LatticeTester::IntFactor']]],
-  ['setlac',['setLac',['../d6/dc0/classLatticeTester_1_1IntLattice.html#aa57093d00d16046c289b80306c219e62',1,'LatticeTester::IntLattice']]],
+  ['setlac',['setLac',['../d6/dc0/classLatticeTester_1_1IntLattice.html#a19cb5accc931351a384f3039a197974d',1,'LatticeTester::IntLattice']]],
   ['setlogdensity',['setLogDensity',['../d0/dc8/classLatticeTester_1_1Normalizer.html#a57179afb1d2912d93e4b35202241b5ba',1,'LatticeTester::Normalizer']]],
   ['setmaxnodesbb',['setMaxNodesBB',['../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a1fc0539cd051f00ce329117b903736f3',1,'LatticeTester::LatticeAnalysis']]],
   ['setmultiplicity',['setMultiplicity',['../d6/d95/classLatticeTester_1_1IntFactor.html#ac79ea554966fa6d3e9f300e795ae4822',1,'LatticeTester::IntFactor']]],
@@ -33,7 +33,6 @@ var searchData=
   ['size',['size',['../d0/d01/classNTL_1_1vector.html#a27e58542ea75f8221a479637f1a8fc0c',1,'NTL::vector']]],
   ['size1',['size1',['../d4/d6f/classNTL_1_1matrix.html#ac642b4a5afc2a742f30c50467ecf9559',1,'NTL::matrix']]],
   ['size2',['size2',['../d4/d6f/classNTL_1_1matrix.html#a3c020943f9dced68275092612a89f7ab',1,'NTL::matrix']]],
-  ['size_5ftype',['size_type',['../d0/d01/classNTL_1_1vector.html#aa4ce7dc750065f6413002e22a47b8a07',1,'NTL::vector::size_type()'],['../d4/d6f/classNTL_1_1matrix.html#a13de13e7e0de8829cff40c18d5881a47',1,'NTL::matrix::size_type()']]],
   ['sort',['sort',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a82f6e60a98f1c2cdca32babe73becb87',1,'LatticeTester::IntLatticeBasis']]],
   ['subsets',['Subsets',['../d8/d6d/classLatticeTester_1_1CoordinateSets_1_1Subsets.html',1,'LatticeTester::CoordinateSets::Subsets'],['../d8/d6d/classLatticeTester_1_1CoordinateSets_1_1Subsets.html#aac137b6289ae3d3513eae1bcb6b16f78',1,'LatticeTester::CoordinateSets::Subsets::Subsets()']]],
   ['swap9',['swap9',['../d8/d74/namespaceLatticeTester.html#ad4d16fed8fda92252dc423db28136932',1,'LatticeTester']]]

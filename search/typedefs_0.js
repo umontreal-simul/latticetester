@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['bmat',['BMat',['../d7/d31/classLatticeTester_1_1CoordinateSets_1_1AddCoordinate.html#aa078adf7464b28f4bb15e2ed48b45d39',1,'LatticeTester::CoordinateSets::AddCoordinate']]]
+  ['mat_5f64',['Mat_64',['../d2/d5a/namespaceNTL.html#a60a94702129d4e1861593e9b065d6977',1,'NTL']]]
 ];

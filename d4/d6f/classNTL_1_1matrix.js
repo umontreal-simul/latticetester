@@ -1,6 +1,5 @@
 var classNTL_1_1matrix =
 [
-    [ "size_type", "d4/d6f/classNTL_1_1matrix.html#a13de13e7e0de8829cff40c18d5881a47", null ],
     [ "matrix", "d4/d6f/classNTL_1_1matrix.html#a16f367fc850c9ca39bbbb796971de141", null ],
     [ "matrix", "d4/d6f/classNTL_1_1matrix.html#aafb33f5a0a25d024f9745e4c85f99d99", null ],
     [ "matrix", "d4/d6f/classNTL_1_1matrix.html#accc96531e7fef556bbc9385321f4c8f6", null ],

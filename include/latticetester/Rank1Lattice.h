@@ -18,6 +18,7 @@
 #ifndef RANK1LATTICE_H
 #define RANK1LATTICE_H
 
+#include "latticetester/Util.h"
 #include "latticetester/Const.h"
 #include "latticetester/IntLattice.h"
 
@@ -237,12 +238,11 @@ namespace LatticeTester {
 
       // if a[0] != 1, the basis must be triangularized
       if (this->m_basis (0, 0) != 1) {
-        Triangularization < BasIntMat > (
+        Triangularization (
             this->m_basis, this->m_dualbasis, d, d, this->m_modulo);
         dualize ();
       }
-      CalcDual < BasIntMat > (
-          this->m_basis, this->m_dualbasis, d, this->m_modulo);
+      CalcDual (this->m_basis, this->m_dualbasis, d, this->m_modulo);
       this->setNegativeNorm ();
       this->setDualNegativeNorm ();
     }

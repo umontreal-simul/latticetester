@@ -54,7 +54,7 @@
  * mieux que la triangularisation justement parce que les vecteurs n'escaladent
  * pas vers des tailles démoniaques.
  * */
-#define NTL_TYPES_CODE 2
+#define NTL_TYPES_CODE 1
 
 #include <iostream>
 #include <ctime>
@@ -63,6 +63,7 @@
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/Util.h"
 #include "latticetester/ParamReader.h"
+#include "latticetester/IntLattice.h"
 
 using namespace LatticeTester;
 
@@ -156,6 +157,8 @@ int main() {
   std::cout << "cou_dual: " << cou_dual << std::endl;
   std::cout << "LLL_dual: " << LLL_dual << std::endl;
   std::cout << "ma_dual/cou_dual: " << (double)ma_dual/cou_dual << std::endl;
+
+  IntLattice<MScal, BScal, NScal, RScal> Lattice(MScal(1), 1, 1);
 
   return 0;
 }

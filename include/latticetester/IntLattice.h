@@ -18,19 +18,20 @@
 #ifndef LATTICETESTER__INTLATTICE_H
 #define LATTICETESTER__INTLATTICE_H
 
-#include <cassert>
-
 #include "latticetester/IntLatticeBasis.h"
-#include "latticetester/Normalizer.h"
 #include "latticetester/NormaBestLat.h"
+#include "latticetester/NormaBestBound.h"
 #include "latticetester/NormaLaminated.h"
 #include "latticetester/NormaRogers.h"
 #include "latticetester/NormaMinkL1.h"
 #include "latticetester/NormaPalpha.h"
 #include "latticetester/NormaMinkowski.h"
+#include "latticetester/Normalizer.h"
 #include "latticetester/Coordinates.h"
 #include "latticetester/Lacunary.h"
 #include "latticetester/Util.h"
+
+#include <cassert>
 
 namespace LatticeTester {
 
@@ -265,7 +266,7 @@ namespace LatticeTester {
       int dim = this->getDim ();
       IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::initVecNorm();
       double temp;
-      conv (temp, this->m_modulo);
+      NTL::conv (temp, this->m_modulo);
 
       m_lgVolDual2 = new double[dim+1];
       m_lgm2 = 2.0 * Lg (temp);
@@ -465,6 +466,9 @@ namespace LatticeTester {
         case BESTLAT:
           normal = new NormaBestLat<RedDbl> (logDensity, dim);
           break;
+        case BESTBOUND:
+          normal = new NormaBestBound<RedDbl> (logDensity, dim);
+          break;
         case LAMINATED:
           normal = new NormaLaminated<RedDbl> (logDensity, dim);
           break;
@@ -474,14 +478,11 @@ namespace LatticeTester {
         case MINKL1:
           normal = new NormaMinkL1<RedDbl> (logDensity, dim);
           break;
-        case MINKOWSKI:
+        case MINK:
           normal = new NormaMinkowski<RedDbl> (logDensity, dim);
           break;
-        case NORMA_GENERIC:
+        case NONE:
           normal = new Normalizer<RedDbl> (logDensity, dim, "Norma_generic");
-          break;
-        case PALPHA_N:
-          normal = new NormaPalpha<Int, RedDbl> (this->m_modulo, alpha, dim);
           break;
         default:
           std::cout << "normalizer:   no such case";

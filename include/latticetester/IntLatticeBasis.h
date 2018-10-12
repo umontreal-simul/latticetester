@@ -384,7 +384,7 @@ namespace LatticeTester {
         /**
          * The `m` used for rescaling the lattice.
          */
-        Int m_modulo;
+        BasInt m_modulo;
 
         /**
          * If m_withDual is `true` a dual basis has been specified, otherwise it

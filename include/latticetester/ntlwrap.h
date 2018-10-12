@@ -15,8 +15,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef __NTLWRAP_H__
-#define __NTLWRAP_H__
+#ifndef LATTICETESTER__NTLWRAP_H
+#define LATTICETESTER__NTLWRAP_H
 
 #include <NTL/vector.h>
 #include <NTL/matrix.h>
@@ -42,11 +42,6 @@
 
 namespace NTL
 {
-  /// Renaming this supported type for convenience.
-  typedef Mat<std::int64_t> Mat_64;
-  /// Renaming this supported type for convenience.
-  typedef Vec<std::int64_t> Vec_64;
-
   /**
    * A subclass of the `NTL::Vec<T>` class. It extends its parent with a few 
    * methods and overloads a few others with more compatible defaults.
@@ -114,6 +109,16 @@ namespace NTL
        * This uses `%NTL::%Vec<T>::%MaxLength()`.
        */
       size_type max_size() const { return this->MaxLength(); }
+
+      /**
+      * a copy from NTL::Vec<T>::append
+      */
+      void push_back(const T& element) { this->append(element); }
+
+      /**
+      * return the last element, this one is for STL compatibility
+      */
+      T back() { return (*(this->end()-1)); }
 
       /**
        * Returns `true` if the vector has length 0 and `false` otherwise.
@@ -205,12 +210,7 @@ namespace NTL
       const T& operator()(size_type i, size_type j) const {
         return (*this)[i][j];
       }
-
   };
-
-
-
-
 
   /**
    * An extension of `NTL::vector<T>` implemented in this module to be used as
@@ -232,6 +232,13 @@ namespace NTL
           this->_vec__rep = 0; /* avoid destruction in parent class */
         }
     };
+
+  //============================================================================
+
+  /// Renaming this supported type for convenience.
+  typedef Mat<std::int64_t> Mat_64;
+  /// Renaming this supported type for convenience.
+  typedef Vec<std::int64_t> Vec_64;
 
   //============================================================================
 
@@ -259,8 +266,8 @@ namespace NTL
    * @}
    * */
 
-  double determinant(NTL::matrix<long int>& mat);
+  double determinant(const NTL::matrix<std::int64_t>& mat);
 
 } // End namespace NTL
 
-#endif // __NTLWRAP_H__
+#endif // LATTICETESTER__NTLWRAP_H

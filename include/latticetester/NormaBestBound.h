@@ -15,8 +15,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATTICETESTER__NORMAROGERS_H
-#define LATTICETESTER__NORMAROGERS_H
+#ifndef LATTICETESTER__NORMABESTBOUND_H
+#define LATTICETESTER__NORMABESTBOUND_H
 
 #include "latticetester/Normalizer.h"
 

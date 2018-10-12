@@ -17,7 +17,7 @@ def build(ctx):
                 stlib=ctx.env.STLIB_NTL + ctx.env.STLIB_GMP,
                 target=src.name[:-3],
                 use=['latticetester'],
-                install_path='examples')
+                install_path='${BINDIR}/examples')
 
     ctx.set_group('group4')
     for src in ctx.path.ant_glob('build/examples/*.o'):
@@ -25,17 +25,17 @@ def build(ctx):
                 source=src,
                 target=src.name[:],
                 use=src.name[:-6] + 'cc',
-                install_path='examples')
+                install_path='${BINDIR}/examples')
         
     ctx.set_group('group5')
     for src in ctx.path.ant_glob('*.dat'):
         ctx(rule='cp ${SRC} ${TGT}',
                 source=src,
                 target=src.name[:],
-                install_path='examples')
+                install_path='${BINDIR}/examples')
 
     for src in ctx.path.ant_glob('*.zip'):
         ctx(rule='cp ${SRC} ${TGT}',
                 source=src,
                 target=src.name[:],
-                install_path='examples')
+                install_path='${BINDIR}/examples')

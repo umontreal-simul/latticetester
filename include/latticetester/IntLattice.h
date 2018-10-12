@@ -36,8 +36,7 @@ namespace LatticeTester {
 
   /**
    * This class is a skeleton for the implementation of different types of 
-   * lattices of arbitrary rank.
-   * \todo define rank of a lattice in the intro
+   * lattices.
    * 
    * This class contains a method to compute lattices of projections of 
    * \f$\{x_i\}_{ 0 \leq i}\f$, a method to exchange the basis and the dual 
@@ -118,7 +117,6 @@ namespace LatticeTester {
            * Computes the logarithm of the normalization factor
            * (<tt>m_lgVolDual2</tt>) in all dimensions \f$\leq\f$ `MaxDim` for
            * the lattice. `lgm2` is the logarithm in base 2 of \f$m^2\f$.
-           * \todo What is this?
            */
           void calcLgVolDual2 (double lgm2);
 
@@ -151,11 +149,8 @@ namespace LatticeTester {
 
           /**
            * Builds the basis for the lattice in dimension `d`. This function is
-           * not implemented for this class because the building strategy will
-           * depend on what kind of lattice is used. If you just want to
-           * generate a basis from a set of generating vector, look into module
-           * **something**.
-           * \todo add a module for basis construction.
+           * not implemented for this class. The general basis construction for
+           * a lattice such as this one is located in BasisConstruction.
            */
           virtual void buildBasis (int d);
 
@@ -185,9 +180,6 @@ namespace LatticeTester {
           // * The components of the lattice when it is built out of more than one
           // * component. When there is only one component, it is unused as the
           // * parameters are the same as above.
-          // * \todo Find a way to move this somewhere else. This is currently
-          // * used in LatMRG and should not be here. We keep it because It would 
-          // * be a hassle to correct LatMRG to remove this.
           // */
           //std::vector<MRGComponent *> comp;
 

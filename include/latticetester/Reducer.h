@@ -675,12 +675,12 @@ namespace LatticeTester {
           U.SetDims(red.getIntLatticeBasis()->getBasis().NumRows(), 
               red.getIntLatticeBasis()->getBasis().NumCols());
           NTL::ZZ det(0);
-          LLL(det, red.getIntLatticeBasis()->getBasis(), U, 99999, 100000);
+          NTL::LLL(det, red.getIntLatticeBasis()->getBasis(), U, 99999, 100000);
           red.getIntLatticeBasis()->getDualBasis() = 
             transpose(inv(U)) * red.getIntLatticeBasis()->getDualBasis();
         } else{
           NTL::ZZ det(0);
-          LLL(det, red.getIntLatticeBasis()->getBasis(), 99999, 100000);
+          NTL::LLL(det, red.getIntLatticeBasis()->getBasis(), 99999, 100000);
         }
       }
 

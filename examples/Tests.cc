@@ -32,15 +32,15 @@ int main() {
   Reducer<MScal, BScal, NScal, RScal> red(basis);
 
   // Creating an empty object. This is to showcase the setup from scratch.
-  LatticeAnalysis<MScal, BScal, NScal, RScal> lattice;
+  // LatticeAnalysis<MScal, BScal, NScal, RScal> lattice;
   // Setting all the values needed to execute a test
-  lattice.setReducer(red);
-  lattice.setCriterion(SPECTRAL);
-  lattice.setPreReduction(BKZ);
-  lattice.setNorm(L2NORM);
-  lattice.initNormalizer(ROGERS);
-  lattice.doTest();
-  lattice.printTestResults();
+  // lattice.setReducer(red);
+  // lattice.setCriterion(SPECTRAL);
+  // lattice.setPreReduction(BKZ);
+  // lattice.setNorm(L2NORM);
+  // lattice.initNormalizer(ROGERS);
+  // lattice.doTest();
+  // lattice.printTestResults();
   // Here Reducer has been modified by doTest(). We can get the modified basis.
   std::cout << "The basis that we have:\n" << basis.toStringBasis();
 
@@ -48,10 +48,10 @@ int main() {
   basis = IntLatticeBasis<MScal, BScal, NScal, RScal>(matrix, 4);
   // This instanciation lists all the possibilities. All the commented parameters
   // have somewhat sane defaults except normaType in the case of a spectral test.
-  lattice = LatticeAnalysis<MScal, BScal, NScal, RScal>(red, BEYER
-      /*, preRed, norm, maxNodesBB, normaType, alpha*/);
-  lattice.doTest();
-  lattice.printTestResults();
+  // lattice = LatticeAnalysis<MScal, BScal, NScal, RScal>(red, BEYER
+  //    , preRed, norm, maxNodesBB, normaType, alpha);
+  // lattice.doTest();
+  // lattice.printTestResults();
   // Here Reducer has been modified by doTest(). We can get the modified basis.
   std::cout << "The basis that we have:\n" << basis.toStringBasis();
   return 0;

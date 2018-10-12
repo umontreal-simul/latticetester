@@ -438,7 +438,7 @@ int main (int argc, char *argv[])
     cerr << "No valid type name has been specified\n";
   }
 
-  return 1;
+  return 0;
 }
 
 

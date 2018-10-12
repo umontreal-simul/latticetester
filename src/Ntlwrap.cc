@@ -65,4 +65,18 @@ namespace NTL {
     return mat;
   }
 
+  double determinant(NTL::matrix<long int>& mat) {
+    NTL::matrix<NTL::ZZ> temp_mat;
+    temp_mat.SetDims(mat.NumCols(), mat.NumCols());
+    for (int i = 0; i < mat.NumCols(); i++) {
+      for (int j = 0; j < mat.NumCols(); j++) {
+        temp_mat[i][j] = mat[i][j];
+      }
+    }
+    double temp;
+    NTL::conv(temp, NTL::determinant(temp_mat));
+    return temp;
+  }
+
+
 }

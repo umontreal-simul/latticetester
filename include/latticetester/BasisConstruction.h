@@ -17,125 +17,188 @@
 
 #include "NTL/LLL.h"
 
+#include "latticetester/IntLatticeBasis.h"
 #include "latticetester/ntlwrap.h"
 #include "latticetester/Util.h"
+#include "latticetester/Coordinates.h"
 
 namespace LatticeTester {
-  /**
-   * **WARNING** THIS MODULE IS UNDER CONSTRUCTION.
-   *
-   * This class implements general methods to perform a lattice basis
-   * construction from a set of vectors, as well as general methods to obtain
-   * the dual lattice basis depending on the current lattice basis.
-   *
-   * This module still has to be implemented.
-   *
-   * This module should work only with NTL matrices because those are objects
-   * aware of their shape. I think that this is important since we use object
-   * oriented stuff.
-   *
-   * What is done here seems like very simple linear algebra BUT it is not. The
-   * fact that we operate only on the ring of integers makes it so that these
-   * simple algorithms can become way too slow very rapidly because the numbers
-   * they manipulate grow very fast. This also means that in many cases the
-   * usage of standard `long` type integers will overflow.
-   * */
-  template<typename BasInt> class BasisConstruction{
 
-    private:
-      typedef NTL::vector<BasInt> BasIntVec;
-      typedef NTL::matrix<BasInt> BasIntMat;
-
-    public:
-      /**
-       * */
-      BasisConstruction(){};
-
-      /**
-       * Destructor.
-       * */
-      ~BasisConstruction(){};
-
-      /**
-       * This functions takes a set of generating vectors of a vector space and
-       * finds a basis for this space whilst applying LLL reduction. This is
-       * much faster than applying GCDConstruction, but it doesn't help building
-       * the dual.
-       * */
+  template <typename BasIntMat>
+    struct LLLConstr {
       void LLLConstruction(BasIntMat& matrix);
+    };
 
-      /**
-       * This function does some kind of Gaussian elimination on
-       * \f$\text{span}(\text{matrix}^t)\f$ as a vector space on \f$\mathbb{Z}\f$ to
-       * obtain a basis of this vector space (lattice).
-       * This takes a matrix `matrix` where each row `v[0], ..., v[n]` is
-       * considered as a vector. This basically performs, for each column,
-       * Euclid's algorithm on the rows under the diagonal to set all
-       * coefficients to zero except the one in the diagonal. Finding the GCD
-       * of all the coefficients from the diagonal and under allows to perform
-       * Gaussian elimination using only the 3 allowed operations that do not
-       * change the span of the vectors:
-       *   - Multiply a line by \f$-1\f$,
-       *   - Add an integer multiple of line \f$i\f$ to line \f$j\f$ for \f$i \neq j\f$,
-       *   - Swap line \f$i\f$ and line \f$j\f$.
-       * After constructing this basis, the algorithm eliminates negative
-       * coefficients in the matrix.
-       *
-       * WATCH OUT. This function (and building mecanism) are very memory heavy
-       * has the numbers below the diagonal can grow very big.
-       *
-       * \todo Give a running time. **Marc-Antoine**: This runs in
-       * O(min(row, col)*lg(n)*row + row^2) time I think, but it might be a bit
-       * more because we do operations on vectors so we might need to multiply
-       * this by col.
-       * */
-      void GCDConstruction(BasIntMat& matrix);
+/**
+ * **We need to change the signatures of the methods of this class so that they
+ * take IntLatticeBasis objects.** This makes no other object needed when
+ * calling the functions after.
+ *
+ * **WARNING** THIS MODULE IS UNDER CONSTRUCTION.
+ *
+ * This class implements general methods to perform a lattice basis
+ * construction from a set of vectors, as well as general methods to obtain
+ * the dual lattice basis depending on the current lattice basis.
+ *
+ * This module still has to be implemented.
+ *
+ * This module should work only with NTL matrices because those are objects
+ * aware of their shape. I think that this is important since we use object
+ * oriented stuff.
+ *
+ * What is done here seems like very simple linear algebra BUT it is not. The
+ * fact that we operate only on the ring of integers makes it so that these
+ * simple algorithms can become way too slow very rapidly because the numbers
+ * they manipulate grow very fast. This also means that in many cases the
+ * usage of standard `long` type integers will overflow.
+ *
+ * ### A note on basis construction
+ * Although basis construction is mathematically simple (and also
+ * computationnally simple when in the field of real numbers), when dealing
+ * with the \f$\mathbb{Z}\f$-module of \f$\mathbb{Z}^n\f$ vectors, things can
+ * get messy. In higher dimensions (~30), the coefficients in the matrix start
+ * getting really big (\f$\gg 2^{64}\f$) and needing a lot of memory
+ * (run the BasisConstruction example and see this for yourself). Therefore, we
+ * give users a few tips about the usage of this module.
+ * - Prefer the usage of NTL types when using this module. The functions don't
+ *   have any kind of overflow detection.
+ * - Reduce the basis before doing a triangularization. Reducing a basis with
+ *   LLL is much faster than GCDConstruction and seems to make this operation
+ *   easier to perform.
+ * - Use specialized methods. With a more in depth knowledge of your problem, it
+ *   is possible that there are much more efficient ways to build a basis its
+ *   dual.
+ * */
+template<typename BasInt> class BasisConstruction{
 
-      /**
-       * Suppose the basis matrix contains basis vectors on its lines and is
-       * \f$p\times q\f$ where \f$q \geq p\f$. We can compute the \f$m\f$-dual
-       * as follows.
-       * Let's note the basis matrix `V` and the dual matrix `W` and have lines
-       * of `W` also contain dual basis vectors in its lines. We know that
-       * \f$VW^t = mI_{p\times p}\f$ where \f$I\f$ is the identity matrix. Now, in
-       * the case of a \f$m\f$-dual computation, we can assume that all the
-       * arithmetic is done modulo \f$m\f$ and that \f$m\f$ is prime??
-       * */
-      void DualConstruction(BasIntMat& matrix, BasIntMat& dualMatrix,
-          BasInt& modulo);
+  private:
+    typedef NTL::vector<BasInt> BasIntVec;
+    typedef NTL::matrix<BasInt> BasIntMat;
 
-      void DualConstruction2(BasIntMat& matrix, BasIntMat& dualMatrix,
-          BasInt& modulo);
+    struct LLLConstr<BasIntMat> spec;
 
-    private:
+  public:
+    /**
+     * */
+    BasisConstruction(){};
 
-      /**
-       * This is the matrix this object is working on. This matrix is modified
-       * as the program advances.
-       * */
-      BasIntMat m_mat;
+    /**
+     * Destructor.
+     * */
+    ~BasisConstruction(){};
 
-      /**
-       * This stores the matrix the object was initialized with. This is usefull
-       * for implementing methods that verify this class does not change the
-       * lattice. This is also usefull to compare different reduction methods.
-       * Finally, this can be kept for the sake of comparison.
-       * */
-      BasIntMat m_old;
+    /**
+     * This functions takes a set of generating vectors of a vector space and
+     * finds a basis for this space whilst applying LLL reduction. This is
+     * much faster than applying GCDConstruction, but it doesn't help building
+     * the dual.
+     * */
+    void LLLConstruction(BasIntMat& matrix);
 
+    /**
+     * This function does some kind of Gaussian elimination on
+     * \f$\text{span}(\text{matrix}^t)\f$ as a vector space on \f$\mathbb{Z}\f$ to
+     * obtain a basis of this vector space (lattice).
+     * This takes a matrix `matrix` where each row `v[0], ..., v[n]` is
+     * considered as a vector. This basically performs, for each column,
+     * Euclid's algorithm on the rows under the diagonal to set all
+     * coefficients to zero except the one in the diagonal. Finding the GCD
+     * of all the coefficients from the diagonal and under allows to perform
+     * Gaussian elimination using only the 3 allowed operations that do not
+     * change the span of the vectors:
+     *   - Multiply a line by \f$-1\f$,
+     *   - Add an integer multiple of line \f$i\f$ to line \f$j\f$ for \f$i \neq j\f$,
+     *   - Swap line \f$i\f$ and line \f$j\f$.
+     * After constructing this basis, the algorithm eliminates negative
+     * coefficients in the matrix.
+     *
+     * WATCH OUT. This function (and building mecanism) are very memory heavy
+     * has the numbers below the diagonal can grow very big.
+     *
+     * \todo Give a running time. **Marc-Antoine**: This runs in
+     * O(min(row, col)*lg(n)*row + row^2) time I think, but it might be a bit
+     * more because we do operations on vectors so we might need to multiply
+     * this by col.
+     * */
+    void GCDConstruction(BasIntMat& matrix);
+
+    /**
+     * This method builds the dual of `matrix` in `dualMatrix` and multiplies
+     * modulo by the rescaling factor used. This function uses the clever method
+     * developed in \cite rCOU96a that notes that for `B` to be a `m`-dual to
+     * `A`, we have to have that \f$AB^t = mI\f$. It is quite easy to show that,
+     * knowing `A` is upper triangular, `B` will be a lower triangular matrix
+     * with `A(i,i)*B(i,i) = m` for all `i` and \f$ A_i \cdot B_j = 0\f$ for
+     * \f$i\neq j\f$. And that to get the second condition, we simply have to
+     * recursively take for each line
+     * \f[B_{i,j} = -\frac{1}{A_{j,j}}\sum_{k=j+1}^i A_{j,k} B_{i,k}.\f]
+     *
+     * This does the computation much faster than doing a traditionnal solving
+     * of a linear system.
+     * */
+    void DualConstruction(BasIntMat& matrix, BasIntMat& dualMatrix,
+        BasInt& modulo);
+
+    /**
+     * This does the same thing as DualConstruction(), but is much slower. This
+     * is here simply for the sake of comparison and should not be used in
+     * practice.
+     *
+     * Suppose the basis matrix contains basis vectors on its lines and is
+     * \f$p\times q\f$ where \f$q \geq p\f$. We can compute the \f$m\f$-dual
+     * as follows.
+     * Let's note the basis matrix `V` and the dual matrix `W` and have lines
+     * of `W` also contain dual basis vectors in its lines. We know that
+     * \f$VW^t = mI_{p\times p}\f$ where \f$I\f$ is the identity matrix. Now, in
+     * the case of a \f$m\f$-dual computation, we can assume that all the
+     * arithmetic is done modulo \f$m\f$ and that \f$m\f$ is prime??
+     * */
+    void DualSlow(BasIntMat& matrix, BasIntMat& dualMatrix,
+        BasInt& modulo);
+
+    /**
+     * This is a method that does the general construction of the projection
+     * `proj` of the basis `in` and puts it in `out`. This will completely
+     * overwrite the lattice basis in `out`, changing the dimension. If one
+     * wants to compute the dual for this projection, it has to be done
+     * afterwards with the DualConstruction() method.
+     * */
+    template<typename Int, typename Dbl, typename RedDbl>
+    void ProjectionConstruction(IntLatticeBasis<Int, BasInt, Dbl, RedDbl>& in,
+        IntLatticeBasis<Int, BasInt, Dbl, RedDbl>& out, Coordinates& proj);
   };
 
   //============================================================================
-  // Implementation
+  // Specialization of LLLConstr
+  //============================================================================
+  
+  template <>
+    void LLLConstr<NTL::matrix<std::int64_t>>::LLLConstruction(
+        NTL::matrix<std::int64_t>& matrix) {
+      std::cerr << "LLL Construction can only be done with NTL::ZZ integers.\n";
+      std::cerr << "Aborting.\n";
+      exit(1);
+    }
 
-  template<typename BasInt>
-    void BasisConstruction<BasInt>::LLLConstruction(BasIntMat& matrix){
+  //============================================================================
+
+  template <>
+    void LLLConstr<NTL::matrix<NTL::ZZ>>::LLLConstruction(
+        NTL::matrix<NTL::ZZ>& matrix) {
       long rank = NTL::LLL_XD(matrix);
       long num = matrix.NumRows();
       for (long i = 0; i < rank; i++) {
         NTL::swap(matrix[i], matrix[num-rank+i]);
       }
       matrix.SetDims(rank, matrix.NumCols());
+    }
+
+  //============================================================================
+  // Implementation
+
+  template<typename BasInt>
+    void BasisConstruction<BasInt>::LLLConstruction(BasIntMat& matrix){
+      spec.LLLConstruction(matrix);
     }
 
   template<typename BasInt>
@@ -188,7 +251,7 @@ namespace LatticeTester {
    * Right now, this assumes the basis is triangular, might need to change it.
    * */
   template<typename BasInt>
-    void BasisConstruction<BasInt>::DualConstruction(BasIntMat& matrix,
+    void BasisConstruction<BasInt>::DualSlow(BasIntMat& matrix,
         BasIntMat& dualMatrix, BasInt& modulo)
   {
     // We need to have a triangular basis matrix
@@ -225,7 +288,7 @@ namespace LatticeTester {
   }
 
   template<typename BasInt>
-    void BasisConstruction<BasInt>::DualConstruction2(BasIntMat& matrix,
+    void BasisConstruction<BasInt>::DualConstruction(BasIntMat& matrix,
         BasIntMat& dualMatrix, BasInt& modulo)
   {
     // We need to have a triangular basis matrix
@@ -238,6 +301,7 @@ namespace LatticeTester {
     }
     if (modulo < 1) {
       std::cerr << "modulo has to be a positive integer.\n";
+      exit(1);
       return;
     }
     dualMatrix.SetDims(dim, dim);

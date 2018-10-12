@@ -7,9 +7,8 @@
 - Update the doc to be publishable
   - Finish documentation on Weight classes and Rank1Lattice/IntLattice
   - Re-read what has been done to fit with the pdf guide.
-- Build projections basis and dual basis
+- Build projections basis
 - Check if LLL can be done with all norms.
-- Implement LLL construction/reduction.
 
 ## New features
 - Implement upper bounds as in Cohn and Elkies and look for higher dimensions

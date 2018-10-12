@@ -159,6 +159,16 @@ namespace LatticeTester {
          * initialized to the right size.
          */
         void readBMat (BasIntMat & fields, unsigned int & ln, unsigned int pos,
+            unsigned int numPos, unsigned int numCols);
+
+        /**
+         * Reads a square `BMat` of size `numPos*numPos` from the 
+         * <tt>pos</tt>-th token of the <tt>ln</tt>-th line into `field`. The 
+         * lines in the matrix will be read from the subsequent lines in the 
+         * file, starting from token at the position `pos`. `fields` has to be
+         * initialized to the right size.
+         */
+        void readBMat (BasIntMat & fields, unsigned int & ln, unsigned int pos,
             unsigned int numPos);
 
         /**
@@ -215,6 +225,13 @@ namespace LatticeTester {
             unsigned int pos);
 
         /**
+         * Reads a problem type from the <tt>pos</tt>-th token of the
+         * <tt>ln</tt>-th line into `field`.
+         */
+        void readProblemType (ProblemType& field, unsigned int ln,
+            unsigned int pos);
+
+        /**
          * Reads a test type from the <tt>pos</tt>-th token of the
          * <tt>ln</tt>-th line into `field`.
          */
@@ -255,7 +272,7 @@ namespace LatticeTester {
          * reading order that is used in `LatticeAnalysis` to get data from a
          * file with the standard format described in `Using the executable`.
          */
-        void read (LatticeTesterConfig<Int, BasIntMat> & config);
+        void read (Config<Int, BasIntMat> & config);
 
       protected:
 
@@ -266,6 +283,49 @@ namespace LatticeTester {
          * to split the line it has to operate on.
          */
         void getToken (std::string & field, unsigned int ln, unsigned int pos);
+
+        /**
+         * Reads the configuration file into `config` for. This is a preset 
+         * reading order that is used in `LatticeAnalysis` to get data from a
+         * file with the standard format described in `Using the executable`.
+         */
+          void readBasisConfig (Config<Int, BasIntMat> & config,
+              unsigned int& ln);
+
+        /**
+         * Reads the configuration file into `config` for. This is a preset 
+         * reading order that is used in `LatticeAnalysis` to get data from a
+         * file with the standard format described in `Using the executable`.
+         */
+          void readDualConfig (Config<Int, BasIntMat> & config,
+              unsigned int& ln);
+
+
+        /**
+         * Reads the configuration file into `config` for. This is a preset 
+         * reading order that is used in `LatticeAnalysis` to get data from a
+         * file with the standard format described in `Using the executable`.
+         */
+          void readReductionConfig (Config<Int, BasIntMat> & config,
+              unsigned int& ln);
+
+
+        /**
+         * Reads the configuration file into `config` for. This is a preset 
+         * reading order that is used in `LatticeAnalysis` to get data from a
+         * file with the standard format described in `Using the executable`.
+         */
+          void readShortestConfig (Config<Int, BasIntMat> & config,
+              unsigned int& ln);
+
+
+        /**
+         * Reads the configuration file into `config` for. This is a preset 
+         * reading order that is used in `LatticeAnalysis` to get data from a
+         * file with the standard format described in `Using the executable`.
+         */
+          void readMeritConfig (Config<Int, BasIntMat> & config,
+              unsigned int& ln);
 
       private:
 
@@ -377,6 +437,91 @@ namespace LatticeTester {
       return;
     }
 
+  //===========================================================================
+  // Specializations for different problems reading.
+
+  template<typename Int, typename BasInt, typename RedDbl>
+    void ParamReader<Int, BasInt, RedDbl>::readBasisConfig(
+        Config<Int, BasIntMat> & config, unsigned int& ln)
+    {
+      config.config.basis = {};
+      std::string method;
+      readString(method, ++ln, 0);
+      if (method == "GCD")
+        config.config.basis.method = true;
+      else
+        config.config.basis.method = false;
+      readOutputType(config.outputType, ++ln, 0);
+      readInt (config.NumRows, ++ln, 0);
+      readInt (config.NumCols, ln, 1);
+      config.basis.SetDims(config.NumRows, config.NumCols);
+      readBMat(config.basis, ++ln, 0, config.NumRows, config.NumCols);
+    }
+
+  //===========================================================================
+
+
+  template<typename Int, typename BasInt, typename RedDbl>
+    void ParamReader<Int, BasInt, RedDbl>::readDualConfig(
+        Config<Int, BasIntMat> & config, unsigned int& ln)
+    {
+      config.config.dual = {};
+      readOutputType(config.outputType, ++ln, 0);
+      readInt (config.NumRows, ++ln, 0);
+      config.NumCols = config.NumRows;
+      config.basis.SetDims(config.NumRows, config.NumCols);
+      readBMat(config.basis, ++ln, 0, config.NumRows);
+    }
+
+  //===========================================================================
+
+  template<typename Int, typename BasInt, typename RedDbl>
+    void ParamReader<Int, BasInt, RedDbl>::readReductionConfig(
+        Config<Int, BasIntMat> & config, unsigned int& ln)
+    {
+      config.config.reduct = {};
+      readPreRed(config.config.reduct.method, ++ln, 0);
+      readOutputType(config.outputType, ++ln, 0);
+      readInt (config.NumRows, ++ln, 0);
+      config.NumCols = config.NumRows;
+      config.basis.SetDims(config.NumRows, config.NumCols);
+      readBMat(config.basis, ++ln, 0, config.NumRows);
+    }
+
+  //===========================================================================
+
+  template<typename Int, typename BasInt, typename RedDbl>
+    void ParamReader<Int, BasInt, RedDbl>::readShortestConfig(
+        Config<Int, BasIntMat> & config, unsigned int& ln)
+    {
+      config.config.shortest = {};
+      bool reduction;
+      readBool(reduction, ++ln, 0);
+      if (reduction) readPreRed(config.config.shortest.method, ln, 1);
+      readOutputType(config.outputType, ++ln, 0);
+      readInt (config.NumRows, ++ln, 0);
+      config.NumCols = config.NumRows;
+      config.basis.SetDims(config.NumRows, config.NumCols);
+      readBMat(config.basis, ++ln, 0, config.NumRows);
+    }
+
+  //===========================================================================
+
+  template<typename Int, typename BasInt, typename RedDbl>
+    void ParamReader<Int, BasInt, RedDbl>::readMeritConfig(
+        Config<Int, BasIntMat> & config, unsigned int& ln)
+    {
+      config.config.merit = {};
+      readCriterionType(config.config.merit.figure, ++ln, 0);
+      readNormaType(config.config.merit.norma, ++ln, 0);
+      readBool(config.config.merit.reduction, ++ln, 0);
+      if (config.config.merit.reduction) readPreRed(config.config.merit.method, ln, 1);
+      readOutputType(config.outputType, ++ln, 0);
+      readInt (config.NumRows, ++ln, 0);
+      config.NumCols = config.NumRows;
+      config.basis.SetDims(config.NumRows, config.NumCols);
+      readBMat(config.basis, ++ln, 0, config.NumRows);
+    }
 
   //===========================================================================
 
@@ -606,6 +751,22 @@ namespace LatticeTester {
   template<typename Int, typename BasInt, typename RedDbl>
     void ParamReader<Int, BasInt, RedDbl>::readBMat(
         BasIntMat & fields, unsigned int & ln, unsigned int pos, 
+        unsigned int numPos, unsigned int numCols)
+    {
+      for (unsigned int i = pos; i < numPos; i++){
+        for (unsigned int j = pos; j < numCols; j++){
+          readBScal(fields(i,j), ln, j);
+        }
+        ln++;
+      }
+
+    }
+
+  //===========================================================================
+
+  template<typename Int, typename BasInt, typename RedDbl>
+    void ParamReader<Int, BasInt, RedDbl>::readBMat(
+        BasIntMat & fields, unsigned int & ln, unsigned int pos, 
         unsigned int numPos)
     {
       for (unsigned int i = pos; i < numPos; i++){
@@ -656,6 +817,32 @@ namespace LatticeTester {
    * }
    * }
    * */
+
+  //===========================================================================
+
+  template<typename Int, typename BasInt, typename RedDbl>
+    void ParamReader<Int, BasInt, RedDbl>::readProblemType(
+        ProblemType& field, unsigned int ln, unsigned int pos)
+    {
+      std::string val;
+      getToken(val, ln, pos);
+
+      if (0 == strcasecmp(val.c_str(), "BASIS"))
+        field = BASIS;
+      else if (0 == strcasecmp(val.c_str(), "DUAL"))
+        field = DUAL;
+      else if (0 == strcasecmp(val.c_str(), "REDUCTION")){
+        field = REDUCTION;
+      }
+      else if (0 == strcasecmp(val.c_str(), "SHORTEST")){
+        field = SHORTEST;
+      }
+      else if (0 == strcasecmp(val.c_str(), "MERIT")){
+        field = MERIT;
+      }
+      else
+        MyExit(1, "readProblemType:   NO SUCH CASE");
+    }
 
   //===========================================================================
 
@@ -714,20 +901,22 @@ namespace LatticeTester {
 
       if (0 == strcasecmp(val.c_str(), "BESTLAT"))
         field = BESTLAT;
+      else if (0 == strcasecmp(val.c_str(), "BESTBOUND"))
+        field = BESTBOUND;
       else if (0 == strcasecmp(val.c_str(), "LAMINATED"))
         field = LAMINATED;
       else if (0 == strcasecmp(val.c_str(), "ROGERS"))
         field = ROGERS;
       else if (0 == strcasecmp(val.c_str(), "MINKL1"))
         field = MINKL1;
-      else if (0 == strcasecmp(val.c_str(), "MINKOWSKI"))
-        field = MINKOWSKI;
-      else if (0 == strcasecmp(val.c_str(), "NORMA_GENERIC"))
-        field = NORMA_GENERIC;
+      else if (0 == strcasecmp(val.c_str(), "MINK"))
+        field = MINK;
       else if (0 == strcasecmp(val.c_str(), "L1"))
         field = L1;
       else if (0 == strcasecmp(val.c_str(), "L2"))
         field = L2;
+      else if (0 == strcasecmp(val.c_str(), "NONE"))
+        field = NONE;
       else
         MyExit(1, "readNormaType:   NO SUCH CASE");
     }
@@ -768,8 +957,8 @@ namespace LatticeTester {
       std::string val;
       getToken(val, ln, pos);
 
-      if (0 == strcasecmp(val.c_str(), "TERMINAL"))
-        field = TERMINAL;
+      if (0 == strcasecmp(val.c_str(), "TERM"))
+        field = TERM;
       else if (0 == strcasecmp(val.c_str(), "RES"))
         field = RES;
       else if (0 == strcasecmp(val.c_str(), "GEN")) {
@@ -794,10 +983,10 @@ namespace LatticeTester {
 
       if (0 == strcasecmp(val.c_str(), "BKZ"))
         field = BKZ;
-      else if (0 == strcasecmp(val.c_str(), "PreRedDieter"))
-        field = PreRedDieter;
-      else if (0 == strcasecmp(val.c_str(), "LenstraLL"))
-        field = LenstraLL;
+      else if (0 == strcasecmp(val.c_str(), "Dieter"))
+        field = Dieter;
+      else if (0 == strcasecmp(val.c_str(), "LLL"))
+        field = LLL;
       else if (0 == strcasecmp(val.c_str(), "NOPRERED"))
         field = NOPRERED;
       else
@@ -806,81 +995,25 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  /**
-   * Sets the norm in config depending on it's normalizer.
-   * */
-  template<typename Int, typename BasIntMat>
-    void initNorm(LatticeTesterConfig<Int, BasIntMat> & config)
-    {
-      switch(config.normalizer){
-        case BESTLAT: 
-        case LAMINATED: 
-        case ROGERS: 
-        case NORMA_GENERIC: 
-        case MINKOWSKI: 
-        case L2:
-          config.norm = L2NORM;
-          break;
-        case MINKL1: case L1:
-          config.norm = L1NORM;
-          break;
-        default:
-          MyExit(1, "initNorm NORMA:   NO SUCH CASE");
-          break;
-      }
-    }
-
-  //===========================================================================
-
-
   template<typename Int, typename BasInt, typename RedDbl>
     void ParamReader<Int, BasInt, RedDbl>::read (
-        LatticeTesterConfig<Int, BasIntMat> & config)
+        Config<Int, BasIntMat> & config)
     {
       getLines ();
       unsigned int ln = 0;
 
-      readCriterionType (config.test, ln, 0);
-
-      switch(config.test) {
-
-        case SPECTRAL:
-          readNormaType (config.normalizer, ln, 1);
-          initNorm(config);
-          readPreRed (config.prereduction, ++ln, 0);
-          if (config.prereduction == BKZ) {
-            readPrecisionType (config.precision, ln, 1);
-            readDouble (config.fact, ln, 2);
-            readInt (config.blocksize, ln, 3);
-          } else if(config.prereduction == LenstraLL) {
-            readPrecisionType (config.precision, ln, 1);
-            readDouble (config.fact, ln, 2);
-          }
-          readInt (config.dim, ++ln, 0);
-          config.basis.resize(config.dim, config.dim);
-          readBMat(config.basis, ++ln, 0, config.dim);
-          readLong (config.maxNodesBB, ln, 0);
-          readOutputType(config.outputType, ++ln, 0);
-          break;
-
-        case BEYER: 
-          MyExit(1, "BEYER not implemented yet. Need to change pre-red in reductMinkowski (either preRedDieter with dual basis calculation or redBKZ pre-redduction directly"); 
-          break;
-
-        case PALPHA:
-          std::int64_t m1, m2, m3;
-          readNumber3(config.modulo, m1, m2, m3, ++ln, 0);
-          readInt (config.alpha, ++ln, 0);
-          readInt (config.dim, ++ln, 0);
-          config.basis.resize(config.dim, config.dim);
-          readBMat(config.basis, ++ln, 0, config.dim);
-          readLong (config.maxNodesBB, ln, 0);
-          readOutputType(config.outputType, ++ln, 0);
-          break;
-
-        default:
-          MyExit(1, "Criterion type:   NO SUCH CASE");
-          break;
+      config.filename = m_fileName;
+      readProblemType (config.prob, ln, 0);
+      if (config.prob == BASIS) {
+        readBasisConfig(config, ln);
+      } else if (config.prob == DUAL) {
+        readDualConfig(config, ln);
+      } else if (config.prob == REDUCTION) {
+        readReductionConfig(config, ln);
+      } else if (config.prob == SHORTEST) {
+        readShortestConfig(config, ln);
+      } else if (config.prob == MERIT) {
+        readMeritConfig(config, ln);
       }
     }
 

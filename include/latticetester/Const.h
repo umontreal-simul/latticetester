@@ -37,24 +37,25 @@ namespace LatticeTester {
    * \f$\Vert X\Vert= |x_1|+\cdots+|x_t|\f$.<br> `L2NORM` corresponds to
    * \f$\Vert X\Vert= (x_1^2+\cdots+x_t^2)^{1/2}\f$.<br> `ZAREMBANORM`
    * corresponds to \f$\Vert X\Vert= \max(1, |x_1|)\cdots\max(1, |x_t|)\f$.
-   *
-   * \todo Maybe just implement a function for each norm and pass these functions?
-   * Otherwise, we could have an abstract class norm with a simple function norm
-   * that is reimplemented.
    */
   enum NormType { SUPNORM = 1, L1NORM = 2, L2NORM = 3, ZAREMBANORM = 4 };
 
   /**
    * Indicates in which form and where the results will be sent.
    *
-   * `TERMINAL`: the results will appear only on the terminal screen.<br>
+   * `TERM`: the results will appear only on the terminal screen.<br>
    * `RES`: the results will be in plain text format and sent to a file with
    * extension `.res`.<br>
    * `TEX`: the results will be in LaTeX format and sent to a file with extension
    * `.tex`.\n
    * `GEN`: the results will be sent to a file with extension `.gen`.
    */
-  enum OutputType { TERMINAL, RES, TEX, GEN };
+  enum OutputType { TERM, RES, TEX, GEN };
+
+  /**
+   * An enum listing the problems that LatticeTester can solve.
+   * */
+  enum ProblemType {BASIS, DUAL, REDUCTION, SHORTEST, MERIT};
 
   /**
    * Indicates in which precision the NTL algorithms will be perfoms :
@@ -95,6 +96,8 @@ namespace LatticeTester {
    *
    * `BESTLAT`: the value used for \f$d_t^*\f$ corresponds to the best
    * lattice.<br>
+   * `BESTLAT`: the value used for \f$d_t^*\f$ corresponds to the best
+   * bound known to us.<br>
    * `LAMINATED`: the value used for \f$d_t^*\f$ corresponds to the best
    * *laminated* lattice.<br>
    * `ROGERS`: the value for \f$d_t^*\f$ is obtained from *Rogers’* bound on the
@@ -105,12 +108,10 @@ namespace LatticeTester {
    * `MINKL1`: the value for \f$d_t^*\f$ is obtained from the theoretical bounds
    * on the length of the shortest nonzero vector in the lattice using the
    * \f${\mathcal{L}}_1\f$ norm.<br>
-   * <tt>PALPHA_N</tt>: the case of the \f$P_{\alpha}\f$ test.<br>
-   * <tt>NORMA_GENERIC</tt>: the trivial normalization (= 1) used for the generic
-   * case when no useful normalization constant is known.
+   * `NONE`: no normalization will be used.<br>
    */
-  enum NormaType { BESTLAT, LAMINATED, ROGERS, MINKOWSKI, MINKL1,
-    PALPHA_N, NORMA_GENERIC, L1, L2 };
+  enum NormaType { BESTLAT, BESTBOUND, LAMINATED, ROGERS, MINK, MINKL1,
+    L1, L2 , NONE};
 
   /**
    * Indicates which type of calculation is considered for the
@@ -125,13 +126,12 @@ namespace LatticeTester {
    */
   enum CalcType { PAL, NORMPAL, BAL, SEEKPAL };
 
-
   /**
    * Indicates the Prereduction Type (BKZ, LenstraLL, ...) used before applying the 
    * Branch and Bound procedure.
    */
 
-  enum PreReductionType {BKZ, PreRedDieter, LenstraLL, NOPRERED};
+  enum PreReductionType {BKZ, Dieter, LLL, NOPRERED};
 
   /**
    * \name toString functions
@@ -145,6 +145,7 @@ namespace LatticeTester {
   std::string toStringNorm (NormType);
   std::string toStringPrime (PrimeType);
   std::string toStringCriterion (CriterionType);
+  std::string toStringProblem (ProblemType);
   std::string toStringNorma (NormaType);
   std::string toStringCalc (CalcType);
   std::string toStringPreRed (PreReductionType);

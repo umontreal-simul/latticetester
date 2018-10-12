@@ -20,6 +20,8 @@
 
 #include <NTL/vector.h>
 #include <NTL/matrix.h>
+#include <NTL/ZZ.h>
+#include <NTL/mat_ZZ.h>
 
 #include <cstdint>
 
@@ -52,8 +54,6 @@ namespace NTL
   template <typename T> class vector : public Vec<T>{
     public:
 
-      /** \todo Check if this type is valid or should be reverted to `long`
-       * */
       typedef std::int64_t size_type;
 
       /**
@@ -138,7 +138,6 @@ namespace NTL
 
     public:
 
-      /** \todo Check if this type is valid or should be reverted to `long`*/
       typedef std::int64_t size_type;
 
       /**
@@ -259,6 +258,8 @@ namespace NTL
   /**
    * @}
    * */
+
+  double determinant(NTL::matrix<long int>& mat);
 
 } // End namespace NTL
 

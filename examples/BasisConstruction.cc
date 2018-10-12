@@ -114,7 +114,7 @@ int main() {
         ma_basis += clock() - tmp;
         basis_dim_ma[j/5-1] += clock()-tmp;
         tmp = clock();
-        constr.DualConstruction(matrix1, matrix4, m);
+        constr.DualSlow(matrix1, matrix4, m);
         ma_dual += clock() - tmp;
         matrix1.kill();
         matrix1.SetDims(numlines, numlines);
@@ -126,7 +126,7 @@ int main() {
         cou_basis += clock() - tmp;
         basis_dim_cou[j/5-1] += clock()-tmp;
         tmp = clock();
-        constr.DualConstruction2(matrix1, matrix4, m);
+        constr.DualConstruction(matrix1, matrix4, m);
         cou_dual += clock() - tmp;
 
         // Timing LLL
@@ -136,22 +136,25 @@ int main() {
         LLL_basis += clock() - tmp;
         basis_dim_LLL[j/5-1] += clock()-tmp;
         tmp = clock();
-        constr.DualConstruction2(matrix3, matrix4, m);
+        constr.DualConstruction(matrix3, matrix4, m);
         LLL_dual += clock() - tmp;
       }
     }
   }
   std::cout << "ma_basis: " << ma_basis << std::endl;
   std::cout << "cou_basis: " << cou_basis << std::endl;
+  std::cout << "LLL_basis: " << LLL_basis << std::endl;
   std::cout << "ma_basis/cou_basis: " << (double)ma_basis/cou_basis << std::endl;
   for (int i = 0; i < 7; i++) {
     std::cout << "Dimension: " << (i+1)*5 << std::endl;
     std::cout << "ma_basis: " << basis_dim_ma[i] << std::endl;
     std::cout << "cou_basis: " << basis_dim_cou[i] << std::endl;
+    std::cout << "LLL_basis: " << basis_dim_LLL[i] << std::endl;
     std::cout << "ma_basis/cou_basis: " << (double)basis_dim_ma[i]/basis_dim_cou[i] << std::endl;
   }
   std::cout << "ma_dual: " << ma_dual << std::endl;
   std::cout << "cou_dual: " << cou_dual << std::endl;
+  std::cout << "LLL_dual: " << LLL_dual << std::endl;
   std::cout << "ma_dual/cou_dual: " << (double)ma_dual/cou_dual << std::endl;
 
   return 0;

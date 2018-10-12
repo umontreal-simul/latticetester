@@ -159,7 +159,6 @@ namespace LatticeTester {
   template<typename RedDbl>
     NormaBestBound<RedDbl>::~NormaBestBound()
     {
-      delete[] m_gamma;
     }
 
   /*=========================================================================*/

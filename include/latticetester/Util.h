@@ -20,9 +20,6 @@
  *
  * This module describes various useful functions as well as functions
  * implementing various interactions with NTL.
- * \todo Maybe the functions implemented in the NTL namespace should go in
- * `ntlwrap.h` for the sake of consistency. Otherwise, ntlwrap should be moved
- * here.
  */
 
 
@@ -680,10 +677,6 @@ namespace LatticeTester {
    * These are utilities to manipulate vectors ranging from instanciation to 
    * scalar product.
    *
-   * \todo Functions of this section take the size of the input vectors as an
-   * argument with name d. Some of them assume d is the number of components of
-   * the vectors while somme of them assume that d+1 is the number of components
-   * of the vector. We need to uniformize that.
    */
 
   /**
@@ -1134,9 +1127,7 @@ namespace LatticeTester {
    * `W` contains the set of vectors that is used and modified at each step to
    * get a new vector from the basis.
    *
-   * \todo Benchmark this algorithm. Maybe this is fast, but this is not space
-   * efficient. Maybe something similar could be done in place. This algorithm
-   * should not necessitate the use of `m`.
+   * \todo If this is not used this should be removed at some point.
    */
   template <typename Int>
     void Triangularization (NTL::matrix<Int> & W, NTL::matrix<Int> & V, int lin,
@@ -1256,9 +1247,6 @@ namespace LatticeTester {
    * \f$ A_i \cdot B_j = 0\f$ for \f$i\neq j\f$. To get the second condition,
    * we simply have to recursively take for each line
    * \f[B_{i,j} = -\frac{1}{A_{j,j}}\sum_{k=j+1}^i A_{j,k} B_{i,k}.\f]
-   *
-   * \todo This algorithm should implement a check for its conditions and
-   * transform the basis as needed. This should also compute `m` on the fly.
    * */
   template <typename Int>
     void CalcDual (NTL::matrix<Int> & A, NTL::matrix<Int> & B, int d,

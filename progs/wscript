@@ -7,10 +7,10 @@ def build(ctx):
     lat_inc_dir = ctx.path.find_dir('../include')
 
     ctx(features='cxx cxxprogram',
-        source=src_dir.ant_glob('lattester.cc'),
+        source=src_dir.ant_glob('LatticeTester.cc'),
         includes=[lat_inc_dir],
         lib=ctx.env.LIB_NTL + ctx.env.LIB_GMP  + ctx.env.LIB_MYLIB,
         stlib=ctx.env.STLIB_NTL + ctx.env.LIB_GMP + ctx.env.STLIB_MYLIB,
-        target=('lattest'),
+        target=('LatticeTester'),
         use=['latticetester'],
         install_path='${BINDIR}')

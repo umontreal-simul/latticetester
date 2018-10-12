@@ -12,9 +12,12 @@
 #include "latticetester/IntLatticeBasis.h"
 #include "latticetester/WriterRes.h"
 
+#include "NTL/LLL.h"
+
 using namespace LatticeTester;
 
 int main() {
+  int size = 9;
   // Creating a Reader for file `44matrixEx`.
   ParamReader<MScal, BScal, RScal> reader("build/examples/44matrixEx.dat");
   // Storing all the lines in `44matrixEx`
@@ -27,9 +30,9 @@ int main() {
    * incremented during execution.
    * */
   // Reading a matrix and printing it
-  BMat matrix(4,4); // The "recipient"
+  BMat matrix(size, size); // The "recipient"
   unsigned int ln = 0; // The line counter
-  reader.readBMat(matrix, ln, 0, 4);
+  reader.readBMat(matrix, ln, 0, size);
 
   // We want to save the results of the reductions to a file, rather than to the
   // standard output.
@@ -39,7 +42,7 @@ int main() {
   // non-singular)
   // It is also possible to specify give a modulo and an dual basis when creating
   // an IntLattice, but we will not use them here.
-  IntLatticeBasis<MScal, BScal, NScal, RScal> lat_basis(matrix, 4);
+  IntLatticeBasis<MScal, BScal, NScal, RScal> lat_basis(matrix, size);
   // We can evaluate and print the lenght of the vectors of this basis
   lat_basis.updateVecNorm();
   lat_basis.sort(0);
@@ -66,7 +69,7 @@ int main() {
     lat_basis.toStringBasis();
 
   // This is not really satisfying. Let's do the reduction with LLL this time
-  lat_basis = IntLatticeBasis<MScal, BScal, NScal, RScal>(matrix, 4);
+  lat_basis = IntLatticeBasis<MScal, BScal, NScal, RScal>(matrix, size);
   lat_basis.updateVecNorm();
   lat_basis.sort(0);
   red.redLLLNTL();
@@ -82,7 +85,7 @@ int main() {
 
   // We got the same thing because we are on small dimensions. Still, let's
   // compare with BKZ.
-  lat_basis = IntLatticeBasis<MScal, BScal, NScal, RScal>(matrix, 4);
+  lat_basis = IntLatticeBasis<MScal, BScal, NScal, RScal>(matrix, size);
   lat_basis.updateVecNorm();
   lat_basis.sort(0);
   red.redBKZ();
@@ -96,6 +99,9 @@ int main() {
   std::cout << "The basis and the vector norms after BKZ reduction:\n" <<
     lat_basis.toStringBasis();
 
+  lat_basis = IntLatticeBasis<MScal, BScal, NScal, RScal>(matrix, size);
+  lat_basis.updateVecNorm();
+  lat_basis.sort(0);
   // Let's get the shortest vector to see how far we are with the reductions
   if (red.shortestVector(L2NORM)) {
     // Writing in the file
@@ -105,6 +111,16 @@ int main() {
     // Writing the same thing on standard output
     std::cout << "The basis and the vector norms with the shortest vector:\n" <<
       lat_basis.toStringBasis();
+  }
+
+  std::cout << matrix << std::endl << lat_basis.getBasis() << std::endl;
+  BVect x;
+  x.SetLength(size);
+  for (int i = 0; i < size; i++) {
+    if (!NTL::LatticeSolve(x, lat_basis.getBasis(), matrix[i]))
+      std::cout << "Not the same basis\n";
+    else
+      std::cout << "ok\n";
   }
   
   return 0;

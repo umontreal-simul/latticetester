@@ -74,6 +74,26 @@ namespace LatticeTester
     }
   }
 
+  //===========================================================================
+
+  string toStringProblem (ProblemType prob)
+  {
+    switch (prob) {
+      case BASIS:
+        return "BASIS";
+      case DUAL:
+        return "DUAL";
+      case REDUCTION:
+        return "REDUCTION";
+      case SHORTEST:
+        return "SHORTEST";
+      case MERIT:
+        return "MERIT";
+      default:
+        return "***** ProblemType: IMPOSSIBLE CASE ";
+    }
+  }
+
 
   //===========================================================================
 
@@ -82,20 +102,22 @@ namespace LatticeTester
     switch (norma) {
       case BESTLAT:
         return "BESTLAT";
+      case BESTBOUND:
+        return "BESTBOUND";
       case LAMINATED:
         return "LAMINATED";
       case ROGERS:
         return "ROGERS";
       case MINKL1:
         return "MINKL1";
-      case MINKOWSKI:
-        return "MINKOWSKI";
-      case NORMA_GENERIC:
-        return "NORMA_GENERIC";
+      case MINK:
+        return "MINK";
       case L1:
         return "L1";
       case L2:
         return "L2";
+      case NONE:
+        return "NONE";
       default:
         return "***** NormaType: IMPOSSIBLE CASE ";
     }
@@ -127,10 +149,10 @@ namespace LatticeTester
     switch (prered) {
       case BKZ:
         return "BKZ";
-      case PreRedDieter:
-        return "PreRedDieter";
-      case LenstraLL:
-        return "LenstraLL";
+      case Dieter:
+        return "Dieter";
+      case LLL:
+        return "LLL";
       case NOPRERED:
         return "NOPRERED";
       default:
@@ -165,8 +187,8 @@ namespace LatticeTester
   string toStringOutput (OutputType sort)
   {
     switch (sort) {
-      case TERMINAL:
-        return "TERMINAL";
+      case TERM:
+        return "TERM";
       case RES:
         return "RES";
       case TEX:

@@ -53,17 +53,16 @@
  * 
  * \section usage_program Using the executable
  *
- * \todo Update the LatticeTester executable
- *
  * *LatticeTester* is built in order to analyse a Lattice based on a set
  * of vectors called *basis* therefore it provides an executable that can
- * be used directly to do so at a small level. This executable is a small
+ * be used directly to do so at a small scale. This executable is a small
  * program that can read data from a file to perform tests as specified by the
  * user. Through this program, all the problems *LatticeTester* aims at solving
  * can be addressed, as well as the computation of figures of merit. Although,
- * concerns for the efficiency of *LatticeTester* have no reason to target
- * the object instanciation, it is recommended that, if you want to perform
- * tests or algorithms on multiple lattices, you make a C++ program using the
+ * concerns for the efficiency of object instanciation when using
+ * *LatticeTester* are not needed (since it should not take a large proportion
+ * of the execution time), it is recommended that, if you want to perform
+ * tests or algorithms on numerous lattices, you make a C++ program using the
  * library instead of sending multiple files to the executable.
  *
  * Once the program is compiled, to use it, you simply have to call it from a
@@ -76,8 +75,9 @@
  * You can specify a directory relative to your current working directory for
  * either of the program and the executable.
  * `LLDD`, `ZZDD` and `ZZRR` are integer type specifiers. For more information
- * on the type usage, please look into `Types.h`. For most use cases, `ZZDD`
- * should do the trick and/or might be needed.
+ * on the type usage, please look into `Types`. For most use cases, `ZZDD`
+ * should do the trick, or will be needed since a few functions only need with
+ * `ZZ` integers.
  *
  * The file must contain, in order:
  * - A test or computation to be performed
@@ -89,10 +89,10 @@
  * example available for each case in the folder `inputTestFiles` in the
  * repository.
  * There are 5 computations possible when calling *LatticeTester*. In what
- * follows, we present them and explain what each parameter is. Each parameter
+ * follows, we present them and explain what each parameter is. Parameters are
  * written in the format `parameter <option1, option2, ...>` if you need to
  * choose from multiple options or in the format `parameter [type]` if it is a
- * numeric type. When writing a parameter, you just have to write the
+ * basic type. When writing a parameter, you just have to write the
  * choosen option and not the parameter name.
  *
  * \subsection Basis Basis Construction
@@ -149,7 +149,7 @@
  * In that case, the file will look like this :
  * \code
  * REDUCTION
- * Method <Dieter, LLL, BKZ, MINK>
+ * Method <Dieter, LLL, BKZ>
  * Output <RES, TERM>
  * Dim [int]
  * Matrix [Dim*Dim int type array]
@@ -169,9 +169,6 @@
  *   - **BKZ** is the block *Korkine-Zolotarev* reduction. It is a bit stronger
  *     than LLL reduction but more costly. It is recommended on applications
  *     for which the reduction is critical.
- *   - **MINK** will compute a Minkowski reduced basis. This might be
- *     interesting for a few problems. Note that this reduction is quite
- *     different from the others and should take much more time.
  * - **Output** is the output wanted.
  *   - **RES** means *results file*. The results will be printed in a file with
  *     the same name as the input file with a `.res` extension.
@@ -269,6 +266,41 @@
  *    a non-square matrix.
  * - **Matrix** is a `Dim`\f$\times\f$`Dim` matrix where each line
  *   represents a vector of the lattice. This matrix must be invertible.
+ *
+ * \section library_usage Using the library
+ * 
+ * In the event that you should need more flexibility than what is offered by
+ * the executable, we also present the classes containing the main
+ * functionnalities of *LatticeTester*. There are three of them bringing
+ * together similar computations :
+ * - `BasisConstruction` grouping functions helping with basis, dual, and
+ *   projection constructions
+ * - `Reducer` with functions to do basis reduction and solve the shortest
+ *   vector problem
+ * - `LatticeAnalysis` that contains functions to do the computation of figures
+ *   of merit
+ * 
+ * This section won't go into the depth of each of those class since it would be
+ * redundant with their documentation. Instead, we point to the examples,
+ * where their usage is demonstrated. We also point out to the following classes
+ * without which the usage of the main classes would be difficult :
+ * - `IntLatticeBasis` is a class representing a lattice basis. This is the
+ * lowest level class available to represent a lattice in *LatticeTester* and it
+ * is the class that is needed for the instanciation of a `Reducer`.
+ * - `Config` stores all the configuration for the execution of a
+ * `LatticeAnalysis`. It is possible to lauch tests by passing a `Config` object
+ * to a `LatticeAnalysis`.
+ * - `ParamReader` implements a simple interface to read information from files.
+ * It also offers methods to initialize a `Config` object from the format of
+ * file specified above.
+ * - `Normalizer` is a base class to the implementation of a normalizer to
+ * figures of merit. There are many modules implementing various normalizers for
+ * the spectral test that are available in *LatticeTester*.
+ * - `Weights` is a base class to weight multiple figures of merit in some way
+ * to build a figure of merit of of them.
+ * Although this is not directly used by *LatticeTester*, it is relevant to
+ * point out this class to users interested in computing figures of merit with
+ * multiple projections from a lattice.
  * */
 
 The main analysis is the Spectral Test

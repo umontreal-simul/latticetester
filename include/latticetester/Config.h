@@ -34,6 +34,10 @@ namespace LatticeTester {
   template<typename Int, typename BasIntMat>
     class Config {
       public:
+        /*
+         * Each `Config` object stores exactly one of those classes to store the
+         * information that is specific to its problem.
+         * */
         class BasisConfig {
           public:
             bool method;
@@ -74,25 +78,41 @@ namespace LatticeTester {
         ProblemType prob;
 
         /**
-         * File format used to store the results. See `Const` for a definition
+         * File format used to print the results. See `Const` for a definition
          * of the possible output types.
          */
         OutputType outputType;
 
         /**
+         * The number of columns of the matrix stored in this object.
          * */
         int NumCols;
 
         /**
+         * The number of rows of the matrix stored in this object.
          * */
         int NumRows;
 
         /**
+         * The basis matrix read from the file.
          * */
         BasIntMat basis;
+
+        /**
+         * The dual matrix to the basis matrix read from the file. This stores
+         * the dual so that the results can be reprinted.
+         * */
         BasIntMat dual_basis;
+
+        /**
+         * The rescalling factor used (if it was needed by the test).
+         * */
         Int m;
 
+        /**
+         * This will store the infomration specific to the problem this `Config`
+         * object is for.
+         * */
         union Configuration {
           BasisConfig basis;
           DualConfig dual;

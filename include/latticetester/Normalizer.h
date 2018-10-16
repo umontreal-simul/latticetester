@@ -293,21 +293,7 @@ namespace LatticeTester {
 
       for (int j = 1; j <= m_maxDim; j++) {
         y =  1. / j;
-        if (typeid(RedDbl) != typeid(double)) {
-          // We have to convert to double
-          x = 0.5 * log (
-              getGamma(j)) + j * logBeta - y * NTL::conv<double>(logDensity0);
-        } else {
-          // We suppose we already have NTL::ZZ as integer type
-          x = 0.5 * log (getGamma(j)) + j * logBeta - y * logDensity0;
-        }
-        // #if NTL_TYPES_CODE == 3
-        //         x = 0.5 * log (getGamma(j)) + j * logBeta - y * conv<double>(logDensity0);
-        // #else 
-        //         x = 0.5 * log (getGamma(j)) + j * logBeta - y * logDensity0;
-        // #endif
-        //log calculation to handle large values of n
-
+        x = 0.5*log (getGamma(j)) + j*logBeta - y*NTL::conv<double>(logDensity0);
         m_bounds[j] = exp(x); 
       }
     }
@@ -355,7 +341,7 @@ namespace LatticeTester {
       /*
        * remark: 
        * in the init method, the bounds are pre-computed for the dimensions of
-       * the projection, and are accessible throw this function. But in the code
+       * the projection, and are accessible through this function. But in the code
        * a call to function getBound (below) is made. This means the pre-computed
        * bounds are not used and the bounds are calculated again at each step with 
        * the function below. Could be improved.
@@ -378,24 +364,9 @@ namespace LatticeTester {
       double logBeta;
       y = 1./j;
       logBeta = log(m_beta);
-      if (typeid(RedDbl) != typeid(double)) {
-        // We have to convert to double
-        x = 0.5 * log (
-            getGamma(j)) + j * logBeta - y * NTL::conv<double>(m_logDensity);
-      } else {
-        // We suppose we already have NTL::ZZ as integer type
-        x = 0.5 * log (getGamma(j)) + j * logBeta - y * m_logDensity;
-      }
-      //log calculation to handle large values of n
-      // #if NTL_TYPES_CODE == 3
-      //       x = 0.5 * log (getGamma(j)) + j * logBeta - y * conv<double>(m_logDensity);
-      // #else
-      //       x = 0.5 * log (getGamma(j)) + j * logBeta - y * m_logDensity;
-      // #endif
-      //log calculation to handle large values of n
+      x = 0.5*log (getGamma(j)) + j*logBeta - y*NTL::conv<double>(m_logDensity);
 
       return exp(x);
-      //}
     }
 
 

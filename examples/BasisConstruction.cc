@@ -1,4 +1,10 @@
 /**
+ * This example showcases the usage of the BasisConstruction module. This reads
+ * matrices from files and builds a basis and a dual for IntLatticeBasis objects.
+ *
+ * This should also compare the speed of methods, namely, the speed of LLLConstruction + GCDConstruction vs the only usage of GCDConstruction.
+ * */
+/**
  * For now, this example benchmarks the different implementations we have
  * available for basis reduction.
  *
@@ -54,7 +60,10 @@
  * mieux que la triangularisation justement parce que les vecteurs n'escaladent
  * pas vers des tailles démoniaques.
  * */
-#define NTL_TYPES_CODE 1
+
+// This should always use Types 2 or 3, because we get too big numbers with GCD
+// elimination.
+#define NTL_TYPES_CODE 2
 
 #include <iostream>
 #include <ctime>
@@ -67,98 +76,121 @@
 
 using namespace LatticeTester;
 
+/*
+ * Ce qu'on veut c'est de sonder les fichiers, puis
+ * construire la base puis le dual pour chacun et le mettre dans un IntLatticeBasis.
+ * On veut comparer la vitesse pour la construction de la base pour plusieurs méthodes différentes.
+ * pour comparer les exécutions il suffit de mesurer le temps pris par chaque tour de boucle.
+ * */
 int main() {
-  clock_t ma_basis = 0, cou_basis = 0, ma_dual = 0, cou_dual = 0, LLL_basis = 0,
-          LLL_dual = 0, tmp;
-  clock_t basis_dim_ma[7], basis_dim_cou[7], basis_dim_LLL[7];
-  for (int i = 0; i < 7; i++) {
-    basis_dim_ma[i] = 0;
-    basis_dim_cou[i] = 0;
-    basis_dim_LLL[i] = 0;
+  // The different clocks we will use for benchmarking
+  int max_dim = 7; // Actual max dim is 5*max_dim
+  clock_t tmp;
+  clock_t gcd_time[max_dim], lll_time[max_dim];
+  for (int i = 0; i < max_dim; i++) {
+    gcd_time[i] = 0;
+    lll_time[i] = 0;
   }
-  std::string primes[6] = {"1021", "1048573", "1073741827", "1099511627791",
-    "1125899906842597", "18446744073709551629"};
-  ParamReader<MScal, BScal, RScal> reader;
-  //long err_ma = 0, err_cou = 0;
 
+  std::string prime = "1021";
+  ParamReader<MScal, BScal, RScal> reader;
+
+  // The constructor we will use
   BasisConstruction<BScal> constr;
-  BScal m;
-  BMat matrix1, matrix2, matrix3, matrix4;
+  BMat bas_mat, dua_mat;
   int numlines;
   unsigned int ln;
   std::string name;
-  for (int i = 0; i < 1; i++) {
-    for (int j = 5; j < 36; j+=5) {
-      for (int k = 0; k < 10; k++) {
-        // Reader shenanigans
-        name = "bench/" + primes[i] + "_" + std::to_string(j) + "_" + std::to_string(k);
-        reader = ParamReader<MScal, BScal, RScal>(name + ".dat");
-        reader.getLines();
-        reader.readInt(numlines, 0, 0);
-        matrix1.kill();
-        matrix2.kill();
-        matrix3.kill();
-        matrix4.kill();
-        matrix1.SetDims(numlines, numlines);
-        matrix2.SetDims(numlines, numlines);
-        matrix3.SetDims(numlines, numlines);
-        matrix4.SetDims(numlines, numlines);
-        ln = 1;
-        reader.readBMat(matrix4, ln, 0, numlines);
-        matrix1 = matrix2 = matrix3 = matrix4;
-        if (NTL::determinant(matrix1) == 0) continue;
-
-        // Timing ma first
-        tmp = clock();
-        m = 1;
-        constr.GCDConstruction(matrix1);
-        ma_basis += clock() - tmp;
-        basis_dim_ma[j/5-1] += clock()-tmp;
-        tmp = clock();
-        constr.DualSlow(matrix1, matrix4, m);
-        ma_dual += clock() - tmp;
-        matrix1.kill();
-        matrix1.SetDims(numlines, numlines);
-
-        // Timing cou
-        tmp = clock();
-        m = 1;
-        Triangularization(matrix2, matrix1, numlines, numlines, m);
-        cou_basis += clock() - tmp;
-        basis_dim_cou[j/5-1] += clock()-tmp;
-        tmp = clock();
-        constr.DualConstruction(matrix1, matrix4, m);
-        cou_dual += clock() - tmp;
-
-        // Timing LLL
-        tmp = clock();
-        m = 1;
-        constr.LLLConstruction(matrix3);
-        LLL_basis += clock() - tmp;
-        basis_dim_LLL[j/5-1] += clock()-tmp;
-        tmp = clock();
-        constr.DualConstruction(matrix3, matrix4, m);
-        LLL_dual += clock() - tmp;
+  // This loop builds the basis with GCDConstruction straight up.
+  for (int j = 0; j < max_dim; j++) {
+    for (int k = 0; k < 10; k++) {
+      tmp = clock();
+      // Reader shenanigans
+      name = "bench/" + prime + "_" + std::to_string((j+1)*5) + "_" + std::to_string(k);
+      std::cout << name << std::endl;
+      reader = ParamReader<MScal, BScal, RScal>(name + ".dat");
+      reader.getLines();
+      reader.readInt(numlines, 0, 0);
+      bas_mat.kill();
+      bas_mat.SetDims(numlines, numlines);
+      dua_mat.kill();
+      dua_mat.SetDims(numlines, numlines);
+      ln = 1;
+      reader.readBMat(bas_mat, ln, 0, numlines);
+      // We want to avoid singular matrix because we can't compute the dual, and
+      // IntLatticeBasis only really supports square matrices.
+      if (NTL::determinant(bas_mat) == 0) {
+        std::cout << name << " is singular\n";
+        continue;
       }
+
+      // Timing ma first
+      constr.GCDConstruction(bas_mat);
+      // If you don't need the dual basis, the following line is sufficient
+      // basis = IntLatticeBasis<MScal, BScal, NScal, RScal>(matrix, numlines);
+      MScal modulo(1);
+
+      constr.DualConstruction(bas_mat, dua_mat, modulo);
+      IntLatticeBasis <MScal, BScal, NScal, RScal> basis =
+        IntLatticeBasis<MScal, BScal, NScal, RScal>(bas_mat, dua_mat, modulo, numlines);
+      gcd_time[j] += clock() - tmp;
     }
   }
-  std::cout << "ma_basis: " << ma_basis << std::endl;
-  std::cout << "cou_basis: " << cou_basis << std::endl;
-  std::cout << "LLL_basis: " << LLL_basis << std::endl;
-  std::cout << "ma_basis/cou_basis: " << (double)ma_basis/cou_basis << std::endl;
-  for (int i = 0; i < 7; i++) {
-    std::cout << "Dimension: " << (i+1)*5 << std::endl;
-    std::cout << "ma_basis: " << basis_dim_ma[i] << std::endl;
-    std::cout << "cou_basis: " << basis_dim_cou[i] << std::endl;
-    std::cout << "LLL_basis: " << basis_dim_LLL[i] << std::endl;
-    std::cout << "ma_basis/cou_basis: " << (double)basis_dim_ma[i]/basis_dim_cou[i] << std::endl;
-  }
-  std::cout << "ma_dual: " << ma_dual << std::endl;
-  std::cout << "cou_dual: " << cou_dual << std::endl;
-  std::cout << "LLL_dual: " << LLL_dual << std::endl;
-  std::cout << "ma_dual/cou_dual: " << (double)ma_dual/cou_dual << std::endl;
+  // This loop builds the basis with LLLConstruction first.
+  for (int j = 0; j < max_dim; j++) {
+    for (int k = 0; k < 10; k++) {
+      tmp = clock();
+      // Reader shenanigans
+      name = "bench/" + prime + "_" + std::to_string((j+1)*5) + "_" + std::to_string(k);
+      reader = ParamReader<MScal, BScal, RScal>(name + ".dat");
+      reader.getLines();
+      reader.readInt(numlines, 0, 0);
+      bas_mat.kill();
+      bas_mat.SetDims(numlines, numlines);
+      dua_mat.kill();
+      dua_mat.SetDims(numlines, numlines);
+      ln = 1;
+      reader.readBMat(bas_mat, ln, 0, numlines);
+      // We want to avoid singular matrix because we can't compute the dual, and
+      // IntLatticeBasis only really supports square matrices.
+      if (NTL::determinant(bas_mat) == 0) {
+        std::cout << name << " is singular\n";
+        continue;
+      }
 
-  IntLattice<MScal, BScal, NScal, RScal> Lattice(MScal(1), 1, 1);
+      // Timing ma first
+      constr.GCDConstruction(bas_mat);
+      // If you don't need the dual basis, the following line is sufficient
+      // basis = IntLatticeBasis<MScal, BScal, NScal, RScal>(matrix, numlines);
+      MScal modulo(1);
+
+      constr.DualConstruction(bas_mat, dua_mat, modulo);
+      IntLatticeBasis <MScal, BScal, NScal, RScal> basis =
+        IntLatticeBasis<MScal, BScal, NScal, RScal>(bas_mat, dua_mat, modulo, numlines);
+      lll_time[j] += clock() - tmp;
+    }
+  }
+  tmp = 0;
+  for (int i = 0; i < max_dim; i++) {
+    tmp += gcd_time[i];
+  }
+  int width1 = log10(tmp)+2;
+  std::cout << "           GCD";
+  for (int i = 0; i<width1-3; i++) {
+    std::cout << " ";
+  }
+  std::cout << "LLL\n";
+  std::cout << "Total time " << tmp << " ";
+  tmp = 0;
+  for (int i = 0; i < max_dim; i++) {
+    tmp += lll_time[i];
+  }
+  int width2 = log10(tmp)+2;
+  std::cout << tmp << std::endl;
+  for (int i = 0; i < max_dim; i++) {
+    std::cout << "Dim " << std::setw(6) << (i+1)*5 << std::setw(width1)
+      << gcd_time[i] << std::setw(width2) << lll_time[i] << std::endl;
+  }
 
   return 0;
 }

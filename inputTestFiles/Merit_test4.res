@@ -13,4 +13,5 @@ Resulting basis:
 
 Length of the shortest vector: 298.923
 Figure of merit computed: 0.344095
+
 ----------------------------------------------------------

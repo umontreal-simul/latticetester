@@ -1,7 +1,6 @@
 # This file contains a few notes on what work has to be done in this repo
 
 ## Urgent work
-- Check if the generating vectors are still a basis after reduction
 - Have examples (usage of most functions on a simple basis)
   - One on Weights???
 - Update the doc to be publishable
@@ -11,7 +10,6 @@
 - Check if LLL can be done with all norms.
 
 ## New features
-- Implement upper bounds as in Cohn and Elkies and look for higher dimensions
 - Choose a license
 - Test current implementation for supported types combinations
 - Make sure everything that is advertised in the manual is implemented

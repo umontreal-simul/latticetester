@@ -44,7 +44,7 @@
 #include "latticetester/IntLatticeBasis.h"
 #include "latticetester/Reducer.h"
 #include "latticetester/ParamReader.h"
-#include "latticetester/LatticeTesterConfig.h"
+#include "latticetester/Config.h"
 #include "latticetester/LatticeAnalysis.h"
 
 // Include NTL Header
@@ -63,8 +63,8 @@
 using namespace std;
 using namespace LatticeTester;
 
-/* int ZZRR (int argc, char* argv[]) {
-  LatticeAnalysis<NTL::ZZ, NTL::vector<NTL::ZZ>, NTL::matrix<NTL::ZZ>, NTL::ZZ, NTL::vector<NTL::ZZ>, NTL::matrix<NTL::ZZ>, NTL::RR, NTL::vector<NTL::RR>, NTL::RR, NTL::vector<NTL::RR>, NTL::matrix<NTL::RR>> latAnalysis;
+int ZZRR(int argc, char* argv[]) {
+  LatticeAnalysis<NTL::ZZ, NTL::ZZ, NTL::RR, NTL::RR> latAnalysis;
   struct stat buf; // properties of a file or directory
   int status = 0;
 
@@ -82,47 +82,7 @@ using namespace LatticeTester;
     }
   }
   return 1;
-} */
-/* int ZZRD(int argc, char* argv[]) {
-  LatticeAnalysis<NTL::ZZ, NTL::vector<NTL::ZZ>, NTL::matrix<NTL::ZZ>, NTL::ZZ, NTL::vector<NTL::ZZ>, NTL::matrix<NTL::ZZ>, NTL::RR, NTL::vector<NTL::RR>, double, NTL::vector<double>, NTL::matrix<double>> latAnalysis;
-  struct stat buf; // properties of a file or directory
-  int status = 0;
-
-  for (int j = 2; j < argc; j++) {
-    // Do the test for each data file or directory on the command line
-
-    stat(argv[j], &buf);
-    if (0 != S_ISDIR(buf.st_mode)) // directory
-      status |= latAnalysis.doTestFromDirectory (argv[j]);
-    else {
-      string dataname(argv[j]);
-      dataname.append(".dat");
-      stat(dataname.c_str(), &buf);
-      status |= latAnalysis.doTestFromInputFile (argv[j]);
-    }
-  }
-  return 1;
-} */
-/* int ZZDR(int argc, char* argv[]) {
-  LatticeAnalysis<NTL::ZZ, NTL::vector<NTL::ZZ>, NTL::matrix<NTL::ZZ>, NTL::ZZ, NTL::vector<NTL::ZZ>, NTL::matrix<NTL::ZZ>, double, NTL::vector<double>, NTL::RR, NTL::vector<NTL::RR>, NTL::matrix<NTL::RR>> latAnalysis;
-  struct stat buf; // properties of a file or directory
-  int status = 0;
-
-  for (int j = 2; j < argc; j++) {
-    // Do the test for each data file or directory on the command line
-
-    stat(argv[j], &buf);
-    if (0 != S_ISDIR(buf.st_mode)) // directory
-      status |= latAnalysis.doTestFromDirectory (argv[j]);
-    else {
-      string dataname(argv[j]);
-      dataname.append(".dat");
-      stat(dataname.c_str(), &buf);
-      status |= latAnalysis.doTestFromInputFile (argv[j]);
-    }
-  }
-  return 1;
-} */
+}
 int ZZDD(int argc, char* argv[]) {
   LatticeAnalysis<NTL::ZZ, NTL::ZZ, double, double> latAnalysis;
   struct stat buf; // properties of a file or directory
@@ -143,226 +103,6 @@ int ZZDD(int argc, char* argv[]) {
   }
   return 1;
 }
-/* int ZLRR(int argc, char* argv[]) {
-  LatticeAnalysis<NTL::ZZ, NTL::vector<NTL::ZZ>, NTL::matrix<NTL::ZZ>, long, NTL::vector<long>, NTL::matrix<long>, NTL::RR, NTL::vector<NTL::RR>, NTL::RR, NTL::vector<NTL::RR>, NTL::matrix<NTL::RR>> latAnalysis;
-  struct stat buf; // properties of a file or directory
-  int status = 0;
-
-  for (int j = 2; j < argc; j++) {
-    // Do the test for each data file or directory on the command line
-
-    stat(argv[j], &buf);
-    if (0 != S_ISDIR(buf.st_mode)) // directory
-      status |= latAnalysis.doTestFromDirectory (argv[j]);
-    else {
-      string dataname(argv[j]);
-      dataname.append(".dat");
-      stat(dataname.c_str(), &buf);
-      status |= latAnalysis.doTestFromInputFile (argv[j]);
-    }
-  }
-  return 1;
-} */
-/* int ZLRD(int argc, char* argv[]) {
-  LatticeAnalysis<NTL::ZZ, NTL::vector<NTL::ZZ>, NTL::matrix<NTL::ZZ>, long, NTL::vector<long>, NTL::matrix<long>, NTL::RR, NTL::vector<NTL::RR>, double, NTL::vector<double>, NTL::matrix<double>> latAnalysis;
-  struct stat buf; // properties of a file or directory
-  int status = 0;
-
-  for (int j = 2; j < argc; j++) {
-    // Do the test for each data file or directory on the command line
-
-    stat(argv[j], &buf);
-    if (0 != S_ISDIR(buf.st_mode)) // directory
-      status |= latAnalysis.doTestFromDirectory (argv[j]);
-    else {
-      string dataname(argv[j]);
-      dataname.append(".dat");
-      stat(dataname.c_str(), &buf);
-      status |= latAnalysis.doTestFromInputFile (argv[j]);
-    }
-  }
-  return 1;
-} */
-/* int ZLDR(int argc, char* argv[]) {
-  LatticeAnalysis<NTL::ZZ, NTL::vector<NTL::ZZ>, NTL::matrix<NTL::ZZ>, long, NTL::vector<long>, NTL::matrix<long>, double, NTL::vector<double>, NTL::RR, NTL::vector<NTL::RR>, NTL::matrix<NTL::RR>> latAnalysis;
-  struct stat buf; // properties of a file or directory
-  int status = 0;
-
-  for (int j = 2; j < argc; j++) {
-    // Do the test for each data file or directory on the command line
-
-    stat(argv[j], &buf);
-    if (0 != S_ISDIR(buf.st_mode)) // directory
-      status |= latAnalysis.doTestFromDirectory (argv[j]);
-    else {
-      string dataname(argv[j]);
-      dataname.append(".dat");
-      stat(dataname.c_str(), &buf);
-      status |= latAnalysis.doTestFromInputFile (argv[j]);
-    }
-  }
-  return 1;
-} */
-/* int ZLDD(int argc, char* argv[]) {
-  LatticeAnalysis<NTL::ZZ, NTL::vector<NTL::ZZ>, NTL::matrix<NTL::ZZ>, long, NTL::vector<long>, NTL::matrix<long>, double, NTL::vector<double>, double, NTL::vector<double>, NTL::matrix<double>> latAnalysis;
-  struct stat buf; // properties of a file or directory
-  int status = 0;
-
-  for (int j = 2; j < argc; j++) {
-    // Do the test for each data file or directory on the command line
-
-    stat(argv[j], &buf);
-    if (0 != S_ISDIR(buf.st_mode)) // directory
-      status |= latAnalysis.doTestFromDirectory (argv[j]);
-    else {
-      string dataname(argv[j]);
-      dataname.append(".dat");
-      stat(dataname.c_str(), &buf);
-      status |= latAnalysis.doTestFromInputFile (argv[j]);
-    }
-  }
-  return 1;
-} */
-/* int LZRR(int argc, char* argv[]) {
-  LatticeAnalysis<long, NTL::vector<long>, NTL::matrix<long>, NTL::ZZ, NTL::vector<NTL::ZZ>, NTL::matrix<NTL::ZZ>, NTL::RR, NTL::vector<NTL::RR>, NTL::RR, NTL::vector<NTL::RR>, NTL::matrix<NTL::RR>> latAnalysis;
-  struct stat buf; // properties of a file or directory
-  int status = 0;
-
-  for (int j = 2; j < argc; j++) {
-    // Do the test for each data file or directory on the command line
-
-    stat(argv[j], &buf);
-    if (0 != S_ISDIR(buf.st_mode)) // directory
-      status |= latAnalysis.doTestFromDirectory (argv[j]);
-    else {
-      string dataname(argv[j]);
-      dataname.append(".dat");
-      stat(dataname.c_str(), &buf);
-      status |= latAnalysis.doTestFromInputFile (argv[j]);
-    }
-  }
-  return 1;
-} */
-/* int LZRD(int argc, char* argv[]) {
-  LatticeAnalysis<long, NTL::vector<long>, NTL::matrix<long>, NTL::ZZ, NTL::vector<NTL::ZZ>, NTL::matrix<NTL::ZZ>, NTL::RR, NTL::vector<NTL::RR>, double, NTL::vector<double>, NTL::matrix<double>> latAnalysis;
-  struct stat buf; // properties of a file or directory
-  int status = 0;
-
-  for (int j = 2; j < argc; j++) {
-    // Do the test for each data file or directory on the command line
-
-    stat(argv[j], &buf);
-    if (0 != S_ISDIR(buf.st_mode)) // directory
-      status |= latAnalysis.doTestFromDirectory (argv[j]);
-    else {
-      string dataname(argv[j]);
-      dataname.append(".dat");
-      stat(dataname.c_str(), &buf);
-      status |= latAnalysis.doTestFromInputFile (argv[j]);
-    }
-  }
-  return 1;
-} */
-/* int LZDR(int argc, char* argv[]) {
-  LatticeAnalysis<long, NTL::vector<long>, NTL::matrix<long>, NTL::ZZ, NTL::vector<NTL::ZZ>, NTL::matrix<NTL::ZZ>, double, NTL::vector<double>, NTL::RR, NTL::vector<NTL::RR>, NTL::matrix<NTL::RR>> latAnalysis;
-  struct stat buf; // properties of a file or directory
-  int status = 0;
-
-  for (int j = 2; j < argc; j++) {
-    // Do the test for each data file or directory on the command line
-
-    stat(argv[j], &buf);
-    if (0 != S_ISDIR(buf.st_mode)) // directory
-      status |= latAnalysis.doTestFromDirectory (argv[j]);
-    else {
-      string dataname(argv[j]);
-      dataname.append(".dat");
-      stat(dataname.c_str(), &buf);
-      status |= latAnalysis.doTestFromInputFile (argv[j]);
-    }
-  }
-  return 1;
-} */
-/* int LZDD(int argc, char* argv[]) {
-  LatticeAnalysis<long, NTL::vector<long>, NTL::matrix<long>, NTL::ZZ, NTL::vector<NTL::ZZ>, NTL::matrix<NTL::ZZ>, double, NTL::vector<double>, double, NTL::vector<double>, NTL::matrix<double>> latAnalysis;
-  struct stat buf; // properties of a file or directory
-  int status = 0;
-
-  for (int j = 2; j < argc; j++) {
-    // Do the test for each data file or directory on the command line
-
-    stat(argv[j], &buf);
-    if (0 != S_ISDIR(buf.st_mode)) // directory
-      status |= latAnalysis.doTestFromDirectory (argv[j]);
-    else {
-      string dataname(argv[j]);
-      dataname.append(".dat");
-      stat(dataname.c_str(), &buf);
-      status |= latAnalysis.doTestFromInputFile (argv[j]);
-    }
-  }
-  return 1;
-} */
-/* int LLRR(int argc, char* argv[]) {
-  LatticeAnalysis<long, NTL::vector<long>, NTL::matrix<long>, long, NTL::vector<long>, NTL::matrix<long>, NTL::RR, NTL::vector<NTL::RR>, NTL::RR, NTL::vector<NTL::RR>, NTL::matrix<NTL::RR>> latAnalysis;
-  struct stat buf; // properties of a file or directory
-  int status = 0;
-
-  for (int j = 2; j < argc; j++) {
-    // Do the test for each data file or directory on the command line
-
-    stat(argv[j], &buf);
-    if (0 != S_ISDIR(buf.st_mode)) // directory
-      status |= latAnalysis.doTestFromDirectory (argv[j]);
-    else {
-      string dataname(argv[j]);
-      dataname.append(".dat");
-      stat(dataname.c_str(), &buf);
-      status |= latAnalysis.doTestFromInputFile (argv[j]);
-    }
-  }
-  return 1;
-} */
-/* int LLRD(int argc, char* argv[]) {
-  LatticeAnalysis<long, NTL::vector<long>, NTL::matrix<long>, long, NTL::vector<long>, NTL::matrix<long>, NTL::RR, NTL::vector<NTL::RR>, double, NTL::vector<double>, NTL::matrix<double>> latAnalysis;
-  struct stat buf; // properties of a file or directory
-  int status = 0;
-
-  for (int j = 2; j < argc; j++) {
-    // Do the test for each data file or directory on the command line
-
-    stat(argv[j], &buf);
-    if (0 != S_ISDIR(buf.st_mode)) // directory
-      status |= latAnalysis.doTestFromDirectory (argv[j]);
-    else {
-      string dataname(argv[j]);
-      dataname.append(".dat");
-      stat(dataname.c_str(), &buf);
-      status |= latAnalysis.doTestFromInputFile (argv[j]);
-    }
-  }
-  return 1;
-} */
-/* int LLDR(int argc, char* argv[]) {
-  LatticeAnalysis<long, NTL::vector<long>, NTL::matrix<long>, long, NTL::vector<long>, NTL::matrix<long>, double, NTL::vector<double>, NTL::RR, NTL::vector<NTL::RR>, NTL::matrix<NTL::RR>> latAnalysis;
-  struct stat buf; // properties of a file or directory
-  int status = 0;
-
-  for (int j = 2; j < argc; j++) {
-    // Do the test for each data file or directory on the command line
-
-    stat(argv[j], &buf);
-    if (0 != S_ISDIR(buf.st_mode)) // directory
-      status |= latAnalysis.doTestFromDirectory (argv[j]);
-    else {
-      string dataname(argv[j]);
-      dataname.append(".dat");
-      stat(dataname.c_str(), &buf);
-      status |= latAnalysis.doTestFromInputFile (argv[j]);
-    }
-  }
-  return 1;
-} */
 int LLDD(int argc, char* argv[]) {
   LatticeAnalysis<std::int64_t, std::int64_t, double, double> latAnalysis;
   struct stat buf; // properties of a file or directory
@@ -400,40 +140,18 @@ int main (int argc, char *argv[])
     return -1;
   }
   //cout << "ARGC " << argc << endl;
-  /*if (!strcmp(argv[1], "ZZRR")) {
-    return ZZRR(argc, argv);
-  } *//*else if (!strcmp(argv[1], "ZZRD")) {
-    return ZZRD(argc, argv);
-  }*/ /*else if (!strcmp(argv[1], "ZZDR")) {
-    return ZZDR(argc, argv);
-  } *//*else*/ if (!strcmp(argv[1], "ZZDD")) {
+  if (!strcmp(argv[1], "ZZRR")) {
+    ZZRR(argc, argv);
+    std::clock_t end_t = std::clock();
+    cout << "Time: " << (double)(end_t-start_t)/CLOCKS_PER_SEC << " sec\n";
+  } else if (!strcmp(argv[1], "ZZDD")) {
     ZZDD(argc, argv);
     std::clock_t end_t = std::clock();
     cout << "Time: " << (double)(end_t-start_t)/CLOCKS_PER_SEC << " sec\n";
-  } /*else if (!strcmp(argv[1], "ZLRR")) {
-    return ZLRR(argc, argv);
-  } *//*else if (!strcmp(argv[1], "ZLRD")) {
-    return ZLRD(argc, argv);
-  }*/ /*else if (!strcmp(argv[1], "ZLDR")) {
-    return ZLDR(argc, argv);
-  } *//*else if (!strcmp(argv[1], "ZLDD")) {
-    return ZLDD(argc, argv);
-  } *//*else if (!strcmp(argv[1], "LZRR")) {
-    return LZRR(argc, argv);
-  } *//*else if (!strcmp(argv[1], "LZRD")) {
-    return LZRD(argc, argv);
-  }*//* else if (!strcmp(argv[1], "LZDR")) {
-    return LZDR(argc, argv);
-  }*//* else if (!strcmp(argv[1], "LZDD")) {
-    return LZDD(argc, argv);
-  } *//*else if (!strcmp(argv[1], "LLRR")) {
-    return LLRR(argc, argv);
-  } *//*else if (!strcmp(argv[1], "LLRD")) {
-    return LLRD(argc, argv);
-  }*//* else if (!strcmp(argv[1], "LLDR")) {
-    return LLDR(argc, argv);
-  } */else if (!strcmp(argv[1], "LLDD")) {
-    return LLDD(argc, argv);
+  } else if (!strcmp(argv[1], "LLDD")) {
+    LLDD(argc, argv);
+    std::clock_t end_t = std::clock();
+    cout << "Time: " << (double)(end_t-start_t)/CLOCKS_PER_SEC << " sec\n";
   } else {
     cerr << "No valid type name has been specified\n";
   }

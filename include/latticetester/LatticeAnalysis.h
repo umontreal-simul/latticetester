@@ -39,7 +39,7 @@
 #include "latticetester/Reducer.h"
 #include "latticetester/Writer.h"
 #include "latticetester/WriterRes.h"
-#include "latticetester/LatticeTesterConfig.h"
+#include "latticetester/Config.h"
 #include "latticetester/ParamReader.h"
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/ntlwrap.h"
@@ -552,7 +552,7 @@ namespace LatticeTester {
         result = Red.shortestVector(L2NORM);
         // calculating the Figure of Merit
         NormaType norma(config.config.merit.norma);
-        RedDbl density = -log(abs(NTL::determinant(config.basis)));
+        RedDbl density = RedDbl(-log(abs(NTL::determinant(config.basis))));
         Normalizer<RedDbl>* normalizer = NULL;
         m_shortest = NTL::conv<double>(Red.getMinLength());
         if (norma == NONE) {

@@ -1,4 +1,9 @@
 /**
+ * This is an example to the usage of the reducer class to perform reduction
+ * of lattices. This also compares the average relative length reduction of each
+ * method and the time taken by dimension.
+ * */
+/**
  * This example compares our implementation of the LLL algorithm with the one in
  * NTL. This comparison is done on a set of randomly generated matrices
  * available in the `bench.zip` archive in the example folder of the build tree.

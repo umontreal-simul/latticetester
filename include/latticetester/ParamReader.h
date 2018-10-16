@@ -23,7 +23,7 @@
 #include "latticetester/ntlwrap.h"
 #include "latticetester/Util.h"
 #include "latticetester/Const.h"
-#include "latticetester/LatticeTesterConfig.h"
+#include "latticetester/Config.h"
 
 #include <string>
 #include <cstring>
@@ -268,9 +268,10 @@ namespace LatticeTester {
             unsigned int pos);
 
         /**
-         * Reads the configuration file into `config` for. This is a preset 
-         * reading order that is used in `LatticeAnalysis` to get data from a
-         * file with the standard format described in `Using the executable`.
+         * Reads the configuration file into `config`. This reads the file, 
+         * looking for information in a specific order, to populate `config`
+         * with enough information to exectute a `LatticeAnalysis` test. The
+         * standard format is described in \ref usage_program.
          */
         void read (Config<Int, BasIntMat> & config);
 
@@ -285,47 +286,43 @@ namespace LatticeTester {
         void getToken (std::string & field, unsigned int ln, unsigned int pos);
 
         /**
-         * Reads the configuration file into `config` for. This is a preset 
-         * reading order that is used in `LatticeAnalysis` to get data from a
-         * file with the standard format described in `Using the executable`.
-         */
-          void readBasisConfig (Config<Int, BasIntMat> & config,
-              unsigned int& ln);
+         * This can be called to read a basis construction configuration from
+         * the file starting from `ln` (without the `BASIS` line).
+         * */
+        void readBasisConfig (Config<Int, BasIntMat> & config,
+            unsigned int& ln);
 
         /**
-         * Reads the configuration file into `config` for. This is a preset 
-         * reading order that is used in `LatticeAnalysis` to get data from a
-         * file with the standard format described in `Using the executable`.
+         * This can be called to read a dual computation configuration from
+         * the file starting from `ln` (without the `DUAL` line).
          */
-          void readDualConfig (Config<Int, BasIntMat> & config,
-              unsigned int& ln);
+        void readDualConfig (Config<Int, BasIntMat> & config,
+            unsigned int& ln);
 
 
         /**
-         * Reads the configuration file into `config` for. This is a preset 
-         * reading order that is used in `LatticeAnalysis` to get data from a
-         * file with the standard format described in `Using the executable`.
+         * This can be called to read a reduction problem configuration from
+         * the file starting from `ln` (without the `REDUCT` line).
          */
-          void readReductionConfig (Config<Int, BasIntMat> & config,
-              unsigned int& ln);
+        void readReductionConfig (Config<Int, BasIntMat> & config,
+            unsigned int& ln);
 
 
         /**
-         * Reads the configuration file into `config` for. This is a preset 
-         * reading order that is used in `LatticeAnalysis` to get data from a
-         * file with the standard format described in `Using the executable`.
+         * This can be called to read a shortest vector problem configuration
+         * from the file starting from `ln` (without the `SHORTEST` line).
          */
-          void readShortestConfig (Config<Int, BasIntMat> & config,
-              unsigned int& ln);
+        void readShortestConfig (Config<Int, BasIntMat> & config,
+            unsigned int& ln);
 
 
         /**
-         * Reads the configuration file into `config` for. This is a preset 
-         * reading order that is used in `LatticeAnalysis` to get data from a
-         * file with the standard format described in `Using the executable`.
+         * This can be called to read a figure of merit computation
+         * configuration from the file starting from `ln`
+         * (without the `MERIT` line).
          */
-          void readMeritConfig (Config<Int, BasIntMat> & config,
-              unsigned int& ln);
+        void readMeritConfig (Config<Int, BasIntMat> & config,
+            unsigned int& ln);
 
       private:
 

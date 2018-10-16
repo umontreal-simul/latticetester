@@ -162,10 +162,12 @@ template<typename BasInt> class BasisConstruction{
      * overwrite the lattice basis in `out`, changing the dimension. If one
      * wants to compute the dual for this projection, it has to be done
      * afterwards with the DualConstruction() method.
+     *
+     * \todo Test this new function
      * */
     template<typename Int, typename Dbl, typename RedDbl>
-    void ProjectionConstruction(IntLatticeBasis<Int, BasInt, Dbl, RedDbl>& in,
-        IntLatticeBasis<Int, BasInt, Dbl, RedDbl>& out, Coordinates& proj);
+      void ProjectionConstruction(IntLatticeBasis<Int, BasInt, Dbl, RedDbl>& in,
+          IntLatticeBasis<Int, BasInt, Dbl, RedDbl>& out, Coordinates& proj);
   };
 
   //============================================================================
@@ -339,5 +341,32 @@ template<typename BasInt> class BasisConstruction{
 
     }
   }
+
+  //============================================================================
+
+    template<typename BasInt>
+    template<typename Int, typename Dbl, typename RedDbl>
+      void BasisConstruction<BasInt>::ProjectionConstruction(
+      IntLatticeBasis<Int, BasInt, Dbl, RedDbl>& in,
+      IntLatticeBasis<Int, BasInt, Dbl, RedDbl>& out,
+      Coordinates& proj) {
+        std::size_t dim = proj.size();
+        if (dim > in.getDim())
+            MyExit(1, "Coordinates do not match 'in' dimension.");
+        BasIntMat new_basis, tmp(in.getBasis());
+        new_basis.SetDims(dim, tmp.NumRows());
+        tmp = NTL::transpose(tmp);
+        auto it = proj.cbegin();
+        for (std::size_t i = 0; i < dim; i++) {
+          if (*it <= in.getDim())
+            new_basis[i] = tmp[*it];
+          else
+            MyExit(1, "Coordinates do not match 'in' dimension.");
+        }
+        new_basis = NTL::transpose(new_basis);
+        LLLConstruction(new_basis);
+        out = IntLatticeBasis<Int, BasInt, Dbl, RedDbl>(new_basis, dim, in.getNorm());
+      }
+
 
 } // end namespace LatticeTester

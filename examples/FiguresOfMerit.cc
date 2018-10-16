@@ -1,3 +1,6 @@
+/**
+ * This example should showcase the usage of the Normalizer and Weights classes.
+ * */
 /** 
  * Suppose that we have a `m`-lattice and its `m`-dual. We can get the figure of
  * merit called the normalized spectral test by dividing the length of the

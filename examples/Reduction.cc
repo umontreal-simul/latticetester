@@ -113,7 +113,7 @@ int main() {
     for (int k = 0; k < 10; k++) {
       tmp = clock();
       // Reader shenanigans
-      name = "bench/" + prime + "_" + std::to_string(j) + "_" + std::to_string(k);
+      name = "bench/" + prime + "_" + std::to_string(5*(j+1)) + "_" + std::to_string(k);
       reader = ParamReader<MScal, BScal, RScal>(name + ".dat");
       reader.getLines();
       reader.readInt(numlines, 0, 0);
@@ -135,7 +135,7 @@ int main() {
     for (int k = 0; k < 10; k++) {
       tmp = clock();
       // Reader shenanigans
-      name = "bench/" + prime + "_" + std::to_string(j) + "_" + std::to_string(k);
+      name = "bench/" + prime + "_" + std::to_string(5*(j+1)) + "_" + std::to_string(k);
       reader = ParamReader<MScal, BScal, RScal>(name + ".dat");
       reader.getLines();
       reader.readInt(numlines, 0, 0);
@@ -157,7 +157,7 @@ int main() {
     for (int k = 0; k < 10; k++) {
       tmp = clock();
       // Reader shenanigans
-      name = "bench/" + prime + "_" + std::to_string(j) + "_" + std::to_string(k);
+      name = "bench/" + prime + "_" + std::to_string(5*(j+1)) + "_" + std::to_string(k);
       reader = ParamReader<MScal, BScal, RScal>(name + ".dat");
       reader.getLines();
       reader.readInt(numlines, 0, 0);
@@ -179,7 +179,7 @@ int main() {
     for (int k = 0; k < 10; k++) {
       tmp = clock();
       // Reader shenanigans
-      name = "bench/" + prime + "_" + std::to_string(j) + "_" + std::to_string(k);
+      name = "bench/" + prime + "_" + std::to_string(5*(j+1)) + "_" + std::to_string(k);
       reader = ParamReader<MScal, BScal, RScal>(name + ".dat");
       reader.getLines();
       reader.readInt(numlines, 0, 0);

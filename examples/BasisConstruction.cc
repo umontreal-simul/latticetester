@@ -1,64 +1,12 @@
 /**
  * This example showcases the usage of the BasisConstruction module. This reads
- * matrices from files and builds a basis and a dual for IntLatticeBasis objects.
- *
- * This should also compare the speed of methods, namely, the speed of LLLConstruction + GCDConstruction vs the only usage of GCDConstruction.
- * */
-/**
- * For now, this example benchmarks the different implementations we have
- * available for basis reduction.
- *
- * Add an error counter to see if both methods work.
- *
- * As of now the results look like this:
- * ma_basis: 21739192
- * cou_basis: 249924718
- * ma_basis/cou_basis: 0.086983
- * Dimension: 5
- * ma_basis: 300
- * cou_basis: 764
- * ma_basis/cou_basis: 0.39267
- * Dimension: 10
- * ma_basis: 1892
- * cou_basis: 3883
- * ma_basis/cou_basis: 0.487252
- * Dimension: 15
- * ma_basis: 7809
- * cou_basis: 18444
- * ma_basis/cou_basis: 0.42339
- * Dimension: 20
- * ma_basis: 48107
- * cou_basis: 186311
- * ma_basis/cou_basis: 0.258208
- * Dimension: 25
- * ma_basis: 70023
- * cou_basis: 329619
- * ma_basis/cou_basis: 0.212436
- * Dimension: 30
- * ma_basis: 449102
- * cou_basis: 6603505
- * ma_basis/cou_basis: 0.0680096
- * Dimension: 35
- * ma_basis: 21162057
- * cou_basis: 242782302
- * ma_basis/cou_basis: 0.0871647
- * ma_dual: 179732000
- * cou_dual: 5370
- * ma_dual/cou_dual: 33469.6
- *
- * This means that 1) Obviously the dual basis construction from solving a
- * linear system is crap. Doing the Euclid algorithm on the lines of the matrix
- * is about 10 times faster for the instances studied here but we should verify
- * if there is a difference in this ratio depending on the size of the instance.
- * Also, it is important to note that basis construction takes way less memory
- * in my method because it is done in place.
- *
- * Although it is not definitive, the triangularization seems faster in my
- * implementation, especially in larger dimensions.
- *
- * Aussi, clairement la construction de base par LLL est juste beaucoup trop
- * mieux que la triangularisation justement parce que les vecteurs n'escaladent
- * pas vers des tailles démoniaques.
+ * matrices from files and builds a basis and a dual for an IntLatticeBasis
+ * object. The files this is set to use are in the `bench.zip` archive. To
+ * execute the program, the archive should be unziped and the `bench` folder
+ * should be put in the same directory from which the executable is called.
+ * 
+ * This prints the time used by each strategy, but for the dimensions that we
+ * use, we can conclude that there is not one method better than the other.
  * */
 
 // This should always use Types 2 or 3, because we get too big numbers with GCD
@@ -76,14 +24,9 @@
 
 using namespace LatticeTester;
 
-/*
- * Ce qu'on veut c'est de sonder les fichiers, puis
- * construire la base puis le dual pour chacun et le mettre dans un IntLatticeBasis.
- * On veut comparer la vitesse pour la construction de la base pour plusieurs méthodes différentes.
- * pour comparer les exécutions il suffit de mesurer le temps pris par chaque tour de boucle.
- * */
 int main() {
   // The different clocks we will use for benchmarking
+  // We use ctime for implementation simplicity
   int max_dim = 7; // Actual max dim is 5*max_dim
   clock_t tmp;
   clock_t gcd_time[max_dim], lll_time[max_dim];
@@ -106,7 +49,6 @@ int main() {
     for (int k = 0; k < 10; k++) {
       tmp = clock();
       // Reader shenanigans
-      name = "bench/" + prime + "_" + std::to_string((j+1)*5) + "_" + std::to_string(k);
       std::cout << name << std::endl;
       reader = ParamReader<MScal, BScal, RScal>(name + ".dat");
       reader.getLines();

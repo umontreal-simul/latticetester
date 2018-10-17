@@ -63,7 +63,7 @@
 // We define the numeric types.
 // It is possible to use this example with TYPES 2 and 3. For now 1 calls the
 // same function for both execution and we look forward to change that.
-#define NTL_TYPES_CODE 1
+#define NTL_TYPES_CODE 2
 
 #include <iostream>
 #include <ctime>
@@ -76,24 +76,27 @@
 
 using namespace LatticeTester;
 
+/*
+ * On veut faire les réductions de Dieter, LLL, BKZ et de Minkowski pour
+ * plusieurs bases, comparer le temps d'exécution et la réduction moyenne des
+ * longueurs des vecteurs pour le fun.
+ * */
 int main() {
+  int max_dim = 20; // Actual max dim is 5*max_dim
   // This is basically the C method of timing a program. We time globally, but
   // also for eache dimension and for each size of integers in the matrix.
-  clock_t our_time = 0, ntl_time = 0, diff;
-  clock_t our_time_num[6], ntl_time_num[6];
-  for (int i = 0; i < 6; i++){
-    our_time_num[i] = 0;
-    ntl_time_num[i] = 0;
-  }
-  clock_t our_time_dim[20], ntl_time_dim[20];
-  for (int i = 0; i < 20; i++){
-    our_time_dim[i] = 0;
-    ntl_time_dim[i] = 0;
+  clock_t lll_time[max_dim], die_time[max_dim], bkz_time[max_dim],
+  min_time[max_dim], tmp;
+  clock_t total_times[4];
+  for (int i = 0; i < max_dim; i++){
+    lll_time[i] = 0;
+    die_time[i] = 0;
+    bkz_time[i] = 0;
+    min_time[i] = 0;
   }
 
   // Variables declaration.
-  std::string primes[6] = {"1021", "1048573", "1073741827", "1099511627791",
-    "1125899906842597", "18446744073709551629"};
+  std::string prime = "1021";
   ParamReader<MScal, BScal, RScal> reader;
   // We dynamically allocate memory to these two pointers every time we need to
   // create an object of their type. It is probably not the best way to do it,
@@ -102,73 +105,141 @@ int main() {
   Reducer<MScal, BScal, NScal, RScal>* red;
   std::string name;
   int numlines;
-  BMat matrix1, matrix2;
+  BMat matrix1;
   unsigned int ln;
 
-  for (int i = 0; i < 2; i++) {
-    for (int j = 5; j < 101; j+=5) {
-      for (int k = 0; k < 10; k++) {
-        // Reader shenanigans
-        name = "bench/" + primes[i] + "_" + std::to_string(j) + "_" + std::to_string(k);
-        reader = ParamReader<MScal, BScal, RScal>(name + ".dat");
-        reader.getLines();
-        reader.readInt(numlines, 0, 0);
-        matrix1.SetDims(numlines, numlines);
-        matrix2.SetDims(numlines, numlines);
-        ln = 1;
-        reader.readBMat(matrix1, ln, 0, numlines);
-        matrix2 = matrix1;
+  // Timing Dieter
+  for (int j = 0; j < max_dim; j++) {
+    for (int k = 0; k < 10; k++) {
+      tmp = clock();
+      // Reader shenanigans
+      name = "bench/" + prime + "_" + std::to_string(j) + "_" + std::to_string(k);
+      reader = ParamReader<MScal, BScal, RScal>(name + ".dat");
+      reader.getLines();
+      reader.readInt(numlines, 0, 0);
+      matrix1.SetDims(numlines, numlines);
+      ln = 1;
+      reader.readBMat(matrix1, ln, 0, numlines);
 
-        // We time NTL first
-        basis = new IntLatticeBasis<MScal, BScal, NScal, RScal>(matrix2, numlines);
-        red = new Reducer<MScal, BScal, NScal, RScal>(*basis);
-        diff = clock();
-        red->redLLLNTL();
-        ntl_time += clock()-diff;
-        ntl_time_dim[j/5-1] += clock()-diff;
-        ntl_time_num[i] += clock()-diff;
-        delete red;
-        delete basis;
+      // We time NTL first
+      basis = new IntLatticeBasis<MScal, BScal, NScal, RScal>(matrix1, numlines);
+      red = new Reducer<MScal, BScal, NScal, RScal>(*basis);
+      red->redDieter(0);
+      delete red;
+      delete basis;
+      die_time[j] += clock() - tmp;
+    }
+  }
+  // Timing LLL with default parameters
+  for (int j = 0; j < max_dim; j++) {
+    for (int k = 0; k < 10; k++) {
+      tmp = clock();
+      // Reader shenanigans
+      name = "bench/" + prime + "_" + std::to_string(j) + "_" + std::to_string(k);
+      reader = ParamReader<MScal, BScal, RScal>(name + ".dat");
+      reader.getLines();
+      reader.readInt(numlines, 0, 0);
+      matrix1.SetDims(numlines, numlines);
+      ln = 1;
+      reader.readBMat(matrix1, ln, 0, numlines);
 
-        // We time our implementation
-        matrix2 = matrix1;
-        basis = new IntLatticeBasis<MScal, BScal, NScal, RScal>(matrix2, numlines);
-        red = new Reducer<MScal, BScal, NScal, RScal>(*basis);
-        diff = clock();
-        red->redLLL();
-        our_time += clock()-diff;
-        our_time_dim[j/5-1] += clock()-diff;
-        our_time_num[i] += clock()-diff;
-        delete red;
-        delete basis;
-      }
+      // We time NTL first
+      basis = new IntLatticeBasis<MScal, BScal, NScal, RScal>(matrix1, numlines);
+      red = new Reducer<MScal, BScal, NScal, RScal>(*basis);
+      red->redLLLNTL();
+      delete red;
+      delete basis;
+      lll_time[j] += clock() - tmp;
+    }
+  }
+  // Timing BKZ with default parameters
+  for (int j = 0; j < max_dim; j++) {
+    for (int k = 0; k < 10; k++) {
+      tmp = clock();
+      // Reader shenanigans
+      name = "bench/" + prime + "_" + std::to_string(j) + "_" + std::to_string(k);
+      reader = ParamReader<MScal, BScal, RScal>(name + ".dat");
+      reader.getLines();
+      reader.readInt(numlines, 0, 0);
+      matrix1.SetDims(numlines, numlines);
+      ln = 1;
+      reader.readBMat(matrix1, ln, 0, numlines);
+
+      // We time NTL first
+      basis = new IntLatticeBasis<MScal, BScal, NScal, RScal>(matrix1, numlines);
+      red = new Reducer<MScal, BScal, NScal, RScal>(*basis);
+      red->redBKZ();
+      delete red;
+      delete basis;
+      bkz_time[j] += clock() - tmp;
+    }
+  }
+  // Timing Minkowski reduction
+  for (int j = 0; j < max_dim; j++) {
+    for (int k = 0; k < 10; k++) {
+      tmp = clock();
+      // Reader shenanigans
+      name = "bench/" + prime + "_" + std::to_string(j) + "_" + std::to_string(k);
+      reader = ParamReader<MScal, BScal, RScal>(name + ".dat");
+      reader.getLines();
+      reader.readInt(numlines, 0, 0);
+      matrix1.SetDims(numlines, numlines);
+      ln = 1;
+      reader.readBMat(matrix1, ln, 0, numlines);
+
+      // We time NTL first
+      basis = new IntLatticeBasis<MScal, BScal, NScal, RScal>(matrix1, numlines);
+      red = new Reducer<MScal, BScal, NScal, RScal>(*basis);
+      red->reductMinkowski(0);
+      delete red;
+      delete basis;
+      min_time[j] += clock() - tmp;
     }
   }
 
   // Printing the results in a somewhat formated way.
   std::cout << "ALL THE RESULTS ARE NUMBERED IN TERMS OF SYSTEM CLOCK TICKS\n";
-  std::cout << "Results depending on the size of the numbers\n";
-  std::cout << std::setw(20) << "Lower than" << std::setw(15) << "NTL"
-    << std::setw(15) << "Us" << std::setw(15) << "NTL/Us" << std::endl;
-  for (int i = 0; i < 6; i++){
-    std::cout << std::setw(20) << primes[i] << std::setw(15) << ntl_time_num[i]
-      << std::setw(15) << our_time_num[i] << std::setw(15)
-      << (double)ntl_time_num[i]/(double)our_time_num[i] << std::endl;
+  tmp = 0;
+  for (int i = 0; i < max_dim; i++) {
+    tmp += die_time[i];
   }
-
-  std::cout << "\nResults depending on the dimension\n";
-  std::cout << std::setw(10) << "Dimension" << std::setw(15) << "NTL"
-    << std::setw(15) << "Us" << std::setw(15) << "NTL/Us" << std::endl;
-  for (int i = 0; i < 20; i++){
-    std::cout << std::setw(10) << (i+1)*5 << std::setw(15) << ntl_time_dim[i]
-      << std::setw(15) << our_time_dim[i] << std::setw(15)
-      << (double)ntl_time_dim[i]/(double)our_time_dim[i] << std::endl;
+  int width1 = log10(tmp)+2;
+  total_times[0] = tmp;
+  std::cout << "          " << std::setw(width1) << "Dieter";
+  for (int i = 0; i<width1-3; i++) {
+    std::cout << " ";
   }
-
-  std::cout << "\nWe took  " << our_time << " ticks\n";
-  std::cout << "NTL took " << ntl_time << " ticks\n";
-  std::cout << "We are globally " << (double)our_time/(double)ntl_time
-    << " times slower\n";
+  std::cout << "Total time " << tmp << " ";
+  tmp = 0;
+  for (int i = 0; i < max_dim; i++) {
+    tmp += lll_time[i];
+  }
+  int width2 = log10(tmp)+2;
+  total_times[1] = tmp;
+  std::cout << " " << std::setw(width2) << "LLL";
+  tmp = 0;
+  for (int i = 0; i < max_dim; i++) {
+    tmp += bkz_time[i];
+  }
+  int width3 = log10(tmp)+2;
+  total_times[2] = tmp;
+  std::cout << " " << std::setw(width3) << "BKZ";
+  tmp = 0;
+  for (int i = 0; i < max_dim; i++) {
+    tmp += min_time[i];
+  }
+  int width4 = log10(tmp)+2;
+  total_times[3] = tmp;
+  std::cout << " " << std::setw(width4) << "Minkowski";
+  std::cout << "Total time " << std::setw(width1) << total_times[0]
+    << std::setw(width2) << total_times[1]
+    << std::setw(width3) << total_times[2]
+    << std::setw(width4) << total_times[3];
+  for (int i = 0; i < max_dim; i++) {
+    std::cout << "Dim " << std::setw(6) << (i+1)*5 << std::setw(width1)
+      << die_time[i] << std::setw(width2) << lll_time[i] << std::setw(width3)
+      << bkz_time[i] << std::setw(width4) << min_time[i];
+  }
   
   return 0;
 }

@@ -6,8 +6,6 @@
 - Update the doc to be publishable
   - Finish documentation on Weight classes and Rank1Lattice/IntLattice
   - Re-read what has been done to fit with the pdf guide.
-- Build projections basis
-- Check if LLL can be done with all norms.
 
 ## New features
 - Choose a license

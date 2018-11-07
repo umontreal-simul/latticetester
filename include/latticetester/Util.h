@@ -177,6 +177,38 @@ namespace NTL {
    * @}
    * */
 
+  /**
+   * \name Mathematical functions
+   * @{
+   * These are complementary overloads to NTL power functions.
+   */
+
+  /**
+   * Returns \f$p^i\f$.
+   */
+  inline std::int64_t power (std::int64_t p, std::int64_t i)
+  {
+    return NTL::power_long (p, i);
+  }
+
+  /**
+   * Sets \f$z = 2^i\f$.
+   */
+  inline void power2 (std::int64_t & z, std::int64_t i)
+  {
+    z = NTL::power_long (2, i);
+  }
+  /**
+   * Sets \f$z = 2^i\f$.
+   */
+  inline void power2 (NTL::ZZ& z, std::int64_t i)
+  {
+    z = NTL::power_ZZ (2, i);
+  }
+  /**
+   * @}
+   * */
+
 }     // namespace NTL
 
 namespace LatticeTester {
@@ -250,32 +282,9 @@ namespace LatticeTester {
   /**
    * \name Mathematical functions
    * @{
-   * These are basic wrapper and overloads to common mathematical functions
-   * such as logarithm, exponentiation, and square-root.
+   * These are complete reimplementation of certain mathematical functions, or
+   * wrappers for standard C/C++ functions.
    */
-
-  /**
-   * Returns \f$p^i\f$.
-   */
-  inline std::int64_t power (std::int64_t p, std::int64_t i)
-  {
-    return NTL::power_long (p, i);
-  }
-
-  /**
-   * Sets \f$z = 2^i\f$.
-   */
-  inline void power2 (std::int64_t & z, std::int64_t i)
-  {
-    z = NTL::power_long (2, i);
-  }
-  /**
-   * Sets \f$z = 2^i\f$.
-   */
-  inline void power2 (NTL::ZZ& z, std::int64_t i)
-  {
-    z = NTL::power_ZZ (2, i);
-  }
 
   /**
    * Returns \f$\sqrt{x}\f$ for \f$x\ge0\f$, and \f$-1\f$ for \f$x < 0\f$.
@@ -514,7 +523,7 @@ namespace LatticeTester {
     inline void Divide (Real & q, Real & r, const Real & a, const Real & b)
     {
       q = a / b;
-      conv (q, trunc(q));
+      NTL::conv (q, trunc(q));
       r = a - q * b;
     }
 
@@ -828,7 +837,7 @@ namespace LatticeTester {
   template<typename IntVec>
     inline void Invert (const IntVec & A, IntVec & B, int n)
     {
-      conv(B[n], 1);
+      NTL::conv(B[n], 1);
       for(int i = 0; i < n; i++){
         B[i] = -A[n - i - 1];
       }

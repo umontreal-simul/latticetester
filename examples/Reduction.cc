@@ -109,6 +109,7 @@ int main() {
   unsigned int ln;
 
   // Timing Dieter
+  std::cerr << "Dieter\n";
   for (int j = 0; j < max_dim; j++) {
     for (int k = 0; k < 10; k++) {
       tmp = clock();
@@ -130,6 +131,7 @@ int main() {
       die_time[j] += clock() - tmp;
     }
   }
+  std::cerr << "LLL\n";
   // Timing LLL with default parameters
   for (int j = 0; j < max_dim; j++) {
     for (int k = 0; k < 10; k++) {
@@ -152,6 +154,7 @@ int main() {
       lll_time[j] += clock() - tmp;
     }
   }
+  std::cerr << "BKZ\n";
   // Timing BKZ with default parameters
   for (int j = 0; j < max_dim; j++) {
     for (int k = 0; k < 10; k++) {
@@ -174,8 +177,11 @@ int main() {
       bkz_time[j] += clock() - tmp;
     }
   }
+  std::cerr << "Minkowski\n";
   // Timing Minkowski reduction
   for (int j = 0; j < max_dim; j++) {
+    // The execution is too costly for great dimensions.
+    if (j > 7) continue;
     for (int k = 0; k < 10; k++) {
       tmp = clock();
       // Reader shenanigans
@@ -190,6 +196,7 @@ int main() {
       // We time NTL first
       basis = new IntLatticeBasis<MScal, BScal, NScal, RScal>(matrix1, numlines);
       red = new Reducer<MScal, BScal, NScal, RScal>(*basis);
+      red->redBKZ();
       red->reductMinkowski(0);
       delete red;
       delete basis;
@@ -209,7 +216,6 @@ int main() {
   for (int i = 0; i<width1-3; i++) {
     std::cout << " ";
   }
-  std::cout << "Total time " << tmp << " ";
   tmp = 0;
   for (int i = 0; i < max_dim; i++) {
     tmp += lll_time[i];
@@ -230,15 +236,15 @@ int main() {
   }
   int width4 = log10(tmp)+2;
   total_times[3] = tmp;
-  std::cout << " " << std::setw(width4) << "Minkowski";
+  std::cout << " " << std::setw(width4) << "Minkowski\n";
   std::cout << "Total time " << std::setw(width1) << total_times[0]
     << std::setw(width2) << total_times[1]
     << std::setw(width3) << total_times[2]
-    << std::setw(width4) << total_times[3];
+    << std::setw(width4) << total_times[3] << std::endl;
   for (int i = 0; i < max_dim; i++) {
     std::cout << "Dim " << std::setw(6) << (i+1)*5 << std::setw(width1)
       << die_time[i] << std::setw(width2) << lll_time[i] << std::setw(width3)
-      << bkz_time[i] << std::setw(width4) << min_time[i];
+      << bkz_time[i] << std::setw(width4) << min_time[i] << std::endl;
   }
   
   return 0;

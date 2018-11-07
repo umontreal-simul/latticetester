@@ -248,6 +248,51 @@ namespace NTL
    * */
   void ident(Mat_64& mat, long dim);
 
+  /**
+   * Transposes `A` into `X`.
+   * This is a template overload of the transpose function of NTL. This
+   * does basically the same thing as the implementation NTL uses. It might
+   * be necessary to implement the swap function for the type `T` for this to
+   * work.
+   * */
+  template<typename T>
+    void transpose(NTL::Mat<T>& X, const NTL::Mat<T>& A) {
+      long n = A.NumRows();
+      long m = A.NumCols();
+
+      long i, j;
+
+      // If both matrices have the same address, we need to transpose in place
+      if (&X == &A) {
+        if (n == m) 
+          for (i = 0; i < n; i++)
+            for (j = 0; j < m; j++)
+              swap(X[i][j], X[j][i]);
+        else {
+          NTL::Mat<T> tmp;
+          tmp.SetDims(m, n);
+          for (i = 0; i < n; i++)
+            for (j = 0; j < m; j++)
+              tmp[j][i] = A[i][j];
+          X.kill();
+          X = tmp;
+        }
+      } else {
+        X.SetDims(m, n);
+        for (i = 0; i < n; i++)
+          for (j = 0; j < m; j++)
+            X[j][i] = A[i][j];
+      }
+    }
+
+  /**
+   * Other programming style to the `NTL::transpose` function.
+   * */
+  template<typename T>
+    inline NTL::Mat<T> transpose(const NTL::Mat<T>& a) {
+      NTL::Mat<T> x; transpose(x, a); return x;
+  }
+
   //============================================================================
   
   /**

@@ -657,7 +657,7 @@ namespace LatticeTester {
         m = -m;
       } else
         sign = 1;
-      m = sign*(power (m, m2) + m3);
+      m = sign*(NTL::power (m, m2) + m3);
     }
 
   //===========================================================================

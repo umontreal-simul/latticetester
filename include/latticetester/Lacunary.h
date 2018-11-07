@@ -150,7 +150,7 @@ namespace LatticeTester {
       }
 
       BasInt t1;
-      LatticeTester::power2 (t1, (std::int64_t) w);
+      NTL::power2 (t1, (std::int64_t) w);
       BasInt t;
       t = 0;
       int i = 0;

@@ -15,8 +15,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATTICETESTERCONFIG_H
-#define LATTICETESTERCONFIG_H
+#ifndef LATTICETESTER_CONFIG_H
+#define LATTICETESTER_CONFIG_H
 
 #include "latticetester/Const.h"
 #include "latticetester/Util.h"
@@ -123,5 +123,9 @@ namespace LatticeTester {
 
     };
 
+  extern template class Config<std::int64_t, NTL::matrix<std::int64_t>>;
+  extern template class Config<NTL::ZZ, NTL::matrix<NTL::ZZ>>;
+
 } // End namespace LatticeTester
+
 #endif

@@ -15,8 +15,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef RANK1LATTICE_H
-#define RANK1LATTICE_H
+#ifndef LATTICETESTER_RANK1LATTICE_H
+#define LATTICETESTER_RANK1LATTICE_H
 
 #include "latticetester/Util.h"
 #include "latticetester/Const.h"
@@ -174,7 +174,7 @@ namespace LatticeTester {
     {
       if (this == &lat)
         return * this;
-      copy (lat);
+      this->copy (lat);
       init ();
       this->m_a = lat.m_a;
       return *this;
@@ -256,6 +256,10 @@ namespace LatticeTester {
       this->m_basis = this->m_dualbasis;
       this->m_dualbasis = tmps;
     }
+
+  extern template class Rank1Lattice<std::int64_t, std::int64_t, double, double>;
+  extern template class Rank1Lattice<NTL::ZZ, NTL::ZZ, double, double>;
+  extern template class Rank1Lattice<NTL::ZZ, NTL::ZZ, NTL::RR, NTL::RR>;
 
 } // End namespace LatticeTester
 

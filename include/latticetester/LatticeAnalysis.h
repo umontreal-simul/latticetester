@@ -15,8 +15,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATTICEANALYSIS_H
-#define LATTICEANALYSIS_H
+#ifndef LATTICETESTER_LATTICEANALYSIS_H
+#define LATTICETESTER_LATTICEANALYSIS_H
 
 #include <string>
 #include <list>
@@ -175,7 +175,7 @@ namespace LatticeTester {
           int doTestFromDirectory (const char *dirname);
 
 
-          Config<Int, BasIntMat> getConfig() {
+          Config<Int, BasIntMat>* getConfig() {
             return m_config;
           }
 
@@ -634,6 +634,10 @@ namespace LatticeTester {
       }
       return rw;
     }
+
+  extern template class LatticeAnalysis<std::int64_t, std::int64_t, double, double>;
+  extern template class LatticeAnalysis<NTL::ZZ, NTL::ZZ, double, double>;
+  extern template class LatticeAnalysis<NTL::ZZ, NTL::ZZ, NTL::RR, NTL::RR>;
 
 } // end namespace
 

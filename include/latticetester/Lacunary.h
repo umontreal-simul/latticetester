@@ -15,8 +15,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATTICETESTER__LACUNARY_H
-#define LATTICETESTER__LACUNARY_H
+#ifndef LATTICETESTER_LACUNARY_H
+#define LATTICETESTER_LACUNARY_H
 #include "latticetester/Util.h"
 #include "latticetester/ntlwrap.h"
 
@@ -168,5 +168,9 @@ namespace LatticeTester {
       }
     }
 
+  extern template class Lacunary<std::int64_t>;
+  extern template class Lacunary<NTL::ZZ>;
+
 } // End namespace LatticeTester
+
 #endif

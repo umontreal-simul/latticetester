@@ -15,8 +15,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATTICETESTER__REDUCER_H
-#define LATTICETESTER__REDUCER_H
+#ifndef LATTICETESTER_REDUCER_H
+#define LATTICETESTER_REDUCER_H
 
 #include "NTL/LLL.h"
 
@@ -2502,5 +2502,10 @@ namespace LatticeTester {
    *    }
    * */
 
+  extern template class Reducer<std::int64_t, std::int64_t, double, double>;
+  extern template class Reducer<NTL::ZZ, NTL::ZZ, double, double>;
+  extern template class Reducer<NTL::ZZ, NTL::ZZ, NTL::RR, NTL::RR>;
+
 }     // namespace LatticeTester
+
 #endif // REDUCER_H

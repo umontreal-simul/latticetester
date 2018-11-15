@@ -15,8 +15,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATTICETESTER__NORMALIZER_H
-#define LATTICETESTER__NORMALIZER_H
+#ifndef LATTICETESTER_NORMALIZER_H
+#define LATTICETESTER_NORMALIZER_H
 
 #include "latticetester/Util.h"
 #include "latticetester/Const.h"
@@ -369,6 +369,8 @@ namespace LatticeTester {
       return exp(x);
     }
 
+  extern template class Normalizer<double>;
+  extern template class Normalizer<NTL::RR>;
 
 } // end namespace LatticeTester
 

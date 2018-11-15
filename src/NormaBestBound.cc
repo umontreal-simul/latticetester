@@ -15,22 +15,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <NTL/ZZ.h>
 #include <NTL/RR.h>
-
-#include "latticetester/Reducer.h"
-#include <iostream>
+#include "latticetester/NormaBestBound.h"
 
 namespace LatticeTester{
-
-void negativeCholeski()
-  {
-    std::cout << "\n***** Negative diagonal element in Choleski Decomposition\n"
-      << std::endl;
-  }
-
-  template class Reducer<std::int64_t, std::int64_t, double, double>;
-  template class Reducer<NTL::ZZ, NTL::ZZ, double, double>;
-  template class Reducer<NTL::ZZ, NTL::ZZ, NTL::RR, NTL::RR>;
-
+  template class NormaBestBound<double>;
+  template class NormaBestBound<NTL::RR>;
 }

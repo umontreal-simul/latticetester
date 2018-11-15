@@ -15,8 +15,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATTICETESTER__NORMAPALPHA_H
-#define LATTICETESTER__NORMAPALPHA_H
+#ifndef LATTICETESTER_NORMAPALPHA_H
+#define LATTICETESTER_NORMAPALPHA_H
 
 #include "latticetester/Normalizer.h"
 #include "latticetester/IntFactor.h"
@@ -124,7 +124,7 @@ namespace LatticeTester {
 
       const double eBasis = 2.71828182845904523536;
       double MM;
-      conv (MM, m_m);
+      NTL::conv (MM, m_m);
 
       if (dim <= 1) {
         std::cout << "NormaPalpha::calcBound:  dim < 2.   Returns -1" << std:: endl;
@@ -157,5 +157,10 @@ namespace LatticeTester {
       return exp(Res);
     }
 
+  extern template class NormaPalpha<std::int64_t, double>;
+  extern template class NormaPalpha<NTL::ZZ, double>;
+  extern template class NormaPalpha<NTL::ZZ, NTL::RR>;
+
 } // End namespace LatticeTester
+
 #endif

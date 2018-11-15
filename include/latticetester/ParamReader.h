@@ -15,8 +15,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef PARAMREADER_H
-#define PARAMREADER_H
+#ifndef LATTICETESTER_PARAMREADER_H
+#define LATTICETESTER_PARAMREADER_H
 
 #include "NTL/ZZ.h"
 
@@ -1014,5 +1014,10 @@ namespace LatticeTester {
       }
     }
 
+  extern template class ParamReader<std::int64_t, std::int64_t, double>;
+  extern template class ParamReader<NTL::ZZ, NTL::ZZ, double>;
+  extern template class ParamReader<NTL::ZZ, NTL::ZZ, NTL::RR>;
+
 } // End namespace LatticeTester
+
 #endif

@@ -18,19 +18,10 @@
 #include <NTL/ZZ.h>
 #include <NTL/RR.h>
 
-#include "latticetester/Reducer.h"
-#include <iostream>
+#include "latticetester/IntLatticeBasis.h"
 
 namespace LatticeTester{
-
-void negativeCholeski()
-  {
-    std::cout << "\n***** Negative diagonal element in Choleski Decomposition\n"
-      << std::endl;
-  }
-
-  template class Reducer<std::int64_t, std::int64_t, double, double>;
-  template class Reducer<NTL::ZZ, NTL::ZZ, double, double>;
-  template class Reducer<NTL::ZZ, NTL::ZZ, NTL::RR, NTL::RR>;
-
+  template class IntLatticeBasis<std::int64_t, std::int64_t, double, double>;
+  template class IntLatticeBasis<NTL::ZZ, NTL::ZZ, double, double>;
+  template class IntLatticeBasis<NTL::ZZ, NTL::ZZ, NTL::RR, NTL::RR>;
 }

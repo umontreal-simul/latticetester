@@ -15,8 +15,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATTICETESTER__NORMAMINKL1_H
-#define LATTICETESTER__NORMAMINKL1_H
+#ifndef LATTICETESTER_NORMAMINKL1_H
+#define LATTICETESTER_NORMAMINKL1_H
 
 #include "latticetester/Normalizer.h"
 
@@ -187,6 +187,9 @@ namespace LatticeTester {
         throw std::out_of_range("NormaMinkL1::getGamma");
       return m_gamma[j];
     }
+  extern template class NormaMinkL1<double>;
+  extern template class NormaMinkL1<NTL::RR>;
 
 } // End namespace LatticeTester
+
 #endif

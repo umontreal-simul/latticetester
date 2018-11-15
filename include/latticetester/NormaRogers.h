@@ -15,8 +15,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATTICETESTER__NORMAROGERS_H
-#define LATTICETESTER__NORMAROGERS_H
+#ifndef LATTICETESTER_NORMAROGERS_H
+#define LATTICETESTER_NORMAROGERS_H
 
 #include "latticetester/Normalizer.h"
 
@@ -234,6 +234,9 @@ namespace LatticeTester {
       return m_gamma[j];
     }
 
+  extern template class NormaRogers<double>;
+  extern template class NormaRogers<NTL::RR>;
 
 }
+
 #endif

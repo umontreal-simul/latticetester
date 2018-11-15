@@ -15,6 +15,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+#ifndef LATTICETESTER_BASISCONSTRUCTION_H
+#define LATTICETESTER_BASISCONSTRUCTION_H
+
 #include "NTL/LLL.h"
 
 #include "latticetester/IntLatticeBasis.h"
@@ -169,31 +172,6 @@ template<typename BasInt> class BasisConstruction{
       void ProjectionConstruction(IntLatticeBasis<Int, BasInt, Dbl, RedDbl>& in,
           IntLatticeBasis<Int, BasInt, Dbl, RedDbl>& out, Coordinates& proj);
   };
-
-  //============================================================================
-  // Specialization of LLLConstr
-  //============================================================================
-  
-  template <>
-    void LLLConstr<NTL::matrix<std::int64_t>>::LLLConstruction(
-        NTL::matrix<std::int64_t>& matrix) {
-      std::cerr << "LLL Construction can only be done with NTL::ZZ integers.\n";
-      std::cerr << "Aborting.\n";
-      exit(1);
-    }
-
-  //============================================================================
-
-  template <>
-    void LLLConstr<NTL::matrix<NTL::ZZ>>::LLLConstruction(
-        NTL::matrix<NTL::ZZ>& matrix) {
-      long rank = NTL::LLL_XD(matrix);
-      long num = matrix.NumRows();
-      for (long i = 0; i < rank; i++) {
-        NTL::swap(matrix[i], matrix[num-rank+i]);
-      }
-      matrix.SetDims(rank, matrix.NumCols());
-    }
 
   //============================================================================
   // Implementation
@@ -368,5 +346,9 @@ template<typename BasInt> class BasisConstruction{
         out = IntLatticeBasis<Int, BasInt, Dbl, RedDbl>(new_basis, dim, in.getNorm());
       }
 
+  extern template class BasisConstruction<std::int64_t>;
+  extern template class BasisConstruction<NTL::ZZ>;
 
 } // end namespace LatticeTester
+
+#endif

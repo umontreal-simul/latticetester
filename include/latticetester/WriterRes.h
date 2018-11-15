@@ -15,8 +15,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATTESTWRITERRES_H
-#define LATTESTWRITERRES_H
+#ifndef LATTICETESTER_WRITERRES_H
+#define LATTICETESTER_WRITERRES_H
 
 #include <iostream>
 #include <fstream>
@@ -246,5 +246,9 @@ namespace LatticeTester {
       newLine();
     }
 
+  extern template class WriterRes<std::int64_t>;
+  extern template class WriterRes<NTL::ZZ>;
+
 } // End namespace LatticeTester
+
 #endif

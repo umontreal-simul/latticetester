@@ -15,8 +15,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATTICETESTER__INTFACTOR_H
-#define LATTICETESTER__INTFACTOR_H
+#ifndef LATTICETESTER_INTFACTOR_H
+#define LATTICETESTER_INTFACTOR_H
 
 #include <string>
 #include <iomanip>
@@ -225,5 +225,9 @@ namespace LatticeTester {
       return stat;
     }
 
+  extern template class IntFactor<NTL::ZZ>;
+  extern template class IntFactor<std::int64_t>;
+
 }     // namespace LatticeTester
+
 #endif

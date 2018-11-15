@@ -15,8 +15,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATTICETESTER__INTLATTICE_H
-#define LATTICETESTER__INTLATTICE_H
+#ifndef LATTICETESTER_INTLATTICE_H
+#define LATTICETESTER_INTLATTICE_H
 
 #include "latticetester/IntLatticeBasis.h"
 #include "latticetester/NormaBestLat.h"
@@ -499,6 +499,10 @@ namespace LatticeTester {
       assert (0);
       return std::string();
     }
+  extern template class IntLattice<std::int64_t, std::int64_t, double, double>;
+  extern template class IntLattice<NTL::ZZ, NTL::ZZ, double, double>;
+  extern template class IntLattice<NTL::ZZ, NTL::ZZ, NTL::RR, NTL::RR>;
 
 } // End namespace LatticeTester
+
 #endif

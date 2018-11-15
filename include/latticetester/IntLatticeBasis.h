@@ -16,8 +16,8 @@
 // limitations under the License.
 
 
-#ifndef LATTICETESTER__INTLATTICEBASIS_H
-#define LATTICETESTER__INTLATTICEBASIS_H
+#ifndef LATTICETESTER_INTLATTICEBASIS_H
+#define LATTICETESTER_INTLATTICEBASIS_H
 
 #include "latticetester/Const.h"
 #include "latticetester/Util.h"
@@ -781,7 +781,7 @@ namespace LatticeTester {
           std::cout << "NaN OR Not computed";
         } else {
           if (this->m_norm == L2NORM) {
-            std::cout << std::sqrt(this->m_vecNorm[i]);
+            std::cout << NTL::sqrt(this->m_vecNorm[i]);
           } else {
             std::cout << this->m_vecNorm[i];
           }
@@ -792,7 +792,7 @@ namespace LatticeTester {
             std::cout << "NaN OR Not computed";
           else{
             if (this->m_norm == L2NORM) {
-              std::cout << std::sqrt(this->m_dualvecNorm[i]);
+              std::cout << NTL::sqrt(this->m_dualvecNorm[i]);
             } else {
               std::cout << this->m_dualvecNorm[i];
             }
@@ -860,8 +860,10 @@ namespace LatticeTester {
       return os.str ();
     }
 
+  extern template class IntLatticeBasis<std::int64_t, std::int64_t, double, double>;
+  extern template class IntLatticeBasis<NTL::ZZ, NTL::ZZ, double, double>;
+  extern template class IntLatticeBasis<NTL::ZZ, NTL::ZZ, NTL::RR, NTL::RR>;
+
 } // namespace LatticeTester
 
 #endif
-
-

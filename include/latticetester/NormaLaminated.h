@@ -15,8 +15,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATTICETESTER__NORMALAMINATED_H
-#define LATTICETESTER__NORMALAMINATED_H
+#ifndef LATTICETESTER_NORMALAMINATED_H
+#define LATTICETESTER_NORMALAMINATED_H
 
 #include "latticetester/Normalizer.h"
 
@@ -177,6 +177,9 @@ namespace LatticeTester {
       return m_gamma[j];
     }
 
+  extern template class NormaLaminated<double>;
+  extern template class NormaLaminated<NTL::RR>;
 
 }
+
 #endif

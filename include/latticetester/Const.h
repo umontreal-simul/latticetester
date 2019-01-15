@@ -74,7 +74,6 @@ namespace LatticeTester {
   /**
    * Indicates whether an integer is prime, probably prime, composite or its
    * status is unknown (or don’t care).
-   * \todo Maybe this should be defined in the IntFactor class
    */
   enum PrimeType { UNKNOWN, PRIME, PROB_PRIME, COMPOSITE };
 

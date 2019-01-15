@@ -33,9 +33,6 @@ namespace LatticeTester {
    * require very little storage. They virtually contain objects of type
    * LatticeTester::Coordinates.
    *
-   * \todo present/make a template class for reimplementations so that the
-   * classes in this namespace all work the same (they already do) and can be 
-   * reimplemented easily.
    * \code
    * class CoordinateSets {
    *   class const_iterator: public std::iterator<std::forward_iterator_tag,
@@ -554,8 +551,7 @@ namespace LatticeTester {
      * \tparam BASE Type of coordinate sets that serves as a base. This should
      * be one of the classes defined in the `CoordinateSets` namespace.
      *
-     * \todo Should this class implement the CoordinateSets template? Because it
-     * would need a few more attributes. This class also needs to be benchmarked
+     * \todo This class needs to be benchmarked
      * to see how much slower it is (because it will be).
      */
     template <typename BASE> class AddCoordinate {

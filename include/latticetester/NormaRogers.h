@@ -38,8 +38,6 @@ namespace LatticeTester {
    * exactly for \f$n \leq 8\f$, the Hermite's constant for these \f$n\f$ are
    * **not** upper bounds.
    * 
-   * \todo Explain how this is calculated
-   *
    * From there, we get
    * \f[
    *    \gamma_s = 4 \delta_s^{2/s}.

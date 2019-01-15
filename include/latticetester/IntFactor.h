@@ -84,10 +84,6 @@ namespace LatticeTester {
          * divisible by all small primes \f$p\f$ (\f$p < 2^{16}\f$) that are
          * kept in file `prime.dat`. Then applies the Miller-Rabin probability
          * test with \f$k\f$ trials.
-         *
-         * \todo We should have an option to apply something else than a 
-         * probabilistic test. Also, maybe we could store more primes than those
-         * smaller than 2^16.
          */
         static PrimeType isPrime (const Int & y, std::int64_t k);
 

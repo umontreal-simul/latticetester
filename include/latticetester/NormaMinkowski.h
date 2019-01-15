@@ -25,10 +25,6 @@
 namespace LatticeTester {
 
   /**
-   * \todo Look with Pierre to see if this still has any use/why it is implemented.
-   * There is no real use of a lower bound, except to exclude very bad lattices.
-   * Unless this bound is really hard to obtain?
-   *
    * This class implements Minkowski’s theoretical **LOWER** bound on the length
    * of the shortest non-zero vector in a lattice. The length of a vector is
    * computed using the \f${\mathcal{L}}_2\f$ norm. The bounding lengths, for a

@@ -32,8 +32,8 @@ namespace LatticeTester {
    * values spaced in a certain way. This class is present here to be used with
    * the subclasses of IntLattice.
    *
-   * \todo Test the implementation of this class. **Marc-Antoine**: I feel like
-   * the current implementation of this class is obsolete : it contains too few
+   * \todo **Marc-Antoine**: I feel like the current implementation of this
+   * class is obsolete : it contains too few
    * methods and functions to be of more use than the vector classes.
    */
   template<typename BasInt>

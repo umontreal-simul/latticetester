@@ -261,8 +261,6 @@ namespace LatticeTester {
    * numbers \f$i\f$ and \f$j\f$ are part of the possible output. It is
    * important that \f$i < j\f$ because the underlying arithmetic uses unsigned
    * integers to store j-i+1 and that will be undefined behavior.
-   *
-   * \todo For some reason, this only uses the first 62 bits of the generator. Why?
    */
   int RandInt (int i, int j);
 
@@ -813,7 +811,7 @@ namespace LatticeTester {
    * \todo This uses so many types without check about them and also assumes all
    * those types can be converted to each other without problem... The types
    * here should be uniformized.
-   * THIS DOES NOT SEEM TO BE A VERY SAFE IMPLEMENTATION
+   * THIS IS NOT A VERY SAFE IMPLEMENTATION
    */
   template <typename Int, typename Vect1, typename Vect2, typename Scal>
     inline void ProdScal (const Vect1 & A, const Vect2 & B, int n, Scal & D)
@@ -831,12 +829,6 @@ namespace LatticeTester {
    * Takes an input vector `A` of dimension `n+1` and fill the vector `B` with
    * the values `[-A[n] -A[n-1] ... -A[1] 1]`. `B` is assumed to be of dimension
    * at least `n+1`.
-   *
-   * **OLD DOC**:
-   * Transforms the polynomial \f$ A_0 + A_1x^1 + \cdots + A_nx^n\f$ into
-   * \f$x^n - A_1x^{n-1} - \cdots - A_n\f$. The result is put in `B`.
-   * \todo This function does not do what the old doc says. Check if it causes a
-   * problem where this function is called.
    */
   template<typename IntVec>
     inline void Invert (const IntVec & A, IntVec & B, int n)
@@ -1138,8 +1130,6 @@ namespace LatticeTester {
    * implements what is written at the end of the article, that is the matrix
    * `W` contains the set of vectors that is used and modified at each step to
    * get a new vector from the basis.
-   *
-   * \todo If this is not used this should be removed at some point.
    */
   template <typename Matr, typename Int>
     void Triangularization (Matr & W, Matr & V, int lin, int col,

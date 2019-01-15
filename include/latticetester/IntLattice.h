@@ -213,9 +213,13 @@ namespace LatticeTester {
           double m_lgm2;
 
           /**
-           * Use to save the dual basis and the basis in some works.
+           * The dual basis of the current projection.
            */
           BasIntMat m_wSI;
+
+          /**
+           * The primal basis of the current projection.
+           */
           BasIntMat m_vSI;
 
           /**

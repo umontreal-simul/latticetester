@@ -181,6 +181,9 @@ namespace LatticeTester {
            * This method performs pairwise reduction sequentially on all vectors
            * of the basis whose indice is greater of equal to `d`.
            *
+           * `xx[]` is used internally when doing Minkowski reduction. This is
+           * somewhat ugly but this fixes a leak.
+           *
            * Normalement, cette méthode devrait implémenter l'algorithme de Dieter
            * en se basant sur Knuth, mais là ça ne fait que de réductions par 
            * paires et ça arrête après un certain nombre d'itérations qui ne font rien.
@@ -188,7 +191,7 @@ namespace LatticeTester {
            * fait ou bien sinon il faudrait changer cet algorithme pour faire la
            * bonne chose.
            */
-          void redDieter (int d);
+          void redDieter (int d, bool xx[] = NULL);
 
 
           /**
@@ -372,7 +375,7 @@ namespace LatticeTester {
            * adding to it a multiple of the \f$i\f$-th vector. Always uses the
            * Euclidean norm.
            */
-          void pairwiseRedPrimal (int i, int d);
+          void pairwiseRedPrimal (int i, int d, bool xx[] = NULL);
 
           /**
            * Performs pairwise reductions, trying to reduce every other vector of
@@ -382,13 +385,13 @@ namespace LatticeTester {
            * length of vector \f$i\f$ in the primal basis. Always uses the
            * Euclidean norm.
            */
-          void pairwiseRedDual (int i);
+          void pairwiseRedDual (int i, bool xx[] = NULL);
 
           /**
            * Tries to shorten the vectors of the primal basis using
            * branch-and-bound, in `reductMinkowski`.
            */
-          bool redBB (int i, int d, int Stage, bool & smaller);
+          bool redBB (int i, int d, int Stage, bool & smaller, bool xx[] = NULL);
 
           /**
            * Tries to shorten the smallest vector of the primal basis using
@@ -1127,7 +1130,7 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      void Reducer<Int, BasInt, Dbl, RedDbl>::pairwiseRedPrimal (int i, int d)
+      void Reducer<Int, BasInt, Dbl, RedDbl>::pairwiseRedPrimal (int i, int d, bool xx[])
     {
       const int dim = m_lat->getDim ();
       ++m_countDieter;
@@ -1187,8 +1190,10 @@ namespace LatticeTester {
             m_lat->setDualNegativeNorm(i);
 
           }
-          m_lat->setXX (false, i);
-          m_lat->setXX (false, j);
+          if(xx) {
+            xx[i] = false;
+            xx[j] = false;
+          }
         }
       }
     }
@@ -1196,7 +1201,7 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      void Reducer<Int, BasInt, Dbl, RedDbl>::pairwiseRedDual (int i)
+      void Reducer<Int, BasInt, Dbl, RedDbl>::pairwiseRedDual (int i, bool xx[])
     {
       int j;
       const int dim = m_lat->getDim ();
@@ -1231,7 +1236,7 @@ namespace LatticeTester {
         for (j = 0; j < dim; j++)
           row6(j) = m_bv[j];
         m_lat->setNegativeNorm (i);
-        m_lat->setXX (false, i);
+        if (xx) xx[i] = false;
         m_lat->setVecNorm (m_ns, i);
         for (j = 0; j < dim; j++) {
           if (i != j && m_nv[j] != 0) {
@@ -1242,7 +1247,7 @@ namespace LatticeTester {
             //  ModifVect (m_lat->getDualBasis ()[j], m_lat->getDualBasis ()[i],
             //            m_bs, dim);
             m_lat->setDualNegativeNorm (j);
-            m_lat->setXX (false, j);
+            if (xx) xx[j] = false;
           }
         }
       }
@@ -1251,7 +1256,7 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      void Reducer<Int, BasInt, Dbl, RedDbl>::redDieter(int d)
+      void Reducer<Int, BasInt, Dbl, RedDbl>::redDieter(int d, bool xx[])
     {
       std::int64_t BoundCount;
       const int dim = m_lat->getDim ();
@@ -1264,9 +1269,9 @@ namespace LatticeTester {
       m_countDieter = 0;
       BoundCount = 2 * dim - d;
       do {
-        pairwiseRedPrimal (i, d);
+        pairwiseRedPrimal (i, d, xx);
         if (i > d && withDual)
-          pairwiseRedDual (i);
+          pairwiseRedDual (i, xx);
         if (i < 1)
           i = dim-1;
         else
@@ -1879,7 +1884,7 @@ namespace LatticeTester {
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
       bool Reducer<Int, BasInt, Dbl, RedDbl>::redBB (
-          int i, int d, int Stage, bool & smaller)
+          int i, int d, int Stage, bool & smaller, bool xx[])
       /*
        * Tries to shorten m_lat->getBasis()[i] using branch-and-bound.
        * Used in Minkowski Reduction.
@@ -1965,7 +1970,7 @@ namespace LatticeTester {
           m_lat->updateDualVecNorm ();
         }
         for (h = 0; h < dim; h++)
-          m_lat->setXX (XXTemp[h], h);
+          xx[h] = XXTemp[h];
       }
       if (smaller)
       {
@@ -1996,12 +2001,12 @@ namespace LatticeTester {
             }
             if (Stage == 2) {
               if (h >= d)
-                m_lat->setXX (false, h);
+                xx[h] = false;
             }
           }
         }
       } else if (Stage == 2)
-        m_lat->setXX(true, dim-1);
+        xx[dim-1] = true;
 
       m_lat->permute (i, dim-1);
       // trace( "APRES redBB");
@@ -2290,20 +2295,21 @@ namespace LatticeTester {
       std::int64_t totalNodes = 0;
       bool found;
       bool smaller;               // A smaller vector has been found
+      bool xx[dim];               // This has a use, I just don't know which
 
       //redBKZ(0.999999, 10);
       do {
         // The first d vectors should not be modified.
         for (i = 0; i < d; i++)
-          m_lat->setXX (true, i);
+          xx[i] = true;
         for (i = d; i < dim; i++)
-          m_lat->setXX (false, i);
+          xx[i] = false;
 
 
         found = false; 
 
         do {
-          redDieter (d);
+          redDieter (d, xx);
 
           m_lat->setNegativeNorm(d);
           m_lat->updateVecNorm (d);
@@ -2315,8 +2321,8 @@ namespace LatticeTester {
           found = false;
 
           for (i = 0; i < dim; i++) {
-            if (!m_lat->getXX (i)) {
-              // On essaie de reduire le i-ieme vecteur.
+            if (!xx[i]) {
+              // On essaie de reduire le i-eme vecteur.
               if (!redBB (i, d, 2, smaller))
                 return false;
               totalNodes += m_countNodes;

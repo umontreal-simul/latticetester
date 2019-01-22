@@ -220,21 +220,6 @@ namespace LatticeTester {
         void setDualFlag(bool flag) { m_withDual = flag; }
 
         /**
-         * Gets whether or not there is a component at the `i`-th position in
-         * the basis.
-         *
-         * \todo find the real use of m_xx. It is only used in reductMinkowski 
-         * in Reducer and it is set in the function depending on it's parameter.
-         * It is probably very useless
-         */
-        bool getXX (int i) const { return m_xx[i]; } //???
-
-        /**
-         * Sets `value` at the `i`-th position in the array xx.
-         */
-        void setXX (bool val, int i) { m_xx[i] = val; } //??
-
-        /**
          * Sets all the values in the array containing the norms of the basis 
          * vectors to -1.
          */
@@ -396,7 +381,7 @@ namespace LatticeTester {
          * This table is used in the Minkowski reduction, but it's usage is quite
          * obscure.
          */
-        bool *m_xx;
+        //bool *m_xx;
 
     }; // class IntLatticeBasis
 
@@ -408,8 +393,8 @@ namespace LatticeTester {
       m_dim (dim),
       m_norm (norm),
       m_modulo(0),
-      m_withDual(false),
-      m_xx(0)
+      m_withDual(false)
+      //m_xx(0)
 
   {
     this->m_basis.resize(dim,dim);
@@ -426,8 +411,8 @@ namespace LatticeTester {
       m_dim (dim),
       m_norm (norm),
       m_modulo(0),
-      m_withDual(false),
-      m_xx(0)
+      m_withDual(false)
+      //m_xx(0)
   {
     this->m_vecNorm.resize (dim);
     initVecNorm();
@@ -445,7 +430,7 @@ namespace LatticeTester {
       IntLatticeBasis<Int, BasInt, Dbl, RedDbl>(
           primalbasis, dim, norm)
   {
-    this->m_dualbasis = dualbasis;
+    this->m_dualbasis = BasIntMat(dualbasis);
     this->m_withDual = true;
     this->m_dualvecNorm.resize (dim);
     setDualNegativeNorm();
@@ -458,8 +443,8 @@ namespace LatticeTester {
     IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::IntLatticeBasis (
         const IntLatticeBasis<Int, BasInt, Dbl, RedDbl> & lat):
       m_dim (lat.getDim ()),
-      m_norm (lat.getNorm ()),
-      m_xx(0)
+      m_norm (lat.getNorm ())
+      //m_xx(0)
   {
     copyBasis (lat);
   }
@@ -481,8 +466,8 @@ namespace LatticeTester {
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
     void IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::kill ()
     {
-      delete [] this->m_xx;
-      this->m_xx = 0;
+      //delete [] this->m_xx;
+      //this->m_xx = 0;
     }
 
   /*=========================================================================*/
@@ -493,15 +478,12 @@ namespace LatticeTester {
     {
       //if(m_dim == lat.m_dim)
 
-      this->m_basis = lat.m_basis;
-      this->m_dualbasis = lat.m_dualbasis;
-      this->m_vecNorm = lat.m_vecNorm;
-      this->m_dualvecNorm = lat.m_dualvecNorm;
+      this->m_basis = BasIntMat(lat.m_basis);
+      this->m_dualbasis = BasIntMat(lat.m_dualbasis);
+      this->m_vecNorm = DblVec(lat.m_vecNorm);
+      this->m_dualvecNorm = DblVec(lat.m_dualvecNorm);
       this->m_withDual = lat.m_withDual;
       this->m_modulo = lat.m_modulo;
-      this->m_xx = new bool[m_dim];
-      for (int i = 0; i < this->m_dim; i++)
-        this->m_xx[i] = lat.getXX(i);
     }
 
   /*=========================================================================*/
@@ -522,9 +504,6 @@ namespace LatticeTester {
           CopyVect(this->m_dualvecNorm, lat.m_dualvecNorm, n);
         }
         this->m_modulo = lat.m_modulo;
-        this->m_xx = new bool[n];
-        for (int i = 0; i < n; i++)
-          this->m_xx[i] = lat.getXX(i);
       }
     }
 
@@ -533,10 +512,10 @@ namespace LatticeTester {
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
     void IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::initVecNorm ()
     {
-      this->m_xx = new bool[this->m_dim];
+      //this->m_xx = new bool[this->m_dim];
       for(int i = 0; i < this->m_dim; i++){
         this->m_vecNorm[i] = -1;
-        this->m_xx[i] = true;
+        //this->m_xx[i] = true;
       }
     }
 
@@ -672,9 +651,9 @@ namespace LatticeTester {
       if(this->m_withDual){
         swap9 (this->m_dualvecNorm[i], this->m_dualvecNorm[j]);
       }
-      bool b = this->m_xx[j];
-      this->m_xx[j] = this->m_xx[i];
-      this->m_xx[i] = b;
+      //bool b = this->m_xx[j];
+      //this->m_xx[j] = this->m_xx[i];
+      //this->m_xx[i] = b;
     }
 
 

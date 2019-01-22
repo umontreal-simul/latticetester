@@ -314,16 +314,30 @@ namespace LatticeTester {
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
       void IntLattice<Int, BasInt, Dbl, RedDbl>::incDim ()
     {
+      //std::cout << "incDim()\n";
       IntLattice<Int, BasInt, Dbl, RedDbl> lattmp (*this);
+      //std::cout << "1\n";
       int dim = this->getDim();
+      //std::cout << "dimension: " << dim << std::endl;
+      //std::cout << "basis dim: " << this->m_basis.NumRows() << std::endl;
+      //std::cout << "basis: " << this->m_basis << std::endl;
 
       // std::int64_t sizemat = m_basis.size1();
       // declared as an "unused variable" by the compiler
 
+      if(this->m_lgVolDual2 != 0)
+        delete[] this->m_lgVolDual2;
+      this->m_lgVolDual2 = new double[dim+2]();
+      //this->m_basis.kill();
+      //std::cout << "2\n";
       this->m_basis.resize(dim+1, dim+1);
+      //std::cout << "2\n";
       this->m_dualbasis.resize(dim+1, dim+1);
+      //std::cout << "3\n";
       this->m_vecNorm.resize(dim+1);
+      //std::cout << "4\n";
       this->m_dualvecNorm.resize(dim+1);
+      //std::cout << "5\n";
 
       for(int i = 0; i < dim; i++){
         for(int j = 0; j < dim; j++){
@@ -333,9 +347,13 @@ namespace LatticeTester {
         this->m_vecNorm(i) = lattmp.m_vecNorm(i);
         this->m_dualvecNorm(i) = lattmp.m_dualvecNorm(i);
       }
-      this->setNegativeNorm(dim);
-      this->setDualNegativeNorm(dim);
+      //std::cout << "6\n";
+      this->setNegativeNorm(dim+1);
+      this->setDualNegativeNorm(dim+1);
       this->setDim(dim+1);
+      //std::cout << "7\n";
+      //std::cout << "This function is over\n";
+      return;
     }
 
   //===========================================================================
@@ -446,8 +464,6 @@ namespace LatticeTester {
       this->m_basis = lat.m_basis;
       this->m_dualbasis = lat.m_dualbasis;
       init ();
-      for (int i = 0; i < lat.getDim (); i++)
-        this->m_xx[i] = lat.getXX(i);
     }
 
   //===========================================================================

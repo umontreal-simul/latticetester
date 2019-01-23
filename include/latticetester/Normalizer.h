@@ -192,7 +192,7 @@ namespace LatticeTester {
          * Calculates and returns the bound on the length of the shortest nonzero vector in
          * dimension `j`.
          */
-        virtual double getBound (int j) const;
+        virtual RedDbl getBound (int j) const;
 
         /**
          * Returns the value of a lattice constant \f$\gamma\f$ in
@@ -351,7 +351,7 @@ namespace LatticeTester {
   /*-------------------------------------------------------------------------*/
 
   template<typename RedDbl>
-    double Normalizer<RedDbl>::getBound (int j) const
+    RedDbl Normalizer<RedDbl>::getBound (int j) const
     {
       /*
          assert (j >= 1 && j <= m_maxDim);
@@ -360,11 +360,11 @@ namespace LatticeTester {
          else {
          */
 
-      double x,y;
-      double logBeta;
-      y = 1./j;
-      logBeta = log(m_beta);
-      x = 0.5*log (getGamma(j)) + j*logBeta - y*NTL::conv<double>(m_logDensity);
+      RedDbl x,y;
+      RedDbl logBeta;
+      y = NTL::inv(RedDbl(j));
+      logBeta = NTL::log(m_beta);
+      x = 0.5*NTL::log (getGamma(j)) + j*logBeta - y*m_logDensity;
 
       return exp(x);
     }

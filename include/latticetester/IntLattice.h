@@ -464,9 +464,9 @@ namespace LatticeTester {
       RedDbl logDensity;
 
       if (dualF) // dual basis 
-        logDensity = - m_order * log(this->m_modulo);
+        logDensity = - m_order * NTL::log(this->m_modulo);
       else // primal basis
-        logDensity = m_order * log(this->m_modulo);
+        logDensity = m_order * NTL::log(this->m_modulo);
 
       switch (norma) {
         case BESTLAT:

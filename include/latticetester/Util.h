@@ -213,6 +213,10 @@ namespace NTL {
   inline double log(const double x) {
     return std::log(x);
   }
+
+  inline double inv(const double x) {
+    return 1./x;
+  }
   /**
    * @}
    * */

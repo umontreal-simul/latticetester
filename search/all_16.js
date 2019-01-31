@@ -5,7 +5,6 @@ var searchData=
   ['_7eintlatticebasis',['~IntLatticeBasis',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a85998730c386f62d87dfd696322aabed',1,'LatticeTester::IntLatticeBasis']]],
   ['_7elacunary',['~Lacunary',['../d8/d3b/classLatticeTester_1_1Lacunary.html#a3297da5b3fb2dfd27843307b10e54c89',1,'LatticeTester::Lacunary']]],
   ['_7elatticeanalysis',['~LatticeAnalysis',['../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a2109e3f2cb6ed0a3b4c597ff7d2ffdf1',1,'LatticeTester::LatticeAnalysis']]],
-  ['_7elatticetesterconfig',['~LatticeTesterConfig',['../d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html#ade7c106687e5200b7d812f2d6bd16124',1,'LatticeTester::LatticeTesterConfig']]],
   ['_7ematrix_5frow',['~matrix_row',['../df/d79/classNTL_1_1matrix__row.html#a9a15e2004c4f3312e19c7a2777b5e324',1,'NTL::matrix_row']]],
   ['_7enormabestbound',['~NormaBestBound',['../df/de5/classLatticeTester_1_1NormaBestBound.html#a9a10d0b58ca46f4093a715b2a184324d',1,'LatticeTester::NormaBestBound']]],
   ['_7enormalizer',['~Normalizer',['../d0/dc8/classLatticeTester_1_1Normalizer.html#adbce21ee38d3ac7527531e3a22f51c30',1,'LatticeTester::Normalizer']]],

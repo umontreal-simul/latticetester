@@ -3,7 +3,7 @@ var searchData=
   ['weight',['Weight',['../db/d40/classLatticeTester_1_1Weights.html#a5b53e5716aeadbb040a52c9c8c124c74',1,'LatticeTester::Weights']]],
   ['weights',['Weights',['../db/d40/classLatticeTester_1_1Weights.html',1,'LatticeTester']]],
   ['withdual',['withDual',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#adad5256ecd1222f5953f080fff737a02',1,'LatticeTester::IntLatticeBasis']]],
-  ['write',['write',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a50bb85839ddba692cfff69307568c73b',1,'LatticeTester::IntLatticeBasis::write()'],['../d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html#a970fe1a68a97a8097a7bc4e1888ea9c6',1,'LatticeTester::LatticeTesterConfig::write()']]],
+  ['write',['write',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a50bb85839ddba692cfff69307568c73b',1,'LatticeTester::IntLatticeBasis']]],
   ['writebool',['writeBool',['../d4/dc5/classLatticeTester_1_1Writer.html#a0b191bf4848aa96a00385850d13999b4',1,'LatticeTester::Writer']]],
   ['writedouble',['writeDouble',['../d4/dc5/classLatticeTester_1_1Writer.html#afe5f397a20f2d1550aa99f2ab4adfbf3',1,'LatticeTester::Writer']]],
   ['writeint',['writeInt',['../d4/dc5/classLatticeTester_1_1Writer.html#aa2771c74cb8367dfdb1022bcc0e49af9',1,'LatticeTester::Writer']]],

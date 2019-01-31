@@ -1,7 +1,7 @@
 var searchData=
 [
   ['calcbound',['calcBound',['../d8/d6e/classLatticeTester_1_1NormaPalpha.html#ae2d9a6a833d73c03b94b424f923a07b8',1,'LatticeTester::NormaPalpha']]],
-  ['calcdual',['CalcDual',['../d8/d74/namespaceLatticeTester.html#a127c50e06b3cc677853a45a592ea45ff',1,'LatticeTester']]],
+  ['calcdual',['CalcDual',['../d8/d74/namespaceLatticeTester.html#a17df0e6fdb1f11335eaf91f82ee298b0',1,'LatticeTester']]],
   ['calcindicesstreams',['calcIndicesStreams',['../d8/d3b/classLatticeTester_1_1Lacunary.html#abfa0005744bccda2a6356c1bb8b591d4',1,'LatticeTester::Lacunary']]],
   ['calclgvoldual2',['calcLgVolDual2',['../d6/dc0/classLatticeTester_1_1IntLattice.html#abeecdd1d7ec6d821e502bcb8c9bca6ef',1,'LatticeTester::IntLattice']]],
   ['calcnorm',['CalcNorm',['../d8/d74/namespaceLatticeTester.html#a7022d363aa696d09b59c9499745466a6',1,'LatticeTester']]],

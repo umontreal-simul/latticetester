@@ -1,7 +1,7 @@
 var Util_8h =
 [
     [ "abs", "d1/dc8/Util_8h.html#a67e0668a966fb5fa3e22fc1ffa6d59ed", null ],
-    [ "CalcDual", "d1/dc8/Util_8h.html#a127c50e06b3cc677853a45a592ea45ff", null ],
+    [ "CalcDual", "d1/dc8/Util_8h.html#a17df0e6fdb1f11335eaf91f82ee298b0", null ],
     [ "CalcNorm", "d1/dc8/Util_8h.html#a7022d363aa696d09b59c9499745466a6", null ],
     [ "ChangeSign", "d1/dc8/Util_8h.html#a127802e517a91268330bad9930e5a5f4", null ],
     [ "CheckTriangular", "d1/dc8/Util_8h.html#a05684550e5a7aa0b7d625024702a966d", null ],
@@ -49,9 +49,9 @@ var Util_8h =
     [ "operator<<", "d1/dc8/Util_8h.html#abf71d740b6bd3ef605406a4493939692", null ],
     [ "operator<<", "d1/dc8/Util_8h.html#a0f1e552bdaa65b87d6fd17c57edb040e", null ],
     [ "operator<<", "d1/dc8/Util_8h.html#a8a8412cabdb8630ae40926d3257dddb2", null ],
-    [ "power", "d1/dc8/Util_8h.html#aa1b3094c46a9f69a9f1bbdcf29320886", null ],
-    [ "power2", "d1/dc8/Util_8h.html#afee3ffd9833b68af2a314e6b3c30641f", null ],
-    [ "power2", "d1/dc8/Util_8h.html#ab1dc3cf1db9f995cbf5bec7430e81393", null ],
+    [ "power", "d1/dc8/Util_8h.html#a369678174d23f9f3b894bbcb332ada72", null ],
+    [ "power2", "d1/dc8/Util_8h.html#a75c240b4ff3905479a42cdfc0b8b6857", null ],
+    [ "power2", "d1/dc8/Util_8h.html#a2196092756677cc86a6b6d65250d5cbc", null ],
     [ "ProdScal", "d1/dc8/Util_8h.html#a53d8462179e4ca773d33843c15c77afc", null ],
     [ "Quotient", "d1/dc8/Util_8h.html#aa9056e4da6e74d83c6061650caf9e59f", null ],
     [ "RandBits", "d1/dc8/Util_8h.html#a56b8827c239bd1293eacd356e5cbe3b2", null ],
@@ -68,7 +68,7 @@ var Util_8h =
     [ "toStr", "d1/dc8/Util_8h.html#ab1f9c94abf76e8ce25eb60bb6d1bda2e", null ],
     [ "toString", "d1/dc8/Util_8h.html#a8c8c9d98d5ebd8cb7d73cec8a8e93c13", null ],
     [ "toString", "d1/dc8/Util_8h.html#a0a994e5f949c8b1315d0324e7826240d", null ],
-    [ "Triangularization", "d1/dc8/Util_8h.html#a1b998d416a64afe708710620a4b96810", null ],
+    [ "Triangularization", "d1/dc8/Util_8h.html#aa519a1e0589932719c79b73c76bb1093", null ],
     [ "MAX_LONG_DOUBLE", "d1/dc8/Util_8h.html#ac9adbd421a1148216c8eac1b7d96a5b8", null ],
     [ "TWO_EXP", "d1/dc8/Util_8h.html#ae540464b3215755b9a0ba65ebfba38f8", null ]
 ];

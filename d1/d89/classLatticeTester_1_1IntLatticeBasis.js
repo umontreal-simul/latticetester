@@ -17,7 +17,6 @@ var classLatticeTester_1_1IntLatticeBasis =
     [ "getNorm", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a501e39a4de8c05fd4389174eebd86ba9", null ],
     [ "getVecNorm", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a878fedc00d47a1717c84f8db2674dddf", null ],
     [ "getVecNorm", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a537538c4a3e6dad3cb74869d86f59eeb", null ],
-    [ "getXX", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a0d132b7c45dfe36cbfaaad80530659bd", null ],
     [ "initVecNorm", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#ae8f7e8367b54b45bdacae13e04a8399f", null ],
     [ "kill", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#ae41990f7448aa2085e1e32704f091fbd", null ],
     [ "permute", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a666ed5b323f58f8d4c9dcace46aeddec", null ],
@@ -30,7 +29,6 @@ var classLatticeTester_1_1IntLatticeBasis =
     [ "setNegativeNorm", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a364c95929f9390caaf8b9f5a427c2058", null ],
     [ "setNorm", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a80587d323e2aa5797016718487e5a408", null ],
     [ "setVecNorm", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#ac38daf938ea1d0e1505ada0aa62338cc", null ],
-    [ "setXX", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a5475513e8509c1adfa937afcfb90edbe", null ],
     [ "sort", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a82f6e60a98f1c2cdca32babe73becb87", null ],
     [ "toStringBasis", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a4a205abb7fcd4af3999472be7deed2a2", null ],
     [ "toStringDualBasis", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a67d64d63f2b845edcbe3e702014de0e8", null ],
@@ -48,9 +46,8 @@ var classLatticeTester_1_1IntLatticeBasis =
     [ "m_dim", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a52accf778795f21b455bb24b1bce376d", null ],
     [ "m_dualbasis", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#aede423915c4f4537f78b0751e1477060", null ],
     [ "m_dualvecNorm", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a4ea226c937b5156aa98d66c42643e100", null ],
-    [ "m_modulo", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#ae3b09065d08c3c65c38c9d2700dae470", null ],
+    [ "m_modulo", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a0ab25982641b7d1b0a055c12c237e16b", null ],
     [ "m_norm", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#afec063bcd01dc6db5c9c8d507635ad65", null ],
     [ "m_vecNorm", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a4d6c888217b3bf24263ec8ea577f7964", null ],
-    [ "m_withDual", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a48a4a45de571178a9706e343fda32fe5", null ],
-    [ "m_xx", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a4a8b175dcbf921b70d77fa66fcfd4517", null ]
+    [ "m_withDual", "d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a48a4a45de571178a9706e343fda32fe5", null ]
 ];

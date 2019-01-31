@@ -8,9 +8,9 @@ var index =
         [ "Lattice Reduction", "d4/d4e/detailed_usage.html#Lattice", null ],
         [ "Shortest Vector Research", "d4/d4e/detailed_usage.html#Shortest", null ],
         [ "Figure of Merit Computation", "d4/d4e/detailed_usage.html#Figure", null ]
-      ] ]
+      ] ],
+      [ "Using the library", "d4/d4e/detailed_usage.html#library_usage", null ]
     ] ],
-    [ "Make your own program", "d0/d0a/DIY.html", null ],
     [ "Background", "da/d18/a_intro.html", [
       [ "Lattices in the Real Space", "da/d18/a_intro.html#lattices", [
         [ "Definition of a Lattice", "da/d18/a_intro.html#lattices_def", null ],

@@ -21,5 +21,6 @@ var classLatticeTester_1_1IntLattice =
     [ "m_lgVolDual2", "d6/dc0/classLatticeTester_1_1IntLattice.html#ad5f263f05db85f6b6ae4ec741fb5b0eb", null ],
     [ "m_order", "d6/dc0/classLatticeTester_1_1IntLattice.html#a40dd1adade2b732238310bd0aad5adf4", null ],
     [ "m_t1", "d6/dc0/classLatticeTester_1_1IntLattice.html#aad3b58188ac2d910290e5c0803e127f9", null ],
+    [ "m_vSI", "d6/dc0/classLatticeTester_1_1IntLattice.html#aae0a4eb660bac00bc2c7fc2646f5002d", null ],
     [ "m_wSI", "d6/dc0/classLatticeTester_1_1IntLattice.html#a57f80c9dded11962656466c30bfc9d44", null ]
 ];

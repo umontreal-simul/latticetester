@@ -7,5 +7,6 @@ var Const_8h =
     [ "OutputType", "db/da7/Const_8h.html#ad78f099c800f4c648134967a45b91058", null ],
     [ "PrecisionType", "db/da7/Const_8h.html#a94f96ff406f8b56147a2b7fd96209cb2", null ],
     [ "PreReductionType", "db/da7/Const_8h.html#a191af830e61af769e233e1b03138520e", null ],
-    [ "PrimeType", "db/da7/Const_8h.html#a9b64954fb374b16e1fe991e435501d65", null ]
+    [ "PrimeType", "db/da7/Const_8h.html#a9b64954fb374b16e1fe991e435501d65", null ],
+    [ "ProblemType", "db/da7/Const_8h.html#aad7b917d5ef7e8167bc50aa56109faff", null ]
 ];

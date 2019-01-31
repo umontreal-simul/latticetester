@@ -1,6 +1,9 @@
 var hierarchy =
 [
+    [ "LatticeTester::Config< Int, matrix< BasInt > >", "d8/dcd/classLatticeTester_1_1Config.html", null ],
     [ "LatticeTester::BasisConstruction< BasInt >", "d0/d18/classLatticeTester_1_1BasisConstruction.html", null ],
+    [ "LatticeTester::Config< Int, BasIntMat >", "d8/dcd/classLatticeTester_1_1Config.html", null ],
+    [ "LatticeTester::Config< Int, BasIntMat >::Configuration", "d6/d37/unionLatticeTester_1_1Config_1_1Configuration.html", null ],
     [ "LatticeTester::CoordinateSets::AddCoordinate< BASE >", "d7/d31/classLatticeTester_1_1CoordinateSets_1_1AddCoordinate.html", null ],
     [ "LatticeTester::CoordinateSets::AddCoordinate< BASE >::const_iterator", "df/d75/classLatticeTester_1_1CoordinateSets_1_1AddCoordinate_1_1const__iterator.html", null ],
     [ "LatticeTester::CoordinateSets::FromRanges", "d8/d34/classLatticeTester_1_1CoordinateSets_1_1FromRanges.html", null ],
@@ -15,7 +18,6 @@ var hierarchy =
     ] ],
     [ "LatticeTester::Lacunary< BasInt >", "d8/d3b/classLatticeTester_1_1Lacunary.html", null ],
     [ "LatticeTester::LatticeAnalysis< Int, BasInt, Dbl, RedDbl >", "df/d59/classLatticeTester_1_1LatticeAnalysis.html", null ],
-    [ "LatticeTester::LatticeTesterConfig< Int, BasIntMat >", "d4/dfd/classLatticeTester_1_1LatticeTesterConfig.html", null ],
     [ "LatticeTester::Normalizer< RedDbl >", "d0/dc8/classLatticeTester_1_1Normalizer.html", [
       [ "LatticeTester::NormaBestBound< RedDbl >", "df/de5/classLatticeTester_1_1NormaBestBound.html", null ],
       [ "LatticeTester::NormaBestLat< RedDbl >", "d1/d24/classLatticeTester_1_1NormaBestLat.html", null ],

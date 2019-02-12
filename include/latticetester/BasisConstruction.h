@@ -33,21 +33,12 @@ namespace LatticeTester {
     };
 
 /**
- * **We need to change the signatures of the methods of this class so that they
- * take IntLatticeBasis objects.** This makes no other object needed when
- * calling the functions after.
- *
- * **WARNING** THIS MODULE IS UNDER CONSTRUCTION.
- *
  * This class implements general methods to perform a lattice basis
  * construction from a set of vectors, as well as general methods to obtain
  * the dual lattice basis depending on the current lattice basis.
  *
- * This module still has to be implemented.
- *
- * This module should work only with NTL matrices because those are objects
- * aware of their shape. I think that this is important since we use object
- * oriented stuff.
+ * This module only works with NTL matrices because those are objects
+ * aware of their shape.
  *
  * What is done here seems like very simple linear algebra BUT it is not. The
  * fact that we operate only on the ring of integers makes it so that these
@@ -57,8 +48,7 @@ namespace LatticeTester {
  *
  * ### A note on basis construction
  * Although basis construction is mathematically simple (and also
- * computationnally simple when in the field of real numbers), when dealing
- * with the \f$\mathbb{Z}\f$-module of \f$\mathbb{Z}^n\f$ vectors, things can
+ * computationnally simple when in the field of real numbers), things can
  * get messy. In higher dimensions (~30), the coefficients in the matrix start
  * getting really big (\f$\gg 2^{64}\f$) and needing a lot of memory
  * (run the BasisConstruction example and see this for yourself). Therefore, we
@@ -69,8 +59,8 @@ namespace LatticeTester {
  *   LLL is much faster than GCDConstruction and seems to make this operation
  *   easier to perform.
  * - Use specialized methods. With a more in depth knowledge of your problem, it
- *   is possible that there are much more efficient ways to build a basis its
- *   dual.
+ *   is possible that there are much more efficient ways to build a basis and its
+ *   dual (and/or that those matrices will already be triangular).
  * */
 template<typename BasInt> class BasisConstruction{
 
@@ -81,15 +71,6 @@ template<typename BasInt> class BasisConstruction{
     struct LLLConstr<BasIntMat> spec;
 
   public:
-    /**
-     * */
-    BasisConstruction(){};
-
-    /**
-     * Destructor.
-     * */
-    ~BasisConstruction(){};
-
     /**
      * This functions takes a set of generating vectors of a vector space and
      * finds a basis for this space whilst applying LLL reduction. This is
@@ -117,11 +98,6 @@ template<typename BasInt> class BasisConstruction{
      *
      * WATCH OUT. This function (and building mecanism) are very memory heavy
      * has the numbers below the diagonal can grow very big.
-     *
-     * \todo Give a running time. **Marc-Antoine**: This runs in
-     * O(min(row, col)*lg(n)*row + row^2) time I think, but it might be a bit
-     * more because we do operations on vectors so we might need to multiply
-     * this by col.
      * */
     void GCDConstruction(BasIntMat& matrix);
 
@@ -136,7 +112,7 @@ template<typename BasInt> class BasisConstruction{
      * recursively take for each line
      * \f[B_{i,j} = -\frac{1}{A_{j,j}}\sum_{k=j+1}^i A_{j,k} B_{i,k}.\f]
      *
-     * This does the computation much faster than doing a traditionnal solving
+     * This does the computation much faster than doing a traditional solving
      * of a linear system.
      * */
     void DualConstruction(BasIntMat& matrix, BasIntMat& dualMatrix,
@@ -165,8 +141,6 @@ template<typename BasInt> class BasisConstruction{
      * overwrite the lattice basis in `out`, changing the dimension. If one
      * wants to compute the dual for this projection, it has to be done
      * afterwards with the DualConstruction() method.
-     *
-     * \todo Test this new function
      * */
     template<typename Int, typename Dbl, typename RedDbl>
       void ProjectionConstruction(IntLatticeBasis<Int, BasInt, Dbl, RedDbl>& in,
@@ -199,7 +173,6 @@ template<typename BasInt> class BasisConstruction{
           matrix[i].swap(matrix[j]);
           q = matrix[j][i]/matrix[i][i];
           matrix[j] -= q * matrix[i];
-          //std::cout << "Matrix:\n" << matrix;
         }
       }
       // We make sure that the coefficients are positive.
@@ -217,10 +190,8 @@ template<typename BasInt> class BasisConstruction{
       // }
       if (matrix[i][i] != 0) rank++;
     }
-    //std::cout << "Matrix before truncating\n" << matrix;
     // We remove zero vectors from the basis.
     matrix.SetDims(rank, cols);
-    //std::cout << matrix << std::endl;
   }
 
   //============================================================================

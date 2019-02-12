@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['_7ebasisconstruction',['~BasisConstruction',['../d0/d18/classLatticeTester_1_1BasisConstruction.html#af904353a100b162fc9127170cfe321b8',1,'LatticeTester::BasisConstruction']]],
   ['_7eintlattice',['~IntLattice',['../d6/dc0/classLatticeTester_1_1IntLattice.html#a59ba31b3de42c44101f3bdc231e9ccfe',1,'LatticeTester::IntLattice']]],
   ['_7eintlatticebasis',['~IntLatticeBasis',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a85998730c386f62d87dfd696322aabed',1,'LatticeTester::IntLatticeBasis']]],
   ['_7elacunary',['~Lacunary',['../d8/d3b/classLatticeTester_1_1Lacunary.html#a3297da5b3fb2dfd27843307b10e54c89',1,'LatticeTester::Lacunary']]],

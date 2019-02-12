@@ -103,18 +103,14 @@ $(document).ready(function(){initNavTree('dd/da0/todo.html','../../');});
 <dd><a class="anchor" id="_todo000002"></a><b>Pierre</b>: Add an example of this, with a figure. </dd>
 <dt>Page <a class="el" href="../../d4/d4e/detailed_usage.html">Detailed usage instructions</a>  </dt>
 <dd><a class="anchor" id="_todo000001"></a>multiple norms? </dd>
-<dt>Member <a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html#af2d87fd90972f750218d516e4fa47596">LatticeTester::BasisConstruction&lt; BasInt &gt;::GCDConstruction</a>  (BasIntMat &amp;matrix)</dt>
-<dd><a class="anchor" id="_todo000003"></a>Give a running time. <b>Marc-Antoine</b>: This runs in O(min(row, col)*lg(n)*row + row^2) time I think, but it might be a bit more because we do operations on vectors so we might need to multiply this by col.  </dd>
-<dt>Member <a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html#a5855203eb20a7757cb2a533504dd3cbe">LatticeTester::BasisConstruction&lt; BasInt &gt;::ProjectionConstruction</a>  (IntLatticeBasis&lt; Int, BasInt, Dbl, RedDbl &gt; &amp;in, IntLatticeBasis&lt; Int, BasInt, Dbl, RedDbl &gt; &amp;out, <a class="el" href="../../d9/dd3/classLatticeTester_1_1Coordinates.html" title="This is basically a std::set&lt;std::size_t&gt;.">Coordinates</a> &amp;proj)</dt>
-<dd><a class="anchor" id="_todo000004"></a>Test this new function  </dd>
 <dt>Class <a class="el" href="../../d7/d31/classLatticeTester_1_1CoordinateSets_1_1AddCoordinate.html">LatticeTester::CoordinateSets::AddCoordinate&lt; BASE &gt;</a>  </dt>
-<dd><a class="anchor" id="_todo000005"></a>This class needs to be benchmarked to see how much slower it is (because it will be).  </dd>
+<dd><a class="anchor" id="_todo000003"></a>This class needs to be benchmarked to see how much slower it is (because it will be).  </dd>
 <dt>Class <a class="el" href="../../d8/d3b/classLatticeTester_1_1Lacunary.html">LatticeTester::Lacunary&lt; BasInt &gt;</a>  </dt>
-<dd><a class="anchor" id="_todo000006"></a><b>Marc-Antoine</b>: I feel like the current implementation of this class is obsolete : it contains too few methods and functions to be of more use than the vector classes.  </dd>
+<dd><a class="anchor" id="_todo000004"></a><b>Marc-Antoine</b>: I feel like the current implementation of this class is obsolete : it contains too few methods and functions to be of more use than the vector classes.  </dd>
 <dt>Member <a class="el" href="../../d8/d3b/classLatticeTester_1_1Lacunary.html#a8c91ccc16be251a222faa28853849c8f">LatticeTester::Lacunary&lt; BasInt &gt;::Lacunary</a>  (const BasIntVec &amp;C, int t)</dt>
-<dd><a class="anchor" id="_todo000007"></a>This constructor might not work as intended because BasIntVec is an <a class="el" href="../../d0/d01/classNTL_1_1vector.html" title="A subclass of the NTL::Vec&lt;T&gt; class.">NTL::vector</a> type and this function dynamically allocates an array to it. There is no real reason to do that since there is a setSize method available.  </dd>
+<dd><a class="anchor" id="_todo000005"></a>This constructor might not work as intended because BasIntVec is an <a class="el" href="../../d0/d01/classNTL_1_1vector.html" title="A subclass of the NTL::Vec&lt;T&gt; class.">NTL::vector</a> type and this function dynamically allocates an array to it. There is no real reason to do that since there is a setSize method available.  </dd>
 <dt>Member <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a53d8462179e4ca773d33843c15c77afc">LatticeTester::ProdScal</a>  (const Vect1 &amp;A, const Vect2 &amp;B, int n, Scal &amp;D)</dt>
-<dd><a class="anchor" id="_todo000008"></a>This uses so many types without check about them and also assumes all those types can be converted to each other without problem... The types here should be uniformized. THIS IS NOT A VERY SAFE IMPLEMENTATION </dd>
+<dd><a class="anchor" id="_todo000006"></a>This uses so many types without check about them and also assumes all those types can be converted to each other without problem... The types here should be uniformized. THIS IS NOT A VERY SAFE IMPLEMENTATION </dd>
 </dl>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
@@ -122,7 +118,7 @@ $(document).ready(function(){initNavTree('dd/da0/todo.html','../../');});
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="footer">Generated on Thu Jan 31 2019 14:43:50 for Lattice Tester Manual by
+    <li class="footer">Generated on Tue Feb 12 2019 15:01:51 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.15 </li>
   </ul>

@@ -102,16 +102,13 @@ $(document).ready(function(){initNavTree('d0/d18/classLatticeTester_1_1BasisCons
 </div><!--header-->
 <div class="contents">
 
-<p><b>We need to change the signatures of the methods of this class so that they take <a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html" title="This class represents a lattice and its basis and offers tools to do basic manipulations on lattice b...">IntLatticeBasis</a> objects. </b> 
+<p>This class implements general methods to perform a lattice basis construction from a set of vectors, as well as general methods to obtain the dual lattice basis depending on the current lattice basis.  
  <a href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html#details">More...</a></p>
 
 <p><code>#include &lt;latticetester/BasisConstruction.h&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af904353a100b162fc9127170cfe321b8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html#af904353a100b162fc9127170cfe321b8">~BasisConstruction</a> ()</td></tr>
-<tr class="memdesc:af904353a100b162fc9127170cfe321b8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destructor.  <a href="#af904353a100b162fc9127170cfe321b8">More...</a><br /></td></tr>
-<tr class="separator:af904353a100b162fc9127170cfe321b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae5a5ec90b38dcb71359d3b8ef605345b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html#ae5a5ec90b38dcb71359d3b8ef605345b">LLLConstruction</a> (<a class="el" href="../../d4/d6f/classNTL_1_1matrix.html">BasIntMat</a> &amp;matrix)</td></tr>
 <tr class="memdesc:ae5a5ec90b38dcb71359d3b8ef605345b"><td class="mdescLeft">&#160;</td><td class="mdescRight">This functions takes a set of generating vectors of a vector space and finds a basis for this space whilst applying LLL reduction.  <a href="#ae5a5ec90b38dcb71359d3b8ef605345b">More...</a><br /></td></tr>
 <tr class="separator:ae5a5ec90b38dcb71359d3b8ef605345b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -133,50 +130,16 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><h3>template&lt;typename BasInt&gt;<br />
 class LatticeTester::BasisConstruction&lt; BasInt &gt;</h3>
 
-<p><b>We need to change the signatures of the methods of this class so that they take <a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html" title="This class represents a lattice and its basis and offers tools to do basic manipulations on lattice b...">IntLatticeBasis</a> objects. </b></p>
-<p>This makes no other object needed when calling the functions after.</p>
-<p><b>WARNING</b> THIS MODULE IS UNDER CONSTRUCTION.</p>
-<p>This class implements general methods to perform a lattice basis construction from a set of vectors, as well as general methods to obtain the dual lattice basis depending on the current lattice basis.</p>
-<p>This module still has to be implemented.</p>
-<p>This module should work only with <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL.">NTL</a> matrices because those are objects aware of their shape. I think that this is important since we use object oriented stuff.</p>
+<p>This class implements general methods to perform a lattice basis construction from a set of vectors, as well as general methods to obtain the dual lattice basis depending on the current lattice basis. </p>
+<p>This module only works with <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL.">NTL</a> matrices because those are objects aware of their shape.</p>
 <p>What is done here seems like very simple linear algebra BUT it is not. The fact that we operate only on the ring of integers makes it so that these simple algorithms can become way too slow very rapidly because the numbers they manipulate grow very fast. This also means that in many cases the usage of standard <code>long</code> type integers will overflow.</p>
 <h3>A note on basis construction</h3>
-<p>Although basis construction is mathematically simple (and also computationnally simple when in the field of real numbers), when dealing with the \(\mathbb{Z}\)-module of \(\mathbb{Z}^n\) vectors, things can get messy. In higher dimensions (~30), the coefficients in the matrix start getting really big ( \(\gg 2^{64}\)) and needing a lot of memory (run the <a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html" title="We need to change the signatures of the methods of this class so that they take IntLatticeBasis objec...">BasisConstruction</a> example and see this for yourself). Therefore, we give users a few tips about the usage of this module.</p><ul>
+<p>Although basis construction is mathematically simple (and also computationnally simple when in the field of real numbers), things can get messy. In higher dimensions (~30), the coefficients in the matrix start getting really big ( \(\gg 2^{64}\)) and needing a lot of memory (run the <a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html" title="This class implements general methods to perform a lattice basis construction from a set of vectors,...">BasisConstruction</a> example and see this for yourself). Therefore, we give users a few tips about the usage of this module.</p><ul>
 <li>Prefer the usage of <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL.">NTL</a> types when using this module. The functions don't have any kind of overflow detection.</li>
 <li>Reduce the basis before doing a triangularization. Reducing a basis with LLL is much faster than GCDConstruction and seems to make this operation easier to perform.</li>
-<li>Use specialized methods. With a more in depth knowledge of your problem, it is possible that there are much more efficient ways to build a basis its dual. </li>
+<li>Use specialized methods. With a more in depth knowledge of your problem, it is possible that there are much more efficient ways to build a basis and its dual (and/or that those matrices will already be triangular). </li>
 </ul>
-</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="af904353a100b162fc9127170cfe321b8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af904353a100b162fc9127170cfe321b8">&#9670;&nbsp;</a></span>~BasisConstruction()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<div class="memtemplate">
-template&lt;typename BasInt &gt; </div>
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html">LatticeTester::BasisConstruction</a>&lt; BasInt &gt;::~<a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html">BasisConstruction</a> </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Destructor. </p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
+</div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a87a05d339617608f3ad3ba1c47d1acd1"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a87a05d339617608f3ad3ba1c47d1acd1">&#9670;&nbsp;</a></span>DualConstruction()</h2>
 
@@ -215,7 +178,7 @@ template&lt;typename BasInt &gt; </div>
 <p>This function uses the clever method developed in <a class="el" href="../../d0/de3/citelist.html#CITEREF_rCOU96a">[3]</a> that notes that for <code>B</code> to be a <code>m</code>-dual to <code>A</code>, we have to have that \(AB^t = mI\). It is quite easy to show that, knowing <code>A</code> is upper triangular, <code>B</code> will be a lower triangular matrix with <code>A(i,i)*B(i,i) = m</code> for all <code>i</code> and \( A_i \cdot B_j = 0\) for \(i\neq j\). And that to get the second condition, we simply have to recursively take for each line </p><p class="formulaDsp">
 \[B_{i,j} = -\frac{1}{A_{j,j}}\sum_{k=j+1}^i A_{j,k} B_{i,k}.\]
 </p>
-<p>This does the computation much faster than doing a traditionnal solving of a linear system. </p>
+<p>This does the computation much faster than doing a traditional solving of a linear system. </p>
 
 </div>
 </div>
@@ -285,8 +248,7 @@ template&lt;typename BasInt &gt; </div>
 <li>Add an integer multiple of line \(i\) to line \(j\) for \(i \neq j\),</li>
 <li>Swap line \(i\) and line \(j\). After constructing this basis, the algorithm eliminates negative coefficients in the matrix.</li>
 </ul>
-<p>WATCH OUT. This function (and building mecanism) are very memory heavy has the numbers below the diagonal can grow very big.</p>
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000003">Todo:</a></b></dt><dd>Give a running time. <b>Marc-Antoine</b>: This runs in O(min(row, col)*lg(n)*row + row^2) time I think, but it might be a bit more because we do operations on vectors so we might need to multiply this by col. </dd></dl>
+<p>WATCH OUT. This function (and building mecanism) are very memory heavy has the numbers below the diagonal can grow very big. </p>
 
 </div>
 </div>
@@ -350,8 +312,7 @@ template&lt;typename Int , typename Dbl , typename RedDbl &gt; </div>
 </div><div class="memdoc">
 
 <p>This is a method that does the general construction of the projection <code>proj</code> of the basis <code>in</code> and puts it in <code>out</code>. </p>
-<p>This will completely overwrite the lattice basis in <code>out</code>, changing the dimension. If one wants to compute the dual for this projection, it has to be done afterwards with the <a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html#a87a05d339617608f3ad3ba1c47d1acd1" title="This method builds the dual of matrix in dualMatrix and multiplies modulo by the rescaling factor use...">DualConstruction()</a> method.</p>
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000004">Todo:</a></b></dt><dd>Test this new function </dd></dl>
+<p>This will completely overwrite the lattice basis in <code>out</code>, changing the dimension. If one wants to compute the dual for this projection, it has to be done afterwards with the <a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html#a87a05d339617608f3ad3ba1c47d1acd1" title="This method builds the dual of matrix in dualMatrix and multiplies modulo by the rescaling factor use...">DualConstruction()</a> method. </p>
 
 </div>
 </div>
@@ -364,7 +325,7 @@ template&lt;typename Int , typename Dbl , typename RedDbl &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a></li><li class="navelem"><a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html">BasisConstruction</a></li>
-    <li class="footer">Generated on Thu Jan 31 2019 14:43:50 for Lattice Tester Manual by
+    <li class="footer">Generated on Tue Feb 12 2019 15:01:51 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.15 </li>
   </ul>

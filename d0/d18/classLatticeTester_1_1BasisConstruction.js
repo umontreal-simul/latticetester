@@ -1,6 +1,5 @@
 var classLatticeTester_1_1BasisConstruction =
 [
-    [ "~BasisConstruction", "d0/d18/classLatticeTester_1_1BasisConstruction.html#af904353a100b162fc9127170cfe321b8", null ],
     [ "DualConstruction", "d0/d18/classLatticeTester_1_1BasisConstruction.html#a87a05d339617608f3ad3ba1c47d1acd1", null ],
     [ "DualSlow", "d0/d18/classLatticeTester_1_1BasisConstruction.html#ab486a7a6110df22a049122bb81fb2bf9", null ],
     [ "GCDConstruction", "d0/d18/classLatticeTester_1_1BasisConstruction.html#af2d87fd90972f750218d516e4fa47596", null ],

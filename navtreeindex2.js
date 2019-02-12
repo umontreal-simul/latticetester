@@ -1,6 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"df/d59/classLatticeTester_1_1LatticeAnalysis.html":[4,0,0,8],
 "df/d59/classLatticeTester_1_1LatticeAnalysis.html#a2109e3f2cb6ed0a3b4c597ff7d2ffdf1":[4,0,0,8,2],
 "df/d59/classLatticeTester_1_1LatticeAnalysis.html#a72ff43c478feda50b9a75be2601fe7ec":[4,0,0,8,8],
 "df/d59/classLatticeTester_1_1LatticeAnalysis.html#a7dae9b32ccbaf612bffd0e2a62f612bd":[4,0,0,8,3],
@@ -36,8 +35,8 @@ var NAVTREEINDEX2 =
 "dir_8e3d3e3450631fd0c5f22b5c59b9b09f.html":[5,0,0,0],
 "dir_d44c64559bbebec7f509842c48db8b23.html":[5,0,0],
 "files.html":[5,0],
-"functions.html":[4,3,0,0],
 "functions.html":[4,3,0],
+"functions.html":[4,3,0,0],
 "functions_b.html":[4,3,0,1],
 "functions_c.html":[4,3,0,2],
 "functions_d.html":[4,3,0,3],
@@ -83,8 +82,8 @@ var NAVTREEINDEX2 =
 "functions_w.html":[4,3,0,19],
 "functions_~.html":[4,3,0,20],
 "hierarchy.html":[4,2],
-"index.html":[0],
 "index.html":[],
+"index.html":[0],
 "namespacemembers.html":[3,1,0],
 "namespacemembers_enum.html":[3,1,4],
 "namespacemembers_func.html":[3,1,1],

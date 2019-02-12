@@ -117,7 +117,7 @@ Namespaces</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html">BasisConstruction</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>We need to change the signatures of the methods of this class so that they take <a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html" title="This class represents a lattice and its basis and offers tools to do basic manipulations on lattice b...">IntLatticeBasis</a> objects. </b> <a href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html#details">More...</a><br /></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class implements general methods to perform a lattice basis construction from a set of vectors, as well as general methods to obtain the dual lattice basis depending on the current lattice basis.  <a href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d8/dcd/classLatticeTester_1_1Config.html">Config</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">This class contains a configuration that can be passed to a <code><a class="el" href="../../df/d59/classLatticeTester_1_1LatticeAnalysis.html" title="Objects of this class can perform various tests on lattices.">LatticeAnalysis</a></code> object to perform a computation.  <a href="../../d8/dcd/classLatticeTester_1_1Config.html#details">More...</a><br /></td></tr>
@@ -2390,7 +2390,7 @@ template&lt;typename Int , typename Vect1 , typename Vect2 , typename Scal &gt; 
 </div><div class="memdoc">
 
 <p>Computes the scalar product of vectors <code>A</code> and <code>B</code> truncated to their <code>n</code> first components, then puts the result in <code>D</code>. </p>
-<p>There is a lot to consider when passing types to this function. The best for Vect1 to be the same type as Vect2 and for Scal to be the same as Int, and that those types are the ones stored in Vect1 and Vect2. </p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000008">Todo:</a></b></dt><dd>This uses so many types without check about them and also assumes all those types can be converted to each other without problem... The types here should be uniformized. THIS IS NOT A VERY SAFE IMPLEMENTATION </dd></dl>
+<p>There is a lot to consider when passing types to this function. The best for Vect1 to be the same type as Vect2 and for Scal to be the same as Int, and that those types are the ones stored in Vect1 and Vect2. </p><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000006">Todo:</a></b></dt><dd>This uses so many types without check about them and also assumes all those types can be converted to each other without problem... The types here should be uniformized. THIS IS NOT A VERY SAFE IMPLEMENTATION </dd></dl>
 
 </div>
 </div>
@@ -2983,7 +2983,7 @@ template&lt;typename Matr , typename Int &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a></li>
-    <li class="footer">Generated on Thu Jan 31 2019 14:43:50 for Lattice Tester Manual by
+    <li class="footer">Generated on Tue Feb 12 2019 15:01:51 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.15 </li>
   </ul>

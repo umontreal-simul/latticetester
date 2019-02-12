@@ -16,12 +16,11 @@ var NAVTREEINDEX0 =
 "d0/d01/classNTL_1_1vector.html#ae03f3503466ee02a1e5832da0138b9a0":[4,0,1,2,4],
 "d0/d01/classNTL_1_1vector.html#ae2b87f5aff6ceb487128a1e41f46cd63":[4,0,1,2,1],
 "d0/d18/classLatticeTester_1_1BasisConstruction.html":[4,0,0,1],
-"d0/d18/classLatticeTester_1_1BasisConstruction.html#a5855203eb20a7757cb2a533504dd3cbe":[4,0,0,1,5],
-"d0/d18/classLatticeTester_1_1BasisConstruction.html#a87a05d339617608f3ad3ba1c47d1acd1":[4,0,0,1,1],
-"d0/d18/classLatticeTester_1_1BasisConstruction.html#ab486a7a6110df22a049122bb81fb2bf9":[4,0,0,1,2],
-"d0/d18/classLatticeTester_1_1BasisConstruction.html#ae5a5ec90b38dcb71359d3b8ef605345b":[4,0,0,1,4],
-"d0/d18/classLatticeTester_1_1BasisConstruction.html#af2d87fd90972f750218d516e4fa47596":[4,0,0,1,3],
-"d0/d18/classLatticeTester_1_1BasisConstruction.html#af904353a100b162fc9127170cfe321b8":[4,0,0,1,0],
+"d0/d18/classLatticeTester_1_1BasisConstruction.html#a5855203eb20a7757cb2a533504dd3cbe":[4,0,0,1,4],
+"d0/d18/classLatticeTester_1_1BasisConstruction.html#a87a05d339617608f3ad3ba1c47d1acd1":[4,0,0,1,0],
+"d0/d18/classLatticeTester_1_1BasisConstruction.html#ab486a7a6110df22a049122bb81fb2bf9":[4,0,0,1,1],
+"d0/d18/classLatticeTester_1_1BasisConstruction.html#ae5a5ec90b38dcb71359d3b8ef605345b":[4,0,0,1,3],
+"d0/d18/classLatticeTester_1_1BasisConstruction.html#af2d87fd90972f750218d516e4fa47596":[4,0,0,1,2],
 "d0/d6f/namespaceLatticeTester_1_1CoordinateSets.html":[4,0,0,0],
 "d0/d6f/namespaceLatticeTester_1_1CoordinateSets.html":[3,0,0,0],
 "d0/dc8/classLatticeTester_1_1Normalizer.html":[4,0,0,12],
@@ -249,5 +248,6 @@ var NAVTREEINDEX0 =
 "d4/dc5/classLatticeTester_1_1Writer.html#afc4dc08b00d2667905a309a18bc83bf0":[4,0,0,28,3],
 "d4/dc5/classLatticeTester_1_1Writer.html#afe095da2a5d7b44eb142f0dc8e959281":[4,0,0,28,2],
 "d4/dc5/classLatticeTester_1_1Writer.html#afe5f397a20f2d1550aa99f2ab4adfbf3":[4,0,0,28,13],
-"d4/dc5/classLatticeTester_1_1Writer.html#afefd2866bad293913c9dbaf6520234b5":[4,0,0,28,10]
+"d4/dc5/classLatticeTester_1_1Writer.html#afefd2866bad293913c9dbaf6520234b5":[4,0,0,28,10],
+"d4/de7/classLatticeTester_1_1PODWeights.html":[4,0,0,19]
 };

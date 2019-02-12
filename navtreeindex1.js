@@ -1,6 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"d4/de7/classLatticeTester_1_1PODWeights.html":[4,0,0,19],
 "d4/de7/classLatticeTester_1_1PODWeights.html#a0a52d8dcbbbd20de34a67653fb29015e":[4,0,0,19,1],
 "d4/de7/classLatticeTester_1_1PODWeights.html#a7f370068cceaba197946741cacc8c0db":[4,0,0,19,3],
 "d4/de7/classLatticeTester_1_1PODWeights.html#aac9ba10cba4104e655999b4be0bbc7e8":[4,0,0,19,5],
@@ -249,5 +248,6 @@ var NAVTREEINDEX1 =
 "de/dfe/classLatticeTester_1_1Rank1Lattice.html#aad299f05cc3c03540b2cc44e23b13473":[4,0,0,23,4],
 "de/dfe/classLatticeTester_1_1Rank1Lattice.html#ac56f7281941e5971c4d88f140583f11a":[4,0,0,23,6],
 "de/dfe/classLatticeTester_1_1Rank1Lattice.html#ac6a7d1f29ed108667b7e24a37ded7c29":[4,0,0,23,9],
-"de/dfe/classLatticeTester_1_1Rank1Lattice.html#aef92565c07e9095cb426b573b04d5acc":[4,0,0,23,3]
+"de/dfe/classLatticeTester_1_1Rank1Lattice.html#aef92565c07e9095cb426b573b04d5acc":[4,0,0,23,3],
+"df/d59/classLatticeTester_1_1LatticeAnalysis.html":[4,0,0,8]
 };

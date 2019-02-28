@@ -326,7 +326,7 @@ namespace LatticeTester {
   template<typename RedDbl>
     double Normalizer<RedDbl>::getGamma (int) const
     {
-      return 1.0;
+      return -1.0;
     }
 
 
@@ -359,6 +359,7 @@ namespace LatticeTester {
          return getPreComputedBound (j);
          else {
          */
+      if (getGamma(j) < 0) return RedDbl(1.0);
 
       RedDbl x,y;
       RedDbl logBeta;

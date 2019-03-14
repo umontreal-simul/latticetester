@@ -25,8 +25,6 @@
 namespace LatticeTester {
 
   /**
-   * \Remark The current implementation does not implement the bounds for now
-   *
    * This class implements upper bounds on the lenght of the shortest nonzero
    * vector in a lattice. To obtain these bounds, this class contains hard-coded
    * values of an approximation of the Hermite's constants \f$\gamma_s\f$

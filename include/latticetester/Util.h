@@ -72,7 +72,7 @@ namespace NTL {
   }
 
   /**
-   * Converts a `long long` to a `double.
+   * Converts a `long long` to a `double`.
    * */
   inline void  conv(double &x, long long a)
   {
@@ -394,7 +394,7 @@ namespace LatticeTester {
    */
 
   /**
-   * Computes a/b, truncates the fractionnal part and puts the result in q.
+   * Computes `a/b`, truncates the fractionnal part and puts the result in q.
    * This function is overloaded to work as specified on NTL::ZZ integers.
    * Example:
    *
@@ -699,7 +699,7 @@ namespace LatticeTester {
 
   /**
    * Allocates memory to `A` as an array of `Real` of dimension `d` and
-   * initializes its elements to 0. `Real has to be a numeric type.
+   * initializes its elements to 0. `Real` has to be a numeric type.
    */
   template <typename Real>
     inline void CreateVect (Real* & A, int d)
@@ -724,7 +724,7 @@ namespace LatticeTester {
 
   /**
    * Frees the memory used by the vector `A`. This calls `delete[]` on `A`
-   * so trying to access `A after using this is unsafe.
+   * so trying to access `A` after using this is unsafe.
    */
   template <typename Real>
     inline void DeleteVect (Real* & A)
@@ -792,7 +792,7 @@ namespace LatticeTester {
 
   /**
    * Returns a string containing the first `d` components of the vector `A` as a
-   * string. Calls toString(const Vect&, int, int, const char*).
+   * string. Calls `toString(const Vect&, int, int, const char*)`.
    */
   template <typename Vect>
     std::string toString (const Vect & A, int d)
@@ -813,9 +813,9 @@ namespace LatticeTester {
   /**
    * Computes the scalar product of vectors `A` and `B` truncated to their `n`
    * first components, then puts the result in `D`. There is a lot to consider
-   * when passing types to this function. The best for Vect1 to be the same type
-   * as Vect2 and for Scal to be the same as Int, and that those types are the
-   * ones stored in Vect1 and Vect2.
+   * when passing types to this function. The best is for `Vect1` to be the same type
+   * as `Vect2` and for `Scal` to be the same as `Int`, and that those types are the
+   * ones stored in `Vect1` and `Vect2`.
    * \todo This uses so many types without check about them and also assumes all
    * those types can be converted to each other without problem... The types
    * here should be uniformized.
@@ -831,11 +831,9 @@ namespace LatticeTester {
       NTL::conv(D, C);
     }
 
-
-
   /**
    * Takes an input vector `A` of dimension `n+1` and fill the vector `B` with
-   * the values `[-A[n] -A[n-1] ... -A[1] 1]`. `B` is assumed to be of dimension
+   * the values `[-A[n] -A[n-1] ... -A[1][1]`. `B` is assumed to be of dimension
    * at least `n+1`.
    */
   template<typename IntVec>
@@ -988,7 +986,7 @@ namespace LatticeTester {
     }
 
   /**
-   * Resizes the matrix `A` to a square matrix of dimensions `d \times d`
+   * Resizes the matrix `A` to a square matrix of dimensions `d*d`
    * and re-initializes its elements to 0.
    */
   template<typename IntMat>
@@ -1301,7 +1299,7 @@ namespace LatticeTester {
 
   /**
    * Streaming operator for maps.
-   * Formats a map as: \texttt{\{ key1=>val1, ..., keyN=>valN \}}.
+   * Formats a map as: `{ key1=>val1, ..., keyN=>valN }`.
    */
   template <class K, class T, class C, class A>
     std::ostream & operator<< (std::ostream & out, const std::map<K,T,C,A> & x)
@@ -1319,7 +1317,7 @@ namespace LatticeTester {
 
   /**
    * Streaming operator for vectors.
-   * Formats a pair as: \c (first,second).
+   * Formats a pair as:  `(first,second)`.
    */
   template <class T1, class T2>
     std::ostream & operator<< (std::ostream & out, const std::pair<T1,T2> & x)
@@ -1331,7 +1329,7 @@ namespace LatticeTester {
 
   /**
    * Streaming operator for vectors.
-   * Formats a vector as: <tt>[ val1, ..., valN ]</tt>.
+   * Formats a vector as: `[ val1, ..., valN ]`.
    */
   template <class T, class A>
     std::ostream & operator<< (std::ostream & out, const std::vector<T,A> & x)
@@ -1350,7 +1348,7 @@ namespace LatticeTester {
 
   /**
    * Streaming operator for sets.
-   * Formats a set as: \texttt{\{ val1, ..., valN \}}.
+   * Formats a set as: `{ val1, ..., valN }`.
    */
   template <class K, class C, class A>
     std::ostream & operator<< (std::ostream & out, const std::set<K,C,A> & x)

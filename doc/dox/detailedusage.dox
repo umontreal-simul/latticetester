@@ -380,7 +380,7 @@ The data for *LatticeTester* must be placed in a file with extension
 The fields in square brackets are optional (depending on the value taken by
 the first field on the line). The meaning of all data fields is explained
 below. To run the program, type 
-<tt>&quot;.\\lattest*</tt> &lt;<em>file</em>&gt;<tt>&quot;</tt>, where &lt;*file*&gt;
+<tt>.\\lattest*</tt> <em>file</em>, where *file*
 is the name of the data file, without extension, and <tt>lattest*</tt> is one
 of the three program : <tt>lattestLLDD</tt>, <tt>lattestZZDD</tt>, <tt>lattestZZRR</tt>. The results will
 be in a file with the same name, with extension (<tt>".res"</tt> or <tt>".tex"</tt> or <tt>".gen"</tt>)
@@ -588,7 +588,7 @@ The test will be perform only for this dimension.
 
 <dt><em>Matrix Coefficients</em>:</dt>
 <dd>
-int or ZZ values depending the program <tt>&quot;.\\lattest*</tt>.
+int or ZZ values depending the program <tt>.\\lattest*</tt>.
 They must be separed only ba a space and a back space after each line.
 </dd>
 

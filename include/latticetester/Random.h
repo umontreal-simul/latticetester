@@ -24,9 +24,9 @@ namespace LatticeTester {
 
   /**
    * This class generates random numbers (in fact pseudo-random numbers).
-   * The generator used is the 64-bits generator \c LFSR258
+   * The generator used is the 64-bits generator `LFSR258`
    * from L'Ecuyer \cite rLEC99a  with period length near \f$2^{258}\f$
-   * for 64-bits machines, and the 32-bits generator \c LFSR113
+   * for 64-bits machines, and the 32-bits generator `LFSR113`
    * from L'Ecuyer \cite rLEC99a  with period length near \f$2^{113}\f$
    * on  32-bits machines. Thus the random numbers generated will be
    * different on 32-bits and 64-bits machines.
@@ -36,7 +36,7 @@ namespace LatticeTester {
 
       /**
        * Constructor using a default seed for the generator.
-       * One may reset the seed by calling \c setSeed.
+       * One may reset the seed by calling `setSeed`.
        */
       Random();
 

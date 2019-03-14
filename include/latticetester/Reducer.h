@@ -1074,7 +1074,7 @@ namespace LatticeTester {
       /* This operation with the dual is needed in case of high dimension
        * and large number (30 bits). The choleski decomposition
        * convert numbers in double which is not sufficient in that case.
-       * You need to use RR of the NTL library for this calcul.
+       * You need to use RR of the NTL library for this calculation.
        */
       if(m_lat->withDual()){
         for (i = dim-1; i >= d; i--)

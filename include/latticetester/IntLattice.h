@@ -139,7 +139,6 @@ namespace LatticeTester {
            */
           void fixLatticeNormalization (bool dualF);
 
-
           /**
            * Builds the basis (and dual basis) of the projection `proj` for this
            * lattice. The result is placed in the `lattice` lattice. The basis is

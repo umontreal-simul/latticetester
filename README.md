@@ -1,7 +1,56 @@
 # LatticeTester
+
 _A software package for testing the uniformity of integral lattices in the real space_
 
 ## Documentation
+
+_LatticeTester_ is a library that is intended to facilitate the manipulation
+of lattices and the execution of certain algorithms on such objects. Lattices
+are the discrete subgroup of a vector space obtained by taking all the integer
+linear combinations of a set of vectors. They have a lot of structure and can be
+found, for example, in certain algorithmicaly generated point sets such as
+some types of random number generators and quasi-Monte-Carlo integration point
+sets.
+
+Studying those point sets is mostly about trying to mesure their uniformity in
+the unit hypercube with what is called **figures of merit**. Figures of merit
+are mesures built to capture the uniformity of point sets in a number that can
+easily be compared for different point sets. Namely, *LatticeTester* implements
+the computation of the **Spectral Test** and of the **Beyer quotient**.
+
+To perform such computations, _LatticeTester_ implements numerous algorithms
+to manipulate lattices. Notable ones include a Branch-and-Bound procedure
+that computes the **shortest non-zero vector** in a lattice and various **basis
+reduction algorithms** using criterions like LLL and BKZ.
+In *LatticeTester*, and in general, lattices are represented by a **basis**, a
+set of vectors of minimal cardinality generating the entire lattice. Basis
+reduction algorithms are algorithms that take the basis of a lattice as input
+and try to find another basis of the same lattice, but with vector of shorter
+length.
+
+Finally _LatticeTester_ also implements lower level operations on lattices.
+Those include the extraction of a basis for a lattice from a set of vectors
+generating this lattice, norm computation in both L1 and L2 norms and vector 
+swapping in the basis.
+Concurrently to the basis computations, _LatticeTester_ can also compute what is
+called the **dual basis**, a set of vectors spanning all vectors normal to
+hyperplans in the lattice.
+
+_LatticeTester_ is primarily built as a library for the software packages
+[LatNet Builder](https://github.com/umontreal-simul/latbuilder),
+and [LatMRG](https://github.com/umontreal-simul/latmrg) that
+respectively study quasi-Monte-Carlo point sets and congruential random number
+generators. The applications targeted by these programs require specific shared
+functionnalities and _LatticeTester_ aims at provinding them.
+
+For more details about *LatticeTester* can be found in:
+- [The tutorial] containing a few examples showing of the main classes of the
+  library
+- [The API documentation], for specific implementation details of each class in
+  the library
+- [The theoretical background], should you need to remind yourself details of the above
+- [The full documentation](http://umontreal-simul.github.io/latticetester/) Containing all the above and more
+
 
 This software package allows it's user to calculate various figures of merit 
 such as the normalized spectral test and the Beyer quotient on integral lattices.
@@ -13,7 +62,7 @@ software available at [https://github.com/umontreal-simul](https://github.com/um
 namely [LatNet Builder](https://github.com/umontreal-simul/latbuilder) for QMC
 point sets and [LatMRG](https://github.com/umontreal-simul/latmrg) for PRNG
 point sets. A detailed documentation of *LatticeTester* is available 
-[here](http://umontreal-simul.github.io/latticetester/).
+[here].
 
 ## Compiling
 

@@ -13,6 +13,17 @@
  * as well as describing the main purposes of *LatticeTester*, presents the
  * theory behind this software.
  *
+ * # Manual Outline
+ * 
+ * The rest of the manual goes as follows
+ * - \subpage detailed_usage presents the installation process, the
+ * dependencies, the usage of the executable and the main classes to look for
+ * when using the library.
+ * - \subpage a_intro should be removed in favor of the reference manual. 
+ * - \subpage examples_page is a good place to start at
+ * - The Classes and the Namespaces buttons above link to the mains page to look
+ *   into the API documentation
+ *
  * # Overview
  * 
  * *LatticeTester* is a C++ software library to perform various calculations on
@@ -103,12 +114,5 @@
  * Library (GMP) \cite iGMP06a, which allow arbitrary precision for
  * calculations.
  * 
- * # Manual Outline
- * 
- * The rest of the manual goes as follows
- * - \subpage detailed_usage presents the installation process, the
- * dependencies, the usage of the executable and the main classes to look for
- * when using the library.
- * - \subpage a_intro should be removed in favor of the reference manual. 
  * 
  * */

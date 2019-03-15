@@ -51,19 +51,6 @@ For more details about *LatticeTester* can be found in:
 - [The theoretical background], should you need to remind yourself details of the above
 - [The full documentation](http://umontreal-simul.github.io/latticetester/) Containing all the above and more
 
-
-This software package allows it's user to calculate various figures of merit 
-such as the normalized spectral test and the Beyer quotient on integral lattices.
-It also contains classes that can represent such a lattice and that can be used
-to manipulate and reduce it's basis. On the other hand, this program cannot
-compute the basis of a lattice by itself. To do this, depending on your use case,
-you will either need to use external software or to use some of the other
-software available at [https://github.com/umontreal-simul](https://github.com/umontreal-simul),
-namely [LatNet Builder](https://github.com/umontreal-simul/latbuilder) for QMC
-point sets and [LatMRG](https://github.com/umontreal-simul/latmrg) for PRNG
-point sets. A detailed documentation of *LatticeTester* is available 
-[here].
-
 ## Compiling
 
 ### Software Dependencies

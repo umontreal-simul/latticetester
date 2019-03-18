@@ -1,3 +1,33 @@
 /**
  * \page examples_page Examples
+ * 
+ * This page contains **very basic and short** examples demonstrating the usage
+ * of the principal functions of *LatticeTester*. The examples featured here are
+ * available in the directory *examples* of the repository. They are compiled
+ * along the library and their source code includes the description of their
+ * usage.
+ *
+ * These examples where conceived with two goals in mind:
+ * - Having examples for most of the functionnalities of *LatticeTester*
+ * - Testing the implementation and efficiency of the implementation of a few
+ *   methods
+ *
+ * Because of the second point, some of those examples run in a long time and
+ * use a lot of memory. It is advised to have at least XGb of memory to run all
+ * the examples. Users with less memory than that can view what the ouputs of
+ * these examples look like in their source code files and on this page bellow.
+ * \todo Review the examples and format of their output. We should include a
+ * testing part in the build like in LatNet Builder using these examples to test
+ * the implementation when modifying things.
+ *
+ * \section sec_basis Basis manipulation
+ * \include BasisConstruction.cc
+ * \section sec_io Using the input and output classes
+ * \include IOExample.cc
+ * \section sec_reduc The Reducer class
+ * \include Reduction.cc
+ * \section sec_FOM Construction figures of merit
+ * \include FiguresOfMerit.cc
+ * \section sec_misc Miscellanous functions
+ * \include Subsets.cc
  * */

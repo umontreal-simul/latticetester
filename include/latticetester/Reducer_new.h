@@ -15,8 +15,8 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATTICETESTER_REDUCER_H
-#define LATTICETESTER_REDUCER_H
+#ifndef LATTICETESTER_REDUCER_NEW_H
+#define LATTICETESTER_REDUCER_NEW_H
 
 #include "NTL/LLL.h"
 
@@ -33,7 +33,7 @@
 namespace LatticeTester {
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      class Reducer;
+      class Reducer_new;
 
   /// \cond specReducerDec
   /*
@@ -49,10 +49,10 @@ namespace LatticeTester {
    * */
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
       struct specReducer {
-        void redLLLNTLExact(Reducer<Int, BasInt, Dbl, RedDbl>& red, double fact);
-        void redBKZ(Reducer<Int, BasInt, Dbl, RedDbl>& red, double fact,
+        void redLLLNTLExact(Reducer_new<Int, BasInt, Dbl, RedDbl>& red, double fact);
+        void redBKZ(Reducer_new<Int, BasInt, Dbl, RedDbl>& red, double fact,
             std::int64_t blocksize, PrecisionType precision, int dim);
-        void redLLLNTL(Reducer<Int, BasInt, Dbl, RedDbl>& red, double fact,
+        void redLLLNTL(Reducer_new<Int, BasInt, Dbl, RedDbl>& red, double fact,
             PrecisionType precision, int dim);
       };
   /// \endcond
@@ -66,6 +66,9 @@ namespace LatticeTester {
    * use weaker, but much faster, reductions such as pairwise-reduction 
    * \cite rDIE75a, LLL reduction \cite mLEN82a and BKZ reduction \cite mSCH91a.
    * The theoretical details of these algorithm are presented in \ref a_intro.
+   *
+   * Unless using Dieter or Minkowski reduction, the methods of this class do not
+   * change the dual of the lattice that is being reduced.
    *
    * The LLL reduction has been implemented both by us and in NTL, but since we
    * did not test our algorithm for efficiency, it is recommended to stick with
@@ -82,7 +85,7 @@ namespace LatticeTester {
    * the branch-and-bound search.
    */
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      class Reducer {
+      class Reducer_new {
         private:
           // Local typedefs for matrix and vector types needed in the class.
           typedef NTL::vector<BasInt> BasIntVec;
@@ -127,29 +130,29 @@ namespace LatticeTester {
           /**
            * Constructor that initializes the reducer to work on lattice basis `lat`.
            */
-          Reducer (IntLatticeBasis<Int, BasInt, Dbl, RedDbl> & lat);
+          Reducer_new (IntLatticeBasis<Int, BasInt, Dbl, RedDbl> & lat);
 
           /**
            * Copy constructor.
            */
-          Reducer (const Reducer<Int, BasInt, Dbl, RedDbl> & red);
+          Reducer_new (const Reducer_new<Int, BasInt, Dbl, RedDbl> & red);
 
           /**
            * Destructor.
            */
-          ~Reducer ();
+          ~Reducer_new ();
 
           /**
            * Assignment operator that allows copying `red` into the object by 
            * usig copy.
            */
-          Reducer<Int, BasInt, Dbl, RedDbl> & operator= (
-              const Reducer<Int, BasInt, Dbl, RedDbl> & red);
+          Reducer_new<Int, BasInt, Dbl, RedDbl> & operator= (
+              const Reducer_new<Int, BasInt, Dbl, RedDbl> & red);
 
           /**
            * Copies the reducer `red` into this object.
            */
-          void copy (const Reducer<Int, BasInt, Dbl, RedDbl> & red);
+          void copy (const Reducer_new<Int, BasInt, Dbl, RedDbl> & red);
 
           /**
            * Computes the shortest non-zero vector of the IntLatticeBasis stored
@@ -497,7 +500,7 @@ namespace LatticeTester {
   template<typename Dbl, typename RedDbl>
       struct specReducer<std::int64_t, std::int64_t, Dbl, RedDbl> {
 
-      void redLLLNTLExact(Reducer<std::int64_t, std::int64_t, Dbl, RedDbl>& red,
+      void redLLLNTLExact(Reducer_new<std::int64_t, std::int64_t, Dbl, RedDbl>& red,
           double fact)
       {
         std::cout << "**** WARNING redLLLNTLExact cannot be used with integers (std::int64_t)\n";
@@ -506,7 +509,7 @@ namespace LatticeTester {
         red.redLLL(fact, 1000000, red.getIntLatticeBasis()->getDim ());
       }
 
-      void redBKZ(Reducer<std::int64_t, std::int64_t, Dbl, RedDbl>& red,
+      void redBKZ(Reducer_new<std::int64_t, std::int64_t, Dbl, RedDbl>& red,
           double fact, std::int64_t blocksize, PrecisionType precision, int dim)
       {
           IntLatticeBasis<std::int64_t, std::int64_t, Dbl, RedDbl> *lattmp = 0;
@@ -529,7 +532,7 @@ namespace LatticeTester {
        * performs NTL LLL reduction is faster than our own LLL.
        * If it is, we should reimplement our LLL to match what is done in NTL.
        * */
-      void redLLLNTL(Reducer<std::int64_t, std::int64_t, Dbl, RedDbl>& red,
+      void redLLLNTL(Reducer_new<std::int64_t, std::int64_t, Dbl, RedDbl>& red,
           double fact, PrecisionType precision, int dim)
        {
          IntLatticeBasis<NTL::ZZ, NTL::ZZ, Dbl, RedDbl> *lattmp = 0;
@@ -573,7 +576,7 @@ namespace LatticeTester {
          delete lattmp;
        }
       /*
-       * void redLLLNTL(Reducer<std::int64_t, std::int64_t, Dbl, RedDbl>& red,
+       * void redLLLNTL(Reducer_new<std::int64_t, std::int64_t, Dbl, RedDbl>& red,
        *     double fact, PrecisionType precision, int dim)
        * {
        *   IntLatticeBasis<std::int64_t, std::int64_t, Dbl, RedDbl> *lattmp = 0;
@@ -598,10 +601,10 @@ namespace LatticeTester {
   template<typename Dbl, typename RedDbl>
       struct specReducer<NTL::ZZ, NTL::ZZ, Dbl, RedDbl> {
 
-      void redLLLNTLExact(Reducer<NTL::ZZ, NTL::ZZ, Dbl, RedDbl> & red,
+      void redLLLNTLExact(Reducer_new<NTL::ZZ, NTL::ZZ, Dbl, RedDbl> & red,
           double fact)
       {
-        if (red.getIntLatticeBasis()->withDual()) {
+        /*if (red.getIntLatticeBasis()->withDual()) {
           NTL::mat_ZZ U;
           U.SetDims(red.getIntLatticeBasis()->getBasis().NumRows(), 
               red.getIntLatticeBasis()->getBasis().NumCols());
@@ -609,14 +612,14 @@ namespace LatticeTester {
           NTL::LLL(det, red.getIntLatticeBasis()->getBasis(), U, 99999, 100000);
           red.getIntLatticeBasis()->getDualBasis() = 
             transpose(inv(U)) * red.getIntLatticeBasis()->getDualBasis();
-        } else{
+        } else{*/
           NTL::ZZ det(0);
           NTL::LLL(det, red.getIntLatticeBasis()->getBasis(), 99999, 100000);
-        }
+        //}
       }
 
 
-      void redBKZ(Reducer<NTL::ZZ, NTL::ZZ, Dbl, RedDbl>& red, double fact,
+      void redBKZ(Reducer_new<NTL::ZZ, NTL::ZZ, Dbl, RedDbl>& red, double fact,
           std::int64_t blocksize, PrecisionType precision, int dim)
       {
         IntLatticeBasis<NTL::ZZ, NTL::ZZ, Dbl, RedDbl> *lattmp = 0;
@@ -628,7 +631,7 @@ namespace LatticeTester {
         else
           lattmp = red.getIntLatticeBasis();
 
-        bool withDual = red.getIntLatticeBasis()->withDual();
+        //bool withDual = red.getIntLatticeBasis()->withDual();
         NTL::mat_ZZ U;
         U.SetDims(lattmp->getBasis().size1(), lattmp->getBasis().size2());
 
@@ -649,15 +652,15 @@ namespace LatticeTester {
             MyExit(1, "BKZ PrecisionType:   NO SUCH CASE");
         }
 
-        if (withDual)
-          lattmp->getDualBasis() = transpose(inv(U)) * lattmp->getDualBasis();
+        //if (withDual)
+          //lattmp->getDualBasis() = transpose(inv(U)) * lattmp->getDualBasis();
 
         red.getIntLatticeBasis()->copyBasis(*lattmp, dim);
 
         if (dim>0) delete lattmp;
       }
 
-      void redLLLNTL(Reducer<NTL::ZZ, NTL::ZZ, Dbl, RedDbl>& red, double fact,
+      void redLLLNTL(Reducer_new<NTL::ZZ, NTL::ZZ, Dbl, RedDbl>& red, double fact,
           PrecisionType precision, int dim)
       {
         IntLatticeBasis<NTL::ZZ, NTL::ZZ, Dbl, RedDbl> *lattmp = 0;
@@ -671,7 +674,7 @@ namespace LatticeTester {
         if(precision == EXACT)
           red.redLLLNTLExact(fact);
         else{
-          bool withDual = red.getIntLatticeBasis()->withDual();
+          //bool withDual = red.getIntLatticeBasis()->withDual();
           NTL::mat_ZZ U;
           U.SetDims(lattmp->getBasis().NumRows(), lattmp->getBasis().NumCols());
 
@@ -694,8 +697,8 @@ namespace LatticeTester {
               MyExit(1, "LLL PrecisionType:   NO SUCH CASE");
           }
 
-          if (withDual)
-            lattmp->getDualBasis() = transpose(inv(U)) * lattmp->getDualBasis();
+          //if (withDual)
+          //  lattmp->getDualBasis() = transpose(inv(U)) * lattmp->getDualBasis();
 
           red.getIntLatticeBasis()->copyBasis(*lattmp, dim);
 
@@ -711,21 +714,21 @@ namespace LatticeTester {
 
   // Initialization of non-const static members
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      bool Reducer<Int, BasInt, Dbl, RedDbl>::PreRedDieterSV = false;
+      bool Reducer_new<Int, BasInt, Dbl, RedDbl>::PreRedDieterSV = false;
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      bool Reducer<Int, BasInt, Dbl, RedDbl>::PreRedLLLSV = false;
+      bool Reducer_new<Int, BasInt, Dbl, RedDbl>::PreRedLLLSV = false;
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      bool Reducer<Int, BasInt, Dbl, RedDbl>::PreRedLLLRM = false;
+      bool Reducer_new<Int, BasInt, Dbl, RedDbl>::PreRedLLLRM = false;
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      bool Reducer<Int, BasInt, Dbl, RedDbl>::PreRedBKZ = true;
+      bool Reducer_new<Int, BasInt, Dbl, RedDbl>::PreRedBKZ = true;
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      std::int64_t Reducer<Int, BasInt, Dbl, RedDbl>::maxNodesBB = 10000000;
+      std::int64_t Reducer_new<Int, BasInt, Dbl, RedDbl>::maxNodesBB = 10000000;
 
 
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      Reducer<Int, BasInt, Dbl, RedDbl>::Reducer (
+      Reducer_new<Int, BasInt, Dbl, RedDbl>::Reducer_new (
           IntLatticeBasis<Int, BasInt, Dbl, RedDbl> & lat)
     {
       // Squared length of vectors must not overflow max(double)
@@ -767,7 +770,7 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      Reducer<Int, BasInt, Dbl, RedDbl>::Reducer (const Reducer<Int, BasInt, 
+      Reducer_new<Int, BasInt, Dbl, RedDbl>::Reducer_new (const Reducer_new<Int, BasInt, 
         Dbl, RedDbl> & red)
     {
       copy (red);
@@ -777,8 +780,8 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      Reducer<Int, BasInt, Dbl, RedDbl> &
-      Reducer<Int, BasInt, Dbl, RedDbl>::operator= (const Reducer<Int, BasInt, 
+      Reducer_new<Int, BasInt, Dbl, RedDbl> &
+      Reducer_new<Int, BasInt, Dbl, RedDbl>::operator= (const Reducer_new<Int, BasInt, 
         Dbl, RedDbl> & red)
     {
       if (this != &red)
@@ -790,7 +793,7 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      void Reducer<Int, BasInt, Dbl, RedDbl>::copy (const Reducer<Int, BasInt, 
+      void Reducer_new<Int, BasInt, Dbl, RedDbl>::copy (const Reducer_new<Int, BasInt, 
         Dbl, RedDbl> & red)
     {
       m_lat = red.m_lat;
@@ -818,7 +821,7 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      Reducer<Int, BasInt, Dbl, RedDbl>::~Reducer ()
+      Reducer_new<Int, BasInt, Dbl, RedDbl>::~Reducer_new ()
     {
       m_c0.clear();
       m_c2.clear();
@@ -840,7 +843,7 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      void Reducer<Int, BasInt, Dbl, RedDbl>::setBoundL2 (const DblVec & V,
+      void Reducer_new<Int, BasInt, Dbl, RedDbl>::setBoundL2 (const DblVec & V,
           int dim1, int dim2)
     {
       m_BoundL2.resize(dim2);
@@ -852,7 +855,7 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      void Reducer<Int, BasInt, Dbl, RedDbl>::permuteGramVD (int i, int j, int n)
+      void Reducer_new<Int, BasInt, Dbl, RedDbl>::permuteGramVD (int i, int j, int n)
       /*
        * Permute la i-ieme et la j-ieme ligne, et la i-ieme et j-ieme colonne
        * de la matrice des produits scalaires.   Pour redLLL.
@@ -873,7 +876,7 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      void Reducer<Int, BasInt, Dbl, RedDbl>::calculCholeski2LLL (int n, int j)
+      void Reducer_new<Int, BasInt, Dbl, RedDbl>::calculCholeski2LLL (int n, int j)
       /*
        * Recalcule les n premieres entrees de la colonne j de la matrice de
        * Choleski d'ordre 2.   Pour redLLL.
@@ -892,7 +895,7 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      inline void Reducer<Int, BasInt, Dbl, RedDbl>::calculCholeski2Ele (int i, int j)
+      inline void Reducer_new<Int, BasInt, Dbl, RedDbl>::calculCholeski2Ele (int i, int j)
       // Recalcule l'entree (i,j) de la matrice de Choleski d'ordre 2
     {
       m_cho2(i,j) = m_gramVD(i,j);
@@ -908,7 +911,7 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      inline void Reducer<Int, BasInt, Dbl, RedDbl>::calculGramVD ()
+      inline void Reducer_new<Int, BasInt, Dbl, RedDbl>::calculGramVD ()
       /*
        * Retourne dans m_gramVD la matrice des produits scalaires m_lat->V[i]*m_lat->V[j].
        * Rem.: m_lat->V.vecNorm ne contient que les m_lat->V[i]*m_lat->V[i].
@@ -931,7 +934,7 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      inline void Reducer<Int, BasInt, Dbl, RedDbl>::miseAJourGramVD (int j)
+      inline void Reducer_new<Int, BasInt, Dbl, RedDbl>::miseAJourGramVD (int j)
       /*
        * Recalcule la j-ieme ligne et la j-ieme colonne de la matrice des
        * produits scalaires.  Pour redLLL.
@@ -949,7 +952,7 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      bool Reducer<Int, BasInt, Dbl, RedDbl>::calculCholeski (RedDblVec & DC2,
+      bool Reducer_new<Int, BasInt, Dbl, RedDbl>::calculCholeski (RedDblVec & DC2,
           RedDblMat & C0)
       /*
        * Returns in C0 the elements of the upper triangular matrix of the
@@ -967,8 +970,8 @@ namespace LatticeTester {
       NTL::conv (m2, m_lat->getModulo ());
       m2 = m2*m2;
       int d = dim;
-      if(m_lat->withDual())
-        d = dim / 2; // If we use the Dual, we compute Choleski
+      //if(m_lat->withDual())
+      //  d = dim / 2; // If we use the Dual, we compute Choleski
       // with the Dual
 
       // Compute the d first lines of C0 with the primal Basis.
@@ -1001,51 +1004,51 @@ namespace LatticeTester {
        * convert numbers in double which is not sufficient in that case.
        * You need to use RR of the NTL library for this calculation.
        */
-      if(m_lat->withDual()){
-        for (i = dim-1; i >= d; i--)
-        {
-          m_lat->updateDualScalL2Norm (i);
-          for (j = i; j >= 0; j--) {
-            if (j == i)
-              NTL::conv (m_c2(i,i), m_lat->getDualVecNorm (i));
-            else {
-              NTL::matrix_row<BasIntMat> row1(m_lat->getDualBasis(), i);
-              NTL::matrix_row<BasIntMat> row2(m_lat->getDualBasis(), j);
-              ProdScal<Int> (row1, row2, dim, m_c2(i,j));
-            }
-            for (k = i + 1; k < dim; k++){
-              m_c2(i,j) -= C0(k,i) * m_c2(k,j);
-            }
-            if (i != j)
-              C0(i,j) = m_c2(i,j) / m_c2(i,i);
-          }
-          DC2[i] = m2 / m_c2(i,i);
-          if (DC2[i] < 0.0) {
-            negativeCholeski();
-            return false;
-          }
-          for (j = i + 1; j < dim; j++) {
-            C0(i,j) = -C0(j,i);
-            for (k = i + 1; k < j; k++) {
-              C0(i,j) -= C0(k,i) * C0(k,j);
-            }
-          }
-        }
-      }
+      //if(m_lat->withDual()){
+      //  for (i = dim-1; i >= d; i--)
+      //  {
+      //    m_lat->updateDualScalL2Norm (i);
+      //    for (j = i; j >= 0; j--) {
+      //      if (j == i)
+      //        NTL::conv (m_c2(i,i), m_lat->getDualVecNorm (i));
+      //      else {
+      //        NTL::matrix_row<BasIntMat> row1(m_lat->getDualBasis(), i);
+      //        NTL::matrix_row<BasIntMat> row2(m_lat->getDualBasis(), j);
+      //        ProdScal<Int> (row1, row2, dim, m_c2(i,j));
+      //      }
+      //      for (k = i + 1; k < dim; k++){
+      //        m_c2(i,j) -= C0(k,i) * m_c2(k,j);
+      //      }
+      //      if (i != j)
+      //        C0(i,j) = m_c2(i,j) / m_c2(i,i);
+      //    }
+      //    DC2[i] = m2 / m_c2(i,i);
+      //    if (DC2[i] < 0.0) {
+      //      negativeCholeski();
+      //      return false;
+      //    }
+      //    for (j = i + 1; j < dim; j++) {
+      //      C0(i,j) = -C0(j,i);
+      //      for (k = i + 1; k < j; k++) {
+      //        C0(i,j) -= C0(k,i) * C0(k,j);
+      //      }
+      //    }
+      //  }
+      //}
       return true;
     }
 
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      void Reducer<Int, BasInt, Dbl, RedDbl>::trace (char *mess)
+      void Reducer_new<Int, BasInt, Dbl, RedDbl>::trace (char *mess)
     {
       std::cout << std::endl << "================================= " << mess << std::endl;
       //std::cout << "dim = " << m_lat->getDim () << std::endl;
       m_lat->setNegativeNorm();
-      m_lat->setDualNegativeNorm();
+      //m_lat->setDualNegativeNorm();
       m_lat->updateVecNorm ();
-      m_lat->updateDualVecNorm();
+      //m_lat->updateDualVecNorm();
       m_lat->sort(0);
       m_lat->write();
     }
@@ -1053,7 +1056,7 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      void Reducer<Int, BasInt, Dbl, RedDbl>::pairwiseRedPrimal (int i, int d, bool xx[])
+      void Reducer_new<Int, BasInt, Dbl, RedDbl>::pairwiseRedPrimal (int i, int d, bool xx[])
     {
       const int dim = m_lat->getDim ();
       ++m_countDieter;
@@ -1124,7 +1127,7 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      void Reducer<Int, BasInt, Dbl, RedDbl>::pairwiseRedDual (int i, bool xx[])
+      void Reducer_new<Int, BasInt, Dbl, RedDbl>::pairwiseRedDual (int i, bool xx[])
     {
       int j;
       const int dim = m_lat->getDim ();
@@ -1179,7 +1182,7 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      void Reducer<Int, BasInt, Dbl, RedDbl>::redDieter(int d, bool xx[])
+      void Reducer_new<Int, BasInt, Dbl, RedDbl>::redDieter(int d, bool xx[])
     {
       std::int64_t BoundCount;
       const int dim = m_lat->getDim ();
@@ -1205,7 +1208,7 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      void Reducer<Int, BasInt, Dbl, RedDbl>::redDieterRandomized (int d,
+      void Reducer_new<Int, BasInt, Dbl, RedDbl>::redDieterRandomized (int d,
           int seed)
     {
       std::int64_t BoundCount;
@@ -1238,7 +1241,7 @@ namespace LatticeTester {
    * to the j-th vector. It updates the Gram Schmidt matrix
    */
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      void Reducer<Int, BasInt, Dbl, RedDbl>::reductionFaible (int i, int j)
+      void Reducer_new<Int, BasInt, Dbl, RedDbl>::reductionFaible (int i, int j)
       /*
        * Reduit la matrice de Choleski (d'ordre 2) en ajoutant un multiple du
        * vecteur i au vecteur j, si possible.  Modifie le vecteur dual W_i en
@@ -1248,7 +1251,7 @@ namespace LatticeTester {
     {
       RedDbl cte;
       std::int64_t cteLI;
-      bool withDual = m_lat->withDual();
+      //bool withDual = m_lat->withDual();
       cte = m_cho2(i,j) / m_cho2(i,i);
 
       const int dim = m_lat->getDim ();
@@ -1260,11 +1263,11 @@ namespace LatticeTester {
           NTL::matrix_row<BasIntMat> row1(m_lat->getBasis(), j);
           NTL::matrix_row<BasIntMat> row2(m_lat->getBasis(), i);
           ModifVect (row1, row2, -cteLI, dim);
-          if(withDual){
-            NTL::matrix_row<BasIntMat> row3(m_lat->getDualBasis(), i);
-            NTL::matrix_row<BasIntMat> row4(m_lat->getDualBasis(), j);
-            ModifVect (row3, row4, cteLI, dim);
-          }
+          //if(withDual){
+          //  NTL::matrix_row<BasIntMat> row3(m_lat->getDualBasis(), i);
+          //  NTL::matrix_row<BasIntMat> row4(m_lat->getDualBasis(), j);
+          //  ModifVect (row3, row4, cteLI, dim);
+          //}
 
         } else
           return;
@@ -1276,19 +1279,19 @@ namespace LatticeTester {
         NTL::matrix_row<BasIntMat> row1(m_lat->getBasis(), j);
         NTL::matrix_row<BasIntMat> row2(m_lat->getBasis(), i);
         ModifVect (row1, row2, -cte, dim);
-        if(withDual){
-          NTL::matrix_row<BasIntMat> row3(m_lat->getDualBasis(), i);
-          NTL::matrix_row<BasIntMat> row4(m_lat->getDualBasis(), j);
-          ModifVect (row3, row4, cte, dim);
-        }
+        //if(withDual){
+        //  NTL::matrix_row<BasIntMat> row3(m_lat->getDualBasis(), i);
+        //  NTL::matrix_row<BasIntMat> row4(m_lat->getDualBasis(), j);
+        //  ModifVect (row3, row4, cte, dim);
+        //}
 
       }
       m_lat->setNegativeNorm (j);
       m_lat->updateVecNorm(j);
-      if(withDual){
-        m_lat->setDualNegativeNorm (i);
-        m_lat->updateDualVecNorm(i);
-      }
+      //if(withDual){
+      //  m_lat->setDualNegativeNorm (i);
+      //  m_lat->updateDualVecNorm(i);
+      //}
 
 
       miseAJourGramVD (j);
@@ -1298,14 +1301,14 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      void Reducer<Int, BasInt, Dbl, RedDbl>::redLLLNTLExact(double fact) {
+      void Reducer_new<Int, BasInt, Dbl, RedDbl>::redLLLNTLExact(double fact) {
       spec.redLLLNTLExact(*this, fact);
     }
 
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      void Reducer<Int, BasInt, Dbl, RedDbl>::redBKZ(
+      void Reducer_new<Int, BasInt, Dbl, RedDbl>::redBKZ(
         double fact, std::int64_t blocksize, PrecisionType precision, int dim)
     {
       spec.redBKZ(*this, fact, blocksize, precision, dim);
@@ -1314,7 +1317,7 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      void Reducer<Int, BasInt, Dbl, RedDbl>::redLLLNTL(
+      void Reducer_new<Int, BasInt, Dbl, RedDbl>::redLLLNTL(
           double fact, PrecisionType precision, int dim) {
       spec.redLLLNTL(*this, fact, precision, dim);
     }
@@ -1322,14 +1325,14 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      void Reducer<Int, BasInt, Dbl, RedDbl>::redLLL (
+      void Reducer_new<Int, BasInt, Dbl, RedDbl>::redLLL (
           double fact, std::int64_t maxcpt, int Max)
       /*
        * Effectue la pre-reduction de B au sens de Lenstra-Lenstra-Lovasz. N'utilise
        * pas les vecteurs m_lat->getBasis().vecNorm, Wm_lat->getDualBasis().
        */
     {
-      bool withDual = m_lat->withDual();
+      //bool withDual = m_lat->withDual();
       const int REDBAS_e = 40;
       int i, j, k, h;
       RedDbl Cho0ij;
@@ -1418,21 +1421,21 @@ namespace LatticeTester {
           reductionFaible (i, j);
       }
       m_lat->setNegativeNorm ();
-      if(withDual){
-        m_lat->setDualNegativeNorm ();
-      }
+      //if(withDual){
+      //  m_lat->setDualNegativeNorm ();
+      //}
     }
 
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      void Reducer<Int, BasInt, Dbl, RedDbl>::transformStage3 (
+      void Reducer_new<Int, BasInt, Dbl, RedDbl>::transformStage3 (
           std::vector<std::int64_t> & z, int & k)
     {
       int j, i;
       std::int64_t q;
       const int dim = m_lat->getDim ();
-      bool withDual = m_lat->withDual();
+      //bool withDual = m_lat->withDual();
 
       j = dim-1;
       while (z[j] == 0)
@@ -1455,14 +1458,14 @@ namespace LatticeTester {
             ModifVect (row1, row2, q, dim);
             m_lat->setNegativeNorm (j);
 
-            if(withDual){
-              NTL::matrix_row<BasIntMat> row3(m_lat->getDualBasis(), i);
-              NTL::matrix_row<BasIntMat> row4(m_lat->getDualBasis(), j);
-              //    ModifVect (m_lat->getDualBasis ()[i], m_lat->getDualBasis ()[j],
-              //             -q, dim);
-              ModifVect (row3, row4, -q, dim);
-              m_lat->setDualNegativeNorm (i);
-            }
+            //if(withDual){
+            //  NTL::matrix_row<BasIntMat> row3(m_lat->getDualBasis(), i);
+            //  NTL::matrix_row<BasIntMat> row4(m_lat->getDualBasis(), j);
+            //  //    ModifVect (m_lat->getDualBasis ()[i], m_lat->getDualBasis ()[j],
+            //  //             -q, dim);
+            //  ModifVect (row3, row4, -q, dim);
+            //  m_lat->setDualNegativeNorm (i);
+            //}
           }
           // Permutation.
           std::swap <std::int64_t>(z[i], z[j]);
@@ -1476,7 +1479,7 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      bool Reducer<Int, BasInt, Dbl, RedDbl>::tryZ (
+      bool Reducer_new<Int, BasInt, Dbl, RedDbl>::tryZ (
           int j, int i, int Stage, bool & smaller, const BasIntMat & WTemp)
       // Si m_countNodes > MaxNodes retourne false, sinon retourne true.
     {
@@ -1656,7 +1659,7 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      bool Reducer<Int, BasInt, Dbl, RedDbl>::redBB (
+      bool Reducer_new<Int, BasInt, Dbl, RedDbl>::redBB (
           int i, int d, int Stage, bool & smaller, bool xx[])
       /*
        * Tries to shorten m_lat->getBasis()[i] using branch-and-bound.
@@ -1789,7 +1792,7 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      bool Reducer<Int, BasInt, Dbl, RedDbl>::tryZ0 (int j, bool & smaller)
+      bool Reducer_new<Int, BasInt, Dbl, RedDbl>::tryZ0 (int j, bool & smaller)
       /*
        * Procedure recursive implantant le BB pour shortestVector (redBB0).
        * Si m_countNodes > MaxNodes, retourne false.
@@ -1944,7 +1947,7 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      bool Reducer<Int, BasInt, Dbl, RedDbl>::redBB0 (NormType norm)
+      bool Reducer_new<Int, BasInt, Dbl, RedDbl>::redBB0 (NormType norm)
       /*
        * Finds shortest non-zero vector, using branch-and-bound. Stops and returns
        * false if not finished after examining MaxNodes nodes in the
@@ -1953,7 +1956,7 @@ namespace LatticeTester {
        */
     {
 
-      bool withDual = m_lat->withDual();
+      //bool withDual = m_lat->withDual();
       bool smaller = false;
       int k, h;
       const int dim = m_lat->getDim ();
@@ -1965,9 +1968,9 @@ namespace LatticeTester {
          the case of the L2 Norm. */
 
       m_lat->updateScalL2Norm (0, dim);
-      if(withDual){
-        m_lat->updateDualScalL2Norm (0, dim);
-      }
+      //if(withDual){
+      //  m_lat->updateDualScalL2Norm (0, dim);
+      //}
       if (m_countNodes < SHORT_LLL)
         m_lat->sort (0);
 
@@ -2022,20 +2025,20 @@ namespace LatticeTester {
 
         /* The new shorter vector is now in m_lat->getBasis()[k].  */
         /*  We update the vectors of the dual basis. */
-        if (withDual){
-          if (m_zShort[k] < 0) {
-            NTL::matrix_row<BasIntMat> row2(m_lat->getDualBasis(), k);
-            ChangeSign (row2, dim);
-          }
-          for (h = 0; h < dim; h++) {
-            if (m_zShort[h] && h != k) {
-              NTL::matrix_row<BasIntMat> row3(m_lat->getDualBasis(), h);
-              NTL::matrix_row<BasIntMat> row4(m_lat->getDualBasis(), k);
-              ModifVect (row3, row4, -m_zShort[h], dim);
-              m_lat->setDualNegativeNorm (h);
-            }
-          }
-        }
+        //if (withDual){
+        //  if (m_zShort[k] < 0) {
+        //    NTL::matrix_row<BasIntMat> row2(m_lat->getDualBasis(), k);
+        //    ChangeSign (row2, dim);
+        //  }
+        //  for (h = 0; h < dim; h++) {
+        //    if (m_zShort[h] && h != k) {
+        //      NTL::matrix_row<BasIntMat> row3(m_lat->getDualBasis(), h);
+        //      NTL::matrix_row<BasIntMat> row4(m_lat->getDualBasis(), k);
+        //      ModifVect (row3, row4, -m_zShort[h], dim);
+        //      m_lat->setDualNegativeNorm (h);
+        //    }
+        //  }
+        //}
 
         /* The new candidate for a shortest vector will be in
            m_lat->getBasis()(0). */
@@ -2058,7 +2061,7 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      bool Reducer<Int, BasInt, Dbl, RedDbl>::reductMinkowski (int d)
+      bool Reducer_new<Int, BasInt, Dbl, RedDbl>::reductMinkowski (int d)
     {
       bool withDual = m_lat->withDual();
       const int dim = m_lat->getDim ();
@@ -2134,14 +2137,14 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      bool Reducer<Int, BasInt, Dbl, RedDbl>::shortestVector (NormType norm)
+      bool Reducer_new<Int, BasInt, Dbl, RedDbl>::shortestVector (NormType norm)
       // Square length of shortest vector can be recovered in m_lMin2
     {
 
       if (norm != L2NORM) {
         m_lat->setNegativeNorm ();
-        if(m_lat->withDual())
-          m_lat->setDualNegativeNorm ();
+        //if(m_lat->withDual())
+        //  m_lat->setDualNegativeNorm ();
       }
 
       /* Find the shortest vector for the selected norm.  */
@@ -2157,17 +2160,17 @@ namespace LatticeTester {
 
       m_lat->updateVecNorm();
       m_lat->sort(0);
-      if(m_lat->withDual())
-        m_lat->updateDualVecNorm();
+      //if(m_lat->withDual())
+      //  m_lat->updateDualVecNorm();
 
       return ok;
     }
 
   //============================================================================
 
-  extern template class Reducer<std::int64_t, std::int64_t, double, double>;
-  extern template class Reducer<NTL::ZZ, NTL::ZZ, double, double>;
-  extern template class Reducer<NTL::ZZ, NTL::ZZ, NTL::RR, NTL::RR>;
+  extern template class Reducer_new<std::int64_t, std::int64_t, double, double>;
+  extern template class Reducer_new<NTL::ZZ, NTL::ZZ, double, double>;
+  extern template class Reducer_new<NTL::ZZ, NTL::ZZ, NTL::RR, NTL::RR>;
 
 }     // namespace LatticeTester
 

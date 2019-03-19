@@ -50,13 +50,17 @@ namespace LatticeTester {
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
       struct specReducer {
         void redLLLNTLExact(Reducer<Int, BasInt, Dbl, RedDbl>& red, double fact);
+        void redLLLNTLExactNoDual(Reducer<Int, BasInt, Dbl, RedDbl>& red, double fact);
         void redBKZ(Reducer<Int, BasInt, Dbl, RedDbl>& red, double fact,
+            std::int64_t blocksize, PrecisionType precision, int dim);
+        void redBKZNoDual(Reducer<Int, BasInt, Dbl, RedDbl>& red, double fact,
             std::int64_t blocksize, PrecisionType precision, int dim);
         void redLLLNTL(Reducer<Int, BasInt, Dbl, RedDbl>& red, double fact,
             PrecisionType precision, int dim);
+        void redLLLNTLNoDual(Reducer<Int, BasInt, Dbl, RedDbl>& red, double fact,
+            PrecisionType precision, int dim);
       };
   /// \endcond
-
 
   /**
    * This class implements (or wraps from NTL) all the functions that are
@@ -64,7 +68,7 @@ namespace LatticeTester {
    * For a given lattice basis, stored in an IntLatticeBasis, this class can
    * reduce it in the sense of Minkowski, as well as find the shortest vector
    * in the lattice with the Branch-and-Bound algorithm. It is also possible to
-   * use weaker, but much faster, reductions such as Dieter reduction 
+   * use weaker, but much faster, reductions such as pairwise-reduction 
    * \cite rDIE75a, LLL reduction \cite mLEN82a and BKZ reduction \cite mSCH91a.
    * The theoretical details of these algorithm are presented in \ref a_intro.
    *
@@ -170,12 +174,7 @@ namespace LatticeTester {
            * use case.
            */
           bool shortestVector (NormType norm);
-
-          /* Marc-Antoine: This should be removed because its implementation
-           * does basically nothing and pre-red is separate from B&B now.
-           *
-           * bool shortestVectorDieter (NormType norm);
-           * */
+          bool shortestVectorNoDual (NormType norm);
 
           /**
            * This method performs pairwise reduction sequentially on all vectors
@@ -183,13 +182,6 @@ namespace LatticeTester {
            *
            * `xx[]` is used internally when doing Minkowski reduction. This is
            * somewhat ugly but this fixes a leak.
-           *
-           * Normalement, cette méthode devrait implémenter l'algorithme de Dieter
-           * en se basant sur Knuth, mais là ça ne fait que de réductions par 
-           * paires et ça arrête après un certain nombre d'itérations qui ne font rien.
-           * Il faudrait vérifier que soit : c'est parfaitement ce que l'algorithme
-           * fait ou bien sinon il faudrait changer cet algorithme pour faire la
-           * bonne chose.
            */
           void redDieter (int d, bool xx[] = NULL);
 
@@ -197,28 +189,15 @@ namespace LatticeTester {
           /**
            * This method does the same thing as redDieter(int) but the choice of
            * vectors on which to perform pairwise reduction is randomized.
-           *
-           * On a le même problème que dans redDieter, c'est-à-dire que ce n'est
-           * pas clair que ça fait exactement l'algorithme que l'on dit que ça 
-           * fait dans la doc.
            */
           void redDieterRandomized (int d, int seed);
-
-          /* Marc-Antoine: This function does not change the basis, so I don't 
-           * see why it would be of any use.
-           *
-           * Finds the shortest non-zero vector using norm `norm`. Returns `true`
-           * upon success. Uses the algorithm of Dieter \cite rDIE75a
-           * given in Knuth \cite rKNU98a.
-           * bool redDieter (NormType norm);
-           */
 
           /**
            * Performs a LLL (Lenstra-Lenstra-Lovasz) basis reduction for the 
            * first `dim` vector of the basis with coefficient `fact`.
-           * `fact` is a floating point number between 1/4(?) and 1 that
+           * `fact` is a floating point number between 1/2 and 1 that
            * specifies the algorithm's tolerance to floating point arithmetic
-           * error. has to be between 1/2 and 1. If `fact` is closer to 1,
+           * error. If `fact` is closer to 1,
            * the basis will be (typically) "more reduced" as the
            * algorithm will enforce a tighter condition on the basis,
            * but that will require more work. The reduction algorithm is
@@ -226,13 +205,13 @@ namespace LatticeTester {
            * or until the basis is correctly reduced.
            * 
            * This algorithm is an implementation of the LLL reduction
-           * algorithm made in our lab. It is not recommended to use it because
-           * it has not been tested extensively for distribution. Instead, it
-           * is recommended to use (in the case that you wanted to use the LLL
-           * reduction algorithm) the redLLLNTL method. This implementation
+           * algorithm made in our lab. It is considerably slower than what is
+           * available through NTL for NTL types, but performs well on standard
+           * C++ types. This implementation
            * always uses the Euclidean norm.
            */
           void redLLL (double fact = 0.999999, std::int64_t maxcpt = 1000000000, int dim = 0);
+          void redLLLNoDual (double fact = 0.999999, std::int64_t maxcpt = 1000000000, int dim = 0);
 
           /**
            * This is the NTL implementation of the floating point version of the
@@ -255,16 +234,14 @@ namespace LatticeTester {
            */
           void redLLLNTL(double fact = 0.999999, 
               PrecisionType precision = QUADRUPLE, int dim = 0);
+          void redLLLNTLNoDual(double fact = 0.999999, 
+              PrecisionType precision = QUADRUPLE, int dim = 0);
 
           /**
-           * Marc-Antoine: I do not think what is stated bellow is exact.
-           * I think NTL exact implementation is about the exact algorith that
-           * verifies a slightly different condition.
-           *
-           * This version is implemented in the NTL Library with exact number
-           * (arbitrary precision RR)
+           * This implements an algorithm to perform the original LLL reduction.
            */
           void redLLLNTLExact(double fact);
+          void redLLLNTLExactNoDual(double fact);
 
           /**
            * This is the NTL implementation of the floating point version of the
@@ -292,6 +269,8 @@ namespace LatticeTester {
            */
           void redBKZ(double fact = 0.999999, std::int64_t blocksize = 10,
               PrecisionType precision = QUADRUPLE, int dim = 0);
+          void redBKZNoDual(double fact = 0.999999, std::int64_t blocksize = 10,
+              PrecisionType precision = QUADRUPLE, int dim = 0);
 
           /**
            * Reduces the current basis to a Minkowski reduced basis with respect
@@ -303,6 +282,7 @@ namespace LatticeTester {
            * <tt>V[Dim-1]</tt>).
            */
           bool reductMinkowski (int d);
+          bool reductMinkowskiNoDual ();
 
           /**
            * Returns the length of the shortest basis vector in the lattice.
@@ -368,6 +348,7 @@ namespace LatticeTester {
            * \f$j\f$ such that \f$|z_j|=1\f$.
            */
           void transformStage3 (std::vector<std::int64_t> & z, int & k);
+          void transformStage3NoDual (std::vector<std::int64_t> & z, int & k);
 
           /**
            * Performs pairwise reductions. This method tries to reduce each basis
@@ -392,12 +373,14 @@ namespace LatticeTester {
            * branch-and-bound, in `reductMinkowski`.
            */
           bool redBB (int i, int d, int Stage, bool & smaller, bool xx[] = NULL);
+          bool redBBNoDual (int i, int d, int Stage, bool & smaller, bool xx[] = NULL);
 
           /**
            * Tries to shorten the smallest vector of the primal basis using
            * branch-and-bound, in `ShortestVector`.
            */
           bool redBB0 (NormType norm);
+          bool redBB0NoDual(NormType norm);
 
           /**
            * Tries to find shorter vectors in `reductMinkowski`.
@@ -444,6 +427,7 @@ namespace LatticeTester {
            * to the j-th vector. It updates the Gram Schmidt matrix
            */
           void reductionFaible (int i, int j);
+          void reductionFaibleNoDual (int i, int j);
 
           /**
            * Lower bound on the length squared of the shortest vector in each
@@ -533,54 +517,23 @@ namespace LatticeTester {
       void redLLLNTLExact(Reducer<std::int64_t, std::int64_t, Dbl, RedDbl>& red,
           double fact)
       {
-        std::cout << "**** WARNING redLLLNTLExact cannot be used with Double Precision (LLDD)\n";
+        std::cout << "**** WARNING redLLLNTLExact cannot be used with integers (std::int64_t)\n";
         std::cout << "**** in NTL nor without NTL. LLL reduction is used with our algorithm \n";
-        std::cout << "which can be slower.";
+        std::cout << "**** redLLL which does not do the same thing.\n";
         red.redLLL(fact, 1000000, red.getIntLatticeBasis()->getDim ());
+      }
+      void redLLLNTLExactNoDual(Reducer<std::int64_t, std::int64_t, Dbl, RedDbl>& red,
+          double fact)
+      {
+        std::cout << "**** WARNING redLLLNTLExact cannot be used with integers (std::int64_t)\n";
+        std::cout << "**** in NTL nor without NTL. LLL reduction is used with our algorithm \n";
+        std::cout << "**** redLLL which does not do the same thing.\n";
+        red.redLLLNoDual(fact, 1000000, red.getIntLatticeBasis()->getDim ());
       }
 
       void redBKZ(Reducer<std::int64_t, std::int64_t, Dbl, RedDbl>& red,
           double fact, std::int64_t blocksize, PrecisionType precision, int dim)
       {
-        /*
-        IntLatticeBasis<NTL::ZZ, NTL::ZZ, Dbl, RedDbl> *lattmp = 0;
-        if(dim >0){
-          lattmp = new IntLatticeBasis<NTL::ZZ, NTL::ZZ, Dbl, RedDbl>(
-                     dim, red.getIntLatticeBasis()->getNorm());
-          lattmp->copyBasis(*red.getIntLatticeBasis(), dim);
-        }
-        else
-          lattmp = red.getIntLatticeBasis();
-
-        bool withDual = red.getIntLatticeBasis()->withDual();
-        NTL::mat_ZZ U, V;
-        U.SetDims(lattmp->getBasis().size1(), lattmp->getBasis().size2());
-
-        switch(precision){
-          case DOUBLE:
-            NTL::BKZ_FP(lattmp->getBasis(), U, fact, blocksize);
-            break;
-          case QUADRUPLE:
-            NTL::BKZ_QP(lattmp->getBasis(), U, fact, blocksize);
-            break;
-          case EXPONENT:
-            NTL::BKZ_XD(lattmp->getBasis(), U, fact, blocksize);
-            break;
-          case ARBITRARY:
-            NTL::BKZ_RR(lattmp->getBasis(), U, fact, blocksize);
-            break;
-          default:
-            MyExit(1, "BKZ PrecisionType:   NO SUCH CASE");
-        }
-
-        if (withDual)
-          lattmp->getDualBasis() = transpose(inv(U)) * lattmp->getDualBasis();
-
-        red.getIntLatticeBasis()->copyBasis(*lattmp, dim);
-
-        if (dim>0) delete lattmp;
-        */
-        
           IntLatticeBasis<std::int64_t, std::int64_t, Dbl, RedDbl> *lattmp = 0;
           if (dim > 0) {
             lattmp = new IntLatticeBasis<std::int64_t, std::int64_t, Dbl, RedDbl>(
@@ -590,10 +543,28 @@ namespace LatticeTester {
           else
             lattmp = red.getIntLatticeBasis();
           std::cout << "\n**** WARNING redBKZ cannot be use with std::int64_t type for integers\n";
-          std::cout << "**** (LLDD) and requires ZZ type. Instead, LLL reduction is\n";
-          std::cout << "**** performed with our algorithm which can be much slower.\n";
+          std::cout << "**** and requires ZZ type. Instead, LLL reduction is\n";
+          std::cout << "**** performed with the algorithm redLLL which does not do the same thing.\n";
           std::cout << std::endl;
           red.redLLL(fact, 1000000, red.getIntLatticeBasis()->getDim ());
+          if (dim > 0) delete lattmp; 
+      }
+      void redBKZNoDual(Reducer<std::int64_t, std::int64_t, Dbl, RedDbl>& red,
+          double fact, std::int64_t blocksize, PrecisionType precision, int dim)
+      {
+          IntLatticeBasis<std::int64_t, std::int64_t, Dbl, RedDbl> *lattmp = 0;
+          if (dim > 0) {
+            lattmp = new IntLatticeBasis<std::int64_t, std::int64_t, Dbl, RedDbl>(
+                       dim, red.getIntLatticeBasis()->getNorm());
+            lattmp->copyBasis(*red.getIntLatticeBasis(), dim);
+          }
+          else
+            lattmp = red.getIntLatticeBasis();
+          std::cout << "\n**** WARNING redBKZ cannot be use with std::int64_t type for integers\n";
+          std::cout << "**** and requires ZZ type. Instead, LLL reduction is\n";
+          std::cout << "**** performed with the algorithm redLLL which does not do the same thing.\n";
+          std::cout << std::endl;
+          red.redLLLNoDual(fact, 1000000, red.getIntLatticeBasis()->getDim ());
           if (dim > 0) delete lattmp; 
       }
 
@@ -602,6 +573,49 @@ namespace LatticeTester {
        * If it is, we should reimplement our LLL to match what is done in NTL.
        * */
       void redLLLNTL(Reducer<std::int64_t, std::int64_t, Dbl, RedDbl>& red,
+          double fact, PrecisionType precision, int dim)
+       {
+         IntLatticeBasis<NTL::ZZ, NTL::ZZ, Dbl, RedDbl> *lattmp = 0;
+         NTL::matrix<std::int64_t> basis = red.getIntLatticeBasis()->getBasis();
+         NTL::mat_ZZ U;
+         U.SetDims(basis.NumRows(), basis.NumCols());
+         for (int i = 0; i < basis.NumRows(); i++) {
+           for (int j = 0; j < basis.NumCols(); j++) {
+             U[i][j] = basis[i][j];
+           }
+         }
+         lattmp = new IntLatticeBasis<NTL::ZZ, NTL::ZZ, Dbl, RedDbl>(U, dim,
+             red.getIntLatticeBasis()->getNorm());
+
+         switch(precision){
+           case DOUBLE:
+             LLL_FP(lattmp->getBasis(), U, fact, 0, 0);
+             break;
+           case QUADRUPLE:
+             LLL_QP(lattmp->getBasis(), U, fact, 0, 0);
+             break;
+           case EXPONENT:
+             LLL_XD(lattmp->getBasis(), U, fact, 0, 0);
+             break;
+           case ARBITRARY:
+             LLL_RR(lattmp->getBasis(), U, fact, 0, 0);
+             break;
+           case EXACT:
+             break;
+           default:
+             MyExit(1, "LLL PrecisionType:   NO SUCH CASE");
+         }
+
+         for (int i = 0; i < basis.NumRows(); i++) {
+           for (int j = 0; j < basis.NumCols(); j++) {
+             red.getIntLatticeBasis()->getBasis()[i][j] = NTL::trunc_long(U[i][j], 64);
+           }
+         }
+         red.getIntLatticeBasis()->updateVecNorm();
+
+         delete lattmp;
+       }
+      void redLLLNTLNoDual(Reducer<std::int64_t, std::int64_t, Dbl, RedDbl>& red,
           double fact, PrecisionType precision, int dim)
        {
          IntLatticeBasis<NTL::ZZ, NTL::ZZ, Dbl, RedDbl> *lattmp = 0;
@@ -687,6 +701,12 @@ namespace LatticeTester {
         }
       }
 
+      void redLLLNTLExactNoDual(Reducer<NTL::ZZ, NTL::ZZ, Dbl, RedDbl> & red,
+          double fact)
+      {
+          NTL::ZZ det(0);
+          NTL::LLL(det, red.getIntLatticeBasis()->getBasis(), 99999, 100000);
+      }
 
       void redBKZ(Reducer<NTL::ZZ, NTL::ZZ, Dbl, RedDbl>& red, double fact,
           std::int64_t blocksize, PrecisionType precision, int dim)
@@ -723,6 +743,42 @@ namespace LatticeTester {
 
         if (withDual)
           lattmp->getDualBasis() = transpose(inv(U)) * lattmp->getDualBasis();
+
+        red.getIntLatticeBasis()->copyBasis(*lattmp, dim);
+
+        if (dim>0) delete lattmp;
+      }
+      void redBKZNoDual(Reducer<NTL::ZZ, NTL::ZZ, Dbl, RedDbl>& red, double fact,
+          std::int64_t blocksize, PrecisionType precision, int dim)
+      {
+        IntLatticeBasis<NTL::ZZ, NTL::ZZ, Dbl, RedDbl> *lattmp = 0;
+        if(dim >0){
+          lattmp = new IntLatticeBasis<NTL::ZZ, NTL::ZZ, Dbl, RedDbl>(
+                     dim, red.getIntLatticeBasis()->getNorm());
+          lattmp->copyBasis(*red.getIntLatticeBasis(), dim);
+        }
+        else
+          lattmp = red.getIntLatticeBasis();
+
+        NTL::mat_ZZ U;
+        U.SetDims(lattmp->getBasis().size1(), lattmp->getBasis().size2());
+
+        switch(precision){
+          case DOUBLE:
+            NTL::BKZ_FP(lattmp->getBasis(), U, fact, blocksize);
+            break;
+          case QUADRUPLE:
+            NTL::BKZ_QP(lattmp->getBasis(), U, fact, blocksize);
+            break;
+          case EXPONENT:
+            NTL::BKZ_XD(lattmp->getBasis(), U, fact, blocksize);
+            break;
+          case ARBITRARY:
+            NTL::BKZ_RR(lattmp->getBasis(), U, fact, blocksize);
+            break;
+          default:
+            MyExit(1, "BKZ PrecisionType:   NO SUCH CASE");
+        }
 
         red.getIntLatticeBasis()->copyBasis(*lattmp, dim);
 
@@ -768,6 +824,48 @@ namespace LatticeTester {
 
           if (withDual)
             lattmp->getDualBasis() = transpose(inv(U)) * lattmp->getDualBasis();
+
+          red.getIntLatticeBasis()->copyBasis(*lattmp, dim);
+
+        }
+        if (dim>0) delete lattmp;
+
+      }
+      void redLLLNTLNoDual(Reducer<NTL::ZZ, NTL::ZZ, Dbl, RedDbl>& red, double fact,
+          PrecisionType precision, int dim)
+      {
+        IntLatticeBasis<NTL::ZZ, NTL::ZZ, Dbl, RedDbl> *lattmp = 0;
+        if(dim >0){
+          lattmp = new IntLatticeBasis<NTL::ZZ, NTL::ZZ, Dbl, RedDbl>(
+                     dim, red.getIntLatticeBasis()->getNorm());
+          lattmp->copyBasis(*red.getIntLatticeBasis(), dim);
+        }
+        else
+          lattmp = red.getIntLatticeBasis();
+        if(precision == EXACT)
+          red.redLLLNTLExactNoDual(fact);
+        else{
+          NTL::mat_ZZ U;
+          U.SetDims(lattmp->getBasis().NumRows(), lattmp->getBasis().NumCols());
+
+          switch(precision){
+            case DOUBLE:
+              LLL_FP(lattmp->getBasis(), U, fact, 0, 0);
+              break;
+            case QUADRUPLE:
+              LLL_QP(lattmp->getBasis(), U, fact, 0, 0);
+              break;
+            case EXPONENT:
+              LLL_XD(lattmp->getBasis(), U, fact, 0, 0);
+              break;
+            case ARBITRARY:
+              LLL_RR(lattmp->getBasis(), U, fact, 0, 0);
+              break;
+            case EXACT:
+              break;
+            default:
+              MyExit(1, "LLL PrecisionType:   NO SUCH CASE");
+          }
 
           red.getIntLatticeBasis()->copyBasis(*lattmp, dim);
 
@@ -973,7 +1071,6 @@ namespace LatticeTester {
       }
     }
 
-
   //=========================================================================
 
   void negativeCholeski ();
@@ -1001,7 +1098,6 @@ namespace LatticeTester {
       }
     }
 
-
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
@@ -1019,7 +1115,6 @@ namespace LatticeTester {
         m_gramVD(j,i) = m_gramVD(i,j);
       }
     }
-
 
   //=========================================================================
 
@@ -1110,7 +1205,6 @@ namespace LatticeTester {
       return true;
     }
 
-
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
@@ -1125,7 +1219,6 @@ namespace LatticeTester {
       m_lat->sort(0);
       m_lat->write();
     }
-
 
   //===========================================================================
 
@@ -1308,8 +1401,6 @@ namespace LatticeTester {
       } while (!(m_countDieter >= BoundCount || m_cpt > MAX_PRE_RED));
     }
 
-
-
   //=========================================================================
 
   /**
@@ -1373,44 +1464,51 @@ namespace LatticeTester {
       miseAJourGramVD (j);
       calculCholeski2LLL (i, j);
     }
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+      void Reducer<Int, BasInt, Dbl, RedDbl>::reductionFaibleNoDual (int i, int j)
+    {
+      RedDbl cte;
+      std::int64_t cteLI;
+      cte = m_cho2(i,j) / m_cho2(i,i);
 
+      const int dim = m_lat->getDim ();
 
+      if (abs (cte) < std::numeric_limits<double>::max()) {
+        // On peut representer cte en LONGINT.
+        if (abs (cte) > 0.5) {
+          NTL::conv (cteLI, Round (cte));
+          NTL::matrix_row<BasIntMat> row1(m_lat->getBasis(), j);
+          NTL::matrix_row<BasIntMat> row2(m_lat->getBasis(), i);
+          ModifVect (row1, row2, -cteLI, dim);
+        } else return;
+      } else {
+        // On represente cte en double.
+        if (abs (cte) < std::numeric_limits<long double>::max())
+          cte = Round (cte);
+        NTL::matrix_row<BasIntMat> row1(m_lat->getBasis(), j);
+        NTL::matrix_row<BasIntMat> row2(m_lat->getBasis(), i);
+        ModifVect (row1, row2, -cte, dim);
+      }
+      m_lat->setNegativeNorm (j);
+      m_lat->updateVecNorm(j);
 
+      miseAJourGramVD (j);
+      calculCholeski2LLL (i, j);
+    }
 
   //=========================================================================
+
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
       void Reducer<Int, BasInt, Dbl, RedDbl>::redLLLNTLExact(double fact) {
       spec.redLLLNTLExact(*this, fact);
     }
-  /*
-   *    template<typename Int, typename BasInt, typename 
-   *     typename typename Dbl, typename typename RedDbl,
-   *     typename typename RedDblMat>
-   *    void Reducer<Int, BasInt, Dbl, RedDbl,
-   *    RedDblMat>::redLLLNTLExact(double fact){
-   *#if NTL_TYPES_CODE > 1
-   *
-   *if (m_lat->withDual()) {
-   *NTL::mat_ZZ U;
-   *U.SetDims(m_lat->getBasis().NumRows(), m_lat->getBasis().NumCols());
-   *NTL::ZZ det(0);
-   *LLL(det, m_lat->getBasis(), U, 99999, 100000);
-   *m_lat->getDualBasis() = transpose(inv(U)) * m_lat->getDualBasis();
-   *} else{
-   *NTL::ZZ det(0);
-   *LLL(det, m_lat->getBasis(), 99999, 100000);
-   *}
-   *
-   *#else
-   *
-   *std::cout << "**** WARNING redLLLNTLExact cannot be used with Double Precision (LLDD)\n";
-   *std::cout << "**** in NTL nor without NTL. LLL reduction is used with our algorithm \n";
-   *std::cout << "which can be slower.";
-   *redLLL(fact, 1000000, m_lat->getDim ());
-   *
-   *#endif
-   *}
-   * */
+
+  //=========================================================================
+
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+      void Reducer<Int, BasInt, Dbl, RedDbl>::redLLLNTLExactNoDual(double fact) {
+      spec.redLLLNTLExactNoDual(*this, fact);
+    }
 
   //=========================================================================
 
@@ -1420,61 +1518,12 @@ namespace LatticeTester {
     {
       spec.redBKZ(*this, fact, blocksize, precision, dim);
     }
-  // This function is impemented in Reducer.cc because it needs to be overloaded
-  /*
-   *    template<typename Int, typename BasInt, typename typename typename Dbl, typename typename RedDbl, typename typename RedDblMat>
-   *    void Reducer<Int, BasInt, Dbl, RedDbl>::redBKZ(double fact, std::int64_t blocksize, PrecisionType precision, int dim) {
-   *
-   *    IntLatticeBasis<Int, BasInt, Dbl, RedDbl> *lattmp = 0;
-   *    if(dim >0){
-   *    lattmp = new IntLatticeBasis<Int, BasInt, Dbl, RedDbl>(dim, m_lat->getNorm());
-   *    lattmp->copyBasis(*m_lat, dim);
-   *    }
-   *    else
-   *    lattmp = m_lat;
-   *
-   *#if NTL_TYPES_CODE > 1
-   *
-   *bool withDual = m_lat->withDual();
-   *NTL::mat_ZZ U;
-   *U.SetDims(lattmp->getBasis().size1(), lattmp->getBasis().size2());
-   *
-   *switch(precision){
-   *case DOUBLE:
-   *NTL::BKZ_FP(lattmp->getBasis(), U, fact, blocksize);
-   *break;
-   *case QUADRUPLE:
-   *NTL::BKZ_QP(lattmp->getBasis(), U, fact, blocksize);
-   *break;
-   *case EXPONENT:
-   *NTL::BKZ_XD(lattmp->getBasis(), U, fact, blocksize);
-   *break;
-   *case ARBITRARY:
-   *NTL::BKZ_RR(lattmp->getBasis(), U, fact, blocksize);
-   *break;
-   *default:
-   *MyExit(1, "BKZ PrecisionType:   NO SUCH CASE");
-   *}
-   *
-   *if (withDual)
-   *lattmp->getDualBasis() = transpose(inv(U)) * lattmp->getDualBasis();
-   *
-   *m_lat->copyBasis(*lattmp, dim);
-   *
-   *#else
-   *
-   *std::cout << "\n**** WARNING redBKZ cannot be use with std::int64_t type for integers\n";
-   *std::cout << "**** (LLDD) and requires NTL::ZZ type. Instead, LLL reduction is\n";
-   *std::cout << "**** performed with our algorithm which can be much slower.\n";
-   *std::cout << std::endl;
-   *redLLL(fact, 1000000, m_lat->getDim ());
-   *
-   *#endif
-   *
-   *if (dim>0) delete lattmp;
-   *
-   *}
-   * */
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+      void Reducer<Int, BasInt, Dbl, RedDbl>::redBKZNoDual(
+        double fact, std::int64_t blocksize, PrecisionType precision, int dim)
+    {
+      spec.redBKZNoDual(*this, fact, blocksize, precision, dim);
+    }
 
   //=========================================================================
 
@@ -1483,65 +1532,14 @@ namespace LatticeTester {
           double fact, PrecisionType precision, int dim) {
       spec.redLLLNTL(*this, fact, precision, dim);
     }
-  /*
-   * template<typename Int, typename BasInt, typename typename typename Dbl, typename typename RedDbl, typename typename RedDblMat>
-   * void Reducer<Int, BasInt, Dbl, RedDbl>::redLLLNTL(double fact, PrecisionType precision, int dim) {
-   *   IntLatticeBasis<Int, BasInt, Dbl, RedDbl> *lattmp = 0;
-   *     if(dim >0){
-   *       lattmp = new IntLatticeBasis<Int, BasInt, Dbl, RedDbl>(dim, m_lat->getNorm());
-   *       lattmp->copyBasis(*m_lat, dim);
-   *     }
-   *     else
-   *       lattmp = m_lat;
-   *
-   *#if NTL_TYPES_CODE > 1
-   *
-   *     if(precision == EXACT)
-   *       redLLLNTLExact(fact);
-   *     else{
-   *       bool withDual = m_lat->withDual();
-   *       NTL::mat_ZZ U;
-   *       U.SetDims(lattmp->getBasis().NumRows(), lattmp->getBasis().NumCols());
-   *
-   *       switch(precision){
-   *         case DOUBLE:
-   *           LLL_FP(lattmp->getBasis(), U, fact, 0, 0);
-   *           break;
-   *         case QUADRUPLE:
-   *           LLL_QP(lattmp->getBasis(), U, fact, 0, 0);
-   *           break;
-   *         case EXPONENT:
-   *           LLL_XD(lattmp->getBasis(), U, fact, 0, 0);
-   *           break;
-   *         case ARBITRARY:
-   *           LLL_RR(lattmp->getBasis(), U, fact, 0, 0);
-   *           break;
-   *         case EXACT:
-   *           break;
-   *         default:
-   *           MyExit(1, "LLL PrecisionType:   NO SUCH CASE");
-   *       }
-   *
-   *       if (withDual)
-   *         lattmp->getDualBasis() = transpose(inv(U)) * lattmp->getDualBasis();
-   *
-   *       m_lat->copyBasis(*lattmp, dim);
-   *
-   *     }
-   *
-   *#else
-   *
-   *     std::cout << "\n**** WARNING redLLLNTL cannot be use with std::int64_t type for integers\n";
-   *     std::cout << "**** (LLDD) and requires NTL::ZZ type. Instead, LLL reduction is performed\n";
-   *     std::cout << "**** with our algorithm which can be much slower.\n";
-   *     std::cout << std::endl;
-   *     redLLL(fact, 1000000, m_lat->getDim ());
-   *
-   *#endif
-   *
-   *     if (dim>0) delete lattmp;
-   *   }
-   * */
+
+  //=========================================================================
+
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+      void Reducer<Int, BasInt, Dbl, RedDbl>::redLLLNTLNoDual(
+          double fact, PrecisionType precision, int dim) {
+      spec.redLLLNTLNoDual(*this, fact, precision, dim);
+    }
 
   //=========================================================================
 
@@ -1647,6 +1645,105 @@ namespace LatticeTester {
       }
     }
 
+  //=========================================================================
+
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+      void Reducer<Int, BasInt, Dbl, RedDbl>::redLLLNoDual (
+          double fact, std::int64_t maxcpt, int Max)
+      /*
+       * Effectue la pre-reduction de B au sens de Lenstra-Lenstra-Lovasz. N'utilise
+       * pas les vecteurs m_lat->getBasis().vecNorm, Wm_lat->getDualBasis().
+       */
+    {
+      const int REDBAS_e = 40;
+      int i, j, k, h;
+      RedDbl Cho0ij;
+      RedDbl limite;
+      std::int64_t cpt;
+
+      const int dim = m_lat->getDim ();
+      if (Max == 0) Max = dim;
+
+      cpt = 0;
+      calculGramVD ();
+      limite = 1.0;
+      for (k = 1; k <= REDBAS_e; k++)
+        limite *= 2.0;
+      limite *= dim;
+      m_cho2(0,0) = m_gramVD(0,0);
+      m_cho2(0,1) = m_gramVD(0,1);
+      m_IC[0] = 1;
+      m_cho2(1,1) = m_gramVD(1,1) - m_cho2(0,1) * (m_cho2(0,1) / m_cho2(0,0));
+      m_IC[1] = 1;
+      for (i = 2; i < dim; i++)
+        m_IC[i] = -1;
+      h = 0;
+
+      while (h < Max-1 && cpt < maxcpt) {
+        if (m_gramVD(h + 1,h + 1) > limite) {
+          for (i = h; i >= 0; i--)
+            reductionFaibleNoDual (i, h + 1);
+        } else
+          reductionFaibleNoDual (h, h + 1);
+
+        calculCholeski2Ele (h + 1, h + 1);
+        if (m_IC[h + 1] == -1)
+          m_IC[h + 1] = h + 1;
+
+        if (m_cho2(h + 1,h + 1)/m_cho2(h,h) + (m_cho2(h,h + 1)/m_cho2(h,h))
+            * (m_cho2(h,h + 1) / m_cho2(h,h)) < fact) {
+          ++cpt;
+
+          m_lat->permute (h, h + 1);
+          permuteGramVD (h, h + 1, dim);
+          m_cho2(h,h) = m_gramVD(h,h);
+          for (i = 0; i < h; i++) {
+            std::swap(m_cho2(i,h), m_cho2(i,h + 1));
+            m_cho2(h,h) -= m_cho2(i,h) * (m_cho2(i,h) / m_cho2(i,i));
+          }
+          if (h == 0) {
+            Cho0ij = m_cho2(0,1) / m_cho2(0,0);
+            if (abs (Cho0ij) > 0.5) {
+              m_IC[0] = 1;
+              m_IC[1] = -1;
+              h = 0;
+            } else {
+              m_cho2(1,1) = m_gramVD(1,1) -
+                m_cho2(0,1) * m_cho2(0,1) / m_cho2(0,0);
+              calculCholeski2LLL (2, 2);
+              m_IC[0] = 2;
+              m_IC[1] = 2;
+              m_IC[2] = 2;
+              h = 1;
+            }
+          } else {
+            m_IC[h] = h + 1;
+            m_IC[h + 1] = -1;
+            --h;
+          }
+
+        } else {
+          for (i = 0; i <= h + 2; i++) {
+            if (h + 2 > m_IC[i]) {
+              if (h + 2 < dim)
+                calculCholeski2Ele (i, h + 2);
+              m_IC[i] = h + 2;
+            }
+          }
+          ++h;
+        }
+      }
+
+      if(cpt == maxcpt){
+        std::cout << "***** in redLLL cpt > maxcpt = " << maxcpt << std::endl;
+      }
+
+      for (j = 2; j < Max; j++) {
+        for (i = j - 2; i >= 0; i--)
+          reductionFaible (i, j);
+      }
+      m_lat->setNegativeNorm ();
+    }
 
   //=========================================================================
 
@@ -1697,7 +1794,43 @@ namespace LatticeTester {
       }
       k = j;
     }
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+      void Reducer<Int, BasInt, Dbl, RedDbl>::transformStage3NoDual (
+          std::vector<std::int64_t> & z, int & k)
+    {
+      int j, i;
+      std::int64_t q;
+      const int dim = m_lat->getDim ();
 
+      j = dim-1;
+      while (z[j] == 0)
+        --j;
+      while (abs (z[j]) > 1) {
+        i = j - 1;
+        while (z[i] == 0)
+          --i;
+        // On a 2 indices i < j tels que |z_j| > 1 et z_i != 0.
+        while (z[j]) {
+          // Troncature du quotient vers 0
+          q = z[i] / z[j];
+          if (q) {
+            // On ajoute q * v[i] au vecteur m_lat->getBasis()[j]
+            z[i] -= q * z[j];
+            NTL::matrix_row<BasIntMat> row2(m_lat->getBasis(), i);
+            NTL::matrix_row<BasIntMat> row1(m_lat->getBasis(), j);
+            //    ModifVect (m_lat->getBasis ()[j], m_lat->getBasis ()[i],
+            //            q, dim);
+            ModifVect (row1, row2, q, dim);
+            m_lat->setNegativeNorm (j);
+          }
+          // Permutation.
+          std::swap <std::int64_t>(z[i], z[j]);
+          m_lat->permute (i, j);
+        }
+        j = i;
+      }
+      k = j;
+    }
 
   //=========================================================================
 
@@ -1879,7 +2012,6 @@ namespace LatticeTester {
       return true;
     }
 
-
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
@@ -2013,6 +2145,96 @@ namespace LatticeTester {
       return true;
     }
 
+  //=========================================================================
+
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+      bool Reducer<Int, BasInt, Dbl, RedDbl>::redBBNoDual (
+          int i, int d, int Stage, bool & smaller, bool xx[])
+      /*
+       * Tries to shorten m_lat->getBasis()[i] using branch-and-bound.
+       * Used in Minkowski Reduction.
+       * Stage is 2 or 3.
+       * z[i] = 1 if Stage = 2, z[i] >= 2 if Stage = 3.
+       * Stops and returns false if not finished after examining MaxNodes
+       * nodes in the branch-and-bound tree.  When succeeds, returns true.
+       * Assumes that the norm is Euclidean.
+       */
+    {
+      const int dim = m_lat->getDim ();
+      BasIntMat VTemp (dim, dim), WTemp (dim, dim);
+      bool XXTemp[dim];
+      Dbl tmp;
+      // trace( "AVANT redBB");
+      smaller = false;
+
+      // Approximation du carre de la std::int64_tueur de Vi.
+      if (m_lat->getVecNorm(i) < 0) {
+        NTL::matrix_row<BasIntMat> row1(m_lat->getBasis(), i);
+        ProdScal<Int> (row1, row1, dim, tmp);
+        //  ProdScal<Int> (m_lat->getBasis()[i], m_lat->getBasis()[i],
+        //            dim, tmp);
+        m_lat->setVecNorm (tmp, i);
+      }
+      NTL::conv (m_lMin2, m_lat->getVecNorm (i));
+
+      m_lat->updateVecNorm ();
+      m_lat->permute (i, dim-1);
+
+      int k, h;
+
+      if (PreRedLLLRM)
+      {
+        // On memorise la base courante.
+        VTemp = m_lat->getBasis ();
+        for (h = 0; h < dim; h++)
+          XXTemp[h] = true;
+        redLLL (1.0, 1000000, dim - 1);
+        m_lat->updateVecNorm ();
+      }
+      if (!calculCholeski (m_dc2, m_c0))
+        return false;
+      m_countNodes = 0;
+      m_n2[dim-1] = 0.0;
+      if (!tryZ (dim-1, i, Stage, smaller, WTemp))
+        return false;
+
+      if (PreRedLLLRM)
+      {
+        /* On remet l'anciennne base, celle d'avant LLL, avant de considerer
+           la prochaine m_lat->dimension.  */
+        m_lat->getBasis () = VTemp;
+        m_lat->updateVecNorm ();
+        for (h = 0; h < dim; h++)
+          xx[h] = XXTemp[h];
+      }
+      if (smaller)
+      {
+        /* On a trouve un plus court vecteur.  On ameliore
+           m_lat->getBasis()[k].  */
+        if (Stage == 2)
+          k = dim-1;
+        else
+          transformStage3NoDual (m_zShort, k);
+        NTL::matrix_row<BasIntMat> row1(m_lat->getBasis(), k);
+        for (h = 0; h < dim; h++)
+          row1(h) = m_bv[h];
+        //  m_lat->getBasis ()[k] = m_bv;
+        m_lat->setNegativeNorm (k);
+        for (h = 0; h < dim; h++) {
+          if ((m_zShort[h] != 0) && (h != k)) {
+            if (Stage == 2) {
+              if (h >= d)
+                xx[h] = false;
+            }
+          }
+        }
+      } else if (Stage == 2)
+        xx[dim-1] = true;
+
+      m_lat->permute (i, dim-1);
+      // trace( "APRES redBB");
+      return true;
+    }
 
   //=========================================================================
 
@@ -2169,7 +2391,6 @@ namespace LatticeTester {
       return true;
     }
 
-
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
@@ -2287,6 +2508,100 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+      bool Reducer<Int, BasInt, Dbl, RedDbl>::redBB0NoDual (NormType norm)
+      /*
+       * Finds shortest non-zero vector, using branch-and-bound. Stops and returns
+       * false if not finished after examining MaxNodes nodes in the
+       * branch-and-bound tree.  When succeeds, returns true, and the shortest
+       * vector square length will be in m_lMin2.
+       */
+    {
+
+      bool smaller = false;
+      int k, h;
+      const int dim = m_lat->getDim ();
+
+      RedDbl x;
+      /* We sort here to get same results as in xds98 version. Otherwise,
+         Cholesky will fail more rapidly due to floating-point errors. We do
+         not sort after redLLL because this greatly slows down the program in
+         the case of the L2 Norm. */
+
+      m_lat->updateScalL2Norm (0, dim);
+      if (m_countNodes < SHORT_LLL)
+        m_lat->sort (0);
+
+      /* Approximation de la norme du plus court vecteur. */
+      if (norm == L2NORM) {
+        NTL::conv (m_lMin2, m_lat->getVecNorm (0));
+      } else {
+        // Looking for the min of of the vecteur according to the considered norm
+        NTL::matrix_row<BasIntMat> row1(m_lat->getBasis(), 0);
+        CalcNorm <BasIntVec, Dbl> (row1, dim, m_lMin, norm);
+        for (k = 1; k < dim; k++) {
+          NTL::matrix_row<BasIntMat> row2(m_lat->getBasis(), k);
+          CalcNorm <BasIntVec, Dbl> (row2, dim, x, norm);
+          if (x < m_lMin)
+            m_lMin = x;
+        }
+        m_lMin2 = m_lMin * m_lMin;
+      }
+
+      if (m_lMin2 <= m_BoundL2[dim-1]) {
+
+        /* If there is in this lattice a vector that are shorter than the shortest
+           of the current lattice, we don't need to find the shortest vector in this
+           lattice. Use only in seek function
+
+           S'il existe dans ce réseau un vecteur de std::int64_tueur plus courte que celle
+           du meilleur réseau trouvé à date, il n'est pas nécessaire de trouver le
+           plus court vecteur de ce réseau: on peut l'éliminer immédiatement. */
+
+        return false;
+      }
+
+      if (!calculCholeski (m_dc2, m_c0))
+        return false;
+
+      /* On effectue le branch and bound.  */
+      /* m_n2[j] sera la somme des termes |z*k|^2 ||v*k||^2 pour k > j.  */
+      m_n2[dim-1] = 0.0;
+      m_countNodes = 0;
+      smaller = false;
+      m_foundZero = false;
+      if (!tryZ0 (dim-1, smaller))
+        return false;
+
+      if (smaller) {
+        // We have found a shorter vector. Its square length is in m_lMin2.
+        transformStage3NoDual (m_zShort, k);
+        NTL::matrix_row<BasIntMat> row1(m_lat->getBasis(), k);
+        for (h = 0; h < dim; h++)
+          row1(h) = m_bw[h];
+        m_lat->setNegativeNorm (k);
+
+
+        /* The new candidate for a shortest vector will be in
+           m_lat->getBasis()(0). */
+        /* In the case of L1NORM or others, check that it is really smaller.  */
+        if (norm == L2NORM)
+          m_lat->permute (k, 0);
+        else {
+          NTL::matrix_row<BasIntMat> row5(m_lat->getBasis(), k);
+          CalcNorm (row5, dim, x, norm);
+          if (x < m_lMin) {
+            m_lMin = x;
+            m_lMin2 = m_lMin * m_lMin;
+            m_lat->permute (k, 0);
+          }
+        }
+      }
+      return true;
+    }
+
+  //=========================================================================
+
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
       bool Reducer<Int, BasInt, Dbl, RedDbl>::reductMinkowski (int d)
     {
       bool withDual = m_lat->withDual();
@@ -2297,7 +2612,6 @@ namespace LatticeTester {
       bool smaller;               // A smaller vector has been found
       bool xx[dim];               // This has a use, I just don't know which
 
-      //redBKZ(0.999999, 10);
       do {
         // The first d vectors should not be modified.
         for (i = 0; i < d; i++)
@@ -2323,7 +2637,7 @@ namespace LatticeTester {
           for (i = 0; i < dim; i++) {
             if (!xx[i]) {
               // On essaie de reduire le i-eme vecteur.
-              if (!redBB (i, d, 2, smaller))
+              if (!redBB (i, d, 2, smaller, xx))
                 return false;
               totalNodes += m_countNodes;
               if (smaller){
@@ -2336,7 +2650,7 @@ namespace LatticeTester {
         // Stage 3
         if (dim > 7) {
           for (i = d; i < dim; i++) {
-            if (!redBB (i, d, 3, smaller))
+            if (!redBB (i, d, 3, smaller, xx))
               return false;
             totalNodes += m_countNodes;
             if (smaller)
@@ -2360,7 +2674,55 @@ namespace LatticeTester {
       m_lMin2 = m_lat->getVecNorm(0);
       return true;
     }
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+      bool Reducer<Int, BasInt, Dbl, RedDbl>::reductMinkowskiNoDual ()
+    {
+      const int dim = m_lat->getDim ();
+      int i;
+      std::int64_t totalNodes = 0;
+      bool found;
+      bool smaller;               // A smaller vector has been found
+      int d = 0;
 
+      do {
+        found = false; 
+
+        do {
+          m_lat->setNegativeNorm(d);
+          m_lat->updateVecNorm (d);
+          m_lat->sort (d);
+          found = false;
+
+          for (i = 0; i < dim; i++) {
+            if (i>=d) {
+              // On essaie de reduire le i-eme vecteur.
+              if (!redBBNoDual (i, d, 2, smaller))
+                return false;
+              totalNodes += m_countNodes;
+              if (smaller){
+                found = true;
+              }
+            }
+          }
+
+        } while (found);
+        // Stage 3
+        if (dim > 7) {
+          for (i = d; i < dim; i++) {
+            if (!redBBNoDual (i, d, 3, smaller))
+              return false;
+            totalNodes += m_countNodes;
+            if (smaller)
+              found = true;
+          }
+        }
+      } while (found);
+
+      m_lat->setNegativeNorm();
+      m_lat->updateScalL2Norm (0, dim);
+      m_lMin2 = m_lat->getVecNorm(0);
+      return true;
+    }
 
   //=========================================================================
 
@@ -2394,119 +2756,35 @@ namespace LatticeTester {
       return ok;
     }
 
-  //=========================================================================
+  //============================================================================
 
-  /*
-   *  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-   *      bool Reducer<Int, BasInt, Dbl, RedDbl>::redDieter (NormType norm)
-   *       * Finds shortest non-zero vector with specified norm.
-   *       * Does not modify the basis.
-   *       * Stops and returns false if not finished after examining possib.
-   *       * When succeeds, returns true, and returns length in m_lMin.
-   *       * Uses the algorithm of Dieter (1975), given in Knuth (1981).
-   *    {
-   *      if(!m_lat->withDual()){
-   *        std::cout << "***************************************************\n";
-   *        std::cout << "Dieter Reduction needs the Dual. Evaluation Aborted\n";
-   *        std::cout << "***************************************************\n" << std::endl;
-   *        return false;
-   *      }
-   *      const int dim = m_lat->getDim ();
-   *      int k;
-   *      RedDbl x;
-   *      DblVec supz, z;
-   *
-   *      supz.resize (dim);
-   *      z.resize (dim);
-   *
-   *      // Compute the bounds in eq.(7) of Dieter (1975).
-   *      // For this, VV and WW temporarily hold the vector norms.
-   *      m_lat->setNegativeNorm();
-   *      m_lat->setDualNegativeNorm();
-   *      m_lat->updateVecNorm ();
-   *      m_lat->updateDualVecNorm ();
-   *      m_lat->sort (0);
-   *
-   *      // Basis is now sorted according to the desired norm.
-   *      NTL::conv (m_lMin, m_lat->getVecNorm (0));
-   *      m_lMin2 = m_lMin * m_lMin;
-   *      Dbl temp1, temp2;
-   *      NTL::conv (temp1, m_lMin);
-   *      NTL::conv (temp2, m_lat->getModulo ());
-   *      for (k = 0; k < dim; k++)
-   *      {
-   *        supz[k] =
-   *          1.0E-9 + m_lat->getDualVecNorm (k) * temp1 / temp2;
-   *        z[k] = 0;
-   *      }
-   *
-   *      // Algorithm given in Knuth (1981).  Memoire de F. Blouin, p. 25.
-   *      m_countNodes = 0;
-   *      for (k = 0; k < dim; k++)
-   *        m_bv[k] = 0;
-   *
-   *      k = dim-1;
-   *      while (k >= 0)
-   *      {
-   *        if (z[k] < supz[k]) {
-   *          ++z[k];
-   *          NTL::matrix_row<BasIntMat> row1(m_lat->getBasis(), k);
-   *          ModifVect (m_bv, row1, 1, dim);
-   *          while (k < dim-1) {
-   *            ++k;
-   *            z[k] = -supz[k];
-   *            NTL::matrix_row<BasIntMat> row2(m_lat->getBasis(), k);
-   *            ModifVect (m_bv, row2, 2 * z[k], dim);
-   *          }
-   *          CalcNorm <BasIntVec, RedDbl> (m_bv, dim, x, norm);
-   *          if (x < m_lMin) {
-   *            NTL::conv (m_lMin, x);
-   *          }
-   *        } else
-   *          --k;
-   *      }
-   *      if (norm == L2NORM)
-   *        m_lMin2 = m_lMin * m_lMin;
-   *
-   *      m_lat->setNegativeNorm ();
-   *      m_lat->setDualNegativeNorm ();
-   *
-   *      supz.clear ();
-   *      z.clear ();
-   *
-   *      return true;
-   *    }
-   */
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+      bool Reducer<Int, BasInt, Dbl, RedDbl>::shortestVectorNoDual (NormType norm)
+      // Square length of shortest vector can be recovered in m_lMin2
+    {
+
+      if (norm != L2NORM) {
+        m_lat->setNegativeNorm ();
+      }
+
+      /* Find the shortest vector for the selected norm.  */
+      /* The L2 norm is used for the Choleski decomposition and BB bounds. */
+      bool ok;
+      if (norm == L1NORM || norm == L2NORM || norm == ZAREMBANORM) {
+        ok = redBB0 (norm);
+      } else {
+        ok = false;
+        std::cerr << "RedLattice::shortestVector:   wrong norm";
+        exit (3);
+      }
+
+      m_lat->updateVecNorm();
+      m_lat->sort(0);
+
+      return ok;
+    }
 
   //=========================================================================
-
-  /* This method's implementation has not been finished and I have no idea what
-   * its purpose is. I think it should be removed anyway, because B&B is now 
-   * independent from pre-reductions.
-   * Marc-Antoine
-   *
-   *  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-   *      bool Reducer<Int, BasInt, Dbl, RedDbl>::shortestVectorDieter (
-   *          NormType norm)
-   *      // Length of shortest vector can be recovered in m_lMin.
-   *    {
-   *      // Perform pre-reductions using L2 norm.
-   *      if (PreRedDieterSV)
-   *        preRedDieter (0);
-   *      if (PreRedLLLSV)
-   *        redLLL (0.999999, 1000000, m_lat->getDim ());
-   *
-   *      // Find the shortest vector for the selected norm.
-   *      bool ok = redDieter (norm);
-   *      if (m_countNodes > SHORT_DIET)
-   *        PreRedDieterSV = true;
-   *      if (m_countNodes > SHORT_LLL)
-   *        PreRedLLLSV = true;
-   *      // UpdateVVWW (0);
-   *      // m_lat->getBasis().Sort (0);
-   *      return ok;
-   *    }
-   * */
 
   extern template class Reducer<std::int64_t, std::int64_t, double, double>;
   extern template class Reducer<NTL::ZZ, NTL::ZZ, double, double>;

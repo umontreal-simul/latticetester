@@ -18,7 +18,8 @@
  * these examples look like in their source code files and on this page bellow.
  * \todo Review the examples and format of their output. We should include a
  * testing part in the build like in LatNet Builder using these examples to test
- * the implementation when modifying things.
+ * the implementation when modifying things. Modifying the examples could
+ * include the test of the update to Reducer to not maintain the dual.
  *
  * \section sec_basis Basis manipulation
  * \include BasisConstruction.cc

@@ -11,6 +11,14 @@
  * what you would expect in reality since bench contains random full matrices.
  * 
  * This is a sample output for NTL_TYPES_CODE 2:
+ *                GCD    LLL     DUAL1    DUAL2
+ * Dim     5     4418   3074       735     1002
+ * Dim    10    13497   7900      2647     8151
+ * Dim    15    38502  20984      9543    19052
+ * Dim    20    94467  44949     88171    50834
+ * Dim    25   152712  86751    154730   181654
+ * Dim    30   594683 137168   2970433  1682890
+ * Dim    35 21994254 221505 168412442 13860037
  * */
 
 // This should always use Types 2 or 3, because we get too big numbers with GCD
@@ -42,7 +50,7 @@ int getWidth(clock_t time[], int dim, std::string message) {
 int main() {
   // The different clocks we will use for benchmarking
   // We use ctime for implementation simplicity
-  int max_dim = 6; // Actual max dim is 5*max_dim
+  int max_dim = 7; // Actual max dim is 5*max_dim
   clock_t tmp;
   clock_t gcd_time[max_dim], lll_time[max_dim],
   dual1_time[max_dim], dual2_time[max_dim];

@@ -67,6 +67,9 @@ namespace LatticeTester {
    * \cite rDIE75a, LLL reduction \cite mLEN82a and BKZ reduction \cite mSCH91a.
    * The theoretical details of these algorithm are presented in \ref a_intro.
    *
+   * Unless using Dieter or Minkowski reduction, the methods of this class do not
+   * change the dual of the lattice that is being reduced.
+   *
    * The LLL reduction has been implemented both by us and in NTL, but since we
    * did not test our algorithm for efficiency, it is recommended to stick with
    * the NTL implementation wrapped by the methods redLLLNTL and redLLLNTLExact.
@@ -601,7 +604,7 @@ namespace LatticeTester {
       void redLLLNTLExact(Reducer<NTL::ZZ, NTL::ZZ, Dbl, RedDbl> & red,
           double fact)
       {
-        if (red.getIntLatticeBasis()->withDual()) {
+        /*if (red.getIntLatticeBasis()->withDual()) {
           NTL::mat_ZZ U;
           U.SetDims(red.getIntLatticeBasis()->getBasis().NumRows(), 
               red.getIntLatticeBasis()->getBasis().NumCols());
@@ -609,10 +612,10 @@ namespace LatticeTester {
           NTL::LLL(det, red.getIntLatticeBasis()->getBasis(), U, 99999, 100000);
           red.getIntLatticeBasis()->getDualBasis() = 
             transpose(inv(U)) * red.getIntLatticeBasis()->getDualBasis();
-        } else{
+        } else{*/
           NTL::ZZ det(0);
           NTL::LLL(det, red.getIntLatticeBasis()->getBasis(), 99999, 100000);
-        }
+        //}
       }
 
 
@@ -628,7 +631,7 @@ namespace LatticeTester {
         else
           lattmp = red.getIntLatticeBasis();
 
-        bool withDual = red.getIntLatticeBasis()->withDual();
+        //bool withDual = red.getIntLatticeBasis()->withDual();
         NTL::mat_ZZ U;
         U.SetDims(lattmp->getBasis().size1(), lattmp->getBasis().size2());
 
@@ -649,8 +652,8 @@ namespace LatticeTester {
             MyExit(1, "BKZ PrecisionType:   NO SUCH CASE");
         }
 
-        if (withDual)
-          lattmp->getDualBasis() = transpose(inv(U)) * lattmp->getDualBasis();
+        //if (withDual)
+          //lattmp->getDualBasis() = transpose(inv(U)) * lattmp->getDualBasis();
 
         red.getIntLatticeBasis()->copyBasis(*lattmp, dim);
 
@@ -671,7 +674,7 @@ namespace LatticeTester {
         if(precision == EXACT)
           red.redLLLNTLExact(fact);
         else{
-          bool withDual = red.getIntLatticeBasis()->withDual();
+          //bool withDual = red.getIntLatticeBasis()->withDual();
           NTL::mat_ZZ U;
           U.SetDims(lattmp->getBasis().NumRows(), lattmp->getBasis().NumCols());
 
@@ -694,8 +697,8 @@ namespace LatticeTester {
               MyExit(1, "LLL PrecisionType:   NO SUCH CASE");
           }
 
-          if (withDual)
-            lattmp->getDualBasis() = transpose(inv(U)) * lattmp->getDualBasis();
+          //if (withDual)
+          //  lattmp->getDualBasis() = transpose(inv(U)) * lattmp->getDualBasis();
 
           red.getIntLatticeBasis()->copyBasis(*lattmp, dim);
 
@@ -967,8 +970,8 @@ namespace LatticeTester {
       NTL::conv (m2, m_lat->getModulo ());
       m2 = m2*m2;
       int d = dim;
-      if(m_lat->withDual())
-        d = dim / 2; // If we use the Dual, we compute Choleski
+      //if(m_lat->withDual())
+      //  d = dim / 2; // If we use the Dual, we compute Choleski
       // with the Dual
 
       // Compute the d first lines of C0 with the primal Basis.
@@ -1001,37 +1004,37 @@ namespace LatticeTester {
        * convert numbers in double which is not sufficient in that case.
        * You need to use RR of the NTL library for this calculation.
        */
-      if(m_lat->withDual()){
-        for (i = dim-1; i >= d; i--)
-        {
-          m_lat->updateDualScalL2Norm (i);
-          for (j = i; j >= 0; j--) {
-            if (j == i)
-              NTL::conv (m_c2(i,i), m_lat->getDualVecNorm (i));
-            else {
-              NTL::matrix_row<BasIntMat> row1(m_lat->getDualBasis(), i);
-              NTL::matrix_row<BasIntMat> row2(m_lat->getDualBasis(), j);
-              ProdScal<Int> (row1, row2, dim, m_c2(i,j));
-            }
-            for (k = i + 1; k < dim; k++){
-              m_c2(i,j) -= C0(k,i) * m_c2(k,j);
-            }
-            if (i != j)
-              C0(i,j) = m_c2(i,j) / m_c2(i,i);
-          }
-          DC2[i] = m2 / m_c2(i,i);
-          if (DC2[i] < 0.0) {
-            negativeCholeski();
-            return false;
-          }
-          for (j = i + 1; j < dim; j++) {
-            C0(i,j) = -C0(j,i);
-            for (k = i + 1; k < j; k++) {
-              C0(i,j) -= C0(k,i) * C0(k,j);
-            }
-          }
-        }
-      }
+      //if(m_lat->withDual()){
+      //  for (i = dim-1; i >= d; i--)
+      //  {
+      //    m_lat->updateDualScalL2Norm (i);
+      //    for (j = i; j >= 0; j--) {
+      //      if (j == i)
+      //        NTL::conv (m_c2(i,i), m_lat->getDualVecNorm (i));
+      //      else {
+      //        NTL::matrix_row<BasIntMat> row1(m_lat->getDualBasis(), i);
+      //        NTL::matrix_row<BasIntMat> row2(m_lat->getDualBasis(), j);
+      //        ProdScal<Int> (row1, row2, dim, m_c2(i,j));
+      //      }
+      //      for (k = i + 1; k < dim; k++){
+      //        m_c2(i,j) -= C0(k,i) * m_c2(k,j);
+      //      }
+      //      if (i != j)
+      //        C0(i,j) = m_c2(i,j) / m_c2(i,i);
+      //    }
+      //    DC2[i] = m2 / m_c2(i,i);
+      //    if (DC2[i] < 0.0) {
+      //      negativeCholeski();
+      //      return false;
+      //    }
+      //    for (j = i + 1; j < dim; j++) {
+      //      C0(i,j) = -C0(j,i);
+      //      for (k = i + 1; k < j; k++) {
+      //        C0(i,j) -= C0(k,i) * C0(k,j);
+      //      }
+      //    }
+      //  }
+      //}
       return true;
     }
 
@@ -1043,9 +1046,9 @@ namespace LatticeTester {
       std::cout << std::endl << "================================= " << mess << std::endl;
       //std::cout << "dim = " << m_lat->getDim () << std::endl;
       m_lat->setNegativeNorm();
-      m_lat->setDualNegativeNorm();
+      //m_lat->setDualNegativeNorm();
       m_lat->updateVecNorm ();
-      m_lat->updateDualVecNorm();
+      //m_lat->updateDualVecNorm();
       m_lat->sort(0);
       m_lat->write();
     }
@@ -1248,7 +1251,7 @@ namespace LatticeTester {
     {
       RedDbl cte;
       std::int64_t cteLI;
-      bool withDual = m_lat->withDual();
+      //bool withDual = m_lat->withDual();
       cte = m_cho2(i,j) / m_cho2(i,i);
 
       const int dim = m_lat->getDim ();
@@ -1260,11 +1263,11 @@ namespace LatticeTester {
           NTL::matrix_row<BasIntMat> row1(m_lat->getBasis(), j);
           NTL::matrix_row<BasIntMat> row2(m_lat->getBasis(), i);
           ModifVect (row1, row2, -cteLI, dim);
-          if(withDual){
-            NTL::matrix_row<BasIntMat> row3(m_lat->getDualBasis(), i);
-            NTL::matrix_row<BasIntMat> row4(m_lat->getDualBasis(), j);
-            ModifVect (row3, row4, cteLI, dim);
-          }
+          //if(withDual){
+          //  NTL::matrix_row<BasIntMat> row3(m_lat->getDualBasis(), i);
+          //  NTL::matrix_row<BasIntMat> row4(m_lat->getDualBasis(), j);
+          //  ModifVect (row3, row4, cteLI, dim);
+          //}
 
         } else
           return;
@@ -1276,19 +1279,19 @@ namespace LatticeTester {
         NTL::matrix_row<BasIntMat> row1(m_lat->getBasis(), j);
         NTL::matrix_row<BasIntMat> row2(m_lat->getBasis(), i);
         ModifVect (row1, row2, -cte, dim);
-        if(withDual){
-          NTL::matrix_row<BasIntMat> row3(m_lat->getDualBasis(), i);
-          NTL::matrix_row<BasIntMat> row4(m_lat->getDualBasis(), j);
-          ModifVect (row3, row4, cte, dim);
-        }
+        //if(withDual){
+        //  NTL::matrix_row<BasIntMat> row3(m_lat->getDualBasis(), i);
+        //  NTL::matrix_row<BasIntMat> row4(m_lat->getDualBasis(), j);
+        //  ModifVect (row3, row4, cte, dim);
+        //}
 
       }
       m_lat->setNegativeNorm (j);
       m_lat->updateVecNorm(j);
-      if(withDual){
-        m_lat->setDualNegativeNorm (i);
-        m_lat->updateDualVecNorm(i);
-      }
+      //if(withDual){
+      //  m_lat->setDualNegativeNorm (i);
+      //  m_lat->updateDualVecNorm(i);
+      //}
 
 
       miseAJourGramVD (j);
@@ -1329,7 +1332,7 @@ namespace LatticeTester {
        * pas les vecteurs m_lat->getBasis().vecNorm, Wm_lat->getDualBasis().
        */
     {
-      bool withDual = m_lat->withDual();
+      //bool withDual = m_lat->withDual();
       const int REDBAS_e = 40;
       int i, j, k, h;
       RedDbl Cho0ij;
@@ -1418,9 +1421,9 @@ namespace LatticeTester {
           reductionFaible (i, j);
       }
       m_lat->setNegativeNorm ();
-      if(withDual){
-        m_lat->setDualNegativeNorm ();
-      }
+      //if(withDual){
+      //  m_lat->setDualNegativeNorm ();
+      //}
     }
 
   //=========================================================================
@@ -1432,7 +1435,7 @@ namespace LatticeTester {
       int j, i;
       std::int64_t q;
       const int dim = m_lat->getDim ();
-      bool withDual = m_lat->withDual();
+      //bool withDual = m_lat->withDual();
 
       j = dim-1;
       while (z[j] == 0)
@@ -1455,14 +1458,14 @@ namespace LatticeTester {
             ModifVect (row1, row2, q, dim);
             m_lat->setNegativeNorm (j);
 
-            if(withDual){
-              NTL::matrix_row<BasIntMat> row3(m_lat->getDualBasis(), i);
-              NTL::matrix_row<BasIntMat> row4(m_lat->getDualBasis(), j);
-              //    ModifVect (m_lat->getDualBasis ()[i], m_lat->getDualBasis ()[j],
-              //             -q, dim);
-              ModifVect (row3, row4, -q, dim);
-              m_lat->setDualNegativeNorm (i);
-            }
+            //if(withDual){
+            //  NTL::matrix_row<BasIntMat> row3(m_lat->getDualBasis(), i);
+            //  NTL::matrix_row<BasIntMat> row4(m_lat->getDualBasis(), j);
+            //  //    ModifVect (m_lat->getDualBasis ()[i], m_lat->getDualBasis ()[j],
+            //  //             -q, dim);
+            //  ModifVect (row3, row4, -q, dim);
+            //  m_lat->setDualNegativeNorm (i);
+            //}
           }
           // Permutation.
           std::swap <std::int64_t>(z[i], z[j]);
@@ -1953,7 +1956,7 @@ namespace LatticeTester {
        */
     {
 
-      bool withDual = m_lat->withDual();
+      //bool withDual = m_lat->withDual();
       bool smaller = false;
       int k, h;
       const int dim = m_lat->getDim ();
@@ -1965,9 +1968,9 @@ namespace LatticeTester {
          the case of the L2 Norm. */
 
       m_lat->updateScalL2Norm (0, dim);
-      if(withDual){
-        m_lat->updateDualScalL2Norm (0, dim);
-      }
+      //if(withDual){
+      //  m_lat->updateDualScalL2Norm (0, dim);
+      //}
       if (m_countNodes < SHORT_LLL)
         m_lat->sort (0);
 
@@ -2022,20 +2025,20 @@ namespace LatticeTester {
 
         /* The new shorter vector is now in m_lat->getBasis()[k].  */
         /*  We update the vectors of the dual basis. */
-        if (withDual){
-          if (m_zShort[k] < 0) {
-            NTL::matrix_row<BasIntMat> row2(m_lat->getDualBasis(), k);
-            ChangeSign (row2, dim);
-          }
-          for (h = 0; h < dim; h++) {
-            if (m_zShort[h] && h != k) {
-              NTL::matrix_row<BasIntMat> row3(m_lat->getDualBasis(), h);
-              NTL::matrix_row<BasIntMat> row4(m_lat->getDualBasis(), k);
-              ModifVect (row3, row4, -m_zShort[h], dim);
-              m_lat->setDualNegativeNorm (h);
-            }
-          }
-        }
+        //if (withDual){
+        //  if (m_zShort[k] < 0) {
+        //    NTL::matrix_row<BasIntMat> row2(m_lat->getDualBasis(), k);
+        //    ChangeSign (row2, dim);
+        //  }
+        //  for (h = 0; h < dim; h++) {
+        //    if (m_zShort[h] && h != k) {
+        //      NTL::matrix_row<BasIntMat> row3(m_lat->getDualBasis(), h);
+        //      NTL::matrix_row<BasIntMat> row4(m_lat->getDualBasis(), k);
+        //      ModifVect (row3, row4, -m_zShort[h], dim);
+        //      m_lat->setDualNegativeNorm (h);
+        //    }
+        //  }
+        //}
 
         /* The new candidate for a shortest vector will be in
            m_lat->getBasis()(0). */
@@ -2140,8 +2143,8 @@ namespace LatticeTester {
 
       if (norm != L2NORM) {
         m_lat->setNegativeNorm ();
-        if(m_lat->withDual())
-          m_lat->setDualNegativeNorm ();
+        //if(m_lat->withDual())
+        //  m_lat->setDualNegativeNorm ();
       }
 
       /* Find the shortest vector for the selected norm.  */
@@ -2157,8 +2160,8 @@ namespace LatticeTester {
 
       m_lat->updateVecNorm();
       m_lat->sort(0);
-      if(m_lat->withDual())
-        m_lat->updateDualVecNorm();
+      //if(m_lat->withDual())
+      //  m_lat->updateDualVecNorm();
 
       return ok;
     }

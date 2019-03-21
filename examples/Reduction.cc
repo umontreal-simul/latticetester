@@ -1,63 +1,10 @@
 /**
  * This is an example to the usage of the reducer class to perform reduction
- * of lattices. This also compares the average relative length reduction of each
- * method and the time taken by dimension.
- * */
-/**
- * This example compares our implementation of the LLL algorithm with the one in
- * NTL. This comparison is done on a set of randomly generated matrices
- * available in the `bench.zip` archive in the example folder of the build tree.
- * Please note, before running this program that it takes quite a long time to
- * execute (in our test runs it took slightly more than an hour).
- *
- * Also, a lot of the information is hard coded in this example and we are aware
- * this is not a really good practice. This program is mostly a script we made
- * to have tangible proof that NTL is way faster than our algorithm.
- *
- * This program will do LLL reduction on the sets of matrix in the files in the
- * `bench.zip` archive and mesure the time it takes. The matrix where generated
- * with both different dimension and number sizes. For each of the combination
- * of dimension we consider, 10 different matrices are tested for the sake of 
- * consistency.
- *
- * Below is an example execution with NTL_TYPES_CODE 2 :
- *
- * ALL THE RESULTS ARE NUMBERED IN TERMS OF SYSTEM CLOCK TICKS
- * Results depending on the size of the numbers
- *           Lower than            NTL             Us         NTL/Us
- *                 1021        3841541       73879949      0.0519971
- *              1048573        3892779       97965949       0.039736
- *           1073741827        7820678      256791162      0.0304554
- *        1099511627791        8234180      297252111       0.027701
- *     1125899906842597        9700107      348596562      0.0278262
- * 18446744073709551629       10460438      358252442      0.0291985
- * 
- * Results depending on the dimension
- *  Dimension            NTL             Us         NTL/Us
- *          5           4278          11313       0.378149
- *         10          21040         101709       0.206865
- *         15          42329         296306       0.142856
- *         20         100598         984737       0.102157
- *         25         196672        2429732      0.0809439
- *         30         302465        4725799      0.0640029
- *         35         460690        8367421      0.0550576
- *         40         658885       14334478      0.0459651
- *         45         829210       19395797       0.042752
- *         50        1134136       30368342       0.037346
- *         55        1394538       38832067       0.035912
- *         60        1869029       55709073      0.0335498
- *         65        2286715       68535529      0.0333654
- *         70        2632518       82066722      0.0320778
- *         75        3169892       98800234      0.0320839
- *         80        4040843      131201006      0.0307989
- *         85        4760273      158600524      0.0300142
- *         90        5791525      219756863      0.0263542
- *         95        6518928      238274269      0.0273589
- *        100        7734496      259945513      0.0297543
- * 
- * We took  1432735495 ticks
- * NTL took 43947377 ticks
- * We are globally 32.6012 times slower
+ * of lattices. This serves as a comparison between the different reduction
+ * methods when used before searching for the shortest vector. The output is
+ * formated to include the number of clock ticks spent on each algorithm as well
+ * as the number of times the program failed to find the shortest vector for
+ * each pre-reduction.
  * */
 
 // We define the numeric types.
@@ -74,23 +21,12 @@
 #include "latticetester/IntLatticeBasis.h"
 #include "latticetester/WriterRes.h"
 
+#include "Examples.h"
+
 using namespace LatticeTester;
 
-namespace {
-  // This computes the width of the largest number in time
-  int getWidth(clock_t time[], int dim, std::string message, clock_t totals[], int ind) {
-    clock_t tmp = 0;
-    for (int i = 0; i < dim; i++) {
-      tmp += time[i];
-    }
-    int width = log10(tmp) + 2;
-    std::cout << std::setw(width) << message;
-    totals[ind] = tmp;
-    return width;
-  }
-}
-
 int main() {
+  clock_t timer = clock();
   int max_dim = 10; // Actual max dim is 5*max_dim
   // This is basically the C method of timing a program. We time globally, but
   // also for eache dimension and for each size of integers in the matrix.
@@ -107,8 +43,7 @@ int main() {
   }
   int die_fails=0, lll_fails=0, bkz_fails=0;
 
-  // Variables declaration.
-  std::string prime = "1021";
+  std::string prime = primes[0];
 
   for (int j = 0; j < max_dim; j++) {
     for (int k = 0; k < 10; k++) {
@@ -207,6 +142,8 @@ int main() {
     << std::setw(width2) << lll_fails 
     << std::setw(width3) << bkz_fails 
     << std::endl;
+
+  std::cout << "Total time: " << (double)(clock()-timer)/(CLOCKS_PER_SEC*60) << " minutes\n";
   
   return 0;
 }

@@ -34,22 +34,12 @@
 #include "latticetester/ParamReader.h"
 #include "latticetester/IntLattice.h"
 
+#include "Examples.h"
+
 using namespace LatticeTester;
 
 namespace {
-  const std::string prime = "1021";
-
-  // This computes the width of the largest number in time
-  int getWidth(clock_t time[], int dim, std::string message) {
-    clock_t tmp = 0;
-    for (int i = 0; i < dim; i++) {
-      tmp += time[i];
-    }
-    int width = log10(tmp) + 2;
-    std::cout << std::setw(width) << message;
-    return width;
-  }
-
+  const std::string prime = primes[0];
   // The function that tests one of the methods in BasisConstruction.
   // That note that this is a functionnal programming approach
   void testFunction(void (BasisConstruction<BScal>::*func)(BMat&),
@@ -95,11 +85,12 @@ namespace {
 }
 
 int main() {
+  clock_t timer = clock();
   // The different clocks we will use for benchmarking
   // We use ctime for implementation simplicity
   int max_dim = 6; // Actual max dim is 5*max_dim
   clock_t gcd_time[max_dim], lll_time[max_dim],
-  dual1_time[max_dim], dual2_time[max_dim];
+  dual1_time[max_dim], dual2_time[max_dim], totals[4];
   for (int i = 0; i < max_dim; i++) {
     gcd_time[i] = 0;
     lll_time[i] = 0;
@@ -119,18 +110,23 @@ int main() {
       dual2_time, max_dim);
 
   std::cout << "         ";
-  int width1 = getWidth(gcd_time, max_dim, "GCD");
-  int width2 = getWidth(lll_time, max_dim, "LLL");
-  int width3 = getWidth(dual1_time, max_dim, "DUAL1");
-  int width4 = getWidth(dual2_time, max_dim, "DUAL2");
+  int width1 = getWidth(gcd_time, max_dim, "GCD", totals, 0);
+  int width2 = getWidth(lll_time, max_dim, "LLL", totals, 1);
+  int width3 = getWidth(dual1_time, max_dim, "DUAL1", totals, 2);
+  int width4 = getWidth(dual2_time, max_dim, "DUAL2", totals, 3);
   std::cout << std::endl;
 
+  std::cout << "Total time" << std::setw(width1) << totals[0]
+    << std::setw(width2) << totals[1]
+    << std::setw(width3) << totals[2]
+    << std::setw(width4) << totals[3] << std::endl;
   for (int i = 0; i < max_dim; i++) {
     std::cout << "Dim" << std::setw(6) << (i+1)*5
       << std::setw(width1) << gcd_time[i] << std::setw(width2) << lll_time[i]
       << std::setw(width3) << dual1_time[i] << std::setw(width4) << dual2_time[i];
     std::cout << std::endl;
   }
+  std::cout << "Total time: " << (double)(clock()-timer)/(CLOCKS_PER_SEC*60) << " minutes\n";
 
   return 0;
 }

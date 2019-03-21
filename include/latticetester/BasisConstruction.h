@@ -67,7 +67,6 @@ template<typename BasInt> class BasisConstruction{
   private:
     typedef NTL::vector<BasInt> BasIntVec;
     typedef NTL::matrix<BasInt> BasIntMat;
-
     struct LLLConstr<BasIntMat> spec;
 
   public:

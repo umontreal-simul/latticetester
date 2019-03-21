@@ -722,7 +722,7 @@ namespace LatticeTester {
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
       bool Reducer<Int, BasInt, Dbl, RedDbl>::PreRedBKZ = true;
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      std::int64_t Reducer<Int, BasInt, Dbl, RedDbl>::maxNodesBB = 10000000;
+      std::int64_t Reducer<Int, BasInt, Dbl, RedDbl>::maxNodesBB = 1000000000;
 
 
   //=========================================================================
@@ -1497,7 +1497,7 @@ namespace LatticeTester {
 
       ++m_countNodes;
       if (m_countNodes > maxNodesBB) {
-        std::cout << "-------- m_countNodes > maxNodesBB = " << maxNodesBB << std::endl;
+        std::cerr << "-------- m_countNodes > maxNodesBB = " << maxNodesBB << std::endl;
         return false;
       }
 
@@ -1816,7 +1816,7 @@ namespace LatticeTester {
 
       ++m_countNodes;
       if (m_countNodes > maxNodesBB) {
-        std::cout << "*****   m_countNodes > maxNodesBB = " << maxNodesBB << std::endl;
+        std::cerr << "*****   m_countNodes > maxNodesBB = " << maxNodesBB << std::endl;
         return false;
       }
       /* Calcul d'un intervalle contenant les valeurs admissibles de zj. */

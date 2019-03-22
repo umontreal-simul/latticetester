@@ -546,6 +546,7 @@ namespace LatticeTester {
          }
          lattmp = new IntLatticeBasis<NTL::ZZ, NTL::ZZ, Dbl, RedDbl>(U, dim,
              red.getIntLatticeBasis()->getNorm());
+         U.kill();
 
          switch(precision){
            case DOUBLE:
@@ -568,7 +569,8 @@ namespace LatticeTester {
 
          for (int i = 0; i < basis.NumRows(); i++) {
            for (int j = 0; j < basis.NumCols(); j++) {
-             red.getIntLatticeBasis()->getBasis()[i][j] = NTL::trunc_long(U[i][j], 64);
+             red.getIntLatticeBasis()->getBasis()[i][j] = NTL::trunc_long(lattmp->getBasis()[i][j], 63);
+             red.getIntLatticeBasis()->getBasis()[i][j] *= NTL::sign(lattmp->getBasis()[i][j]);
            }
          }
          red.getIntLatticeBasis()->updateVecNorm();

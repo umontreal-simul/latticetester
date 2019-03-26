@@ -210,7 +210,7 @@ namespace LatticeTester {
         /**
          * Returns `true` if a dual has been defined and `false` otherwise.
          */
-        bool withDual() { return m_withDual; }
+        bool withDual() const { return m_withDual; }
 
         /**
          * Sets the `withDual` flag to `flag`. This flag indicates whether or 

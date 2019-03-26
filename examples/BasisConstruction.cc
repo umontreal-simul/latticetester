@@ -32,7 +32,7 @@
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/Util.h"
 #include "latticetester/ParamReader.h"
-#include "latticetester/IntLattice.h"
+#include "latticetester/IntLatticeBasis.h"
 
 #include "Examples.h"
 
@@ -40,12 +40,6 @@ using namespace LatticeTester;
 
 namespace {
   const std::string prime = primes[0];
-  // The function that tests one of the methods in BasisConstruction.
-  // That note that this is a functionnal programming approach
-  void testFunction(void (BasisConstruction<BScal>::*func)(BMat&),
-      BasisConstruction<BScal>& constr, clock_t time1[], clock_t time2[],
-      int max_dim){
-  }
 }
 
 int main() {
@@ -66,14 +60,10 @@ int main() {
   BasisConstruction<BScal> constr; // The basis constructor we will use
   BMat bas_mat, dua_mat;
 
-  //testFunction(&BasisConstruction<BScal>::GCDConstruction, constr, gcd_time,
-  //    dual1_time, max_dim);
-  //testFunction(&BasisConstruction<BScal>::LLLConstruction, constr, lll_time,
-  //    dual2_time, max_dim);
   clock_t tmp;
   for (int j = 0; j < max_dim; j++) {
     for (int k = 0; k < 10; k++) {
-      // Reader shenanigans
+      //! Reader shenanigans
       std::string name = "bench/" + prime + "_" + std::to_string((j+1)*5) + "_" + std::to_string(k);
       ParamReader<MScal, BScal, RScal> reader(name + ".dat");
       reader.getLines();
@@ -84,29 +74,31 @@ int main() {
       bas_mat.SetDims(numlines, numlines);
       dua_mat.SetDims(numlines, numlines);
       ln = 1;
+      // Filling the matrix
       reader.readBMat(bas_mat, ln, 0, numlines);
 
       // Creating a lattice basis
       IntLatticeBasis<MScal, BScal, NScal, RScal> lattice(bas_mat, numlines);
 
-      // We want to avoid singular matrix because we can't compute the dual, and
-      // IntLatticeBasis only really supports square matrices.
+      //! We want to avoid singular matrix because we can't compute the dual, and
+      //! IntLatticeBasis only really supports square matrices.
       if (NTL::determinant(bas_mat) == 0) {
         std::cout << name << " is singular\n";
         continue;
       }
 
-      // Timing GCD first
+      // Timing GCDConstruction first
       tmp = clock();
       constr.GCDConstruction(bas_mat);
       MScal modulo(1);
       gcd_time[j] += clock() - tmp;
 
+      // Timing DualConstruction
       tmp = clock();
       constr.DualConstruction(bas_mat, dua_mat, modulo);
       dual1_time[j] += clock() - tmp;
 
-      // Timing LLL next
+      // Timing LLLConstruction next
       tmp = clock();
       constr.LLLConstruction(lattice.getBasis());
       modulo = MScal(1);

@@ -1,8 +1,9 @@
 /**
  * \page examples_page Examples
  * 
- * This page contains **very basic and short** examples demonstrating the usage
- * of the principal functions of *LatticeTester*. The examples featured here are
+ * This page contains **very basic** and **relatively short** examples
+ * demonstrating the usage of the principal functions of *LatticeTester*. 
+ * The examples featured here are
  * available in the directory *examples* of the repository. They are compiled
  * along the library and their source code includes the description of their
  * usage.
@@ -12,17 +13,75 @@
  * - Testing the implementation and efficiency of the implementation of a few
  *   methods
  *
- * Because of the second point, some of those examples run in a long time and
- * use a lot of memory. It is advised to have at least XGb of memory to run all
- * the examples. Users with less memory than that can view what the ouputs of
- * these examples look like in their source code files and on this page bellow.
- * \todo Review the examples and format of their output. We should include a
- * testing part in the build like in LatNet Builder using these examples to test
- * the implementation when modifying things. Modifying the examples could
- * include the test of the update to Reducer to not maintain the dual.
+ * In the examples you will learn how to create the objects representing the
+ * lattices and manipulate them, how to use the methods to manipulate those
+ * lattices basis, how to use the reduction algorithms available and how to compute
+ * basic mesures of interest like the spectral test and the normalized version
+ * of the spectral test.
+ *
+ * Please note that the code presented here is in C++, meaning that much of it
+ * include statements, variable declarations and output formatting. The code
+ * segments relevant to the examples (that actually showcase LatticeTester
+ * fonctionnalities) have been commented to facilitate the code reading.
+ *
+ * ### Warning!
+ * It is not advised to run the **BasisConstruction** and
+ * the **Reduction** examples on a local machine because they use matrix sets
+ * that test their limits. Their execution takes a long time and uses a lot of
+ * memory. Users are nonetheless ecouraged to play with these
+ * examples, either by modifying them, or by generating another matrix set with
+ * the `python3` script in the `examples/bench.zip` archive.
  *
  * \section sec_basis Basis manipulation
+ *
+ * The following example showcases the usage of `LatticeTester::BasisConstruction`, either
+ * directly on matrices or on `IntLatticeBasis` objects. One of the repercutions
+ * this has is that this example also showcases how to create an `IntLatticeBasis`
+ * object.
+ *
+ * This example compares the execution time of the two different
+ * methods for basis construction as well as the time taken to build a dual
+ * basis after one or the other. `BasisConstruction` contains two methods to 
+ * build a basis from a set of generating vectors, `GCDConstruction` and
+ * `LLLConstruction`, described on the `LatticeTester::BasisConstruction` page.
+ * It is these methods that are compared here. Bellow is the code for the example.
+ *
  * \include BasisConstruction.cc
+ *
+ * There are two things to learn from this example. First is how to create an
+ * `IntLatticeBasis`. Second is the way that the `BasisConstruction` class is
+ * used.
+ *
+ * When working only with `LatticeTester` it is recommended to represent
+ * lattices only by using the `IntLatticeBasis` class instead of the `IntLattice`
+ * class. The reasoning is that `IntLattice` does not bring any new
+ * functionnality by itself, it is a class that contains virtual methods
+ * specifying an easily expandable interface for different lattice types. It is
+ * also better to use `IntLatticeBasis` because the constructor is all that is
+ * needed to get a usable object as is done in this example. This is not the
+ * case of the `IntLattice` class.
+ *
+ * Secondly, the `BasisConstruction` class is also very straight forward. Once
+ * the object is created, its methods can be called on matrices to transform
+ * them in place. Note that the usage of this class does not follow standard
+ * object oriented design. Since the algorithms in it are quite simple and are
+ * to be applied on basic types only, this constructed more like a container for
+ * those function, regrouping them in one simple location. Hence, when an object
+ * of this class is created, it is then possible to apply the contained
+ * algorithms on different objects as is done here.
+ *
+ * The output of this program looks like this: 
+ * \code
+ *                GCD    LLL     DUAL1    DUAL2
+ * Dim     5     4418   3074       735     1002
+ * Dim    10    13497   7900      2647     8151
+ * Dim    15    38502  20984      9543    19052
+ * Dim    20    94467  44949     88171    50834
+ * Dim    25   152712  86751    154730   181654
+ * Dim    30   594683 137168   2970433  1682890
+ * Dim    35 21994254 221505 168412442 13860037
+ * \endcode
+ *
  * \section sec_io Using the input and output classes
  * \include IOExample.cc
  * \section sec_reduc The Reducer class

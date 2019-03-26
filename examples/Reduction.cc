@@ -5,6 +5,26 @@
  * formated to include the number of clock ticks spent on each algorithm as well
  * as the number of times the program failed to find the shortest vector for
  * each pre-reduction.
+ *
+ * This is an example ouput for the program:
+ * ALL THE RESULTS ARE NUMBERED IN TERMS OF SYSTEM CLOCK TICKS
+ *             Dieter    LLL     BKZ   SV Dieter     SV LLL     SV BKZ
+ * Total time 7479736 804050 2414321 11960009667 2665878917 2444318476
+ * Dim      5    3889    873     945         634        583        579
+ * Dim     10   25622   3104    4025        3012       2603       2582
+ * Dim     15   52247   6485   10449        8268       6081       6023
+ * Dim     20   94343  12015   23153       20410      12513      12014
+ * Dim     25  137098  22926   48952      262480      36137      29878
+ * Dim     30  195888  30963   87739      604659     141528     105142
+ * Dim     35  350096  44862  149397     9703739    1469959     968583
+ * Dim     40  468672  54571  176943    28913921    5581257    3571159
+ * Dim     45  619861  80332  229724   607680675   66124526   53250411
+ * Dim     50  839252  98698  269042  1260636786  110130393  102112537
+ * Dim     55 1119413 125894  364620  2351365585  186791907  204776212
+ * Dim     60 1591436 120304  420965  3423588351  416827286  371013095
+ * Dim     65 1981919 203023  628367  4277221147 1878754144 1708470261
+ * Fails           14      2       2
+ * Total time: 284.743 minutes
  * */
 
 // We define the numeric types.

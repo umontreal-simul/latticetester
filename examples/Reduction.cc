@@ -45,11 +45,22 @@
 
 using namespace LatticeTester;
 
+namespace {
+  // Returns the average of the length of this vector
+  NScal average(NVect vector) {
+    NScal sum(0);
+    for (int i = 0; i<vector.length(); i++) {
+      sum += vector[i];
+    }
+    return sum/NScal(vector.length());
+  }
+}
+
 int main() {
   clock_t timer = clock();
-  int max_dim = 10; // Actual max dim is 5*max_dim
-  // This is basically the C method of timing a program. We time globally, but
-  // also for eache dimension and for each size of integers in the matrix.
+  int max_dim = 10; //! Actual max dim is 5*max_dim
+  //! This is basically the C method of timing a program. We time globally, but
+  //! also for eache dimension and for each size of integers in the matrix.
   clock_t die_time[max_dim], lll_time[max_dim], bkz_time[max_dim],
   sho_die[max_dim], sho_lll[max_dim], sho_bkz[max_dim], tmp;
   clock_t total_times[6];
@@ -62,22 +73,27 @@ int main() {
     sho_bkz[i] = 0;
   }
   int die_fails=0, lll_fails=0, bkz_fails=0;
+  NScal vec_length[3];
+  vec_length[0] = vec_length[1] = vec_length[2] = 0;
 
   std::string prime = primes[0];
 
   for (int j = 0; j < max_dim; j++) {
     for (int k = 0; k < 10; k++) {
       // We dynamically allocate memory to these two pointers every time we need to
-      // create an object of their type.
+      // create an object of their type. This is because of the OOP approach
+      // to lattice reduction.
       IntLatticeBasis<MScal, BScal, NScal, RScal>* basis;
       Reducer<MScal, BScal, NScal, RScal>* red;
-      // Variables definition
+
+      //! Variables definition
       ParamReader<MScal, BScal, RScal> reader;
       std::string name;
       int numlines;
       BMat matrix1;
       unsigned int ln;
-      // Reader shenanigans
+
+      //! Reader shenanigans
       name = "bench/" + prime + "_" + std::to_string(5*(j+1)) + "_" + std::to_string(k);
       reader = ParamReader<MScal, BScal, RScal>(name + ".dat");
       reader.getLines();
@@ -86,51 +102,60 @@ int main() {
       ln = 1;
       reader.readBMat(matrix1, ln, 0, numlines);
 
-      // We time Dieter first
+      // Dieter reduction before shortest vector search
       tmp = clock();
       basis = new IntLatticeBasis<MScal, BScal, NScal, RScal>(matrix1, numlines);
       red = new Reducer<MScal, BScal, NScal, RScal>(*basis);
       red->redDieter(0);
       die_time[j] += clock() - tmp;
+      basis->updateVecNorm();
+      vec_length[0] += average(basis->getVecNorm());
       tmp = clock();
       if (!red->shortestVector(L2NORM)) {
         die_fails++;
       }
       sho_die[j] += clock() - tmp;
       delete red;
+      //std::cout << "Dieter: " << average(basis->getVecNorm()) << "\n";
       delete basis;
 
-      // Next LLL
+      // LLL reduction before shortest vector search
       tmp = clock();
       basis = new IntLatticeBasis<MScal, BScal, NScal, RScal>(matrix1, numlines);
       red = new Reducer<MScal, BScal, NScal, RScal>(*basis);
       red->redLLLNTL();
       lll_time[j] += clock() - tmp;
+      basis->updateVecNorm();
+      vec_length[1] += average(basis->getVecNorm());
       tmp = clock();
       if (!red->shortestVector(L2NORM)) {
         lll_fails++;
       }
       sho_lll[j] += clock() - tmp;
       delete red;
+      //std::cout << "LLL: " << average(basis->getVecNorm()) << "\n";
       delete basis;
 
-      // Then BKZ
+      // BKZ reduction before shortest vector search
       tmp = clock();
       basis = new IntLatticeBasis<MScal, BScal, NScal, RScal>(matrix1, numlines);
       red = new Reducer<MScal, BScal, NScal, RScal>(*basis);
       red->redBKZ();
       bkz_time[j] += clock() - tmp;
+      basis->updateVecNorm();
+      vec_length[2] += average(basis->getVecNorm());
       tmp = clock();
       if (!red->shortestVector(L2NORM)) {
         bkz_fails++;
       }
       sho_bkz[j] += clock() - tmp;
       delete red;
+      //std::cout << "BKZ: " << average(basis->getVecNorm()) << "\n";
       delete basis;
     }
   }
 
-  // Printing the results in a somewhat formated way.
+  //! Printing the results in a somewhat formated way.
   std::cout << "ALL THE RESULTS ARE NUMBERED IN TERMS OF SYSTEM CLOCK TICKS\n";
   std::cout << "          ";
   int width1 = getWidth(die_time, max_dim, "Dieter", total_times, 0);
@@ -162,6 +187,10 @@ int main() {
     << std::setw(width2) << lll_fails 
     << std::setw(width3) << bkz_fails 
     << std::endl;
+
+  std::cout << std::fixed << std::setprecision(2) << "Averages: " << std::setw(width1) << vec_length[0]/vec_length[1]
+    << std::setw(width2) << 1.0 << std::setw(width3) << vec_length[2]/vec_length[1]
+    <<std::endl;
 
   std::cout << "Total time: " << (double)(clock()-timer)/(CLOCKS_PER_SEC*60) << " minutes\n";
   

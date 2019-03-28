@@ -90,13 +90,16 @@ int main() {
   // Creation of a writer object for file IOExample.out
   WriterRes<MScal> writer("IOExample.out");
 
+  // Writing to the file
   writer.writeString("We can write messages in the file.");
   writer.newLine();
   writer.writeString("Here is one way to write a matrix.");
   writer.newLine();
   writer.writeMMat(matrix);
-  writer.newLine();
 
+  // Adding indentation
+  writer.beginTabbedSection();
+  writer.newLine();
   writer.writeString("Here is another one.");
   writer.newLine();
   for (int i = 0; i < matrix.NumRows(); i++) {
@@ -109,7 +112,8 @@ int main() {
     writer.writeString("]");
     writer.newLine();
   }
-  writer.newLine();
+  // Printing \n and ending indented section.
+  writer.newParagraph();
 
   writer.writeString("It's also possible to use *ToString() methods to write"
       " stuff in the output\nfile.");

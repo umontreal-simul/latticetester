@@ -83,11 +83,52 @@
  * \endcode
  *
  * \section sec_io Using the input and output classes
+ *
+ * This is an example showing of the usage of both `LatticeTester::ParamReader`
+ * and `LatticeTester::WriterRes`. These two classes can read from files and
+ * format output to them. Since this functionnality is the main way to make a
+ * program interractive, most uses that are not scripting will need these
+ * classes. Both classes can be created easily, simply by specifying a path for
+ * a file that `ParamReader` will read from and that `WriterRes` will write to.
+ * most methods are named quite explicitly as can be seen below.
+ *
  * \include IOExample.cc
+ *
+ * The way that the reader class works, is that you call a method such as
+ * `readBMat` in the example and it will store the requested type in a container
+ * specified as the first argument. It reads on a line specified as the second
+ * argument (starting from 0) and reads starting from the n-th word of that line (n 
+ * being specified as a third argument, starting from 0). If a fourth argument
+ * is needed, it is type specific like here where the matrix needs a dimension.
+ * 
+ * The writer class works the same, but is a little simpler since everything is
+ * written sequentially. This class can also (try to) enforce indentation of
+ * the ouputed text. To do that, the usage of the `newLine` method, as is done in
+ * this example, is needed. This example is fairly limited in scope and does not
+ * contain other other information relevant to the usage of `LatticeTester`.
+ *
  * \section sec_reduc The Reducer class
+ *
+ *
+ *
  * \include Reduction.cc
+ *
+ *
+ *
  * \section sec_FOM Construction figures of merit
+ *
+ *
+ *
  * \include FiguresOfMerit.cc
+ *
+ *
+ *
  * \section sec_misc Miscellanous functions
+ *
+ *
+ *
  * \include Subsets.cc
+ *
+ *
+ *
  * */

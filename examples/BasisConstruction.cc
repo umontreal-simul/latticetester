@@ -74,7 +74,7 @@ int main() {
       bas_mat.SetDims(numlines, numlines);
       dua_mat.SetDims(numlines, numlines);
       ln = 1;
-      // Filling the matrix
+      //! Filling the matrix
       reader.readBMat(bas_mat, ln, 0, numlines);
 
       // Creating a lattice basis

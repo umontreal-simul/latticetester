@@ -32,6 +32,8 @@
  * examples, either by modifying them, or by generating another matrix set with
  * the `python3` script in the `examples/bench.zip` archive.
  *
+ * \todo Maybe the examples could only include the relevant parts of the code
+ *
  * \section sec_basis Basis manipulation
  *
  * The following example showcases the usage of `LatticeTester::BasisConstruction`, either
@@ -46,7 +48,7 @@
  * `LLLConstruction`, described on the `LatticeTester::BasisConstruction` page.
  * It is these methods that are compared here. Bellow is the code for the example.
  *
- * \include BasisConstruction.cc
+ * \include BasisConstruction.cpp
  *
  * There are two things to learn from this example. First is how to create an
  * `IntLatticeBasis`. Second is the way that the `BasisConstruction` class is
@@ -109,7 +111,10 @@
  *
  * \section sec_reduc The Reducer class
  *
- *
+ * This following example is about the usage of the `LatticeTester::Reducer`
+ * class. This class is central to *LatticeTester* and contains the most
+ * important features of the library. This example uses most of the functions of
+ * that class and tries to compare their execution times. 
  *
  * \include Reduction.cc
  *

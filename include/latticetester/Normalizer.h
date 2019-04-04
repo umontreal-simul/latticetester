@@ -37,13 +37,12 @@ namespace LatticeTester {
    * proportion of the space covered by these spheres can be used as a figure of
    * merit for both the dual and the primal lattice. Suppose \f$ V \f$ contains
    * the basis of the lattice in its lines. Then the density of the lattice is
-   * defined by \f$ |\text{det}(V)| \f$ (this determinant is the volume/area contained
-   * in the smallest parallelotope that we can fit between the points of the
-   * lattice) it also is the number of points that the (not rescalled) lattice
+   * defined by \f$ \frac{1}{|\text{det}(V)|} \f$. It is the number of points
+   * that the (not rescalled) lattice
    * will have in \f$[0,1)^t\f$. It is easy to see that the amount of space that
    * will be covered by the spheres is
    * \f[
-   *    \frac{\text{Volume of an }n\text{-sphere of radius }d_n}{\text{Density of the lattice}}.
+   *    \text{Volume of an }n\text{-sphere of radius }d_n\times\text{Density of the lattice}}.
    * \f]
    * There are known upper bounds on the greatest proportion of the space that
    * can be covered in that way \cite mCON99a. If we divide the proportion of

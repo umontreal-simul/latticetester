@@ -67,7 +67,6 @@ template<typename BasInt> class BasisConstruction{
   private:
     typedef NTL::vector<BasInt> BasIntVec;
     typedef NTL::matrix<BasInt> BasIntMat;
-
     struct LLLConstr<BasIntMat> spec;
 
   public:
@@ -144,7 +143,7 @@ template<typename BasInt> class BasisConstruction{
      * */
     template<typename Int, typename Dbl, typename RedDbl>
       void ProjectionConstruction(IntLatticeBasis<Int, BasInt, Dbl, RedDbl>& in,
-          IntLatticeBasis<Int, BasInt, Dbl, RedDbl>& out, Coordinates& proj);
+          IntLatticeBasis<Int, BasInt, Dbl, RedDbl>& out, const Coordinates& proj);
   };
 
   //============================================================================
@@ -298,19 +297,21 @@ template<typename BasInt> class BasisConstruction{
       void BasisConstruction<BasInt>::ProjectionConstruction(
       IntLatticeBasis<Int, BasInt, Dbl, RedDbl>& in,
       IntLatticeBasis<Int, BasInt, Dbl, RedDbl>& out,
-      Coordinates& proj) {
+      const Coordinates& proj) {
         std::size_t dim = proj.size();
-        if (dim > in.getDim())
+        unsigned int lat_dim = in.getDim();
+        if (dim > lat_dim)
             MyExit(1, "Coordinates do not match 'in' dimension.");
-        BasIntMat new_basis, tmp(in.getBasis());
+        BasIntMat new_basis, tmp(NTL::transpose(in.getBasis()));
         new_basis.SetDims(dim, tmp.NumRows());
         tmp = NTL::transpose(tmp);
         auto it = proj.cbegin();
         for (std::size_t i = 0; i < dim; i++) {
-          if (*it <= in.getDim())
+          if (*it <= lat_dim)
             new_basis[i] = tmp[*it];
           else
             MyExit(1, "Coordinates do not match 'in' dimension.");
+          it++;
         }
         new_basis = NTL::transpose(new_basis);
         LLLConstruction(new_basis);

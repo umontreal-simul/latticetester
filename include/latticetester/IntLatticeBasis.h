@@ -210,7 +210,7 @@ namespace LatticeTester {
         /**
          * Returns `true` if a dual has been defined and `false` otherwise.
          */
-        bool withDual() { return m_withDual; }
+        bool withDual() const { return m_withDual; }
 
         /**
          * Sets the `withDual` flag to `flag`. This flag indicates whether or 
@@ -797,16 +797,16 @@ namespace LatticeTester {
         os << " ]\n";
       }
 
-      os << "  Norm:\n";
+      os << "  Norms:\n";
+      os << "    [";
       for (int i = 0; i < this->m_dim; i++) {
-        os << "    ";
         if (this->m_vecNorm[i] < 0) {
-          os << "-1" << std::endl;
+          os << "-1" << " ";
         } else {
-          os << this->m_vecNorm[i] << std::endl;
+          os << this->m_vecNorm[i] << " ";
         }
       }
-      os << std::endl;
+      os << "]" << std::endl;
       return os.str ();
     }
 
@@ -826,16 +826,16 @@ namespace LatticeTester {
         os << " ]\n";
       }
 
-      os << "  Norm:\n";
+      os << "  Norms:\n";
+      os << "    [";
       for (int i = 0; i < this->m_dim; i++) {
-        os << "    ";
         if (this->m_dualvecNorm[i] < 0) {
-          os << "-1" << std::endl;
+          os << "-1" << " ";
         } else {
-          os << this->m_dualvecNorm[i] << std::endl;
+          os << this->m_dualvecNorm[i] << " ";
         }
       }
-      os << std::endl;
+      os << "]" << std::endl;
       return os.str ();
     }
 

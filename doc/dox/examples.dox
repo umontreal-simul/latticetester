@@ -1,0 +1,178 @@
+/**
+ * \page examples_page Examples
+ * 
+ * This page contains **very basic** and **relatively short** examples
+ * demonstrating the usage of the principal functions of *LatticeTester*. 
+ * The examples featured here are
+ * available in the directory *examples* of the repository. They are compiled
+ * along the library and their source code includes the description of their
+ * usage.
+ *
+ * These examples where conceived with two goals in mind:
+ * - Having examples for most of the functionnalities of *LatticeTester*
+ * - Testing the implementation and efficiency of the implementation of a few
+ *   methods
+ *
+ * In the examples you will learn how to create the objects representing the
+ * lattices and manipulate them, how to use the methods to manipulate those
+ * lattices basis, how to use the reduction algorithms available and how to compute
+ * basic mesures of interest like the spectral test and the normalized version
+ * of the spectral test.
+ *
+ * Please note that the code presented here is in C++, meaning that much of it
+ * include statements, variable declarations and output formatting. The code
+ * segments relevant to the examples (that actually showcase LatticeTester
+ * fonctionnalities) have been commented to facilitate the code reading.
+ *
+ * ### Warning!
+ * It is not advised to run the **BasisConstruction** and
+ * the **Reduction** examples on a local machine because they use matrix sets
+ * that test their limits. Their execution takes a long time and uses a lot of
+ * memory. Users are nonetheless ecouraged to play with these
+ * examples, either by modifying them, or by generating another matrix set with
+ * the `python3` script in the `examples/bench.zip` archive.
+ *
+ * \todo Maybe the examples could only include the relevant parts of the code
+ *
+ * \section sec_basis Basis manipulation
+ *
+ * The following example showcases the usage of `LatticeTester::BasisConstruction`, either
+ * directly on matrices or on `IntLatticeBasis` objects. One of the repercutions
+ * this has is that this example also showcases how to create an `IntLatticeBasis`
+ * object.
+ *
+ * This example compares the execution time of the two different
+ * methods for basis construction as well as the time taken to build a dual
+ * basis after one or the other. `BasisConstruction` contains two methods to 
+ * build a basis from a set of generating vectors, `GCDConstruction` and
+ * `LLLConstruction`, described on the `LatticeTester::BasisConstruction` page.
+ * It is these methods that are compared here. Bellow is the code for the example.
+ *
+ * \include BasisConstruction.cpp
+ *
+ * There are two things to learn from this example. First is how to create an
+ * `IntLatticeBasis`. Second is the way that the `BasisConstruction` class is
+ * used.
+ *
+ * When working only with `LatticeTester` it is recommended to represent
+ * lattices only by using the `IntLatticeBasis` class instead of the `IntLattice`
+ * class. The reasoning is that `IntLattice` does not bring any new
+ * functionnality by itself, it is a class that contains virtual methods
+ * specifying an easily expandable interface for different lattice types. It is
+ * also better to use `IntLatticeBasis` because the constructor is all that is
+ * needed to get a usable object as is done in this example. This is not the
+ * case of the `IntLattice` class.
+ *
+ * Secondly, the `BasisConstruction` class is also very straight forward. Once
+ * the object is created, its methods can be called on matrices to transform
+ * them in place. Note that the usage of this class does not follow standard
+ * object oriented design. Since the algorithms in it are quite simple and are
+ * to be applied on basic types only, this constructed more like a container for
+ * those function, regrouping them in one simple location. Hence, when an object
+ * of this class is created, it is then possible to apply the contained
+ * algorithms on different objects as is done here.
+ *
+ * The output of this program looks like this: 
+ * \code
+ *                GCD    LLL     DUAL1    DUAL2
+ * Dim     5     4418   3074       735     1002
+ * Dim    10    13497   7900      2647     8151
+ * Dim    15    38502  20984      9543    19052
+ * Dim    20    94467  44949     88171    50834
+ * Dim    25   152712  86751    154730   181654
+ * Dim    30   594683 137168   2970433  1682890
+ * Dim    35 21994254 221505 168412442 13860037
+ * \endcode
+ *
+ * \section sec_io Using the input and output classes
+ *
+ * This is an example showing of the usage of both `LatticeTester::ParamReader`
+ * and `LatticeTester::WriterRes`. These two classes can read from files and
+ * format output to them. Since this functionnality is the main way to make a
+ * program interractive, most uses that are not scripting will need these
+ * classes. Both classes can be created easily, simply by specifying a path for
+ * a file that `ParamReader` will read from and that `WriterRes` will write to.
+ * most methods are named quite explicitly as can be seen below.
+ *
+ * \include IOExample.cc
+ *
+ * The way that the reader class works, is that you call a method such as
+ * `readBMat` in the example and it will store the requested type in a container
+ * specified as the first argument. It reads on a line specified as the second
+ * argument (starting from 0) and reads starting from the n-th word of that line (n 
+ * being specified as a third argument, starting from 0). If a fourth argument
+ * is needed, it is type specific like here where the matrix needs a dimension.
+ * 
+ * The writer class works the same, but is a little simpler since everything is
+ * written sequentially. This class can also (try to) enforce indentation of
+ * the ouputed text. To do that, the usage of the `newLine` method, as is done in
+ * this example, is needed. This example is fairly limited in scope and does not
+ * contain other other information relevant to the usage of `LatticeTester`.
+ *
+ * \section sec_reduc The Reducer class
+ *
+ * This following example is about the usage of the `LatticeTester::Reducer`
+ * class. This class is central to *LatticeTester* and contains the most
+ * important features of the library. This example uses most of the functions of
+ * that class and tries to compare their execution times. This example works
+ * very similarly to the `BasisConstruction` example.
+ *
+ * \include Reduction.cc
+ *
+ * This example first showcases the usage of the `Reducer` class. This class is
+ * one that is given a `LatticeTester::IntLatticeBasis` and then performs
+ * various algorithms on it when its methods are called. The methods this class
+ * implements perform what we call "reductions". Reductions are algorithms that
+ * reduce, in one way or another, the length of the vectors in the basis stored
+ * in the `IntLatticeBasis`. This example calls most of them, and the code
+ * bellow links to the documentation of these methods.
+ *
+ * The program tests three reductions (Dieter, LLL and BKZ) in two ways. First,
+ * it performs it and times the execution of the reduction algorithm itself.
+ * this is what is shown in the first 3 columns of the results. The program then
+ * perform the "Shortest Vector" reduction, which is the search for the shortest
+ * non-zero vector in the lattice (see \ref a_intro). This search is
+ * particularly costly so reducing the lattice basis first usually gains
+ * time. The next 3 colums show the execution times for the shortest vector
+ * reduction depending on the reduction algorithm used first. Finally, the
+ * example also records the number of failures of the shortest vector search
+ * for each algorithms. Below is an example output for this example.
+ *
+ * \code
+ * ALL THE RESULTS ARE NUMBERED IN TERMS OF SYSTEM CLOCK TICKS
+ *             Dieter    LLL     BKZ   SV Dieter     SV LLL     SV BKZ
+ * Total time 7479736 804050 2414321 11960009667 2665878917 2444318476
+ * Dim      5    3889    873     945         634        583        579
+ * Dim     10   25622   3104    4025        3012       2603       2582
+ * Dim     15   52247   6485   10449        8268       6081       6023
+ * Dim     20   94343  12015   23153       20410      12513      12014
+ * Dim     25  137098  22926   48952      262480      36137      29878
+ * Dim     30  195888  30963   87739      604659     141528     105142
+ * Dim     35  350096  44862  149397     9703739    1469959     968583
+ * Dim     40  468672  54571  176943    28913921    5581257    3571159
+ * Dim     45  619861  80332  229724   607680675   66124526   53250411
+ * Dim     50  839252  98698  269042  1260636786  110130393  102112537
+ * Dim     55 1119413 125894  364620  2351365585  186791907  204776212
+ * Dim     60 1591436 120304  420965  3423588351  416827286  371013095
+ * Dim     65 1981919 203023  628367  4277221147 1878754144 1708470261
+ * Fails           14      2       2
+ * Total time: 284.743 minutes
+ * \endcode
+ *
+ * \section sec_FOM Construction figures of merit
+ *
+ *
+ *
+ * \include FiguresOfMerit.cc
+ *
+ *
+ *
+ * \section sec_misc Miscellanous functions
+ *
+ *
+ *
+ * \include Subsets.cc
+ *
+ *
+ *
+ * */

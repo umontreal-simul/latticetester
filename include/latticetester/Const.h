@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-/**
+/*
  * \file latticetester/Const.h
  *
  * This module contains global constants used in LatticeTester.

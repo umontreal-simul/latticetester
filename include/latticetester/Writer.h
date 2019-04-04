@@ -76,7 +76,7 @@ namespace LatticeTester {
          * is followed by a series of whitespace or tab characters such that the
          * first non-blank characters of the lines in this section are aligned.
          * The amount of tabs in the begginning of the section can be modified
-         * with the addTab(), removeTab() and clearTab() methods.
+         * with the `addTab()`, `removeTab()` and `clearTab()` methods.
          *
          * This is a pure virtual method that has no implementation.
          */

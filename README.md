@@ -44,11 +44,12 @@ generators. The applications targeted by these programs require specific shared
 functionnalities and _LatticeTester_ aims at provinding them.
 
 For more details about *LatticeTester* can be found in:
-- [The tutorial] containing a few examples showing of the main classes of the
-  library
-- [The API documentation], for specific implementation details of each class in
-  the library
-- [The theoretical background], should you need to remind yourself details of the above
+- [The tutorial](http://umontreal-simul.github.io/latticetester/df/d1d/examples_page.html) containing a
+  few examples showing of the main classes of the library
+- [The API documentation](http://umontreal-simul.github.io/latticetester/namespaces.html), for
+  specific implementation details of each class in the library
+- [The theoretical background](http://umontreal-simul.github.io/latticetester/da/d18/a_intro.html),
+  should you need to remind yourself details of the above
 - [The full documentation](http://umontreal-simul.github.io/latticetester/) Containing all the above and more
 
 ## Compiling

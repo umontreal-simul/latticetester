@@ -548,7 +548,7 @@ namespace LatticeTester {
      * because the sets are generated on the fly and the coordinate is added if
      * it is not already contained.
      *
-     * \tparam BASE Type of coordinate sets that serves as a base. This should
+     * `BASE` is a type of coordinate sets that serves as a base. This should
      * be one of the classes defined in the `CoordinateSets` namespace.
      *
      * \todo This class needs to be benchmarked
@@ -559,10 +559,10 @@ namespace LatticeTester {
       public:
         /**
          * Constructs a sequence of coordinate sets by adding the coordinate
-         * \c coord to each element in the base sequence \c base.
+         * `coord` to each element in the base sequence `base`.
          */
         AddCoordinate (const BASE& base, Coordinates::value_type coord):
-          m_base(base), m_coord(coord) {}
+          m_base(base), m_coord(coord) {};
 
         /**
          * Returns the base object used to produce the subsets.

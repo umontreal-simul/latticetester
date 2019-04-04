@@ -161,18 +161,52 @@
  *
  * \section sec_FOM Construction figures of merit
  *
- *
+ * This examples shows how it is possible to use *LatticeTester* to compute a
+ * variety of figures of merit. This example uses a few different tools that
+ * have not been presented before: `LatticeTester::BasisConstruction` as a way
+ * to build projections of a lattice, `LatticeTester::CoordinateSets`, a
+ * namespace containing classes to create indices sets and
+ * `LatticeTester::Weights` and its subclasses that ease the weighting of
+ * different projections in a figure of merit.
  *
  * \include FiguresOfMerit.cc
  *
+ * Note that this example is fairly short, which stands out from the other
+ * examples, but also from what we would expect from a typical `C++` program.
+ * Only a few more lines would be needed to make this program read a file
+ * name from the command line to perform the computation of the same figure of
+ * merit on different matrices.
  *
+ * The first new class seen here is `LatticeTester::UniformWeights`. This is one
+ * of the few classes that inherit from the `Weights` class stated before. The
+ * base class only specifies an interface and the subclasses
+ * `LatticeTester::UniformWeights`, `LatticeTester::ProductWeights`,
+ * `LatticeTester::ProjectionDependentWeights` and `LatticeTester::PODWeights`
+ * are implementations of weighting classes. These classes are classes that can
+ * assign different weights to different projections of a lattice when computing
+ * a figure of merit. Typically, these weights only have to be multiplied to the
+ * value computed for a projection by specifying the projection to the object.
+ * In the case of this example, uniform weights of value 1 are used. This
+ * multiplies 1 to every figure of merit, which does nothing. But using other
+ * more sophisticated weights would only change the construction process for
+ * them and not the actual usage.
+ * 
+ * The next new thing going on is the usage of the `ProjectionConstruction`
+ * method of the `BasisConstruction` class. This method is aptly named, as it
+ * simply constructs a projection, specified by the third argument, from the
+ * first lattice argument and puts it into the second lattice argument. To use
+ * this method, it is recommended to pair it with one of the `CoordinateSets`.
+ * These class can be modified to generate coordinate subsets from a list of
+ * coordinates, generally the lattice coordinates. From instances of these
+ * classes, it is possible to obtain an iterator to perform a loop over the
+ * coordinates sets as is done in the example.
  *
- * \section sec_misc Miscellanous functions
- *
- *
- *
- * \include Subsets.cc
- *
- *
- *
+ * The last thing going on is the usage of some `Normalizer` classes.
+ * `LatticeTester` contains a few classes implementing a normalizer. They are
+ * all subclasses of the `Normalizer` class and can all be instanciated as
+ * specified in the documentation of that class. To use this class, it suffices
+ * to divide the length of the shortest vector in the lattice by the bound in
+ * the dimension of that vector obtained with `getBound(dim)`. If the normalizer
+ * has correctly been instanciated, the obtained number should be a mesure
+ * rescalled between 0 and 1.
  * */

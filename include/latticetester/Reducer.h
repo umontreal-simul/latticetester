@@ -107,7 +107,6 @@ namespace LatticeTester {
            * @{
            * **Marc-Antoine**: it is very possible that we can remove those variables.
            * We just have to make sure that reductMinkowski does not need them 
-           * (in fact I think reductMinkowski has to be reviewed).
            *
            * These boolean variables indicate which type of pre-reduction is to be
            * performed for `ShortestVector` (SV) and for `reductMinkowski` (RM).

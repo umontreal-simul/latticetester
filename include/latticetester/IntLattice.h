@@ -102,11 +102,7 @@ namespace LatticeTester {
           void init ();
 
           /**
-           * This is the order of the underlying MRG. The problem is that the 
-           * lattice is not necessarily associated with a MRG anymore. The 
-           * solution probably is to change this so that it is now the rank
-           * because a MRG of order k spans a lattice of rank k. (See the lattice
-           * construction in Pierre's book)
+           * This returns the rank of the lattice.
            */
           int getOrder() const { return m_order; }
 
@@ -180,15 +176,6 @@ namespace LatticeTester {
            * string.
            */
           virtual std::string toStringCoef() const;
-
-
-          // /**
-          // * The components of the lattice when it is built out of more than one
-          // * component. When there is only one component, it is unused as the
-          // * parameters are the same as above.
-          // */
-          //std::vector<MRGComponent *> comp;
-
 
         protected:
 
@@ -415,8 +402,7 @@ namespace LatticeTester {
       int i = 0;
       BasIntMat temp;
       temp.SetDims(dim, dim);
-      for (Coordinates::const_iterator iter = proj.begin();
-          iter != proj.end(); ++iter) {
+      for (auto iter = proj.begin(); iter != proj.end(); ++iter) {
         for (int j = 0; j < dim; j++){
           temp(j, i) = this->m_basis(j, (*iter));
         }

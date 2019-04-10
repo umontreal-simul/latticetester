@@ -94,7 +94,7 @@
  * and <b>[LatMRG](https://github.com/umontreal-simul/latmrg)</b> are software
  * tools designed in our laboratory that are examples of the capabilities of
  * this library. The first one is designed to analyze and search for lattice
- * rules for quasi-Monte-Carlo integration whilst the second does the same thing
+ * rules for quasi-Monte-Carlo integration whilst the second does something similar
  * for linear congruential pseudo-random number generators.
  *
  * In the next section, you will find a detailled list of what is implemented in
@@ -104,13 +104,21 @@
  * 
  * # Contents and implementation
  * 
- * To do what has been advertised above, *LatticeTester* implements a few key
- * features as classes. This project is mostly built as an object oriented
- * library, and related functions have been grouped in classes to be easy to
- * find. Bellow, you will find a "from the ground up" explanation of the classes
- * contained in *LatticeTester*, that is: we will explain features of
- * *LatticeTester* from the most basic ones to the more complex ones and we will
- * link them to the relevant classes. 
+ * This project is mostly built as an object oriented library. The following
+ * describes the contents of the library and gives the names of the classes
+ * performing them. This is essentially a lenghtier version of the section
+ * above containing "from the ground up" explanations of the library contents,
+ * starting from lattice representation and going to the construction of basic
+ * figures of merit. While goind through the functionnalities of *LatticeTester*
+ * this section will also mention every tool needed to access these functions.
+ *
+ * \remark This section assumes the reader is familiar with a bit of lattice
+ * specific vocabulary. We have two options (I prefer the second one):
+ * - Have explanations here of every thing mentionned and keep \ref a_intro as a
+ *   more advanced ressource
+ * - Only use \ref a_intro as our only theorethical guide.
+ *
+ * ## Types and representations
  *
  * Before diving into the features of *LatticeTester* lets look at what are NOT
  * features of this library, but are needed by it: the ability to manipulate
@@ -118,9 +126,57 @@
  * library called the Number Theory Library, more commonly called NTL. Anyone
  * using *LatticeTester* will need to use some of the functionnalities of NTL
  * at one point. Many basic mathematical functions require using this library
- * directly. Its documentation can be found at [https://www.shoup.net/ntl/](https://www.shoup.net/ntl/)
+ * directly. Its documentation can be found at [https://www.shoup.net/ntl/](https://www.shoup.net/ntl/).
+ * Note that this documentation also contains a namespace called NTL. This
+ * namespace contains extentions of NTL functions to non-NTL types to ease the
+ * usage of *LatticeTester* with NTL and non-NTL types with the same code.
+ *
+ * As its name says, *LatticeTester* is a library to manipulate lattices. As
+ * such, it implements classes representing lattices. First there is the
+ * `IntLatticeBasis` class that simply is a class to represent a lattice basis
+ * by storing a matrix. This class can exchange the order of the vectors in the basis,
+ * compute their norm and also store the dual basis. Most functions doing
+ * computations on lattices directly use either the basis matrix or this class.
+ * it is recommended to use this class to represent lattices when working
+ * exclusively with *LatticeTester*. This is what is done in the \ref examples_page.
+ *
+ * When using the library with a specific problem in mind, more powerful objects
+ * representing lattices can be obtained by using the problem structure to
+ * build a lattice and different projections easily. For this use case, we
+ * provide the `IntLattice` class. This class inherits `IntLatticeBasis` to be
+ * used with the library easily and contains lattice specific features and
+ * virtual methods. These ad the possibility to build projections
+ * for the lattice and to build a basis for different dimensions. These features
+ * are not immediately useful here: a lattice cannot change dimension, but, for
+ * example, an random number generator may span a lattice in multiple dimensions
+ * and implementing these methods can be a good way to build them sequentially
+ * with a single object.
+ *
+ * ## Library features
+ *
+ * As presented above, *LatticeTester* revolves around solving 4 different
+ * problems. We now present what is available to resolve them with a bit more
+ * specificity. For a more hands-on approach than this section, the
+ * \ref examples_page are the place to go.
+ *
+ * ### Basis construction
+ * 
+ * *LatticeTester* can build the basis of a lattice from a set of generating
+ * vectors. That is, given a set of vectors
+ * \f$\{v_1, \ldots, v_s\} \in \mathbb{Z}^t\f$
+ * spanning a lattice \f$L_t\f$, it can extract another set of vectors
+ * \f$\{\hat{v}_1, \ldots, \hat{v}_t\}\f$ that is a basis of the lattice.
+ * There are two methods available to do just that in the `BasisConstruction`
+ * class. Beyond this basic functionnality that most users will probably not
+ * even need, *LatticeTester* also has ways to build projections of a lattice,
+ * which is a much more desirable feature.
+ *
+ * To build a projection what is usually done is to take a subset of the
+ * coordinates \f$\{1, \ldots, t\}\f$ of the lattice vectors and to only consider
+ * the vectors formed by this subset of coordinates. 
  *
  * \todo Remove bellow.
+ *
  * The prefered approach to solving the problems above is presented in the
  * reference
  * manual. For each of the problems, *LatticeTester* implements at least one way

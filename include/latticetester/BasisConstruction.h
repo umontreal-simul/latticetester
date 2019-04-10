@@ -212,8 +212,7 @@ template<typename BasInt> class BasisConstruction{
       std::cout << "matrix has to be square, but dimensions do not fit.\n";
       return;
     }
-    BasInt m;
-    m = 1;
+    BasInt m(1);
     NTL::ident(dualMatrix, dim);
     BasInt gcd;
     for (long i = dim-1; i>=0; i--) {

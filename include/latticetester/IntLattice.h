@@ -200,7 +200,7 @@ namespace LatticeTester {
           double *m_lgVolDual2;
 
           /**
-           * The logarithm \f$\log_2 (m^2)\f$.
+           * The logarithm \f$\log (m^2)\f$.
            */
           double m_lgm2;
 
@@ -325,6 +325,7 @@ namespace LatticeTester {
         if(this->m_lgVolDual2 != 0)
           delete[] this->m_lgVolDual2;
         this->m_lgVolDual2 = new double[dim+2]();
+        this->calcLgVolDual2 (m_lgm2);
         this->m_dualbasis.resize(dim+1, dim+1);
         this->m_dualvecNorm.resize(dim+1);
       }

@@ -19,6 +19,10 @@
 #define LATTICETESTER__RANDOM_H
 
 #include <cstdint>
+#include <climits>
+#define GERME   (ULONG_MAX / 54321)
+
+#include <NTL/ZZ.h>
 
 namespace LatticeTester {
 
@@ -31,50 +35,39 @@ namespace LatticeTester {
    * on  32-bits machines. Thus the random numbers generated will be
    * different on 32-bits and 64-bits machines.
    */
-  class Random {
-    public:
+  namespace Random {
+    /**
+     * Returns a random number in \f$[0, 1)\f$. The number has 53 random bits
+     * of resolution on 64-bits machines, and 32 random bits
+     * on 32-bits machines.
+     */
+    double randU01();
 
-      /**
-       * Constructor using a default seed for the generator.
-       * One may reset the seed by calling `setSeed`.
-       */
-      Random();
+    /**
+     * Return a random integer in \f$[i, j]\f$. The numbers \f$i\f$ and \f$j\f$ can occur.
+     * Restriction: \f$i < j\f$. The generated number is limited to 62 bits.
+     */
+    std::int64_t randInt (std::int64_t i, std::int64_t j);
 
-      /**
-       * Destructor.
-       */
-      ~Random()  {}
+    /**
+     * This is an overload of the previous method to create an NTL::ZZ integer
+     * in the range \f$[i,j]\f$. NTL has a method to generate pseudo random
+     * numbers in a given range, but it is not deterministic. This method
+     * concatenates random bits until it has a big enough number and tries to
+     * assign the correct integer to it.
+     * */
+    NTL::ZZ randInt(NTL::ZZ i, NTL::ZZ j);
 
-      /**
-       * Returns a random number in \f$[0, 1)\f$. The number has 53 random bits
-       * of resolution on 64-bits machines, and 32 random bits
-       * on 32-bits machines.
-       */
-      double randU01();
+    /**
+     * Returns random blocks of \f$s\f$ bits (\f$s\f$-bit integers).
+     */
+    std::uint64_t randBits (int s);
 
-      /**
-       * Return a random integer in \f$[i, j]\f$. The numbers \f$i\f$ and \f$j\f$ can occur.
-       * Restriction: \f$i < j\f$.
-       */
-      int randInt (int i, int j);
-
-      /**
-       * Returns random blocks of \f$s\f$ bits (\f$s\f$-bit integers).
-       */
-      std::uint64_t randBits (int s);
-
-      /**
-       * Sets the seed of the generator. If not called, a default seed is used.
-       */
-      void setSeed (std::uint64_t seed);
-
-
-    private:
-
-      std::uint64_t randValue();
-
-      std::uint64_t etat1, etat2, etat3, etat4, etat5;
-  };
+    /**
+     * Sets the seed of the generator. If not called, a default seed is used.
+     */
+    void setSeed (std::uint64_t seed = GERME);
+  }
 
 }
 

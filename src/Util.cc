@@ -154,7 +154,8 @@ namespace LatticeTester
     // The range covered by the interval
     std::uint64_t d = j-i+1;
     // Gap between numbers of the output. That is, if we generate a number
-    // in (0,q) we will get i and in [q,2q) we will get i+1 and so on.
+    // in (0,q) with RandValue(), we will get i and in [q,2q) we will get i+1
+    // and so on.
     std::uint64_t q = 0x4000000000000000L / d;
     // These two numbers make a correction to avoid a bias. Basically if we want
     // to generate an integers with the inverse density, we need to select each

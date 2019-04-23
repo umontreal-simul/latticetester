@@ -22,6 +22,7 @@
 #include <set>
 #include <map>
 #include <iostream>
+#include <vector>
 
 namespace LatticeTester {
 
@@ -48,6 +49,15 @@ namespace LatticeTester {
       Coordinates(const Coordinates& other):
         std::set<value_type>(other)
     { }
+
+      /**
+       * Builds a set of coordinates by adding all the elements of coord in it.
+       * */
+      Coordinates(const std::vector<std::size_t>& coord) {
+        for (auto it = coord.begin(); it != coord.end(); it++) {
+          insert(*it);
+        }
+      }
 
       /**
        * Constructs a coordinate set populated with the values from `first`

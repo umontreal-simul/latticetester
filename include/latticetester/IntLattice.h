@@ -172,10 +172,9 @@ namespace LatticeTester {
           virtual void setLac (const Lacunary<BasInt> &) {};
 
           /**
-           * Returns the vector of multipliers (or coefficients) \f$A\f$ as a
-           * string.
+           * Returns a string describing the lattice. 
            */
-          virtual std::string toStringCoef() const;
+          virtual std::string toString() const;
 
         protected:
 
@@ -517,7 +516,7 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      std::string IntLattice<Int, BasInt, Dbl, RedDbl>::toStringCoef () const
+      std::string IntLattice<Int, BasInt, Dbl, RedDbl>::toString() const
     {
       assert (0);
       return std::string();

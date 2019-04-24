@@ -232,6 +232,9 @@ namespace LatticeTester {
     this->m_modulo = modulo;
     m_order = k;
     init ();
+    this->m_basis.resize(this->m_dim,this->m_dim);
+    this->m_vecNorm.resize(this->m_dim);
+    this->setNegativeNorm();
     if (withDual) {
       this->m_dualbasis.resize(this->m_dim,this->m_dim);
       this->m_dualvecNorm.resize(this->m_dim);
@@ -284,17 +287,14 @@ namespace LatticeTester {
     {
       IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::kill();
 
-      if (m_lgVolDual2 == 0)
-        return;
-      delete [] m_lgVolDual2;
-      m_lgVolDual2 = 0;
-      m_vSI.clear();
+      if (this->m_withDual){
+        if (m_lgVolDual2 == 0)
+          return;
+        delete [] m_lgVolDual2;
+        m_lgVolDual2 = 0;
+      }
+      // m_vSI.clear();
 
-      //    if (!comp.empty()) {
-      //       for (int s = 0; s < (int) comp.size(); s++)
-      //          delete comp[s];
-      //       comp.clear();
-      //    }
     }
 
 

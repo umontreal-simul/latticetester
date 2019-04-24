@@ -643,14 +643,14 @@ namespace LatticeTester {
         return ;
       for (int k = 0; k < this->m_dim; k++){
         swap9 (this->m_basis(j,k), this->m_basis(i,k));
-        if(this->m_withDual){
-          swap9(this->m_dualbasis(j,k), this->m_dualbasis(i,k));
-        }
+        //if(this->m_withDual){
+        //  swap9(this->m_dualbasis(j,k), this->m_dualbasis(i,k));
+        //}
       }
       swap9 (this->m_vecNorm[i], this->m_vecNorm[j]);
-      if(this->m_withDual){
-        swap9 (this->m_dualvecNorm[i], this->m_dualvecNorm[j]);
-      }
+      //if(this->m_withDual){
+      //  swap9 (this->m_dualvecNorm[i], this->m_dualvecNorm[j]);
+      //}
       //bool b = this->m_xx[j];
       //this->m_xx[j] = this->m_xx[i];
       //this->m_xx[i] = b;

@@ -146,7 +146,7 @@ namespace LatticeTester {
            * lattice. The result is placed in the `lattice` lattice. The basis is
            * triangularized to form a proper basis.
            */
-          void buildProjection (IntLattice<Int, BasInt, Dbl, RedDbl>* lattice,
+          virtual void buildProjection (IntLattice<Int, BasInt, Dbl, RedDbl>* lattice,
               const Coordinates & proj);
 
           /**

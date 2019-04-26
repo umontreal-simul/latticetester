@@ -299,6 +299,12 @@ namespace LatticeTester {
         void permute (int i, int j);
 
         /**
+         * Exchanges vectors `i` and `j` in the basis without changing the dual.
+         * See `permute()`.
+         */
+        void permuteNoDual (int i, int j);
+
+        /**
          * Returns `true` if the dual basis contained in the object really is 
          * the dual of the basis, and `false` otherwise. This also returns false
          * if no dual has been specified.
@@ -311,6 +317,12 @@ namespace LatticeTester {
          * that the lengths of the corresponding basis vectors are up to date.
          */
         void sort (int d);
+
+        /**
+         * Sorts the basis vectors with indices greater of equal to \f$d\f$ by 
+         * increasing length. The dual vectors are **not** permuted. See `sort()`.
+         */
+        void sortNoDual (int d);
 
         /**
          * Returns a string with the primal basis and its norms.
@@ -643,17 +655,30 @@ namespace LatticeTester {
         return ;
       for (int k = 0; k < this->m_dim; k++){
         swap9 (this->m_basis(j,k), this->m_basis(i,k));
-        //if(this->m_withDual){
-        //  swap9(this->m_dualbasis(j,k), this->m_dualbasis(i,k));
-        //}
+        if(this->m_withDual){
+          swap9(this->m_dualbasis(j,k), this->m_dualbasis(i,k));
+        }
       }
       swap9 (this->m_vecNorm[i], this->m_vecNorm[j]);
-      //if(this->m_withDual){
-      //  swap9 (this->m_dualvecNorm[i], this->m_dualvecNorm[j]);
-      //}
+      if(this->m_withDual){
+        swap9 (this->m_dualvecNorm[i], this->m_dualvecNorm[j]);
+      }
       //bool b = this->m_xx[j];
       //this->m_xx[j] = this->m_xx[i];
       //this->m_xx[i] = b;
+    }
+
+  /*=========================================================================*/
+
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    void IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::permuteNoDual (int i, int j)
+    {
+      if (i == j)
+        return ;
+      for (int k = 0; k < this->m_dim; k++){
+        swap9 (this->m_basis(j,k), this->m_basis(i,k));
+      }
+      swap9 (this->m_vecNorm[i], this->m_vecNorm[j]);
     }
 
 
@@ -719,6 +744,35 @@ namespace LatticeTester {
         }
         if (i != k)
           permute (i, k);
+      }
+    }
+
+  /*=========================================================================*/
+
+  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
+    void IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::sortNoDual (int d)
+    /*
+     * We assume that the square lengths are already updated.
+     * This gives flexibility to the user to put something else than
+     * the square Euclidean length in V.vecNorm, W.vecNorm, etc.
+     */
+    {
+      int dim = getDim ();
+      for (int i = 0; i < dim; i++){
+        if (getVecNorm(i) < 0) {
+          std::cout << "\n***** ERROR: sort   Negative norm for i = " << i <<
+            ",  dim = " << dim << std::endl;
+        }
+      }
+
+      for (int i = d; i < dim; i++){
+        int k = i;
+        for (int j = i + 1; j < dim; j++) {
+          if (getVecNorm (j) < getVecNorm (k))
+            k = j;
+        }
+        if (i != k)
+          permuteNoDual (i, k);
       }
     }
 

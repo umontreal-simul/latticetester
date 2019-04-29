@@ -115,7 +115,7 @@ template<typename BasInt> class BasisConstruction{
      * of a linear system.
      * */
     void DualConstruction(BasIntMat& matrix, BasIntMat& dualMatrix,
-        BasInt& modulo);
+        BasInt modulo);
 
     /**
      * This does the same thing as DualConstruction(), but is much slower. This
@@ -187,7 +187,10 @@ template<typename BasInt> class BasisConstruction{
       //     }
       //   }
       // }
-      if (matrix[i][i] != 0) rank++;
+      if (matrix[i][i] != 0) {
+        rank++;
+        if (matrix[i][i] < 0) matrix[i] *= BasInt(-1);
+      }
     }
     // We remove zero vectors from the basis.
     matrix.SetDims(rank, cols);
@@ -238,7 +241,7 @@ template<typename BasInt> class BasisConstruction{
 
   template<typename BasInt>
     void BasisConstruction<BasInt>::DualConstruction(BasIntMat& matrix,
-        BasIntMat& dualMatrix, BasInt& modulo)
+        BasIntMat& dualMatrix, BasInt modulo)
   {
     // We need to have a triangular basis matrix
     if (! CheckTriangular(matrix, matrix.NumRows(), BasInt(0)))

@@ -80,6 +80,7 @@ namespace LatticeTester {
   /**
    * Gives the merit criterion for ranking generators or lattices.
    *
+   * `LENGTH`: Only using the length of the shortest vector as a criterion.
    * `BEYER`: the figure of merit is the Beyer quotient \f$Q_T\f$.<br>
    * `SPECTRAL`: the figure of merit \f$S_T\f$ is based on the spectral
    * test.<br>
@@ -87,7 +88,7 @@ namespace LatticeTester {
    * <tt>BOUND_JS</tt>: the figure of merit is based on
    * the Joe-Sinescu bound \cite rSIN08a.<br>
    */
-  enum CriterionType { SPECTRAL, BEYER, PALPHA, BOUND_JS };
+  enum CriterionType { LENGTH, SPECTRAL, BEYER, PALPHA, BOUND_JS };
 
   /**
    * Indicates which normalization is used to compute \f$S_t\f$ in the spectral
@@ -126,11 +127,15 @@ namespace LatticeTester {
   enum CalcType { PAL, NORMPAL, BAL, SEEKPAL };
 
   /**
-   * Indicates the Prereduction Type (BKZ, LenstraLL, ...) used before applying the 
-   * Branch and Bound procedure.
+   * A list of all the possible lattice reduction implemented in `LatticeTester`.
+   *
+   * `NORPRERED`: no reduction
+   * `DIETER`: Pairwise reduction
+   * `LLL`: LLL reduction
+   * `BKZ`: block Korkine-Zolotarev reduction
+   * `FULL`: shortest vector search.
    */
-
-  enum PreReductionType {BKZ, Dieter, LLL, NOPRERED};
+  enum PreReductionType {NOPRERED, DIETER, LLL, BKZ, FULL};
 
   /**
    * \name toString functions

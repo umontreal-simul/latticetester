@@ -854,6 +854,8 @@ namespace LatticeTester {
         field = SPECTRAL;
       else if (0 == strcasecmp(val.c_str(), "BEYER"))
         field = BEYER;
+      else if (0 == strcasecmp(val.c_str(), "LENGTH"))
+        field = LENGTH;
       else if (0 == strcasecmp(val.c_str(), "PALPHA")){
         field = PALPHA;
       }
@@ -980,12 +982,14 @@ namespace LatticeTester {
 
       if (0 == strcasecmp(val.c_str(), "BKZ"))
         field = BKZ;
-      else if (0 == strcasecmp(val.c_str(), "Dieter"))
-        field = Dieter;
+      else if (0 == strcasecmp(val.c_str(), "DIETER"))
+        field = DIETER;
       else if (0 == strcasecmp(val.c_str(), "LLL"))
         field = LLL;
       else if (0 == strcasecmp(val.c_str(), "NOPRERED"))
         field = NOPRERED;
+      else if (0 == strcasecmp(val.c_str(), "FULL"))
+        field = FULL;
       else
         MyExit(1, "readPreRed:   NO SUCH CASE");
     }

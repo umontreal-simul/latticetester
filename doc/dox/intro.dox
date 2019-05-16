@@ -12,6 +12,8 @@
  *
  * \section lattices_def Lattices on the Integers
  *
+ * \subsection lattices_def_def Definitions
+ *
  * \f$t\f$- dimensional **lattices** in the real space \f$\mathbb{R}^t\f$ are
  * discrete subspaces of the real vector space \f$\mathbb{R}^t\f$ that can be
  * expressed as
@@ -47,84 +49,29 @@
  * matrix** \f$\mathbf{W} = \mathbf{V}^{-1}\f$,
  * the inverse of the generator matrix \f$\mathbf{V}\f$.
  *
- * \subsection lattices_rescaling Rescaling to lattices in the integer space
- *
  * *LatticeTester* stores and manipulates only lattices by storing its basis
- * and, possibly, its dual basis in integer coordinates.
+ * and, possibly, its dual basis in integer coordinates. If a lattice has an
+ * integer basis, its dual is often fractional. This is a problem that is solved
+ * by storing a rescaled version of the dual: the **m-dual** \f$mL_t^*\f$. When
+ * using the m-dual, m is chosen so that \f$m\mathbf{W}\f$ is an integer matrix.
+ * Such a m usually is defined by the application for which lattices are used.
+ * It is the responsibility of the user to find it out.
+ * In this software and the documentation, we assume that the appropriate
+ * rescaling has already been done and we always work directly with a lattice
+ * \f$\Lambda_t \subset \mathbb{Z}^t\f$ and its m-dual
+ * \f$\Lambda_t^*\in\mathbb{Z}^t\f$.
+ * The advantage of this framework is that all vector coordinates are integers
+ * and easily representable exactly on the computer.
  *
- * For the applications targeted by this software, the lattice \f$L_t\f$ either contains,
- * or is contained in, the integer lattice \f$\mathbb{Z}^t\f$; i.e., 
- * \f$\mathbb{Z}^t\subseteq L_t\f$ or \f$L_t\subseteq \mathbb{Z}^t\f$. When 
- * \f$L_t\f$ satisfies the first condition, then its dual satisfies the second,
- * and vice-versa. When \f$\mathbb{Z}^t\subseteq L_t\f$, there is always an 
- * integer \f$m \ge 1\f$ such that all the coordinates of all vectors are 
- * multiple of \f$1/m\f$, and one can rescale \f$L_t\f$ by a factor of \f$m\f$
- * to obtain the \f$\mathbf{m}\f$ **-scaled** lattice \f$\Lambda_t = m L_t\f$
- * whose vectors have only integer coordinates, i.e., \f$\Lambda_t \subseteq
- * \mathbb{Z}^t\f$ is a \f$\mathbb{Z}\f$-lattice in \f$\mathbb{Z}^t\f$.
- * The rows of \f$m \mathbf{V}\f$ form a basis of \f$\Lambda_t\f$, also called an \f$\mathbf{m}\f$ **-scaled basis** for \f$L_t\f$,
- * and the columns of \f$\mathbf{W}\f$ are its \f$\mathbf{m}\f$ **-dual basis**.
- * They are a basis of \f$\Lambda^*_t = L^*_t\f$, the \f$\mathbf{m}\f$ **-dual lattice** of \f$\Lambda_t\f$.
- * When \f$L_t\subset \mathbb{Z}^t\f$, there is an integer \f$m \ge 1\f$ such that
- * \f$m L^*_t \subseteq \mathbb{Z}^t\f$, in which case we can define \f$\Lambda^*_t = m L^*_t\f$
- * and \f$\Lambda_t = L_t\f$.
- *
- * More generally, if there are positive integers \f$m_1\f$ and \f$m_2\f$ such that
- * \f$\Lambda_t = m_1 L_t \subseteq \mathbb{Z}^t\f$ and \f$\Lambda_t^* = m_2 L_t^* \subseteq \mathbb{Z}^t\f$,
- * then we can work with \f$\Lambda_t\f$ and its \f$m\f$-dual lattice \f$\Lambda_t^*\f$,
- * where \f$m = m_1 m_2\f$.  That is, we rescale both the lattice and its dual.
- * Note that scaling a lattice by \f$m\f$ multiplies all vector lengths by \f$m\f$ and all volumes by \f$m^t\f$,
- * and it divides the lattice density by \f$m^t\f$.
- *
- * \remark
- *      **Pierre**: Oups, ici je vois que la densite devient un nombre reel tres petit...
- *      Pas 100% certain que c'est une bonne idee de travailler avec \f$\Lambda_t\f$ et oublier
- *      le scaling, car cela change la normalisation... Mais cela rend quand meme les choses plus generales.
- *
- * In this software and in the remainder of this document, we assume that the appropriate
- * rescaling has already been done and we always work directly with the rescaled versions
- * \f$\Lambda_t\f$ and \f$\Lambda_t^*\f$, which are \f$\mathbb{Z}\f$-lattices over \f$\mathbb{Z}^t\f$
- * and are \f$m\f$-dual to each other.
- * The advantage is that in this framework, all vector coordinates are integers
- * and this permit us to always and easily represent them exactly on the computer.
- * With a slight abuse of notation, we will use \f$\mathbf{V}\f$ with columns \f$\mathbf{V}_1,\dots,\mathbf{V}_t\f$
- * to represent a basis of \f$\Lambda_t\f$ and \f$\mathbf{W}\f$ with rows \f$\mathbf{W}_1,\dots,\mathbf{W}_t\f$
- * for a basis of \f$\Lambda_t^*\f$.
- *
- * A \f$\mathbb{Z}\f$-lattice \f$\Lambda_t\f$ can be uniquely specified by selecting a basis \f$\mathbf{V}\f$
- * of \f$t\f$ linearly independent vectors in \f$\mathbb{Z}^t\f$.
- * The \f$m\f$-dual basis \f$\mathbf{W}\f$ can then be computed for any integer \f$m\ge 2\f$.
- * However, the entries of \f$\mathbf{W}\f$ are not necessarily all integers for any \f$m\f$;
- * this holds only under certain conditions on \f$\mathbf{V}\f$ and \f$m\f$.
- * In the applications targeted by this software, the basis and its \f$m\f$ dual are
- * typically constructed together in a way that these conditions are guaranteed to
- * be satisfied.  Our software can take advantage of this.
- *
- * \remark **Pierre**: Must define *rescaled integration lattice of rank 1* earlier.
- *
- * In the case of a rescaled integration lattice of rank 1, it suffices to specify the generating vector
- * \f$\mathbf{a} = \mathbf{V}_1\f$ and an integer \f$m > 0\f$ such that the vectors \f$\mathbf{V}_2= m \mathbf{e}_2, \dots, \mathbf{V}_t = m \mathbf{e}_t\f$
- * complete a basis, where the \f$\mathbf{e}_j\f$ are the unit vectors.
- *
- * For all lattices, we want to be able to easily enumerate the lattice points
- * that lie in the scaled unit hypercube \f$[0,m)^t\f$ for an appropriate scaling factor \f$m\f$;
- * i.e., the points of \f$\Lambda_t \cap [0,m)^t\f$, and perhaps their rescaled versions to \f$[0,1)^t\f$.
- * For a rescaled integration lattice of rank 1, this is easy: These are the points of the form
- * \f$\mathbf{V} = i \mathbf{V}_1 \bmod 1\f$ for \f$i=0,1,2, \dots\f$.
- * 
- * \remark **Pierre**:It would be good to have a way to enumerate the points of
- *  \f$L_t \cap [0,1)^t\f$ for a more general lattice.
- *
- * \subsubsection lattice_def_other Other definitions
- *
+ * There are a few more usefull definitions needed to understand this software.
  * The determinant of the matrix \f$\mathbf{V}\f$ is equal to the volume of the
  * fundamental parallelepiped
  * \f$\{\mathbf{v} = \lambda_1\mathbf{v}_1 + \cdots + \lambda_t\mathbf{v}_t \mid
  * 0\le \lambda_i\le 1\f$ for \f$1\le i\le t\}\f$.  It is independent of
- * the choice of basis. It is called the **determinant** of \f$L_t\f$.
- * The quantity \f$n = 1/\det(L_t) = 1/\det(\mathbf{v}) = \det(\mathbf{v}^{-1})\f$
+ * the choice of basis and is called the **determinant** or **volume** of \f$L_t\f$.
+ * The quantity \f$n = 1/\det(L_t) = 1/\det(\mathbf{V}) = \det(\mathbf{V}^{-1})\f$
  * is called the **density** of \f$L_t\f$ and it represents the
- * average number of points per unit of volume.
+ * average number of points per unit of volume in the lattice.
  * When \f$L_t\f$ contains \f$\mathbb{Z}^t\f$, the density \f$n\f$ is an integer equal to the
  * cardinality of the point set \f$L_t \cap [0,1)^t\f$.
  *
@@ -144,12 +91,64 @@
  * be analyzed by subtracting the shift and analyzing the (unshifted) lattice 
  * \f$L_t\f$.
  *
+ * \subsection lattices_def_algo Algorithms on lattices
+ * 
+ * There are a few algorithms specifically doing lattice manipulations
+ * implemented in *LatticeTester*. The first is the computation of a diagonal
+ * basis for a lattice. Given a lattice basis \f$\mathbf{V}\f$, there always exist a
+ * unimodular matrix \f$T\f$ such that
+ * \f{equation}{
+ *   T\mathbf{V} =
+ *   \begin{bmatrix}
+ *     \hat{v}_{11} & \hat{v}_{12} & \cdots & \hat{v}_{1t} \\
+ *     0 & \hat{v}_{22} & \cdots & \hat{v}_{2t} \\
+ *     \vdots & \ddots & \ddots & \vdots \\
+ *     0 & \cdots & 0 & \hat{v}_{tt}
+ *   \end{bmatrix}.
+ * \f}
+ * Since \f$T\f$ is unimodular, \f$T\mathbf{V}\f$ is still a basis for the
+ * lattice \f$\Lambda_t\f$ and can be used in place of \f$\mathbf{V}\f$ to
+ * perform computations. Lets note the lines of \f$\mathbf{V}\f$ as `V[i]` and
+ * define the following algorithm:
+ * \code
+ * def Euclid(vector1, vector2, i):
+ *   while vector2[i] != 0:
+ *     int a  = vector1[i]/vector2[i] # integer division
+ *     vector1 = vector1 - a * vector2
+ *     vect tmp = vector2
+ *     vector2 = vector1
+ *     vector1 = tmp
+ * \endcode
+ * Then the next algorithm transforms V in a diagonal basis for lattice \f$\Lambda_t\f$:
+ * \code
+ * def Diagonalize(V, t):
+ *   for 1 <= i <= t:
+ *     for i < j <= t:
+ *       Euclid(V[i], V[j], i)
+ * \endcode
+ *
+ * Having the preceding algorithm is usefull to compute the m-dual of a lattice.
+ * When m is known, it is easy to extrapolate the m-dual from a diagonal basis
+ * because the matrix \f$m\mathbf{W}\f$ such that
+ * \f$\mathbf{V}(m\mathbf{W})^t = m\mathbf{I}\f$ is a basis to the m-dual. As
+ * pointed out in \cite rCOU96a, when we know that m is right, every of the
+ * divisions in the following algorithm will be integer and the m-dual is easily
+ * choosen:
+ * \code
+ * def BuildDual(V, W, m):
+ *   W = 0
+ *   Diagonalize(V, V.size())
+ *   for 1 <= i <= t:
+ *     W[i][i] = m / V[i][i]
+ *   for 1 <= i <= t:
+ *     for i > j >= 1:
+ *       for j+1 <= k <= i:
+ *         W[i][j] -= m * V[j][k] * W[i][k] / V[j][j]
+ * \endcode
+ *
  * \section sec_merit Measures of Uniformity
  *
- * \remark **Pierre**: See Section 3.2.8 of my class notes for more details on the uniformity measures,
- * how to compute them, and how to normalize them to values between 0 and 1.
- *
- * \subsection spectral Shortest Nonzero Lattice Vector
+ * \subsection sec_merit_spectral Shortest Nonzero Lattice Vector
  *
  * The Euclidean length \f$\mathit{l}\f$ of the shortest nonzero lattice vector
  * in the lattice \f$\Lambda_t\f$, say with Euclidean norm,
@@ -365,7 +364,6 @@
  *
  * Here is a pseudo-code for the Branch and Bound algorithm :
  *
- *
  * <center><div class="LatSoft-fbox">\image html branchandbound.png "Pseudo-code for the Branch-and-bound algorithm implemented in LatticeTester." width=700px
  * </div></center>
  *
@@ -574,7 +572,12 @@
  * *LatticeTester* is just a wrapper most of the time.
  *
  */
- *
+
+
+
+
+
+
  * Such lattices are encountered for example in quasi-Monte Carlo integration
  * (by lattice rules) and in the analysis of uniform random number generators
  * defined by linear recurrences modulo a large integer.
@@ -641,4 +644,51 @@
  * properties.
  * In section \ref sec_merit, we define and discuss the various figures of merit
  * that the software can compute.
+ *
+ * For the applications targeted by this software, the lattice \f$L_t\f$ either contains,
+ * or is contained in, the integer lattice \f$\mathbb{Z}^t\f$; i.e., 
+ * \f$\mathbb{Z}^t\subseteq L_t\f$ or \f$L_t\subseteq \mathbb{Z}^t\f$. When 
+ * \f$L_t\f$ satisfies the first condition, then its dual satisfies the second,
+ * and vice-versa. When \f$\mathbb{Z}^t\subseteq L_t\f$, there is always an 
+ * integer \f$m \ge 1\f$ such that all the coordinates of all vectors are 
+ * multiple of \f$1/m\f$, and one can rescale \f$L_t\f$ by a factor of \f$m\f$
+ * to obtain the \f$\mathbf{m}\f$ **-scaled** lattice \f$\Lambda_t = m L_t\f$
+ * whose vectors have only integer coordinates, i.e., \f$\Lambda_t \subseteq
+ * \mathbb{Z}^t\f$ is a \f$\mathbb{Z}\f$-lattice in \f$\mathbb{Z}^t\f$.
+ * The rows of \f$m \mathbf{V}\f$ form a basis of \f$\Lambda_t\f$, also called an \f$\mathbf{m}\f$ **-scaled basis** for \f$L_t\f$,
+ * and the columns of \f$\mathbf{W}\f$ are its \f$\mathbf{m}\f$ **-dual basis**.
+ * They are a basis of \f$\Lambda^*_t = L^*_t\f$, the \f$\mathbf{m}\f$ **-dual lattice** of \f$\Lambda_t\f$.
+ * When \f$L_t\subset \mathbb{Z}^t\f$, there is an integer \f$m \ge 1\f$ such that
+ * \f$m L^*_t \subseteq \mathbb{Z}^t\f$, in which case we can define \f$\Lambda^*_t = m L^*_t\f$
+ * and \f$\Lambda_t = L_t\f$.
+ *
+ * More generally, if there are positive integers \f$m_1\f$ and \f$m_2\f$ such that
+ * \f$\Lambda_t = m_1 L_t \subseteq \mathbb{Z}^t\f$ and \f$\Lambda_t^* = m_2 L_t^* \subseteq \mathbb{Z}^t\f$,
+ * then we can work with \f$\Lambda_t\f$ and its \f$m\f$-dual lattice \f$\Lambda_t^*\f$,
+ * where \f$m = m_1 m_2\f$.  That is, we rescale both the lattice and its dual.
+ * Note that scaling a lattice by \f$m\f$ multiplies all vector lengths by \f$m\f$ and all volumes by \f$m^t\f$,
+ * and it divides the lattice density by \f$m^t\f$.
+ *
+ * \remark
+ *      **Pierre**: Oups, ici je vois que la densite devient un nombre reel tres petit...
+ *      Pas 100% certain que c'est une bonne idee de travailler avec \f$\Lambda_t\f$ et oublier
+ *      le scaling, car cela change la normalisation... Mais cela rend quand meme les choses plus generales.
+ *
+ * \remark **Pierre**: Must define *rescaled integration lattice of rank 1* earlier.
+ *
+ * In the case of a rescaled integration lattice of rank 1, it suffices to specify the generating vector
+ * \f$\mathbf{a} = \mathbf{V}_1\f$ and an integer \f$m > 0\f$ such that the vectors \f$\mathbf{V}_2= m \mathbf{e}_2, \dots, \mathbf{V}_t = m \mathbf{e}_t\f$
+ * complete a basis, where the \f$\mathbf{e}_j\f$ are the unit vectors.
+ *
+ * For all lattices, we want to be able to easily enumerate the lattice points
+ * that lie in the scaled unit hypercube \f$[0,m)^t\f$ for an appropriate scaling factor \f$m\f$;
+ * i.e., the points of \f$\Lambda_t \cap [0,m)^t\f$, and perhaps their rescaled versions to \f$[0,1)^t\f$.
+ * For a rescaled integration lattice of rank 1, this is easy: These are the points of the form
+ * \f$\mathbf{V} = i \mathbf{V}_1 \bmod 1\f$ for \f$i=0,1,2, \dots\f$.
+ * 
+ * \remark **Pierre**:It would be good to have a way to enumerate the points of
+ *  \f$L_t \cap [0,1)^t\f$ for a more general lattice.
+ *
+ * \remark **Pierre**: See Section 3.2.8 of my class notes for more details on the uniformity measures,
+ * how to compute them, and how to normalize them to values between 0 and 1.
  *

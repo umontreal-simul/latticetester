@@ -1,10 +1,30 @@
 /**
  * \page a_intro Background
  *
+ * This page contains a (not so brief) summary of the mathematical concepts
+ * used in *LatticeTester*.
+ * The library is intended to ease the computation of uniformity
+ * measures (also called figures of merit) on lattices in the
+ * \f$t\f$-dimensional the real space \f$\mathbb{R}^t\f$ that contain
+ * \f$\mathbb{Z}^t\f$ as a sublattice or are contained in \f$\mathbb{Z}^t\f$.
+ * We therefore introduce here exactly what lattices are covered by this program
+ * and a bit of the theory behind the implemented algorithms.
  *
- * *LatticeTester* is a software library and tool to measure theoretical measures
- * of uniformity (or figures of merit) for lattices in the \f$t\f$-dimensional the real space \f$\mathbb{R}^t\f$
- * that contain \f$\mathbb{Z}^t\f$ as a sublattice or are contained in \f$\mathbb{Z}^t\f$.
+ * \f$t\f$- dimensional *Lattices* in the real space \f$\mathbb{R}^t\f$ are
+ * discrete subspaces of the real vector space \f$\mathbb{R}^t\f$ that can be
+ * expressed as
+ * \f{equation}
+ *  L_t = \{\mathbf{v} = \sum_{j=1}^t z_j\mathbf{v}_j\mid \mbox{ each } z_j\in\mathbb{Z}\}
+ *      = \oplus_{j=1}^t \mathbb{Z} \mathbf{v}_j,
+ * \label {eq:lattice}
+ * \f{equation}
+ * where \f$t\f$ is a positive integer, and
+ * \f$\mathbf{v}_1,\dots,\mathbf{v}_t\f$ are linearly independent vectors in \f$\mathbb{R}^t\f$
+ * which form a **basis** of the lattice.
+ * The matrix \f$\mathbf{V}\f$, whose \f$i\f$th row is \f$\mathbf{v}_i\f$, is the
+ * corresponding **generator matrix** of \f$L_t\f$.
+ * A comprehensive treatment of such lattices can be found in \cite mCON99a .
+ *
  * Such lattices are encountered for example in quasi-Monte Carlo integration
  * (by lattice rules) and in the analysis of uniform random number generators
  * defined by linear recurrences modulo a large integer.

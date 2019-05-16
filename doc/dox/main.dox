@@ -6,7 +6,7 @@
  * \mainpage LatticeTester Manual
  * \endif
  * 
- * # Reference Manual
+ * # User's guide
  * 
  * This is the reference manual of [LatticeTester](https://github.com/umontreal-simul/latticetester),
  * a library intented to simplify the construction of software studying lattices.

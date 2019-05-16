@@ -5,141 +5,36 @@
  * used in *LatticeTester*.
  * The library is intended to ease the computation of uniformity
  * measures (also called figures of merit) on lattices in the
- * \f$t\f$-dimensional the real space \f$\mathbb{R}^t\f$ that contain
- * \f$\mathbb{Z}^t\f$ as a sublattice or are contained in \f$\mathbb{Z}^t\f$.
- * We therefore introduce here exactly what lattices are covered by this program
- * and a bit of the theory behind the implemented algorithms.
+ * \f$t\f$-dimensional the real space \f$\mathbb{R}^t\f$ that are contained in
+ * \f$\mathbb{Z}^t\f$.
+ * We therefore introduce here exactly what those lattices are
+ * and part of the theory behind the implemented algorithms.
  *
- * \f$t\f$- dimensional *Lattices* in the real space \f$\mathbb{R}^t\f$ are
+ * \section lattices_def Lattices on the Integers
+ *
+ * \f$t\f$- dimensional **lattices** in the real space \f$\mathbb{R}^t\f$ are
  * discrete subspaces of the real vector space \f$\mathbb{R}^t\f$ that can be
  * expressed as
- * \f{equation}
- *  L_t = \{\mathbf{v} = \sum_{j=1}^t z_j\mathbf{v}_j\mid \mbox{ each } z_j\in\mathbb{Z}\}
- *      = \oplus_{j=1}^t \mathbb{Z} \mathbf{v}_j,
- * \label {eq:lattice}
- * \f{equation}
- * where \f$t\f$ is a positive integer, and
- * \f$\mathbf{v}_1,\dots,\mathbf{v}_t\f$ are linearly independent vectors in \f$\mathbb{R}^t\f$
- * which form a **basis** of the lattice.
- * The matrix \f$\mathbf{V}\f$, whose \f$i\f$th row is \f$\mathbf{v}_i\f$, is the
- * corresponding **generator matrix** of \f$L_t\f$.
- * A comprehensive treatment of such lattices can be found in \cite mCON99a .
- *
- * Such lattices are encountered for example in quasi-Monte Carlo integration
- * (by lattice rules) and in the analysis of uniform random number generators
- * defined by linear recurrences modulo a large integer.
- * Measures of uniformity include the length of the shortest nonzero vector
- * in the lattice or in its dual (the spectral test), the Beyer ratio,
- * \f$\mathcal{P}_\alpha\f$, as well as figures of merit that take normalized versions
- * of these measures over projections of the lattice on subsets of the \f$t\f$ coordinates,
- * and then take a weighted sum or the worst-case over the class of considered projections.
- * *LatticeTester* is used in particular in the *LatNet Builder* and *LatMRG*
- * software tools, designed to construct and analyze lattice rules and linear generators.
- *
- * The purpose of *LatticeTester* is to compute various figures of merit that
- * serve as measures of uniformity for lattices in the \f$t\f$-dimensional real
- * space \f$\mathbb{R}^t\f$ that contain \f$\mathbb{Z}^t\f$ as a sublattice or are contained in \f$\mathbb{Z}^t\f$
- * \cite vLEC00b \cite mSLO94a .
- *
- * The lattices we consider are discrete vector spaces in \f$\mathbb{R}^t\f$ and
- * one is often interested in the (finite) intersection of the lattice
- * with the \f$t\f$-dimensional unit hypercube \f$[0,1)^t\f$.
- * This is the case for *Lattice rules*, which are multivariate integration
- * methods that take the average value of a function at this set
- * of points (sometimes randomly shifted modulo 1)
- * to estimate the integral of the function over the unit cube
- * \cite vLEC00b \cite vLEC09f \cite mSLO94a.
- * Bounds on the (mean square) integration error can be obtained in
- * terms of figures of merit computed by the present software.
- *
- * This same set of points is also the set of all vectors of \f$t\f$ successive
- * values produced by certain types of linear congruential generators
- * in scalar or matrix form.  In that context, we want the point set
- * to cover the unit hypercube as uniformly as possible, and a standard
- * way of measuring this uniformity is the spectral test
- * \cite rCOV67a \cite rKNU98a \cite rLEC97c, that computes the length of the
- * shortest nonzero vector in the dual lattice.
- * The inverse of this length represents the maximal distance between successive hyperplanes
- * in a family of equidistant hyperplanes that contain all the lattice points.
- * We want this maximal distance to be not too large for the points to cover the space evenly.
- * *LatticeTester* permits one to compute this distance for the lattice and for any of its
- * projections over a subset of coordinates.
- *
- * In these applications, the lattice of interest contains \f$\mathbb{Z}^t\f$ and its dual lattice
- * is contained in \f$\mathbb{Z}_t\f$.
- * An important difference between these two applications (from the practical viewpoint)
- * is that the number of lattice points per unit of volume,
- * i.e., the number \f$n\f$ of lattice points in the unit hypercube \f$[0,1)^t\f$,
- * is usually modest (at most in the thousands or millions) for lattice rules,
- * and much larger (say, from \f$2^{100}\f$ to \f$2^{1000}\f$ or more)  in the case of
- * random number generators (because the period of the generator typically 
- * cannot exceed \f$n\f$). For this reason, the figures of merit for these two 
- * applications are typically not the same.
- * The most relevant measures for lattice rules (e.g., \f$\mathcal{P}_\alpha\f$ with weights)
- * require a computing time that increases at least linearly (or faster)
- * with \f$n\f$ and are unusable when \f$n \ge 2^{100}\f$.
- * The spectral test, whose computing time is exponential in \f$t\f$ but only
- * logarithmic in \f$n\f$, appears more appropriate in this situation.
- *
- * For more details on lattices, see for example \cite mCON99a \cite mSLO94a.
- * Here we use \f$t\f$ for the lattice dimension, as do many papers and books on
- * linear congruential generators (e.g., \cite rKNU98a \cite rLEC90a \cite rLEC96b).
- * Most papers on lattice rules use \f$s\f$ or \f$d\f$ instead.
- *
- * The rest of this document is organized as follows.
- * In the next section, we define the lattices considered here and recall their main
- * properties.
- * In section \ref sec_merit, we define and discuss the various figures of merit
- * that the software can compute.
- *
- * \section lattices Lattices in the Real Space
- *
- * \subsection lattices_def Definition of a Lattice
- *
- * We start with *lattices* over \f$\mathbb{Z}\f$ (or \f$\mathbb{Z}\f$-lattices)
- * in the real space \f$\mathbb{R}^t\f$, which are discrete subspaces of the 
- * real vector space \f$\mathbb{R}^t\f$ that can be expressed as
- * \f[
+ * \f{equation}{
  *  L_t = \left\{\mathbf{v} = \sum_{j=1}^t z_j\mathbf{v}_j\mid \mbox{ each } z_j\in\mathbb{Z}\right\}
  *      = \oplus_{j=1}^t \mathbb{Z} \mathbf{v}_j,
  * \label {eq:lattice}
- * \f]
+ * \f}
  * where \f$t\f$ is a positive integer, and
  * \f$\mathbf{v}_1,\dots,\mathbf{v}_t\f$ are linearly independent vectors in \f$\mathbb{R}^t\f$
  * which form a **basis** of the lattice.
  * The matrix \f$\mathbf{V}\f$, whose \f$i\f$th row is \f$\mathbf{v}_i\f$, is the
  * corresponding **generator matrix** of \f$L_t\f$.
- * A comprehensive treatment of such lattices can be found in \cite mCON99a .
+ * A comprehensive treatment of such lattices can be found in \cite mCON99a. The
+ * algorithms implemented in *LatticeTester* need to be exact most of the time.
+ * To work around this limitation, the library only considers lattices with 
+ * \f$\mathbf{v}_1,\dots,\mathbf{v}_t \in \mathbb{Z}^t\f$. Note that if the basis
+ * vectors are in \f$\mathbb{Q}^t\f$ instead of \f$\mathbb{Z}^t\f$ it is possible
+ * **rescale** the lattice by multiplying all the vectors it contains by an
+ * integer such that the resulting lattice is in \f$\mathbb{Z}^t\f$. The details
+ * of this conversion are left to the user as it is not implemented.
  *
- * The determinant of the matrix \f$\mathbf{V}\f$ is equal to the volume of the
- * fundamental parallelepiped
- * \f$\{\mathbf{v} = \lambda_1\mathbf{v}_1 + \cdots + \lambda_t\mathbf{v}_t \mid
- * 0\le \lambda_i\le 1\f$ for \f$1\le i\le t\}\f$.  It is independent of
- * the choice of basis. It is called the **determinant** of \f$L_t\f$.
- * The quantity \f$n = 1/\det(L_t) = 1/\det(\mathbf{v}) = \det(\mathbf{v}^{-1})\f$
- * is called the **density** of \f$L_t\f$ and it represents the
- * average number of points per unit of volume.
- * When \f$L_t\f$ contains \f$\mathbb{Z}^t\f$, the density \f$n\f$ is an integer equal to the
- * cardinality of the point set \f$L_t \cap [0,1)^t\f$.
- *
- * For a given lattice \f$L_t\f$ and a subset of coordinates
- * \f$I = \{i_1,\dots,i_d\} \subseteq \{1,\dots,t\}\f$, denote by \f$L_t(I)\f$
- * the projection of \f$L_t\f$ over the \f$d\f$-dimensional subspace determined
- * by the coordinates in \f$I\f$.
- * This projection is also a lattice, whose density divides that of \f$L_t\f$.
- * There are exactly \f$\det(L_t(I))/\det(L_t)\f$ points of \f$L_t\f$ that are
- * projected onto each point of \f$L_t(I)\f$.
- * In group theory language, \f$L_t(I)\f$ corresponds to a coset of \f$L_t\f$.
- *
- * A **shifted lattice** is a lattice \f$L_t\f$ shifted by a constant vector
- * \f$\mathbf{v}_0\not\in L_t\f$, i.e., a point set of the form 
- * \f$L'_t = \{\mathbf{v}+\mathbf{v}_0 : \mathbf{v} \in L_t\}\f$, where 
- * \f$L_t\f$ is a lattice.  The uniformity of a shifted lattices \f$L'_t\f$ can
- * be analyzed by subtracting the shift and analyzing the (unshifted) lattice 
- * \f$L_t\f$.
- *
- * For a positive integer \f$m\f$,
- * The **dual lattice** of \f$L_t\f$ is defined as
+ * The **dual lattice** of \f$L_t^*\f$ is defined as
  * \f[
  * L_t^* = \{\mathbf{h} \in \mathbb{R}^t \mid \forall \mathbf{v} \in L_t, \mathbf{h}\cdot\mathbf{v} \in \mathbb{Z} \}.
  * \f]
@@ -148,10 +43,14 @@
  * such that \f$\mathbf{v}_i\cdot\mathbf{w}_j = \delta_{ij}\f$, where \f$\delta_{ij}=1\f$
  * if \f$i=j\f$, and \f$\delta_{ij}=0\f$ otherwise.
  * It forms a basis of the dual lattice.
- * These \f$\mathbf{w}_j\f$'s are the columns of the matrix \f$\mathbf{v}^{-1}\f$,
- * the inverse of the matrix \f$\mathbf{v}\f$.
+ * These \f$\mathbf{w}_j\f$'s are the columns of the **dual basis generator
+ * matrix** \f$\mathbf{W} = \mathbf{V}^{-1}\f$,
+ * the inverse of the generator matrix \f$\mathbf{V}\f$.
  *
  * \subsection lattices_rescaling Rescaling to lattices in the integer space
+ *
+ * *LatticeTester* stores and manipulates only lattices by storing its basis
+ * and, possibly, its dual basis in integer coordinates.
  *
  * For the applications targeted by this software, the lattice \f$L_t\f$ either contains,
  * or is contained in, the integer lattice \f$\mathbb{Z}^t\f$; i.e., 
@@ -215,6 +114,35 @@
  * 
  * \remark **Pierre**:It would be good to have a way to enumerate the points of
  *  \f$L_t \cap [0,1)^t\f$ for a more general lattice.
+ *
+ * \subsubsection lattice_def_other Other definitions
+ *
+ * The determinant of the matrix \f$\mathbf{V}\f$ is equal to the volume of the
+ * fundamental parallelepiped
+ * \f$\{\mathbf{v} = \lambda_1\mathbf{v}_1 + \cdots + \lambda_t\mathbf{v}_t \mid
+ * 0\le \lambda_i\le 1\f$ for \f$1\le i\le t\}\f$.  It is independent of
+ * the choice of basis. It is called the **determinant** of \f$L_t\f$.
+ * The quantity \f$n = 1/\det(L_t) = 1/\det(\mathbf{v}) = \det(\mathbf{v}^{-1})\f$
+ * is called the **density** of \f$L_t\f$ and it represents the
+ * average number of points per unit of volume.
+ * When \f$L_t\f$ contains \f$\mathbb{Z}^t\f$, the density \f$n\f$ is an integer equal to the
+ * cardinality of the point set \f$L_t \cap [0,1)^t\f$.
+ *
+ * For a given lattice \f$L_t\f$ and a subset of coordinates
+ * \f$I = \{i_1,\dots,i_d\} \subseteq \{1,\dots,t\}\f$, denote by \f$L_t(I)\f$
+ * the projection of \f$L_t\f$ over the \f$d\f$-dimensional subspace determined
+ * by the coordinates in \f$I\f$.
+ * This projection is also a lattice, whose density divides that of \f$L_t\f$.
+ * There are exactly \f$\det(L_t(I))/\det(L_t)\f$ points of \f$L_t\f$ that are
+ * projected onto each point of \f$L_t(I)\f$.
+ * In group theory language, \f$L_t(I)\f$ corresponds to a coset of \f$L_t\f$.
+ *
+ * A **shifted lattice** is a lattice \f$L_t\f$ shifted by a constant vector
+ * \f$\mathbf{v}_0\not\in L_t\f$, i.e., a point set of the form 
+ * \f$L'_t = \{\mathbf{v}+\mathbf{v}_0 : \mathbf{v} \in L_t\}\f$, where 
+ * \f$L_t\f$ is a lattice.  The uniformity of a shifted lattices \f$L'_t\f$ can
+ * be analyzed by subtracting the shift and analyzing the (unshifted) lattice 
+ * \f$L_t\f$.
  *
  * \section sec_merit Measures of Uniformity
  *
@@ -646,3 +574,71 @@
  * *LatticeTester* is just a wrapper most of the time.
  *
  */
+ *
+ * Such lattices are encountered for example in quasi-Monte Carlo integration
+ * (by lattice rules) and in the analysis of uniform random number generators
+ * defined by linear recurrences modulo a large integer.
+ * Measures of uniformity include the length of the shortest nonzero vector
+ * in the lattice or in its dual (the spectral test), the Beyer ratio,
+ * \f$\mathcal{P}_\alpha\f$, as well as figures of merit that take normalized versions
+ * of these measures over projections of the lattice on subsets of the \f$t\f$ coordinates,
+ * and then take a weighted sum or the worst-case over the class of considered projections.
+ * *LatticeTester* is used in particular in the *LatNet Builder* and *LatMRG*
+ * software tools, designed to construct and analyze lattice rules and linear generators.
+ *
+ * The purpose of *LatticeTester* is to compute various figures of merit that
+ * serve as measures of uniformity for lattices in the \f$t\f$-dimensional real
+ * space \f$\mathbb{R}^t\f$ that contain \f$\mathbb{Z}^t\f$ as a sublattice or are contained in \f$\mathbb{Z}^t\f$
+ * \cite vLEC00b \cite mSLO94a .
+ *
+ * The lattices we consider are discrete vector spaces in \f$\mathbb{R}^t\f$ and
+ * one is often interested in the (finite) intersection of the lattice
+ * with the \f$t\f$-dimensional unit hypercube \f$[0,1)^t\f$.
+ * This is the case for *Lattice rules*, which are multivariate integration
+ * methods that take the average value of a function at this set
+ * of points (sometimes randomly shifted modulo 1)
+ * to estimate the integral of the function over the unit cube
+ * \cite vLEC00b \cite vLEC09f \cite mSLO94a.
+ * Bounds on the (mean square) integration error can be obtained in
+ * terms of figures of merit computed by the present software.
+ *
+ * This same set of points is also the set of all vectors of \f$t\f$ successive
+ * values produced by certain types of linear congruential generators
+ * in scalar or matrix form.  In that context, we want the point set
+ * to cover the unit hypercube as uniformly as possible, and a standard
+ * way of measuring this uniformity is the spectral test
+ * \cite rCOV67a \cite rKNU98a \cite rLEC97c, that computes the length of the
+ * shortest nonzero vector in the dual lattice.
+ * The inverse of this length represents the maximal distance between successive hyperplanes
+ * in a family of equidistant hyperplanes that contain all the lattice points.
+ * We want this maximal distance to be not too large for the points to cover the space evenly.
+ * *LatticeTester* permits one to compute this distance for the lattice and for any of its
+ * projections over a subset of coordinates.
+ *
+ * In these applications, the lattice of interest contains \f$\mathbb{Z}^t\f$ and its dual lattice
+ * is contained in \f$\mathbb{Z}_t\f$.
+ * An important difference between these two applications (from the practical viewpoint)
+ * is that the number of lattice points per unit of volume,
+ * i.e., the number \f$n\f$ of lattice points in the unit hypercube \f$[0,1)^t\f$,
+ * is usually modest (at most in the thousands or millions) for lattice rules,
+ * and much larger (say, from \f$2^{100}\f$ to \f$2^{1000}\f$ or more)  in the case of
+ * random number generators (because the period of the generator typically 
+ * cannot exceed \f$n\f$). For this reason, the figures of merit for these two 
+ * applications are typically not the same.
+ * The most relevant measures for lattice rules (e.g., \f$\mathcal{P}_\alpha\f$ with weights)
+ * require a computing time that increases at least linearly (or faster)
+ * with \f$n\f$ and are unusable when \f$n \ge 2^{100}\f$.
+ * The spectral test, whose computing time is exponential in \f$t\f$ but only
+ * logarithmic in \f$n\f$, appears more appropriate in this situation.
+ *
+ * For more details on lattices, see for example \cite mCON99a \cite mSLO94a.
+ * Here we use \f$t\f$ for the lattice dimension, as do many papers and books on
+ * linear congruential generators (e.g., \cite rKNU98a \cite rLEC90a \cite rLEC96b).
+ * Most papers on lattice rules use \f$s\f$ or \f$d\f$ instead.
+ *
+ * The rest of this document is organized as follows.
+ * In the next section, we define the lattices considered here and recall their main
+ * properties.
+ * In section \ref sec_merit, we define and discuss the various figures of merit
+ * that the software can compute.
+ *

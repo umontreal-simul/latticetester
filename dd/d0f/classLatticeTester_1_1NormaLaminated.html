@@ -37,7 +37,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-70</span>
+   &#160;<span id="projectnumber">0.1.0-doc-120</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -187,7 +187,7 @@ class LatticeTester::NormaLaminated&lt; RedDbl &gt;</h3>
 
 <p>This class implements upper bounds on the lenght of the shortest nonzero vector in a lattice. </p>
 <p>To obtain these bounds, this class contains hard-coded values of an approximation of the Hermite's constant \(\gamma_s\) with the density of the laminated lattice of dimension <code>s</code>. These Hermite's constants are stored in a table accessible via the <a class="el" href="../../dd/d0f/classLatticeTester_1_1NormaLaminated.html#a13ea427b207d3259735ff5011a21dd08" title="Returns the value of the bound on the Hermite&#39;s constant  in dimension .">getGamma(int) const</a> method.</p>
-<p>A laminated lattice in dimension <code>s</code> is, roughly speaking, the densest possible packing of a laminated lattice of dimension <code>s-1</code> with copies of itself. These lattices are not always the densest lattices available, but are a more instinctive construction of a dense lattice. In <a class="el" href="../../d0/de3/citelist.html#CITEREF_mCON99a">[2]</a>, Table 6.1 gives the determinant \(\lambda_s\) that can be used to recover the center density \(\delta_s = \lambda_s^{-1/2}\) of the densest laminated lattice in dimension \(s\). From there, we get </p><p class="formulaDsp">
+<p>A laminated lattice in dimension <code>s</code> is, roughly speaking, the densest possible packing of a laminated lattice of dimension <code>s-1</code> with copies of itself. These lattices are not always the densest lattices available, but are a more instinctive construction of a dense lattice. In <a class="el" href="../../d0/de3/citelist.html#CITEREF_mCON99a">[4]</a>, Table 6.1 gives the determinant \(\lambda_s\) that can be used to recover the center density \(\delta_s = \lambda_s^{-1/2}\) of the densest laminated lattice in dimension \(s\). From there, we get </p><p class="formulaDsp">
 \[ \gamma_s = 4 \delta_s^{2/s}. \]
 </p>
 <p> The number \(\gamma_n\) is the number returned by calling <code>getGamma(n)</code>. The <a class="el" href="../../d0/dc8/classLatticeTester_1_1Normalizer.html#a455dc822f63297363c329adad6a0bec7" title="This is a method that will initialize the bounds this normalizer can return.">init()</a> method of this class inherited from <code><a class="el" href="../../d0/dc8/classLatticeTester_1_1Normalizer.html" title="Classes which inherit from this base class are used in implementing bounds on the length of the short...">Normalizer</a></code> computes the upper bound on the shortest non-zero vector of the lattice as </p><p class="formulaDsp">
@@ -279,7 +279,7 @@ template&lt;typename RedDbl &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a></li><li class="navelem"><a class="el" href="../../dd/d0f/classLatticeTester_1_1NormaLaminated.html">NormaLaminated</a></li>
-    <li class="footer">Generated on Tue Feb 12 2019 17:13:08 for Lattice Tester Manual by
+    <li class="footer">Generated on Mon Jun 3 2019 17:37:01 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.15 </li>
   </ul>

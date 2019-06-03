@@ -7,5 +7,6 @@ var searchData=
   ['latticetester',['LatticeTester',['../d8/d74/namespaceLatticeTester.html',1,'']]],
   ['lfactorial',['lFactorial',['../d8/d74/namespaceLatticeTester.html#a61a624270d67110531f2dea4c739eff5',1,'LatticeTester']]],
   ['lg',['Lg',['../d8/d74/namespaceLatticeTester.html#ae12db9335c229d7c60e570dab50ef05b',1,'LatticeTester::Lg(const T &amp;x)'],['../d8/d74/namespaceLatticeTester.html#a12e4b6c931cf0a19642828796b3b3bef',1,'LatticeTester::Lg(std::int64_t x)']]],
-  ['lllconstruction',['LLLConstruction',['../d0/d18/classLatticeTester_1_1BasisConstruction.html#ae5a5ec90b38dcb71359d3b8ef605345b',1,'LatticeTester::BasisConstruction']]]
+  ['lllconstruction',['LLLConstruction',['../d0/d18/classLatticeTester_1_1BasisConstruction.html#ae5a5ec90b38dcb71359d3b8ef605345b',1,'LatticeTester::BasisConstruction']]],
+  ['random',['Random',['../d3/dfe/namespaceLatticeTester_1_1Random.html',1,'LatticeTester']]]
 ];

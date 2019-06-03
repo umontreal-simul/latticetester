@@ -13,7 +13,7 @@ var searchData=
   ['setmultiplicity',['setMultiplicity',['../d6/d95/classLatticeTester_1_1IntFactor.html#ac79ea554966fa6d3e9f300e795ae4822',1,'LatticeTester::IntFactor']]],
   ['setnegativenorm',['setNegativeNorm',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#af2af81f5743dfc7bd467cc7aae8662b7',1,'LatticeTester::IntLatticeBasis::setNegativeNorm()'],['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a364c95929f9390caaf8b9f5a427c2058',1,'LatticeTester::IntLatticeBasis::setNegativeNorm(const int &amp;i)']]],
   ['setnorm',['setNorm',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a80587d323e2aa5797016718487e5a408',1,'LatticeTester::IntLatticeBasis::setNorm()'],['../d0/dc8/classLatticeTester_1_1Normalizer.html#a1351f2eef049216516d15c6c69811df1',1,'LatticeTester::Normalizer::setNorm()']]],
-  ['setseed',['setSeed',['../dc/d9a/classLatticeTester_1_1Random.html#a539901c84d5d15d51f75a68816e85585',1,'LatticeTester::Random::setSeed()'],['../d8/d74/namespaceLatticeTester.html#a1a68bc6b1e81a03d09ea07fa9efed658',1,'LatticeTester::SetSeed()']]],
+  ['setseed',['SetSeed',['../d8/d74/namespaceLatticeTester.html#a1a68bc6b1e81a03d09ea07fa9efed658',1,'LatticeTester::SetSeed()'],['../d3/dfe/namespaceLatticeTester_1_1Random.html#ac6d5f121924c4f8bb4809567de5945f1',1,'LatticeTester::Random::setSeed()']]],
   ['setstatus',['setStatus',['../d6/d95/classLatticeTester_1_1IntFactor.html#a425d7954ef8007fb4c87cf9c5285f07e',1,'LatticeTester::IntFactor']]],
   ['setvalue',['SetValue',['../d8/d74/namespaceLatticeTester.html#a07e941416f7b2402d15045a459e4196e',1,'LatticeTester']]],
   ['setvecnorm',['setVecNorm',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#ac38daf938ea1d0e1505ada0aa62338cc',1,'LatticeTester::IntLatticeBasis']]],
@@ -27,6 +27,7 @@ var searchData=
   ['size1',['size1',['../d4/d6f/classNTL_1_1matrix.html#ac642b4a5afc2a742f30c50467ecf9559',1,'NTL::matrix']]],
   ['size2',['size2',['../d4/d6f/classNTL_1_1matrix.html#a3c020943f9dced68275092612a89f7ab',1,'NTL::matrix']]],
   ['sort',['sort',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a82f6e60a98f1c2cdca32babe73becb87',1,'LatticeTester::IntLatticeBasis']]],
+  ['sortnodual',['sortNoDual',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a0d0a99d73670c9131710c482d0f072d3',1,'LatticeTester::IntLatticeBasis']]],
   ['subsets',['Subsets',['../d8/d6d/classLatticeTester_1_1CoordinateSets_1_1Subsets.html',1,'LatticeTester::CoordinateSets::Subsets'],['../d8/d6d/classLatticeTester_1_1CoordinateSets_1_1Subsets.html#aac137b6289ae3d3513eae1bcb6b16f78',1,'LatticeTester::CoordinateSets::Subsets::Subsets()']]],
   ['swap9',['swap9',['../d8/d74/namespaceLatticeTester.html#ad4d16fed8fda92252dc423db28136932',1,'LatticeTester']]]
 ];

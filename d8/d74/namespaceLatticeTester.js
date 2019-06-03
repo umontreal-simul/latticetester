@@ -22,7 +22,6 @@ var namespaceLatticeTester =
     [ "PODWeights", "d4/de7/classLatticeTester_1_1PODWeights.html", "d4/de7/classLatticeTester_1_1PODWeights" ],
     [ "ProductWeights", "da/d3e/classLatticeTester_1_1ProductWeights.html", "da/d3e/classLatticeTester_1_1ProductWeights" ],
     [ "ProjectionDependentWeights", "d1/db4/classLatticeTester_1_1ProjectionDependentWeights.html", "d1/db4/classLatticeTester_1_1ProjectionDependentWeights" ],
-    [ "Random", "dc/d9a/classLatticeTester_1_1Random.html", "dc/d9a/classLatticeTester_1_1Random" ],
     [ "Rank1Lattice", "de/dfe/classLatticeTester_1_1Rank1Lattice.html", "de/dfe/classLatticeTester_1_1Rank1Lattice" ],
     [ "Reducer", "d8/de3/classLatticeTester_1_1Reducer.html", "d8/de3/classLatticeTester_1_1Reducer" ],
     [ "Types", "d6/df9/classLatticeTester_1_1Types.html", null ],

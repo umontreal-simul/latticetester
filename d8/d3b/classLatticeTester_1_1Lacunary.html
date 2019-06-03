@@ -37,7 +37,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-70</span>
+   &#160;<span id="projectnumber">0.1.0-doc-120</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -140,7 +140,7 @@ class LatticeTester::Lacunary&lt; BasInt &gt;</h3>
 
 <p>This class represents a set of indices with lacunary values. </p>
 <p>This class stores the values of those indices as a vector, and they can be accessed via the <code>[]</code> operator. There also is a method to construct a set with values spaced in a certain way. This class is present here to be used with the subclasses of <a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html" title="This class is a skeleton for the implementation of different types of lattices.">IntLattice</a>.</p>
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000004">Todo:</a></b></dt><dd><b>Marc-Antoine</b>: I feel like the current implementation of this class is obsolete : it contains too few methods and functions to be of more use than the vector classes. </dd></dl>
+<dl class="section remark"><dt>Remarks</dt><dd>As it is, this class could be replaced by a simple vector when it occurs. It does not implement any feature that a basic vector class does not have. This class was part of the legacy code base but removing the instances where it is used would take more time than we are currently willing to spend on this library. </dd></dl>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a8c91ccc16be251a222faa28853849c8f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a8c91ccc16be251a222faa28853849c8f">&#9670;&nbsp;</a></span>Lacunary() <span class="overload">[1/2]</span></h2>
@@ -179,7 +179,6 @@ template&lt;typename BasInt &gt; </div>
 </div><div class="memdoc">
 
 <p>Constructor for a set of \(t\) indices given in the vector <code>C</code>. </p>
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000005">Todo:</a></b></dt><dd>This constructor might not work as intended because BasIntVec is an <a class="el" href="../../d0/d01/classNTL_1_1vector.html" title="A subclass of the NTL::Vec&lt;T&gt; class.">NTL::vector</a> type and this function dynamically allocates an array to it. There is no real reason to do that since there is a setSize method available. </dd></dl>
 
 </div>
 </div>
@@ -404,7 +403,7 @@ template&lt;typename BasInt &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a></li><li class="navelem"><a class="el" href="../../d8/d3b/classLatticeTester_1_1Lacunary.html">Lacunary</a></li>
-    <li class="footer">Generated on Tue Feb 12 2019 17:13:08 for Lattice Tester Manual by
+    <li class="footer">Generated on Mon Jun 3 2019 17:37:00 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.15 </li>
   </ul>

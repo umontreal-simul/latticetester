@@ -37,7 +37,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-70</span>
+   &#160;<span id="projectnumber">0.1.0-doc-120</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -178,9 +178,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4ee626bcafc762ae00166fc8fe9bb276"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a4ee626bcafc762ae00166fc8fe9bb276">setDualVecNorm</a> (const Dbl &amp;value, const int &amp;i)</td></tr>
 <tr class="memdesc:a4ee626bcafc762ae00166fc8fe9bb276"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the norm of the <code>i</code>-th component of the dual basis to <code>value</code>.  <a href="#a4ee626bcafc762ae00166fc8fe9bb276">More...</a><br /></td></tr>
 <tr class="separator:a4ee626bcafc762ae00166fc8fe9bb276"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adad5256ecd1222f5953f080fff737a02"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#adad5256ecd1222f5953f080fff737a02">withDual</a> ()</td></tr>
-<tr class="memdesc:adad5256ecd1222f5953f080fff737a02"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if a dual has been defined and <code>false</code> otherwise.  <a href="#adad5256ecd1222f5953f080fff737a02">More...</a><br /></td></tr>
-<tr class="separator:adad5256ecd1222f5953f080fff737a02"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5173b1b59fe7d000ba2fb6e03be507de"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a5173b1b59fe7d000ba2fb6e03be507de">withDual</a> () const</td></tr>
+<tr class="memdesc:a5173b1b59fe7d000ba2fb6e03be507de"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if a dual has been defined and <code>false</code> otherwise.  <a href="#a5173b1b59fe7d000ba2fb6e03be507de">More...</a><br /></td></tr>
+<tr class="separator:a5173b1b59fe7d000ba2fb6e03be507de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0efb2540097aea0153fc49de5644347"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#ac0efb2540097aea0153fc49de5644347">setDualFlag</a> (bool flag)</td></tr>
 <tr class="memdesc:ac0efb2540097aea0153fc49de5644347"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the <code>withDual</code> flag to <code>flag</code>.  <a href="#ac0efb2540097aea0153fc49de5644347">More...</a><br /></td></tr>
 <tr class="separator:ac0efb2540097aea0153fc49de5644347"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -223,12 +223,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a666ed5b323f58f8d4c9dcace46aeddec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a666ed5b323f58f8d4c9dcace46aeddec">permute</a> (int i, int j)</td></tr>
 <tr class="memdesc:a666ed5b323f58f8d4c9dcace46aeddec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exchanges vectors <code>i</code> and <code>j</code> in the basis.  <a href="#a666ed5b323f58f8d4c9dcace46aeddec">More...</a><br /></td></tr>
 <tr class="separator:a666ed5b323f58f8d4c9dcace46aeddec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e5ed9b05edc7c6ce235fa0f1631fc35"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a0e5ed9b05edc7c6ce235fa0f1631fc35">permuteNoDual</a> (int i, int j)</td></tr>
+<tr class="memdesc:a0e5ed9b05edc7c6ce235fa0f1631fc35"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exchanges vectors <code>i</code> and <code>j</code> in the basis without changing the dual.  <a href="#a0e5ed9b05edc7c6ce235fa0f1631fc35">More...</a><br /></td></tr>
+<tr class="separator:a0e5ed9b05edc7c6ce235fa0f1631fc35"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3aef5ff1c24b10130431c35f3a19b1e0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a3aef5ff1c24b10130431c35f3a19b1e0">checkDuality</a> ()</td></tr>
 <tr class="memdesc:a3aef5ff1c24b10130431c35f3a19b1e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if the dual basis contained in the object really is the dual of the basis, and <code>false</code> otherwise.  <a href="#a3aef5ff1c24b10130431c35f3a19b1e0">More...</a><br /></td></tr>
 <tr class="separator:a3aef5ff1c24b10130431c35f3a19b1e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82f6e60a98f1c2cdca32babe73becb87"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a82f6e60a98f1c2cdca32babe73becb87">sort</a> (int d)</td></tr>
 <tr class="memdesc:a82f6e60a98f1c2cdca32babe73becb87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sorts the basis vectors with indices greater of equal to \(d\) by increasing length.  <a href="#a82f6e60a98f1c2cdca32babe73becb87">More...</a><br /></td></tr>
 <tr class="separator:a82f6e60a98f1c2cdca32babe73becb87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d0a99d73670c9131710c482d0f072d3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a0d0a99d73670c9131710c482d0f072d3">sortNoDual</a> (int d)</td></tr>
+<tr class="memdesc:a0d0a99d73670c9131710c482d0f072d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sorts the basis vectors with indices greater of equal to \(d\) by increasing length.  <a href="#a0d0a99d73670c9131710c482d0f072d3">More...</a><br /></td></tr>
+<tr class="separator:a0d0a99d73670c9131710c482d0f072d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a205abb7fcd4af3999472be7deed2a2"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a4a205abb7fcd4af3999472be7deed2a2">toStringBasis</a> () const</td></tr>
 <tr class="memdesc:a4a205abb7fcd4af3999472be7deed2a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string with the primal basis and its norms.  <a href="#a4a205abb7fcd4af3999472be7deed2a2">More...</a><br /></td></tr>
 <tr class="separator:a4a205abb7fcd4af3999472be7deed2a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -528,7 +534,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -557,7 +563,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -587,7 +593,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -616,7 +622,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -646,7 +652,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -675,7 +681,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -705,7 +711,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -734,7 +740,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -764,7 +770,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -862,13 +868,46 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 
 </div>
 </div>
+<a id="a0e5ed9b05edc7c6ce235fa0f1631fc35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0e5ed9b05edc7c6ce235fa0f1631fc35">&#9670;&nbsp;</a></span>permuteNoDual()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html">LatticeTester::IntLatticeBasis</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::permuteNoDual </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Exchanges vectors <code>i</code> and <code>j</code> in the basis without changing the dual. </p>
+<p>See <code><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a666ed5b323f58f8d4c9dcace46aeddec" title="Exchanges vectors i and j in the basis.">permute()</a></code>. </p>
+
+</div>
+</div>
 <a id="aa7c20e93b24ea706a80e8cd813dd4f86"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa7c20e93b24ea706a80e8cd813dd4f86">&#9670;&nbsp;</a></span>setDim()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -899,7 +938,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -920,7 +959,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 </div><div class="memdoc">
 
 <p>Sets the <code>withDual</code> flag to <code>flag</code>. </p>
-<p>This flag indicates whether or not this <a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html" title="This class represents a lattice and its basis and offers tools to do basic manipulations on lattice b...">IntLatticeBasis</a> contains a dual basis. It is the flag returned by <code><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#adad5256ecd1222f5953f080fff737a02" title="Returns true if a dual has been defined and false otherwise.">withDual()</a></code>. </p>
+<p>This flag indicates whether or not this <a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html" title="This class represents a lattice and its basis and offers tools to do basic manipulations on lattice b...">IntLatticeBasis</a> contains a dual basis. It is the flag returned by <code><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a5173b1b59fe7d000ba2fb6e03be507de" title="Returns true if a dual has been defined and false otherwise.">withDual()</a></code>. </p>
 
 </div>
 </div>
@@ -951,7 +990,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -981,7 +1020,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1043,7 +1082,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1073,7 +1112,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1103,7 +1142,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1158,6 +1197,29 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 
 <p>Sorts the basis vectors with indices greater of equal to \(d\) by increasing length. </p>
 <p>The dual vectors are permuted accordingly. Assumes that the lengths of the corresponding basis vectors are up to date. </p>
+
+</div>
+</div>
+<a id="a0d0a99d73670c9131710c482d0f072d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d0a99d73670c9131710c482d0f072d3">&#9670;&nbsp;</a></span>sortNoDual()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html">LatticeTester::IntLatticeBasis</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::sortNoDual </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>d</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Sorts the basis vectors with indices greater of equal to \(d\) by increasing length. </p>
+<p>The dual vectors are <b>not</b> permuted. See <code><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a82f6e60a98f1c2cdca32babe73becb87" title="Sorts the basis vectors with indices greater of equal to  by increasing length.">sort()</a></code>. </p>
 
 </div>
 </div>
@@ -1397,13 +1459,13 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 
 </div>
 </div>
-<a id="adad5256ecd1222f5953f080fff737a02"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adad5256ecd1222f5953f080fff737a02">&#9670;&nbsp;</a></span>withDual()</h2>
+<a id="a5173b1b59fe7d000ba2fb6e03be507de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5173b1b59fe7d000ba2fb6e03be507de">&#9670;&nbsp;</a></span>withDual()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1412,7 +1474,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
           <td class="memname">bool <a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html">LatticeTester::IntLatticeBasis</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::withDual </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
-          <td></td>
+          <td> const</td>
         </tr>
       </table>
   </td>
@@ -1455,7 +1517,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1481,7 +1543,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1508,7 +1570,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1534,7 +1596,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1560,7 +1622,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1586,7 +1648,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1612,7 +1674,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1638,7 +1700,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+template&lt;typename Int, typename BasInt, typename Dbl, typename RedDbl&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -1667,7 +1729,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a></li><li class="navelem"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html">IntLatticeBasis</a></li>
-    <li class="footer">Generated on Tue Feb 12 2019 17:13:08 for Lattice Tester Manual by
+    <li class="footer">Generated on Mon Jun 3 2019 17:37:00 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.15 </li>
   </ul>

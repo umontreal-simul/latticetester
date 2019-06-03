@@ -13,7 +13,6 @@ var searchData=
   ['normatype',['NormaType',['../d8/d74/namespaceLatticeTester.html#ab747c1cbb0f5e47fef711b62327a8e90',1,'LatticeTester']]],
   ['normtype',['NormType',['../d8/d74/namespaceLatticeTester.html#a9770e4d57aa715e249cd7e700c6f37e4',1,'LatticeTester']]],
   ['ntl',['NTL',['../d2/d5a/namespaceNTL.html',1,'']]],
-  ['num_2eh',['Num.h',['../d8/d53/Num_8h.html',1,'']]],
   ['numcols',['NumCols',['../d8/dcd/classLatticeTester_1_1Config.html#ae5cd8282b7aec200f916486700ba52d3',1,'LatticeTester::Config']]],
   ['numrows',['NumRows',['../d8/dcd/classLatticeTester_1_1Config.html#ae027b303017127355f60f226c251ac49',1,'LatticeTester::Config']]]
 ];

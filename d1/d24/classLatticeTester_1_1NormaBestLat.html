@@ -37,7 +37,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-70</span>
+   &#160;<span id="projectnumber">0.1.0-doc-120</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -186,7 +186,7 @@ Additional Inherited Members</h2></td></tr>
 class LatticeTester::NormaBestLat&lt; RedDbl &gt;</h3>
 
 <p>This class implements upper bounds on the lenght of the shortest nonzero vector in a lattice. </p>
-<p>To obtain these bounds, this class contains hard-coded values of an approximation of the Hermite's constant \(\gamma_s\) with the density of the highest density lattices known as of <a class="el" href="../../d0/de3/citelist.html#CITEREF_mCON99a">[2]</a>. These Hermite's constants are stored in a table accessible via the <a class="el" href="../../d1/d24/classLatticeTester_1_1NormaBestLat.html#ac0e95c3463b2ff7f80ef007064d12d02" title="Returns the value of the bound on the Hermite&#39;s constant  in dimension .">getGamma(int) const </a>method. In <a class="el" href="../../d0/de3/citelist.html#CITEREF_mCON99a">[2]</a>, Table I.1(a) gives the center density \(\delta_s\) of the densest known packings in dimension \(s\). We then have that </p><p class="formulaDsp">
+<p>To obtain these bounds, this class contains hard-coded values of an approximation of the Hermite's constant \(\gamma_s\) with the density of the highest density lattices known as of <a class="el" href="../../d0/de3/citelist.html#CITEREF_mCON99a">[4]</a>. These Hermite's constants are stored in a table accessible via the <a class="el" href="../../d1/d24/classLatticeTester_1_1NormaBestLat.html#ac0e95c3463b2ff7f80ef007064d12d02" title="Returns the value of the bound on the Hermite&#39;s constant  in dimension .">getGamma(int) const </a>method. In <a class="el" href="../../d0/de3/citelist.html#CITEREF_mCON99a">[4]</a>, Table I.1(a) gives the center density \(\delta_s\) of the densest known packings in dimension \(s\). We then have that </p><p class="formulaDsp">
 \[ \gamma_s = 4 \delta_s^{2/s}. \]
 </p>
 <p> The number \(\gamma_n\) is the number returned by calling <code>getGamma(n)</code>. The <a class="el" href="../../d0/dc8/classLatticeTester_1_1Normalizer.html#a455dc822f63297363c329adad6a0bec7" title="This is a method that will initialize the bounds this normalizer can return.">init()</a> method of this class inherited from <code><a class="el" href="../../d0/dc8/classLatticeTester_1_1Normalizer.html" title="Classes which inherit from this base class are used in implementing bounds on the length of the short...">Normalizer</a></code> computes the upper bound on the shortest non-zero vector of the lattice as </p><p class="formulaDsp">
@@ -278,7 +278,7 @@ template&lt;typename RedDbl &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a></li><li class="navelem"><a class="el" href="../../d1/d24/classLatticeTester_1_1NormaBestLat.html">NormaBestLat</a></li>
-    <li class="footer">Generated on Tue Feb 12 2019 17:13:08 for Lattice Tester Manual by
+    <li class="footer">Generated on Mon Jun 3 2019 17:37:01 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.15 </li>
   </ul>

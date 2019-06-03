@@ -37,7 +37,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-70</span>
+   &#160;<span id="projectnumber">0.1.0-doc-120</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -102,7 +102,7 @@ $(document).ready(function(){initNavTree('df/de5/classLatticeTester_1_1NormaBest
 </div><!--header-->
 <div class="contents">
 
-<p>\Remark The current implementation does not implement the bounds for now  
+<p>This class implements upper bounds on the lenght of the shortest nonzero vector in a lattice.  
  <a href="../../df/de5/classLatticeTester_1_1NormaBestBound.html#details">More...</a></p>
 
 <p><code>#include &lt;latticetester/NormaBestBound.h&gt;</code></p>
@@ -188,8 +188,8 @@ Additional Inherited Members</h2></td></tr>
 <div class="textblock"><h3>template&lt;typename RedDbl&gt;<br />
 class LatticeTester::NormaBestBound&lt; RedDbl &gt;</h3>
 
-<p>\Remark The current implementation does not implement the bounds for now </p>
-<p>This class implements upper bounds on the lenght of the shortest nonzero vector in a lattice. To obtain these bounds, this class contains hard-coded values of an approximation of the Hermite's constants \(\gamma_s\) that are the best upper bounds that we are aware of. These Hermite's constants are stored in a table accessible via the <a class="el" href="../../df/de5/classLatticeTester_1_1NormaBestBound.html#a7c6a618d514298fe8f765b26ba896c81" title="Returns the value of the bound on the Hermite&#39;s constant  in dimension .">getGamma(int) const</a> method.</p>
+<p>This class implements upper bounds on the lenght of the shortest nonzero vector in a lattice. </p>
+<p>To obtain these bounds, this class contains hard-coded values of an approximation of the Hermite's constants \(\gamma_s\) that are the best upper bounds that we are aware of. These Hermite's constants are stored in a table accessible via the <a class="el" href="../../df/de5/classLatticeTester_1_1NormaBestBound.html#a7c6a618d514298fe8f765b26ba896c81" title="Returns the value of the bound on the Hermite&#39;s constant  in dimension .">getGamma(int) const</a> method.</p>
 <p>For dimensions 0 through 8, the Hermite's constant are known exactly. For dimensions 9 through 36, see <a href="https://doi.org/10.4007/annals.2003.157.689">https://doi.org/10.4007/annals.2003.157.689</a>. For dimensions 37 through 48 this uses Rogers's bound.</p>
 <p>This class is to be used with the L2NORM (the Euclidian norm) exclusively. Note this class stores the log value of the density to handle larger values. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
@@ -228,7 +228,7 @@ template&lt;typename RedDbl &gt; </div>
 </div><div class="memdoc">
 
 <p>Constructor for this class. </p>
-<p>Suppose we want to use this normalizer on a lattice with it's basis in the lines of \(V\) of dimension \(t\). We can call this constructor as <code><a class="el" href="../../df/de5/classLatticeTester_1_1NormaBestBound.html" title="\Remark The current implementation does not implement the bounds for now">NormaBestBound</a>(abs(det(V)), t)</code>. getPreComputedBound(t) will then return an upper bound on the lenght of the shortest non-zero vector in dimension <code>t</code>. In the case where the lattice also has the same density in lower dimensions than <code>t</code>, pre-computed bounds will also be available.</p>
+<p>Suppose we want to use this normalizer on a lattice with it's basis in the lines of \(V\) of dimension \(t\). We can call this constructor as <code><a class="el" href="../../df/de5/classLatticeTester_1_1NormaBestBound.html" title="This class implements upper bounds on the lenght of the shortest nonzero vector in a lattice.">NormaBestBound</a>(abs(det(V)), t)</code>. getPreComputedBound(t) will then return an upper bound on the lenght of the shortest non-zero vector in dimension <code>t</code>. In the case where the lattice also has the same density in lower dimensions than <code>t</code>, pre-computed bounds will also be available.</p>
 <p>The bias factor <code>beta</code> gives more or less weight to some of the dimensions (see <a class="el" href="../../d0/dc8/classLatticeTester_1_1Normalizer.html" title="Classes which inherit from this base class are used in implementing bounds on the length of the short...">Normalizer</a> for details). It is recommended to keep it at its default value because its usage is deprecated.</p>
 <p>There is a restriction for <code>t</code> to be \(\le48\). </p>
 
@@ -297,7 +297,7 @@ template&lt;typename RedDbl &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a></li><li class="navelem"><a class="el" href="../../df/de5/classLatticeTester_1_1NormaBestBound.html">NormaBestBound</a></li>
-    <li class="footer">Generated on Tue Feb 12 2019 17:13:08 for Lattice Tester Manual by
+    <li class="footer">Generated on Mon Jun 3 2019 17:37:01 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.15 </li>
   </ul>

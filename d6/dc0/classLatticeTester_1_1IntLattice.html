@@ -37,7 +37,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-70</span>
+   &#160;<span id="projectnumber">0.1.0-doc-120</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -115,9 +115,9 @@ $(document).ready(function(){initNavTree('d6/dc0/classLatticeTester_1_1IntLattic
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aff4b943c6beebfe5583e637788dbc6fb"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#aff4b943c6beebfe5583e637788dbc6fb">IntLattice</a> (Int modulo, int k, int maxDim, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9770e4d57aa715e249cd7e700c6f37e4">NormType</a> norm=L2NORM)</td></tr>
-<tr class="memdesc:aff4b943c6beebfe5583e637788dbc6fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor initializing the primal and the dual basis with the identity matrix.  <a href="#aff4b943c6beebfe5583e637788dbc6fb">More...</a><br /></td></tr>
-<tr class="separator:aff4b943c6beebfe5583e637788dbc6fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1c1297762b5a7cefda7df7fbc4338b7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#aa1c1297762b5a7cefda7df7fbc4338b7">IntLattice</a> (Int modulo, int k, int maxDim, bool <a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a5173b1b59fe7d000ba2fb6e03be507de">withDual</a>, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9770e4d57aa715e249cd7e700c6f37e4">NormType</a> norm=L2NORM)</td></tr>
+<tr class="memdesc:aa1c1297762b5a7cefda7df7fbc4338b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor initializing the primal and the dual basis with the identity matrix.  <a href="#aa1c1297762b5a7cefda7df7fbc4338b7">More...</a><br /></td></tr>
+<tr class="separator:aa1c1297762b5a7cefda7df7fbc4338b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abb0304b8968e1eb0fd3c027719c05046"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#abb0304b8968e1eb0fd3c027719c05046">IntLattice</a> (const <a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html">IntLattice</a>&lt; Int, BasInt, Dbl, RedDbl &gt; &amp;Lat)</td></tr>
 <tr class="memdesc:abb0304b8968e1eb0fd3c027719c05046"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor that makes a copy of <code>Lat</code>.  <a href="#abb0304b8968e1eb0fd3c027719c05046">More...</a><br /></td></tr>
 <tr class="separator:abb0304b8968e1eb0fd3c027719c05046"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -131,7 +131,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memdesc:a11c725be12a73fbd6a5a402b9fc2031b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allocates space to vectors used internally.  <a href="#a11c725be12a73fbd6a5a402b9fc2031b">More...</a><br /></td></tr>
 <tr class="separator:a11c725be12a73fbd6a5a402b9fc2031b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1460e1a647ff9d1a3f3a0bd05f50a217"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#a1460e1a647ff9d1a3f3a0bd05f50a217">getOrder</a> () const</td></tr>
-<tr class="memdesc:a1460e1a647ff9d1a3f3a0bd05f50a217"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is the order of the underlying MRG.  <a href="#a1460e1a647ff9d1a3f3a0bd05f50a217">More...</a><br /></td></tr>
+<tr class="memdesc:a1460e1a647ff9d1a3f3a0bd05f50a217"><td class="mdescLeft">&#160;</td><td class="mdescRight">This returns the rank of the lattice.  <a href="#a1460e1a647ff9d1a3f3a0bd05f50a217">More...</a><br /></td></tr>
 <tr class="separator:a1460e1a647ff9d1a3f3a0bd05f50a217"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aeaedcd4d3f21ff6c1d328bfcd924e05a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#aeaedcd4d3f21ff6c1d328bfcd924e05a">incDim</a> ()</td></tr>
 <tr class="memdesc:aeaedcd4d3f21ff6c1d328bfcd924e05a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Increments the dimension of the basis and dual basis vectors by one.  <a href="#aeaedcd4d3f21ff6c1d328bfcd924e05a">More...</a><br /></td></tr>
@@ -148,7 +148,7 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0eac7df4c5b815439778bccb0242e594"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#a0eac7df4c5b815439778bccb0242e594">fixLatticeNormalization</a> (bool dualF)</td></tr>
 <tr class="memdesc:a0eac7df4c5b815439778bccb0242e594"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function is called to fix the normalization constants to get the normalized merit from the shortest distance in the lattice.  <a href="#a0eac7df4c5b815439778bccb0242e594">More...</a><br /></td></tr>
 <tr class="separator:a0eac7df4c5b815439778bccb0242e594"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c7bf4f621c4f306263f8b0e6057941e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#a9c7bf4f621c4f306263f8b0e6057941e">buildProjection</a> (<a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html">IntLattice</a>&lt; Int, BasInt, Dbl, RedDbl &gt; *lattice, const <a class="el" href="../../d9/dd3/classLatticeTester_1_1Coordinates.html">Coordinates</a> &amp;proj)</td></tr>
+<tr class="memitem:a9c7bf4f621c4f306263f8b0e6057941e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#a9c7bf4f621c4f306263f8b0e6057941e">buildProjection</a> (<a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html">IntLattice</a>&lt; Int, BasInt, Dbl, RedDbl &gt; *lattice, const <a class="el" href="../../d9/dd3/classLatticeTester_1_1Coordinates.html">Coordinates</a> &amp;proj)</td></tr>
 <tr class="memdesc:a9c7bf4f621c4f306263f8b0e6057941e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds the basis (and dual basis) of the projection <code>proj</code> for this lattice.  <a href="#a9c7bf4f621c4f306263f8b0e6057941e">More...</a><br /></td></tr>
 <tr class="separator:a9c7bf4f621c4f306263f8b0e6057941e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68235b33d81fc119b2006b3dbbcb426d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#a68235b33d81fc119b2006b3dbbcb426d">buildBasis</a> (int d)</td></tr>
@@ -160,9 +160,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a19cb5accc931351a384f3039a197974d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#a19cb5accc931351a384f3039a197974d">setLac</a> (const <a class="el" href="../../d8/d3b/classLatticeTester_1_1Lacunary.html">Lacunary</a>&lt; BasInt &gt; &amp;)</td></tr>
 <tr class="memdesc:a19cb5accc931351a384f3039a197974d"><td class="mdescLeft">&#160;</td><td class="mdescRight">A utility method to store a vector of indices with lacunary values in subclasses of this one.  <a href="#a19cb5accc931351a384f3039a197974d">More...</a><br /></td></tr>
 <tr class="separator:a19cb5accc931351a384f3039a197974d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a73ee08245ad247bbf1a98dbd403ee334"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#a73ee08245ad247bbf1a98dbd403ee334">toStringCoef</a> () const</td></tr>
-<tr class="memdesc:a73ee08245ad247bbf1a98dbd403ee334"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the vector of multipliers (or coefficients) \(A\) as a string.  <a href="#a73ee08245ad247bbf1a98dbd403ee334">More...</a><br /></td></tr>
-<tr class="separator:a73ee08245ad247bbf1a98dbd403ee334"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab0bebb3144f0bf22d9f18c3bfed9ddf2"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#ab0bebb3144f0bf22d9f18c3bfed9ddf2">toString</a> () const</td></tr>
+<tr class="memdesc:ab0bebb3144f0bf22d9f18c3bfed9ddf2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string describing the lattice.  <a href="#ab0bebb3144f0bf22d9f18c3bfed9ddf2">More...</a><br /></td></tr>
+<tr class="separator:ab0bebb3144f0bf22d9f18c3bfed9ddf2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classLatticeTester_1_1IntLatticeBasis"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classLatticeTester_1_1IntLatticeBasis')"><img src="../../closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html">LatticeTester::IntLatticeBasis&lt; Int, BasInt, Dbl, RedDbl &gt;</a></td></tr>
 <tr class="memitem:a1b9f071180fba913123db2c7eb9665c1 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a1b9f071180fba913123db2c7eb9665c1">IntLatticeBasis</a> (const int dim, <a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9770e4d57aa715e249cd7e700c6f37e4">NormType</a> norm=L2NORM)</td></tr>
 <tr class="memdesc:a1b9f071180fba913123db2c7eb9665c1 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor initializing the primal basis with the identity matrix.  <a href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a1b9f071180fba913123db2c7eb9665c1">More...</a><br /></td></tr>
@@ -230,9 +230,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4ee626bcafc762ae00166fc8fe9bb276 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a4ee626bcafc762ae00166fc8fe9bb276">setDualVecNorm</a> (const Dbl &amp;value, const int &amp;i)</td></tr>
 <tr class="memdesc:a4ee626bcafc762ae00166fc8fe9bb276 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the norm of the <code>i</code>-th component of the dual basis to <code>value</code>.  <a href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a4ee626bcafc762ae00166fc8fe9bb276">More...</a><br /></td></tr>
 <tr class="separator:a4ee626bcafc762ae00166fc8fe9bb276 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adad5256ecd1222f5953f080fff737a02 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#adad5256ecd1222f5953f080fff737a02">withDual</a> ()</td></tr>
-<tr class="memdesc:adad5256ecd1222f5953f080fff737a02 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if a dual has been defined and <code>false</code> otherwise.  <a href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#adad5256ecd1222f5953f080fff737a02">More...</a><br /></td></tr>
-<tr class="separator:adad5256ecd1222f5953f080fff737a02 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5173b1b59fe7d000ba2fb6e03be507de inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a5173b1b59fe7d000ba2fb6e03be507de">withDual</a> () const</td></tr>
+<tr class="memdesc:a5173b1b59fe7d000ba2fb6e03be507de inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if a dual has been defined and <code>false</code> otherwise.  <a href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a5173b1b59fe7d000ba2fb6e03be507de">More...</a><br /></td></tr>
+<tr class="separator:a5173b1b59fe7d000ba2fb6e03be507de inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0efb2540097aea0153fc49de5644347 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#ac0efb2540097aea0153fc49de5644347">setDualFlag</a> (bool flag)</td></tr>
 <tr class="memdesc:ac0efb2540097aea0153fc49de5644347 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the <code>withDual</code> flag to <code>flag</code>.  <a href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#ac0efb2540097aea0153fc49de5644347">More...</a><br /></td></tr>
 <tr class="separator:ac0efb2540097aea0153fc49de5644347 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -275,12 +275,18 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a666ed5b323f58f8d4c9dcace46aeddec inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a666ed5b323f58f8d4c9dcace46aeddec">permute</a> (int i, int j)</td></tr>
 <tr class="memdesc:a666ed5b323f58f8d4c9dcace46aeddec inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exchanges vectors <code>i</code> and <code>j</code> in the basis.  <a href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a666ed5b323f58f8d4c9dcace46aeddec">More...</a><br /></td></tr>
 <tr class="separator:a666ed5b323f58f8d4c9dcace46aeddec inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e5ed9b05edc7c6ce235fa0f1631fc35 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a0e5ed9b05edc7c6ce235fa0f1631fc35">permuteNoDual</a> (int i, int j)</td></tr>
+<tr class="memdesc:a0e5ed9b05edc7c6ce235fa0f1631fc35 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="mdescLeft">&#160;</td><td class="mdescRight">Exchanges vectors <code>i</code> and <code>j</code> in the basis without changing the dual.  <a href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a0e5ed9b05edc7c6ce235fa0f1631fc35">More...</a><br /></td></tr>
+<tr class="separator:a0e5ed9b05edc7c6ce235fa0f1631fc35 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3aef5ff1c24b10130431c35f3a19b1e0 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a3aef5ff1c24b10130431c35f3a19b1e0">checkDuality</a> ()</td></tr>
 <tr class="memdesc:a3aef5ff1c24b10130431c35f3a19b1e0 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns <code>true</code> if the dual basis contained in the object really is the dual of the basis, and <code>false</code> otherwise.  <a href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a3aef5ff1c24b10130431c35f3a19b1e0">More...</a><br /></td></tr>
 <tr class="separator:a3aef5ff1c24b10130431c35f3a19b1e0 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a82f6e60a98f1c2cdca32babe73becb87 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a82f6e60a98f1c2cdca32babe73becb87">sort</a> (int d)</td></tr>
 <tr class="memdesc:a82f6e60a98f1c2cdca32babe73becb87 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sorts the basis vectors with indices greater of equal to \(d\) by increasing length.  <a href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a82f6e60a98f1c2cdca32babe73becb87">More...</a><br /></td></tr>
 <tr class="separator:a82f6e60a98f1c2cdca32babe73becb87 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d0a99d73670c9131710c482d0f072d3 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a0d0a99d73670c9131710c482d0f072d3">sortNoDual</a> (int d)</td></tr>
+<tr class="memdesc:a0d0a99d73670c9131710c482d0f072d3 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sorts the basis vectors with indices greater of equal to \(d\) by increasing length.  <a href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a0d0a99d73670c9131710c482d0f072d3">More...</a><br /></td></tr>
+<tr class="separator:a0d0a99d73670c9131710c482d0f072d3 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a205abb7fcd4af3999472be7deed2a2 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a4a205abb7fcd4af3999472be7deed2a2">toStringBasis</a> () const</td></tr>
 <tr class="memdesc:a4a205abb7fcd4af3999472be7deed2a2 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a string with the primal basis and its norms.  <a href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a4a205abb7fcd4af3999472be7deed2a2">More...</a><br /></td></tr>
 <tr class="separator:a4a205abb7fcd4af3999472be7deed2a2 inherit pub_methods_classLatticeTester_1_1IntLatticeBasis"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -294,7 +300,7 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:abcb9d029e70935a6f883f5bcf6ae5e24"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#abcb9d029e70935a6f883f5bcf6ae5e24">kill</a> ()</td></tr>
-<tr class="memdesc:abcb9d029e70935a6f883f5bcf6ae5e24"><td class="mdescLeft">&#160;</td><td class="mdescRight">The components of the lattice when it is built out of more than one component.  <a href="#abcb9d029e70935a6f883f5bcf6ae5e24">More...</a><br /></td></tr>
+<tr class="memdesc:abcb9d029e70935a6f883f5bcf6ae5e24"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cleans and releases all the memory allocated to this lattice.  <a href="#abcb9d029e70935a6f883f5bcf6ae5e24">More...</a><br /></td></tr>
 <tr class="separator:abcb9d029e70935a6f883f5bcf6ae5e24"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
@@ -306,7 +312,7 @@ Protected Attributes</h2></td></tr>
 <tr class="memdesc:ad5f263f05db85f6b6ae4ec741fb5b0eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Represente sur dual along the diagonal?? ERWAN.  <a href="#ad5f263f05db85f6b6ae4ec741fb5b0eb">More...</a><br /></td></tr>
 <tr class="separator:ad5f263f05db85f6b6ae4ec741fb5b0eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0b6e9739ac9bd351ada79d3477509ba0"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#a0b6e9739ac9bd351ada79d3477509ba0">m_lgm2</a></td></tr>
-<tr class="memdesc:a0b6e9739ac9bd351ada79d3477509ba0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The logarithm \(\log_2 (m^2)\).  <a href="#a0b6e9739ac9bd351ada79d3477509ba0">More...</a><br /></td></tr>
+<tr class="memdesc:a0b6e9739ac9bd351ada79d3477509ba0"><td class="mdescLeft">&#160;</td><td class="mdescRight">The logarithm \(\log (m^2)\).  <a href="#a0b6e9739ac9bd351ada79d3477509ba0">More...</a><br /></td></tr>
 <tr class="separator:a0b6e9739ac9bd351ada79d3477509ba0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57f80c9dded11962656466c30bfc9d44"><td class="memItemLeft" align="right" valign="top"><a class="el" href="../../d4/d6f/classNTL_1_1matrix.html">BasIntMat</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html#a57f80c9dded11962656466c30bfc9d44">m_wSI</a></td></tr>
 <tr class="memdesc:a57f80c9dded11962656466c30bfc9d44"><td class="mdescLeft">&#160;</td><td class="mdescRight">The dual basis of the current projection.  <a href="#a57f80c9dded11962656466c30bfc9d44">More...</a><br /></td></tr>
@@ -348,11 +354,12 @@ Protected Attributes</h2></td></tr>
 class LatticeTester::IntLattice&lt; Int, BasInt, Dbl, RedDbl &gt;</h3>
 
 <p>This class is a skeleton for the implementation of different types of lattices. </p>
-<p>This class contains a method to compute lattices of projections of \(\{x_i\}_{ 0 \leq i}\), a method to exchange the basis and the dual basis, and a virtual method that can be implemented in subclasses to recompute the basis for different dimensions.</p>
+<p>This class is not really intended to be used directly, hence the lack of constructor allowing the specification of a basis.</p>
+<p>This class can store a lattice with or without dual and contains a few virtual methods to perform common computations on lattices. This class contains a method to compute lattices of projections of \(\{x_i\}_{ 0 \leq i}\), a method to exchange the basis and the dual basis, and a virtual method that can be implemented in subclasses to recompute the basis for different dimensions.</p>
 <p>A lattice of rank \(k\) with integer vectors modulo \(m\) contains \(m^k\) distinct vectors. This number, the density, can then be used to compute bounds on the spectral test. This class implements methods to compute \( \log_2(m^{2i}) \) for \( 1 \leq i \leq k \) to help with the computation of such bounds. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aff4b943c6beebfe5583e637788dbc6fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aff4b943c6beebfe5583e637788dbc6fb">&#9670;&nbsp;</a></span>IntLattice() <span class="overload">[1/2]</span></h2>
+<a id="aa1c1297762b5a7cefda7df7fbc4338b7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1c1297762b5a7cefda7df7fbc4338b7">&#9670;&nbsp;</a></span>IntLattice() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -380,6 +387,12 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
         <tr>
           <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>withDual</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
           <td class="paramtype"><a class="el" href="../../d8/d74/namespaceLatticeTester.html#a9770e4d57aa715e249cd7e700c6f37e4">NormType</a>&#160;</td>
           <td class="paramname"><em>norm</em> = <code>L2NORM</code>&#160;</td>
         </tr>
@@ -397,6 +410,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
     <tr><td class="paramname">modulo</td><td>The modulo of the integer coordinates </td></tr>
     <tr><td class="paramname">k</td><td>The rank of the lattice to be constructed </td></tr>
     <tr><td class="paramname">maxDim</td><td>The maximal dimension for which this lattice can be expanded/tested (?) </td></tr>
+    <tr><td class="paramname">withDual</td><td>Specifies wether this object contains a dual or not </td></tr>
     <tr><td class="paramname">norm</td><td>The norm to use in for reduction </td></tr>
   </table>
   </dd>
@@ -495,6 +509,9 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">void <a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html">LatticeTester::IntLattice</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::buildProjection </td>
@@ -514,6 +531,11 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
           <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Builds the basis (and dual basis) of the projection <code>proj</code> for this lattice. </p>
@@ -705,8 +727,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 </table>
 </div><div class="memdoc">
 
-<p>This is the order of the underlying MRG. </p>
-<p>The problem is that the lattice is not necessarily associated with a MRG anymore. The solution probably is to change this so that it is now the rank because a MRG of order k spans a lattice of rank k. (See the lattice construction in Pierre's book) </p>
+<p>This returns the rank of the lattice. </p>
 
 </div>
 </div>
@@ -789,8 +810,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 </table>
 </div><div class="memdoc">
 
-<p>The components of the lattice when it is built out of more than one component. </p>
-<p>When there is only one component, it is unused as the parameters are the same as above.Cleans and releases all the memory allocated to this lattice.</p>
+<p>Cleans and releases all the memory allocated to this lattice. </p>
 
 </div>
 </div>
@@ -825,8 +845,8 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 
 </div>
 </div>
-<a id="a73ee08245ad247bbf1a98dbd403ee334"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a73ee08245ad247bbf1a98dbd403ee334">&#9670;&nbsp;</a></span>toStringCoef()</h2>
+<a id="ab0bebb3144f0bf22d9f18c3bfed9ddf2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab0bebb3144f0bf22d9f18c3bfed9ddf2">&#9670;&nbsp;</a></span>toString()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -837,7 +857,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string <a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html">LatticeTester::IntLattice</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::toStringCoef </td>
+          <td class="memname">std::string <a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html">LatticeTester::IntLattice</a>&lt; Int, BasInt, Dbl, RedDbl &gt;::toString </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -850,9 +870,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 </table>
 </div><div class="memdoc">
 
-<p>Returns the vector of multipliers (or coefficients) \(A\) as a string. </p>
-
-<p>Reimplemented in <a class="el" href="../../de/dfe/classLatticeTester_1_1Rank1Lattice.html#a0d17717d737fb62d56d0e63a287249ef">LatticeTester::Rank1Lattice&lt; Int, BasInt, Dbl, RedDbl &gt;</a>.</p>
+<p>Returns a string describing the lattice. </p>
 
 </div>
 </div>
@@ -879,7 +897,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 </table>
 </div><div class="memdoc">
 
-<p>The logarithm \(\log_2 (m^2)\). </p>
+<p>The logarithm \(\log (m^2)\). </p>
 
 </div>
 </div>
@@ -1022,7 +1040,7 @@ template&lt;typename Int , typename BasInt , typename Dbl , typename RedDbl &gt;
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a></li><li class="navelem"><a class="el" href="../../d6/dc0/classLatticeTester_1_1IntLattice.html">IntLattice</a></li>
-    <li class="footer">Generated on Tue Feb 12 2019 17:13:08 for Lattice Tester Manual by
+    <li class="footer">Generated on Mon Jun 3 2019 17:37:00 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.15 </li>
   </ul>

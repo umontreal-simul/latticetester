@@ -28,7 +28,6 @@ var hierarchy =
       [ "LatticeTester::NormaRogers< RedDbl >", "d1/d30/classLatticeTester_1_1NormaRogers.html", null ]
     ] ],
     [ "LatticeTester::ParamReader< Int, BasInt, RedDbl >", "da/d47/classLatticeTester_1_1ParamReader.html", null ],
-    [ "LatticeTester::Random", "dc/d9a/classLatticeTester_1_1Random.html", null ],
     [ "LatticeTester::Reducer< Int, BasInt, Dbl, RedDbl >", "d8/de3/classLatticeTester_1_1Reducer.html", null ],
     [ "LatticeTester::Types", "d6/df9/classLatticeTester_1_1Types.html", null ],
     [ "LatticeTester::Weights", "db/d40/classLatticeTester_1_1Weights.html", [

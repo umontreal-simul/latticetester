@@ -37,7 +37,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-70</span>
+   &#160;<span id="projectnumber">0.1.0-doc-120</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -115,16 +115,16 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:af2d87fd90972f750218d516e4fa47596"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html#af2d87fd90972f750218d516e4fa47596">GCDConstruction</a> (<a class="el" href="../../d4/d6f/classNTL_1_1matrix.html">BasIntMat</a> &amp;matrix)</td></tr>
 <tr class="memdesc:af2d87fd90972f750218d516e4fa47596"><td class="mdescLeft">&#160;</td><td class="mdescRight">This function does some kind of Gaussian elimination on \(\text{span}(\text{matrix}^t)\) as a vector space on \(\mathbb{Z}\) to obtain a basis of this vector space (lattice).  <a href="#af2d87fd90972f750218d516e4fa47596">More...</a><br /></td></tr>
 <tr class="separator:af2d87fd90972f750218d516e4fa47596"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87a05d339617608f3ad3ba1c47d1acd1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html#a87a05d339617608f3ad3ba1c47d1acd1">DualConstruction</a> (<a class="el" href="../../d4/d6f/classNTL_1_1matrix.html">BasIntMat</a> &amp;matrix, <a class="el" href="../../d4/d6f/classNTL_1_1matrix.html">BasIntMat</a> &amp;dualMatrix, BasInt &amp;modulo)</td></tr>
-<tr class="memdesc:a87a05d339617608f3ad3ba1c47d1acd1"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method builds the dual of <code>matrix</code> in <code>dualMatrix</code> and multiplies modulo by the rescaling factor used.  <a href="#a87a05d339617608f3ad3ba1c47d1acd1">More...</a><br /></td></tr>
-<tr class="separator:a87a05d339617608f3ad3ba1c47d1acd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0783fc67f85f004cd66c1035ef065b8a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html#a0783fc67f85f004cd66c1035ef065b8a">DualConstruction</a> (<a class="el" href="../../d4/d6f/classNTL_1_1matrix.html">BasIntMat</a> &amp;matrix, <a class="el" href="../../d4/d6f/classNTL_1_1matrix.html">BasIntMat</a> &amp;dualMatrix, BasInt modulo)</td></tr>
+<tr class="memdesc:a0783fc67f85f004cd66c1035ef065b8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">This method builds the dual of <code>matrix</code> in <code>dualMatrix</code> and multiplies modulo by the rescaling factor used.  <a href="#a0783fc67f85f004cd66c1035ef065b8a">More...</a><br /></td></tr>
+<tr class="separator:a0783fc67f85f004cd66c1035ef065b8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab486a7a6110df22a049122bb81fb2bf9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html#ab486a7a6110df22a049122bb81fb2bf9">DualSlow</a> (<a class="el" href="../../d4/d6f/classNTL_1_1matrix.html">BasIntMat</a> &amp;matrix, <a class="el" href="../../d4/d6f/classNTL_1_1matrix.html">BasIntMat</a> &amp;dualMatrix, BasInt &amp;modulo)</td></tr>
-<tr class="memdesc:ab486a7a6110df22a049122bb81fb2bf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">This does the same thing as <a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html#a87a05d339617608f3ad3ba1c47d1acd1" title="This method builds the dual of matrix in dualMatrix and multiplies modulo by the rescaling factor use...">DualConstruction()</a>, but is much slower.  <a href="#ab486a7a6110df22a049122bb81fb2bf9">More...</a><br /></td></tr>
+<tr class="memdesc:ab486a7a6110df22a049122bb81fb2bf9"><td class="mdescLeft">&#160;</td><td class="mdescRight">This does the same thing as <a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html#a0783fc67f85f004cd66c1035ef065b8a" title="This method builds the dual of matrix in dualMatrix and multiplies modulo by the rescaling factor use...">DualConstruction()</a>, but is much slower.  <a href="#ab486a7a6110df22a049122bb81fb2bf9">More...</a><br /></td></tr>
 <tr class="separator:ab486a7a6110df22a049122bb81fb2bf9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5855203eb20a7757cb2a533504dd3cbe"><td class="memTemplParams" colspan="2">template&lt;typename Int , typename Dbl , typename RedDbl &gt; </td></tr>
-<tr class="memitem:a5855203eb20a7757cb2a533504dd3cbe"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html#a5855203eb20a7757cb2a533504dd3cbe">ProjectionConstruction</a> (<a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html">IntLatticeBasis</a>&lt; Int, BasInt, Dbl, RedDbl &gt; &amp;in, <a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html">IntLatticeBasis</a>&lt; Int, BasInt, Dbl, RedDbl &gt; &amp;out, <a class="el" href="../../d9/dd3/classLatticeTester_1_1Coordinates.html">Coordinates</a> &amp;proj)</td></tr>
-<tr class="memdesc:a5855203eb20a7757cb2a533504dd3cbe"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a method that does the general construction of the projection <code>proj</code> of the basis <code>in</code> and puts it in <code>out</code>.  <a href="#a5855203eb20a7757cb2a533504dd3cbe">More...</a><br /></td></tr>
-<tr class="separator:a5855203eb20a7757cb2a533504dd3cbe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32a4a2a2e8e85c616c45fdecbb4d6b72"><td class="memTemplParams" colspan="2">template&lt;typename Int , typename Dbl , typename RedDbl &gt; </td></tr>
+<tr class="memitem:a32a4a2a2e8e85c616c45fdecbb4d6b72"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html#a32a4a2a2e8e85c616c45fdecbb4d6b72">ProjectionConstruction</a> (<a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html">IntLatticeBasis</a>&lt; Int, BasInt, Dbl, RedDbl &gt; &amp;in, <a class="el" href="../../d1/d89/classLatticeTester_1_1IntLatticeBasis.html">IntLatticeBasis</a>&lt; Int, BasInt, Dbl, RedDbl &gt; &amp;out, const <a class="el" href="../../d9/dd3/classLatticeTester_1_1Coordinates.html">Coordinates</a> &amp;proj)</td></tr>
+<tr class="memdesc:a32a4a2a2e8e85c616c45fdecbb4d6b72"><td class="mdescLeft">&#160;</td><td class="mdescRight">This is a method that does the general construction of the projection <code>proj</code> of the basis <code>in</code> and puts it in <code>out</code>.  <a href="#a32a4a2a2e8e85c616c45fdecbb4d6b72">More...</a><br /></td></tr>
+<tr class="separator:a32a4a2a2e8e85c616c45fdecbb4d6b72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename BasInt&gt;<br />
@@ -140,8 +140,8 @@ class LatticeTester::BasisConstruction&lt; BasInt &gt;</h3>
 <li>Use specialized methods. With a more in depth knowledge of your problem, it is possible that there are much more efficient ways to build a basis and its dual (and/or that those matrices will already be triangular). </li>
 </ul>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a87a05d339617608f3ad3ba1c47d1acd1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a87a05d339617608f3ad3ba1c47d1acd1">&#9670;&nbsp;</a></span>DualConstruction()</h2>
+<a id="a0783fc67f85f004cd66c1035ef065b8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0783fc67f85f004cd66c1035ef065b8a">&#9670;&nbsp;</a></span>DualConstruction()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -163,7 +163,7 @@ template&lt;typename BasInt &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">BasInt &amp;&#160;</td>
+          <td class="paramtype">BasInt&#160;</td>
           <td class="paramname"><em>modulo</em>&#160;</td>
         </tr>
         <tr>
@@ -175,7 +175,7 @@ template&lt;typename BasInt &gt; </div>
 </div><div class="memdoc">
 
 <p>This method builds the dual of <code>matrix</code> in <code>dualMatrix</code> and multiplies modulo by the rescaling factor used. </p>
-<p>This function uses the clever method developed in <a class="el" href="../../d0/de3/citelist.html#CITEREF_rCOU96a">[3]</a> that notes that for <code>B</code> to be a <code>m</code>-dual to <code>A</code>, we have to have that \(AB^t = mI\). It is quite easy to show that, knowing <code>A</code> is upper triangular, <code>B</code> will be a lower triangular matrix with <code>A(i,i)*B(i,i) = m</code> for all <code>i</code> and \( A_i \cdot B_j = 0\) for \(i\neq j\). And that to get the second condition, we simply have to recursively take for each line </p><p class="formulaDsp">
+<p>This function uses the clever method developed in <a class="el" href="../../d0/de3/citelist.html#CITEREF_rCOU96a">[5]</a> that notes that for <code>B</code> to be a <code>m</code>-dual to <code>A</code>, we have to have that \(AB^t = mI\). It is quite easy to show that, knowing <code>A</code> is upper triangular, <code>B</code> will be a lower triangular matrix with <code>A(i,i)*B(i,i) = m</code> for all <code>i</code> and \( A_i \cdot B_j = 0\) for \(i\neq j\). And that to get the second condition, we simply have to recursively take for each line </p><p class="formulaDsp">
 \[B_{i,j} = -\frac{1}{A_{j,j}}\sum_{k=j+1}^i A_{j,k} B_{i,k}.\]
 </p>
 <p>This does the computation much faster than doing a traditional solving of a linear system. </p>
@@ -216,7 +216,7 @@ template&lt;typename BasInt &gt; </div>
       </table>
 </div><div class="memdoc">
 
-<p>This does the same thing as <a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html#a87a05d339617608f3ad3ba1c47d1acd1" title="This method builds the dual of matrix in dualMatrix and multiplies modulo by the rescaling factor use...">DualConstruction()</a>, but is much slower. </p>
+<p>This does the same thing as <a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html#a0783fc67f85f004cd66c1035ef065b8a" title="This method builds the dual of matrix in dualMatrix and multiplies modulo by the rescaling factor use...">DualConstruction()</a>, but is much slower. </p>
 <p>This algorithm calculates the dual as well as the <code>m</code> used for rescalling.</p>
 <p>This is here simply for the sake of comparison and should not be used in practice.</p>
 <p>Suppose the basis matrix contains basis vectors on its lines and is \(p\times q\) where \(q \geq p\). We can compute the \(m\)-dual as follows. Let's note the basis matrix <code>V</code> and the dual matrix <code>W</code> and have lines of <code>W</code> also contain dual basis vectors in its lines. We know that \(VW^t = mI_{p\times p}\) where \(I\) is the identity matrix. Now, in the case of a \(m\)-dual computation, we can assume that all the arithmetic is done modulo \(m\) and that \(m\) is prime??</p>
@@ -275,8 +275,8 @@ template&lt;typename BasInt &gt; </div>
 
 </div>
 </div>
-<a id="a5855203eb20a7757cb2a533504dd3cbe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5855203eb20a7757cb2a533504dd3cbe">&#9670;&nbsp;</a></span>ProjectionConstruction()</h2>
+<a id="a32a4a2a2e8e85c616c45fdecbb4d6b72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32a4a2a2e8e85c616c45fdecbb4d6b72">&#9670;&nbsp;</a></span>ProjectionConstruction()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -300,7 +300,7 @@ template&lt;typename Int , typename Dbl , typename RedDbl &gt; </div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype"><a class="el" href="../../d9/dd3/classLatticeTester_1_1Coordinates.html">Coordinates</a> &amp;&#160;</td>
+          <td class="paramtype">const <a class="el" href="../../d9/dd3/classLatticeTester_1_1Coordinates.html">Coordinates</a> &amp;&#160;</td>
           <td class="paramname"><em>proj</em>&#160;</td>
         </tr>
         <tr>
@@ -312,7 +312,7 @@ template&lt;typename Int , typename Dbl , typename RedDbl &gt; </div>
 </div><div class="memdoc">
 
 <p>This is a method that does the general construction of the projection <code>proj</code> of the basis <code>in</code> and puts it in <code>out</code>. </p>
-<p>This will completely overwrite the lattice basis in <code>out</code>, changing the dimension. If one wants to compute the dual for this projection, it has to be done afterwards with the <a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html#a87a05d339617608f3ad3ba1c47d1acd1" title="This method builds the dual of matrix in dualMatrix and multiplies modulo by the rescaling factor use...">DualConstruction()</a> method. </p>
+<p>This will completely overwrite the lattice basis in <code>out</code>, changing the dimension. If one wants to compute the dual for this projection, it has to be done afterwards with the <a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html#a0783fc67f85f004cd66c1035ef065b8a" title="This method builds the dual of matrix in dualMatrix and multiplies modulo by the rescaling factor use...">DualConstruction()</a> method. </p>
 
 </div>
 </div>
@@ -325,7 +325,7 @@ template&lt;typename Int , typename Dbl , typename RedDbl &gt; </div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="../../d8/d74/namespaceLatticeTester.html">LatticeTester</a></li><li class="navelem"><a class="el" href="../../d0/d18/classLatticeTester_1_1BasisConstruction.html">BasisConstruction</a></li>
-    <li class="footer">Generated on Tue Feb 12 2019 17:13:08 for Lattice Tester Manual by
+    <li class="footer">Generated on Mon Jun 3 2019 17:37:00 for Lattice Tester Manual by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.15 </li>
   </ul>

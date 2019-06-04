@@ -73,8 +73,8 @@
  * spectral test, that is the inverse length of the shortest vector in the
  * dual lattie, and the Beyer ratio, which is an old test (\cite rBEY71a)
  * inlcuded mainly as part of our legacy code base. Building on those mesures
- * of uniformity, *LatticeTester* also implements classes to build __figures of
- * merit__ upon them. Figures of merit are a recurring theme in quasi-Monte
+ * of uniformity, *LatticeTester* also implements classes that help constructing
+ * __figures of merit__. Figures of merit are a recurring theme in quasi-Monte
  * Carlo point set studies \cite vLEC12a. A figure of merit is a standardized
  * measure that can be used to compare point sets between them. Generally,
  * they are constructed as a weighted sum, or the minimum of weighted values : 
@@ -97,11 +97,17 @@
  * rules for quasi-Monte-Carlo integration whilst the second does something similar
  * for linear congruential pseudo-random number generators.
  *
- * In the next section, you will find a detailled list of what is implemented in
- * *LatticeTester*, along with links to the relevant parts of the API
- * documentation. Users wishing to quickly "get their hands dirty" in this
- * library are advised to skip the next section and to go to the \ref examples_page.
- * 
+ * Should you need to get more familiar with lattices and the theory behind
+ * *LatticeTester*, we provide a (non extensive) \ref a_intro section. If
+ * you only seek a tool to perform on of the options above, we provide
+ * \ref examples_page that cover the usage of the library to approach
+ * those problems. Building upon then should help you "get your hands dirty"
+ * rapidly. Finally, this guide features a full API documentation in the
+ * **Namespaces** and **Classes** tabs.
+ *
+ * \remark I forgot this wall of text section. It needs to be cleaned up
+ * and its relevant content moved in \ref a_intro
+ *
  * # Contents and implementation
  * 
  * This project is mostly built as an object oriented library. The following
@@ -111,12 +117,6 @@
  * starting from lattice representation and going to the construction of basic
  * figures of merit. While goind through the functionnalities of *LatticeTester*
  * this section will also mention every tool needed to access these functions.
- *
- * \remark This section assumes the reader is familiar with a bit of lattice
- * specific vocabulary. We have two options (I prefer the second one):
- * - Have explanations here of every thing mentionned and keep \ref a_intro as a
- *   more advanced ressource
- * - Only use \ref a_intro as our only theorethical guide.
  *
  * ## Types and representations
  *

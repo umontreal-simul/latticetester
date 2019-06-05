@@ -63,6 +63,8 @@ namespace LatticeTester
   string toStringCriterion (CriterionType criter)
   {
     switch (criter) {
+      case LENGTH:
+        return "LENGTH";
       case SPECTRAL:
         return "SPECTRAL";
       case BEYER:
@@ -147,10 +149,12 @@ namespace LatticeTester
   string toStringPreRed (PreReductionType prered)
   {
     switch (prered) {
+      case FULL:
+        return "FULL";
       case BKZ:
         return "BKZ";
-      case Dieter:
-        return "Dieter";
+      case DIETER:
+        return "DIETER";
       case LLL:
         return "LLL";
       case NOPRERED:

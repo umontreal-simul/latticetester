@@ -177,7 +177,7 @@ namespace NTL
 
       /**
        * Releases space and sets the matrix this size \f$0\times 0\f$.
-       * This uses `%NTL::%Mat<T>::%kill()`.
+       * This uses `NTL::Mat<T>::kill()`.
        */
       void clear() { this->kill(); }
 
@@ -303,10 +303,12 @@ namespace NTL
    * */
   Vec_64 operator*(const Vec_64& vec, std::int64_t a);
   Vec_64 operator*(std::int64_t a, const Vec_64& vec);
+  std::int64_t operator*(const Vec_64& vec1, const Vec_64& vec2);
   Vec_64& operator+=(Vec_64& vec1, const Vec_64& vec2);
   Vec_64& operator-=(Vec_64& vec1, const Vec_64& vec2);
   Vec_64& operator*=(Vec_64& vec, std::int64_t a);
   Mat_64& operator*=(Mat_64& mat, std::int64_t a);
+  Mat_64 operator*(const Mat_64& mat1, const Mat_64& mat2);
   /**
    * @}
    * */

@@ -30,6 +30,7 @@
 #include "latticetester/Coordinates.h"
 #include "latticetester/Lacunary.h"
 #include "latticetester/Util.h"
+#include "latticetester/BasisConstruction.h"
 
 #include <cassert>
 
@@ -37,8 +38,11 @@ namespace LatticeTester {
 
   /**
    * This class is a skeleton for the implementation of different types of 
-   * lattices.
+   * lattices. This class is not really intended to be used directly, hence the
+   * lack of constructor allowing the specification of a basis.
    * 
+   * This class can store a lattice with or without dual and contains a few
+   * virtual methods to perform common computations on lattices.
    * This class contains a method to compute lattices of projections of 
    * \f$\{x_i\}_{ 0 \leq i}\f$, a method to exchange the basis and the dual 
    * basis, and a virtual method that can be implemented in subclasses to 
@@ -66,9 +70,11 @@ namespace LatticeTester {
            * @param k The rank of the lattice to be constructed
            * @param maxDim The maximal dimension for which this lattice can be
            * expanded/tested (?)
+           * @param withDual Specifies wether this object contains a dual or not
            * @param norm The norm to use in for reduction
            */
-          IntLattice (Int modulo, int k, int maxDim, NormType norm = L2NORM);
+          IntLattice (Int modulo, int k, int maxDim, bool withDual,
+              NormType norm = L2NORM);
 
           /**
            * Copy constructor that makes a copy of `Lat`. The maximal dimension 
@@ -96,11 +102,7 @@ namespace LatticeTester {
           void init ();
 
           /**
-           * This is the order of the underlying MRG. The problem is that the 
-           * lattice is not necessarily associated with a MRG anymore. The 
-           * solution probably is to change this so that it is now the rank
-           * because a MRG of order k spans a lattice of rank k. (See the lattice
-           * construction in Pierre's book)
+           * This returns the rank of the lattice.
            */
           int getOrder() const { return m_order; }
 
@@ -144,7 +146,7 @@ namespace LatticeTester {
            * lattice. The result is placed in the `lattice` lattice. The basis is
            * triangularized to form a proper basis.
            */
-          void buildProjection (IntLattice<Int, BasInt, Dbl, RedDbl>* lattice,
+          virtual void buildProjection (IntLattice<Int, BasInt, Dbl, RedDbl>* lattice,
               const Coordinates & proj);
 
           /**
@@ -170,19 +172,9 @@ namespace LatticeTester {
           virtual void setLac (const Lacunary<BasInt> &) {};
 
           /**
-           * Returns the vector of multipliers (or coefficients) \f$A\f$ as a
-           * string.
+           * Returns a string describing the lattice. 
            */
-          virtual std::string toStringCoef() const;
-
-
-          // /**
-          // * The components of the lattice when it is built out of more than one
-          // * component. When there is only one component, it is unused as the
-          // * parameters are the same as above.
-          // */
-          //std::vector<MRGComponent *> comp;
-
+          virtual std::string toString() const;
 
         protected:
 
@@ -207,7 +199,7 @@ namespace LatticeTester {
           double *m_lgVolDual2;
 
           /**
-           * The logarithm \f$\log_2 (m^2)\f$.
+           * The logarithm \f$\log (m^2)\f$.
            */
           double m_lgm2;
 
@@ -232,17 +224,22 @@ namespace LatticeTester {
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
       IntLattice<Int, BasInt, Dbl, RedDbl>::IntLattice ( Int modulo, int k,
-          int maxDim, NormType norm): 
+          int maxDim, bool withDual, NormType norm): 
       IntLatticeBasis<Int, BasInt, Dbl, RedDbl>(maxDim, norm)
   {
     this->m_dim = maxDim;
-    this->m_withDual = true;
+    this->m_withDual = withDual;
     this->m_modulo = modulo;
     m_order = k;
     init ();
-    this->m_dualbasis.resize(this->m_dim,this->m_dim);
-    this->m_dualvecNorm.resize(this->m_dim);
-    this->setDualNegativeNorm();
+    this->m_basis.resize(this->m_dim,this->m_dim);
+    this->m_vecNorm.resize(this->m_dim);
+    this->setNegativeNorm();
+    if (withDual) {
+      this->m_dualbasis.resize(this->m_dim,this->m_dim);
+      this->m_dualvecNorm.resize(this->m_dim);
+      this->setDualNegativeNorm();
+    }
   }
 
   //===========================================================================
@@ -252,12 +249,14 @@ namespace LatticeTester {
           const IntLattice<Int, BasInt, Dbl, RedDbl> & Lat):
       IntLatticeBasis<Int, BasInt, Dbl, RedDbl>(Lat)
   {
-    this->m_withDual = true;
+    this->m_withDual = Lat.withDual();
     m_order = Lat.m_order;
     init ();
-    this->setDualNegativeNorm();
     m_vSI = Lat.m_vSI;
-    m_wSI = Lat.m_wSI;
+    if (this->m_withDual){
+      this->setDualNegativeNorm();
+      m_wSI = Lat.m_wSI;
+    }
   }
 
   //===========================================================================
@@ -270,12 +269,14 @@ namespace LatticeTester {
       IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::initVecNorm();
       double temp;
       NTL::conv (temp, this->m_modulo);
-
-      m_lgVolDual2 = new double[dim+1];
-      m_lgm2 = 2.0 * Lg (temp);
-      m_lgVolDual2[1] = m_lgm2;
       m_vSI.resize(dim, dim);
-      m_wSI.resize(dim, dim);
+
+      if (this->m_withDual) {
+        m_lgVolDual2 = new double[dim+1];
+        m_lgm2 = 2.0 * Lg (temp);
+        m_lgVolDual2[1] = m_lgm2;
+        m_wSI.resize(dim, dim);
+      }
 
     }
 
@@ -286,17 +287,14 @@ namespace LatticeTester {
     {
       IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::kill();
 
-      if (m_lgVolDual2 == 0)
-        return;
-      delete [] m_lgVolDual2;
-      m_lgVolDual2 = 0;
-      m_vSI.clear();
+      if (this->m_withDual){
+        if (m_lgVolDual2 == 0)
+          return;
+        delete [] m_lgVolDual2;
+        m_lgVolDual2 = 0;
+      }
+      // m_vSI.clear();
 
-      //    if (!comp.empty()) {
-      //       for (int s = 0; s < (int) comp.size(); s++)
-      //          delete comp[s];
-      //       comp.clear();
-      //    }
     }
 
 
@@ -319,24 +317,31 @@ namespace LatticeTester {
       // std::int64_t sizemat = m_basis.size1();
       // declared as an "unused variable" by the compiler
 
-      if(this->m_lgVolDual2 != 0)
-        delete[] this->m_lgVolDual2;
-      this->m_lgVolDual2 = new double[dim+2]();
       this->m_basis.resize(dim+1, dim+1);
-      this->m_dualbasis.resize(dim+1, dim+1);
       this->m_vecNorm.resize(dim+1);
-      this->m_dualvecNorm.resize(dim+1);
+
+      if (this->m_withDual) {
+        if(this->m_lgVolDual2 != 0)
+          delete[] this->m_lgVolDual2;
+        this->m_lgVolDual2 = new double[dim+2]();
+        this->calcLgVolDual2 (m_lgm2);
+        this->m_dualbasis.resize(dim+1, dim+1);
+        this->m_dualvecNorm.resize(dim+1);
+      }
 
       for(int i = 0; i < dim; i++){
         for(int j = 0; j < dim; j++){
           this->m_basis(i,j) = lattmp.m_basis(i,j);
-          this->m_dualbasis(i,j) = lattmp.m_dualbasis(i,j);
+          if (this->m_withDual)
+            this->m_dualbasis(i,j) = lattmp.m_dualbasis(i,j);
         }
         this->m_vecNorm(i) = lattmp.m_vecNorm(i);
-        this->m_dualvecNorm(i) = lattmp.m_dualvecNorm(i);
+        if (this->m_withDual)
+          this->m_dualvecNorm(i) = lattmp.m_dualvecNorm(i);
       }
       this->setNegativeNorm(dim);
-      this->setDualNegativeNorm(dim);
+      if (this->m_withDual)
+        this->setDualNegativeNorm(dim);
       this->setDim(dim+1);
       return;
     }
@@ -346,6 +351,7 @@ namespace LatticeTester {
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
       void IntLattice<Int, BasInt, Dbl, RedDbl>::calcLgVolDual2 (double lgm2)
     {
+      if(!(this->m_withDual)) return;
       int dim = this->getDim();
       int rmax = std::min(m_order, dim);
 
@@ -363,10 +369,10 @@ namespace LatticeTester {
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
       void IntLattice<Int, BasInt, Dbl, RedDbl>::dualize ()
     {
+      if(!(this->m_withDual)) return;
       std::swap(this->m_basis, this->m_dualbasis);
       this->setNegativeNorm ();
       this->setDualNegativeNorm ();
-
     }
 
   //===========================================================================
@@ -394,26 +400,38 @@ namespace LatticeTester {
       const int dim = this->getDim ();
       //  std::cout << "      ESPION_2\n";  getPrimalBasis ().write();
       int i = 0;
-      for (Coordinates::const_iterator iter = proj.begin();
-          iter != proj.end(); ++iter) {
+      BasIntMat temp;
+      temp.SetDims(dim, dim);
+      for (auto iter = proj.begin(); iter != proj.end(); ++iter) {
         for (int j = 0; j < dim; j++){
-          lattice->m_dualbasis(j, i) = this->m_basis(j, (*iter));
+          temp(j, i) = this->m_basis(j, (*iter));
         }
         ++i;
       }
 
       lattice->setDim (static_cast<int>(proj.size()));
       lattice->m_order = m_order;
+      BasisConstruction<BasInt> constr;
+      constr.LLLConstruction(temp);
+      temp.SetDims(lattice->getDim(), lattice->getDim());
+      lattice->setNegativeNorm ();
+      lattice->m_basis = temp;
 
-      Triangularization<BasIntMat> (lattice->m_dualbasis, lattice->m_basis, dim,
-          static_cast<int>(proj.size()), this->m_modulo);
+      lattice->m_withDual = this->m_withDual;
+      if (this->m_withDual) {
+        constr.DualConstruction(lattice->m_basis, lattice->m_dualbasis, this->m_modulo);
+        lattice->setDualNegativeNorm ();
+      }
+
+      //Triangularization<BasIntMat> (lattice->m_dualbasis, lattice->m_basis, dim,
+      //    static_cast<int>(proj.size()), this->m_modulo);
       // lattice->trace("\nESPION_4");
       /* std::cout << "  ***** build 2\n";
          lattice->getPrimalBasis ().setNegativeNorm (true);
          lattice->getPrimalBasis ().updateScalL2Norm (1,proj.size());
          lattice->getPrimalBasis ().write();*/
-      CalcDual<BasIntMat> (lattice->m_basis, lattice->m_dualbasis,
-          static_cast<int>(proj.size()), this->m_modulo);
+      // CalcDual<BasIntMat> (lattice->m_basis, lattice->m_dualbasis,
+      //     static_cast<int>(proj.size()), this->m_modulo);
       /*
          std::cout << "  ***** build 3\n";
          lattice->getDualBasis ().setNegativeNorm (true);
@@ -421,8 +439,6 @@ namespace LatticeTester {
          lattice->getDualBasis ().write();
          */
 
-      lattice->setNegativeNorm ();
-      lattice->setDualNegativeNorm ();
       //lattice->updateDualScalL2Norm (0, proj.size());
       //lattice->updateScalL2Norm (0,proj.size());
       //lattice->setNegativeNorm ();
@@ -447,7 +463,8 @@ namespace LatticeTester {
       this->m_modulo = lat.m_modulo;
       //m_m2 = lat.m_m2;
       this->m_basis = lat.m_basis;
-      this->m_dualbasis = lat.m_dualbasis;
+      if(lat.withDual())
+        this->m_dualbasis = lat.m_dualbasis;
       init ();
     }
 
@@ -499,7 +516,7 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      std::string IntLattice<Int, BasInt, Dbl, RedDbl>::toStringCoef () const
+      std::string IntLattice<Int, BasInt, Dbl, RedDbl>::toString() const
     {
       assert (0);
       return std::string();

@@ -115,7 +115,7 @@ template<typename BasInt> class BasisConstruction{
      * of a linear system.
      * */
     void DualConstruction(BasIntMat& matrix, BasIntMat& dualMatrix,
-        BasInt& modulo);
+        BasInt modulo);
 
     /**
      * This does the same thing as DualConstruction(), but is much slower. This
@@ -143,7 +143,7 @@ template<typename BasInt> class BasisConstruction{
      * */
     template<typename Int, typename Dbl, typename RedDbl>
       void ProjectionConstruction(IntLatticeBasis<Int, BasInt, Dbl, RedDbl>& in,
-          IntLatticeBasis<Int, BasInt, Dbl, RedDbl>& out, Coordinates& proj);
+          IntLatticeBasis<Int, BasInt, Dbl, RedDbl>& out, const Coordinates& proj);
   };
 
   //============================================================================
@@ -187,7 +187,10 @@ template<typename BasInt> class BasisConstruction{
       //     }
       //   }
       // }
-      if (matrix[i][i] != 0) rank++;
+      if (matrix[i][i] != 0) {
+        rank++;
+        if (matrix[i][i] < 0) matrix[i] *= BasInt(-1);
+      }
     }
     // We remove zero vectors from the basis.
     matrix.SetDims(rank, cols);
@@ -212,8 +215,7 @@ template<typename BasInt> class BasisConstruction{
       std::cout << "matrix has to be square, but dimensions do not fit.\n";
       return;
     }
-    BasInt m;
-    m = 1;
+    BasInt m(1);
     NTL::ident(dualMatrix, dim);
     BasInt gcd;
     for (long i = dim-1; i>=0; i--) {
@@ -239,7 +241,7 @@ template<typename BasInt> class BasisConstruction{
 
   template<typename BasInt>
     void BasisConstruction<BasInt>::DualConstruction(BasIntMat& matrix,
-        BasIntMat& dualMatrix, BasInt& modulo)
+        BasIntMat& dualMatrix, BasInt modulo)
   {
     // We need to have a triangular basis matrix
     if (! CheckTriangular(matrix, matrix.NumRows(), BasInt(0)))
@@ -297,19 +299,21 @@ template<typename BasInt> class BasisConstruction{
       void BasisConstruction<BasInt>::ProjectionConstruction(
       IntLatticeBasis<Int, BasInt, Dbl, RedDbl>& in,
       IntLatticeBasis<Int, BasInt, Dbl, RedDbl>& out,
-      Coordinates& proj) {
+      const Coordinates& proj) {
         std::size_t dim = proj.size();
-        if (dim > in.getDim())
+        unsigned int lat_dim = in.getDim();
+        if (dim > lat_dim)
             MyExit(1, "Coordinates do not match 'in' dimension.");
-        BasIntMat new_basis, tmp(in.getBasis());
+        BasIntMat new_basis, tmp(NTL::transpose(in.getBasis()));
         new_basis.SetDims(dim, tmp.NumRows());
         tmp = NTL::transpose(tmp);
         auto it = proj.cbegin();
         for (std::size_t i = 0; i < dim; i++) {
-          if (*it <= in.getDim())
+          if (*it <= lat_dim)
             new_basis[i] = tmp[*it];
           else
             MyExit(1, "Coordinates do not match 'in' dimension.");
+          it++;
         }
         new_basis = NTL::transpose(new_basis);
         LLLConstruction(new_basis);

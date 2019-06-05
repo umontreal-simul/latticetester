@@ -6,7 +6,7 @@
  * \mainpage LatticeTester Manual
  * \endif
  * 
- * # Reference Manual
+ * # User's guide
  * 
  * This is the reference manual of [LatticeTester](https://github.com/umontreal-simul/latticetester),
  * a library intented to simplify the construction of software studying lattices.
@@ -65,7 +65,7 @@
  * 3. **Lattice Basis Reduction**: Given a lattice basis, find another basis
  * whose vectors are nearly orthogonal or as short as possible.
  * There are many variants and definitions for this, such as the well known LLL
- * reduction for which an algorithm is available.
+ * reduction which is available.
  * 4. **Shortest Vector computation**: Find the shortest non-zero vector in a
  * lattice, and prove it is the shortest.
  *
@@ -73,11 +73,16 @@
  * spectral test, that is the inverse length of the shortest vector in the
  * dual lattie, and the Beyer ratio, which is an old test (\cite rBEY71a)
  * inlcuded mainly as part of our legacy code base. Building on those mesures
- * of uniformity, *LatticeTester* also implements classes to build __figures of
- * merit__ upon them. Figures of merit are a recurring theme in quasi-Monte
+ * of uniformity, *LatticeTester* also implements classes that help constructing
+ * __figures of merit__. Figures of merit are a recurring theme in quasi-Monte
  * Carlo point set studies \cite vLEC12a. A figure of merit is a standardized
- * measure that can be used to compare point sets between them.
- * \todo maybe more on figures of merit/redo the paragraph above
+ * measure that can be used to compare point sets between them. Generally,
+ * they are constructed as a weighted sum, or the minimum of weighted values : 
+ * \f[
+ *      \min_{i \subset I} \omega_i \ell_i
+ * \f]
+ * with \f$I\f$, a set of indices, \f$\omega_i\f$ being weights and \f$\ell_i\f$
+ * a mesure on the projection of a lattice on set of indices \f$i\f$.
  *
  * Finaly, for the sake of convenience, *LatticeTester* also features a
  * high-level executable that can perform, without much flexibility, some of the
@@ -89,64 +94,203 @@
  * and <b>[LatMRG](https://github.com/umontreal-simul/latmrg)</b> are software
  * tools designed in our laboratory that are examples of the capabilities of
  * this library. The first one is designed to analyze and search for lattice
- * rules for quasi-Monte-Carlo integration whilst the second does the same thing
+ * rules for quasi-Monte-Carlo integration whilst the second does something similar
  * for linear congruential pseudo-random number generators.
  *
- * In the next section, you will find a detailled list of what is implemented in
- * *LatticeTester*, along with links to the relevant parts of the API
- * documentation. Users wishing to quickly "get their hands dirty" in this
- * library are advised to skip the next section and to go to the \ref examples_page.
- * 
- * \todo Le reste de cette page.
+ * Should you need to get more familiar with lattices and the theory behind
+ * *LatticeTester*, we provide a (non extensive) \ref a_intro section. If
+ * you only seek a tool to perform on of the options above, we provide
+ * \ref examples_page that cover the usage of the library to approach
+ * those problems. Building upon then should help you "get your hands dirty"
+ * rapidly. Finally, this guide features a full API documentation in the
+ * **Namespaces** and **Classes** tabs.
+ *
+ * \remark I forgot this wall of text section. It needs to be cleaned up
+ * and its relevant content moved in \ref a_intro
+ *
  * # Contents and implementation
  * 
- * The prefered approach to solving the problems above is presented in the
- * reference
- * manual. For each of the problems, *LatticeTester* implements at least one way
- * to solve it. For 1, a simple approach based on Gaussian elimination is
- * available. There is also a method that performs 3. via LLL reduction at the
- * same time. Although 2 is, most of the time, application specific, there is
- * a general function allowing to compute the dual basis of a integer lattice
- * as well as the rescalling needed for the dual to be integer. 1 and 2 being
- * somewhat simple problems, they are covered entirely in the reference manual.
- * *LatticeTester* implements 4 solutions to 3:
- * - **Dieter pre-reduction** given by Dieter in \cite rDIE75a.
- * - **LLL reduction** given Lenstra, Lenstra and Lovasz in \cite mLEN82a.
- * - **Block Korkin-Zolotarev (BKZ)** reduction given by Schnorr \cite mSCH91a.
+ * This project is mostly built as an object oriented library. The following
+ * describes the contents of the library and gives the names of the classes
+ * performing them. This is essentially a lenghtier version of the section
+ * above containing "from the ground up" explanations of the library contents,
+ * starting from lattice representation and going to the construction of basic
+ * figures of merit. While goind through the functionnalities of *LatticeTester*
+ * this section will also mention every tool needed to access these functions.
+ *
+ * ## Types and representations
+ *
+ * Before diving into the features of *LatticeTester* lets look at what are NOT
+ * features of this library, but are needed by it: the ability to manipulate
+ * numbers of arbitrary size with decent efficiency. To do that, we use another
+ * library called the Number Theory Library, more commonly called NTL. Anyone
+ * using *LatticeTester* will need to use some of the functionnalities of NTL
+ * at one point. Many basic mathematical functions require using this library
+ * directly. Its documentation can be found at [https://www.shoup.net/ntl/](https://www.shoup.net/ntl/).
+ * Note that this documentation also contains a namespace called NTL. This
+ * namespace contains extentions of NTL functions to non-NTL types to ease the
+ * usage of *LatticeTester* with NTL and non-NTL types with the same code.
+ *
+ * As its name says, *LatticeTester* is a library to manipulate lattices. As
+ * such, it implements classes representing lattices. First there is the
+ * `IntLatticeBasis` class that simply is a class to represent a lattice basis
+ * by storing a matrix. This class can exchange the order of the vectors in the basis,
+ * compute their norm and also store the dual basis. Most functions doing
+ * computations on lattices directly use either the basis matrix or this class.
+ * it is recommended to use this class to represent lattices when working
+ * exclusively with *LatticeTester*. This is what is done in the \ref examples_page.
+ *
+ * When using the library with a specific problem in mind, more powerful objects
+ * representing lattices can be obtained by using the problem structure to
+ * build a lattice and different projections easily. For this use case, we
+ * provide the `IntLattice` class. This class inherits `IntLatticeBasis` to be
+ * used with the library easily and contains lattice specific features and
+ * virtual methods. These ad the possibility to build projections
+ * for the lattice and to build a basis for different dimensions. These features
+ * are not immediately useful here: a lattice cannot change dimension, but, for
+ * example, an random number generator may span a lattice in multiple dimensions
+ * and implementing these methods can be a good way to build them sequentially
+ * with a single object.
+ *
+ * ## Library features
+ *
+ * As presented above, *LatticeTester* revolves around solving 4 different
+ * problems. We now present what is available to resolve them with a bit more
+ * specificity. For a more hands-on approach than this section, the
+ * \ref examples_page are the place to go.
+ *
+ * ### Basis construction
+ * 
+ * *LatticeTester* can build the basis of a lattice from a set of generating
+ * vectors. That is, given a set of vectors
+ * \f$\{v_1, \ldots, v_s\} \in \mathbb{Z}^t\f$
+ * spanning a lattice \f$L_t\f$, it can extract another set of vectors
+ * \f$\{\hat{v}_1, \ldots, \hat{v}_t\}\f$ that is a basis of the lattice.
+ * There are two methods available to do just that in the `BasisConstruction`
+ * class. Beyond this functionnality, it is also possible to build a dual basis
+ * to the basis of a lattice by using that same class. In fact, *LatticeTester*
+ * finds the `m`-dual to a basis. In most applications `m` will be known
+ * beforehand and can be given to the software, but this computation can also be
+ * done without a value for `m` and return the smallest fiting `m`.
+ * Most users will probably not even need to directly use these functionnalities,
+ * but *LatticeTester* also has ways to build projections of a lattice, which is
+ * a much more desirable feature.
+ *
+ * To build a projection what is usually done is to take a subset of the
+ * coordinates \f$\{1, \ldots, t\}\f$ of the lattice vectors and to only consider
+ * the vectors formed by this subset of coordinates. That is, if the basis
+ * matrix is
+ * \f[ \begin{bmatrix}
+ *     v_{11} & \cdots & v_{1t} \\
+ *     \vdots & \ddots & \vdots \\
+ *     v_{t1} & \cdots & v_{tt}
+ * \end{bmatrix} \f]
+ * the projection on coordinates \f$\{i_1, \ldots, i_s\}\f$ is spanned by the
+ * columns of
+ * \f[ \begin{bmatrix}
+ *     v_{1i_1} & \cdots & v_{1i_s} \\
+ *     \vdots & \ddots & \vdots \\
+ *     v_{ti_1} & \cdots & v_{ti_s}
+ * \end{bmatrix}. \f]
+ * *LatticeTester* can build a basis for every such projection simply by applying
+ * one of the basis construction algorithm to the matrix above. The also is a
+ * method in `BasisConstruction` that can build this projection efficiently.
+ * To build projections, the library uses the `Coordinates` class to represent
+ * a set of indices. This class is usefull because the `CoordinateSets`
+ * namespace contains classes that can iterate over sets of coordinates
+ * specified differently. This turns out to be quite useful when building
+ * figures of merit (see \ref sec_FOM for an example).
+ *
+ * In some cases, the construction of projections might be wanted directly when
+ * building the lattice. This occurs, for example, when building a random number
+ * generator using `Lacunary` indices (also known as leapfrog indices). This
+ * happens when a few coordinates are skipped in the output of the generator.
+ * Since building the basis for such a lattice is implementation specific,
+ * there is no algorithm to build such a basis in the library. But everything
+ * needed to build this kind of projection is included: the `IntLattice` class
+ * can be built with a set of `Lacunary` indices specified so that it will be
+ * considered when building the lattice.
+ *
+ * ### Reductions
+ *
+ * What we call reductions here are both lattice basis reduction algorithms and
+ * shortest vector finding algorithms. This is because all those algorithms are
+ * implemented in the same class `Reducer` and are generally employed together.
+ * There are 4 possible lattice basis reductions available:
+ * - **Pairwise reduction**, a heuristic given by Dieter in \cite rDIE75a. This
+ *   algorithm tries to perform a Gram-Schmidt reduction by taking into account
+ *   the fact that we are working with a lattice (this makes the
+ *   orthogonalisation impossible most of the time).
+ * - **LLL reduction**, a much stronger reduction given Lenstra, Lenstra and
+ *   Lovasz in \cite mLEN82a. The idea of this reduction is to have a real 
+ *   condition (instead of the heuristic of pairwise reduction) on how
+ *   orthogonal the reduced vectors are with their neighboor when
+ *   ordered by length.
+ * - **Block Korkin-Zolotarev (BKZ)**, a reinforcement of **LLL** reduction
+ *   given by Schnorr \cite mSCH91a. This expands the condition of **LLL** to
+ *   more than just two vectors at a time in the reduced basis.
  * - **Reduction in the sense of Minkowski** given by Minkowski in \cite mMIN11a.
+ *   This reduction tries to find the successively shortest vectors while also
+ *   maintaining some sort of orthogonality between them.
+ *   
+ * To use any of these reductions you simply have to build an `IntLatticeBasis`
+ * object, pass it to a `Reducer` object and call the corresponding method.
+ * \ref sec_reduc example is a good starting point to learn how to use those
+ * reduction algorithms.
+ * For more information specifically on the algorithms, look at the
+ * \ref a_intro page.
  *
- * Next, 4 can be solved via a Branch and Bound algorithm that is available for
- * both the euclidian and the L1 norms. This algorithm is the one proposed in
- * \cite rDIE75a and later improved in \cite rKNU98a and \cite mFIN85a. Finally,
- * 5 is not yet implemented or is not implemented in any interesting way.
+ * Finding the shortest vector in a lattice is seldom done without preparing the
+ * lattice basis first. The algorithm used by the library to search for that
+ * vector is a Branch-and-Bound search as in \cite rKNU98a. This algorithm
+ * thoroughly searches for the shortest vector in the lattice and proves that
+ * the vector it found is indeed the shortest possible one. Since this algorithm
+ * takes an exponential time relatively to the lattice dimension, using one of
+ * the lattice basis reduction algorithms beforehand usually yields a much
+ * smaller Branch-and-Bound tree and a faster search. The LLL and BKZ basis
+ * reduction in particular give a basis in which the shortest vector is already
+ * a quite good approximation of the shortest vector. This reduces the space of
+ * the Branch-and-Bound search by a lot. This also means that these algorithms can
+ * be used as approximation of the full search when a large number of lattices
+ * have to be tested or when the dimension makes the Branch-and-Bound
+ * impractical.
  *
- * The figures of merit strongly depend on the other problems. The
- * implementation of the Spectral Test, given originally by Coveyou and
- * MacPherson \cite rCOV67a, and improved by Knuth \cite rKNU98a requires an
- * algorithm solving the shortest vector problem (4). It is also traditionally
- * done on the dual of the lattice instead of the primal. The Beyer ratio is
- * dependant on the Branch and Bound procedure: it implements a variant of the
- * Branch and Bound process in order to perform a Minkowski reduction
- * \cite mMIN11a \cite rAFF85a.
+ * ### Figures of Merit
  *
- * The computing time of the Branch and Bound procedure depends exponentially on
- * the dimension for which we want to solve it. But it also significantly
- * depends on the length of the vectors in the input basis. It turns out that
- * the shortest the input vectors are (i.e the more the input basis is already
- * reduced), the fastest the branch and bound will be performed. Hence, it is
- * also recommended to perform a basis reduction before the figures of merit
- * computation to prevent an explosion of the computing time.
- * 
- * When doing the spectral test, the shortest vector given by the Branch and
- * Bound shall be compared to an upper bound on its length. *LatticeTester*
- * proposes several normalization based on the sphere packing problem given in
- * \cite mCON99a.
- * 
- * The vast majority - and more specifically LLL and BKZ reduction - of the
- * implementation is based on the NTL library developped by Victor Shoup
- * \cite iSHO05a. It is based itself on the GNU Multiple Precision Arithmetic
- * Library (GMP) \cite iGMP06a, which allow arbitrary precision for
- * calculations.
- * 
- * 
+ * Pretty much everything in *LatticeTester* that is not part of what has
+ * been presented is part of the library because it simplifies the creation of
+ * figures of merit. As specified above, figures of merit can be built as a
+ * weighted sum (or minimum) of multiple measures on a lattice. If we take
+ * \f$P \subset \{i \ | \ i \subseteq \{1,\ldots,t\}\}\f$, then a figure of
+ * merit can be built as
+ * \f[
+ *     \sum_{p\in P} \omega_p \ell_p \text{ or } \min_{p \in P} \omega_p \ell_p.
+ * \f]
+ * We do not put the emphasis on the construction of the figure of merit itself
+ * here. Doing the sum or testing for the minimum is not part of what
+ * *LatticeTester* can do (because it is easy to do anyway).
+ *
+ * The first feature of *LatticeTester* when building figures of merit has
+ * already been presented: it is the construction and the iteration over sets
+ * \f$P\f$. This is done via classes in the `CoordinateSets` namespace. The next
+ * feature the library provides is an easy way to build weights \f$\omega_p\f$
+ * depending on \f$p\f$. The class `Weights` and its children implement exactly
+ * this: ways of grouping weights that depend on different properties of
+ * \f$p\f$. It is possible to build uniform weights, weights that depend on the
+ * cardinality of \f$p\f$, weights that differ for every \f$p\f$ and even weights
+ * that are a product that depend on the different coordinates included in
+ * \f$p\f$.
+ *
+ * Finally, the last important feature is the inclusion of `Normalizer` and its
+ * subclasses. These classes are exactly that: normalizers for values measured
+ * on the lattice. The point of normalizers is to rescale measures between `0`
+ * and `1` so that they can be compared with each other, by taking a minimum for
+ * example. Each of those normalizers has a specific purpose and usage that is 
+ * described in its documentation. Most of them are are intended to produce a
+ * bound on the length of the shortest vector in a lattice. It is then possible
+ * to divide the length obtained for the current lattice by this bound and
+ * obtain a measure between 0 and 1. This is one of the most important feature
+ * of the library as it is extensively used when performing the spectral test
+ * on congruencial random number generators.
+ *
  * */

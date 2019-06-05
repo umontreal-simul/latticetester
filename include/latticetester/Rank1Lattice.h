@@ -141,7 +141,7 @@ namespace LatticeTester {
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
     Rank1Lattice<Int, BasInt, Dbl, RedDbl>::Rank1Lattice (
         const Int & m, const IntVec & a, int maxDim, NormType norm):
-      IntLattice<Int, BasInt, Dbl, RedDbl> (m, 1, maxDim, norm)
+      IntLattice<Int, BasInt, Dbl, RedDbl> (m, 1, maxDim, true, norm)
   {
     this->m_a = a;
     init();
@@ -219,6 +219,8 @@ namespace LatticeTester {
     {
       assert(d <= this->m_maxDim);
       this->setDim (d);
+      this->m_basis.SetDims(d,d);
+      this->m_dualbasis.SetDims(d,d);
 
       // conv(m_v[1][1], 1);
 
@@ -237,12 +239,15 @@ namespace LatticeTester {
       }
 
       // if a[0] != 1, the basis must be triangularized
+      BasisConstruction<BasInt> constr;
       if (this->m_basis (0, 0) != 1) {
-        Triangularization (
-            this->m_basis, this->m_dualbasis, d, d, this->m_modulo);
-        dualize ();
+        constr.GCDConstruction(this->m_basis);
+        // Triangularization (
+        //     this->m_basis, this->m_dualbasis, d, d, this->m_modulo);
+        // dualize ();
       }
-      CalcDual (this->m_basis, this->m_dualbasis, d, this->m_modulo);
+      constr.DualConstruction(this->m_basis, this->m_dualbasis, this->m_modulo);
+      //CalcDual (this->m_basis, this->m_dualbasis, d, this->m_modulo);
       this->setNegativeNorm ();
       this->setDualNegativeNorm ();
     }

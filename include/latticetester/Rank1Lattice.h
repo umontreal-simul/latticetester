@@ -239,15 +239,15 @@ namespace LatticeTester {
       }
 
       // if a[0] != 1, the basis must be triangularized
-      BasisConstruction<BasInt> constr;
+      //BasisConstruction<BasInt> constr;
       if (this->m_basis (0, 0) != 1) {
-        constr.GCDConstruction(this->m_basis);
-        // Triangularization (
-        //     this->m_basis, this->m_dualbasis, d, d, this->m_modulo);
-        // dualize ();
+        //constr.GCDConstruction(this->m_basis);
+         Triangularization (
+             this->m_basis, this->m_dualbasis, d, d, this->m_modulo);
+         dualize ();
       }
-      constr.DualConstruction(this->m_basis, this->m_dualbasis, this->m_modulo);
-      //CalcDual (this->m_basis, this->m_dualbasis, d, this->m_modulo);
+      //constr.DualConstruction(this->m_basis, this->m_dualbasis, this->m_modulo);
+      CalcDual (this->m_basis, this->m_dualbasis, d, this->m_modulo);
       this->setNegativeNorm ();
       this->setDualNegativeNorm ();
     }

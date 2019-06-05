@@ -32,9 +32,11 @@ namespace LatticeTester {
    * values spaced in a certain way. This class is present here to be used with
    * the subclasses of IntLattice.
    *
-   * \todo **Marc-Antoine**: I feel like the current implementation of this
-   * class is obsolete : it contains too few
-   * methods and functions to be of more use than the vector classes.
+   * \remark As it is, this class could be replaced by a simple vector when it
+   * occurs. It does not implement any feature that a basic vector class
+   * does not have. This class was part of the legacy code base but removing the
+   * instances where it is used would take more time than we are currently
+   * willing to spend on this library.
    */
   template<typename BasInt>
     class Lacunary {
@@ -46,10 +48,6 @@ namespace LatticeTester {
 
         /**
          * Constructor for a set of \f$t\f$ indices given in the vector `C`.
-         * \todo This constructor might not work as intended because BasIntVec
-         * is an NTL::vector type and this function dynamically allocates an
-         * array to it. There is no real reason to do that since there is a
-         * setSize method available.
          */
         Lacunary (const BasIntVec & C, int t)
         {

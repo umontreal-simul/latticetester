@@ -487,7 +487,7 @@ namespace LatticeTester {
         Red.redBKZ();
       } else if (reduction == LLL) {
         Red.redLLLNTL();
-      } else if (reduction == Dieter) {
+      } else if (reduction == DIETER) {
         Red.redDieter(0);
       }
       config.basis = Basis.getBasis();
@@ -510,7 +510,7 @@ namespace LatticeTester {
           Red.redBKZ();
         } else if (reduction == LLL) {
           Red.redLLLNTL();
-        } else if (reduction == Dieter) {
+        } else if (reduction == DIETER) {
           Red.redDieter(0);
         }
       }
@@ -539,7 +539,7 @@ namespace LatticeTester {
           Red.redBKZ();
         } else if (reduction == LLL) {
           Red.redLLLNTL();
-        } else if (reduction == Dieter) {
+        } else if (reduction == DIETER) {
           Red.redDieter(0);
         }
       }

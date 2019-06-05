@@ -123,12 +123,9 @@ def build(ctx):
             ctx.recurse('doc') 
 
     ctx.recurse('data')    
-    # ctx.recurse('examples')
 
     # ctx.recurse('analysis') # probably broken, not used in the current version
 
-#def examples(ctx):
-#    ctx.recurse('examples')
 
 # # build variants not used in this version
 

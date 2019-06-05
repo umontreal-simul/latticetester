@@ -69,7 +69,7 @@
  * command line with a filename argument. That file name must have a `.dat`
  * extension that should not be included when calling the program like
  * \code
- * ./LatticeTester <LLDD,ZZDD,ZZRR> filename
+ * ./TestLattice <LLDD,ZZDD,ZZRR> filename
  * \endcode
  * in a POSIX shell.
  * You can specify a directory relative to your current working directory for
@@ -216,8 +216,6 @@
  *   represents a vector of the lattice. This matrix must be invertible.
  *
  * \subsection Figure Figure of Merit Computation
- *
- * \todo multiple norms?
  *
  * In that case, the file will look like this :
  * \code

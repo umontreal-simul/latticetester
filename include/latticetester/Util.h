@@ -816,10 +816,11 @@ namespace LatticeTester {
    * when passing types to this function. The best is for `Vect1` to be the same type
    * as `Vect2` and for `Scal` to be the same as `Int`, and that those types are the
    * ones stored in `Vect1` and `Vect2`.
-   * \todo This uses so many types without check about them and also assumes all
-   * those types can be converted to each other without problem... The types
-   * here should be uniformized.
-   * THIS IS NOT A VERY SAFE IMPLEMENTATION
+   *
+   * **WARNING**: This uses so many types without check about them and also assumes all
+   * those types can be converted to each other without problem. This is used in
+   * many places to compute a floating point norm of vectors with integers values.
+   * Take care when using this function.
    */
   template <typename Int, typename Vect1, typename Vect2, typename Scal>
     inline void ProdScal (const Vect1 & A, const Vect2 & B, int n, Scal & D)

@@ -102,11 +102,7 @@ namespace LatticeTester {
           void init ();
 
           /**
-           * This is the order of the underlying MRG. The problem is that the 
-           * lattice is not necessarily associated with a MRG anymore. The 
-           * solution probably is to change this so that it is now the rank
-           * because a MRG of order k spans a lattice of rank k. (See the lattice
-           * construction in Pierre's book)
+           * This returns the rank of the lattice.
            */
           int getOrder() const { return m_order; }
 
@@ -150,7 +146,7 @@ namespace LatticeTester {
            * lattice. The result is placed in the `lattice` lattice. The basis is
            * triangularized to form a proper basis.
            */
-          void buildProjection (IntLattice<Int, BasInt, Dbl, RedDbl>* lattice,
+          virtual void buildProjection (IntLattice<Int, BasInt, Dbl, RedDbl>* lattice,
               const Coordinates & proj);
 
           /**
@@ -176,19 +172,9 @@ namespace LatticeTester {
           virtual void setLac (const Lacunary<BasInt> &) {};
 
           /**
-           * Returns the vector of multipliers (or coefficients) \f$A\f$ as a
-           * string.
+           * Returns a string describing the lattice. 
            */
-          virtual std::string toStringCoef() const;
-
-
-          // /**
-          // * The components of the lattice when it is built out of more than one
-          // * component. When there is only one component, it is unused as the
-          // * parameters are the same as above.
-          // */
-          //std::vector<MRGComponent *> comp;
-
+          virtual std::string toString() const;
 
         protected:
 
@@ -213,7 +199,7 @@ namespace LatticeTester {
           double *m_lgVolDual2;
 
           /**
-           * The logarithm \f$\log_2 (m^2)\f$.
+           * The logarithm \f$\log (m^2)\f$.
            */
           double m_lgm2;
 
@@ -246,6 +232,9 @@ namespace LatticeTester {
     this->m_modulo = modulo;
     m_order = k;
     init ();
+    this->m_basis.resize(this->m_dim,this->m_dim);
+    this->m_vecNorm.resize(this->m_dim);
+    this->setNegativeNorm();
     if (withDual) {
       this->m_dualbasis.resize(this->m_dim,this->m_dim);
       this->m_dualvecNorm.resize(this->m_dim);
@@ -298,17 +287,14 @@ namespace LatticeTester {
     {
       IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::kill();
 
-      if (m_lgVolDual2 == 0)
-        return;
-      delete [] m_lgVolDual2;
-      m_lgVolDual2 = 0;
-      m_vSI.clear();
+      if (this->m_withDual){
+        if (m_lgVolDual2 == 0)
+          return;
+        delete [] m_lgVolDual2;
+        m_lgVolDual2 = 0;
+      }
+      // m_vSI.clear();
 
-      //    if (!comp.empty()) {
-      //       for (int s = 0; s < (int) comp.size(); s++)
-      //          delete comp[s];
-      //       comp.clear();
-      //    }
     }
 
 
@@ -338,6 +324,7 @@ namespace LatticeTester {
         if(this->m_lgVolDual2 != 0)
           delete[] this->m_lgVolDual2;
         this->m_lgVolDual2 = new double[dim+2]();
+        this->calcLgVolDual2 (m_lgm2);
         this->m_dualbasis.resize(dim+1, dim+1);
         this->m_dualvecNorm.resize(dim+1);
       }
@@ -415,8 +402,7 @@ namespace LatticeTester {
       int i = 0;
       BasIntMat temp;
       temp.SetDims(dim, dim);
-      for (Coordinates::const_iterator iter = proj.begin();
-          iter != proj.end(); ++iter) {
+      for (auto iter = proj.begin(); iter != proj.end(); ++iter) {
         for (int j = 0; j < dim; j++){
           temp(j, i) = this->m_basis(j, (*iter));
         }
@@ -530,7 +516,7 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      std::string IntLattice<Int, BasInt, Dbl, RedDbl>::toStringCoef () const
+      std::string IntLattice<Int, BasInt, Dbl, RedDbl>::toString() const
     {
       assert (0);
       return std::string();

@@ -50,6 +50,32 @@
  * library will be available under the `lib` folder in the installation path
  * and the executable program under the `bin` folder as `LatticeTester`(`.exe` 
  * on Windows).
+ *
+ * \subsection Types Types and representations
+ *
+ * *LatticeTester* uses NTL's types and implementations of a few algorithms.
+ * If you ever happen to browse the code of *LatticeTester*, you will notice that
+ * many of the classes use templates. This is because the library is compiled
+ * to work on a variety of types with the same code. These types provide a
+ * variable precision in the representation of both integer numbers and floating
+ * point numbers.
+ *
+ * It is possible to use integers represented as both
+ * `std::int64_t' (integers of exactly 64 bits) and `NTL::ZZ` (NTL
+ * implementation of exact arbitrary length integers) and floating points as
+ * `double` and `NTL::RR` (NTL implementation of arbitrary precision floating
+ * point numbers). Obviously, standard types provide better performance, but
+ * can lead to errors in a few algorithms.
+ *
+ * When using the library, you will have to consider which types you will want
+ * to use to represent numbers. While it is quite safe to assume floating point
+ * arithmetic should not cause problems and that `double`s should be fine, this
+ * is not true for integers. This is because the computations performed on
+ * lattices basis need to be done exactly on integers. Using arbitrary precision
+ * integers is necessary when working with matrix entries that can get close to
+ * \f$2^{63}\f$. This is the case, for example, in
+ * [LatMRG](https://github.com/savamarc/LatMRG) when working with generators with
+ * modulus close to \f$2^{64}\f$.
  * 
  * \section usage_program Using the executable
  *

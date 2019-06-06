@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['background',['Background',['../da/d18/a_intro.html',1,'index']]],
+  ['background',['Background',['../da/d18/a_intro.html',1,'']]],
   ['back',['back',['../d0/d01/classNTL_1_1vector.html#ae03f3503466ee02a1e5832da0138b9a0',1,'NTL::vector']]],
   ['base',['base',['../d7/d31/classLatticeTester_1_1CoordinateSets_1_1AddCoordinate.html#adf998b512cfc6239ae7b5a7ce1666bec',1,'LatticeTester::CoordinateSets::AddCoordinate']]],
   ['basis',['basis',['../d8/dcd/classLatticeTester_1_1Config.html#af43dafbfb94351635b488b8c049fa73c',1,'LatticeTester::Config']]],

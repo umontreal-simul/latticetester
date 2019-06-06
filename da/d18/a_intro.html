@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Lattice Tester Manual: Background</title>
+<title>Lattice Tester Guide: Background</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
@@ -36,8 +36,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-doc-125</span>
+   <div id="projectname">Lattice Tester Guide
+   &#160;<span id="projectnumber">1.0</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -133,7 +133,7 @@ Shortest Nonzero Lattice Vector and Spectral Test</h2>
 <p> With this equation it is to rewrite </p><p class="formulaDsp">
 \[\ell = 2 \left(\frac{\Delta_t}{V_t n}\right)^{1/t} \leq 2\left(\frac{\Delta_t^*}{V_t n}\right)^{1/t}.\]
 </p>
-<p> where \(\Delta_t^*\) is a bound on \(\Delta_t\). <a class="el" href="../../d0/de3/citelist.html#CITEREF_mCON99a">[4]</a> provides various values for Hermit constants (<a class="el" href="../../d0/de3/citelist.html#CITEREF_mCON99a">[4]</a>, <a class="el" href="../../d0/de3/citelist.html#CITEREF_mNGU10l">[20]</a>) \(\gamma_t = 4(\Delta_t^*/V_t)^{2/t}\) that <em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace.">LatticeTester</a></em> uses in subclasses of the <code>Normalizer</code> class to give a bound on \(\ell\) as \(\ell \leq \gamma_t^{1/2} \det(L_t)^{1/t}\).</p>
+<p> where \(\Delta_t^*\) is a bound on \(\Delta_t\). <a class="el" href="../../d0/de3/citelist.html#CITEREF_mCON99a">[4]</a> provides various values for Hermit constants (<a class="el" href="../../d0/de3/citelist.html#CITEREF_mCON99a">[4]</a>, <a class="el" href="../../d0/de3/citelist.html#CITEREF_mNGU10l">[19]</a>) \(\gamma_t = 4(\Delta_t^*/V_t)^{2/t}\) that <em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace.">LatticeTester</a></em> uses in subclasses of the <code>Normalizer</code> class to give a bound on \(\ell\) as \(\ell \leq \gamma_t^{1/2} \det(L_t)^{1/t}\).</p>
 <p>Using these bounds, it is possible to build <b>figures of merit</b>. Figures of merit are values scaled between 0 and 1 that can be used to easily compare different lattice with different \(n\) with some criterion specified beforehand. <em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace.">LatticeTester</a></em> does not, however, provide figures of merit by itself so this topic is not covered more in depth here.</p>
 <h3><a class="anchor" id="sec_merit_spectral"></a>
 The Spectral Test</h3>
@@ -159,7 +159,7 @@ Pairwise reduction</h3>
 <p>As noted by Dieter, pairwise reductions can also be applied conjointly on the primal and dual basis. The idea is simply to make it so that every time a vector is modified, the other basis is changed accordingly so that \(\mathbf{V}\mathbf{W} = mI\) at all times. More details are available in <a class="el" href="../../d0/de3/citelist.html#CITEREF_rDIE75a">[6]</a>.</p>
 <h3><a class="anchor" id="sec_latred_lll"></a>
 Lenstra-Lenstra-Lovasz reduction</h3>
-<p>Lenstra, Lenstra, and Lovasz <a class="el" href="../../d0/de3/citelist.html#CITEREF_mLEN82a">[17]</a> have proposed a popular form of lattice basis reduction known as <b>LLL reduction</b>. Our software implements or uses (via a library implementation) a slightly modified version of this algorithm presented in <a class="el" href="../../d0/de3/citelist.html#CITEREF_mSCH91a">[23]</a>.</p>
+<p>Lenstra, Lenstra, and Lovasz <a class="el" href="../../d0/de3/citelist.html#CITEREF_mLEN82a">[17]</a> have proposed a popular form of lattice basis reduction known as <b>LLL reduction</b>. Our software implements or uses (via a library implementation) a slightly modified version of this algorithm presented in <a class="el" href="../../d0/de3/citelist.html#CITEREF_mSCH91a">[22]</a>.</p>
 <p>For \(1/4 \leq \delta &lt; 1\) (usually close to 1), we say that a basis is \(\delta\)-LLL reduced if</p><ol type="1">
 <li>\( |\mu_{ij}| \leq 1/2 \) for \(1 \leq j &lt; i \leq t\) ;</li>
 <li>\(\delta \leq \frac{\Vert \hat{\mathbf{v}}_{i+1} + \mu_{i+1\,i} \hat{\mathbf{v}}_i \Vert^2}{\Vert \hat{\mathbf{v}}_i\Vert^2}\), for \(0 &lt; i \leq t-1 \).</li>
@@ -175,7 +175,7 @@ Block Korkine-Zolotarev Reduction</h3>
 \[ \delta \Vert \hat{\mathbf{v}}_i \Vert^2 \leq \lambda_1(L^i(\mathbf{v}_1, \ldots, \mathbf{v}_{\min(i+\beta-1, t)}))^2,\ 1 \leq i \leq t-1. \]
 </p>
 <p> where \(2 \leq \beta &lt; t\) is called a block size, \(\lambda_1(L)\) is the shortest vector in lattice \(L\) and \(L_i(b_1, \ldots, b_n)\) is the projection of \(\{b_1,\ldots, b_n\}\) on \(\{\mathbf{v}_1, \ldots, \mathbf{v}_{i-1}\}\), which is a lattice of rank \(t-i+1\). A lattice respecting this condition and the condition 1 of \(\delta\)-LLL reduction is called \(\delta\)-BKZ with block size \(\beta\).</p>
-<p>BKZ reduction has been introduced in <a class="el" href="../../d0/de3/citelist.html#CITEREF_mSCH87a">[24]</a> and perfected to use a variable precision in <a class="el" href="../../d0/de3/citelist.html#CITEREF_mSCH91a">[23]</a>. It turns out that BKZ reduction gives tighter bounds on the shortest obtained vector in the reduced basis: provided that \(\beta-1\) divides \(t-1\) theorem 2.3 in <a class="el" href="../../d0/de3/citelist.html#CITEREF_mSCH87a">[24]</a> gives </p><p class="formulaDsp">
+<p>BKZ reduction has been introduced in <a class="el" href="../../d0/de3/citelist.html#CITEREF_mSCH87a">[23]</a> and perfected to use a variable precision in <a class="el" href="../../d0/de3/citelist.html#CITEREF_mSCH91a">[22]</a>. It turns out that BKZ reduction gives tighter bounds on the shortest obtained vector in the reduced basis: provided that \(\beta-1\) divides \(t-1\) theorem 2.3 in <a class="el" href="../../d0/de3/citelist.html#CITEREF_mSCH87a">[23]</a> gives </p><p class="formulaDsp">
 \[ \lambda_1(L_t)^2 \leq \Vert \mathbf{v}_1 \Vert^2 \leq \alpha_\beta^{(t-1)/(\beta-1)} \lambda_1(L_t)^2 \]
 </p>
 <p> as a bound on the first vector in the basis. Note that \(\alpha_\beta\) is a constant with \(\alpha_2 = \frac{4}{3}\) and generally \(\alpha_\beta \leq \beta^{1+\ln\beta}\). This implies that \(1 &lt; \alpha_\beta^{1/(\beta-1)} \rightarrow 1\) as \(\beta\) increases. This is better than what can be achieved with LLL, which is </p><p class="formulaDsp">
@@ -194,13 +194,13 @@ Shortest Vector Computation</h2>
 <p>Suppose that the basis vectors \(\mathbf{v}_1,\dots,\mathbf{v}_t\) are ordered by increasing length and that our best solution so far is the vector \(\mathbf{v}_1\), with square length \(\hat{\ell} = \mathbf{v}&#39;_1 \mathbf{v}_1\). This \(\hat{\ell}\) is an upper bound on the length \(\ell\) of a shortest vector.</p>
 <p>In the B&amp;B algorithm, we fix successively \(z_t\), then \(z_{t-1}\), then \(z_{t-2}\), down to fixing \(z_1\). Without any more constraints, this yields an (possibly infinite) exponentially growing tree. To avoid this, at each step, for any fixed values of \(z_t,\dots,z_{j+1}\), we compute a finite range (interval) of values of \(z_j\) such that all values outside that range cannot lead to a better solution than \(\hat{\ell}\). All These values will be tested to verify that there is no possible shorter vector than the one we currently know. When a shorter vector is found, \(\mathbf{v}_1\) is changed to that new vector and the search continues. The search ends when all combinations of \(z_j\) inside the intervals have been tested.</p>
 <p>Computing an interval for \(z_j\) is the main challenge of this problem. We present the approach of <a class="el" href="../../d0/de3/citelist.html#CITEREF_mAFF85a">[2]</a> to get this interval. This is what is implemented in <em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace.">LatticeTester</a></em>.</p>
-<p>At the beginning of the B&amp;B procedure, as in <a class="el" href="../../d0/de3/citelist.html#CITEREF_rAFF85a">[1]</a> <a class="el" href="../../d0/de3/citelist.html#CITEREF_mFIN85a">[7]</a> <a class="el" href="../../d0/de3/citelist.html#CITEREF_rGRO88a">[9]</a> <a class="el" href="../../d0/de3/citelist.html#CITEREF_mPOH81a">[22]</a>, we compute a Cholesky decomposition <a class="el" href="../../d0/de3/citelist.html#CITEREF_mGOL89a">[8]</a> of the matrix of scalar products of basis vectors \(\mathbf{V}\mathbf{V}^t\) which always is positive-definite: </p><p class="formulaDsp">
+<p>At the beginning of the B&amp;B procedure, as in <a class="el" href="../../d0/de3/citelist.html#CITEREF_rAFF85a">[1]</a> <a class="el" href="../../d0/de3/citelist.html#CITEREF_mFIN85a">[7]</a> <a class="el" href="../../d0/de3/citelist.html#CITEREF_rGRO88a">[9]</a> <a class="el" href="../../d0/de3/citelist.html#CITEREF_mPOH81a">[21]</a>, we compute a Cholesky decomposition <a class="el" href="../../d0/de3/citelist.html#CITEREF_mGOL89a">[8]</a> of the matrix of scalar products of basis vectors \(\mathbf{V}\mathbf{V}^t\) which always is positive-definite: </p><p class="formulaDsp">
 \[ \mathbf{V} \mathbf{V}^t = \mathbf{U}^t \mathbf{U} \]
 </p>
 <p> where \(\mathbf{U}\) is an upper triangular matrix: </p><p class="formulaDsp">
 \[ \mathbf{U} = \begin{pmatrix} u_{11} &amp; \ldots &amp; u_{1t} \\\ \vdots &amp; \ddots &amp;\vdots \\\ \mathbf{0} &amp; \ldots &amp; u_{tt} \end{pmatrix} \]
 </p>
-<p>Now, if \(\mathbf{z} = (z_1,\dots,z_t)\), we have a shortest vector candidate \(\mathbf{v} = \mathbf{V}^t\mathbf{z}^t\). Note \(r_j = \sum_{k=j+1}^t u_{jk} z_k\), and \(s_j = \sum_{k=j+1}^t \left(\sum_{l=k}^t u_{kl} z_l\right)^2\), then we have <a class="el" href="../../d0/de3/citelist.html#CITEREF_rAFF85a">[1]</a> <a class="el" href="../../d0/de3/citelist.html#CITEREF_mFIN85a">[7]</a> <a class="el" href="../../d0/de3/citelist.html#CITEREF_mPOH81a">[22]</a> :</p>
+<p>Now, if \(\mathbf{z} = (z_1,\dots,z_t)\), we have a shortest vector candidate \(\mathbf{v} = \mathbf{V}^t\mathbf{z}^t\). Note \(r_j = \sum_{k=j+1}^t u_{jk} z_k\), and \(s_j = \sum_{k=j+1}^t \left(\sum_{l=k}^t u_{kl} z_l\right)^2\), then we have <a class="el" href="../../d0/de3/citelist.html#CITEREF_rAFF85a">[1]</a> <a class="el" href="../../d0/de3/citelist.html#CITEREF_mFIN85a">[7]</a> <a class="el" href="../../d0/de3/citelist.html#CITEREF_mPOH81a">[21]</a> :</p>
 <p class="formulaDsp">
 \begin{eqnarray*} \mathbf{v}^t\mathbf{v} &amp;=&amp; \mathbf{z}\mathbf{V} \mathbf{V}^t \mathbf{z}^t = \mathbf{z}\mathbf{U}^t \mathbf{U} \mathbf{z}^t = \sum_{k=1}^t \left(\sum_{l=k}^t u_{kl} z_l\right)^2 \\\\ &amp;\ge&amp; \left( u_{jj} z_j + \sum_{l=j+1}^t u_{jl} z_l\right)^2 + \sum_{k=j+1}^t \left(\sum_{l=k}^t u_{kl} z_l\right)^2 \\\\ &amp;=&amp; (u_{jj} z_j + r_j)^2 + s_{j} \quad = \; s_{j-1}. \end{eqnarray*}
 </p>
@@ -219,8 +219,7 @@ Shortest Vector Computation</h2>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="../../index.html">LatticeTester Manual</a></li>
-    <li class="footer">Generated on Tue Jun 4 2019 12:35:46 for Lattice Tester Manual by
+    <li class="footer">Generated on Thu Jun 6 2019 12:22:41 for Lattice Tester Guide by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.15 </li>
   </ul>

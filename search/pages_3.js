@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['latticetester_20manual',['LatticeTester Manual',['../index.html',1,'']]]
+  ['latticetester_20guide',['LatticeTester Guide',['../index.html',1,'']]]
 ];

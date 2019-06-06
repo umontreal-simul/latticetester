@@ -23,8 +23,32 @@ for the JavaScript code in this file
 */
 var NAVTREE =
 [
-  [ "Lattice Tester Manual", "index.html", [
-    [ "LatticeTester Manual", "index.html", "index" ],
+  [ "Lattice Tester Guide", "index.html", [
+    [ "LatticeTester Guide", "index.html", "index" ],
+    [ "Examples", "df/d1d/examples_page.html", [
+      [ "Basis manipulation", "df/d1d/examples_page.html#sec_basis", null ],
+      [ "Using the input and output classes", "df/d1d/examples_page.html#sec_io", null ],
+      [ "The Reducer class", "df/d1d/examples_page.html#sec_reduc", null ],
+      [ "Construction figures of merit", "df/d1d/examples_page.html#sec_FOM", null ]
+    ] ],
+    [ "Background", "da/d18/a_intro.html", [
+      [ "Lattices on the Integers", "da/d18/a_intro.html#lattices_def", [
+        [ "Definitions", "da/d18/a_intro.html#lattices_def_def", null ],
+        [ "Algorithms on lattices", "da/d18/a_intro.html#lattices_def_algo", null ]
+      ] ],
+      [ "Measures of Uniformity", "da/d18/a_intro.html#sec_merit", [
+        [ "Shortest Nonzero Lattice Vector and Spectral Test", "da/d18/a_intro.html#sec_merit_short", [
+          [ "The Spectral Test", "da/d18/a_intro.html#sec_merit_spectral", null ]
+        ] ],
+        [ "Lattice Reduction Algorithms", "da/d18/a_intro.html#sec_latred", [
+          [ "Pairwise reduction", "da/d18/a_intro.html#sec_latred_dieter", null ],
+          [ "Lenstra-Lenstra-Lovasz reduction", "da/d18/a_intro.html#sec_latred_lll", null ],
+          [ "Block Korkine-Zolotarev Reduction", "da/d18/a_intro.html#sec_latred_bkz", null ],
+          [ "A Quick Note on Precision", "da/d18/a_intro.html#sec_latred_precision", null ]
+        ] ],
+        [ "Shortest Vector Computation", "da/d18/a_intro.html#sec_svp", null ]
+      ] ]
+    ] ],
     [ "Todo List", "dd/da0/todo.html", null ],
     [ "Bibliography", "d0/de3/citelist.html", null ],
     [ "Namespaces", "namespaces.html", [
@@ -54,7 +78,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"d8/d34/classLatticeTester_1_1CoordinateSets_1_1FromRanges.html#af2d7114bcd6c8fec85f3cfae1dc19810"
+"d8/d34/classLatticeTester_1_1CoordinateSets_1_1FromRanges.html#a6556ec5599dce5d32eb6265f0924b99c",
+"namespacemembers_vars.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Lattice Tester Manual: Detailed usage instructions</title>
+<title>Lattice Tester Guide: Detailed usage instructions</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
@@ -36,8 +36,8 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Lattice Tester Manual
-   &#160;<span id="projectnumber">0.1.0-doc-125</span>
+   <div id="projectname">Lattice Tester Guide
+   &#160;<span id="projectnumber">1.0</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -115,10 +115,15 @@ Building the executable</h1>
 <p>The prefered way of getting this software is by downloading it on github (either via <code>git clone</code> or with a <code>.zip</code>) and to compile it yourself (for now). The build process uses the <code>waf</code> metabuild system that greatly streamlines the process.</p>
 <p>To build the project, you simply need to be in the root folder of <em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace.">LatticeTester</a></em> and call: </p><div class="fragment"><div class="line">./waf configure build install</div></div><!-- fragment --><p> or, on Windows, </p><div class="fragment"><div class="line">python waf configure build install</div></div><!-- fragment --><p> If the build process fails, the README might offer you some insight as to what went wrong. Note that for the installation process to work, you will need the have administrative rights on the installation folder.</p>
 <p>The previous command will fetch the environment variables specific to your system to prepare the compilation, compile the program in a local folder and place the binaries and header files in a default location depending on your OS. Depending on your installation path, you might need to specify a path to you compilier when using the <em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace.">LatticeTester</a></em> library. After that, the library will be available under the <code>lib</code> folder in the installation path and the executable program under the <code>bin</code> folder as <code><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace.">LatticeTester</a></code>(<code>.exe</code> on Windows).</p>
+<h2><a class="anchor" id="Types"></a>
+Types and representations</h2>
+<p><em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace.">LatticeTester</a></em> uses <a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL.">NTL</a>'s types and implementations of a few algorithms. If you ever happen to browse the code of <em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace.">LatticeTester</a></em>, you will notice that many of the classes use templates. This is because the library is compiled to work on a variety of types with the same code. These types provide a variable precision in the representation of both integer numbers and floating point numbers.</p>
+<p>It is possible to use integers represented as both &lsquo;std::int64_t&rsquo; (integers of exactly 64 bits) and <code>NTL::ZZ</code> (<a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL.">NTL</a> implementation of exact arbitrary length integers) and floating points as <code>double</code> and <code>NTL::RR</code> (<a class="el" href="../../d2/d5a/namespaceNTL.html" title="This module contains extensions of certain classes in NTL.">NTL</a> implementation of arbitrary precision floating point numbers). Obviously, standard types provide better performance, but can lead to errors in a few algorithms.</p>
+<p>When using the library, you will have to consider which types you will want to use to represent numbers. While it is quite safe to assume floating point arithmetic should not cause problems and that <code>double</code>s should be fine, this is not true for integers. This is because the computations performed on lattices basis need to be done exactly on integers. Using arbitrary precision integers is necessary when working with matrix entries that can get close to \(2^{63}\). This is the case, for example, in <a href="https://github.com/savamarc/LatMRG">LatMRG</a> when working with generators with modulus close to \(2^{64}\).</p>
 <h1><a class="anchor" id="usage_program"></a>
 Using the executable</h1>
 <p><em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace.">LatticeTester</a></em> is built in order to analyse a Lattice based on a set of vectors called <em>basis</em> therefore it provides an executable that can be used directly to do so at a small scale. This executable is a small program that can read data from a file to perform tests as specified by the user. Through this program, all the problems <em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace.">LatticeTester</a></em> aims at solving can be addressed, as well as the computation of figures of merit. Although, concerns for the efficiency of object instanciation when using <em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace.">LatticeTester</a></em> are not needed (since it should not take a large proportion of the execution time), it is recommended that, if you want to perform tests or algorithms on numerous lattices, you make a C++ program using the library instead of sending multiple files to the executable.</p>
-<p>Once the program is compiled, to use it, you simply have to call it from a command line with a filename argument. That file name must have a <code>.dat</code> extension that should not be included when calling the program like </p><div class="fragment"><div class="line">./LatticeTester &lt;LLDD,ZZDD,ZZRR&gt; filename</div></div><!-- fragment --><p> in a POSIX shell. You can specify a directory relative to your current working directory for either of the program and the executable. <code>LLDD</code>, <code>ZZDD</code> and <code>ZZRR</code> are integer type specifiers. For more information on the type usage, please look into <code>Types</code>. For most use cases, <code>ZZDD</code> should do the trick, or will be needed since a few functions only need with <code>ZZ</code> integers.</p>
+<p>Once the program is compiled, to use it, you simply have to call it from a command line with a filename argument. That file name must have a <code>.dat</code> extension that should not be included when calling the program like </p><div class="fragment"><div class="line">./TestLattice &lt;LLDD,ZZDD,ZZRR&gt; filename</div></div><!-- fragment --><p> in a POSIX shell. You can specify a directory relative to your current working directory for either of the program and the executable. <code>LLDD</code>, <code>ZZDD</code> and <code>ZZRR</code> are integer type specifiers. For more information on the type usage, please look into <code>Types</code>. For most use cases, <code>ZZDD</code> should do the trick, or will be needed since a few functions only need with <code>ZZ</code> integers.</p>
 <p>The file must contain, in order:</p><ul>
 <li>A test or computation to be performed</li>
 <li>Parameters for that test/computation</li>
@@ -189,7 +194,6 @@ Shortest Vector Research</h2>
 </ul>
 <h2><a class="anchor" id="Figure"></a>
 Figure of Merit Computation</h2>
-<dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000001">Todo:</a></b></dt><dd>multiple norms?</dd></dl>
 <p>In that case, the file will look like this : </p><div class="fragment"><div class="line">MERIT</div><div class="line">Figure &lt;SPECTRAL, BEYER&gt;</div><div class="line">Normalizer &lt;NONE, BESTBOUND, BESTLAT, LAMINATED, MINK&gt;</div><div class="line">Reduction [bool] Type &lt;Dieter, LLL, BKZ&gt; </div><div class="line">Output &lt;RES, TERM&gt;</div><div class="line">Dim [int]</div><div class="line">Matrix [Dim*Dim <span class="keywordtype">int</span> type array]</div></div><!-- fragment --><ul>
 <li><b>MERIT</b> is the first line indicating the computation to be done. In that case, it means computing a figure of merit.</li>
 <li><b>Figure</b> is the figure of merit to compute.<ul>
@@ -235,8 +239,8 @@ Using the library</h1>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="../../index.html">LatticeTester Manual</a></li>
-    <li class="footer">Generated on Tue Jun 4 2019 12:35:46 for Lattice Tester Manual by
+    <li class="navelem"><a class="el" href="../../index.html">LatticeTester Guide</a></li>
+    <li class="footer">Generated on Thu Jun 6 2019 12:22:41 for Lattice Tester Guide by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.15 </li>
   </ul>

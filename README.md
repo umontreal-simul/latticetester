@@ -50,7 +50,7 @@ For more details about *LatticeTester* can be found in:
   specific implementation details of each class in the library
 - [The theoretical background](http://umontreal-simul.github.io/latticetester/da/d18/a_intro.html),
   should you need to remind yourself details of the above
-- [The full documentation](http://umontreal-simul.github.io/latticetester/) Containing all the above and more
+- [The full](http://umontreal-simul.github.io/latticetester/) Containing all the above and more
 
 ## Compiling
 

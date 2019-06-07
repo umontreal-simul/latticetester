@@ -825,10 +825,9 @@ namespace LatticeTester {
   template <typename Int, typename Vect1, typename Vect2, typename Scal>
     inline void ProdScal (const Vect1 & A, const Vect2 & B, int n, Scal & D)
     {
-      // Le produit A[i] * B[i] peut déborder, d'où conv.
+      // Le produit A[i] * B[i] peut deborder, d'ou conv.
       Int C;   C = 0;
-      for (int i = 0; i < n; i++)
-        C += A[i] * B[i];
+      for (int i = 0; i < n; i++) C += A[i] * B[i];
       NTL::conv(D, C);
     }
 

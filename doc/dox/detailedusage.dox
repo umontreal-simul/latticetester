@@ -1,9 +1,9 @@
 /**
- * \page detailed_usage Detailed usage instructions
- * 
+ * \page usage Detailed usage instructions
+ *
  * \section usage_build Building the executable
  *
- * ## Software Dependencies
+ * \subsection usage_build_soft Software Dependencies
  * 
  * If you intend on building *LatticeTester* from scratch, the following
  * software will need to be installed on the system:
@@ -15,9 +15,9 @@
  * - [Doxygen](http://www.doxygen.nl/) <i>(optional for generating
  *   the documentation)</i>
  * 
- * You will also need a recent compiler compliant with the C++14 standard.
+ * You will also need a compiler compliant with the C++14 standard.
  * 
- * ## Acquiring/Building/Installing the program
+ * \subsection usage_build_build Acquiring/Building/Installing the program
  *
  * This section won't go in depth and explain all the particularities of the
  * build process. If you are a developper and wish to participate to this

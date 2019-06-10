@@ -1,4 +1,11 @@
 /**
+ * \if LATMRG_DOC
+ * \page lattice_back Theory on Lattices
+ * 
+ * This is the theory page available in LatticeTester. This page covers the
+ * concept of lattices as well as a few algorithms very important in LatMRG.
+ *
+ * \else
  * \page a_intro Background
  *
  * This page contains a (not so brief) summary of the mathematical concepts
@@ -10,6 +17,7 @@
  * We therefore introduce here exactly what those lattices are
  * and part of the theory behind the implemented algorithms.
  *
+ * \endif
  * \section lattices_def Lattices on the Integers
  *
  * \subsection lattices_def_def Definitions

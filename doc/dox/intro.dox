@@ -99,6 +99,8 @@
  * be analyzed by subtracting the shift and analyzing the (unshifted) lattice 
  * \f$L_t\f$.
  *
+ * \if LATMRG_DOC
+ * \else
  * \subsection lattices_def_algo Algorithms on lattices
  * 
  * There are a few algorithms specifically doing lattice manipulations
@@ -153,6 +155,7 @@
  *       for j+1 <= k <= i:
  *         W[i][j] -= m * V[j][k] * W[i][k] / V[j][j]
  * \endcode
+ * \endif
  *
  * \section sec_merit Measures of Uniformity
  *
@@ -266,6 +269,8 @@
  * is a suitable integer solution to the problem. By taking this \f$q\f$ we also
  * get that \f$\Vert \mathbf{v}_i - q \mathbf{v}_j \Vert <= \Vert \mathbf{v}_i \Vert\f$.
  * 
+ * \if LATMRG_DOC
+ * \else
  * Pairwise reduction can then
  * be written as the following algorithm with `V[i]`, \f$t\f$-dimensional vectors
  * that are the rows of a matrix:
@@ -289,6 +294,7 @@
  * Since the algorithm is garanteed to reduce the vector length whenever it modifies
  * a vector, it is also garanteed to stop at one point because there is minimal
  * attainable length.
+ * \endif
  *
  * As noted by Dieter, pairwise reductions can also be applied conjointly on the
  * primal and dual basis. The idea is simply to make it so that every time a
@@ -325,6 +331,8 @@
  * short vector can be used as an approximation of the shortest non-zero vector
  * in the lattice.
  *
+ * \if LATMRG_DOC
+ * \else
  * Schnorr and Euchner give the following algorithm for \f$\delta\f$-LLL reduction
  * that is used in *LatticeTester* on a lattice basis in matrix `V`, 1/2 < `delta` < 1
  * and `prec` the number of bits in the floating point arithmetic:
@@ -379,6 +387,7 @@
  * 
  * This algorithm performs in polynomial time and usually does not suffer from
  * precision problems that may arise from the usage of floating point numbers.
+ * \endif
  *
  * \subsubsection sec_latred_bkz Block Korkine-Zolotarev Reduction
  *
@@ -526,6 +535,8 @@
  * Note that \f$s_t = r_t = 0\f$, so at the beginning the bounds on \f$z_t\f$ are
  * given by \f$z_t^2 \le \mathbf{v}_1^\mathbf{t} \mathbf{v}_1\f$.
  *
+ * \if LATMRG_DOC
+ * \else
  * The algorithm explores a B&B tree in which each node corresponds to
  * a partial solution \f$(z_t,\dots,z_{j})\f$. This node has a child
  * \f$(z_t,\dots,z_{j},z_{j-1})\f$ for each value of \f$z_j\f$ that satisfies
@@ -615,6 +626,7 @@
  * of *LatticeTester* to overcome this difficulty.
  * For the same reason, it also helps it we quickly find a tree leaf that corresponds to
  * an improved solution, because it can reduce the size of the tree.
+ * \endif
  *
  * Observe that if \f$\mathbf{v} = \mathbf{z}\mathbf{V}\f$ is a lattice vector,
  * \f$-\mathbf{v} = (-\mathbf{z})\mathbf{V}\f$ is also a lattice

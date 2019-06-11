@@ -5,24 +5,26 @@ _A software package for testing the uniformity of integral lattices in the real 
 ## What this software is about
 
 _Lattice Tester_ is a library offering facilities to manipulate integral lattices 
-and apply certain algorithms on them, for example to compute a reduced basis,
+and to apply certain algorithms on them, for example to compute a reduced basis,
 find a shortest nonzero vector, dualize the lattice, etc.
 The lattices considered are in t dimensions and must be specified by giving a 
-basis of t vectors with rational coordinates. By multiplying these basis vectors 
-by some appropriate integer m, one obtains a lattice whose points have all integer coordinates.  
-This is how the lattices are represented in Lattice Tester: all basis vectors 
-have integer coordinates.
+basis of t vectors with integer coordinates. If the lattice of interest has vectors 
+with rational coordinates, one can rescale it (multiply its basis vectors) 
+by an appropriate integer m to obtains a lattice whose points have all integer coordinates,
+so it can be handled by Lattice Tester.
 
-Lattices that satisfy this property are encountered for example when studying 
-lattice rules for quasi-Monte Carlo integration and when studying certain types 
+Lattices whose points have integral or rational coordinates are encountered for example 
+as lattice rules for quasi-Monte Carlo integration, and when studying certain types 
 of linear congruential generators whose vectors of successive output values have
 a lattice structure. The purpose of Lattice Tester is to compute various 
-**figures of merit** that serve a measures of quality for integral lattices. 
-These figures of merit can compute measures of unformity for several projections 
-of the lattice over lower-dimensional subspaces, and combine them in some way.
-Examples of such measures of uniformity include the length of the shortest 
-nonzero vector in the dual lattice (the spectral test), the number of hyperplanes 
-that contain all the points in the unit hypercube, the beyer quotient, etc.
+**figures of merit** that serve a global measures of quality for integral lattices. 
+These figures of merit can be defined in terms of measures of non-uniformity of the points
+that are computed for several projections of the lattice over lower-dimensional subspaces, 
+and combined in some way (e.g., as a weighted sum or maximum).
+Examples of such measures of non-uniformity include the largest distance between successive
+hyperplanes that contain all the points (whose computation is known as the spectral test),
+the (inverse) length of the shortest nonzero vector in the lattice, the (inverse) 
+number of hyperplanes that contain all the points in the unit hypercube, the beyer quotient, etc.
 
 _Lattice Tester_ was built primarily as a base library for the software packages
 [LatNet Builder](https://github.com/umontreal-simul/latbuilder),
@@ -30,6 +32,8 @@ and [LatMRG](https://github.com/umontreal-simul/latmrg), designed to analyze
 the lattice structure of lattice rules (for quasi-Monte-Carlo) and linear 
 congruential random number generators, respectively. 
 These packages require shared functionnalities which are provided by _Lattice Tester_.
+It is intended to be used as a library to build other programs, and not really as a 
+standalone program, even though it contains such a program for convenience. 
 
 More details on  *Lattice Tester* can be found in:
 - [The tutorial](http://umontreal-simul.github.io/latticetester/df/d1d/examples_page.html) which 
@@ -152,26 +156,21 @@ with:
     ./waf install
 
 
-## Running Lattice Tester
+## Running the lattest executable
 
-A *Lattice Tester* executable can be found in the `bin` subdirectory, under 
-the installation prefix.  It includes:
+Although *Lattice Tester* is meant to be used primarily as a library to build other programs,
+it also contains an executable program which could be convenient if one only wishes to
+examine the properties of a specific integral lattice. This program is named `lattest` and 
+can be found in the `bin` subdirectory, under the installation prefix.
+Under Windows, this program has the additional `.exe` extension.
+See [user guide](http://umontreal-simul.github.io/latticetester/) for further details.
 
-- `lattest`: study lattice properties;
-
-The [user guide](http://umontreal-simul.github.io/latticetester/) provides
-further details.
-
-**NOTE:** Under Windows, the programs have an additional `.exe` extension.
-
-Before executing lattest, it may be necessary to inform the dynamic
-linker where to find the NTL and GMP shared libraries.  Under Linux
+Before executing `lattest`, it may be necessary to inform the dynamic
+linker where to find the NTL and GMP shared libraries.  Under **Linux**
 this is done by appending the paths to the `LD_LIBRARY_PATH` environment
 variable, e.g.,
 
     export LD_LIBRARY_PATH=/opt/ntl/lib:/opt/gmp/lib:$LD_LIBRARY_PATH
 
-with a Bash-compatible shell.
-
-**Microsoft Windows** users might need to copy the NTL and GMP DLLs into the
-same directory (`$HOME/latticetestersoft/bin`, for example) as the executable programs.
+with a Bash-compatible shell.  Under **Windows**, one might need to copy the NTL and GMP DLLs into the
+same directory (`$HOME/latticetestersoft/bin`, for example) as the executable program.

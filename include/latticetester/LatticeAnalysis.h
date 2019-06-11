@@ -147,7 +147,7 @@ namespace LatticeTester {
           /**
            * Reads the parameters of the test in input text file `datafile`;
            * then does the specified computation. The format of the data file
-           * must be as presented in \ref detailed_usage.
+           * must be as presented in \ref usage.
            * This will also print the results of the test in the way specified
            * by the configuration file.
            *

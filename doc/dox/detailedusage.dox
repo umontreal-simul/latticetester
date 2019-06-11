@@ -1,7 +1,8 @@
 /**
- * \page usage Detailed usage instructions
+ * \page usage Usage instructions
+ * \todo Reread this
  *
- * \section usage_build Building the executable
+ * \section usage_build Compiling the Library
  *
  * \subsection usage_build_soft Software Dependencies
  * 
@@ -291,40 +292,6 @@
  * - **Matrix** is a `Dim`\f$\times\f$`Dim` matrix where each line
  *   represents a vector of the lattice. This matrix must be invertible.
  *
- * \section library_usage Using the library
- * 
- * In the event that you should need more flexibility than what is offered by
- * the executable, we also present the classes containing the main
- * functionnalities of *LatticeTester*. There are three of them bringing
- * together similar computations :
- * - `BasisConstruction` grouping functions helping with basis, dual, and
- *   projection constructions
- * - `Reducer` with functions to do basis reduction and solve the shortest
- *   vector problem
- * - `LatticeAnalysis` that contains functions to do the computation of figures
- *   of merit
- * 
- * This section won't go into the depth of each of those class since it would be
- * redundant with their documentation. Instead, we point to the examples,
- * where their usage is demonstrated. We also point out to the following classes
- * without which the usage of the main classes would be difficult :
- * - `IntLatticeBasis` is a class representing a lattice basis. This is the
- * lowest level class available to represent a lattice in *LatticeTester* and it
- * is the class that is needed for the instanciation of a `Reducer`.
- * - `Config` stores all the configuration for the execution of a
- * `LatticeAnalysis`. It is possible to lauch tests by passing a `Config` object
- * to a `LatticeAnalysis`.
- * - `ParamReader` implements a simple interface to read information from files.
- * It also offers methods to initialize a `Config` object from the format of
- * file specified above.
- * - `Normalizer` is a base class to the implementation of a normalizer to
- * figures of merit. There are many modules implementing various normalizers for
- * the spectral test that are available in *LatticeTester*.
- * - `Weights` is a base class to weight multiple figures of merit in some way
- * to build a figure of merit of of them.
- * Although this is not directly used by *LatticeTester*, it is relevant to
- * point out this class to users interested in computing figures of merit with
- * multiple projections from a lattice.
  * */
 
 The main analysis is the Spectral Test

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['detailed_20usage_20instructions',['Detailed usage instructions',['../d4/d4e/detailed_usage.html',1,'index']]]
+  ['todo_20list',['Todo List',['../dd/da0/todo.html',1,'']]],
+  ['tutorial',['Tutorial',['../db/d4e/tutorial.html',1,'']]]
 ];

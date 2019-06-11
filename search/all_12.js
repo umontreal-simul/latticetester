@@ -8,6 +8,7 @@ var searchData=
   ['tostringdualbasis',['toStringDualBasis',['../d1/d89/classLatticeTester_1_1IntLatticeBasis.html#a67d64d63f2b845edcbe3e702014de0e8',1,'LatticeTester::IntLatticeBasis']]],
   ['transpose',['transpose',['../d2/d5a/namespaceNTL.html#a888d95def613c05a77a555a1890a95cf',1,'NTL::transpose(NTL::Mat&lt; T &gt; &amp;X, const NTL::Mat&lt; T &gt; &amp;A)'],['../d2/d5a/namespaceNTL.html#a431e852107e7dba457fda02652fb345f',1,'NTL::transpose(const NTL::Mat&lt; T &gt; &amp;a)']]],
   ['triangularization',['Triangularization',['../d8/d74/namespaceLatticeTester.html#aa519a1e0589932719c79b73c76bb1093',1,'LatticeTester']]],
+  ['tutorial',['Tutorial',['../db/d4e/tutorial.html',1,'']]],
   ['two_5fexp',['TWO_EXP',['../d8/d74/namespaceLatticeTester.html#ae540464b3215755b9a0ba65ebfba38f8',1,'LatticeTester']]],
   ['types',['Types',['../d6/df9/classLatticeTester_1_1Types.html',1,'LatticeTester']]]
 ];

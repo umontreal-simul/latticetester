@@ -7,7 +7,7 @@ var indexSectionsWithContent =
   4: "bdfmnopt",
   5: "mvw",
   6: "cnop",
-  7: "bdelt"
+  7: "btu"
 };
 
 var indexSectionNames =

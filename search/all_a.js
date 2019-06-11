@@ -1,7 +1,6 @@
 var searchData=
 [
   ['coordinatesets',['CoordinateSets',['../d0/d6f/namespaceLatticeTester_1_1CoordinateSets.html',1,'LatticeTester']]],
-  ['latticetester_20guide',['LatticeTester Guide',['../index.html',1,'']]],
   ['lacunary',['Lacunary',['../d8/d3b/classLatticeTester_1_1Lacunary.html',1,'LatticeTester::Lacunary&lt; BasInt &gt;'],['../d8/d3b/classLatticeTester_1_1Lacunary.html#a8c91ccc16be251a222faa28853849c8f',1,'LatticeTester::Lacunary::Lacunary(const BasIntVec &amp;C, int t)'],['../d8/d3b/classLatticeTester_1_1Lacunary.html#a7dcc3dafb83ab3b880d79b5862f1a6a9',1,'LatticeTester::Lacunary::Lacunary(int t=0)']]],
   ['latticeanalysis',['LatticeAnalysis',['../df/d59/classLatticeTester_1_1LatticeAnalysis.html',1,'LatticeTester::LatticeAnalysis&lt; Int, BasInt, Dbl, RedDbl &gt;'],['../df/d59/classLatticeTester_1_1LatticeAnalysis.html#abec5518737b36f9d89274e296927fce7',1,'LatticeTester::LatticeAnalysis::LatticeAnalysis()'],['../df/d59/classLatticeTester_1_1LatticeAnalysis.html#aa37a6f5f64bedd942662eed34d58aeb8',1,'LatticeTester::LatticeAnalysis::LatticeAnalysis(Config&lt; Int, BasIntMat &gt; &amp;config)']]],
   ['latticetester',['LatticeTester',['../d8/d74/namespaceLatticeTester.html',1,'']]],

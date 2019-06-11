@@ -10,7 +10,7 @@ git clone https://github.com/umontreal-simul/latticetester.git doc/html
 cd doc/html	
 git checkout -b gh-pages origin/gh-pages	
 rm -r !('README.md')
-cp ../../build/doc/html/* .
+cp -r ../../build/doc/html/* .
 git status	
 git add .	
 git commit -m "update documentation"	

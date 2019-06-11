@@ -24,12 +24,32 @@ for the JavaScript code in this file
 var NAVTREE =
 [
   [ "Lattice Tester Guide", "index.html", [
-    [ "LatticeTester Guide", "index.html", "index" ],
-    [ "Examples", "df/d1d/examples_page.html", [
-      [ "Basis manipulation", "df/d1d/examples_page.html#sec_basis", null ],
-      [ "Using the input and output classes", "df/d1d/examples_page.html#sec_io", null ],
-      [ "The Reducer class", "df/d1d/examples_page.html#sec_reduc", null ],
-      [ "Construction figures of merit", "df/d1d/examples_page.html#sec_FOM", null ]
+    [ "Overview", "index.html#over", [
+      [ "Content Outline", "index.html#over_ctn", null ],
+      [ "Presentation of Lattice Tester", "index.html#presentation", null ],
+      [ "Types and representations", "index.html#overview_type", null ],
+      [ "Links", "index.html#links", null ]
+    ] ],
+    [ "Tutorial", "db/d4e/tutorial.html", [
+      [ "Using the library", "db/d4e/tutorial.html#library_usage", null ],
+      [ "Basis manipulation", "db/d4e/tutorial.html#sec_basis", null ],
+      [ "Using the input and output classes", "db/d4e/tutorial.html#sec_io", null ],
+      [ "The Reducer class", "db/d4e/tutorial.html#sec_reduc", null ],
+      [ "Construction figures of merit", "db/d4e/tutorial.html#sec_FOM", null ]
+    ] ],
+    [ "Usage instructions", "da/d1b/usage.html", [
+      [ "Compiling the Library", "da/d1b/usage.html#usage_build", [
+        [ "Software Dependencies", "da/d1b/usage.html#usage_build_soft", null ],
+        [ "Acquiring/Building/Installing the program", "da/d1b/usage.html#usage_build_build", null ],
+        [ "Types and representations", "da/d1b/usage.html#Types", null ]
+      ] ],
+      [ "Using the executable", "da/d1b/usage.html#usage_program", [
+        [ "Basis Construction", "da/d1b/usage.html#Basis", null ],
+        [ "Dual Construction", "da/d1b/usage.html#Dual", null ],
+        [ "Lattice Reduction", "da/d1b/usage.html#Lattice", null ],
+        [ "Shortest Vector Research", "da/d1b/usage.html#Shortest", null ],
+        [ "Figure of Merit Computation", "da/d1b/usage.html#Figure", null ]
+      ] ]
     ] ],
     [ "Background", "da/d18/a_intro.html", [
       [ "Lattices on the Integers", "da/d18/a_intro.html#lattices_def", [
@@ -78,8 +98,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "annotated.html",
-"d8/d34/classLatticeTester_1_1CoordinateSets_1_1FromRanges.html#a6556ec5599dce5d32eb6265f0924b99c",
-"namespacemembers_vars.html"
+"d8/d3b/classLatticeTester_1_1Lacunary.html#abfa0005744bccda2a6356c1bb8b591d4",
+"namespacemembers.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

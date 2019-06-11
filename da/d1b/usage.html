@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.15"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Lattice Tester Guide: Detailed usage instructions</title>
+<title>Lattice Tester Guide: Usage instructions</title>
 <link href="../../tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="../../jquery.js"></script>
 <script type="text/javascript" src="../../dynsections.js"></script>
@@ -37,7 +37,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">Lattice Tester Guide
-   &#160;<span id="projectnumber">1.0-1</span>
+   &#160;<span id="projectnumber">1.0-9</span>
    </div>
    <div id="projectbrief">Software Package For Testing The Uniformity Of Integral Lattices In The Real Space</div>
   </td>
@@ -75,7 +75,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('d4/d4e/detailed_usage.html','../../');});
+$(document).ready(function(){initNavTree('da/d1b/usage.html','../../');});
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -95,13 +95,12 @@ $(document).ready(function(){initNavTree('d4/d4e/detailed_usage.html','../../');
 
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Detailed usage instructions </div>  </div>
+<div class="title">Usage instructions </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>pasge</p>
+<div class="textblock"><dl class="todo"><dt><b><a class="el" href="../../dd/da0/todo.html#_todo000001">Todo:</a></b></dt><dd>Reread this</dd></dl>
 <h1><a class="anchor" id="usage_build"></a>
-Building the executable</h1>
-<p>pasge</p>
+Compiling the Library</h1>
 <h2><a class="anchor" id="usage_build_soft"></a>
 Software Dependencies</h2>
 <p>If you intend on building <em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace.">LatticeTester</a></em> from scratch, the following software will need to be installed on the system:</p>
@@ -186,7 +185,7 @@ Shortest Vector Research</h2>
 <p>In that case, the file will look like this : </p><div class="fragment"><div class="line">SHORTEST</div><div class="line">Reduction [bool] Type &lt;Dieter, LLL, BKZ&gt;</div><div class="line">Output &lt;RES, TERM&gt;</div><div class="line">Dim [int]</div><div class="line">Matrix [Dim*Dim <span class="keywordtype">int</span> type array]</div></div><!-- fragment --><ul>
 <li><b>SHORTEST</b> is the first line indicating the computation to be done. In that case, it means finding the shortest vector</li>
 <li><b>Reduction</b> allows the user to perform a lattice basis reduction prior to the shortest vector research. It is recommended that this flag be set to <code>true</code>.</li>
-<li><b>Type</b> is the type of reduction to use if <em>Reduction</em> is set to <code>true</code>. This field is not needed if <em>Reduction</em> is <code>false</code>. Look at <a class="el" href="../../d4/d4e/detailed_usage.html#Lattice">Lattice Reduction</a> for more details.</li>
+<li><b>Type</b> is the type of reduction to use if <em>Reduction</em> is set to <code>true</code>. This field is not needed if <em>Reduction</em> is <code>false</code>. Look at <a class="el" href="../../da/d1b/usage.html#Lattice">Lattice Reduction</a> for more details.</li>
 <li><b>Error</b> is a factor indicating the tolerance for error. If error is set to \(\alpha\), the shortest vector returned by this algorithm will have a length that is at most \(1 + \alpha\) times the length of the true shortest vector. This can be set to 0 to obtain the true shortest vector. If this is non-zero, the program will be slower because of the checks that will occur.</li>
 <li><b>Output</b> is the output wanted.<ul>
 <li><b>RES</b> means <em>results file</em>. The results will be printed in a file with the same name as the input file with a <code>.res</code> extension.</li>
@@ -214,37 +213,24 @@ Figure of Merit Computation</h2>
 </ul>
 </li>
 <li><b>Reduction</b> allows the user to perform a lattice basis reduction prior to other computations. It is recommended that this flag be set to <code>true</code>.</li>
-<li><b>Type</b> is the type of reduction to use if <em>Reduction</em> is set to <code>true</code>. This field is not needed if <em>Reduction</em> is <code>false</code>. Look at <a class="el" href="../../d4/d4e/detailed_usage.html#Lattice">Lattice Reduction</a> for more details.</li>
+<li><b>Type</b> is the type of reduction to use if <em>Reduction</em> is set to <code>true</code>. This field is not needed if <em>Reduction</em> is <code>false</code>. Look at <a class="el" href="../../da/d1b/usage.html#Lattice">Lattice Reduction</a> for more details.</li>
 <li><b>Output</b> is the output wanted.<ul>
 <li><b>RES</b> means <em>results file</em>. The results will be printed in a file with the same name as the input file with a <code>.res</code> extension.</li>
 <li><b>TERM</b> means <em>terminal</em>. The results will be printed on the command line</li>
 </ul>
 </li>
 <li><b>Dim</b> is the dimension of the input matrix. In theory, it is not necessary that this matrix be square, but <em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace.">LatticeTester</a></em> will not reduce a non-square matrix.</li>
-<li><b>Matrix</b> is a <code>Dim</code> \(\times\)<code>Dim</code> matrix where each line represents a vector of the lattice. This matrix must be invertible.</li>
-</ul>
-<h1><a class="anchor" id="library_usage"></a>
-Using the library</h1>
-<p>In the event that you should need more flexibility than what is offered by the executable, we also present the classes containing the main functionnalities of <em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace.">LatticeTester</a></em>. There are three of them bringing together similar computations :</p><ul>
-<li><code>BasisConstruction</code> grouping functions helping with basis, dual, and projection constructions</li>
-<li><code>Reducer</code> with functions to do basis reduction and solve the shortest vector problem</li>
-<li><code>LatticeAnalysis</code> that contains functions to do the computation of figures of merit</li>
-</ul>
-<p>This section won't go into the depth of each of those class since it would be redundant with their documentation. Instead, we point to the examples, where their usage is demonstrated. We also point out to the following classes without which the usage of the main classes would be difficult :</p><ul>
-<li><code>IntLatticeBasis</code> is a class representing a lattice basis. This is the lowest level class available to represent a lattice in <em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace.">LatticeTester</a></em> and it is the class that is needed for the instanciation of a <code>Reducer</code>.</li>
-<li><code>Config</code> stores all the configuration for the execution of a <code>LatticeAnalysis</code>. It is possible to lauch tests by passing a <code>Config</code> object to a <code>LatticeAnalysis</code>.</li>
-<li><code>ParamReader</code> implements a simple interface to read information from files. It also offers methods to initialize a <code>Config</code> object from the format of file specified above.</li>
-<li><code>Normalizer</code> is a base class to the implementation of a normalizer to figures of merit. There are many modules implementing various normalizers for the spectral test that are available in <em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace.">LatticeTester</a></em>.</li>
-<li><code>Weights</code> is a base class to weight multiple figures of merit in some way to build a figure of merit of of them. Although this is not directly used by <em><a class="el" href="../../d8/d74/namespaceLatticeTester.html" title="Lattice namespace.">LatticeTester</a></em>, it is relevant to point out this class to users interested in computing figures of merit with multiple projections from a lattice. </li>
+<li><b>Matrix</b> is a <code>Dim</code> \(\times\)<code>Dim</code> matrix where each line represents a vector of the lattice. This matrix must be invertible. </li>
 </ul>
 </div></div><!-- PageDoc -->
 </div><!-- contents -->
 </div><!-- doc-content -->
+<!-- HTML footer for doxygen 1.8.15-->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="../../index.html">LatticeTester Guide</a></li>
-    <li class="footer">Generated on Fri Jun 7 2019 14:04:00 for Lattice Tester Guide by
+    <a href="https://github.com/umontreal-simul/latticetester">Available on Github</a>
+    <li class="footer">Generated on Tue Jun 11 2019 15:21:27 for Lattice Tester Guide by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="../../doxygen.png" alt="doxygen"/></a> 1.8.15 </li>
   </ul>

@@ -1,63 +1,56 @@
-# LatticeTester
+﻿# Lattice Tester
 
 _A software package for testing the uniformity of integral lattices in the real space_
 
-## Documentation
+## What this software is about
 
-_LatticeTester_ is a library that is intended to facilitate the manipulation
-of lattices and the execution of certain algorithms on such objects. Lattices
-are the discrete subgroup of a vector space obtained by taking all the integer
-linear combinations of a set of vectors. They have a lot of structure and can be
-found, for example, in certain algorithmicaly generated point sets such as
-some types of random number generators and quasi-Monte-Carlo integration point
-sets.
+_Lattice Tester_ is a library offering facilities to manipulate integral lattices 
+and to apply certain algorithms on them, for example to compute a reduced basis,
+find a shortest nonzero vector, dualize the lattice, etc.
+The lattices considered are in t dimensions and must be specified by giving a 
+basis of t vectors with integer coordinates. If the lattice of interest has vectors 
+with rational coordinates, one can rescale it (multiply its basis vectors) 
+by an appropriate integer m to obtains a lattice whose points have all integer coordinates,
+so it can be handled by Lattice Tester.
 
-Studying those point sets is mostly about trying to mesure their uniformity in
-the unit hypercube with what is called **figures of merit**. Figures of merit
-are mesures built to capture the uniformity of point sets in a number that can
-easily be compared for different point sets. Namely, *LatticeTester* implements
-the computation of the **Spectral Test** and of the **Beyer quotient**.
+Lattices whose points have integral or rational coordinates are encountered for example 
+as lattice rules for quasi-Monte Carlo integration, and when studying certain types 
+of linear congruential generators whose vectors of successive output values have
+a lattice structure. The purpose of Lattice Tester is to compute various 
+**figures of merit** that serve a global measures of quality for integral lattices. 
+These figures of merit can be defined in terms of measures of non-uniformity of the points
+that are computed for several projections of the lattice over lower-dimensional subspaces, 
+and combined in some way (e.g., as a weighted sum or maximum).
+Examples of such measures of non-uniformity include the largest distance between successive
+hyperplanes that contain all the points (whose computation is known as the spectral test),
+the (inverse) length of the shortest nonzero vector in the lattice, the (inverse) 
+number of hyperplanes that contain all the points in the unit hypercube, the beyer quotient, etc.
 
-To perform such computations, _LatticeTester_ implements numerous algorithms
-to manipulate lattices. Notable ones include a Branch-and-Bound procedure
-that computes the **shortest non-zero vector** in a lattice and various **basis
-reduction algorithms** using criterions like LLL and BKZ.
-In *LatticeTester*, and in general, lattices are represented by a **basis**, a
-set of vectors of minimal cardinality generating the entire lattice. Basis
-reduction algorithms are algorithms that take the basis of a lattice as input
-and try to find another basis of the same lattice, but with vector of shorter
-length.
-
-Finally _LatticeTester_ also implements lower level operations on lattices.
-Those include the extraction of a basis for a lattice from a set of vectors
-generating this lattice, norm computation in both L1 and L2 norms and vector 
-swapping in the basis.
-Concurrently to the basis computations, _LatticeTester_ can also compute what is
-called the **dual basis**, a set of vectors spanning all vectors normal to
-hyperplans in the lattice.
-
-_LatticeTester_ is primarily built as a library for the software packages
+_Lattice Tester_ was built primarily as a base library for the software packages
 [LatNet Builder](https://github.com/umontreal-simul/latbuilder),
-and [LatMRG](https://github.com/umontreal-simul/latmrg) that
-respectively study quasi-Monte-Carlo point sets and congruential random number
-generators. The applications targeted by these programs require specific shared
-functionnalities and _LatticeTester_ aims at provinding them.
+and [LatMRG](https://github.com/umontreal-simul/latmrg), designed to analyze
+the lattice structure of lattice rules (for quasi-Monte-Carlo) and linear 
+congruential random number generators, respectively. 
+These packages require shared functionnalities which are provided by _Lattice Tester_.
+It is intended to be used as a library to build other programs, and not really as a 
+standalone program, even though it contains such a program for convenience. 
 
-For more details about *LatticeTester* can be found in:
-- [The tutorial](http://umontreal-simul.github.io/latticetester/df/d1d/examples_page.html) containing a
-  few examples showing of the main classes of the library
-- [The API documentation](http://umontreal-simul.github.io/latticetester/namespaces.html), for
-  specific implementation details of each class in the library
+More details on  *Lattice Tester* can be found in:
+- [The tutorial](http://umontreal-simul.github.io/latticetester/df/d1d/examples_page.html) which 
+  provides examples of how to use the library.
+- [The API documentation](http://umontreal-simul.github.io/latticetester/namespaces.html),
+  which specifies the interface.
 - [The theoretical background](http://umontreal-simul.github.io/latticetester/da/d18/a_intro.html),
-  should you need to remind yourself details of the above
-- [The full](http://umontreal-simul.github.io/latticetester/) Containing all the above and more
+  which gives an overview of the underlying theory.
+- [The complete user's guide](http://umontreal-simul.github.io/latticetester/), that contains all of the above.
+
+_Lattice Tester_ is free open source software, distributed under the Apache License.
 
 ## Compiling
 
 ### Software Dependencies
 
-Compiling *LatticeTester* requires the following softwares to be installed on
-the system:
+Compiling *Lattice Tester* requires the following software to be installed:
 
 * [NTL](http://www.shoup.net/ntl/index.html) 10.4.0 or later
 * [GMP](https://gmplib.org/) compatible version with your NTL installation
@@ -70,11 +63,11 @@ You will also need a recent compiler compliant with the C++14 standard.
 
 ### Configuring the Build
 
-*LatticeTester* relies on the
+*Lattice Tester* relies on the
 [waf meta build system](https://code.google.com/p/waf/) for configuring and
-compiling the software source. Waf is included in the *LatticeTester* source 
+compiling the software source. Waf is included in the *Lattice Tester* source 
 tree, but it depends on [Python](http://python.org/download), which must be 
-available on the system on which *LatticeTester* is to be compiled.
+available on the system on which *Lattice Tester* is to be compiled.
 
 The commands below should work verbatim under Linux and MacOS systems.
 **Microsoft Windows** users should replace every instance of `./waf` 
@@ -90,7 +83,7 @@ Change the current directory to the root directory of the package, for example:
 if you obtained the source code with the `git` command.
 If you obtained the source code from the ZIP archive, the directory should be
 named `latticetester-master` instead of `latticetester`.
-At the root of the source tree lies the `waf` script, manages the build
+At the root of the source tree lies the `waf` script, which manages the build
 process.
 
 Try:
@@ -99,16 +92,16 @@ Try:
 
 to see the various commands and options.
 
-There are 6 options that you might want/need to use:
+There are 6 options that you might want or need to use:
 - `--out /path/to/build/location` allows you to specify in which directory the
   build process will operate. The default is `./build`. You will need permission
   to write in that directory.
 - `--prefix /path/to/installation/location` allows you to specify in which 
-  directory you would like to install *LatticeTester* after it's compilation.
+  directory you would like to install *Lattice Tester* after it's compilation.
   The default is `/usr/local` on Linux (waf's default). You will need permission
   to write in that directory.
 - `--ntl /path/to/NTL` allows you to specify the location of your NTL 
-  installation. You will only need this flag if waf doesn't find your NTL
+  installation. You will only need this flag if waf does not find your NTL
   installation automatically.
 - `--gmp /path/to/gmp` allows you to specify the location of your gmp
   installation. You will only need this flag if waf doesn't find your gmp
@@ -132,7 +125,7 @@ two libraries:
         ./waf configure --ntl /opt/ntl --gmp /opt/gmp
 
 It is possible to set the `CXX` environment variable to the path to a specific
-C++ compiler to be used to build LatticeTester, before running the `waf
+C++ compiler to be used to build Lattice Tester, before running the `waf
 configure` command.
 
 A simple 
@@ -152,37 +145,32 @@ script with `./configure.sh` to avoid typing the configure command by hand
 ### Building and Installing
 
 Once everything is configured correctly, the following command will build the
-*LatticeTester* library and command-line tool:
+*Lattice Tester* library and command-line tool:
 
     ./waf build
 
-If the build process completed without errors, *LatticeTester* can be installed to the
+If the build process completed without errors, *Lattice Tester* can be installed to the
 directory specified with the `--prefix` option during the configuration step,
 with:
 
     ./waf install
 
 
-## Running LatticeTester
+## Running the lattest executable
 
-The *LatticeTester* executable can be found in the `bin` subdirectory, under 
-the installation prefix. These include:
+Although *Lattice Tester* is meant to be used primarily as a library to build other programs,
+it also contains an executable program which could be convenient if one only wishes to
+examine the properties of a specific integral lattice. This program is named `lattest` and 
+can be found in the `bin` subdirectory, under the installation prefix.
+Under Windows, this program has the additional `.exe` extension.
+See [user guide](http://umontreal-simul.github.io/latticetester/) for further details.
 
-- `lattest`: study lattice properties;
-
-Refer to the [user guide](http://umontreal-simul.github.io/latticetester/) for 
-further detail.
-
-**NOTE:** Under Windows, the programs have an additional `.exe` extension.
-
-Before executing the lattest program, it may be necessary to inform the dynamic
-linker where to find the NTL and GMP shared libraries.  Under Linux
+Before executing `lattest`, it may be necessary to inform the dynamic
+linker where to find the NTL and GMP shared libraries.  Under **Linux**
 this is done by appending the paths to the `LD_LIBRARY_PATH` environment
 variable, e.g.,
 
     export LD_LIBRARY_PATH=/opt/ntl/lib:/opt/gmp/lib:$LD_LIBRARY_PATH
 
-with a Bash-compatible shell.
-
-**Microsoft Windows** users might need to copy the NTL and GMP DLLs into the
-same directory (`$HOME/latticetestersoft/bin`, for example) as the executable programs.
+with a Bash-compatible shell.  Under **Windows**, one might need to copy the NTL and GMP DLLs into the
+same directory (`$HOME/latticetestersoft/bin`, for example) as the executable program.

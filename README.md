@@ -24,7 +24,7 @@ and combined in some way (e.g., as a weighted sum or maximum).
 Examples of such measures of non-uniformity include the largest distance between successive
 hyperplanes that contain all the points (whose computation is known as the spectral test),
 the (inverse) length of the shortest nonzero vector in the lattice, the (inverse) 
-number of hyperplanes that contain all the points in the unit hypercube, the beyer quotient, etc.
+number of hyperplanes that contain all the points in the unit hypercube, the Beyer quotient, etc.
 
 _Lattice Tester_ was built primarily as a base library for the software packages
 [LatNet Builder](https://github.com/umontreal-simul/latbuilder),
@@ -156,7 +156,7 @@ with:
     ./waf install
 
 
-## Running the lattest executable
+### Running the `lattest` executable
 
 Although *Lattice Tester* is meant to be used primarily as a library to build other programs,
 it also contains an executable program which could be convenient if one only wishes to

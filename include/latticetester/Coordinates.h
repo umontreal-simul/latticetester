@@ -33,7 +33,6 @@ namespace LatticeTester {
    * computing the projections with lacunary indices. Objects of this class are
    * created and returned by the classes in the CoordinateSets namespace.
    */
-
   class Coordinates : public std::set<std::size_t> {
     public:
       /**

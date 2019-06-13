@@ -63,13 +63,15 @@ namespace LatticeTester {
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
     class IntLatticeBasis {
 
-      private:
+      public:
         // Forward definition of types to be used in this class.
+        typedef Int Integ;
+        typedef NTL::vector<Int> IntVec;
+        typedef NTL::matrix<Int> IntMat;
         typedef NTL::vector<BasInt> BasIntVec;
         typedef NTL::matrix<BasInt> BasIntMat;
+        typedef Dbl Float;
         typedef NTL::vector<Dbl> DblVec;
-
-      public:
 
         /**
          * Constructor initializing the primal basis with the identity matrix.

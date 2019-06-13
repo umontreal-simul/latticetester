@@ -56,11 +56,14 @@ namespace LatticeTester {
    */
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
       class IntLattice : public IntLatticeBasis<Int, BasInt, Dbl, RedDbl> {
-        private:
+        public:
+          typedef Int Integ;
+          typedef NTL::vector<Int> IntVec;
+          typedef NTL::matrix<Int> IntMat;
           typedef NTL::vector<BasInt> BasIntVec;
           typedef NTL::matrix<BasInt> BasIntMat;
+          typedef Dbl Float;
           typedef NTL::vector<Dbl> DblVec;
-        public:
 
           /**
            * Constructor initializing the primal and the dual basis with the 

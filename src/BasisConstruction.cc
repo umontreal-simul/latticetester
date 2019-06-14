@@ -47,6 +47,9 @@ namespace LatticeTester {
         NTL::swap(matrix[i], matrix[num-rank+i]);
       }
       matrix.SetDims(rank, matrix.NumCols());
+      matrix = NTL::transpose(matrix);
+      matrix.SetDims(rank, rank);
+      matrix = NTL::transpose(matrix);
     }
 
 }

@@ -42,8 +42,8 @@ namespace LatticeTester {
    * \f}
    * where \f$\mathbf{e}_i\f$ is a vector of 0 with a 1 at the \f$i^\text{th}\f$
    * coordinate.
-   * 
-   * A condition that is most wanted when building a rank 1 lattice is that 
+   *
+   * A condition that is most wanted when building a rank 1 lattice is that
    * \f$\gcd(a_i, m) = 1,\ \forall 1\leq i \leq d\f$. If this condition is
    * verified, the lattice covers the same number of points, \f$m\f$, in all its
    * projections. Note that if one searches for such a lattice, it is possible,
@@ -66,7 +66,7 @@ namespace LatticeTester {
         /**
          * Full constructor. The lattice can be completely described by the
          * generating vector `a`, the dimension `maxDim`, and the modulo `m`
-         * since all the points of the lattice can be obtained by taking 
+         * since all the points of the lattice can be obtained by taking
          * \f[
          *      u_i = (i \mathbf{a} \mod m),
          * \f]
@@ -184,7 +184,7 @@ namespace LatticeTester {
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
     Rank1Lattice<Int, BasInt, Dbl, RedDbl>::Rank1Lattice (
-        const Rank1Lattice<Int, BasInt, Dbl, RedDbl> & lat): 
+        const Rank1Lattice<Int, BasInt, Dbl, RedDbl> & lat):
       IntLattice<Int, BasInt, Dbl, RedDbl> (
           lat.m_modulo, lat.getOrder (), lat.getDim (), lat.getNorm ())
   {

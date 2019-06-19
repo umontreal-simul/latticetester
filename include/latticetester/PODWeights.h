@@ -49,7 +49,7 @@ namespace LatticeTester {
        */
       virtual ~PODWeights()
       { }
-      
+
       /**
        * Returns the weight of the projection specified by \c projection.
        */

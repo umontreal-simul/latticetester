@@ -27,7 +27,7 @@
 
 /**
  * This module contains extensions of certain classes in NTL. It was previously
- * necessary because NTL and boost (an old dependency) did not use the same 
+ * necessary because NTL and boost (an old dependency) did not use the same
  * function names and indices.
  *
  * This name conversion was meant to have the same function names in boost and NTL
@@ -43,7 +43,7 @@
 namespace NTL
 {
   /**
-   * A subclass of the `NTL::Vec<T>` class. It extends its parent with a few 
+   * A subclass of the `NTL::Vec<T>` class. It extends its parent with a few
    * methods and overloads a few others with more compatible defaults.
    * */
   template <typename T> class vector : public Vec<T>{
@@ -91,7 +91,7 @@ namespace NTL
        * implements a member function: `void swap(Vec<T>& other);`. It is kept
        * here for history.
        * Thanks to Ayman for pointing this out.
-       * 
+       *
        * inline void swap (matrix<T> &m) { NTL::swap(*this, m); }
        */
 
@@ -104,7 +104,7 @@ namespace NTL
       /**
        * Returns the number of allocated and initialized elements in the vector.
        * It is possible for the vector length to differ from this one if the max
-       * length has been preemptively expanded or if the vector has been 
+       * length has been preemptively expanded or if the vector has been
        * shrinked because NTL does not free components until explicitly asked.
        * This uses `%NTL::%Vec<T>::%MaxLength()`.
        */
@@ -136,7 +136,7 @@ namespace NTL
   };
 
   /**
-   * A subclass of the `NTL::Mat<T>` class. It extends its parent with a few 
+   * A subclass of the `NTL::Mat<T>` class. It extends its parent with a few
    * methods and overloads a few others with more compatible defaults.
    * */
   template <typename T> class matrix : public Mat<T>{
@@ -201,7 +201,7 @@ namespace NTL
       size_type size2() const { return this->NumCols(); }
 
       /**
-       * Overload to change the indexation reference for (i,j) operator to start 
+       * Overload to change the indexation reference for (i,j) operator to start
        * from 0.
        * In NTL::Vec<T> the (i,j) operator starts from 1 which is not compatible
        * with boost.
@@ -264,7 +264,7 @@ namespace NTL
 
       // If both matrices have the same address, we need to transpose in place
       if (&X == &A) {
-        if (n == m) 
+        if (n == m)
           for (i = 0; i < n; i++)
             for (j = 0; j < m; j++)
               swap(X[i][j], X[j][i]);
@@ -294,7 +294,7 @@ namespace NTL
   }
 
   //============================================================================
-  
+
   /**
    * \name Operator overloads
    * @{

@@ -62,22 +62,22 @@ namespace LatticeTester
 
 // #ifdef WITH_XML
 // #include "xmlerror.hpp"
-// 
+//
 // namespace LatticeTester
 // {
-// 
+//
 //   OrderDependentWeights* OrderDependentWeights::createFromXML (const pugi::xml_node& root)
 //   {
 //     OrderDependentWeights* o = new OrderDependentWeights();
-// 
+//
 //     pugi::xml_node node;
-// 
+//
 //     try {
 //       // default weight
 //       node = root.child("default").child("weight");
 //       if (node)
 //         o->setDefaultWeight(lexical_cast<Weight>(node.child_value()));
-// 
+//
 //       // per-dimension weights
 //       for (pugi::xml_node dnode = root.child("dimension"); dnode; dnode = dnode.next_sibling("dimension")) {
 //         // weight
@@ -90,11 +90,11 @@ namespace LatticeTester
 //         if (!node)
 //           throw pugi::xml_error(dnode, "missing <dimension> element");
 //         int dimension = lexical_cast<int>(node.child_value());
-// 
+//
 //         // store weight
 //         o->setWeightForOrder(dimension, weight);
 //       }
-// 
+//
 //       return o;
 //     }
 //     catch (bad_lexical_cast& e) {
@@ -102,6 +102,6 @@ namespace LatticeTester
 //       throw pugi::xml_error(node, e.what());
 //     }
 //   }
-// 
+//
 // } // namespace LatticeTester
 // #endif

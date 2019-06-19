@@ -42,7 +42,7 @@ namespace LatticeTester {
       public:
 
         /**
-         * Constructor for a factor \f$x\f$ of multiplicity `mult` that has a 
+         * Constructor for a factor \f$x\f$ of multiplicity `mult` that has a
          * PrimeType `stat`
          */
         IntFactor (const Int & x, int mult = 1,
@@ -150,7 +150,7 @@ namespace LatticeTester {
       }
 
       std::ostringstream sortie;
-      sortie << m_factor << std::setw(10) << m_multiplicity << std::setw(10) 
+      sortie << m_factor << std::setw(10) << m_multiplicity << std::setw(10)
         << c;
       return sortie.str ();
     }

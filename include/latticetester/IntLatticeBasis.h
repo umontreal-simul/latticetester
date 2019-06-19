@@ -31,7 +31,7 @@
 namespace LatticeTester {
 
   /**
-   * This class represents a lattice and its basis and offers tools to do basic 
+   * This class represents a lattice and its basis and offers tools to do basic
    * manipulations on lattice bases. Lattices are always stored rescaled. That
    * is, we only consider lattices with rational coordinates such that `m` is a
    * lcm for all the denominators in basis coordinates. It is then possible to
@@ -50,7 +50,7 @@ namespace LatticeTester {
    *
    * This class also has methods and attributes that can be used to store and
    * compute the norms of the basis and dual basis vectors. It can also permute
-   * vectors in the basis or sort them by length and do the corresponding 
+   * vectors in the basis or sort them by length and do the corresponding
    * changes in the dual. Finally, it can also check if the dual really is a
    * dual to the primal basis.
    *
@@ -90,8 +90,8 @@ namespace LatticeTester {
 
         /**
          * Complete constructor. The primal basis is initialized with `primalbasis`,
-         * the dual basis with `dualbasis`, the \f$m\f$ used for rescaling with 
-         * `modulo`, the dimension of the lattice with `dim` and the norm used 
+         * the dual basis with `dualbasis`, the \f$m\f$ used for rescaling with
+         * `modulo`, the dimension of the lattice with `dim` and the norm used
          * for reduction with `norm`.
          */
         IntLatticeBasis (const BasIntMat primalbasis, const BasIntMat dualbasis,
@@ -215,86 +215,86 @@ namespace LatticeTester {
         bool withDual() const { return m_withDual; }
 
         /**
-         * Sets the `withDual` flag to `flag`. This flag indicates whether or 
+         * Sets the `withDual` flag to `flag`. This flag indicates whether or
          * not this IntLatticeBasis contains a dual basis. It is the flag
          * returned by `withDual()`.
          */
         void setDualFlag(bool flag) { m_withDual = flag; }
 
         /**
-         * Sets all the values in the array containing the norms of the basis 
+         * Sets all the values in the array containing the norms of the basis
          * vectors to -1.
          */
         void setNegativeNorm ();
 
         /**
-         * Sets the value of the `i`-th component in the array containing the 
+         * Sets the value of the `i`-th component in the array containing the
          * norms of the basis vectors to -1.
          */
         void setNegativeNorm (const int & i){ m_vecNorm[i] = -1; }
 
         /**
-         * Sets all the values in the array containing the norms of the dual basis 
+         * Sets all the values in the array containing the norms of the dual basis
          * vectors to -1.
          */
         void setDualNegativeNorm ();
 
         /**
-         * Sets the value of the `i`-th component in the array containing the 
+         * Sets the value of the `i`-th component in the array containing the
          * norms of the dual basis vectors to -1.
          */
         void setDualNegativeNorm (const int & i){ m_dualvecNorm[i] = -1; }
 
         /**
-         * Updates the array containing the basis vectors norms by recomputing 
+         * Updates the array containing the basis vectors norms by recomputing
          * them.
          * */
         void updateVecNorm ();
 
         /**
-         * Updates the array containing the basis vectors norms from the `d`-th 
+         * Updates the array containing the basis vectors norms from the `d`-th
          * component to the last by recomputing them.
          * */
         void updateVecNorm (const int & d);
 
         /**
-         * Updates the array containing the dual basis vectors norms by recomputing 
+         * Updates the array containing the dual basis vectors norms by recomputing
          * them.
          * */
         void updateDualVecNorm ();
 
         /**
-         * Updates the array containing the dual basis vectors norms from the `d`-th 
+         * Updates the array containing the dual basis vectors norms from the `d`-th
          * component to the last by recomputing them.
          * */
         void updateDualVecNorm (const int & d);
 
         /**
-         * Updates the `i`-th value of the array containing the norms of the 
+         * Updates the `i`-th value of the array containing the norms of the
          * basis vectors by recomputing it using the `L2NORM`.
          */
         void updateScalL2Norm (const int i);
 
         /**
-         * Updates the `k1`-th to the `k2-1`-th values of the array containing 
+         * Updates the `k1`-th to the `k2-1`-th values of the array containing
          * the norms of the basis vectors by recomputing them using the `L2NORM`.
          */
         void updateScalL2Norm (const int k1, const int k2);
 
         /**
-         * Updates the `i`-th value of the array containing the norms of the 
+         * Updates the `i`-th value of the array containing the norms of the
          * dual basis vectors by recomputing it using the `L2NORM`.
          */
         void updateDualScalL2Norm (const int i);
 
         /**
-         * Updates the `k1`-th to the `k2-1`-th values of the array containing 
+         * Updates the `k1`-th to the `k2-1`-th values of the array containing
          * the norms of the dual basis vectors by recomputing them using the `L2NORM`.
          */
         void updateDualScalL2Norm (const int k1, const int k2);
 
         /**
-         * Exchanges vectors `i` and `j` in the basis. This also changes the 
+         * Exchanges vectors `i` and `j` in the basis. This also changes the
          * dual basis vectors and the arrays containing secondary information
          * about the two basis (like the norms) accordingly.
          */
@@ -307,21 +307,21 @@ namespace LatticeTester {
         void permuteNoDual (int i, int j);
 
         /**
-         * Returns `true` if the dual basis contained in the object really is 
+         * Returns `true` if the dual basis contained in the object really is
          * the dual of the basis, and `false` otherwise. This also returns false
          * if no dual has been specified.
          */
         bool checkDuality();
 
         /**
-         * Sorts the basis vectors with indices greater of equal to \f$d\f$ by 
-         * increasing length. The dual vectors are permuted accordingly. Assumes 
+         * Sorts the basis vectors with indices greater of equal to \f$d\f$ by
+         * increasing length. The dual vectors are permuted accordingly. Assumes
          * that the lengths of the corresponding basis vectors are up to date.
          */
         void sort (int d);
 
         /**
-         * Sorts the basis vectors with indices greater of equal to \f$d\f$ by 
+         * Sorts the basis vectors with indices greater of equal to \f$d\f$ by
          * increasing length. The dual vectors are **not** permuted. See `sort()`.
          */
         void sortNoDual (int d);
@@ -359,7 +359,7 @@ namespace LatticeTester {
 
 
         /**
-         * The dimension of the lattice. The dimension is both the number of 
+         * The dimension of the lattice. The dimension is both the number of
          * vectors in the basis, and the dimension \f$d\f$ of \f$\mathbb{Z}^d\f$
          * containing the lattice.
          */
@@ -869,7 +869,7 @@ namespace LatticeTester {
   /*=========================================================================*/
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-    std::string IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::toStringDualBasis 
+    std::string IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::toStringDualBasis
     () const
     {
       std::ostringstream os;

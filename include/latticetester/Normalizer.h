@@ -71,7 +71,7 @@ namespace LatticeTester {
    * To instanciate this class or its subclasses, the usage of the copy
    * constructor or of the assignment = is prohibited by the fact that these
    * methods are private. The prefered usage for this class is to declare a
-   * pointer to a Normalizer and to instanciate subclasses with dynamically 
+   * pointer to a Normalizer and to instanciate subclasses with dynamically
    * allocated memory:
    * \code{.cpp}
    * Normalizer<RScal>* norma;
@@ -106,7 +106,7 @@ namespace LatticeTester {
          * in large dimensions in a worst-case figure of merit. One normally
          * uses \f$\beta= 1\f$.
          *
-         * Note that the log value of the density is stored (instead of the density 
+         * Note that the log value of the density is stored (instead of the density
          * itself) so it is easier to manipulate really large values of density.
          *
          * \remark **Richard:** Je crois que ce facteur `beta` devrait
@@ -213,7 +213,7 @@ namespace LatticeTester {
         NormType m_norm;
 
         /**
-         * log of the density, ie log of the number of points of the lattice 
+         * log of the density, ie log of the number of points of the lattice
          * per unit of volume.
          */
         RedDbl m_logDensity;
@@ -293,7 +293,7 @@ namespace LatticeTester {
       for (int j = 1; j <= m_maxDim; j++) {
         y =  1. / j;
         x = 0.5*log (getGamma(j)) + j*logBeta - y*NTL::conv<double>(logDensity0);
-        m_bounds[j] = exp(x); 
+        m_bounds[j] = exp(x);
       }
     }
 
@@ -338,11 +338,11 @@ namespace LatticeTester {
       return m_bounds[j];
 
       /*
-       * remark: 
+       * remark:
        * in the init method, the bounds are pre-computed for the dimensions of
        * the projection, and are accessible through this function. But in the code
        * a call to function getBound (below) is made. This means the pre-computed
-       * bounds are not used and the bounds are calculated again at each step with 
+       * bounds are not used and the bounds are calculated again at each step with
        * the function below. Could be improved.
        */
     }

@@ -84,7 +84,7 @@ namespace LatticeTester {
 
         /**
          * Ends a tabbed section.
-         * 
+         *
          * This is a pure virtual method that has no implementation.
          */
         virtual void endTabbedSection() = 0;
@@ -92,7 +92,7 @@ namespace LatticeTester {
         /**
          * After this is called, newlines in tabbed sections will have an
          * additional tab.
-         * 
+         *
          * This is a pure virtual method that has no implementation.
          */
         virtual void addTab() = 0;
@@ -100,14 +100,14 @@ namespace LatticeTester {
         /**
          * After this is called, newlines in tabbed sections will have one less
          * tab.
-         * 
+         *
          * This is a pure virtual method that has no implementation.
          */
         virtual void removeTab() = 0;
 
         /**
          * After this is called, newlines in tabbed sections will have no tab.
-         * 
+         *
          * This is a pure virtual method that has no implementation.
          */
         virtual void clearTab() = 0;
@@ -115,15 +115,15 @@ namespace LatticeTester {
         /**
          * After this is called, newlines in tabbed sections will use the
          * default amount of tabs and spaces of the class.
-         * 
+         *
          * This is a pure virtual method that has no implementation.
          */
         virtual void defaultTab() = 0;
 
         /**
-         * Starts a new line and adds the right amount of tabs if in a tabbed 
+         * Starts a new line and adds the right amount of tabs if in a tabbed
          * section.
-         * 
+         *
          * This is a pure virtual method that has no implementation.
          */
         virtual void newLine() = 0;
@@ -131,7 +131,7 @@ namespace LatticeTester {
         /**
          * Starts a new paragraph. Automatically ends the tabbed section if the
          * writer was in one.
-         * 
+         *
          * This is a pure virtual method that has no implementation.
          */
         virtual void newParagraph() = 0;
@@ -172,7 +172,7 @@ namespace LatticeTester {
          *
          * This method can be implemented in various way. For example, it is
          * possible to have it print with or without the LaTeX $ signs.
-         * 
+         *
          * This is a pure virtual method that has no implementation.
          */
         virtual void writeMathString (const std::string) = 0;
@@ -181,11 +181,11 @@ namespace LatticeTester {
          * Writes a `string` that is formated and in LaTeX math mode with a
          * newline after and before the string. This can be used to print
          * mathemetical formulas in a standardised format.
-         * 
+         *
          * This method can be implemented in various way. For example, it is
          * possible to have it print with or without the LaTeX \\equation
          * delimiters.
-         * 
+         *
          * This is a pure virtual method that has no implementation.
          */
         virtual void writeStandOutMathString (const std::string) = 0;

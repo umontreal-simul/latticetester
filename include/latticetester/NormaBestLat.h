@@ -64,7 +64,7 @@ namespace LatticeTester {
          * The bias factor `beta` gives more or less weight to some of the
          * dimensions (see Normalizer for details). It is recommended to keep it
          * at its default value because its usage is deprecated.
-         * 
+         *
          * There is a restriction for `t` to be \f$\le48\f$.
          */
         NormaBestLat (RedDbl & logDensity, int t, double beta = 1);

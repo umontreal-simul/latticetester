@@ -37,7 +37,7 @@ namespace LatticeTester {
    * use NormaBestBound. Note that, since the value of \f$\gamma_n\f$ is known
    * exactly for \f$n \leq 8\f$, the Hermite's constant for these \f$n\f$ are
    * **not** upper bounds.
-   * 
+   *
    * From there, we get
    * \f[
    *    \gamma_s = 4 \delta_s^{2/s}.
@@ -70,7 +70,7 @@ namespace LatticeTester {
          * The bias factor `beta` gives more or less weight to some of the
          * dimensions (see Normalizer for details). It is recommended to keep it
          * at its default value because its usage is deprecated.
-         * 
+         *
          * There is a restriction for `t` to be \f$\le48\f$.
          */
         NormaRogers (RedDbl & logDensity, int t, double beta = 1);
@@ -110,8 +110,8 @@ namespace LatticeTester {
   /**
    * This is not all the story, this has to be updated.
    *
-   * These Rogers gamma constants are calculated as defined in 
-   * Conway and Sloane book (Sphere packing, Lattices and groups) : 
+   * These Rogers gamma constants are calculated as defined in
+   * Conway and Sloane book (Sphere packing, Lattices and groups) :
    *    - equation (47) page 20 of chapter 1
    *    - table 1.2 page 15 of chapter 1
    */
@@ -186,8 +186,8 @@ namespace LatticeTester {
       r = 4 * exp2(2 * r / dimr);
 
       /*
-       * remark: 
-       * Why "r = 4 * ..." and not "r = 2 * ..." as described in Pierre's 
+       * remark:
+       * Why "r = 4 * ..." and not "r = 2 * ..." as described in Pierre's
        * course IFT6561 page 273 ?
        */
 

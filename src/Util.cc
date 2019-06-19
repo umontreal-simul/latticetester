@@ -36,7 +36,7 @@ namespace
 
 
   // This is the integer version of LFSR258 available at
-  // http://simul.iro.umontreal.ca/ 
+  // http://simul.iro.umontreal.ca/
   std::uint64_t RandValue ()
   {
     std::uint64_t b;

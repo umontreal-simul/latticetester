@@ -23,7 +23,7 @@ namespace LatticeTester {
   // Instanciation of supported types for the class
   template class BasisConstruction<std::int64_t>;
   template class BasisConstruction<NTL::ZZ>;
-  
+
   //============================================================================
   // Specialization of LLLConstr
   //============================================================================

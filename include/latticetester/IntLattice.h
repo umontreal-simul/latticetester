@@ -37,22 +37,22 @@
 namespace LatticeTester {
 
   /**
-   * This class is a skeleton for the implementation of different types of 
+   * This class is a skeleton for the implementation of different types of
    * lattices. This class is not really intended to be used directly, hence the
    * lack of constructor allowing the specification of a basis.
-   * 
+   *
    * This class can store a lattice with or without dual and contains a few
    * virtual methods to perform common computations on lattices.
-   * This class contains a method to compute lattices of projections of 
-   * \f$\{x_i\}_{ 0 \leq i}\f$, a method to exchange the basis and the dual 
-   * basis, and a virtual method that can be implemented in subclasses to 
+   * This class contains a method to compute lattices of projections of
+   * \f$\{x_i\}_{ 0 \leq i}\f$, a method to exchange the basis and the dual
+   * basis, and a virtual method that can be implemented in subclasses to
    * recompute the basis for different dimensions.
    *
    * A lattice of rank \f$k\f$ with integer vectors modulo \f$m\f$ contains
-   * \f$m^k\f$ distinct vectors. This number, the density, can then be used to 
-   * compute bounds on the spectral test. This class implements methods to 
-   * compute \f$ \log_2(m^{2i}) \f$ for \f$ 1 \leq i \leq k \f$ to help with the 
-   * computation of such bounds. 
+   * \f$m^k\f$ distinct vectors. This number, the density, can then be used to
+   * compute bounds on the spectral test. This class implements methods to
+   * compute \f$ \log_2(m^{2i}) \f$ for \f$ 1 \leq i \leq k \f$ to help with the
+   * computation of such bounds.
    */
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
       class IntLattice : public IntLatticeBasis<Int, BasInt, Dbl, RedDbl> {
@@ -66,8 +66,8 @@ namespace LatticeTester {
           typedef NTL::vector<Dbl> DblVec;
 
           /**
-           * Constructor initializing the primal and the dual basis with the 
-           * identity matrix. The dimension of the lattice is set to `maxDim` 
+           * Constructor initializing the primal and the dual basis with the
+           * identity matrix. The dimension of the lattice is set to `maxDim`
            * and the norm used for reduction to `norm`.
            * @param modulo The modulo of the integer coordinates
            * @param k The rank of the lattice to be constructed
@@ -80,7 +80,7 @@ namespace LatticeTester {
               NormType norm = L2NORM);
 
           /**
-           * Copy constructor that makes a copy of `Lat`. The maximal dimension 
+           * Copy constructor that makes a copy of `Lat`. The maximal dimension
            * of the created basis is set equal to `Lat`’s current dimension.
            */
           IntLattice (const IntLattice<Int, BasInt, Dbl, RedDbl> & Lat);
@@ -99,7 +99,7 @@ namespace LatticeTester {
 
           /**
            * Allocates space to vectors used internally. This should probably be
-           * private or protected because it should not be needed to call it 
+           * private or protected because it should not be needed to call it
            * directly (the constructors and copy already call it).
            */
           void init ();
@@ -110,11 +110,11 @@ namespace LatticeTester {
           int getOrder() const { return m_order; }
 
           /**
-           * Increments the dimension of the basis and dual basis vectors by 
-           * one. This initializes the added components to `0` and does not 
+           * Increments the dimension of the basis and dual basis vectors by
+           * one. This initializes the added components to `0` and does not
            * compute the value taken by the added components and vector. It also
            * resets vectors containing the norms. The implementation in this
-           * class is meant to be overriden by subclasses and probably should 
+           * class is meant to be overriden by subclasses and probably should
            * not be used.
            */
           virtual void incDim ();
@@ -175,7 +175,7 @@ namespace LatticeTester {
           virtual void setLac (const Lacunary<BasInt> &) {};
 
           /**
-           * Returns a string describing the lattice. 
+           * Returns a string describing the lattice.
            */
           virtual std::string toString() const;
 
@@ -227,7 +227,7 @@ namespace LatticeTester {
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
       IntLattice<Int, BasInt, Dbl, RedDbl>::IntLattice ( Int modulo, int k,
-          int maxDim, bool withDual, NormType norm): 
+          int maxDim, bool withDual, NormType norm):
       IntLatticeBasis<Int, BasInt, Dbl, RedDbl>(maxDim, norm)
   {
     this->m_dim = maxDim;
@@ -482,7 +482,7 @@ namespace LatticeTester {
 
       RedDbl logDensity;
 
-      if (dualF) // dual basis 
+      if (dualF) // dual basis
         logDensity = - m_order * NTL::log(this->m_modulo);
       else // primal basis
         logDensity = m_order * NTL::log(this->m_modulo);

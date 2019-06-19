@@ -71,7 +71,7 @@ namespace LatticeTester {
          * The bias factor `beta` gives more or less weight to some of the
          * dimensions (see Normalizer for details). It is recommended to keep it
          * at its default value because its usage is deprecated.
-         * 
+         *
          * There is a restriction for `t` to be \f$\le48\f$.
          */
         NormaLaminated (RedDbl & logDensity, int t, double beta = 1);
@@ -93,8 +93,8 @@ namespace LatticeTester {
   //=============================================================================
 
   /**
-   * These laminated gamma constants are calculated as defined in 
-   * Conway and Sloane book (Sphere packing, Lattices and groups) : 
+   * These laminated gamma constants are calculated as defined in
+   * Conway and Sloane book (Sphere packing, Lattices and groups) :
    *    - equation (47) page 20 of chapter 1
    *    - table 6.1 page 158 of chapter 6
    */

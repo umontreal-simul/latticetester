@@ -157,7 +157,7 @@ namespace NTL {
    * Sets `x` to 0.
    */
   inline void clear (std::int64_t & x) { x = 0; }
-  
+
   /**
    * Tests if `x` is odd. Returns 1 if it is odd, and 0 if it is even.
    */
@@ -333,7 +333,7 @@ namespace LatticeTester {
     }
 
   /**
-   * Returns the sign of `x`. The sign is 1 if `x>0`, 0 if `x==0` and -1 if 
+   * Returns the sign of `x`. The sign is 1 if `x>0`, 0 if `x==0` and -1 if
    * `x<0`.
    */
   template <typename T>
@@ -633,8 +633,8 @@ namespace LatticeTester {
    * For \f$A\f$ and \f$B\f$ this will assign to \f$C\f$, \f$D\f$, \f$E\f$,
    * \f$F\f$ and \f$G\f$ values such that:
    * \f{align*}{
-   *    C a + D b & = G = \mbox{GCD } (a,b)\\
-   *   E a + F b & = 0.
+   *    C A + D B & = G = \mbox{GCD } (a,b)\\
+   *   E A + F B & = 0.
    * \f}
    */
   template<typename Int>
@@ -692,7 +692,7 @@ namespace LatticeTester {
    * \name Vectors
    *
    * @{
-   * These are utilities to manipulate vectors ranging from instanciation to 
+   * These are utilities to manipulate vectors ranging from instanciation to
    * scalar product.
    *
    */
@@ -775,7 +775,7 @@ namespace LatticeTester {
     }
 
   /**
-   * Returns a string containing `A[c]` to `A[d-1]` formated as 
+   * Returns a string containing `A[c]` to `A[d-1]` formated as
    * `[A[c]sep...sepA[d-1]]`. In this string, components are separated by string
    * `sep`. By default, `sep` is just a whitespace character.
    */
@@ -897,7 +897,7 @@ namespace LatticeTester {
    */
   template <typename Vect>
     inline void CopyVect (Vect & A, const Vect & B, int n)
-    {   
+    {
       for (int k = 0; k < n; k++)  A[k] = B[k];
     }
 
@@ -1164,9 +1164,9 @@ namespace LatticeTester {
               /*
                  -- Remark --
                  Previously, the call to function Euclide was made with
-                 the following arguments : 
+                 the following arguments :
                  (W(r,j), W(s,j), T1, T2, T3, T4, W(s,j))
-                 But because this function uses references, the result 
+                 But because this function uses references, the result
                  was always the same:
                  W(r,j) = W(r,j)
                  W(s,j) = W(r,j)

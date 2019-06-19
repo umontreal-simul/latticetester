@@ -39,11 +39,11 @@ namespace LatticeTester {
   /*
    * This struct specializes some of the functions in a `Reducer`. This is a
    * workaround needed, implementation wise, since you can't specialize member
-   * functions of a class without specializing the whole class. 
+   * functions of a class without specializing the whole class.
    *
-   * What this does is that this structure contains specific functions of the 
+   * What this does is that this structure contains specific functions of the
    * original class Reducer that will act differently depending on the types of
-   * the arguments. Instead of specializing all the methods of Reducer for all 
+   * the arguments. Instead of specializing all the methods of Reducer for all
    * our use cases (since some of them depend on the type) we can specialize
    * only this structure.
    * */
@@ -63,7 +63,7 @@ namespace LatticeTester {
    * For a given lattice basis, stored in an IntLatticeBasis, this class can
    * reduce it in the sense of Minkowski, as well as find the shortest vector
    * in the lattice with the Branch-and-Bound algorithm. It is also possible to
-   * use weaker, but much faster, reductions such as pairwise-reduction 
+   * use weaker, but much faster, reductions such as pairwise-reduction
    * \cite rDIE75a, LLL reduction \cite mLEN82a and BKZ reduction \cite mSCH91a.
    * The theoretical details of these algorithm are presented in \ref a_intro.
    *
@@ -78,7 +78,7 @@ namespace LatticeTester {
    * To use this class, it suffices to create an instance of it by passing a
    * `IntLatticeBasis` to the constructor. You can then simply call the methods
    * and the `IntLatticeBasis` passed to the Reducer will be modified since it
-   * is stored as a pointer. You should note that the methods to compute the 
+   * is stored as a pointer. You should note that the methods to compute the
    * shortest vector apply no pre-reduction. In a real context, you should
    * always reduce the basis separately with LLL or BKZ reduction before
    * searching for the shortest vector since it drastically reduces the size of
@@ -106,7 +106,7 @@ namespace LatticeTester {
            * \name Pre-reduction flags
            * @{
            * **Marc-Antoine**: it is very possible that we can remove those variables.
-           * We just have to make sure that reductMinkowski does not need them 
+           * We just have to make sure that reductMinkowski does not need them
            *
            * These boolean variables indicate which type of pre-reduction is to be
            * performed for `ShortestVector` (SV) and for `reductMinkowski` (RM).
@@ -142,7 +142,7 @@ namespace LatticeTester {
           ~Reducer ();
 
           /**
-           * Assignment operator that allows copying `red` into the object by 
+           * Assignment operator that allows copying `red` into the object by
            * usig copy.
            */
           Reducer<Int, BasInt, Dbl, RedDbl> & operator= (
@@ -155,7 +155,7 @@ namespace LatticeTester {
 
           /**
            * Computes the shortest non-zero vector of the IntLatticeBasis stored
-           * in this object with respect to norm `norm` using branch-and-bound 
+           * in this object with respect to norm `norm` using branch-and-bound
            * and the algorithm described in \cite rLEC97c. The `Norm` member of
            * this object will be changed to `norm`. If `MaxNodesBB` is exceeded
            * during one of the branch-and-bounds, the method aborts and returns
@@ -189,7 +189,7 @@ namespace LatticeTester {
           void redDieterRandomized (int d, int seed);
 
           /**
-           * Performs a LLL (Lenstra-Lenstra-Lovasz) basis reduction for the 
+           * Performs a LLL (Lenstra-Lenstra-Lovasz) basis reduction for the
            * first `dim` vector of the basis with coefficient `fact`.
            * `fact` is a floating point number between 1/2 and 1 that
            * specifies the algorithm's tolerance to floating point arithmetic
@@ -199,7 +199,7 @@ namespace LatticeTester {
            * but that will require more work. The reduction algorithm is
            * applied until `maxcpt` successful transformations have been done,
            * or until the basis is correctly reduced.
-           * 
+           *
            * This algorithm is an implementation of the LLL reduction
            * algorithm made in our lab. It is considerably slower than what is
            * available through NTL for NTL types, but performs well on standard
@@ -211,23 +211,23 @@ namespace LatticeTester {
           /**
            * This is the NTL implementation of the floating point version of the
            * LLL reduction algorithm presented in \cite mSCH91a.
-           * 
-           * `1/2 < fact < 1` is a number that specifies the strenght of the 
+           *
+           * `1/2 < fact < 1` is a number that specifies the strenght of the
            * condition on the basis, closer to 1 meaning a stronger condition.
-           * `precision` specifies the size of the floating point numbers the 
+           * `precision` specifies the size of the floating point numbers the
            * algorithm will use. Const.h provides a list of the possible values,
-           * but their description is done in the module LLL of NTL. `dim` 
+           * but their description is done in the module LLL of NTL. `dim`
            * is the number of vectors on which to apply the reduction (zero being
            * the entire basis).
            *
            * There should not really be a reason to change the default
            * parameters suggested in this function. It is nonetheless possible
-           * to be in a situation where they do not work. In the occurence of 
+           * to be in a situation where they do not work. In the occurence of
            * poor quality results, it might be necessary to choose a better
-           * `precision`. Also, in a few rare cases, it is possible that fact 
+           * `precision`. Also, in a few rare cases, it is possible that fact
            * be "too close to 1" and that the algorithm takes too much time.
            */
-          void redLLLNTL(double fact = 0.999999, 
+          void redLLLNTL(double fact = 0.999999,
               PrecisionType precision = QUADRUPLE, int dim = 0);
 
           /**
@@ -238,12 +238,12 @@ namespace LatticeTester {
           /**
            * This is the NTL implementation of the floating point version of the
            * BKZ reduction algorithm presented in \cite mSCH91a.
-           * 
-           * `1/2 < fact < 1` is a number that specifies the strenght of the 
+           *
+           * `1/2 < fact < 1` is a number that specifies the strenght of the
            * condition on the basis, closer to 1 meaning a stronger condition.
-           * `precision` specifies the size of the floating point numbers the 
+           * `precision` specifies the size of the floating point numbers the
            * algorithm will use. Const.h provides a list of the possible values,
-           * but their description is done in the module LLL of NTL. `dim` 
+           * but their description is done in the module LLL of NTL. `dim`
            * is the number of vectors on which to apply the reduction with zero being
            * the entire basis. `blocksize` is the size of the blocks of the
            * reduction in the BKZ reduction condition. Roughly, larger blocks
@@ -252,9 +252,9 @@ namespace LatticeTester {
            *
            * There should not really be a reason to change the default
            * parameters suggested in this function. It is nonetheless possible
-           * to be in a situation where they do not work. In the occurence of 
+           * to be in a situation where they do not work. In the occurence of
            * poor quality results, it might be necessary to choose a better
-           * `precision`. Also, in a few rare cases, it is possible that fact 
+           * `precision`. Also, in a few rare cases, it is possible that fact
            * be "too close to 1" and that the algorithm takes too much time.
            * A user whishing to get a faster execution at the cost of condition
            * strenght could also choose a smaller `blocksize`.
@@ -290,8 +290,8 @@ namespace LatticeTester {
             else return m_lat->getVecNorm(m_lat->getDim() - 1); }
 
           /**
-           * Sets a bound on the square length of the shortest vector in the 
-           * lattice in dimensions from `dim1+1` to `dim2`. `V[i]` has to 
+           * Sets a bound on the square length of the shortest vector in the
+           * lattice in dimensions from `dim1+1` to `dim2`. `V[i]` has to
            * contain a lower bound on the square of the lenght of the shortest
            * vector in the lattice in dimension `i+1`. Such a bound, if it is
            * set, will be used during during the Branch-and-Bound step when
@@ -318,10 +318,10 @@ namespace LatticeTester {
            */
           IntLatticeBasis<Int, BasInt, Dbl, RedDbl>* m_lat;
 
-          /** 
+          /**
            * Contains specialized implementations of member methods depending on
-           * the types given to the `Reducer` template. This is private for 
-           * because it is possible to call specialized method at an higher 
+           * the types given to the `Reducer` template. This is private for
+           * because it is possible to call specialized method at an higher
            * level.
            * */
           struct specReducer<Int, BasInt, Dbl, RedDbl> spec;
@@ -341,7 +341,7 @@ namespace LatticeTester {
 
           /**
            * Method used in `reductMinkowski` to perform a transformation of
-           * stage 3 described in \cite rAFF85a. Assumes that 
+           * stage 3 described in \cite rAFF85a. Assumes that
            * \f$\sum_{i=1}^t z_i V_i\f$ is a
            * short vector that will enter the basis. Tries to reduce some vectors
            * by looking for indices \f$i < j\f$ such that \f$|z_j| > 1\f$ and
@@ -384,7 +384,7 @@ namespace LatticeTester {
           /**
            * Tries to find shorter vectors in `reductMinkowski`.
            */
-          bool tryZ  (int j, int i, int Stage, bool & smaller, 
+          bool tryZ  (int j, int i, int Stage, bool & smaller,
               const BasIntMat & WTemp);
 
           /**
@@ -537,7 +537,7 @@ namespace LatticeTester {
           std::cout << "**** performed with the algorithm redLLL which does not do the same thing.\n";
           std::cout << std::endl;
           red.redLLL(fact, 1000000, red.getIntLatticeBasis()->getDim ());
-          if (dim > 0) delete lattmp; 
+          if (dim > 0) delete lattmp;
       }
 
       /* This is a test to see if making the program promote to NTL types and
@@ -766,7 +766,7 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      Reducer<Int, BasInt, Dbl, RedDbl>::Reducer (const Reducer<Int, BasInt, 
+      Reducer<Int, BasInt, Dbl, RedDbl>::Reducer (const Reducer<Int, BasInt,
         Dbl, RedDbl> & red)
     {
       copy (red);
@@ -777,7 +777,7 @@ namespace LatticeTester {
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
       Reducer<Int, BasInt, Dbl, RedDbl> &
-      Reducer<Int, BasInt, Dbl, RedDbl>::operator= (const Reducer<Int, BasInt, 
+      Reducer<Int, BasInt, Dbl, RedDbl>::operator= (const Reducer<Int, BasInt,
         Dbl, RedDbl> & red)
     {
       if (this != &red)
@@ -789,7 +789,7 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      void Reducer<Int, BasInt, Dbl, RedDbl>::copy (const Reducer<Int, BasInt, 
+      void Reducer<Int, BasInt, Dbl, RedDbl>::copy (const Reducer<Int, BasInt,
         Dbl, RedDbl> & red)
     {
       m_lat = red.m_lat;
@@ -2105,7 +2105,7 @@ namespace LatticeTester {
           xx[i] = false;
 
 
-        found = false; 
+        found = false;
 
         do {
           redDieter (d, xx);

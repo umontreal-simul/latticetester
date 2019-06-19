@@ -28,8 +28,8 @@ namespace LatticeTester {
    * This class implements Minkowski’s theoretical **LOWER** bound on the length
    * of the shortest non-zero vector in a lattice. The length of a vector is
    * computed using the \f${\mathcal{L}}_2\f$ norm. The bounding lengths, for a
-   * lattice containing \f$n\f$ points per unit volume in dimension \f$t\f$, 
-   * are given by \f$\ell_t^* = \gamma_t^{1/2} n^{-1/t}\f$, where the 
+   * lattice containing \f$n\f$ points per unit volume in dimension \f$t\f$,
+   * are given by \f$\ell_t^* = \gamma_t^{1/2} n^{-1/t}\f$, where the
    * \f$\gamma_t\f$ are the *Minkowski* lattice constants.
    */
   template<typename RedDbl>
@@ -38,9 +38,9 @@ namespace LatticeTester {
 
         /**
          * Constructor for the bounds obtained for Minkowski lattices. The lattices
-         * have \f$n\f$ points per unit volume, in all dimensions \f$\le t\f$. 
-         * The bias factor `beta` \f$= \beta\f$ gives more weight to some of the 
-         * dimensions. 
+         * have \f$n\f$ points per unit volume, in all dimensions \f$\le t\f$.
+         * The bias factor `beta` \f$= \beta\f$ gives more weight to some of the
+         * dimensions.
          * Note this class stores the log value of the density to handle larger values.
          * Restriction: \f$t \le48\f$.
          */

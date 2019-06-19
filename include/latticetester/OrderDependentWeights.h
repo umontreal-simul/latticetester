@@ -74,11 +74,11 @@ namespace LatticeTester {
       virtual void setDefaultWeight (Weight weight)
       { m_defaultWeight = weight; }
 
-      virtual Weight getDefaultWeight () const 
-      { return m_defaultWeight; } 
+      virtual Weight getDefaultWeight () const
+      { return m_defaultWeight; }
 
-      virtual unsigned int getSize () const 
-      { return (unsigned int) m_weights.size(); } 
+      virtual unsigned int getSize () const
+      { return (unsigned int) m_weights.size(); }
 
 // #ifdef WITH_XML
 //       /**

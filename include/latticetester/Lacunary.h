@@ -51,7 +51,7 @@ namespace LatticeTester {
          */
         Lacunary (const BasIntVec & C, int t)
         {
-          m_dim = t; 
+          m_dim = t;
           CreateVect (m_lac, t);
           CopyVect (m_lac, C, t);
         }
@@ -62,10 +62,10 @@ namespace LatticeTester {
          * should use either one `[]` or `getLac`, or the `calcIndicesStreams()`
          * method.
          */
-        explicit Lacunary (int t = 0) 
+        explicit Lacunary (int t = 0)
         {
-          m_dim = t; 
-          LatticeTester::CreateVect (m_lac, t); 
+          m_dim = t;
+          LatticeTester::CreateVect (m_lac, t);
         }
 
         /**

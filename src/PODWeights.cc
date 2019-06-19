@@ -48,16 +48,16 @@ namespace LatticeTester
 
 // #ifdef WITH_XML
 // #include "xmlerror.hpp"
-// 
+//
 // namespace LatticeTester
 // {
-// 
+//
 //   PODWeights* PODWeights::createFromXML (const pugi::xml_node& root)
 //   {
 //     PODWeights* o = new PODWeights();
-// 
+//
 //     pugi::xml_node node;
-// 
+//
 //     try {
 //       // order-dependent weights
 //       node = root.child("order-dependent");
@@ -66,7 +66,7 @@ namespace LatticeTester
 //       OrderDependentWeights* odw = OrderDependentWeights::createFromXML(*node);
 //       o->m_orderDependentWeights = *odw;
 //       delete odw;
-// 
+//
 //       // product weights
 //       node = root.child("product");
 //       if (!node)
@@ -74,7 +74,7 @@ namespace LatticeTester
 //       ProductWeights* pw = ProductWeights::createFromXML(*node);
 //       o->m_productWeights = *pw;
 //       delete pw;
-// 
+//
 //       return o;
 //     }
 //     catch (bad_lexical_cast& e) {
@@ -82,6 +82,6 @@ namespace LatticeTester
 //       throw pugi::xml_error(node, e.what());
 //     }
 //   }
-// 
+//
 // } // namespace LatticeTester
 // #endif

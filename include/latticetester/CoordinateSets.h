@@ -71,10 +71,10 @@ namespace LatticeTester {
    *
    *       // Comparison operator.
    *       bool operator==(const const_iterator& other) {
-   *         return m_seq == other.m_seq 
+   *         return m_seq == other.m_seq
    *           && (other.m_atEnd ? m_atEnd : m_value == other.m_value);
    *       }
-   * 
+   *
    *       // Second comparison operator.
    *       bool operator!=(const const_iterator& other) {
    *         return !(*this == other);
@@ -127,18 +127,18 @@ namespace LatticeTester {
      * A CoordinateSets for coordinates within a given range.
      * This contains ways to build all subsets of coordinates of a given size
      * in an interval \f$\{\mathtt{minCoord}, \dots, \mathtt{maxCoord}\}\f$.
-     * The intended usage of this class is to generate subsets of different 
+     * The intended usage of this class is to generate subsets of different
      * orders for a single interval.
-     * 
+     *
      * This class keeps a map of intervals indiced with the order that will be
      * used to generate subsets from them. This means that this class only keeps
      * one interval for each order.
-     * 
-     * When you iterate through this class, it generates the next subset of 
-     * coordinates in the interval associated with the current order. If there 
+     *
+     * When you iterate through this class, it generates the next subset of
+     * coordinates in the interval associated with the current order. If there
      * is none left, it moves on to the next order and starts generating subsets
-     * from the interval associated with this order. It is not possible to 
-     * generate coordinate sets of the same order for different intervals with 
+     * from the interval associated with this order. It is not possible to
+     * generate coordinate sets of the same order for different intervals with
      * the same instance of this class.
      * */
     class FromRanges {
@@ -186,7 +186,7 @@ namespace LatticeTester {
          * coordinates \f$1, \dots, 5\f$ to be included.
          * If `order = 0` (corresponding to the empty set),
          * `minCoord` and `maxCoord` are ignored.
-         * 
+         *
          * Except for the case where `order = 0`, an exception is thrown if
          * \f$\mathtt{maxCoord} < \mathtt{minCoord} + \mathtt{order} - 1\f$.
          *
@@ -198,17 +198,17 @@ namespace LatticeTester {
             Coordinates::value_type maxCoord);
 
         /**
-         * Removes the element associated with `order` from the list of 
+         * Removes the element associated with `order` from the list of
          * of intervals to generate from. This means that no coordinate set
          * \f$\mathfrak u\f$ of order \f$|\mathfrak u| = \mathtt{order}\f$ will
-         * be returned by the iterator until a new interval is given to the 
+         * be returned by the iterator until a new interval is given to the
          * object for this order.
          */
         void excludeOrder (Coordinates::size_type order);
 
         /**
          * An iterator class used internaly by the `FromRange` class. Given an
-         * object of this class, it is possible to cycle through the element it 
+         * object of this class, it is possible to cycle through the element it
          * contains with the increment (`++`) operator.
          * */
         class const_iterator : public std::iterator<std::forward_iterator_tag,
@@ -259,17 +259,17 @@ namespace LatticeTester {
           }
 
           /**
-           * Compares this instance with `other`, returning true if they are 
+           * Compares this instance with `other`, returning true if they are
            * associated with the same FromRange object and if they are at the
            * same point in their enumeration cycle.
            * */
           bool operator==(const const_iterator& other) {
-            return m_seq == other.m_seq 
+            return m_seq == other.m_seq
               && (other.m_atEnd ? m_atEnd : m_value == other.m_value);
           }
 
           /**
-           * Compares this instance with `other`, returning false if they are 
+           * Compares this instance with `other`, returning false if they are
            * associated with the same FromRange object and if they are at the
            * same point in their enumeration cycle.
            * */
@@ -338,7 +338,7 @@ namespace LatticeTester {
         }
 
         /**
-         * Returns a const_iterator pointing past the last element in the seq. 
+         * Returns a const_iterator pointing past the last element in the seq.
          * This iterator cannot be used to cycle through the sets, but it can be
          * used as a point of comparison to know when you reached the end of an
          * iterator obtained with `begin()`.
@@ -390,7 +390,7 @@ namespace LatticeTester {
 
         /**
          * An iterator class used internaly by the `Subsets` class. Given an
-         * object of this class, it is possible to cycle through the element it 
+         * object of this class, it is possible to cycle through the element it
          * contains with the increment (`++`) operator.
          * */
         class const_iterator : public std::iterator<std::forward_iterator_tag,
@@ -441,7 +441,7 @@ namespace LatticeTester {
           }
 
           /**
-           * Compares this instance with `other`, returning true if they are 
+           * Compares this instance with `other`, returning true if they are
            * associated with the same Subsets object and if they are at the
            * same point in their enumeration cycle.
            * */
@@ -451,7 +451,7 @@ namespace LatticeTester {
           }
 
           /**
-           * Compares this instance with `other`, returning false if they are 
+           * Compares this instance with `other`, returning false if they are
            * associated with the same Subsets object and if they are at the
            * same point in their enumeration cycle.
            * */
@@ -638,7 +638,7 @@ namespace LatticeTester {
           }
 
           /**
-           * Compares this instance with `other`, returning true if they are 
+           * Compares this instance with `other`, returning true if they are
            * associated with the same AddCoordinate object and if they are at
            * the same point in their enumeration cycle.
            * */
@@ -647,7 +647,7 @@ namespace LatticeTester {
           }
 
           /**
-           * Compares this instance with `other`, returning false if they are 
+           * Compares this instance with `other`, returning false if they are
            * associated with the same AddCoordinate object and if they are at
            * the same point in their enumeration cycle.
            * */

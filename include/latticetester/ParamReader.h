@@ -37,23 +37,23 @@ namespace LatticeTester {
 
   /**
    * Utility class that can be used to read different kind of data from a file.
-   * This class has to be initialized with a `fileName` to be used. After the 
+   * This class has to be initialized with a `fileName` to be used. After the
    * object is initialized, it is then necessary to read the entire file with
    * `getLines`. This will make a vector containing all the lines of the file,
-   * removing those with a `#` at the start. There then are many methods 
-   * allowing the conversion of string tokens to various data types by 
-   * specifying a line and a token number. In every line, a token is a string 
+   * removing those with a `#` at the start. There then are many methods
+   * allowing the conversion of string tokens to various data types by
+   * specifying a line and a token number. In every line, a token is a string
    * delimited by any of these caracters: ` ` (blank), `?`, `!`, `,`, `\t`, and
-   * `\n`. For example, `ReadString(string, 2, 3)` will put the 4th token 
-   * (numerotation starts at 0) of the 3rd line in string.  The user of this 
+   * `\n`. For example, `ReadString(string, 2, 3)` will put the 4th token
+   * (numerotation starts at 0) of the 3rd line in string.  The user of this
    * class has to be aware of the format of the file that will be read.
    *
-   * \remark This class should have proper error management in the `GetToken` 
-   * method because the program curently simply crashes without explanation if 
+   * \remark This class should have proper error management in the `GetToken`
+   * method because the program curently simply crashes without explanation if
    * this class is misued.
    */
   template<typename Int, typename BasInt, typename RedDbl>
-    class ParamReader { 
+    class ParamReader {
       private:
         typedef NTL::vector<Int> IntVec;
         typedef NTL::matrix<BasInt> BasIntMat;
@@ -152,9 +152,9 @@ namespace LatticeTester {
         void readBScal (BasInt & field, unsigned int ln, int pos);
 
         /**
-         * Reads a `BMat` of size `numPos*numCols` from the 
-         * <tt>pos</tt>-th token of the <tt>ln</tt>-th line into `field`. The 
-         * lines in the matrix will be read from the subsequent lines in the 
+         * Reads a `BMat` of size `numPos*numCols` from the
+         * <tt>pos</tt>-th token of the <tt>ln</tt>-th line into `field`. The
+         * lines in the matrix will be read from the subsequent lines in the
          * file, starting from token at the position `pos`. `fields` has to be
          * initialized to the right size.
          */
@@ -162,9 +162,9 @@ namespace LatticeTester {
             unsigned int numPos, unsigned int numCols);
 
         /**
-         * Reads a square `BMat` of size `numPos*numPos` from the 
-         * <tt>pos</tt>-th token of the <tt>ln</tt>-th line into `field`. The 
-         * lines in the matrix will be read from the subsequent lines in the 
+         * Reads a square `BMat` of size `numPos*numPos` from the
+         * <tt>pos</tt>-th token of the <tt>ln</tt>-th line into `field`. The
+         * lines in the matrix will be read from the subsequent lines in the
          * file, starting from token at the position `pos`. `fields` has to be
          * initialized to the right size.
          */
@@ -268,7 +268,7 @@ namespace LatticeTester {
             unsigned int pos);
 
         /**
-         * Reads the configuration file into `config`. This reads the file, 
+         * Reads the configuration file into `config`. This reads the file,
          * looking for information in a specific order, to populate `config`
          * with enough information to exectute a `LatticeAnalysis` test. The
          * standard format is described in \ref usage_program.
@@ -279,7 +279,7 @@ namespace LatticeTester {
 
         /**
          * Puts into `field` the <tt>pos</tt>-th string token from line `ln`.
-         * This is intended to be used by other methods the get a specific 
+         * This is intended to be used by other methods the get a specific
          * string token that can then be converted. This method uses `tokenize`
          * to split the line it has to operate on.
          */
@@ -334,7 +334,7 @@ namespace LatticeTester {
 
         /**
          * The path of the file that this object can read. Note that there are
-         * no methods allowing to modify it in this class so it has to be 
+         * no methods allowing to modify it in this class so it has to be
          * initialized with the constructor.
          */
         std::string m_fileName;
@@ -627,7 +627,7 @@ namespace LatticeTester {
 
   template<typename Int, typename BasInt, typename RedDbl>
     void ParamReader<Int, BasInt, RedDbl>::readNumber3 (
-        Int & m, std::int64_t & m1, std::int64_t & m2, std::int64_t & m3, unsigned int ln, 
+        Int & m, std::int64_t & m1, std::int64_t & m2, std::int64_t & m3, unsigned int ln,
         unsigned int pos)
     {
       m2 = m3 = 0;
@@ -747,7 +747,7 @@ namespace LatticeTester {
 
   template<typename Int, typename BasInt, typename RedDbl>
     void ParamReader<Int, BasInt, RedDbl>::readBMat(
-        BasIntMat & fields, unsigned int & ln, unsigned int pos, 
+        BasIntMat & fields, unsigned int & ln, unsigned int pos,
         unsigned int numPos, unsigned int numCols)
     {
       for (unsigned int i = pos; i < numPos; i++){
@@ -763,7 +763,7 @@ namespace LatticeTester {
 
   template<typename Int, typename BasInt, typename RedDbl>
     void ParamReader<Int, BasInt, RedDbl>::readBMat(
-        BasIntMat & fields, unsigned int & ln, unsigned int pos, 
+        BasIntMat & fields, unsigned int & ln, unsigned int pos,
         unsigned int numPos)
     {
       for (unsigned int i = pos; i < numPos; i++){

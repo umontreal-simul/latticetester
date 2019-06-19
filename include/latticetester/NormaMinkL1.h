@@ -34,9 +34,9 @@ namespace LatticeTester {
    * \cite rMAR68a&thinsp; by applying the general convex body theorem of
    * Minkowski:
    * \f[
-   * \ell_t^* = (t!)^{1/t}*(n)^{-1/t}) = \gamma_t^{1/2} n^{-1/t}, 
+   * \ell_t^* = (t!)^{1/t}*(n)^{-1/t}) = \gamma_t^{1/2} n^{-1/t},
    * \f]
-   * for a lattice containing \f$n\f$ points per unit volume, in dimension \f$t\f$. 
+   * for a lattice containing \f$n\f$ points per unit volume, in dimension \f$t\f$.
    * The lattice constants are thus \f$\gamma_t = (t!)^{2/t}\f$.
    */
 

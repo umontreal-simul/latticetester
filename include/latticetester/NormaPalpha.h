@@ -55,9 +55,9 @@ namespace LatticeTester {
         double calcBound (int alpha, int s);
 
         /**
-         * Preventing the compiler from raising the warning: 
+         * Preventing the compiler from raising the warning:
          * ''
-         * latticetester/NormaPalpha.h:59:9: warning: 
+         * latticetester/NormaPalpha.h:59:9: warning:
          * 'LatticeTester::NormaPalpha::init' hides overloaded virtual function [-Woverloaded-virtual]
          * void init (int alpha);
          * ''
@@ -105,8 +105,8 @@ namespace LatticeTester {
   template<typename Int, typename RedDbl>
     void NormaPalpha<Int, RedDbl>::init (int alpha)
     /*
-     * Computes the vector m_bounds that corresponds to the upper bound for a 
-     * rank 1 lattice of density \f$m\f$ (prime number). The bound doesn't exit 
+     * Computes the vector m_bounds that corresponds to the upper bound for a
+     * rank 1 lattice of density \f$m\f$ (prime number). The bound doesn't exit
      * for dimension < 2.
      */
     {
@@ -144,14 +144,14 @@ namespace LatticeTester {
       double Term1 = log (MM);
       if (Term1 <= alpha*dim /(alpha - 1)) {
         std::cout << "NormaPalpha::calcBound:" << std::endl;
-        std::cout << "   m < exp(alpha*dim/(alpha - 1)) for dim = " << dim 
+        std::cout << "   m < exp(alpha*dim/(alpha - 1)) for dim = " << dim
           << std::endl;
         std::cout << "   Assumption required for existence of theoretical calcBound is not validated." << std::endl;
         std::cout << "   Returns -1" << std::endl;
         return -1;
       }
 
-      Term1 = (2.0 * Term1 + dim) * eBasis / dim;   
+      Term1 = (2.0 * Term1 + dim) * eBasis / dim;
       Res = alpha * dim * log(Term1) - alpha * log(MM);
 
       return exp(Res);

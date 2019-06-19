@@ -106,7 +106,7 @@ namespace LatticeTester {
         void writeMathString (const std::string);
 
         /**
-         * Implementation of the method defined in `Writer`. This writes the 
+         * Implementation of the method defined in `Writer`. This writes the
          * string passed as argument in a tabbed section with a newline
          * character before and after.
          */

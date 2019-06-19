@@ -49,7 +49,7 @@ namespace LatticeTester {
   /**
    * Objects of this class can perform various tests on lattices. There are two
    * intended usages of this class.
-   * - The first one is the one used in the 
+   * - The first one is the one used in the
    * **lattest** executable, it is to simply pass a directory name (resp. a file
    * name) to the program to perform the tests specified in the `.dat` files in
    * the directory (resp. the file itself).
@@ -65,7 +65,7 @@ namespace LatticeTester {
    *
    * To use this class it is imperative to instanciate a Reducer object with the
    * basis of the lattice to analyse. After that, you have to pass, either by
-   * the constructor or by the various methods available, all the parameters 
+   * the constructor or by the various methods available, all the parameters
    * necessary to do a test (these are listed under the empty constructor).
    * Finally, you simply have to call the doTest() method and the `m_merit`
    * field will contain the figure of merit that was asked for.
@@ -151,9 +151,9 @@ namespace LatticeTester {
            * This will also print the results of the test in the way specified
            * by the configuration file.
            *
-           * The data file must always have the extension ".dat", 
-           * but must be given as argument here *without extension*. For example, 
-           * if the data file is named `myLattice.dat`, then the method must be 
+           * The data file must always have the extension ".dat",
+           * but must be given as argument here *without extension*. For example,
+           * if the data file is named `myLattice.dat`, then the method must be
            * called as `doTestFromInputFile("myLattice")`.
            *
            * This method returns 0 if the test completed successfully and
@@ -231,7 +231,7 @@ namespace LatticeTester {
 
           /**
            * This creates and returns a Writer object
-           * Returns a `Writer` created from the input file `infile` and the 
+           * Returns a `Writer` created from the input file `infile` and the
            * given `OutputType`.
            */
           Writer<Int>* createWriter (const char *infile,
@@ -330,7 +330,7 @@ namespace LatticeTester {
       rw->writeString(
           "----------------------------------------------------------\n");
       rw->newLine();
-      rw->writeString("Problem: "); 
+      rw->writeString("Problem: ");
       rw->writeString(toStringProblem(m_config->prob));
       rw->newLine();
       if (m_config->prob == BASIS) {
@@ -390,7 +390,7 @@ namespace LatticeTester {
         rw->newLine();
         rw->writeString("Figure of merit computed: ");
         rw->writeDouble(m_merit);
-      } 
+      }
       rw->newLine();
       rw->newLine();
       rw->writeString(
@@ -409,7 +409,7 @@ namespace LatticeTester {
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
       int LatticeAnalysis<Int, BasInt, Dbl, RedDbl>::doTestFromInputFile (
         const char *infile)
-    {   
+    {
       bool result = false;
       // parameters reading
       std::string fname (infile);
@@ -544,10 +544,10 @@ namespace LatticeTester {
         }
       }
 
-      // performing the Branch-and-Bound procedure to find the shortest 
+      // performing the Branch-and-Bound procedure to find the shortest
       // non-zero vector
       if (config.config.merit.figure == SPECTRAL) {
-        // performing the Branch-and-Bound procedure to find the shortest 
+        // performing the Branch-and-Bound procedure to find the shortest
         // non-zero vector
         result = Red.shortestVector(L2NORM);
         // calculating the Figure of Merit
@@ -573,10 +573,10 @@ namespace LatticeTester {
           normalizer = new NormaLaminated<RedDbl>(density, config.NumCols);
           m_merit = NTL::conv<double>(Red.getMinLength())
             / normalizer->getPreComputedBound(config.NumCols);
-        } 
+        }
         if (normalizer != NULL) delete normalizer;
       } else if (config.config.merit.figure == BEYER) {
-        //performing the Branch-and-Bound procedure to find the 
+        //performing the Branch-and-Bound procedure to find the
         //Minkowski-reduced matrix
         result = Red.reductMinkowski(0);
         // calculating the Figure of Merit

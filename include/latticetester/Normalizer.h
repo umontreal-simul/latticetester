@@ -42,7 +42,7 @@ namespace LatticeTester {
    * will have in \f$[0,1)^t\f$. It is easy to see that the amount of space that
    * will be covered by the spheres is
    * \f[
-   *    \text{Volume of an }n\text{-sphere of radius }d_n\times\text{Density of the lattice}}.
+   *    \text{Volume of an }n\text{-sphere of radius }d_n\times\text{Density of the lattice}.
    * \f]
    * There are known upper bounds on the greatest proportion of the space that
    * can be covered in that way \cite mCON99a. If we divide the proportion of

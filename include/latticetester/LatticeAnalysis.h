@@ -549,6 +549,7 @@ namespace LatticeTester {
       if (config.config.merit.figure == SPECTRAL) {
         // performing the Branch-and-Bound procedure to find the shortest
         // non-zero vector
+        std::cout << "hi" << std::endl;
         result = Red.shortestVector(L2NORM);
         // calculating the Figure of Merit
         NormaType norma(config.config.merit.norma);

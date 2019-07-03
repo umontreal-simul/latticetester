@@ -823,6 +823,7 @@ namespace LatticeTester {
     {
       std::string val;
       getToken(val, ln, pos);
+      std::cout << val <<"\n";
 
       if (0 == strcasecmp(val.c_str(), "BASIS"))
         field = BASIS;

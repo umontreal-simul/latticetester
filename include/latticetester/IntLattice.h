@@ -270,17 +270,16 @@ namespace LatticeTester {
     {
       int dim = this->getDim ();
       IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::initVecNorm();
-      double temp;
-      NTL::conv (temp, this->m_modulo);
       m_vSI.resize(dim, dim);
 
       if (this->m_withDual) {
         m_lgVolDual2 = new double[dim+1];
+        double temp;
+        NTL::conv (temp, this->m_modulo);
         m_lgm2 = 2.0 * Lg (temp);
         m_lgVolDual2[1] = m_lgm2;
         m_wSI.resize(dim, dim);
       }
-
     }
 
   //===========================================================================
@@ -289,14 +288,15 @@ namespace LatticeTester {
       void IntLattice<Int, BasInt, Dbl, RedDbl>::kill ()
     {
       IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::kill();
+      m_vSI.clear();
 
       if (this->m_withDual){
         if (m_lgVolDual2 == 0)
           return;
         delete [] m_lgVolDual2;
         m_lgVolDual2 = 0;
+        m_wSI.clear();
       }
-      // m_vSI.clear();
 
     }
 

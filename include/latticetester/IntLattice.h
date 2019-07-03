@@ -234,9 +234,9 @@ namespace LatticeTester {
     this->m_withDual = withDual;
     this->m_modulo = modulo;
     m_order = k;
-    init ();
-    this->m_basis.resize(this->m_dim,this->m_dim);
     this->m_vecNorm.resize(this->m_dim);
+    this->init ();
+    this->m_basis.resize(this->m_dim,this->m_dim);
     this->setNegativeNorm();
     if (withDual) {
       this->m_dualbasis.resize(this->m_dim,this->m_dim);
@@ -253,12 +253,12 @@ namespace LatticeTester {
       IntLatticeBasis<Int, BasInt, Dbl, RedDbl>(Lat)
   {
     this->m_withDual = Lat.withDual();
-    m_order = Lat.m_order;
-    init ();
-    m_vSI = Lat.m_vSI;
+    this->m_order = Lat.m_order;
+    this->init ();
+    this->m_vSI = Lat.m_vSI;
     if (this->m_withDual){
       this->setDualNegativeNorm();
-      m_wSI = Lat.m_wSI;
+      this->m_wSI = Lat.m_wSI;
     }
   }
 
@@ -268,17 +268,16 @@ namespace LatticeTester {
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
       void IntLattice<Int, BasInt, Dbl, RedDbl>::init ()
     {
-      int dim = this->getDim ();
+      int dim = this->getDim();
       IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::initVecNorm();
-      m_vSI.resize(dim, dim);
-
+      this->m_vSI.resize(dim,dim);
       if (this->m_withDual) {
-        m_lgVolDual2 = new double[dim+1];
+        this->m_lgVolDual2 = new double[dim+1];
         double temp;
-        NTL::conv (temp, this->m_modulo);
-        m_lgm2 = 2.0 * Lg (temp);
-        m_lgVolDual2[1] = m_lgm2;
-        m_wSI.resize(dim, dim);
+        NTL::conv(temp, this->m_modulo);
+        this->m_lgm2 = 2.9*Lg(temp);
+        this->m_lgVolDual2[1] = m_lgm2;
+        this->m_wSI.resize(dim,dim);
       }
     }
 
@@ -288,14 +287,12 @@ namespace LatticeTester {
       void IntLattice<Int, BasInt, Dbl, RedDbl>::kill ()
     {
       IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::kill();
-      m_vSI.clear();
 
       if (this->m_withDual){
         if (m_lgVolDual2 == 0)
           return;
         delete [] m_lgVolDual2;
         m_lgVolDual2 = 0;
-        m_wSI.clear();
       }
 
     }
@@ -306,7 +303,7 @@ namespace LatticeTester {
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
       IntLattice<Int, BasInt, Dbl, RedDbl>::~IntLattice ()
     {
-      kill ();
+      this->kill ();
     }
 
   //===========================================================================

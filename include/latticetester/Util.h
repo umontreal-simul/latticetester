@@ -180,7 +180,7 @@ namespace NTL {
   /**
    * \name Mathematical functions
    * @{
-   * These are complementary overloads to NTL power functions.
+   * These are complementary overloads to NTL mathemaical functions.
    */
 
   /**
@@ -217,6 +217,13 @@ namespace NTL {
   inline double inv(const double x) {
     return 1./x;
   }
+
+  /**
+   * Returns the value of the greatest common divisor of \f$a\f$ and \f$b\f$ by
+   * using Stein's binary GCD algorithm.
+   */
+  std::int64_t GCD (std::int64_t a, std::int64_t b);
+
   /**
    * @}
    * */
@@ -617,12 +624,6 @@ namespace LatticeTester {
       q = -q;
   }
   /// \endcond
-
-  /**
-   * Returns the value of the greatest common divisor of \f$a\f$ and \f$b\f$ by
-   * using Stein's binary GCD algorithm.
-   */
-  std::int64_t gcd (std::int64_t a, std::int64_t b);
 
   /**
    * This method computes the greater common divisor of `A` and `B` with Euclid's

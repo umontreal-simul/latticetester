@@ -104,6 +104,7 @@ namespace LatticeTester {
       NTL::ZZ v = maxvalue - r;
       NTL::ZZ res;
       do {
+        res = 0;
         long leftbits = numbits;
 #ifdef ULONG_64_OUI
         // We have to go 63 bits at a time because the conversion is between long

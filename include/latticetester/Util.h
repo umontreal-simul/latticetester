@@ -206,6 +206,14 @@ namespace NTL {
     z = NTL::power_ZZ (2, i);
   }
 
+  /**
+   * Sets \f$z = 2^i\f$. does unchecked truncation from `NTL::ZZ` to
+   * `std::int64_t` to call `power2(NTL::ZZ, std::int64_t)`
+   * */
+  inline void power2(NTL::ZZ& z, NTL::ZZ& i) {
+    NTL::power2(z, NTL::conv<std::int64_t>(i));
+  }
+
   inline double sqrt(const double & a) {
     return std::sqrt(a);
   }

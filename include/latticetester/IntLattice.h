@@ -275,7 +275,7 @@ namespace LatticeTester {
         this->m_lgVolDual2 = new double[dim+1];
         double temp;
         NTL::conv(temp, this->m_modulo);
-        this->m_lgm2 = 2.9*Lg(temp);
+        this->m_lgm2 = 2.0*Lg(temp);
         this->m_lgVolDual2[1] = m_lgm2;
         this->m_wSI.resize(dim,dim);
       }
@@ -297,13 +297,12 @@ namespace LatticeTester {
 
     }
 
-
   //===========================================================================
 
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
       IntLattice<Int, BasInt, Dbl, RedDbl>::~IntLattice ()
     {
-      this->kill ();
+      kill ();
     }
 
   //===========================================================================

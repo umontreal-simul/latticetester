@@ -199,7 +199,7 @@ namespace LatticeTester {
           /**
            * Represente sur dual along the diagonal?? ERWAN
            */
-          double *m_lgVolDual2;
+          double *m_lgVolDual2 = NULL;
 
           /**
            * The logarithm \f$\log (m^2)\f$.
@@ -235,7 +235,14 @@ namespace LatticeTester {
     this->m_modulo = modulo;
     m_order = k;
     this->m_vecNorm.resize(this->m_dim);
-    this->init ();
+    //this->init ();
+    if (this->m_withDual) {
+      m_lgVolDual2 = new double[maxDim + 1];
+    //  double temp;
+    //  NTL::conv(temp, this->m_modulo);
+    //  this->m_lgm2 = 2.0 * Lg(temp);
+    //  this->m_lgVolDual2[1] = m_lgm2;
+    }
     this->m_basis.resize(this->m_dim,this->m_dim);
     this->setNegativeNorm();
     if (withDual) {
@@ -255,6 +262,7 @@ namespace LatticeTester {
     this->m_withDual = Lat.withDual();
     this->m_order = Lat.m_order;
     this->init ();
+    this->setNegativeNorm();
     this->m_vSI = Lat.m_vSI;
     if (this->m_withDual){
       this->setDualNegativeNorm();
@@ -269,15 +277,14 @@ namespace LatticeTester {
       void IntLattice<Int, BasInt, Dbl, RedDbl>::init ()
     {
       int dim = this->getDim();
-      IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::initVecNorm();
-      this->m_vSI.resize(dim,dim);
+      this->m_vSI.SetDims(dim, dim);
       if (this->m_withDual) {
-        this->m_lgVolDual2 = new double[dim+1];
+        this->m_lgVolDual2 = new double[dim + 1];
         double temp;
         NTL::conv(temp, this->m_modulo);
-        this->m_lgm2 = 2.0*Lg(temp);
+        this->m_lgm2 = 2.0 * Lg(temp);
         this->m_lgVolDual2[1] = m_lgm2;
-        this->m_wSI.resize(dim,dim);
+        this->m_wSI.SetDims(dim, dim);
       }
     }
 
@@ -287,14 +294,9 @@ namespace LatticeTester {
       void IntLattice<Int, BasInt, Dbl, RedDbl>::kill ()
     {
       IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::kill();
-
-      if (this->m_withDual){
-        if (m_lgVolDual2 == 0)
-          return;
+      if (m_lgVolDual2 != NULL) {
         delete [] m_lgVolDual2;
-        m_lgVolDual2 = 0;
       }
-
     }
 
   //===========================================================================
@@ -302,7 +304,7 @@ namespace LatticeTester {
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
       IntLattice<Int, BasInt, Dbl, RedDbl>::~IntLattice ()
     {
-      kill ();
+      kill();
     }
 
   //===========================================================================
@@ -320,9 +322,9 @@ namespace LatticeTester {
       this->m_vecNorm.resize(dim+1);
 
       if (this->m_withDual) {
-        if(this->m_lgVolDual2 != 0)
+        if(this->m_lgVolDual2 != NULL)
           delete[] this->m_lgVolDual2;
-        this->m_lgVolDual2 = new double[dim+2]();
+        this->m_lgVolDual2 = new double[dim+2];
         this->calcLgVolDual2 (m_lgm2);
         this->m_dualbasis.resize(dim+1, dim+1);
         this->m_dualvecNorm.resize(dim+1);

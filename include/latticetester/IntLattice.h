@@ -276,7 +276,7 @@ namespace LatticeTester {
         double temp;
         NTL::conv(temp, this->m_modulo);
         this->m_lgm2 = 2.0 * Lg(temp);
-        this->m_lgVolDual2[1] = m_lgm2;
+        calcLgVolDual2(m_lgm2);
         this->m_wSI.SetDims(dim, dim);
       }
     }
@@ -286,7 +286,6 @@ namespace LatticeTester {
   template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
       void IntLattice<Int, BasInt, Dbl, RedDbl>::kill ()
     {
-      IntLatticeBasis<Int, BasInt, Dbl, RedDbl>::kill();
       if (m_lgVolDual2 != NULL) {
         delete [] m_lgVolDual2;
       }
@@ -315,19 +314,19 @@ namespace LatticeTester {
       this->m_vecNorm.resize(dim+1);
 
       if (this->m_withDual) {
-        if(this->m_lgVolDual2 != NULL)
+        if(m_lgVolDual2 != NULL)
           delete[] this->m_lgVolDual2;
-        this->m_lgVolDual2 = new double[dim+2];
-        this->calcLgVolDual2 (m_lgm2);
+        m_lgVolDual2 = new double[dim+2];
+        calcLgVolDual2 (m_lgm2);
         this->m_dualbasis.resize(dim+1, dim+1);
         this->m_dualvecNorm.resize(dim+1);
       }
 
       for(int i = 0; i < dim; i++){
         for(int j = 0; j < dim; j++){
-          this->m_basis(i,j) = lattmp.m_basis(i,j);
+          this->m_basis(i, j) = lattmp.m_basis(i, j);
           if (this->m_withDual)
-            this->m_dualbasis(i,j) = lattmp.m_dualbasis(i,j);
+            this->m_dualbasis(i, j) = lattmp.m_dualbasis(i, j);
         }
         this->m_vecNorm(i) = lattmp.m_vecNorm(i);
         if (this->m_withDual)
@@ -337,7 +336,6 @@ namespace LatticeTester {
       if (this->m_withDual)
         this->setDualNegativeNorm(dim);
       this->setDim(dim+1);
-      return;
     }
 
   //===========================================================================

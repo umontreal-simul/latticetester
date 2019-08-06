@@ -199,7 +199,7 @@ namespace LatticeTester {
           /**
            * Represente sur dual along the diagonal?? ERWAN
            */
-          double *m_lgVolDual2 = NULL;
+          double *m_lgVolDual2;
 
           /**
            * The logarithm \f$\log (m^2)\f$.
@@ -235,14 +235,7 @@ namespace LatticeTester {
     this->m_modulo = modulo;
     m_order = k;
     this->m_vecNorm.resize(this->m_dim);
-    //this->init ();
-    if (this->m_withDual) {
-      m_lgVolDual2 = new double[maxDim + 1];
-    //  double temp;
-    //  NTL::conv(temp, this->m_modulo);
-    //  this->m_lgm2 = 2.0 * Lg(temp);
-    //  this->m_lgVolDual2[1] = m_lgm2;
-    }
+    this->init ();
     this->m_basis.resize(this->m_dim,this->m_dim);
     this->setNegativeNorm();
     if (withDual) {

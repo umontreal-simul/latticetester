@@ -54,15 +54,15 @@ namespace LatticeTester {
    * compute \f$ \log_2(m^{2i}) \f$ for \f$ 1 \leq i \leq k \f$ to help with the
    * computation of such bounds.
    */
-  template<typename Int, typename BasInt, typename Dbl, typename RedDbl>
-      class IntLattice : public IntLatticeBasis<Int, BasInt, Dbl, RedDbl> {
+  template<typename Integ, typename BasInt, typename Float, typename RedDbl>
+      class IntLattice : public IntLatticeBasis<Integ, BasInt, Float, RedDbl> {
         public:
-          typedef Int Integ;
+          typedef Integ Int;
           typedef NTL::vector<Int> IntVec;
           typedef NTL::matrix<Int> IntMat;
           typedef NTL::vector<BasInt> BasIntVec;
           typedef NTL::matrix<BasInt> BasIntMat;
-          typedef Dbl Float;
+          typedef Float Dbl;
           typedef NTL::vector<Dbl> DblVec;
 
           /**

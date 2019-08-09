@@ -127,5 +127,14 @@ namespace NTL {
     return temp;
   }
 
+  void clear(Vec_64& vec) {
+    for (int i = 0; i < vec.length(); i++) vec[i] = 0;
+  }
+
+  void clear(Mat_64& mat) {
+    for (int i = 0; i < mat.NumRows(); i++)
+      for (int j = 0; j < mat.NumCols(); j++) mat[i][j] = 0;
+  }
+
 
 }

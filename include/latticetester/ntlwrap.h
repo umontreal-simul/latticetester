@@ -293,6 +293,15 @@ namespace NTL
       NTL::Mat<T> x; transpose(x, a); return x;
   }
 
+  /**
+   * Sets `vec=0`.
+   * */
+  void clear(Vec_64& vec);
+  /**
+   * Sets `mat = 0`.
+   * */
+  void clear(Mat_64& mat);
+
   //============================================================================
 
   /**

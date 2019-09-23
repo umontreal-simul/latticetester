@@ -289,6 +289,8 @@
  *    else:
  *      i = 0
  *    k += 1
+ *    if k >= t:
+ *      k = 0
  * \endcode
  * 
  * Since the algorithm is garanteed to reduce the vector length whenever it modifies

@@ -76,22 +76,11 @@ namespace LatticeTester {
         NormaRogers (RedDbl & logDensity, int t, double beta = 1);
 
         /**
-         * Destructor.
-         */
-        ~NormaRogers();
-
-        /**
          * Returns the value of the bound on the Hermite's constant \f$\gamma_j\f$
          * in dimension \f$j\f$.
          */
         double getGamma (int j) const;
       private:
-
-        /**
-         * The lattice constants \f$\gamma_j\f$ are the Rogers bounds in each
-         * dimension \f$j\f$.
-         */
-        double *m_gamma;
 
         /**
          * Precomputed lattice constants \f$\gamma_j\f$ for the Rogers bounds
@@ -102,7 +91,7 @@ namespace LatticeTester {
         /**
          * Computes the Rogers bound in dimension \f$d\f$.
          */
-        double calcGamma (int d);
+        double calcGamma (int d) const;
     }; // End class NormaRogers
 
   //===========================================================================
@@ -173,7 +162,7 @@ namespace LatticeTester {
   /*=======================================================================*/
 
   template<typename RedDbl>
-    double NormaRogers<RedDbl>::calcGamma (int dim)
+    double NormaRogers<RedDbl>::calcGamma (int dim) const
     {
       static const double pi = 3.1415926535897932384;
       static const double e = 2.7182818284590452353;
@@ -201,25 +190,7 @@ namespace LatticeTester {
     NormaRogers<RedDbl>::NormaRogers (RedDbl & logDensity, int t, double beta)
     : Normalizer<RedDbl> (logDensity, t, "Rogers", L2NORM, beta)
     {
-      m_gamma = new double[t + 1];
-
-      int t0 = t;
-      if (t0 > this->MAX_DIM)
-        t0 = this->MAX_DIM;
-      for (int i = 0; i <= t0; i++)
-        m_gamma[i] = m_gamma0[i];
-      for (int i = t0 + 1; i <= t; i++)
-        m_gamma[i] = calcGamma(i);
-
       Normalizer<RedDbl>::init (logDensity, beta);
-    }
-
-  /*=========================================================================*/
-
-  template<typename RedDbl>
-    NormaRogers<RedDbl>::~NormaRogers()
-    {
-      delete[] m_gamma;
     }
 
   /*=========================================================================*/
@@ -227,9 +198,8 @@ namespace LatticeTester {
   template<typename RedDbl>
     inline double NormaRogers<RedDbl>::getGamma (int j) const
     {
-      if (j < 1 || j > this->m_maxDim)
-        throw std::out_of_range("NormaRogers::getGamma");
-      return m_gamma[j];
+      if (0 <= j && j <= this->MAX_DIM) return m_gamma0[j];
+      else return calcGamma(j);
     }
 
   extern template class NormaRogers<double>;

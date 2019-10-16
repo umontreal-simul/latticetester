@@ -230,13 +230,10 @@ namespace LatticeTester {
           int maxDim, bool withDual, NormType norm):
       IntLatticeBasis<Int, BasInt, Dbl, RedDbl>(maxDim, norm)
   {
-    this->m_dim = maxDim;
     this->m_withDual = withDual;
     this->m_modulo = modulo;
     m_order = k;
-    this->m_vecNorm.resize(this->m_dim);
     this->init ();
-    this->m_basis.resize(this->m_dim,this->m_dim);
     this->setNegativeNorm();
     if (withDual) {
       this->m_dualbasis.resize(this->m_dim,this->m_dim);

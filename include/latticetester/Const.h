@@ -161,6 +161,31 @@ namespace LatticeTester {
    * @}
    */
 
+  /**
+   * \name toEnum functions
+   *
+   * Transform strings into their enum value.
+   *
+   * @{
+   *
+   * Returns the `enum` constants integer value from a strings.
+   * Returns -1 if the value is not found.
+   */
+   int toNormString       (NormType&        , const std::string&);
+   int toPrimeString      (PrimeType&       , const std::string&);
+   int toCriterionString  (CriterionType&   , const std::string&);
+   int toProblemString    (ProblemType&     , const std::string&);
+   int toNormaString      (NormaType&       , const std::string&);
+   int toCalcString       (CalcType&        , const std::string&);
+   int toPreRedString     (PreReductionType&, const std::string&);
+   int toOutputString     (OutputType&      , const std::string&);
+   int toPrecisionString  (PrecisionType&   , const std::string&);
+
+
+  /**
+   * @}
+   */
+
   static constexpr unsigned int NB_PRIMES = 6543;
   extern const std::array<unsigned int, NB_PRIMES> PRIMES_ARRAY;
 

@@ -1844,7 +1844,7 @@ namespace LatticeTester {
        * Procedure recursive implantant le BB pour shortestVector (redBB0).
        * Si m_countNodes > MaxNodes, retourne false.
        * Sinon, retourne true: on a trouve le plus court vecteur.
-       * Le carre de la std::int64_tueur du plus court vecteur a date est dans m_lMin2.
+       * Le carre de la longueur du plus court vecteur a date est dans m_lMin2.
        * Si j=1 et on trouve un plus court vecteur, on retrouve les zj
        * correspondants dans m_zShort.
        */
@@ -1876,10 +1876,10 @@ namespace LatticeTester {
 
       dc = sqrt ((m_lMin2 - m_n2[j]) / m_dc2[j]);
 
-      /* Calcul de deux entiers ayant la propriete qu'un entier */
-      /* non-compris entre (i.e. strictement exterieur `a) ceux-ci */
-      /* n'appartient pas a l'intervalle.  */
-      /* Si NOT m_foundZero on pose min egal a zero par symetrie.  */
+      /* Calcul de deux entiers ayant la propriete qu'un entier
+         non-compris entre (i.e. strictement exterieur `a) ceux-ci 
+         n'appartient pas a l'intervalle.
+         Si NOT m_foundZero on pose min egal a zero par symetrie.  */
       if (!m_foundZero)
         min0 = 0;
       else {
@@ -2039,7 +2039,7 @@ namespace LatticeTester {
            of the current lattice, we don't need to find the shortest vector in this
            lattice. Use only in seek function
 
-           S'il existe dans ce réseau un vecteur de std::int64_tueur plus courte que celle
+           S'il existe dans ce réseau un vecteur de longueur plus courte que celle
            du meilleur réseau trouvé à date, il n'est pas nécessaire de trouver le
            plus court vecteur de ce réseau: on peut l'éliminer immédiatement. */
 

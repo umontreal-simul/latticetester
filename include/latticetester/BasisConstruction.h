@@ -149,6 +149,14 @@ template<typename BasInt> class BasisConstruction{
   //============================================================================
   // Implementation
 
+  template <>
+    void LLLConstr<NTL::matrix<std::int64_t>>::LLLConstruction(
+        NTL::matrix<std::int64_t>& matrix) ;
+
+  template <>
+    void LLLConstr<NTL::matrix<NTL::ZZ>>::LLLConstruction(
+        NTL::matrix<NTL::ZZ>& matrix) ;
+
   template<typename BasInt>
     void BasisConstruction<BasInt>::LLLConstruction(BasIntMat& matrix){
       spec.LLLConstruction(matrix);

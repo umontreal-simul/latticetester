@@ -267,7 +267,7 @@ namespace NTL
         if (n == m)
           for (i = 0; i < n; i++)
             for (j = 0; j < m; j++)
-              swap(X[i][j], X[j][i]);
+              std::swap(X[i][j], X[j][i]);
         else {
           NTL::Mat<T> tmp;
           tmp.SetDims(m, n);

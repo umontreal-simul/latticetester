@@ -37,7 +37,7 @@ standalone program, even though it contains such a program for convenience.
 
 More details on  *Lattice Tester* can be found in:
 - [The complete user's guide](http://umontreal-simul.github.io/latticetester/), that contains all of the above.
-- [The tutorial](http://umontreal-simul.github.io/latticetester/df/d1d/tutorial.html) which 
+- [The tutorial](http://umontreal-simul.github.io/latticetester/db/d4e/tutorial.html) which 
   provides examples of how to use the library and highlights the main classes.
 - [The theoretical background](http://umontreal-simul.github.io/latticetester/da/d18/a_intro.html),
   which gives an overview of the underlying theory.

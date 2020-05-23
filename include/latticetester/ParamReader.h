@@ -870,7 +870,7 @@ namespace LatticeTester {
         field = SUPNORM;
         MyExit(1, "readNormType:   SUPNORM case not ready");
       }
-      else if (toLowerString(val).compare("l1norm"))
+      else if (toLowerString(val).compare("l1norm") == 0)
         field = L1NORM;
       else if (toLowerString(val).compare("l2norm") == 0)
         field = L2NORM;

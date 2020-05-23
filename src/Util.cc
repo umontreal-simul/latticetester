@@ -173,6 +173,7 @@ namespace LatticeTester
     return i + (std::uint64_t) (res / q);
   }
 
+  //============================================================================
   // Cuts the last bits of LFSR258 64 bits int and converts it to a double
   // precision number
   double RandU01()
@@ -180,12 +181,13 @@ namespace LatticeTester
     return NORM53 * (RandValue() >> 11);
   }
 
-
+  //============================================================================
   std::uint64_t RandBits (int s)
   {
     return RandValue () >> (64 - s);
   }
 
+  //============================================================================
   void SetSeed (std::uint64_t seed)  {
     // Choose one bit = 1 to make sure initial state is valid
     /*
@@ -200,7 +202,13 @@ namespace LatticeTester
     etat5 = seed | 8388608;
   }
 
-
-  //===========================================================================
+  //============================================================================
+  std::string toLowerString(const std::string& str) {
+    std::string tmpStr = str;
+    for (auto& c: tmpStr) {
+      c = std::tolower(static_cast<unsigned char>(c));
+    }
+    return tmpStr;
+  }
 
 }        // namespace LatticeTester

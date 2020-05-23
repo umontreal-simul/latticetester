@@ -28,7 +28,6 @@
 #include <string>
 #include <cstring>
 #include <vector>
-#include <cassert>
 #include <fstream>
 #include <sstream>
 #include <cstdint>
@@ -591,9 +590,9 @@ namespace LatticeTester {
       std::string val;
       getToken(val, ln, pos);
 
-      if (strcasecmp(val.c_str(), "true") == 0)
+      if (toLowerString(val).compare("true") == 0)
         field = true;
-      else if (strcasecmp(val.c_str(), "false") == 0)
+      else if (toLowerString(val).compare("false") == 0)
         field = false;
       else
         MyExit(1, "readBool:   NO SUCH CASE");
@@ -643,7 +642,6 @@ namespace LatticeTester {
       in2 >> m2;
       if (! in2)
         return;
-      assert (m2 > 0);
       getToken(val, ln, pos++);
       if (val.empty())
         return;
@@ -825,19 +823,16 @@ namespace LatticeTester {
       getToken(val, ln, pos);
       std::cout << val <<"\n";
 
-      if (0 == strcasecmp(val.c_str(), "BASIS"))
+      if (toLowerString(val).compare("basis") == 0)
         field = BASIS;
-      else if (0 == strcasecmp(val.c_str(), "DUAL"))
+      else if (toLowerString(val).compare("dual") == 0)
         field = DUAL;
-      else if (0 == strcasecmp(val.c_str(), "REDUCTION")){
+      else if (toLowerString(val).compare("reduction") == 0)
         field = REDUCTION;
-      }
-      else if (0 == strcasecmp(val.c_str(), "SHORTEST")){
+      else if (toLowerString(val).compare("shortest") == 0)
         field = SHORTEST;
-      }
-      else if (0 == strcasecmp(val.c_str(), "MERIT")){
+      else if (toLowerString(val).compare("merit") == 0)
         field = MERIT;
-      }
       else
         MyExit(1, "readProblemType:   NO SUCH CASE");
     }
@@ -851,15 +846,14 @@ namespace LatticeTester {
       std::string val;
       getToken(val, ln, pos);
 
-      if (0 == strcasecmp(val.c_str(), "SPECTRAL"))
+      if (toLowerString(val).compare("spectral") == 0)
         field = SPECTRAL;
-      else if (0 == strcasecmp(val.c_str(), "BEYER"))
+      else if (toLowerString(val).compare("beyer") == 0)
         field = BEYER;
-      else if (0 == strcasecmp(val.c_str(), "LENGTH"))
+      else if (toLowerString(val).compare("length") == 0)
         field = LENGTH;
-      else if (0 == strcasecmp(val.c_str(), "PALPHA")){
+      else if (toLowerString(val).compare("palpha") == 0)
         field = PALPHA;
-      }
       else
         MyExit(1, "readCriterionType:   NO SUCH CASE");
     }
@@ -872,15 +866,15 @@ namespace LatticeTester {
     {
       std::string val;
       getToken(val, ln, pos);
-      if (0 == strcasecmp(val.c_str(), "SUPNORM")){
+      if (toLowerString(val).compare("supnorm") == 0) {
         field = SUPNORM;
         MyExit(1, "readNormType:   SUPNORM case not ready");
       }
-      else if (0 == strcasecmp(val.c_str(), "L1NORM"))
+      else if (toLowerString(val).compare("l1norm"))
         field = L1NORM;
-      else if (0 == strcasecmp(val.c_str(), "L2NORM"))
+      else if (toLowerString(val).compare("l2norm") == 0)
         field = L2NORM;
-      else if (0 == strcasecmp(val.c_str(), "ZAREMBANORM")){
+      else if (toLowerString(val).compare("zarembanorm") == 0){
         field = ZAREMBANORM;
         MyExit(1, "readNormType:   ZAREMBANORM case not ready");
       }
@@ -899,23 +893,23 @@ namespace LatticeTester {
       std::string val;
       getToken(val, ln, pos);
 
-      if (0 == strcasecmp(val.c_str(), "BESTLAT"))
+      if (toLowerString(val).compare("bestlat") == 0)
         field = BESTLAT;
-      else if (0 == strcasecmp(val.c_str(), "BESTBOUND"))
+      else if (toLowerString(val).compare("bestbound") == 0)
         field = BESTBOUND;
-      else if (0 == strcasecmp(val.c_str(), "LAMINATED"))
+      else if (toLowerString(val).compare("laminated") == 0)
         field = LAMINATED;
-      else if (0 == strcasecmp(val.c_str(), "ROGERS"))
+      else if (toLowerString(val).compare("rogers") == 0)
         field = ROGERS;
-      else if (0 == strcasecmp(val.c_str(), "MINKL1"))
+      else if (toLowerString(val).compare("minkl1") == 0)
         field = MINKL1;
-      else if (0 == strcasecmp(val.c_str(), "MINK"))
+      else if (toLowerString(val).compare("mink") == 0)
         field = MINK;
-      else if (0 == strcasecmp(val.c_str(), "L1"))
+      else if (toLowerString(val).compare("l1") == 0)
         field = L1;
-      else if (0 == strcasecmp(val.c_str(), "L2"))
+      else if (toLowerString(val).compare("l2") == 0)
         field = L2;
-      else if (0 == strcasecmp(val.c_str(), "NONE"))
+      else if (toLowerString(val).compare("none") == 0)
         field = NONE;
       else
         MyExit(1, "readNormaType:   NO SUCH CASE");
@@ -931,15 +925,15 @@ namespace LatticeTester {
       std::string val;
       getToken(val, ln, pos);
 
-      if (0 == strcasecmp(val.c_str(), "DOUBLE"))
+      if (toLowerString(val).compare("double") == 0)
         field = DOUBLE;
-      else if (0 == strcasecmp(val.c_str(), "QUADRUPLE"))
+      else if (toLowerString(val).compare("quadruple") == 0)
         field = QUADRUPLE;
-      else if (0 == strcasecmp(val.c_str(), "EXPONENT"))
+      else if (toLowerString(val).compare("exponent") == 0)
         field = EXPONENT;
-      else if (0 == strcasecmp(val.c_str(), "ARBITRARY"))
+      else if (toLowerString(val).compare("arbitrary") == 0)
         field = ARBITRARY;
-      else if (0 == strcasecmp(val.c_str(), "EXACT"))
+      else if (toLowerString(val).compare("exact") == 0)
         field = EXACT;
       else
         MyExit(1, "readPrecisionType:   NO SUCH CASE");
@@ -957,14 +951,13 @@ namespace LatticeTester {
       std::string val;
       getToken(val, ln, pos);
 
-      if (0 == strcasecmp(val.c_str(), "TERM"))
+      if (toLowerString(val).compare("term") == 0)
         field = TERM;
-      else if (0 == strcasecmp(val.c_str(), "RES"))
+      else if (toLowerString(val).compare("res") == 0)
         field = RES;
-      else if (0 == strcasecmp(val.c_str(), "GEN")) {
+      else if (toLowerString(val).compare("gen") == 0)
         field = GEN;
-        // MyExit(1, "readOutputType:   GEN case not ready");
-      } else if (0 == strcasecmp(val.c_str(), "TEX")) {
+      else if (toLowerString(val).compare("tex") == 0) {
         field = TEX;
         MyExit(1, "readOutputType:   TEX case not ready");
       } else
@@ -981,15 +974,15 @@ namespace LatticeTester {
       std::string val;
       getToken(val, ln, pos);
 
-      if (0 == strcasecmp(val.c_str(), "BKZ"))
+      if (toLowerString(val).compare("bkz") == 0)
         field = BKZ;
-      else if (0 == strcasecmp(val.c_str(), "DIETER"))
+      else if (toLowerString(val).compare("dieter") == 0)
         field = DIETER;
-      else if (0 == strcasecmp(val.c_str(), "LLL"))
+      else if (toLowerString(val).compare("lll") == 0)
         field = LLL;
-      else if (0 == strcasecmp(val.c_str(), "NOPRERED"))
+      else if (toLowerString(val).compare("noprered") == 0)
         field = NOPRERED;
-      else if (0 == strcasecmp(val.c_str(), "FULL"))
+      else if (toLowerString(val).compare("full") == 0)
         field = FULL;
       else
         MyExit(1, "readPreRed:   NO SUCH CASE");

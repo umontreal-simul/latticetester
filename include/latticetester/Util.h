@@ -812,17 +812,12 @@ namespace LatticeTester {
     std::string toString (const Vect & A, int d)
     {
       return toString<Vect>(A, 0, d);
-      /*
-       *  std::ostringstream ostr;
-       *  ostr << "[";
-       *  for (int i = 0; i < d; i++) {
-       *    ostr << std::setprecision(2) << std::setw(3) << A[i] <<
-       *      std::setw(2) << "  ";
-       *  }
-       *  ostr << "]";
-       *  return ostr.str();
-       * */
     }
+
+  /**
+   * Returns a lowercase copy of str.
+   * */
+  std::string toLowerString(const std::string& str);
 
   /**
    * Computes the scalar product of vectors `A` and `B` truncated to their `n`

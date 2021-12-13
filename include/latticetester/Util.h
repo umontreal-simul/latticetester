@@ -103,16 +103,7 @@ namespace NTL {
   {
     x = NTL::conv<long long>(a);
   }
-    
-  /**
-   * Converts a `NTL::zz_p` to a `long long`. This will truncate a if it has to
-   * many digits.
-   * */
-  inline void conv(long long &x, zz_p a)
-  {
-    x = NTL::conv<long long>(a);
-  }
-    
+
   /**
    * Converts a `long long` to a `long`. This will truncate a if it has to
    * many digits.
@@ -120,15 +111,6 @@ namespace NTL {
   inline void conv(long &x, long long a)
   {
     x = static_cast<long>(a);
-  }
-    
-  /**
-   * Converts a `long long` to a `int`. This will truncate a if it has to
-   * many digits.
-   * */
-  inline void conv(int &x, long long a)
-  {
-    x = static_cast<int>(a);
   }
 
   /**
@@ -867,8 +849,7 @@ namespace LatticeTester {
   template<typename IntVec>
     inline void Invert (const IntVec & A, IntVec & B, int n)
     {
-      // the .0 double-literal is needed on some systems to prevent compilation error
-      NTL::conv(B[n], 1.0);
+      NTL::conv(B[n], 1);
       for(int i = 0; i < n; i++){
         B[i] = -A[n - i - 1];
       }

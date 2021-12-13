@@ -38,8 +38,6 @@
 #include <cstdint>
 #include <type_traits>
 
-// this declaration is needed before NTL/tools.h to prevent implicit instantation of the template
-namespace NTL {void conv(int &x, long long a);}
 #include "NTL/tools.h"
 #include "NTL/ZZ.h"
 #include "NTL/RR.h"

@@ -17,7 +17,7 @@ Lattices whose points have integral or rational coordinates are encountered for 
 as lattice rules for quasi-Monte Carlo integration, and when studying certain types 
 of linear congruential generators whose vectors of successive output values have
 a lattice structure. The purpose of Lattice Tester is to compute various 
-**figures of merit** that serve a global measures of quality for integral lattices. 
+**figures of merit** that serve as global measures of quality for integral lattices. 
 These figures of merit can be defined in terms of measures of non-uniformity of the points
 that are computed for several projections of the lattice over lower-dimensional subspaces, 
 and combined in some way (e.g., as a weighted sum or maximum).

@@ -20,7 +20,7 @@
 
 #include "NTL/LLL.h"
 
-#include "latticetester/IntLatticeBasis.h"
+#include "latticetester/IntLatticeBase.h"
 #include "latticetester/ntlwrap.h"
 #include "latticetester/Util.h"
 #include "latticetester/Coordinates.h"
@@ -142,8 +142,8 @@ template<typename Int> class BasisConstruction{
      * afterwards with the DualConstruction() method.
      * */
     template<typename Int, typename Real, typename RealRed>
-      void ProjectionConstruction(IntLatticeBasis<Int, Real, RealRed>& in,
-          IntLatticeBasis<Int, Real, RealRed>& out, const Coordinates& proj);
+      void ProjectionConstruction(IntLatticeBase<Int, Real, RealRed>& in,
+          IntLatticeBase<Int, Real, RealRed>& out, const Coordinates& proj);
   };
 
   //============================================================================
@@ -305,8 +305,8 @@ template<typename Int> class BasisConstruction{
     template<typename Int>
     template<typename Int, typename Real, typename RealRed>
       void BasisConstruction<Int>::ProjectionConstruction(
-      IntLatticeBasis<Int, Real, RealRed>& in,
-      IntLatticeBasis<Int, Real, RealRed>& out,
+      IntLatticeBase<Int, Real, RealRed>& in,
+      IntLatticeBase<Int, Real, RealRed>& out,
       const Coordinates& proj) {
         std::size_t dim = proj.size();
         unsigned int lat_dim = in.getDim();
@@ -325,7 +325,7 @@ template<typename Int> class BasisConstruction{
         }
         new_basis = NTL::transpose(new_basis);
         LLLConstruction(new_basis);
-        out = IntLatticeBasis<Int, Real, RealRed>(new_basis, dim, in.getNorm());
+        out = IntLatticeBase<Int, Real, RealRed>(new_basis, dim, in.getNorm());
       }
 
   extern template class BasisConstruction<std::int64_t>;

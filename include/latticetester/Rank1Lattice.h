@@ -57,8 +57,8 @@ namespace LatticeTester {
 
       private:
         typedef NTL::vector<Int> IntVec;
-        typedef NTL::vector<Int> BasIntVec;
-        typedef NTL::matrix<Int> BasIntMat;
+        typedef NTL::vector<Int> IntVec;
+        typedef NTL::matrix<Int> IntMat;
         typedef NTL::vector<Real> DblVec;
 
       public:
@@ -257,7 +257,7 @@ namespace LatticeTester {
   template<typename Int, typename Real, typename RealRed>
     void Rank1Lattice<Int, Real, RealRed>::dualize ()
     {
-      BasIntMat tmps(this->m_basis);
+      IntMat tmps(this->m_basis);
       this->m_basis = this->m_dualbasis;
       this->m_dualbasis = tmps;
     }

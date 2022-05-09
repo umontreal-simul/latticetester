@@ -2,7 +2,7 @@
 BasisConstruction<BScal> constr; // The basis constructor we will use
 BMat bas_mat, dua_mat; // basis matrix and dual basis matrix
 // Creating a lattice basis
-IntLatticeBasis<MScal, BScal, NScal, RScal> lattice(bas_mat, numlines);
+IntLatticeBase<MScal, BScal, NScal, RScal> lattice(bas_mat, numlines);
 // Constructing a basis matrix with GCDConstruction
 constr.GCDConstruction(bas_mat);
 // Constructing the matrix of a dual to bas_mat

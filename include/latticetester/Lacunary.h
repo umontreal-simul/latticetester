@@ -42,14 +42,14 @@ namespace LatticeTester {
     class Lacunary {
 
       private:
-        typedef NTL::vector<Int> BasIntVec;
+        typedef NTL::vector<Int> IntVec;
 
       public:
 
         /**
          * Constructor for a set of \f$t\f$ indices given in the vector `C`.
          */
-        Lacunary (const BasIntVec & C, int t)
+        Lacunary (const IntVec & C, int t)
         {
           m_dim = t; 
           CreateVect (m_lac, t);
@@ -116,7 +116,7 @@ namespace LatticeTester {
          * The set of lacunary indices is <tt>m_lac[j]</tt> for \f$j = 0, 1,
          * \ldots,\f$ tt>m_dim</tt>.
          */
-        BasIntVec m_lac;
+        IntVec m_lac;
 
     }; // End class Lacunary
 

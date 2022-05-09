@@ -18,10 +18,10 @@
 #include <NTL/ZZ.h>
 #include <NTL/RR.h>
 
-#include "latticetester/IntLatticeBasis.h"
+#include "latticetester/IntLatticeBase.h"
 
 namespace LatticeTester{
-  template class IntLatticeBasis<std::int64_t, double, double>;
-  template class IntLatticeBasis<NTL::ZZ, double, double>;
-  template class IntLatticeBasis<NTL::ZZ, NTL::RR, NTL::RR>;
+  template class IntLatticeBase<std::int64_t, double, double>;
+  template class IntLatticeBase<NTL::ZZ, double, double>;
+  template class IntLatticeBase<NTL::ZZ, NTL::RR, NTL::RR>;
 }

@@ -29,15 +29,14 @@
  * This module contains extensions of certain classes in NTL. It was previously
  * necessary because NTL and boost (an old dependency) did not use the same 
  * function names and indices.
- *
  * This name conversion was meant to have the same function names in boost and NTL
- * and allows us to have LatticeTester work with either boost library or NTL library
+ * and allows us to have LatticeTester work with either the boost or NTL library,
  * depending on preprocessing statements.
  *
  * New functions have been implemented in this module as a way to overload a
  * few operators and methods of NTL (especially on matrix and vector types) to
- * the usage of `NTL::Mat<std::uint64_t>` because some basic utilies do not
- * exist in NTL and we want to support these use cases.
+ * the usage of `NTL::Mat<std::uint64_t>` because some basic utilies that we need
+ * are not offered in NTL.
  */
 
 namespace NTL

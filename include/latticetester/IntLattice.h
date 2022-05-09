@@ -18,7 +18,7 @@
 #ifndef LATTICETESTER_INTLATTICE_H
 #define LATTICETESTER_INTLATTICE_H
 
-#include "latticetester/IntLatticeBasis.h"
+#include "latticetester/IntLatticeBase.h"
 #include "latticetester/NormaBestLat.h"
 #include "latticetester/NormaBestBound.h"
 #include "latticetester/NormaLaminated.h"
@@ -55,10 +55,10 @@ namespace LatticeTester {
    * computation of such bounds. 
    */
   template<typename Int, typename Real, typename RealRed>
-      class IntLattice : public IntLatticeBasis<Int, Real, RealRed> {
+      class IntLattice : public IntLatticeBase<Int, Real, RealRed> {
         private:
-          typedef NTL::vector<Int> BasIntVec;
-          typedef NTL::matrix<Int> BasIntMat;
+          typedef NTL::vector<Int> IntVec;
+          typedef NTL::matrix<Int> IntMat;
           typedef NTL::vector<Real> DblVec;
         public:
 
@@ -179,7 +179,7 @@ namespace LatticeTester {
         protected:
 
           /**
-           * \copydoc LatticeTester::IntLatticeBasis::kill()
+           * \copydoc LatticeTester::IntLatticeBase::kill()
            */
           virtual void kill ();
 
@@ -206,12 +206,12 @@ namespace LatticeTester {
           /**
            * The dual basis of the current projection.
            */
-          BasIntMat m_wSI;
+          IntMat m_wSI;
 
           /**
            * The primal basis of the current projection.
            */
-          BasIntMat m_vSI;
+          IntMat m_vSI;
 
           /**
            * Working Variables used in MRGLattice.h
@@ -225,7 +225,7 @@ namespace LatticeTester {
   template<typename Int, typename Real, typename RealRed>
       IntLattice<Int, Real, RealRed>::IntLattice ( Int modulo, int k,
           int maxDim, bool withDual, NormType norm): 
-      IntLatticeBasis<Int, Real, RealRed>(maxDim, norm)
+      IntLatticeBase<Int, Real, RealRed>(maxDim, norm)
   {
     this->m_dim = maxDim;
     this->m_withDual = withDual;
@@ -247,7 +247,7 @@ namespace LatticeTester {
   template<typename Int, typename Real, typename RealRed>
       IntLattice<Int, Real, RealRed>::IntLattice (
           const IntLattice<Int, Real, RealRed> & Lat):
-      IntLatticeBasis<Int, Real, RealRed>(Lat)
+      IntLatticeBase<Int, Real, RealRed>(Lat)
   {
     this->m_withDual = Lat.withDual();
     m_order = Lat.m_order;
@@ -266,7 +266,7 @@ namespace LatticeTester {
       void IntLattice<Int, Real, RealRed>::init ()
     {
       int dim = this->getDim ();
-      IntLatticeBasis<Int, Real, RealRed>::initVecNorm();
+      IntLatticeBase<Int, Real, RealRed>::initVecNorm();
       double temp;
       NTL::conv (temp, this->m_modulo);
       m_vSI.resize(dim, dim);
@@ -285,7 +285,7 @@ namespace LatticeTester {
   template<typename Int, typename Real, typename RealRed>
       void IntLattice<Int, Real, RealRed>::kill ()
     {
-      IntLatticeBasis<Int, Real, RealRed>::kill();
+      IntLatticeBase<Int, Real, RealRed>::kill();
 
       if (this->m_withDual){
         if (m_lgVolDual2 == 0)
@@ -400,7 +400,7 @@ namespace LatticeTester {
       const int dim = this->getDim ();
       //  std::cout << "      ESPION_2\n";  getPrimalBasis ().write();
       int i = 0;
-      BasIntMat temp;
+      IntMat temp;
       temp.SetDims(dim, dim);
       for (auto iter = proj.begin(); iter != proj.end(); ++iter) {
         for (int j = 0; j < dim; j++){
@@ -423,14 +423,14 @@ namespace LatticeTester {
         lattice->setDualNegativeNorm ();
       }
 
-      //Triangularization<BasIntMat> (lattice->m_dualbasis, lattice->m_basis, dim,
+      //Triangularization<IntMat> (lattice->m_dualbasis, lattice->m_basis, dim,
       //    static_cast<int>(proj.size()), this->m_modulo);
       // lattice->trace("\nESPION_4");
       /* std::cout << "  ***** build 2\n";
          lattice->getPrimalBasis ().setNegativeNorm (true);
          lattice->getPrimalBasis ().updateScalL2Norm (1,proj.size());
          lattice->getPrimalBasis ().write();*/
-      // CalcDual<BasIntMat> (lattice->m_basis, lattice->m_dualbasis,
+      // CalcDual<IntMat> (lattice->m_basis, lattice->m_dualbasis,
       //     static_cast<int>(proj.size()), this->m_modulo);
       /*
          std::cout << "  ***** build 3\n";

@@ -21,7 +21,7 @@
 #include "latticetester/ParamReader.h"
 
 namespace LatticeTester {
-  template class ParamReader<std::int64_t, std::int64_t, double>;
-  template class ParamReader<NTL::ZZ, NTL::ZZ, double>;
-  template class ParamReader<NTL::ZZ, NTL::ZZ, NTL::RR>;
+  template class ParamReader<std::int64_t, double>;
+  template class ParamReader<NTL::ZZ, double>;
+  template class ParamReader<NTL::ZZ, NTL::RR>;
 }

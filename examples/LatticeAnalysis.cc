@@ -21,7 +21,7 @@
 #include "latticetester/LatticeAnalysis.h"
 
 namespace LatticeTester{
-  template class LatticeAnalysis<std::int64_t, std::int64_t, double, double>;
-  template class LatticeAnalysis<NTL::ZZ, NTL::ZZ, double, double>;
-  template class LatticeAnalysis<NTL::ZZ, NTL::ZZ, NTL::RR, NTL::RR>;
+  template class LatticeAnalysis<std::int64_t, double, double>;
+  template class LatticeAnalysis<NTL::ZZ, double, double>;
+  template class LatticeAnalysis<NTL::ZZ, NTL::RR, NTL::RR>;
 }

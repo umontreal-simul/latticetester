@@ -38,7 +38,7 @@
 #include "latticetester/ParamReader.h"
 #include "latticetester/Types.h"
 #include "latticetester/Reducer.h"
-#include "latticetester/IntLatticeBasis.h"
+#include "latticetester/IntLatticeBase.h"
 #include "latticetester/WriterRes.h"
 
 #include "Examples.h"
@@ -83,7 +83,7 @@ int main() {
       // We dynamically allocate memory to these two pointers every time we need to
       // create an object of their type. This is because of the OOP approach
       // to lattice reduction.
-      IntLatticeBasis<MScal, BScal, NScal, RScal>* basis;
+      IntLatticeBase<MScal, BScal, NScal, RScal>* basis;
       Reducer<MScal, BScal, NScal, RScal>* red;
 
       //! Variables definition
@@ -104,7 +104,7 @@ int main() {
 
       // Dieter reduction before shortest vector search
       tmp = clock();
-      basis = new IntLatticeBasis<MScal, BScal, NScal, RScal>(matrix1, numlines);
+      basis = new IntLatticeBase<MScal, BScal, NScal, RScal>(matrix1, numlines);
       red = new Reducer<MScal, BScal, NScal, RScal>(*basis);
       red->redDieter(0);
       die_time[j] += clock() - tmp;
@@ -121,7 +121,7 @@ int main() {
 
       // LLL reduction before shortest vector search
       tmp = clock();
-      basis = new IntLatticeBasis<MScal, BScal, NScal, RScal>(matrix1, numlines);
+      basis = new IntLatticeBase<MScal, BScal, NScal, RScal>(matrix1, numlines);
       red = new Reducer<MScal, BScal, NScal, RScal>(*basis);
       red->redLLLNTL();
       lll_time[j] += clock() - tmp;
@@ -138,7 +138,7 @@ int main() {
 
       // BKZ reduction before shortest vector search
       tmp = clock();
-      basis = new IntLatticeBasis<MScal, BScal, NScal, RScal>(matrix1, numlines);
+      basis = new IntLatticeBase<MScal, BScal, NScal, RScal>(matrix1, numlines);
       red = new Reducer<MScal, BScal, NScal, RScal>(*basis);
       red->redBKZ();
       bkz_time[j] += clock() - tmp;

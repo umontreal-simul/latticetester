@@ -56,7 +56,7 @@ namespace LatticeTester {
     class ParamReader { 
       private:
         typedef NTL::vector<Int> IntVec;
-        typedef NTL::matrix<Int> BasIntMat;
+        typedef NTL::matrix<Int> IntMat;
       public:
         static const int MAX_WORD_SIZE = 64;
 
@@ -158,7 +158,7 @@ namespace LatticeTester {
          * file, starting from token at the position `pos`. `fields` has to be
          * initialized to the right size.
          */
-        void readBMat (BasIntMat & fields, unsigned int & ln, unsigned int pos,
+        void readBMat (IntMat & fields, unsigned int & ln, unsigned int pos,
             unsigned int numPos, unsigned int numCols);
 
         /**
@@ -168,7 +168,7 @@ namespace LatticeTester {
          * file, starting from token at the position `pos`. `fields` has to be
          * initialized to the right size.
          */
-        void readBMat (BasIntMat & fields, unsigned int & ln, unsigned int pos,
+        void readBMat (IntMat & fields, unsigned int & ln, unsigned int pos,
             unsigned int numPos);
 
         /**
@@ -273,7 +273,7 @@ namespace LatticeTester {
          * with enough information to exectute a `LatticeAnalysis` test. The
          * standard format is described in \ref usage_program.
          */
-        void read (Config<Int, BasIntMat> & config);
+        void read (Config<Int, IntMat> & config);
 
       protected:
 
@@ -289,14 +289,14 @@ namespace LatticeTester {
          * This can be called to read a basis construction configuration from
          * the file starting from `ln` (without the `BASIS` line).
          * */
-        void readBasisConfig (Config<Int, BasIntMat> & config,
+        void readBasisConfig (Config<Int, IntMat> & config,
             unsigned int& ln);
 
         /**
          * This can be called to read a dual computation configuration from
          * the file starting from `ln` (without the `DUAL` line).
          */
-        void readDualConfig (Config<Int, BasIntMat> & config,
+        void readDualConfig (Config<Int, IntMat> & config,
             unsigned int& ln);
 
 
@@ -304,7 +304,7 @@ namespace LatticeTester {
          * This can be called to read a reduction problem configuration from
          * the file starting from `ln` (without the `REDUCT` line).
          */
-        void readReductionConfig (Config<Int, BasIntMat> & config,
+        void readReductionConfig (Config<Int, IntMat> & config,
             unsigned int& ln);
 
 
@@ -312,7 +312,7 @@ namespace LatticeTester {
          * This can be called to read a shortest vector problem configuration
          * from the file starting from `ln` (without the `SHORTEST` line).
          */
-        void readShortestConfig (Config<Int, BasIntMat> & config,
+        void readShortestConfig (Config<Int, IntMat> & config,
             unsigned int& ln);
 
 
@@ -321,7 +321,7 @@ namespace LatticeTester {
          * configuration from the file starting from `ln`
          * (without the `MERIT` line).
          */
-        void readMeritConfig (Config<Int, BasIntMat> & config,
+        void readMeritConfig (Config<Int, IntMat> & config,
             unsigned int& ln);
 
       private:
@@ -439,7 +439,7 @@ namespace LatticeTester {
 
   template<typename Int, typename RealRed>
     void ParamReader<Int, RealRed>::readBasisConfig(
-        Config<Int, BasIntMat> & config, unsigned int& ln)
+        Config<Int, IntMat> & config, unsigned int& ln)
     {
       config.config.basis = {};
       std::string method;
@@ -460,7 +460,7 @@ namespace LatticeTester {
 
   template<typename Int, typename RealRed>
     void ParamReader<Int, RealRed>::readDualConfig(
-        Config<Int, BasIntMat> & config, unsigned int& ln)
+        Config<Int, IntMat> & config, unsigned int& ln)
     {
       config.config.dual = {};
       readOutputType(config.outputType, ++ln, 0);
@@ -474,7 +474,7 @@ namespace LatticeTester {
 
   template<typename Int, typename RealRed>
     void ParamReader<Int, RealRed>::readReductionConfig(
-        Config<Int, BasIntMat> & config, unsigned int& ln)
+        Config<Int, IntMat> & config, unsigned int& ln)
     {
       config.config.reduct = {};
       readPreRed(config.config.reduct.method, ++ln, 0);
@@ -489,7 +489,7 @@ namespace LatticeTester {
 
   template<typename Int, typename RealRed>
     void ParamReader<Int, RealRed>::readShortestConfig(
-        Config<Int, BasIntMat> & config, unsigned int& ln)
+        Config<Int, IntMat> & config, unsigned int& ln)
     {
       config.config.shortest = {};
       bool reduction;
@@ -506,7 +506,7 @@ namespace LatticeTester {
 
   template<typename Int, typename RealRed>
     void ParamReader<Int, RealRed>::readMeritConfig(
-        Config<Int, BasIntMat> & config, unsigned int& ln)
+        Config<Int, IntMat> & config, unsigned int& ln)
     {
       config.config.merit = {};
       readCriterionType(config.config.merit.figure, ++ln, 0);
@@ -747,7 +747,7 @@ namespace LatticeTester {
 
   template<typename Int, typename RealRed>
     void ParamReader<Int, RealRed>::readBMat(
-        BasIntMat & fields, unsigned int & ln, unsigned int pos, 
+        IntMat & fields, unsigned int & ln, unsigned int pos,
         unsigned int numPos, unsigned int numCols)
     {
       for (unsigned int i = pos; i < numPos; i++){
@@ -763,7 +763,7 @@ namespace LatticeTester {
 
   template<typename Int, typename RealRed>
     void ParamReader<Int, RealRed>::readBMat(
-        BasIntMat & fields, unsigned int & ln, unsigned int pos, 
+        IntMat & fields, unsigned int & ln, unsigned int pos,
         unsigned int numPos)
     {
       for (unsigned int i = pos; i < numPos; i++){
@@ -998,7 +998,7 @@ namespace LatticeTester {
 
   template<typename Int, typename RealRed>
     void ParamReader<Int, RealRed>::read (
-        Config<Int, BasIntMat> & config)
+        Config<Int, IntMat> & config)
     {
       getLines ();
       unsigned int ln = 0;

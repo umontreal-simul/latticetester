@@ -1,6 +1,6 @@
 /**
  * This example showcases the usage of the BasisConstruction module. This reads
- * matrices from files and builds a basis and a dual for an `IntLatticeBasis`
+ * matrices from files and builds a basis and a dual for an `IntLatticeBase`
  * object. The files this is set to use are in the `bench.zip` archive. To
  * execute the program, the archive should be unziped and the `bench` folder
  * should be put in the same directory from which the executable is called.
@@ -32,7 +32,7 @@
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/Util.h"
 #include "latticetester/ParamReader.h"
-#include "latticetester/IntLatticeBasis.h"
+#include "latticetester/IntLatticeBase.h"
 
 #include "Examples.h"
 
@@ -78,10 +78,10 @@ int main() {
       reader.readBMat(bas_mat, ln, 0, numlines);
 
       // Creating a lattice basis
-      IntLatticeBasis<MScal, BScal, NScal, RScal> lattice(bas_mat, numlines);
+      IntLatticeBase<MScal, BScal, NScal, RScal> lattice(bas_mat, numlines);
 
       //! We want to avoid singular matrix because we can't compute the dual, and
-      //! IntLatticeBasis only really supports square matrices.
+      //! IntLatticeBase only really supports square matrices.
       if (NTL::determinant(bas_mat) == 0) {
         std::cout << name << " is singular\n";
         continue;

@@ -78,9 +78,9 @@ namespace LatticeTester {
    * - `MVect -> IntVec`
    * - `MMat  -> IntMat`
    * - `M*P   -> nothing (never used)`
-   * - `BScal -> BasInt`
-   * - `BVect -> BasIntVec`
-   * - `BMat  -> BasIntMat`
+   * - `BScal -> Int`
+   * - `BVect -> IntVec`
+   * - `BMat  -> IntMat`
    * - `NScal -> Dbl`
    * - `NVect -> DblVec`
    * - `NMat  -> DblMat`

@@ -31,7 +31,7 @@ namespace LatticeTester {
    * bare bones to avoid the confusion of having too many parameters when
    * working with higher level classes.
    * */
-  template<typename Int, typename BasIntMat>
+  template<typename Int, typename IntMat>
     class Config {
       public:
         /*

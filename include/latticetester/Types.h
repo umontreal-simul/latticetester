@@ -265,7 +265,7 @@ typedef NTL::matrix<RScal> RMat;
 
 
 namespace LatticeTester {
-  typedef void ProcII (int, int);
+  typedef void ProcII (int);
 }
 
 #endif

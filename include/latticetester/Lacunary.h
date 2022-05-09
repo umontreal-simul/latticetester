@@ -38,11 +38,11 @@ namespace LatticeTester {
    * instances where it is used would take more time than we are currently
    * willing to spend on this library.
    */
-  template<typename BasInt>
+  template<typename Int>
     class Lacunary {
 
       private:
-        typedef NTL::vector<BasInt> BasIntVec;
+        typedef NTL::vector<Int> BasIntVec;
 
       public:
 
@@ -77,13 +77,13 @@ namespace LatticeTester {
          * Returns a reference to the value of <tt>m_lac[i]</tt>. (`m_lac` is
          * the underlying vector storing the set of indices.)
          */
-        BasInt & operator[] (int i) {return m_lac[i];}
+        Int & operator[] (int i) {return m_lac[i];}
 
         /**
          * Calling the `object.getLac(i)` gives the same result than calling
          * `object[i]`.
          */
-        BasInt & getLac (int i) {return m_lac[i];}
+        Int & getLac (int i) {return m_lac[i];}
 
         /**
          * Returns the size of the set, that is the number of elements in the
@@ -122,8 +122,8 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename BasInt>
-    std::string Lacunary<BasInt>::toString () const
+  template<typename Int>
+    std::string Lacunary<Int>::toString () const
     {
       std::ostringstream out;
       out << "dim = " << m_dim;
@@ -137,8 +137,8 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename BasInt>
-    bool Lacunary<BasInt>::calcIndicesStreams (int s, int w, int maxDim)
+  template<typename Int>
+    bool Lacunary<Int>::calcIndicesStreams (int s, int w, int maxDim)
     {
 
       if (m_dim < maxDim) {
@@ -147,9 +147,9 @@ namespace LatticeTester {
         m_dim = maxDim;
       }
 
-      BasInt t1;
+      Int t1;
       NTL::power2 (t1, (std::int64_t) w);
-      BasInt t;
+      Int t;
       t = 0;
       int i = 0;
       while (true) {

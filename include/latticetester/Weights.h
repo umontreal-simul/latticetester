@@ -64,8 +64,8 @@ namespace LatticeTester {
       virtual Weight getWeight (const Coordinates & projection) const = 0;
 
       /**
-       * Returns the interlacing factor of the weights. This is used to
-       * parametrize figures of merit for interlaced digital nets.
+       * Returns the interlacing factor of the weights. This is used in LatNet Builder
+       * to parameterize the figures of merit for interlaced digital nets.
        */ 
       virtual unsigned int interlacingFactor() const
       {
@@ -76,7 +76,7 @@ namespace LatticeTester {
       /**
        * Identifies the type of weights, formats them and outputs them on \c os.
        *
-       * \remark Deriving classes should identify themselves in the output.
+       * Subclasses that implement Weights should identify themselves in the output.
        */
       virtual void format(std::ostream& os) const = 0;
 

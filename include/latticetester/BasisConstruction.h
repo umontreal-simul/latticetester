@@ -27,9 +27,9 @@
 
 namespace LatticeTester {
 
-  template <typename BasIntMat>
+  template <typename IntMat>
     struct LLLConstr {
-      void LLLConstruction(BasIntMat& matrix);
+      void LLLConstruction(IntMat& matrix);
     };
 
 /**
@@ -62,12 +62,12 @@ namespace LatticeTester {
  *   is possible that there are much more efficient ways to build a basis and its
  *   dual (and/or that those matrices will already be triangular).
  * */
-template<typename BasInt> class BasisConstruction{
+template<typename Int> class BasisConstruction{
 
   private:
-    typedef NTL::vector<BasInt> BasIntVec;
-    typedef NTL::matrix<BasInt> BasIntMat;
-    struct LLLConstr<BasIntMat> spec;
+    typedef NTL::vector<Int> IntVec;
+    typedef NTL::matrix<Int> IntMat;
+    struct LLLConstr<IntMat> spec;
 
   public:
     /**
@@ -76,7 +76,7 @@ template<typename BasInt> class BasisConstruction{
      * much faster than applying GCDConstruction, but it doesn't help building
      * the dual.
      * */
-    void LLLConstruction(BasIntMat& matrix);
+    void LLLConstruction(IntMat& matrix);
 
     /**
      * This function does some kind of Gaussian elimination on
@@ -98,7 +98,7 @@ template<typename BasInt> class BasisConstruction{
      * WATCH OUT. This function (and building mecanism) are very memory heavy
      * has the numbers below the diagonal can grow very big.
      * */
-    void GCDConstruction(BasIntMat& matrix);
+    void GCDConstruction(IntMat& matrix);
 
     /**
      * This method builds the dual of `matrix` in `dualMatrix` and multiplies
@@ -114,8 +114,8 @@ template<typename BasInt> class BasisConstruction{
      * This does the computation much faster than doing a traditional solving
      * of a linear system.
      * */
-    void DualConstruction(BasIntMat& matrix, BasIntMat& dualMatrix,
-        BasInt modulo);
+    void DualConstruction(IntMat& matrix, IntMat& dualMatrix,
+        Int modulo);
 
     /**
      * This does the same thing as DualConstruction(), but is much slower. This
@@ -131,8 +131,8 @@ template<typename BasInt> class BasisConstruction{
      * the case of a \f$m\f$-dual computation, we can assume that all the
      * arithmetic is done modulo \f$m\f$ and that \f$m\f$ is prime??
      * */
-    void DualSlow(BasIntMat& matrix, BasIntMat& dualMatrix,
-        BasInt& modulo);
+    void DualSlow(IntMat& matrix, IntMat& dualMatrix,
+        Int& modulo);
 
     /**
      * This is a method that does the general construction of the projection
@@ -141,9 +141,9 @@ template<typename BasInt> class BasisConstruction{
      * wants to compute the dual for this projection, it has to be done
      * afterwards with the DualConstruction() method.
      * */
-    template<typename Int, typename Dbl, typename RedDbl>
-      void ProjectionConstruction(IntLatticeBasis<Int, BasInt, Dbl, RedDbl>& in,
-          IntLatticeBasis<Int, BasInt, Dbl, RedDbl>& out, const Coordinates& proj);
+    template<typename Int, typename Real, typename RealRed>
+      void ProjectionConstruction(IntLatticeBasis<Int, Real, RealRed>& in,
+          IntLatticeBasis<Int, Real, RealRed>& out, const Coordinates& proj);
   };
 
   //============================================================================
@@ -157,13 +157,13 @@ template<typename BasInt> class BasisConstruction{
     void LLLConstr<NTL::matrix<NTL::ZZ>>::LLLConstruction(
         NTL::matrix<NTL::ZZ>& matrix) ;
 
-  template<typename BasInt>
-    void BasisConstruction<BasInt>::LLLConstruction(BasIntMat& matrix){
+  template<typename Int>
+    void BasisConstruction<Int>::LLLConstruction(IntMat& matrix){
       spec.LLLConstruction(matrix);
     }
 
-  template<typename BasInt>
-    void BasisConstruction<BasInt>::GCDConstruction(BasIntMat& matrix)
+  template<typename Int>
+    void BasisConstruction<Int>::GCDConstruction(IntMat& matrix)
   {
     // It is important to note that the lines of matrix are the basis vectors
     long rows = matrix.NumRows();
@@ -171,7 +171,7 @@ template<typename BasInt> class BasisConstruction{
     long max_rank = rows < cols ? rows : cols;
     long rank = 0;
     // The basis will have at most max_rank vectors.
-    BasInt q;
+    Int q;
     for (long i = 0; i < max_rank; i++) {
       // We find gcd(matrix[i][i], ..., matrix[rows-1][i]) using Euclid
       // algorithm and applying transformations to the matrix
@@ -197,7 +197,7 @@ template<typename BasInt> class BasisConstruction{
       // }
       if (matrix[i][i] != 0) {
         rank++;
-        if (matrix[i][i] < 0) matrix[i] *= BasInt(-1);
+        if (matrix[i][i] < 0) matrix[i] *= Int(-1);
       }
     }
     // We remove zero vectors from the basis.
@@ -211,9 +211,9 @@ template<typename BasInt> class BasisConstruction{
    * It checks if this `m` divides the modulo given to the algorithm.
    * Right now, this assumes the basis is triangular, might need to change it.
    * */
-  template<typename BasInt>
-    void BasisConstruction<BasInt>::DualSlow(BasIntMat& matrix,
-        BasIntMat& dualMatrix, BasInt& modulo)
+  template<typename Int>
+    void BasisConstruction<Int>::DualSlow(IntMat& matrix,
+        IntMat& dualMatrix, Int& modulo)
   {
     // We need to have a triangular basis matrix
     if (! CheckTriangular(matrix, matrix.NumRows(), modulo))
@@ -223,9 +223,9 @@ template<typename BasInt> class BasisConstruction{
       std::cout << "matrix has to be square, but dimensions do not fit.\n";
       return;
     }
-    BasInt m(1);
+    Int m(1);
     NTL::ident(dualMatrix, dim);
-    BasInt gcd;
+    Int gcd;
     for (long i = dim-1; i>=0; i--) {
       for (long j = i+1; j < dim; j++) {
         dualMatrix[i] -= matrix[i][j] * dualMatrix[j];
@@ -247,12 +247,12 @@ template<typename BasInt> class BasisConstruction{
     }
   }
 
-  template<typename BasInt>
-    void BasisConstruction<BasInt>::DualConstruction(BasIntMat& matrix,
-        BasIntMat& dualMatrix, BasInt modulo)
+  template<typename Int>
+    void BasisConstruction<Int>::DualConstruction(IntMat& matrix,
+        IntMat& dualMatrix, Int modulo)
   {
     // We need to have a triangular basis matrix
-    if (! CheckTriangular(matrix, matrix.NumRows(), BasInt(0)))
+    if (! CheckTriangular(matrix, matrix.NumRows(), Int(0)))
       GCDConstruction(matrix);
     long dim = matrix.NumRows();
     if (dim != matrix.NumCols()) {
@@ -270,7 +270,7 @@ template<typename BasInt> class BasisConstruction{
         NTL::clear (dualMatrix(i,j));
 
       if (!NTL::IsZero(matrix(i,i))) {
-        BasInt gcd = NTL::GCD(modulo, matrix(i,i));
+        Int gcd = NTL::GCD(modulo, matrix(i,i));
         modulo *= matrix(i,i) / gcd;
         dualMatrix *= matrix(i,i) / gcd;
       }
@@ -289,7 +289,7 @@ template<typename BasInt> class BasisConstruction{
 
 
         if (!NTL::IsZero(dualMatrix(i,j) % matrix(j,j))) {
-          BasInt gcd = NTL::GCD(dualMatrix(i,j), matrix(j,j));
+          Int gcd = NTL::GCD(dualMatrix(i,j), matrix(j,j));
           modulo *= matrix(j,j) / gcd;
           dualMatrix *= matrix(j,j) / gcd;
         }
@@ -302,17 +302,17 @@ template<typename BasInt> class BasisConstruction{
 
   //============================================================================
 
-    template<typename BasInt>
-    template<typename Int, typename Dbl, typename RedDbl>
-      void BasisConstruction<BasInt>::ProjectionConstruction(
-      IntLatticeBasis<Int, BasInt, Dbl, RedDbl>& in,
-      IntLatticeBasis<Int, BasInt, Dbl, RedDbl>& out,
+    template<typename Int>
+    template<typename Int, typename Real, typename RealRed>
+      void BasisConstruction<Int>::ProjectionConstruction(
+      IntLatticeBasis<Int, Real, RealRed>& in,
+      IntLatticeBasis<Int, Real, RealRed>& out,
       const Coordinates& proj) {
         std::size_t dim = proj.size();
         unsigned int lat_dim = in.getDim();
         if (dim > lat_dim)
             MyExit(1, "Coordinates do not match 'in' dimension.");
-        BasIntMat new_basis, tmp(NTL::transpose(in.getBasis()));
+        IntMat new_basis, tmp(NTL::transpose(in.getBasis()));
         new_basis.SetDims(dim, tmp.NumRows());
         tmp = NTL::transpose(tmp);
         auto it = proj.cbegin();
@@ -325,7 +325,7 @@ template<typename BasInt> class BasisConstruction{
         }
         new_basis = NTL::transpose(new_basis);
         LLLConstruction(new_basis);
-        out = IntLatticeBasis<Int, BasInt, Dbl, RedDbl>(new_basis, dim, in.getNorm());
+        out = IntLatticeBasis<Int, Real, RealRed>(new_basis, dim, in.getNorm());
       }
 
   extern template class BasisConstruction<std::int64_t>;

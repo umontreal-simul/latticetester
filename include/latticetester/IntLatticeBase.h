@@ -93,20 +93,22 @@ public:
 
 	/**
 	 * Cleans and releases all the memory allocated to this lattice.
+	 * This method SEEMS TO DO NOTHING!
 	 */
 	void kill();
 
 	/**
-	 * Copy the lattice `lat`, except it's NormType and dimension, into this
-	 * object. This does not check if the dimensions match.
+	 * Makes a deep copy of the lattice `lat` into this object.
+	 * CHANGED: WE NOW COPY EVERYTHING!
 	 */
 	void copyLattice(const IntLatticeBase<Int, Real, RealRed> &lat);
 
 	/**
-	 * Copy the n first elements of the basis of the lattice `lat` into this
-	 * object. The object into which `lat` is copied has to be of dimension n.
+	 * Copy the `n` first elements of the basis of the lattice `lat` into this
+	 * object. The object into which `lat` is copied has to be of dimension `n` already.
+	 * BIZARRE AND APPARENTLY NEVER USED.
 	 */
-	void copyLattice(const IntLatticeBase<Int, Real, RealRed> &lat, long n);
+	// void copyLattice(const IntLatticeBase<Int, Real, RealRed> &lat, long n);
 
 	/**
 	 * Initializes a vector containing the norms of the basis vectors to -1
@@ -122,99 +124,96 @@ public:
 	}
 
 	/**
-	 * Returns the dual basis represented in a matrix.
+	 * Returns the m-dual basis represented in a matrix.
 	 */
 	IntMat& getDualBasis() {
 		return m_dualbasis;
 	}
 
 	/**
-	 * Returns the dimension of the lattice. (Both the number of vectors in
-	 * the basis and the number of coordinates of those vectors.
+	 * Returns the dimension of the lattice, which is the number of independent vectors in the basis.
 	 */
 	int getDim() const {
 		return m_dim;
 	}
 
 	/**
-	 * Returns the NormType used by this lattice.
+	 * Returns the `NormType` used by this lattice.
 	 */
 	NormType getNorm() const {
 		return m_norm;
 	}
 
 	/**
-	 * Returns the norm of the i-th vector of the basis.
+	 * Returns the norm of the i-th vector of the basis (squared in case of the L^2 norm).
 	 */
 	Real getVecNorm(const int &i) {
 		return m_vecNorm[i];
 	}
 
 	/**
-	 * Returns the norm of each vector of the basis in a vector.
+	 * Returns the norm (squared in case of the L^2 norm) of each basis vector, in a vector.
 	 */
-	DblVec getVecNorm() const {
+	RealVec getVecNorm() const {
 		return m_vecNorm;
 	}
 
 	/**
-	 * Returns the norm of the i-th vector of the dual basis.
+	 * Returns the norm (squared in case of the L^2 norm) of the i-th vector of the m-dual basis.
 	 */
 	Real getDualVecNorm(const int &i) {
 		return m_dualvecNorm[i];
 	}
 
 	/**
-	 * Returns the norm of each vector of the dual basis in a vector.
+	 * Returns the norm (squared in case of the L^2 norm) of each vector of the m-dual basis, in a vector.
 	 */
-	DblVec getDualVecNorm() const {
+	RealVec getDualVecNorm() const {
 		return m_dualvecNorm;
 	}
 
 	/**
-	 * Returns the `m` used for rescaling if it has been defined. Returns `0`
-	 * otherwise.
+	 * Returns the scaling factor `m` if it has been defined. Returns `0` otherwise.
 	 */
 	Int getModulo() const {
 		return m_modulo;
 	}
 
 	/**
-	 * Sets the dimension of the basis to `d`. This won't change any of the
-	 * vectors of the basis by itself. This method should not be called
-	 * directly on an object of this class except in a function specifically
-	 * changing the dimension of this object.
+	 * Sets the dimension of the basis to `dim`. This won't change any of the
+	 * basis vectors, but only the dimension variable.
+	 * Warning: After calling this method, the size of the basis matrix may no longer agree with the dimension.
 	 */
-	void setDim(const int &d) {
-		if (d > 0)
+	void setDim(const int &dim) {
+		if (dim > 0)
 			m_dim = d;
 	}
 
 	/**
-	 * Sets the NormType used by this lattice to `norm`.
+	 * Sets the `NormType` used by this lattice to `norm`.
 	 */
-	void setNorm(const NormType &norm) {
+	void setNormType(const NormType &norm) {
 		m_norm = norm;
 	}
 
 	/**
-	 * Sets the norm of the `i`-th component of the basis to `value`. The
-	 * usage of `updateVecNorm(const int&)` is recommended over this function.
+	 * Sets the norm of the `i`-th component of the basis to `value`.
+	 * Using `updateVecNorm(const int&)` is recommended over this function.
 	 */
 	void setVecNorm(const Real &value, const int &i) {
 		m_vecNorm[i] = value;
 	}
 
 	/**
-	 * Sets the norm of the `i`-th component of the dual basis to `value`.
-	 * The usage of `updateDualVecNorm(const int&)` is recommended over this function.
+	 * Sets the norm of the `i`-th component of the m-dual basis to `value`.
+	 * Using `updateDualVecNorm(const int&)` is recommended over this function.
 	 */
 	void setDualVecNorm(const Real &value, const int &i) {
 		m_dualvecNorm[i] = value;
 	}
 
 	/**
-	 * Returns `true` if a dual has been defined and `false` otherwise.
+	 * Returns `true` iff an m-dual basis is available.
 	 */
 	bool withDual() const {
 		return m_withDual;
@@ -222,7 +221,7 @@ public:
 
 	/**
 	 * Sets the `withDual` flag to `flag`. This flag indicates whether or
-	 * not this IntLatticeBase contains a dual basis. It is the flag
+	 * not this IntLatticeBase contains an m-dual basis. It is the flag
 	 * returned by `withDual()`.
 	 */
 	void setDualFlag(bool flag) {
@@ -230,8 +229,8 @@ public:
 	}
 
 	/**
-	 * Sets all the values in the array containing the norms of the basis
-	 * vectors to -1.
+	 * Sets all the values in the array containing the norms of the basis vectors to -1.
+	 * This means that these norms are not up to date (they still have to be computed).
 	 */
 	void setNegativeNorm();
 
@@ -251,106 +250,104 @@ public:
 
 	/**
 	 * Sets the value of the `i`-th component in the array containing the
-	 * norms of the dual basis vectors to -1.
+	 * norms of the m-dual basis vectors to -1.
 	 */
 	void setDualNegativeNorm(const int &i) {
 		m_dualvecNorm[i] = -1;
 	}
 
 	/**
-	 * Updates the array containing the basis vectors norms by recomputing
-	 * them.
+	 * Updates the array containing the basis vectors norms by recomputing them.
 	 * */
 	void updateVecNorm();
 
 	/**
 	 * Updates the array containing the basis vectors norms from the `d`-th
-	 * component to the last by recomputing them.
+	 * component to the last, by recomputing them.
 	 * */
 	void updateVecNorm(const int &d);
 
 	/**
-	 * Updates the array containing the dual basis vectors norms by recomputing
-	 * them.
+	 * Updates the array containing the m-dual basis vectors norms by recomputing them.
 	 * */
 	void updateDualVecNorm();
 
 	/**
-	 * Updates the array containing the dual basis vectors norms from the `d`-th
+	 * Updates the array containing the m-dual basis vectors norms from the `d`-th
 	 * component to the last by recomputing them.
 	 * */
 	void updateDualVecNorm(const int &d);
 
 	/**
-	 * Updates the `i`-th value of the array containing the norms of the
+	 * Updates the `i`-th value of the array containing the square norms of the
 	 * basis vectors by recomputing it using the `L2NORM`.
 	 */
 	void updateScalL2Norm(const int i);
 
 	/**
 	 * Updates the `k1`-th to the `k2-1`-th values of the array containing
-	 * the norms of the basis vectors by recomputing them using the `L2NORM`.
+	 * the square norms of the basis vectors by recomputing them using the `L2NORM`.
 	 */
 	void updateScalL2Norm(const int k1, const int k2);
 
 	/**
-	 * Updates the `i`-th value of the array containing the norms of the
-	 * dual basis vectors by recomputing it using the `L2NORM`.
+	 * Updates the `i`-th value of the array containing the square norms of the
+	 * m-dual basis vectors by recomputing it using the `L2NORM`.
 	 */
 	void updateDualScalL2Norm(const int i);
 
 	/**
 	 * Updates the `k1`-th to the `k2-1`-th values of the array containing
-	 * the norms of the dual basis vectors by recomputing them using the `L2NORM`.
+	 * the square norms of the m-dual basis vectors by recomputing them using the `L2NORM`.
 	 */
 	void updateDualScalL2Norm(const int k1, const int k2);
 
 	/**
 	 * Exchanges vectors `i` and `j` in the basis. This also changes the
-	 * dual basis vectors and the arrays containing secondary information
+	 * m-dual basis vectors and the arrays containing secondary information
 	 * about the two basis (like the norms) accordingly.
 	 */
 	void permute(int i, int j);
 
 	/**
-	 * Exchanges vectors `i` and `j` in the basis without changing the dual.
+	 * Exchanges vectors `i` and `j` in the basis without changing the m-dual.
 	 * See `permute()`.
 	 */
 	void permuteNoDual(int i, int j);
 
 	/**
-	 * Returns `true` if the dual basis contained in the object really is
-	 * the dual of the basis, and `false` otherwise. This also returns false
+	 * Returns `true` iff the m-dual basis contained in the object really is
+	 * the m-dual of the basis.  This also returns false
 	 * if no dual has been specified.
 	 */
 	bool checkDuality();
 
 	/**
-	 * Sorts the basis vectors with indices greater of equal to \f$d\f$ by
-	 * increasing length. The dual vectors are permuted accordingly. Assumes
-	 * that the lengths of the corresponding basis vectors are up to date.
+	 * Sorts the basis vectors with indices greater of equal to `d` by
+	 * increasing length. The m-dual vectors are permuted accordingly. Assumes
+	 * that the lengths (norms) of the corresponding basis vectors are up to date.
 	 */
 	void sort(int d);
 
 	/**
-	 * Sorts the basis vectors with indices greater of equal to \f$d\f$ by
-	 * increasing length. The dual vectors are **not** permuted. See `sort()`.
+	 * Sorts the basis vectors with indices greater of equal to `d` by
+	 * increasing length. The m-dual vectors are **not** permuted. See `sort()`.
 	 */
 	void sortNoDual(int d);
 
 	/**
-	 * Returns a string with the primal basis and its norms.
+	 * Returns a string that contains the primal basis vectors and their norms.
 	 */
 	std::string toStringBasis() const;
 
 	/**
-	 * Returns a string with the dual basis and its norms.
+	 * Returns a string with the m-dual basis vectors and their norms.
 	 */
 	std::string toStringDualBasis() const;
 
 	/**
 	 * Writes the lattice and its parameters on standard output. This prints
-	 * the dimension, the norm used, the basis and dual basis vectors and
+	 * the dimension, the norm used, the basis and m-dual basis vectors and
 	 * the basis and dual basis vector norms.
 	 */
 	void write() const;
@@ -358,56 +355,49 @@ public:
 protected:
 
 	/**
-	 * Each row of this matrix represents a vector in the basis of the
-	 * lattice.
+	 * The rows of this matrix are the primal basis vectors.
 	 */
 	IntMat m_basis;
 
 	/**
-	 * Each row of this matrix represents a vector in the dual basis of the
-	 * lattice.
+	 * The rows of this matrix are the m-dual basis vectors.  May not be initialized.
 	 */
 	IntMat m_dualbasis;
 
 	/**
-	 * The dimension of the lattice. The dimension is both the number of
-	 * vectors in the basis, and the dimension \f$d\f$ of \f$\mathbb{Z}^d\f$
-	 * containing the lattice.
+	 * The dimension of the lattice, which is the number of (independent) vectors
+	 * in the basis, and cannot exceed the number of coordinates in those vectors.
 	 */
 	int m_dim;
 
 	/**
-	 * The NormType used in the reduction and for this lattice.
+	 * The NormType used to measure the vector lengths (and in the reduction) for this lattice.
 	 */
 	NormType m_norm;
 
-	/**
-	 * The norm of each vector in the basis.
+	/*
+	 * A vector that stores the norm of each basis vector.
+	 * In case of the L_2 norm, it contains the square norm.
+	 * A value of -1 means that the norm is not up to date.
 	 */
-	DblVec m_vecNorm;
+	RealVec m_vecNorm;
 
 	/**
-	 * The norm of each vector in the dual basis.
+	 * Similar to vecNorm, but for the m-dual basis.
 	 */
-	DblVec m_dualvecNorm;
+	RealVec m_dualvecNorm;
 
 	/**
-	 * The `m` used for rescaling the lattice.
+	 * The scaling factor `m` used for rescaling the lattice.
 	 */
 	Int m_modulo;
 
 	/**
-	 * If m_withDual is `true` a dual basis has been specified, otherwise it
-	 * is `false`.
+	 * This `m_withDual` variable is `true` iff an m-dual basis is available.
 	 */
 	bool m_withDual;
-
-	/**
-	 * This table is used in the Minkowski reduction, but it's usage is quite
-	 * obscure.
-	 */
-	//bool *m_xx;
 };
+
 // class IntLatticeBase
 
 //===========================================================================
@@ -415,8 +405,6 @@ protected:
 template<typename Int, typename Real, typename RealRed>
 IntLatticeBase<Int, Real, RealRed>::IntLatticeBase(const int dim, NormType norm) :
 		m_dim(dim), m_norm(norm), m_modulo(0), m_withDual(false)
-//m_xx(0)
-
 {
 	this->m_basis.resize(dim, dim);
 	this->m_vecNorm.resize(dim);
@@ -429,7 +417,6 @@ template<typename Int, typename Real, typename RealRed>
 IntLatticeBase<Int, Real, RealRed>::IntLatticeBase(const IntMat basis,
 		const int dim, NormType norm) :
 		m_basis(basis), m_dim(dim), m_norm(norm), m_modulo(0), m_withDual(false)
-//m_xx(0)
 {
 	this->m_vecNorm.resize(dim);
 	initVecNorm();
@@ -452,9 +439,8 @@ IntLatticeBase<Int, Real, RealRed>::IntLatticeBase(const IntMat primalbasis,
 
 template<typename Int, typename Real, typename RealRed>
 IntLatticeBase<Int, Real, RealRed>::IntLatticeBase(
-		const IntLatticeBase<Int, Real, RealRed> &lat) :
-		m_dim(lat.getDim()), m_norm(lat.getNorm())
-//m_xx(0)
+		const IntLatticeBase<Int, Real, RealRed> &lat)
+//		: m_dim(lat.getDim()), m_norm(lat.getNorm())
 {
 	copyLattice(lat);
 }
@@ -474,8 +460,6 @@ IntLatticeBase<Int, Real, RealRed>::~IntLatticeBase() {
 
 template<typename Int, typename Real, typename RealRed>
 void IntLatticeBase<Int, Real, RealRed>::kill() {
-	//delete [] this->m_xx;
-	//this->m_xx = 0;
 }
 
 /*=========================================================================*/
@@ -483,10 +467,10 @@ void IntLatticeBase<Int, Real, RealRed>::kill() {
 template<typename Int, typename Real, typename RealRed>
 void IntLatticeBase<Int, Real, RealRed>::copyLattice(
 		const IntLatticeBase<Int, Real, RealRed> &lat) {
-	//if(m_dim == lat.m_dim)
-
+	this->m_dim = lat.m_dim;
 	this->m_basis = IntMat(lat.m_basis);
 	this->m_dualbasis = IntMat(lat.m_dualbasis);
+	this->m_norm = lat.m_norm;
 	this->m_vecNorm = DblVec(lat.m_vecNorm);
 	this->m_dualvecNorm = DblVec(lat.m_dualvecNorm);
 	this->m_withDual = lat.m_withDual;
@@ -495,6 +479,7 @@ void IntLatticeBase<Int, Real, RealRed>::copyLattice(
 
 /*=========================================================================*/
 
+/*
 template<typename Int, typename Real, typename RealRed>
 void IntLatticeBase<Int, Real, RealRed>::copyLattice(
 		const IntLatticeBase<Int, Real, RealRed> &lat, long n) {
@@ -512,15 +497,14 @@ void IntLatticeBase<Int, Real, RealRed>::copyLattice(
 		this->m_modulo = lat.m_modulo;
 	}
 }
+*/
 
 /*=========================================================================*/
 
 template<typename Int, typename Real, typename RealRed>
 void IntLatticeBase<Int, Real, RealRed>::initVecNorm() {
-	//this->m_xx = new bool[this->m_dim];
 	for (int i = 0; i < this->m_dim; i++) {
 		this->m_vecNorm[i] = -1;
-		//this->m_xx[i] = true;
 	}
 }
 
@@ -554,7 +538,6 @@ void IntLatticeBase<Int, Real, RealRed>::updateVecNorm() {
 template<typename Int, typename Real, typename RealRed>
 void IntLatticeBase<Int, Real, RealRed>::updateVecNorm(const int &d) {
 	assert(d >= 0);
-
 	for (int i = d; i < this->m_dim; i++) {
 		NTL::matrix_row<IntMat> row(this->m_basis, i);
 		if (this->m_norm == L2NORM) {
@@ -578,7 +561,6 @@ void IntLatticeBase<Int, Real, RealRed>::updateDualVecNorm() {
 template<typename Int, typename Real, typename RealRed>
 void IntLatticeBase<Int, Real, RealRed>::updateDualVecNorm(const int &d) {
 	assert(d >= 0);
-
 	for (int i = d; i < this->m_dim; i++) {
 		NTL::matrix_row<IntMat> row(this->m_dualbasis, i);
 		if (this->m_norm == L2NORM) {

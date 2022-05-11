@@ -2144,12 +2144,6 @@ namespace LatticeTester {
         }
       } while (found);
 
-      /*
-         if (totalNodes > MINK_LLL) {
-         PreRedLLLRM = true;
-         }
-         */
-
       m_lat->setNegativeNorm();
       m_lat->updateScalL2Norm (0, dim);
       if(withDual){

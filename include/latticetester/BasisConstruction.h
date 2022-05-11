@@ -21,7 +21,7 @@
 #include "NTL/LLL.h"
 
 #include "latticetester/IntLatticeBase.h"
-#include "latticetester/ntlwrap.h"
+#include "latticetester/NTLWrap.h"
 #include "latticetester/Util.h"
 #include "latticetester/Coordinates.h"
 

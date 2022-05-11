@@ -20,7 +20,7 @@
 
 #include "NTL/ZZ.h"
 
-#include "latticetester/ntlwrap.h"
+#include "latticetester/NTLWrap.h"
 #include "latticetester/Util.h"
 #include "latticetester/Const.h"
 #include "latticetester/Config.h"

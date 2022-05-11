@@ -35,7 +35,7 @@
  *
  * New functions have been implemented in this module as a way to overload a
  * few operators and methods of NTL (especially on matrix and vector types) to
- * the usage of `NTL::Mat<std::uint64_t>` because some basic utilies that we need
+ * the usage of `NTL::Mat<std::uint64_t>` because some basic utilities that we need
  * are not offered in NTL.
  */
 

@@ -528,7 +528,7 @@ namespace LatticeTester {
           if (dim > 0) {
             lattmp = new IntLatticeBase<std::int64_t, std::int64_t, Real, RealRed>(
                        dim, red.getIntLatticeBasis()->getNorm());
-            lattmp->copyBasis(*red.getIntLatticeBasis(), dim);
+            lattmp->copyLattice(*red.getIntLatticeBasis(), dim);
           }
           else
             lattmp = red.getIntLatticeBasis();
@@ -597,7 +597,7 @@ namespace LatticeTester {
        *   if(dim > 0){
        *     lattmp = new IntLatticeBase<std::int64_t, std::int64_t, Real, RealRed>(
        *                dim, red.getIntLatticeBasis()->getNorm());
-       *     lattmp->copyBasis(*red.getIntLatticeBasis(), dim);
+       *     lattmp->copyLattice(*red.getIntLatticeBasis(), dim);
        *   }
        *   else
        *     lattmp = red.getIntLatticeBasis();
@@ -630,7 +630,7 @@ namespace LatticeTester {
         if(dim >0){
           lattmp = new IntLatticeBase<NTL::ZZ, NTL::ZZ, Real, RealRed>(
                      dim, red.getIntLatticeBasis()->getNorm());
-          lattmp->copyBasis(*red.getIntLatticeBasis(), dim);
+          lattmp->copyLattice(*red.getIntLatticeBasis(), dim);
         }
         else
           lattmp = red.getIntLatticeBasis();
@@ -655,7 +655,7 @@ namespace LatticeTester {
             MyExit(1, "BKZ PrecisionType:   NO SUCH CASE");
         }
 
-        red.getIntLatticeBasis()->copyBasis(*lattmp, dim);
+        red.getIntLatticeBasis()->copyLattice(*lattmp, dim);
 
         if (dim>0) delete lattmp;
       }
@@ -667,7 +667,7 @@ namespace LatticeTester {
         if(dim >0){
           lattmp = new IntLatticeBase<NTL::ZZ, NTL::ZZ, Real, RealRed>(
                      dim, red.getIntLatticeBasis()->getNorm());
-          lattmp->copyBasis(*red.getIntLatticeBasis(), dim);
+          lattmp->copyLattice(*red.getIntLatticeBasis(), dim);
         }
         else
           lattmp = red.getIntLatticeBasis();
@@ -696,7 +696,7 @@ namespace LatticeTester {
               MyExit(1, "LLL PrecisionType:   NO SUCH CASE");
           }
 
-          red.getIntLatticeBasis()->copyBasis(*lattmp, dim);
+          red.getIntLatticeBasis()->copyLattice(*lattmp, dim);
 
         }
         if (dim>0) delete lattmp;

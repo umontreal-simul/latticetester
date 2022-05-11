@@ -72,15 +72,13 @@ namespace LatticeTester {
    */
 
   template<typename Int, typename Real, typename RealRed>
-      class LatticeAnalysis {
+     class LatticeAnalysis {
         private:
           typedef NTL::vector<Int> IntVec;
           typedef NTL::matrix<Int> IntMat;
-          typedef NTL::vector<Int> BasIntVec;
-          typedef NTL::matrix<Int> BasIntMat;
-          typedef NTL::vector<Real> DblVec;
-          typedef NTL::vector<RealRed> RedDblVec;
-          typedef NTL::matrix<RealRed> RedDblMat;
+          typedef NTL::vector<Real> RealVec;
+          typedef NTL::vector<RealRed> RealRedVec;
+          typedef NTL::matrix<RealRed> RealRedMat;
         public:
 
           /**
@@ -121,7 +119,7 @@ namespace LatticeTester {
            * - `alpha` is the \f$\alpha\f$ parameter for the \f$\mathcal{P}_\alpha\f$
            *   test. As of now, this test is not implemented.
            * */
-          LatticeAnalysis (Config<Int, BasIntMat>& config);
+          LatticeAnalysis (Config<Int, IntMat>& config);
 
           /**
            * Destructor. This will deallocate memory to `m_normalizer` if it is
@@ -136,7 +134,7 @@ namespace LatticeTester {
            * This will store the `config` passed to this object for printing
            * latter.
            * */
-          bool doTest(Config<Int, BasIntMat>& config);
+          bool doTest(Config<Int, IntMat>& config);
 
           /**
            * This prints the result of the last computation that was asked to
@@ -175,7 +173,7 @@ namespace LatticeTester {
           int doTestFromDirectory (const char *dirname);
 
 
-          Config<Int, BasIntMat>* getConfig() {
+          Config<Int, IntMat>* getConfig() {
             return m_config;
           }
 
@@ -184,35 +182,35 @@ namespace LatticeTester {
            * This will perform a basis construction according to the
            * configuration and the basis of `config`.
            * */
-          bool performBasis(Config<Int, BasIntMat>& config);
+          bool performBasis(Config<Int, IntMat>& config);
 
           /**
            * This will perform a dual construction according to the
            * configuration and the basis of `config`. `config` is stored in this
            * object so that the results can be printed with printTestResults().
            * */
-          bool performDual(Config<Int, BasIntMat>& config);
+          bool performDual(Config<Int, IntMat>& config);
 
           /**
            * This will perform a lattice reduction according to the
            * configuration and the basis of `config`. `config` is stored in this
            * object so that the results can be printed with printTestResults().
            * */
-          bool performReduction(Config<Int, BasIntMat>& config);
+          bool performReduction(Config<Int, IntMat>& config);
 
           /**
            * This will solve the shortest vector problem according to the
            * configuration and the basis of `config`. `config` is stored in this
            * object so that the results can be printed with printTestResults().
            * */
-          bool performShortest(Config<Int, BasIntMat>& config);
+          bool performShortest(Config<Int, IntMat>& config);
 
           /**
            * This will compute a figure of merit according to the
            * configuration and the basis of `config`. `config` is stored in this
            * object so that the results can be printed with printTestResults().
            * */
-          bool performMerit(Config<Int, BasIntMat>& config);
+          bool performMerit(Config<Int, IntMat>& config);
 
           /**
            * This contains the last figure of merit computed. This is not erased
@@ -240,7 +238,7 @@ namespace LatticeTester {
           /**
            * The configuration of the last test this object has done.
            * */
-          Config<Int, BasIntMat>* m_config;
+          Config<Int, IntMat>* m_config;
 
       }; // End class LatticeAnalysis
 
@@ -310,7 +308,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real, typename RealRed>
       LatticeAnalysis<Int, Real, RealRed>::LatticeAnalysis (
-          Config<Int, BasIntMat>& config)
+          Config<Int, IntMat>& config)
     {
       m_config = &config;
     }
@@ -417,7 +415,7 @@ namespace LatticeTester {
       ParamReader<Int, RealRed> paramRdr (fname.c_str ());
       fname.clear ();
 
-      Config<Int, BasIntMat> config;
+      Config<Int, IntMat> config;
       paramRdr.read (config);
       doTest(config);
 
@@ -430,7 +428,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real, typename RealRed>
     bool LatticeAnalysis<Int, Real, RealRed>::doTest(
-        Config<Int, BasIntMat>& config) {
+        Config<Int, IntMat>& config) {
       m_config = &config;
       bool result = false;
       if (config.prob == BASIS) {
@@ -451,7 +449,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real, typename RealRed>
     bool LatticeAnalysis<Int, Real, RealRed>::performBasis(
-        Config<Int, BasIntMat>& config) {
+        Config<Int, IntMat>& config) {
       BasisConstruction<Int> basis;
       if (config.config.basis.method) {
         basis.GCDConstruction(config.basis);
@@ -465,7 +463,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real, typename RealRed>
     bool LatticeAnalysis<Int, Real, RealRed>::performDual(
-        Config<Int, BasIntMat>& config) {
+        Config<Int, IntMat>& config) {
       config.m = 1;
       BasisConstruction<Int> basis;
       basis.DualConstruction(config.basis, config.dual_basis, config.m);
@@ -476,7 +474,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real, typename RealRed>
     bool LatticeAnalysis<Int, Real, RealRed>::performReduction(
-        Config<Int, BasIntMat>& config) {
+        Config<Int, IntMat>& config) {
 
       IntLatticeBase<Int, Real, RealRed>
         Basis(config.basis, config.NumCols);
@@ -498,7 +496,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real, typename RealRed>
     bool LatticeAnalysis<Int, Real, RealRed>::performShortest(
-        Config<Int, BasIntMat>& config) {
+        Config<Int, IntMat>& config) {
       bool result = false;
       IntLatticeBase<Int, Real, RealRed>
         Basis(config.basis, config.NumCols);
@@ -525,8 +523,8 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int, typename Real, typename RealRed>
-      bool LatticeAnalysis<Int,Real, RealRed>::performMerit (
-          Config<Int, BasIntMat>& config)
+      bool LatticeAnalysis<Int, Real, RealRed>::performMerit (
+          Config<Int, IntMat>& config)
     {
       bool result = false;
       IntLatticeBase<Int, Real, RealRed>

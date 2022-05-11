@@ -18,7 +18,7 @@
 #ifndef LATTICETESTER_LACUNARY_H
 #define LATTICETESTER_LACUNARY_H
 #include "latticetester/Util.h"
-#include "latticetester/ntlwrap.h"
+#include "latticetester/NTLWrap.h"
 
 #include <string>
 #include <cstdint>

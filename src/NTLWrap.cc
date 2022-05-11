@@ -1,4 +1,4 @@
-#include "latticetester/ntlwrap.h"
+#include "latticetester/NTLWrap.h"
 
 namespace NTL {
 

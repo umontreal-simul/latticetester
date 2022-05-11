@@ -24,7 +24,7 @@
 #include <NTL/vector.h>
 #include <NTL/matrix.h>
 
-#include "latticetester/ntlwrap.h"
+#include "latticetester/NTLWrap.h"
 
 namespace LatticeTester {
   /**

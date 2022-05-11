@@ -24,7 +24,7 @@
 #include <NTL/vector.h>
 #include <NTL/matrix.h>
 
-#include "latticetester/ntlwrap.h"
+#include "latticetester/NTLWrap.h"
 
   /**
    * Here we describe the flexible types used by LatticeTester to large integers

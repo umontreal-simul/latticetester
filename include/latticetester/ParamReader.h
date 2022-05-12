@@ -181,7 +181,7 @@ namespace LatticeTester {
          * Reads a `RealRed` from the <tt>pos</tt>-th token of the <tt>ln</tt>-th
          * line into `field`.
          */
-        void readRedDbl (RealRed & field, unsigned int ln, unsigned int pos);
+        void readRealRed (RealRed & field, unsigned int ln, unsigned int pos);
 
         /**
          * Reads `num` tokens (from the <tt>pos</tt>-th token of the

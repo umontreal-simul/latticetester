@@ -90,9 +90,9 @@ namespace LatticeTester {
           // Local typedefs for matrix and vector types needed in the class.
           typedef NTL::vector<Int> IntVec;
           typedef NTL::matrix<Int> IntMat;
-          typedef NTL::vector<Real> DblVec;
-          typedef NTL::vector<RealRed> RedDblVec;
-          typedef NTL::matrix<RealRed> RedDblMat;
+          typedef NTL::vector<Real> RealVec;
+          typedef NTL::vector<RealRed> RedRealVec;
+          typedef NTL::matrix<RealRed> RedRealMat;
         public:
 
           /**
@@ -301,7 +301,7 @@ namespace LatticeTester {
            * the user is searching for a good lattice with the spectral test
            * since this can cut off some work.
            */
-          void setBoundL2 (const DblVec & V, int dim1, int dim2);
+          void setBoundL2 (const RealVec & V, int dim1, int dim2);
 
           /**
            * Returns the basis of this object is working on.
@@ -398,7 +398,7 @@ namespace LatticeTester {
            * decomposition that are above the diagonal. Returns in `DC2` the
            * squared elements of the diagonal.
            */
-          bool calculCholeski (RedDblVec & DC2, RedDblMat & C0);
+          bool calculCholeski (RedRealVec & DC2, RedRealMat & C0);
 
           /**
            * Permutes the \f$i^{th}\f$ and the \f$j^{th}\f$ line, and the
@@ -433,7 +433,7 @@ namespace LatticeTester {
            * we stop the reduction immediately and reject this lattice since its
            * shortest vector will be even smaller. Used only in Seek
            */
-          DblVec m_BoundL2;
+          RealVec m_BoundL2;
 
           /**
            * Whenever the number of nodes in the branch-and-bound tree exceeds
@@ -478,11 +478,11 @@ namespace LatticeTester {
           Real m_lMin2;         // The norm of the shorter vector in the primal basis
           // according to the norm L2
           Real m_ns;
-          DblVec m_nv;
+          RealVec m_nv;
 
           //RealRed m_rs;
-          RedDblVec m_zLR, m_n2, m_dc2;
-          RedDblMat m_c0, m_c2, m_cho2, m_gramVD;
+          RedRealVec m_zLR, m_n2, m_dc2;
+          RedRealMat m_c0, m_c2, m_cho2, m_gramVD;
           int *m_IC;             // Indices in Cholesky
 
           std::vector<std::int64_t> m_zLI;
@@ -840,7 +840,7 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename Real, typename RealRed>
-      void Reducer<Int, Real, RealRed>::setBoundL2 (const DblVec & V,
+      void Reducer<Int, Real, RealRed>::setBoundL2 (const RealVec & V,
           int dim1, int dim2)
     {
       m_BoundL2.resize(dim2);
@@ -949,8 +949,8 @@ namespace LatticeTester {
   //=========================================================================
 
   template<typename Int, typename Real, typename RealRed>
-      bool Reducer<Int, Real, RealRed>::calculCholeski (RedDblVec & DC2,
-          RedDblMat & C0)
+      bool Reducer<Int, Real, RealRed>::calculCholeski (RealRedVec & DC2,
+          RealRedMat & C0)
       /*
        * Returns in C0 the elements of the upper triangular matrix of the
        * Choleski decomposition that are above the diagonal. Returns in DC2 the

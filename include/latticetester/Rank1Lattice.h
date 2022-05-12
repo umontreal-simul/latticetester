@@ -59,7 +59,7 @@ namespace LatticeTester {
         typedef NTL::vector<Int> IntVec;
         typedef NTL::vector<Int> IntVec;
         typedef NTL::matrix<Int> IntMat;
-        typedef NTL::vector<Real> DblVec;
+        typedef NTL::vector<Real> RealVec;
 
       public:
 

@@ -37,54 +37,59 @@
 namespace LatticeTester {
 
   /**
-   * This class is a skeleton for the implementation of different types of 
-   * lattices. This class is not really intended to be used directly, hence the
-   * lack of constructor allowing the specification of a basis.
-   * 
-   * This class can store a lattice with or without dual and contains a few
-   * virtual methods to perform common computations on lattices.
-   * This class contains a method to compute lattices of projections of 
-   * \f$\{x_i\}_{ 0 \leq i}\f$, a method to exchange the basis and the dual 
-   * basis, and a virtual method that can be implemented in subclasses to 
-   * recompute the basis for different dimensions.
+   * This abstract class extends IntLatticeBase and is a skeleton for the
+   * specialized classes that define specific types of lattices.
+   * It is not intended to be used directly, but only via subclasses.
+   * An `IntLattice` is an integral lattice object jut like in `IntLatticeBase`,
+   * but the present class offers additional (virtual) methods that must be
+   * implemented in subclasses.
+   *
+   * In particular, there is a method to construct the lattice defined as the
+   * projection of the full lattice on a subset of coordinates
+   * \f$\{x_i\}_{ 0 \leq i}\f$, a method to dualize the lattice
+   * (exchange the basis with the m-dual basis),
+   * and a virtual method that should be implemented in subclasses to
+   * recompute the basis for different numbers of dimensions.
    *
    * A lattice of rank \f$k\f$ with integer vectors modulo \f$m\f$ contains
-   * \f$m^k\f$ distinct vectors. This number, the density, can then be used to 
-   * compute bounds on the spectral test. This class implements methods to 
-   * compute \f$ \log_2(m^{2i}) \f$ for \f$ 1 \leq i \leq k \f$ to help with the 
-   * computation of such bounds. 
+   * \f$m^k\f$ distinct vectors (modulo $m$). If we divide the basis vectors by \f$m\f$,
+   * this gives \f$m^k\f$ vectors per unit of volume, so we call \f$m^k\f$ the
+   * lattice density. This number is used to obtain bounds on the shortest vector length,
+   * which are used to normalize the shortest vector length in the spectral test.
+   * This class offers methods to compute and store
+   * \f$ \log_2(m^{2i}) \f$ for \f$ 1 \leq i \leq k \f$ to speed up the normalization.
    */
   template<typename Int, typename Real, typename RealRed>
       class IntLattice : public IntLatticeBase<Int, Real, RealRed> {
         private:
           typedef NTL::vector<Int> IntVec;
           typedef NTL::matrix<Int> IntMat;
-          typedef NTL::vector<Real> DblVec;
+          typedef NTL::vector<Real> RealVec;
         public:
 
           /**
-           * Constructor initializing the primal and the dual basis with the 
+           * A constructor that initializes the primal and dual bases with the
            * identity matrix. The dimension of the lattice is set to `maxDim` 
-           * and the norm used for reduction to `norm`.
-           * @param modulo The modulo of the integer coordinates
+           * and the norm type is set to `norm`.
+           * @param m The scaling factor `m` for the integer coordinates
            * @param k The rank of the lattice to be constructed
            * @param maxDim The maximal dimension for which this lattice can be
-           * expanded/tested (?)
-           * @param withDual Specifies wether this object contains a dual or not
-           * @param norm The norm to use in for reduction
+           * expanded/tested
+           * @param withDual Specifies whether this object contains a dual or not
+           * @param norm  The type of d to measure the vector lengths.
            */
-          IntLattice (Int modulo, int k, int maxDim, bool withDual,
+          IntLattice (Int m, int k, int maxDim, bool withDual,
               NormType norm = L2NORM);
 
           /**
            * Copy constructor that makes a copy of `Lat`. The maximal dimension 
-           * of the created basis is set equal to `Lat`’s current dimension.
+           * of the created basis is set equal to the current dimension in `Lat`.
            */
           IntLattice (const IntLattice<Int, Real, RealRed> & Lat);
 
           /**
            * Copies `lattice` into this object. This should be equivalent to
-           * the creation of a new IntLattice using the copy constructor with
+           * the creation of a new `IntLattice` object using the copy constructor with
            * `lattice` as an argument.
            */
           void copy (const IntLattice<Int, Real, RealRed> & lattice);
@@ -95,14 +100,14 @@ namespace LatticeTester {
           virtual ~IntLattice ();
 
           /**
-           * Allocates space to vectors used internally. This should probably be
-           * private or protected because it should not be needed to call it 
-           * directly (the constructors and copy already call it).
+           * Allocates space to the vectors used internally. This should probably be
+           * private or protected because it should not be called directly by the user;
+           * It is called by the constructors and copy methods.
            */
           void init ();
 
           /**
-           * This returns the rank of the lattice.
+           * This returns the rank (order) of the lattice.
            */
           int getOrder() const { return m_order; }
 
@@ -111,63 +116,66 @@ namespace LatticeTester {
            * one. This initializes the added components to `0` and does not 
            * compute the value taken by the added components and vector. It also
            * resets vectors containing the norms. The implementation in this
-           * class is meant to be overriden by subclasses and probably should 
-           * not be used.
+           * class is meant to be overriden by subclasses.
            */
           virtual void incDim ();
 
           /**
-           * Computes the logarithm of the normalization factor
-           * (<tt>m_lgVolDual2</tt>) in all dimensions \f$\leq\f$ `MaxDim` for
-           * the lattice. `lgm2` is the logarithm in base 2 of \f$m^2\f$.
+           * Computes and stores the logarithm in base 2 of the normalization factors
+           * (<tt>m_lgVolDual2</tt>) in all dimensions up to `MaxDim`, for this
+           * lattice. Here, `lgm2` must be \f$\log_g m^2\f$ and the computed values are
+           * those returned by `getLgVolDual2` below.
            */
           void calcLgVolDual2 (double lgm2);
 
           /**
-           * Gives the log of m^(2*i) if i < order, else gives the log of m^(2*i)
+           * Returns \f$\log_2 m^{2i}\f = i \log_2 m^2$  for \f$1\le i \le k\f$,
+           * and \f$\log_2 m^{2k}\f$ otherwise,
+           * where \f$k\f$ is the lattice rank (or order).
            */
           double getLgVolDual2 (int i) const { return m_lgVolDual2[i]; }
 
           /**
-           * Exchange the primal basis and the dual basis.
+           * Exchange the primal and m-dual bases.
+           * If the dual is not defined, does nothing!
            */
           void dualize ();
 
           /**
-           * This function is called to fix the normalization constants to get
-           * the normalized merit from the shortest distance in the lattice. If
-           * `dualF` is `true`, the normalization constant is reset for the dual
-           * lattice, otherwise it is reset for the primal lattice.
+           * This method is called to precompute the normalization constants used to get
+           * the normalized merit from the shortest vectors in the lattice. If
+           * `dualF` is `true`, the normalization constants are computed for the m-dual
+           * lattice, otherwise they are computed for the primal lattice.
            */
           void fixLatticeNormalization (bool dualF);
 
           /**
-           * Builds the basis (and dual basis) of the projection `proj` for this
-           * lattice. The result is placed in the `lattice` lattice. The basis is
+           * Builds the basis (and m-dual basis) for the projection `proj` for this
+           * lattice. The result is placed in the `lattice` object. The basis is
            * triangularized to form a proper basis.
+           *  ** NOT BETTER TO USE LLL INSTEAD?  **
+           *  In fact, the code seems to use LLL and the compute the dual...
            */
           virtual void buildProjection (IntLattice<Int, Real, RealRed>* lattice,
               const Coordinates & proj);
 
           /**
-           * Builds the basis for the lattice in dimension `d`. This function is
-           * not implemented for this class. The general basis construction for
-           * a lattice such as this one is located in BasisConstruction.
+           * This virtual method builds the basis for the lattice in `dim` dimensions.
+           * It must be implemented in subclasses.
            */
-          virtual void buildBasis (int d);
+          virtual void buildBasis (int dim);
 
           /**
-           * Creates and returns the normalizer corresponding to criterion
-           * `norma`. In the case of the \f$P_{\alpha}\f$ test, the argument
-           * `alpha` = \f$\alpha\f$. In all other cases, it is unused.
+           * Creates and returns the normalizer corresponding to the normalization
+           * type `norma`. For the \f$P_{\alpha}\f$ test, the argument
+           * `alpha` = \f$\alpha\f$. For all other cases, it is unused.
            */
           LatticeTester::Normalizer<RealRed> * getNormalizer (NormaType norma,
               int alpha, bool dualF);
 
           /**
-           * A utility method to store a vector of indices with lacunary values
-           * in subclasses of this one. This method has no implementation in
-           * this base class.
+           * A virtual utility method to store a vector of indices with lacunary values
+           * in subclasses of this one.
            */
           virtual void setLac (const Lacunary<Int> &) {};
 
@@ -180,31 +188,32 @@ namespace LatticeTester {
 
           /**
            * \copydoc LatticeTester::IntLatticeBase::kill()
+           *  ** USEFUL ? **
            */
           virtual void kill ();
 
           /**
-           * The order of the basis.
+           * The order (rank) of the basis. Usually defined in subclasses.
            */
           int m_order;
 
           /*
-           * The maximum Dimension for the test
+           * The maximum Dimension for the basis (for tests)
            */
           int m_maxDim;
 
           /**
-           * Represente sur dual along the diagonal?? ERWAN
+           * A vector of normalization constants.  See `calcLgVolDual2`.
            */
           double *m_lgVolDual2;
 
           /**
-           * The logarithm \f$\log (m^2)\f$.
+           * \f$\log_2 (m^2)\f$.
            */
           double m_lgm2;
 
           /**
-           * The dual basis of the current projection.
+           * The m-dual basis of the current projection.
            */
           IntMat m_wSI;
 
@@ -215,6 +224,7 @@ namespace LatticeTester {
 
           /**
            * Working Variables used in MRGLattice.h
+           * **  WHAT ARE THEY DOING HERE? MOVE THEM.  **
            */
           Int m_t1, m_t2, m_t3;
 
@@ -303,7 +313,14 @@ namespace LatticeTester {
   template<typename Int, typename Real, typename RealRed>
       IntLattice<Int, Real, RealRed>::~IntLattice ()
     {
-      kill ();
+      // kill ();
+      IntLatticeBase<Int, Real, RealRed>::kill();
+      if (this->m_withDual){
+        if (m_lgVolDual2 == 0)
+          return;
+        delete [] m_lgVolDual2;
+        m_lgVolDual2 = 0;
+      }
     }
 
   //===========================================================================
@@ -359,7 +376,6 @@ namespace LatticeTester {
       for (int r = 2; r <= rmax; r++)
         m_lgVolDual2[r] = m_lgVolDual2[r - 1] + lgm2;
       // WARNING [David]: one version had `m_order` instead of `rmax`.
-      // I am not sure which is the fix and which is the bug.
       for (int r = rmax + 1; r <= dim; r++)
         m_lgVolDual2[r] = m_lgVolDual2[r - 1];
     }
@@ -381,7 +397,7 @@ namespace LatticeTester {
       void IntLattice<Int, Real, RealRed>::fixLatticeNormalization(
           bool dualF)
     {
-      // Normalization factor: dual to primal : M^(k/dim) -> 1/M^(k/dim)
+      // Normalization factor: dual to primal : m^(k/dim) -> 1/m^(k/dim)
       if (( dualF && m_lgVolDual2[1] < 0.0) ||
           (!dualF && m_lgVolDual2[1] > 0.0)) {
         for (int i = 0; i < this->getDim(); i++)
@@ -521,6 +537,9 @@ namespace LatticeTester {
       assert (0);
       return std::string();
     }
+
+  //===========================================================================
+
   extern template class IntLattice<std::int64_t, std::int64_t, double, double>;
   extern template class IntLattice<NTL::ZZ, NTL::ZZ, double, double>;
   extern template class IntLattice<NTL::ZZ, NTL::ZZ, NTL::RR, NTL::RR>;

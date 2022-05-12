@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
-// LatticeTester
-// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2022  The LatticeTester authors, under the occasional supervision
+// of Pierre L'Ecuyer at Université de Montréal.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -48,7 +48,6 @@ namespace LatticeTester {
  * Methods and attributes are offered to compute and store the norms of the basis and dual basis vectors,
  * to permute basis vectors, sort them by length and do the corresponding changes in the dual, etc.
  *
- * Note that in this class, the indices of basis vectors and coordinates start at 1.
  */
 template<typename Int, typename Real, typename RealRed>
 class IntLatticeBase {
@@ -63,7 +62,7 @@ public:
 
 	/**
 	 * Constructs a lattice whose basis is the identity, in `dim` dimensions,
-	 * with `m=1`, and with the specified norm type.
+	 * with the specified norm type, and the scaling factor `m` undefined.
 	 */
 	IntLatticeBase(const int dim, NormType norm = L2NORM);
 
@@ -93,9 +92,9 @@ public:
 
 	/**
 	 * Cleans and releases all the memory allocated to this lattice.
-	 * This method SEEMS TO DO NOTHING!
+	 * **This method SEEMS TO DO NOTHING!**
 	 */
-	void kill();
+	// void kill();
 
 	/**
 	 * Makes a deep copy of the lattice `lat` into this object.
@@ -103,12 +102,12 @@ public:
 	 */
 	void copyLattice(const IntLatticeBase<Int, Real, RealRed> &lat);
 
-	/**
+	/*
 	 * Copy the `n` first elements of the basis of the lattice `lat` into this
 	 * object. The object into which `lat` is copied has to be of dimension `n` already.
 	 * BIZARRE AND APPARENTLY NEVER USED.
-	 */
 	// void copyLattice(const IntLatticeBase<Int, Real, RealRed> &lat, long n);
+	 */
 
 	/**
 	 * Initializes a vector containing the norms of the basis vectors to -1
@@ -173,7 +172,7 @@ public:
 	}
 
 	/**
-	 * Returns the scaling factor `m` if it has been defined. Returns `0` otherwise.
+	 * Returns the scaling factor `m`, which is 1 by default.
 	 */
 	Int getModulo() const {
 		return m_modulo;
@@ -388,9 +387,9 @@ protected:
 	RealVec m_dualvecNorm;
 
 	/**
-	 * The scaling factor `m` used for rescaling the lattice.
+	 * The scaling factor `m` used for rescaling the lattice. It is 0 when undefined.
 	 */
-	Int m_modulo;
+	Int m_modulo=0;
 
 	/**
 	 * This `m_withDual` variable is `true` iff an m-dual basis is available.
@@ -404,8 +403,7 @@ protected:
 
 template<typename Int, typename Real, typename RealRed>
 IntLatticeBase<Int, Real, RealRed>::IntLatticeBase(const int dim, NormType norm) :
-		m_dim(dim), m_norm(norm), m_modulo(0), m_withDual(false)
-{
+		m_dim(dim), m_norm(norm), m_modulo(0), m_withDual(false) {
 	this->m_basis.resize(dim, dim);
 	this->m_vecNorm.resize(dim);
 	initVecNorm();
@@ -416,8 +414,7 @@ IntLatticeBase<Int, Real, RealRed>::IntLatticeBase(const int dim, NormType norm)
 template<typename Int, typename Real, typename RealRed>
 IntLatticeBase<Int, Real, RealRed>::IntLatticeBase(const IntMat basis,
 		const int dim, NormType norm) :
-		m_basis(basis), m_dim(dim), m_norm(norm), m_modulo(0), m_withDual(false)
-{
+		m_basis(basis), m_dim(dim), m_norm(norm), m_modulo(0), m_withDual(false) {
 	this->m_vecNorm.resize(dim);
 	initVecNorm();
 }
@@ -439,9 +436,8 @@ IntLatticeBase<Int, Real, RealRed>::IntLatticeBase(const IntMat primalbasis,
 
 template<typename Int, typename Real, typename RealRed>
 IntLatticeBase<Int, Real, RealRed>::IntLatticeBase(
-		const IntLatticeBase<Int, Real, RealRed> &lat)
+		const IntLatticeBase<Int, Real, RealRed> &lat) {
 //		: m_dim(lat.getDim()), m_norm(lat.getNorm())
-{
 	copyLattice(lat);
 }
 
@@ -449,18 +445,19 @@ IntLatticeBase<Int, Real, RealRed>::IntLatticeBase(
 
 template<typename Int, typename Real, typename RealRed>
 IntLatticeBase<Int, Real, RealRed>::~IntLatticeBase() {
-	kill();
+	// kill();
 	this->m_basis.IntMat::clear();
 	this->m_dualbasis.IntMat::clear();
 	this->m_vecNorm.clear();
 	this->m_dualvecNorm.clear();
 }
 
-/*=========================================================================*/
+/*=========================================================================
 
 template<typename Int, typename Real, typename RealRed>
 void IntLatticeBase<Int, Real, RealRed>::kill() {
 }
+*/
 
 /*=========================================================================*/
 
@@ -471,8 +468,8 @@ void IntLatticeBase<Int, Real, RealRed>::copyLattice(
 	this->m_basis = IntMat(lat.m_basis);
 	this->m_dualbasis = IntMat(lat.m_dualbasis);
 	this->m_norm = lat.m_norm;
-	this->m_vecNorm = DblVec(lat.m_vecNorm);
-	this->m_dualvecNorm = DblVec(lat.m_dualvecNorm);
+	this->m_vecNorm = RealVec(lat.m_vecNorm);
+	this->m_dualvecNorm = RealVec(lat.m_dualvecNorm);
 	this->m_withDual = lat.m_withDual;
 	this->m_modulo = lat.m_modulo;
 }
@@ -624,9 +621,6 @@ void IntLatticeBase<Int, Real, RealRed>::permute(int i, int j) {
 	if (this->m_withDual) {
 		swap9(this->m_dualvecNorm[i], this->m_dualvecNorm[j]);
 	}
-	//bool b = this->m_xx[j];
-	//this->m_xx[j] = this->m_xx[i];
-	//this->m_xx[i] = b;
 }
 
 /*=========================================================================*/
@@ -646,7 +640,7 @@ void IntLatticeBase<Int, Real, RealRed>::permuteNoDual(int i, int j) {
 template<typename Int, typename Real, typename RealRed>
 bool IntLatticeBase<Int, Real, RealRed>::checkDuality() {
 	if (!this->m_withDual) {
-		std::cout << "DO NOT USE IntLatticeBase::checkDuality without dual"
+		std::cout << "DO NOT USE IntLatticeBase::checkDuality with undefined m-dual"
 				<< std::endl;
 		return false;
 	}
@@ -680,9 +674,9 @@ bool IntLatticeBase<Int, Real, RealRed>::checkDuality() {
 template<typename Int, typename Real, typename RealRed>
 void IntLatticeBase<Int, Real, RealRed>::sort(int d)
 /*
- * We assume that the square lengths are already updated.
+ * We assume that the (square) lengths are already updated.
  * This gives flexibility to the user to put something else than
- * the square Euclidean length in V.vecNorm, W.vecNorm, etc.
+ * the square Euclidean length in vecNorm.
  */
 {
 	int dim = getDim();
@@ -709,9 +703,9 @@ void IntLatticeBase<Int, Real, RealRed>::sort(int d)
 template<typename Int, typename Real, typename RealRed>
 void IntLatticeBase<Int, Real, RealRed>::sortNoDual(int d)
 /*
- * We assume that the square lengths are already updated.
- * This gives flexibility to the user to put something else than
- * the square Euclidean length in V.vecNorm, W.vecNorm, etc.
+ * We assume that the (square) lengths are already updated.
+ * This gives flexibility to the user to use something else than
+ * the square Euclidean length.
  */
 {
 	int dim = getDim();
@@ -746,7 +740,7 @@ void IntLatticeBase<Int, Real, RealRed>::write() const {
 		//}
 		std::cout << "\n";
 	}
-	std::cout << "\nDual basis vectors:\n";
+	std::cout << "\nm-Dual basis vectors:\n";
 	for (int i = 0; i < this->m_dim; i++) {
 		if (this->m_withDual) {
 			std::cout << this->m_dualbasis[i];
@@ -824,7 +818,7 @@ std::string IntLatticeBase<Int, Real, RealRed>::toStringBasis() const {
 template<typename Int, typename Real, typename RealRed>
 std::string IntLatticeBase<Int, Real, RealRed>::toStringDualBasis() const {
 	std::ostringstream os;
-	os << "Dual Basis:\n";
+	os << "m-Dual Basis:\n";
 	os << "  Dim = " << this->m_dim << " \n";
 	for (int i = 0; i < this->m_dim; i++) {
 		os << "    [";

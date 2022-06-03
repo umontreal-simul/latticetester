@@ -62,14 +62,14 @@ public:
 
 	/**
 	 * Constructs a lattice whose basis is the identity, in `dim` dimensions,
-	 * with the specified norm type, and the scaling factor `m` undefined.
+	 * with the specified norm type, and the scaling factor `m` and dual basis undefined.
 	 */
 	IntLatticeBase(const int dim, NormType norm = L2NORM);
 
 	/**
 	 * Constructs a lattice with the given basis, in `dim` dimensions,
 	 * and with the specified norm type. The dual basis and `m` are not initialized.
-	 * The `basis` matrix must be a `dim` by `dim` square matrix.
+	 * The `basis` matrix must be a `dim` by `dim` square integer matrix.
 	 */
 	IntLatticeBase(const IntMat basis, const int dim, NormType norm = L2NORM);
 
@@ -81,9 +81,9 @@ public:
 			const Int m, const int dim, NormType norm = L2NORM);
 
 	/**
-	 * Copy constructor. Makes a deep copy of Lat into `*this`.
+	 * Copy constructor. Makes a deep copy of `lat` into `*this`.
 	 */
-	IntLatticeBase(const IntLatticeBase<Int, Real, RealRed> &Lat);
+	IntLatticeBase(const IntLatticeBase<Int, Real, RealRed> &lat);
 
 	/**
 	 * Destructor.
@@ -105,13 +105,13 @@ public:
 	/*
 	 * Copy the `n` first elements of the basis of the lattice `lat` into this
 	 * object. The object into which `lat` is copied has to be of dimension `n` already.
-	 * BIZARRE AND APPARENTLY NEVER USED.
+	 * SEEMS BIZARRE AND APPARENTLY NEVER USED.
 	// void copyLattice(const IntLatticeBase<Int, Real, RealRed> &lat, long n);
 	 */
 
 	/**
 	 * Initializes a vector containing the norms of the basis vectors to -1
-	 * at all components.
+	 * for all components.
 	 */
 	void initVecNorm();
 
@@ -144,7 +144,8 @@ public:
 	}
 
 	/**
-	 * Returns the norm of the i-th vector of the basis (squared in case of the L^2 norm).
+	 * Returns the norm (squared in case of the L^2 norm) of the i-th vector of the basis,
+	 * with the index i starting at 0.
 	 */
 	Real getVecNorm(const int &i) {
 		return m_vecNorm[i];
@@ -185,7 +186,7 @@ public:
 	 */
 	void setDim(const int &dim) {
 		if (dim > 0)
-			m_dim = d;
+			m_dim = dim;
 	}
 
 	/**
@@ -364,6 +365,11 @@ protected:
 	IntMat m_dualbasis;
 
 	/**
+	 * The scaling factor `m` used for rescaling the lattice. It is 0 when undefined.
+	 */
+	Int m_modulo=0;
+
+	/**
 	 * The dimension of the lattice, which is the number of (independent) vectors
 	 * in the basis, and cannot exceed the number of coordinates in those vectors.
 	 */
@@ -374,7 +380,7 @@ protected:
 	 */
 	NormType m_norm;
 
-	/*
+	/**
 	 * A vector that stores the norm of each basis vector.
 	 * In case of the L_2 norm, it contains the square norm.
 	 * A value of -1 means that the norm is not up to date.
@@ -385,11 +391,6 @@ protected:
 	 * Similar to vecNorm, but for the m-dual basis.
 	 */
 	RealVec m_dualvecNorm;
-
-	/**
-	 * The scaling factor `m` used for rescaling the lattice. It is 0 when undefined.
-	 */
-	Int m_modulo=0;
 
 	/**
 	 * This `m_withDual` variable is `true` iff an m-dual basis is available.
@@ -640,7 +641,7 @@ void IntLatticeBase<Int, Real, RealRed>::permuteNoDual(int i, int j) {
 template<typename Int, typename Real, typename RealRed>
 bool IntLatticeBase<Int, Real, RealRed>::checkDuality() {
 	if (!this->m_withDual) {
-		std::cout << "DO NOT USE IntLatticeBase::checkDuality with undefined m-dual"
+		std::cout << "Calling IntLatticeBase::checkDuality with undefined m-dual"
 				<< std::endl;
 		return false;
 	}
@@ -682,7 +683,7 @@ void IntLatticeBase<Int, Real, RealRed>::sort(int d)
 	int dim = getDim();
 	for (int i = 0; i < dim; i++) {
 		if (getVecNorm(i) < 0) {
-			std::cout << "\n***** ERROR: sort   Negative norm for i = " << i
+			std::cout << "\n***** ERROR: in sort, Negative norm for i = " << i
 					<< ",  dim = " << dim << std::endl;
 		}
 	}
@@ -715,7 +716,6 @@ void IntLatticeBase<Int, Real, RealRed>::sortNoDual(int d)
 					<< ",  dim = " << dim << std::endl;
 		}
 	}
-
 	for (int i = d; i < dim; i++) {
 		int k = i;
 		for (int j = i + 1; j < dim; j++) {

@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
-// LatticeTester
-// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2022  The LatticeTester authors, under the occasional supervision
+// of Pierre L'Ecuyer at Université de Montréal.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+
 
 #ifndef LATTICETESTER_INTLATTICE_H
 #define LATTICETESTER_INTLATTICE_H
@@ -37,7 +38,7 @@
 namespace LatticeTester {
 
   /**
-   * This abstract class extends IntLatticeBase and is a skeleton for the
+   * This abstract class extends `IntLatticeBase` and is a skeleton for the
    * specialized classes that define specific types of lattices.
    * It is not intended to be used directly, but only via subclasses.
    * An `IntLattice` is an integral lattice object jut like in `IntLatticeBase`,
@@ -53,10 +54,10 @@ namespace LatticeTester {
    *
    * A lattice of rank \f$k\f$ with integer vectors modulo \f$m\f$ contains
    * \f$m^k\f$ distinct vectors (modulo $m$). If we divide the basis vectors by \f$m\f$,
-   * this gives \f$m^k\f$ vectors per unit of volume, so we call \f$m^k\f$ the
-   * lattice density. This number is used to obtain bounds on the shortest vector length,
+   * this gives \f$m^k\f$ vectors per unit of volume, so \f$m^k\f$ is the density of the 
+   * original (unscaled) lattice. This number is used to obtain bounds on the shortest vector length,
    * which are used to normalize the shortest vector length in the spectral test.
-   * This class offers methods to compute and store
+   * This class offers methods to compute and store the constants
    * \f$ \log_2(m^{2i}) \f$ for \f$ 1 \leq i \leq k \f$ to speed up the normalization.
    */
   template<typename Int, typename Real, typename RealRed>
@@ -82,10 +83,10 @@ namespace LatticeTester {
               NormType norm = L2NORM);
 
           /**
-           * Copy constructor that makes a copy of `Lat`. The maximal dimension 
-           * of the created basis is set equal to the current dimension in `Lat`.
+           * Copy constructor that makes a copy of `lat`. The maximal dimension 
+           * of the created basis is set equal to the current dimension in `lat`.
            */
-          IntLattice (const IntLattice<Int, Real, RealRed> & Lat);
+          IntLattice (const IntLattice<Int, Real, RealRed> & lat);
 
           /**
            * Copies `lattice` into this object. This should be equivalent to
@@ -138,6 +139,7 @@ namespace LatticeTester {
           /**
            * Exchange the primal and m-dual bases.
            * If the dual is not defined, does nothing!
+           *  ** Add Error message ? **
            */
           void dualize ();
 
@@ -146,15 +148,14 @@ namespace LatticeTester {
            * the normalized merit from the shortest vectors in the lattice. If
            * `dualF` is `true`, the normalization constants are computed for the m-dual
            * lattice, otherwise they are computed for the primal lattice.
+           * ** Done only once in a search? **  
            */
           void fixLatticeNormalization (bool dualF);
 
           /**
-           * Builds the basis (and m-dual basis) for the projection `proj` for this
-           * lattice. The result is placed in the `lattice` object. The basis is
-           * triangularized to form a proper basis.
-           *  ** NOT BETTER TO USE LLL INSTEAD?  **
-           *  In fact, the code seems to use LLL and the compute the dual...
+           * Builds the basis (and perhaps m-dual basis) for the projection `proj` for this
+           * lattice. The result is placed in the `lattice` object. The LLL algorithm is 
+           * applied to recover a proper basis. 
            */
           virtual void buildProjection (IntLattice<Int, Real, RealRed>* lattice,
               const Coordinates & proj);
@@ -167,10 +168,11 @@ namespace LatticeTester {
 
           /**
            * Creates and returns the normalizer corresponding to the normalization
-           * type `norma`. For the \f$P_{\alpha}\f$ test, the argument
-           * `alpha` = \f$\alpha\f$. For all other cases, it is unused.
+           * type `norma`. The argument `alpha` = \f$\alpha\f$ is used only for the 
+           * \f$P_{\alpha}\f$ measure. For all other cases, it is unused.
+           *  **  Replaced getNormalizer by  setNormaliser **
            */
-          LatticeTester::Normalizer<RealRed> * getNormalizer (NormaType norma,
+          LatticeTester::Normalizer<RealRed> * setNormalizer (NormaType norma,
               int alpha, bool dualF);
 
           /**
@@ -197,7 +199,7 @@ namespace LatticeTester {
            */
           int m_order;
 
-          /*
+          /**
            * The maximum Dimension for the basis (for tests)
            */
           int m_maxDim;
@@ -465,7 +467,7 @@ namespace LatticeTester {
   template<typename Int, typename Real, typename RealRed>
       void IntLattice<Int, Real, RealRed>::buildBasis (int d)
     {
-      MyExit(1, " buildBasis does nothing");
+      MyExit(1, " buildBasis(d) does nothing");
       d++;  // eliminates compiler warning
     }
 
@@ -487,7 +489,7 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int, typename Real, typename RealRed>
-      Normalizer<RealRed> * IntLattice<Int, Real, RealRed>::getNormalizer(
+      Normalizer<RealRed> * IntLattice<Int, Real, RealRed>::setNormalizer(
           NormaType norma, int alpha, bool dualF)
     {
       int dim = this->getDim();
@@ -495,6 +497,7 @@ namespace LatticeTester {
 
       RealRed logDensity;
 
+      // The primal lattice density is assumed to be m^k, and m^{-k} for the dual.
       if (dualF) // dual basis 
         logDensity = - m_order * NTL::log(this->m_modulo);
       else // primal basis

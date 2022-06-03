@@ -74,10 +74,10 @@ class Reducer;
  */
 template<typename Int, typename Real, typename RealRed>
 struct specReducer {
-	void redLLLNTLExact(Reducer<Int, Real, RealRed> &red, double fact);
-	void redBKZ(Reducer<Int, Real, RealRed> &red, double fact,
+	void redLLLNTLExact(Reducer<Int, Real, RealRed> &red, double delta);
+	void redBKZ(Reducer<Int, Real, RealRed> &red, double delta,
 			std::int64_t blocksize, PrecisionType precision, int dim);
-	void redLLLNTL(Reducer<Int, Real, RealRed> &red, double fact,
+	void redLLLNTL(Reducer<Int, Real, RealRed> &red, double delta,
 			PrecisionType precision, int dim);
 };
 /// \endcond
@@ -284,7 +284,7 @@ private:
 	 */
 	struct specReducer<Int, Real, RealRed> spec;
 
-	/**
+	/*
 	 * Method used in `ShortestVector` to perform a transformation of
 	 * stage 3 described in \cite rAFF85a. Assumes that
 	 * \f$\sum_{i=1}^t z_i V_i\f$ is a
@@ -292,10 +292,12 @@ private:
 	 * by looking for indices \f$i < j\f$ such that \f$|z_j| > 1\f$ and
 	 * \f$q=\lfloor z_i/z_j\rfloor\not0\f$, and adding \f$q V_i\f$ to
 	 * \f$V_j\f$ when this happens. Returns in \f$k\f$ the last index
-	 * \f$j\f$ such that \f$|z_j|=1\f$. **This method does not change the
-	 * dual.
-	 */
-	void transformStage3(std::vector<std::int64_t> &z, int &k);
+	 * \f$j\f$ such that \f$|z_j|=1\f$.
+	 *   **This method does not change the m-dual.
+	 *   **It is probably useless for SV, because we have a guaranteed SV anyway.
+
+	void transformStage3ShortVec(std::vector<std::int64_t> &z, int &k);
+     */
 
 	/**
 	 * Method used in `reductMinkowski` to perform a transformation of
@@ -307,7 +309,7 @@ private:
 	 * \f$V_j\f$ when this happens. Returns in \f$k\f$ the last index
 	 * \f$j\f$ such that \f$|z_j|=1\f$. **This method updates the dual.**
 	 */
-	void transformStage3Min(std::vector<std::int64_t> &z, int &k);
+	void transformStage3Mink(std::vector<std::int64_t> &z, int &k);
 
 	/**
 	 * Performs pairwise reductions. This method tries to reduce each basis
@@ -331,27 +333,27 @@ private:
 	 * Tries to shorten the vectors of the primal basis using
 	 * branch-and-bound, in `reductMinkowski`.
 	 */
-	bool redBB(int i, int d, int Stage, bool &smaller, bool xx[] = NULL);
+	bool redBBMink(int i, int d, int Stage, bool &smaller, bool xx[] = NULL);
 
 	/**
 	 * Tries to shorten the smallest vector of the primal basis using
 	 * branch-and-bound, in `ShortestVector`.
 	 */
-	bool redBB0(NormType norm);
+	bool redBBShortVec(NormType norm);
 
 	/**
 	 * Tries to find shorter vectors in `reductMinkowski`.
 	 */
-	bool tryZ(int j, int i, int Stage, bool &smaller, const IntMat &WTemp);
+	bool tryZMink(int j, int i, int Stage, bool &smaller, const IntMat &WTemp);
 
 	/**
 	 * Tries to find a shorter vector in `shortestVector`.
 	 */
-	bool tryZ0(int j, bool &smaller);
+	bool tryZShortVec(int j, bool &smaller);
 
 	/**
-	 * Finds a Choleski decomposition of the basis. Returns in `C0` the
-	 * elements of the upper triangular matrix of the Choleski
+	 * Finds a Cholesky decomposition of the basis. Returns in `C0` the
+	 * elements of the upper triangular matrix of the Cholesky
 	 * decomposition that are above the diagonal. Returns in `DC2` the
 	 * squared elements of the diagonal.
 	 */
@@ -359,8 +361,7 @@ private:
 
 	/**
 	 * Permutes the \f$i^{th}\f$ and the \f$j^{th}\f$ line, and the
-	 * \f$i^{th}\f$ and the \f$j^{th}\f$ column of the scalar product’s
-	 * matrix.
+	 * \f$i^{th}\f$ and the \f$j^{th}\f$ column of the scalar products matrix.
 	 */
 	void permuteGramVD(int i, int j, int n);
 
@@ -371,8 +372,7 @@ private:
 	void calculCholeski2LLL(int n, int j);
 
 	/**
-	 * Recalculates the entry (\f$i\f$, \f$j\f$) of the Cholesky matrix
-	 * of order 2.
+	 * Recalculates the entry (\f$i\f$, \f$j\f$) of the Cholesky matrix of order 2.
 	 */
 	void calculCholeski2Ele(int i, int j);
 	void miseAJourGramVD(int j);
@@ -380,7 +380,7 @@ private:
 
 	/**
 	 * Reduce the Cholesky matrix with adding a multiple of the i-th vector
-	 * to the j-th vector. It updates the Gram Schmidt matrix
+	 * to the j-th vector. It updates the Gram-Schmidt matrix
 	 */
 	void reductionFaible(int i, int j);
 
@@ -391,7 +391,7 @@ private:
 	 * we stop the reduction immediately and reject this lattice since
 	 * we already know that its shortest vector is too small.
 	 *
-	 * This is used in `RedBB0`, and really used by the seek procedure in LatMRG.
+	 * This is used in `RedBBShortVec`, and useful for the seek procedure in LatMRG.
 	 *   ** MOVE IT TO THERE ? **
 	 * Note that we could also just check this after the BKZ reduction and after the BB,
 	 * in the seek procedures.
@@ -427,20 +427,20 @@ private:
 	/**
 	 * Whenever the number of nodes in the branch-and-bound tree exceeds
 	 * <tt>MINK_LLL</tt> in the method <tt>reductMinkowski</tt>,
-	 * `PreRedLLLRM` is automatically set to `true` for the next call;
+	 * `PreRedLLLMink` is automatically set to `true` for the next call;
 	 * otherwise it is set to `false`.
 	 */
 	static const std::int64_t MINK_LLL = 500000;
 
 	/**
-	 * Pre-reduction flag for `reductMinkowski` (RM).
-	 * When true, LLL is performed automatically at certain steps of RM.
+	 * Pre-reduction flag for `reductMinkowski`.
+	 * When true, LLL is performed automatically at certain steps of the reduction.
 	 */
-	static bool PreRedLLLRM;
+	static bool PreRedLLLMink;
 
 	/* These other boolean variables are no longer used i this class.
 	 * They were indicating which type of pre-reduction is to be
-	 * performed for `ShortestVector` (SV) and for `reductMinkowski` (RM).
+	 * performed for `ShortestVector` (SV).
 	 * `Dieter` means the pairwise pre-reduction as in the method `PreRedDieter`.
 	 * `LLL` means the LLL reduction of Lenstra, Lenstra, and Lovász. The
 	 * variable `PreRedDieterSV` was originally set to `true` and the two others
@@ -456,12 +456,11 @@ private:
 	 * Work class variables.
 	 */
 	Int m_bs;
-	IntVec m_bv;            // Saves shorter vector in primal basis
-	IntVec m_bw;            // Saves shorter vector in dual basis
-
-	Real m_lMin;          // The norm of the shorter vector in the primal basis
+	IntVec m_bv;          // Saves current shorter vector in primal basis
+	IntVec m_bw;          // Saves current shorter vector in dual basis
+	Real m_lMin;          // The norm of the shortest vector in the primal basis
 	                      // according to the norm considered
-	Real m_lMin2;         // The norm of the shorter vector in the primal basis
+	Real m_lMin2;         // The squared norm of the shortest vector in the primal basis
 	                      // according to the norm L2
 	Real m_ns;
 	RealVec m_nv;
@@ -495,22 +494,21 @@ private:
 /// \cond specReducerSpec
 // Structure specialization
 
-// Specialization for the case LLXX
+// Specialization for the case LLxx
 template<typename Real, typename RealRed>
-struct specReducer<std::int64_t, std::int64_t, Real, RealRed> {
+struct specReducer<std::int64_t, Real, RealRed> {
 
-	void redLLLNTLExact(Reducer<std::int64_t, std::int64_t, Real, RealRed> &red,
-			double fact) {
+	void redLLLNTLExact(Reducer<std::int64_t, Real, RealRed> &red,
+			double delta) {
 		std::cout
 				<< "**** WARNING redLLLNTLExact cannot be used with integers (std::int64_t)\n";
 		std::cout
-				<< "**** in NTL nor without NTL. LLL reduction is used with our algorithm \n";
-		std::cout << "**** redLLL which does not do the same thing.\n";
-		red.redLLL(fact, 1000000, red.getIntLatticeBasis()->getDim());
+				<< "**** in NTL nor without NTL. We are now using redLLL instead.\n";
+		red.redLLL(delta, 1000000, red.getIntLatticeBasis()->getDim());
 	}
 
-	void redBKZ(Reducer<std::int64_t, std::int64_t, Real, RealRed> &red,
-			double fact, std::int64_t blocksize, PrecisionType precision,
+	void redBKZ(Reducer<std::int64_t, Real, RealRed> &red,
+			double delta, std::int64_t blocksize, PrecisionType precision,
 			int dim) {
 		IntLatticeBase<std::int64_t, std::int64_t, Real, RealRed> *lattmp = 0;
 		if (dim > 0) {
@@ -525,7 +523,7 @@ struct specReducer<std::int64_t, std::int64_t, Real, RealRed> {
 		std::cout
 				<< "**** performed with the algorithm redLLL which does not do the same thing.\n";
 		std::cout << std::endl;
-		red.redLLL(fact, 1000000, red.getIntLatticeBasis()->getDim());
+		red.redLLL(delta, 1000000, red.getIntLatticeBasis()->getDim());
 		if (dim > 0)
 			delete lattmp;
 	}
@@ -535,7 +533,7 @@ struct specReducer<std::int64_t, std::int64_t, Real, RealRed> {
 	 * If it is, we should reimplement our LLL to match what is done in NTL.
 	 * */
 	void redLLLNTL(Reducer<std::int64_t, std::int64_t, Real, RealRed> &red,
-			double fact, PrecisionType precision, int dim) {
+			double delta, PrecisionType precision, int dim) {
 		IntLatticeBase<NTL::ZZ, NTL::ZZ, Real, RealRed> *lattmp = 0;
 		NTL::matrix<std::int64_t> basis = red.getIntLatticeBasis()->getBasis();
 		NTL::mat_ZZ U;
@@ -551,16 +549,16 @@ struct specReducer<std::int64_t, std::int64_t, Real, RealRed> {
 
 		switch (precision) {
 		case DOUBLE:
-			LLL_FP(lattmp->getBasis(), U, fact, 0, 0);
+			LLL_FP(lattmp->getBasis(), U, delta, 0, 0);
 			break;
 		case QUADRUPLE:
-			LLL_QP(lattmp->getBasis(), U, fact, 0, 0);
+			LLL_QP(lattmp->getBasis(), U, delta, 0, 0);
 			break;
 		case EXPONENT:
-			LLL_XD(lattmp->getBasis(), U, fact, 0, 0);
+			LLL_XD(lattmp->getBasis(), U, delta, 0, 0);
 			break;
 		case ARBITRARY:
-			LLL_RR(lattmp->getBasis(), U, fact, 0, 0);
+			LLL_RR(lattmp->getBasis(), U, delta, 0, 0);
 			break;
 		case EXACT:
 			break;
@@ -582,7 +580,7 @@ struct specReducer<std::int64_t, std::int64_t, Real, RealRed> {
 	}
 	/*
 	 * void redLLLNTL(Reducer<std::int64_t, std::int64_t, Real, RealRed>& red,
-	 *     double fact, PrecisionType precision, int dim)
+	 *     double delta, PrecisionType precision, int dim)
 	 * {
 	 *   IntLatticeBase<std::int64_t, std::int64_t, Real, RealRed> *lattmp = 0;
 	 *   if(dim > 0){
@@ -596,23 +594,23 @@ struct specReducer<std::int64_t, std::int64_t, Real, RealRed> {
 	 *   std::cout << "**** (LLDD) and requires ZZ type. Instead, LLL reduction is performed\n";
 	 *   std::cout << "**** with our algorithm which can be much slower.\n";
 	 *   std::cout << std::endl;
-	 *   red.redLLL(fact, 1000000, red.getIntLatticeBasis()->getDim ());
+	 *   red.redLLL(delta, 1000000, red.getIntLatticeBasis()->getDim ());
 	 *   if (dim>0) delete lattmp;
 	 * }
 	 * */
 };
 
-// Specialization for the case ZZXX
+// Specialization for the case ZZxx
 template<typename Real, typename RealRed>
 struct specReducer<NTL::ZZ, NTL::ZZ, Real, RealRed> {
 
 	void redLLLNTLExact(Reducer<NTL::ZZ, NTL::ZZ, Real, RealRed> &red,
-			double fact) {
+			double delta) {
 		NTL::ZZ det(0);
 		NTL::LLL(det, red.getIntLatticeBasis()->getBasis(), 99999, 100000);
 	}
 
-	void redBKZ(Reducer<NTL::ZZ, NTL::ZZ, Real, RealRed> &red, double fact,
+	void redBKZ(Reducer<NTL::ZZ, NTL::ZZ, Real, RealRed> &red, double delta,
 			std::int64_t blocksize, PrecisionType precision, int dim) {
 		IntLatticeBase<NTL::ZZ, NTL::ZZ, Real, RealRed> *lattmp = 0;
 		if (dim > 0) {
@@ -627,16 +625,16 @@ struct specReducer<NTL::ZZ, NTL::ZZ, Real, RealRed> {
 
 		switch (precision) {
 		case DOUBLE:
-			NTL::BKZ_FP(lattmp->getBasis(), U, fact, blocksize);
+			NTL::BKZ_FP(lattmp->getBasis(), U, delta, blocksize);
 			break;
 		case QUADRUPLE:
-			NTL::BKZ_QP(lattmp->getBasis(), U, fact, blocksize);
+			NTL::BKZ_QP(lattmp->getBasis(), U, delta, blocksize);
 			break;
 		case EXPONENT:
-			NTL::BKZ_XD(lattmp->getBasis(), U, fact, blocksize);
+			NTL::BKZ_XD(lattmp->getBasis(), U, delta, blocksize);
 			break;
 		case ARBITRARY:
-			NTL::BKZ_RR(lattmp->getBasis(), U, fact, blocksize);
+			NTL::BKZ_RR(lattmp->getBasis(), U, delta, blocksize);
 			break;
 		default:
 			MyExit(1, "BKZ PrecisionType:   NO SUCH CASE");
@@ -648,7 +646,7 @@ struct specReducer<NTL::ZZ, NTL::ZZ, Real, RealRed> {
 			delete lattmp;
 	}
 
-	void redLLLNTL(Reducer<NTL::ZZ, NTL::ZZ, Real, RealRed> &red, double fact,
+	void redLLLNTL(Reducer<NTL::ZZ, NTL::ZZ, Real, RealRed> &red, double delta,
 			PrecisionType precision, int dim) {
 		IntLatticeBase<NTL::ZZ, NTL::ZZ, Real, RealRed> *lattmp = 0;
 		if (dim > 0) {
@@ -658,7 +656,7 @@ struct specReducer<NTL::ZZ, NTL::ZZ, Real, RealRed> {
 		} else
 			lattmp = red.getIntLatticeBasis();
 		if (precision == EXACT)
-			red.redLLLNTLExact(fact);
+			red.redLLLNTLExact(delta);
 		else {
 			NTL::mat_ZZ U;
 			U.SetDims(lattmp->getBasis().NumRows(),
@@ -666,16 +664,16 @@ struct specReducer<NTL::ZZ, NTL::ZZ, Real, RealRed> {
 
 			switch (precision) {
 			case DOUBLE:
-				LLL_FP(lattmp->getBasis(), U, fact, 0, 0);
+				LLL_FP(lattmp->getBasis(), U, delta, 0, 0);
 				break;
 			case QUADRUPLE:
-				LLL_QP(lattmp->getBasis(), U, fact, 0, 0);
+				LLL_QP(lattmp->getBasis(), U, delta, 0, 0);
 				break;
 			case EXPONENT:
-				LLL_XD(lattmp->getBasis(), U, fact, 0, 0);
+				LLL_XD(lattmp->getBasis(), U, delta, 0, 0);
 				break;
 			case ARBITRARY:
-				LLL_RR(lattmp->getBasis(), U, fact, 0, 0);
+				LLL_RR(lattmp->getBasis(), U, delta, 0, 0);
 				break;
 			case EXACT:
 				break;
@@ -696,14 +694,14 @@ struct specReducer<NTL::ZZ, NTL::ZZ, Real, RealRed> {
 //===========================================================================
 
 // Initialization of non-const static members
+//template<typename Int, typename Real, typename RealRed>
+//bool Reducer<Int, Real, RealRed>::PreRedDieterSV = false;
+//template<typename Int, typename Real, typename RealRed>
+//bool Reducer<Int, Real, RealRed>::PreRedLLLSV = false;
 template<typename Int, typename Real, typename RealRed>
-bool Reducer<Int, Real, RealRed>::PreRedDieterSV = false;
-template<typename Int, typename Real, typename RealRed>
-bool Reducer<Int, Real, RealRed>::PreRedLLLSV = false;
-template<typename Int, typename Real, typename RealRed>
-bool Reducer<Int, Real, RealRed>::PreRedLLLRM = false;
-template<typename Int, typename Real, typename RealRed>
-bool Reducer<Int, Real, RealRed>::PreRedBKZ = true;
+bool Reducer<Int, Real, RealRed>::PreRedLLLMink = false;
+//template<typename Int, typename Real, typename RealRed>
+//bool Reducer<Int, Real, RealRed>::PreRedBKZ = true;
 template<typename Int, typename Real, typename RealRed>
 std::int64_t Reducer<Int, Real, RealRed>::maxNodesBB = 1000000000;
 
@@ -1259,30 +1257,30 @@ void Reducer<Int, Real, RealRed>::reductionFaible(int i, int j)
 //=========================================================================
 
 template<typename Int, typename Real, typename RealRed>
-void Reducer<Int, Real, RealRed>::redLLLNTLExact(double fact) {
-	spec.redLLLNTLExact(*this, fact);
+void Reducer<Int, Real, RealRed>::redLLLNTLExact(double delta) {
+	spec.redLLLNTLExact(*this, delta);
 }
 
 //=========================================================================
 
 template<typename Int, typename Real, typename RealRed>
-void Reducer<Int, Real, RealRed>::redBKZ(double fact, std::int64_t blocksize,
+void Reducer<Int, Real, RealRed>::redBKZ(double delta, std::int64_t blocksize,
 		PrecisionType precision, int dim) {
-	spec.redBKZ(*this, fact, blocksize, precision, dim);
+	spec.redBKZ(*this, delta, blocksize, precision, dim);
 }
 
 //=========================================================================
 
 template<typename Int, typename Real, typename RealRed>
-void Reducer<Int, Real, RealRed>::redLLLNTL(double fact,
+void Reducer<Int, Real, RealRed>::redLLLNTL(double delta,
 		PrecisionType precision, int dim) {
-	spec.redLLLNTL(*this, fact, precision, dim);
+	spec.redLLLNTL(*this, delta, precision, dim);
 }
 
 //=========================================================================
 
 template<typename Int, typename Real, typename RealRed>
-void Reducer<Int, Real, RealRed>::redLLL(double fact, std::int64_t maxcpt,
+void Reducer<Int, Real, RealRed>::redLLL(double delta, std::int64_t maxcpt,
 		int Max)
 		/*
 		 * Effectue la pre-reduction de B au sens de Lenstra-Lenstra-Lovasz. N'utilise
@@ -1329,7 +1327,7 @@ void Reducer<Int, Real, RealRed>::redLLL(double fact, std::int64_t maxcpt,
 
 		if (m_cho2(h + 1, h + 1) / m_cho2(h, h)
 				+ (m_cho2(h, h + 1) / m_cho2(h, h))
-						* (m_cho2(h, h + 1) / m_cho2(h, h)) < fact) {
+						* (m_cho2(h, h + 1) / m_cho2(h, h)) < delta) {
 			++cpt;
 
 			m_lat->permuteNoDual(h, h + 1);
@@ -1389,7 +1387,7 @@ void Reducer<Int, Real, RealRed>::redLLL(double fact, std::int64_t maxcpt,
 //=========================================================================
 
 template<typename Int, typename Real, typename RealRed>
-void Reducer<Int, Real, RealRed>::transformStage3Min(
+void Reducer<Int, Real, RealRed>::transformStage3Mink(
 		std::vector<std::int64_t> &z, int &k) {
 	int j, i;
 	std::int64_t q;
@@ -1437,8 +1435,9 @@ void Reducer<Int, Real, RealRed>::transformStage3Min(
 
 //=========================================================================
 
+/*
 template<typename Int, typename Real, typename RealRed>
-void Reducer<Int, Real, RealRed>::transformStage3(std::vector<std::int64_t> &z,
+void Reducer<Int, Real, RealRed>::transformStage3ShortVec(std::vector<std::int64_t> &z,
 		int &k) {
 	int j, i;
 	std::int64_t q;
@@ -1483,11 +1482,12 @@ void Reducer<Int, Real, RealRed>::transformStage3(std::vector<std::int64_t> &z,
 	}
 	k = j;
 }
+*/
 
 //=========================================================================
 
 template<typename Int, typename Real, typename RealRed>
-bool Reducer<Int, Real, RealRed>::tryZ(int j, int i, int Stage, bool &smaller,
+bool Reducer<Int, Real, RealRed>::tryZMink(int j, int i, int Stage, bool &smaller,
 		const IntMat &WTemp)
 		// If m_countNodes > MaxNodesBB, returns false, otherwise returns true.
 		{
@@ -1517,6 +1517,7 @@ bool Reducer<Int, Real, RealRed>::tryZ(int j, int i, int Stage, bool &smaller,
 			center = center - m_c0(j, k) * m_zLR[k];
 
 		// Distance du centre aux extremites de l'intervalle.
+		// We use the L2 norm for this, since other norms are not allowed.
 		dc = sqrt((m_lMin2 - m_n2[j]) / m_dc2[j]);
 
 		/* Calcul de deux entiers ayant la propriete qu'un entier */
@@ -1606,7 +1607,7 @@ bool Reducer<Int, Real, RealRed>::tryZ(int j, int i, int Stage, bool &smaller,
 				if (S1 < S4) {
 					if (Stage == 2) {
 						smaller = true;
-						if (!PreRedLLLRM)
+						if (!PreRedLLLMink)
 							m_zShort = m_zLI;
 						else {
 							for (k = 1; k < dim; k++) {
@@ -1617,7 +1618,7 @@ bool Reducer<Int, Real, RealRed>::tryZ(int j, int i, int Stage, bool &smaller,
 							}
 							m_zShort[dim - 1] = 1;
 						}
-					} else if (Stage == 3 && !PreRedLLLRM) {
+					} else if (Stage == 3 && !PreRedLLLMink) {
 						if (GCD2vect(m_zLI, i, dim) == 1) {
 							m_zShort = m_zLI;
 							smaller = true;
@@ -1643,7 +1644,7 @@ bool Reducer<Int, Real, RealRed>::tryZ(int j, int i, int Stage, bool &smaller,
 		} else { // j > 0
 			m_n2[j - 1] = m_n2[j] + x * x * m_dc2[j];
 			if (m_lMin2 >= m_n2[j - 1]) {
-				if (!tryZ(j - 1, i, Stage, smaller, WTemp))
+				if (!tryZMink(j - 1, i, Stage, smaller, WTemp))
 					return false;
 				// Des qu'on a trouve quelque chose, on sort de la recursion
 				// et on retourne dans reductMinkowski.
@@ -1667,14 +1668,14 @@ bool Reducer<Int, Real, RealRed>::tryZ(int j, int i, int Stage, bool &smaller,
 //=========================================================================
 
 template<typename Int, typename Real, typename RealRed>
-bool Reducer<Int, Real, RealRed>::redBB(int i, int d, int Stage, bool &smaller,
+bool Reducer<Int, Real, RealRed>::redBBMink(int i, int d, int Stage, bool &smaller,
 		bool xx[])
 		/*
 		 * Tries to shorten m_lat->getBasis()[i] using branch-and-bound.
 		 * Used in Minkowski Reduction.
 		 * Stage is 2 or 3.
 		 * z[i] = 1 if Stage = 2, z[i] >= 2 if Stage = 3.
-		 * Stops and returns false if not finished after examining MaxNodes
+		 * Stops and returns false if not finished after examining MaxNodesBB
 		 * nodes in the branch-and-bound tree.  When succeeds, returns true.
 		 * Assumes that the norm is Euclidean.
 		 */
@@ -1684,10 +1685,10 @@ bool Reducer<Int, Real, RealRed>::redBB(int i, int d, int Stage, bool &smaller,
 	IntMat VTemp(dim, dim), WTemp(dim, dim);
 	bool XXTemp[dim];
 	Real tmp;
-	// trace( "AVANT redBB");
+	// trace( "AVANT redBBMink");
 	smaller = false;
 
-	// Approximation du carre de la std::int64_tueur de Vi.
+	// Approximation du carre de la longueur de Vi.
 	if (m_lat->getVecNorm(i) < 0) {
 		NTL::matrix_row<IntMat> row1(m_lat->getBasis(), i);
 		ProdScal<Int>(row1, row1, dim, tmp);
@@ -1720,7 +1721,7 @@ bool Reducer<Int, Real, RealRed>::redBB(int i, int d, int Stage, bool &smaller,
 
 	int k, h;
 
-	if (PreRedLLLRM) {
+	if (PreRedLLLMink) {
 		// On memorise la base courante.
 		VTemp = m_lat->getBasis();
 		if (withDual) {
@@ -1738,10 +1739,10 @@ bool Reducer<Int, Real, RealRed>::redBB(int i, int d, int Stage, bool &smaller,
 		return false;
 	m_countNodes = 0;
 	m_n2[dim - 1] = 0.0;
-	if (!tryZ(dim - 1, i, Stage, smaller, WTemp))
+	if (!tryZMink(dim - 1, i, Stage, smaller, WTemp))
 		return false;
 
-	if (PreRedLLLRM) {
+	if (PreRedLLLMink) {
 		/* On remet l'anciennne base, celle d'avant LLL, avant de considerer
 		 la prochaine m_lat->dimension.  */
 		m_lat->getBasis() = VTemp;
@@ -1759,7 +1760,7 @@ bool Reducer<Int, Real, RealRed>::redBB(int i, int d, int Stage, bool &smaller,
 		if (Stage == 2)
 			k = dim - 1;
 		else
-			transformStage3Min(m_zShort, k);
+			transformStage3Mink(m_zShort, k);
 		NTL::matrix_row<IntMat> row1(m_lat->getBasis(), k);
 		for (h = 0; h < dim; h++)
 			row1(h) = m_bv[h];
@@ -1789,30 +1790,31 @@ bool Reducer<Int, Real, RealRed>::redBB(int i, int d, int Stage, bool &smaller,
 		xx[dim - 1] = true;
 
 	m_lat->permute(i, dim - 1);
-	// trace( "APRES redBB");
+	// trace( "APRES redBBMink");
 	return true;
 }
 
 //=========================================================================
 
 template<typename Int, typename Real, typename RealRed>
-bool Reducer<Int, Real, RealRed>::tryZ0(int j, bool &smaller)
+bool Reducer<Int, Real, RealRed>::tryZShortVec(int j, bool &smaller)
 /*
- * Procedure recursive implantant le BB pour shortestVector (redBB0).
- * Si m_countNodes > MaxNodes, retourne false.
+ * This procedure uses the Cholesky decomposition and assumes the L2 norm!
+ * Procedure recursive implantant le BB pour shortestVector (redBBShortVec).
+ * Si m_countNodes > MaxNodesBB, retourne false.
  * Sinon, retourne true: on a trouve le plus court vecteur.
- * Le carre de la std::int64_tueur du plus court vecteur a date est dans m_lMin2.
+ * Le carre de la longueur du plus court vecteur a date est dans m_lMin2.
  * Si j=1 et on trouve un plus court vecteur, on retrouve les zj
  * correspondants dans m_zShort.
  */
 {
 	/* Note: Pour une implantation non recursive, ces variables devraient
-	 etre des tableaux indices par j. */
+	   etre des tableaux indices par j. */
 	RealRed dc, x, center;
-	std::int64_t min0, max0;            // Bornes de l'intervalle pour les z_j.
+	std::int64_t min0, max0;           // Bornes de l'intervalle pour les z_j.
 	std::int64_t zlow, zhigh;          // Valeur courante examinee a gauche et a
 	// droite du centre.
-	bool high;                  // Indique si on est a d. ou g. du centre.
+	bool high;        // Indicates if we are on the right (true) or the left of the center.
 	int k;
 	std::int64_t temp;
 
@@ -1824,22 +1826,20 @@ bool Reducer<Int, Real, RealRed>::tryZ0(int j, bool &smaller)
 				<< std::endl;
 		return false;
 	}
-	/* Calcul d'un intervalle contenant les valeurs admissibles de zj. */
-	/* Calcul du centre de l'intervalle.  */
+	/* Compute an interval that contains the admissible values of zj. */
+	/* This computation is for the L2 norm!   */
+	/* 1. Compute the center of the interval.  */
 	center = 0.0;
 	for (k = j + 1; k < dim; ++k)
 		center -= m_c0(j, k) * m_zLR[k];
 
-	// Distance du centre aux extremites de l'intervalle.
-
+	// Distance from the center to the boundaries.
+	// Here we must use the square length of current shortest vector with the selected norm.
 	dc = sqrt((m_lMin2 - m_n2[j]) / m_dc2[j]);
 
-	/* Calcul de deux entiers ayant la propriete qu'un entier */
-	/* non-compris entre (i.e. strictement exterieur `a) ceux-ci */
-	/* n'appartient pas a l'intervalle.  */
-	/* Si NOT m_foundZero on pose min egal a zero par symetrie.  */
+	/* Compute two integers min0 and max0 such that are the min and max integers in the interval. */
 	if (!m_foundZero)
-		min0 = 0;
+		min0 = 0;     // We are at the beginning, min will be zero.
 	else {
 		x = center - dc;
 		NTL::conv(min0, trunc(x));
@@ -1851,7 +1851,7 @@ bool Reducer<Int, Real, RealRed>::tryZ0(int j, bool &smaller)
 	if (x < 0.0)
 		--max0;
 
-	// En vue du choix initial de zj. On determine zlow et zhigh.
+	// Compute initial values of zlow and zhigh, which are search pointers on each side of the interval.
 	if (min0 > max0)
 		return true;
 	if (min0 == max0) {
@@ -1870,8 +1870,7 @@ bool Reducer<Int, Real, RealRed>::tryZ0(int j, bool &smaller)
 		high = (temp & 1) == 0;
 	}
 
-	// On essaie maintenant chacun des z[j] dans l'intervalle, en
-	// commencant par le centre puis en alternant d'un cote a l'autre.
+	// We now try each zj in the interval, starting in the center and alternating between left and right.
 	while (zlow >= min0 || zhigh <= max0) {
 		if (high)
 			m_zLI[j] = zhigh;
@@ -1879,14 +1878,12 @@ bool Reducer<Int, Real, RealRed>::tryZ0(int j, bool &smaller)
 			m_zLI[j] = zlow;
 		m_zLR[j] = m_zLI[j];
 
-		// Calcul de m_n2[j-1], qui est normalise dans le cas SISquares.
+		// Computing m_n2[j-1], qui est normalise dans le cas SISquares.
 		x = m_zLR[j] - center;
-
 		if (j == 0) {
 			// Tous les zj sont choisis: on a un vecteur a tester.
 			if (m_lMin2 > m_n2[0] + x * x * m_dc2[0]) {
-				/* On verifie si on a vraiment trouve un vecteur */
-				/* non-nul et plus court.  */
+				/* Check if we have a shorter nonzero vector. */
 				if (!m_foundZero) {
 					// Le premier vecteur trouve sera zero.
 					m_foundZero = true;
@@ -1898,29 +1895,16 @@ bool Reducer<Int, Real, RealRed>::tryZ0(int j, bool &smaller)
 							ModifVect(m_bv, row1, m_zLI[k], dim);
 						}
 					}
-					// Le nouveau vecteur trouve est maintenant dans m_bv.
+					// The new vector is now in m_bv.
 					if (m_lat->getNorm() == L2NORM) {
 						ProdScal<Int>(m_bv, m_bv, dim, x);
 					} else {
-						CalcNorm<IntVec, RealRed>(m_bv, dim, x,
-								m_lat->getNorm());
+						// DOES THIS REALLY WORK FOR THE L1 NORM?  ARE THE SEARCH INTERVALS VALID?
+						CalcNorm<IntVec, RealRed>(m_bv, dim, x,	m_lat->getNorm());
 						x = x * x;
 					}
 					if (x < m_lMin2) {
-						/* La condition suivante ralentit le programme; je l'ai mise donc en
-						 commentaire. Il est très rare qu'elle soit effective et permette de sortir
-						 prématurément, et seulement pour de grandes dimensions dans le cas L2NORM.
-						 Mais on doit la tester à chaque passage ici, et la std::int64_tueur des candidats
-						 plus courts diminue lentement.
-						 Il se pourrait que ce soit parfois plus rapide dans le cas L1NORM,
-						 dépendant de la dimension. Mais L2NORM est primordial. */
-						/*
-						 if (x <= m_BoundL2[dim]) {
-						 return false;
-						 }
-						 */
-
-						// Il est plus court!
+						// The new vector is shorter.
 						smaller = true;
 						NTL::conv(m_lMin2, x);
 						m_zShort = m_zLI;
@@ -1929,9 +1913,9 @@ bool Reducer<Int, Real, RealRed>::tryZ0(int j, bool &smaller)
 				}
 			}
 		} else if (m_lMin2 > m_n2[j] + x * x * m_dc2[j]) {
-			// Encore de l'espoir: recursion.
+			// There is still hope; we continue the recursion.
 			m_n2[j - 1] = m_n2[j] + x * x * m_dc2[j];
-			if (!tryZ0(j - 1, smaller))
+			if (!tryZShortVec(j - 1, smaller))
 				return false;
 		} else
 			m_n2[j - 1] = m_n2[j] + x * x * m_dc2[j];
@@ -1952,34 +1936,33 @@ bool Reducer<Int, Real, RealRed>::tryZ0(int j, bool &smaller)
 //=========================================================================
 
 template<typename Int, typename Real, typename RealRed>
-bool Reducer<Int, Real, RealRed>::redBB0(NormType norm)
+bool Reducer<Int, Real, RealRed>::redBBShortVec(NormType norm)
 /*
- * Finds shortest non-zero vector, using branch-and-bound. Stops and returns
- * false if not finished after examining MaxNodes nodes in the
+ * Finds shortest non-zero vector, using branch-and-bound, with L1 or L2 norm.
+ * Stops and returns false if not finished after examining MaxNodesBB nodes in the
  * branch-and-bound tree.  When succeeds, returns true, and the shortest
- * vector square length will be in m_lMin2.
+ * vector length (squared if L2 norm) will be in m_lMin2.
  */
 {
-
-	bool smaller = false;
+	if ((norm != L1NORM) & (norm != L2NORM)) {
+		std::cerr << "RedBBShortVec: this norm is not supported";
+		return false
+	}
+	bool smaller = false;  // Found a smaller vector?
 	int k, h;
-	const int dim = m_lat->getDim();
-
+	const int dim = m_lat->getDim();  // Lattice dimension
 	RealRed x;
-	/* We sort here to get same results as in xds98 version. Otherwise,
-	 Cholesky will fail more rapidly due to floating-point errors. We do
-	 not sort after redLLL because this greatly slows down the program in
-	 the case of the L2 Norm. */
-
+	/* We sort the basis here, otherwise Cholesky will fail more rapidly due to floating-point errors. */
 	m_lat->updateScalL2Norm(0, dim);
-	if (m_countNodes < SHORT_LLL)
-		m_lat->sortNoDual(0);
+    m_lat->sortNoDual(0);
+
+    zzzzz
 
 	/* Approximation de la norme du plus court vecteur. */
 	if (norm == L2NORM) {
 		NTL::conv(m_lMin2, m_lat->getVecNorm(0));
 	} else {
-		// Looking for the min of of the vecteur according to the considered norm
+		// Looking for the shortest vector in basis according to the considered norm
 		NTL::matrix_row<IntMat> row1(m_lat->getBasis(), 0);
 		CalcNorm<IntVec, Real>(row1, dim, m_lMin, norm);
 		for (k = 1; k < dim; k++) {
@@ -1988,44 +1971,38 @@ bool Reducer<Int, Real, RealRed>::redBB0(NormType norm)
 			if (x < m_lMin)
 				m_lMin = x;
 		}
-		m_lMin2 = m_lMin * m_lMin;
+		m_lMin2 = m_lMin * m_lMin;  // Squared shortest length.
 	}
 
-	if (m_lMin2 <= m_BoundL2[dim - 1]) {
-
-		/* If there is in this lattice a vector that are shorter than the shortest
-		 of the current lattice, we don't need to find the shortest vector in this
-		 lattice. Use only in seek function
-
-		 S'il existe dans ce réseau un vecteur de std::int64_tueur plus courte que celle
-		 du meilleur réseau trouvé à date, il n'est pas nécessaire de trouver le
-		 plus court vecteur de ce réseau: on peut l'éliminer immédiatement. */
-
+	/* If we already have a shorter vector than the minimum length allowed, we can stop right away.
+	 * This is used in the seek programs in LatMRG.
+	 */
+	if (m_lMin2 <= m_BoundL2[dim - 1])
 		return false;
-	}
 
+    /* Perform the Cholesky decomposition; if it fails we exit. */
 	if (!calculCholeski(m_dc2, m_c0))
 		return false;
 
-	/* On effectue le branch and bound.  */
+	/* Perform the branch and bound.  */
 	/* m_n2[j] sera la somme des termes |z*k|^2 ||v*k||^2 pour k > j.  */
 	m_n2[dim - 1] = 0.0;
 	m_countNodes = 0;
 	smaller = false;
 	m_foundZero = false;
-	if (!tryZ0(dim - 1, smaller))
+	if (!tryZShortVec(dim - 1, smaller))
 		return false;
 
 	if (smaller) {
 		// We have found a shorter vector. Its square length is in m_lMin2.
-		transformStage3(m_zShort, k);
+	    transformStage3ShortVec(m_zShort, k);    // Is this useless ???
 		NTL::matrix_row<IntMat> row1(m_lat->getBasis(), k);
 		for (h = 0; h < dim; h++)
-			row1(h) = m_bw[h];
-		m_lat->setNegativeNorm(k);
+			  row1(h) = m_bw[h];
+	    m_lat->setNegativeNorm(k);
 
 		/* The new candidate for a shortest vector will be in
-		 m_lat->getBasis()(0). */
+		   m_lat->getBasis()(0). */
 		/* In the case of L1NORM or others, check that it is really smaller.  */
 		if (norm == L2NORM)
 			m_lat->permuteNoDual(k, 0);
@@ -2044,6 +2021,7 @@ bool Reducer<Int, Real, RealRed>::redBB0(NormType norm)
 
 //=========================================================================
 
+// This works only for the L2 norm.
 template<typename Int, typename Real, typename RealRed>
 bool Reducer<Int, Real, RealRed>::reductMinkowski(int d) {
 	bool withDual = m_lat->withDual();
@@ -2051,8 +2029,8 @@ bool Reducer<Int, Real, RealRed>::reductMinkowski(int d) {
 	int i;
 	std::int64_t totalNodes = 0;
 	bool found;
-	bool smaller;               // A smaller vector has been found
-	bool xx[dim];               // This has a use, I just don't know which
+	bool smaller;          // A smaller vector has been found
+	bool xx[dim];          // xx[i]=true means that vector i should not be modified.
 
 	do {
 		// The first d vectors should not be modified.
@@ -2060,11 +2038,9 @@ bool Reducer<Int, Real, RealRed>::reductMinkowski(int d) {
 			xx[i] = true;
 		for (i = d; i < dim; i++)
 			xx[i] = false;
-
 		found = false;
-
 		do {
-			redDieter(d, xx);
+			redDieter(d, xx);  // Not so good... should be changed to BKZ!
 
 			m_lat->setNegativeNorm(d);
 			m_lat->updateVecNorm(d);
@@ -2078,7 +2054,7 @@ bool Reducer<Int, Real, RealRed>::reductMinkowski(int d) {
 			for (i = 0; i < dim; i++) {
 				if (!xx[i]) {
 					// On essaie de reduire le i-eme vecteur.
-					if (!redBB(i, d, 2, smaller, xx))
+					if (!redBBMink(i, d, 2, smaller, xx))
 						return false;
 					totalNodes += m_countNodes;
 					if (smaller) {
@@ -2086,12 +2062,11 @@ bool Reducer<Int, Real, RealRed>::reductMinkowski(int d) {
 					}
 				}
 			}
-
 		} while (found);
 		// Stage 3
 		if (dim > 7) {
 			for (i = d; i < dim; i++) {
-				if (!redBB(i, d, 3, smaller, xx))
+				if (!redBBMink(i, d, 3, smaller, xx))
 					return false;
 				totalNodes += m_countNodes;
 				if (smaller)
@@ -2112,29 +2087,26 @@ bool Reducer<Int, Real, RealRed>::reductMinkowski(int d) {
 
 //=========================================================================
 
+// On successful exit, the basis vectors are sorted by lengths and the norms are updated.
+// The (square) length of the shortest vector can be recovered in m_lMin2.
 template<typename Int, typename Real, typename RealRed>
-bool Reducer<Int, Real, RealRed>::shortestVector(NormType norm)
-// Square length of shortest vector can be recovered in m_lMin2
-		{
+bool Reducer<Int, Real, RealRed>::shortestVector(NormType norm) {
 
 	if (norm != L2NORM) {
 		m_lat->setNegativeNorm();
 	}
-
 	/* Find the shortest vector for the selected norm.  */
 	/* The L2 norm is used for the Choleski decomposition and BB bounds. */
 	bool ok;
 	if (norm == L1NORM || norm == L2NORM || norm == ZAREMBANORM) {
-		ok = redBB0(norm);
+		ok = redBBShortVec(norm);
 	} else {
 		ok = false;
-		std::cerr << "RedLattice::shortestVector:   wrong norm";
+		std::cerr << "RedLattice::shortestVector: this norm is not supported";
 		exit(3);
 	}
-
 	m_lat->updateVecNorm();
 	m_lat->sortNoDual(0);
-
 	return ok;
 }
 

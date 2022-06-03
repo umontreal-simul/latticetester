@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
-// LatticeTester
-// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2022  The LatticeTester authors, under the occasional supervision
+// of Pierre L'Ecuyer at Université de Montréal.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@
 #include "latticetester/Util.h"
 #include "latticetester/Coordinates.h"
 
-namespace LatticeTester {
+namespace LatticeTester {	
 
   template <typename IntMat>
     struct LLLConstr {
@@ -62,6 +62,7 @@ namespace LatticeTester {
  *   is possible that there are much more efficient ways to build a basis and its
  *   dual (and/or that those matrices will already be triangular).
  * */
+
 template<typename Int> class BasisConstruction{
 
   private:
@@ -70,11 +71,11 @@ template<typename Int> class BasisConstruction{
     struct LLLConstr<IntMat> spec;
 
   public:
+	  
     /**
      * This functions takes a set of generating vectors of a vector space and
-     * finds a basis for this space whilst applying LLL reduction. This is
-     * much faster than applying GCDConstruction, but it doesn't help building
-     * the dual.
+     * finds a basis for this space by applying LLL reduction, using the NTL implementation. 
+     * This is much faster than applying GCDConstruction, but it does not provide a triangular basis.
      * */
     void LLLConstruction(IntMat& matrix);
 
@@ -95,8 +96,8 @@ template<typename Int> class BasisConstruction{
      * After constructing this basis, the algorithm eliminates negative
      * coefficients in the matrix.
      *
-     * WATCH OUT. This function (and building mecanism) are very memory heavy
-     * has the numbers below the diagonal can grow very big.
+     * WATCH OUT. This function (and building mecanism) are very memory heavy,
+     * since the numbers below the diagonal can grow very big.
      * */
     void GCDConstruction(IntMat& matrix);
 

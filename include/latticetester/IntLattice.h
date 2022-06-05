@@ -50,8 +50,17 @@ namespace LatticeTester {
    * \f$\{x_i\}_{ 0 \leq i}\f$, a method to dualize the lattice
    * (exchange the basis with the m-dual basis),
    * and a virtual method that should be implemented in subclasses to
-   * recompute the basis for different numbers of dimensions.
+   * recompute the basis for different numbers of dimensions and subsets 
+   * of coordinates. 
    *
+   * The lattices considered here are assumed to have a special structure, which is used
+   * for the computation of the lattice density and the normaliation constants in the 
+   * figures of merit.  It is assumed that the lattice has rank \f$k\f$ and that the
+   * rescaling was done by multiplying the primal basis vectors by \f$m\f$.
+   * All the lattices considered in the LatMRG and LatNet Builder software tools 
+   * have this property. 
+   *  
+   * 
    * A lattice of rank \f$k\f$ with integer vectors modulo \f$m\f$ contains
    * \f$m^k\f$ distinct vectors (modulo $m$). If we divide the basis vectors by \f$m\f$,
    * this gives \f$m^k\f$ vectors per unit of volume, so \f$m^k\f$ is the density of the 
@@ -126,6 +135,8 @@ namespace LatticeTester {
            * (<tt>m_lgVolDual2</tt>) in all dimensions up to `MaxDim`, for this
            * lattice. Here, `lgm2` must be \f$\log_g m^2\f$ and the computed values are
            * those returned by `getLgVolDual2` below.
+           * These normalization contants are for the Euclidean norm only. 
+           * They are the log in base 2 of the 
            */
           void calcLgVolDual2 (double lgm2);
 
@@ -150,7 +161,8 @@ namespace LatticeTester {
            * lattice, otherwise they are computed for the primal lattice.
            * ** Done only once in a search? **  
            */
-          void fixLatticeNormalization (bool dualF);
+          void computeNormalConstants(bool dualF);
+          //  void fixLatticeNormalization (bool dualF);
 
           /**
            * Builds the basis (and perhaps m-dual basis) for the projection `proj` for this
@@ -258,16 +270,16 @@ namespace LatticeTester {
 
   template<typename Int, typename Real, typename RealRed>
       IntLattice<Int, Real, RealRed>::IntLattice (
-          const IntLattice<Int, Real, RealRed> & Lat):
-      IntLatticeBase<Int, Real, RealRed>(Lat)
+          const IntLattice<Int, Real, RealRed> & lat):
+      IntLatticeBase<Int, Real, RealRed>(lat)
   {
-    this->m_withDual = Lat.withDual();
-    m_order = Lat.m_order;
+    this->m_withDual = lat.withDual();
+    m_order = lat.m_order;
     init ();
-    m_vSI = Lat.m_vSI;
+    m_vSI = lat.m_vSI;
     if (this->m_withDual){
       this->setDualNegativeNorm();
-      m_wSI = Lat.m_wSI;
+      m_wSI = lat.m_wSI;
     }
   }
 
@@ -298,7 +310,6 @@ namespace LatticeTester {
       void IntLattice<Int, Real, RealRed>::kill ()
     {
       IntLatticeBase<Int, Real, RealRed>::kill();
-
       if (this->m_withDual){
         if (m_lgVolDual2 == 0)
           return;
@@ -306,7 +317,6 @@ namespace LatticeTester {
         m_lgVolDual2 = 0;
       }
       // m_vSI.clear();
-
     }
 
 
@@ -396,10 +406,11 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int, typename Real, typename RealRed>
-      void IntLattice<Int, Real, RealRed>::fixLatticeNormalization(
+      void IntLattice<Int, Real, RealRed>::computeNormalConstants(
           bool dualF)
     {
       // Normalization factor: dual to primal : m^(k/dim) -> 1/m^(k/dim)
+	  // This is the part of the normalization that depends on the lattice density.
       if (( dualF && m_lgVolDual2[1] < 0.0) ||
           (!dualF && m_lgVolDual2[1] > 0.0)) {
         for (int i = 0; i < this->getDim(); i++)

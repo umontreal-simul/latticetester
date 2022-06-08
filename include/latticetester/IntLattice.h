@@ -159,6 +159,7 @@ namespace LatticeTester {
            * the normalized merit from the shortest vectors in the lattice. If
            * `dualF` is `true`, the normalization constants are computed for the m-dual
            * lattice, otherwise they are computed for the primal lattice.
+           * Currently, this only computes the log of m^(k/dim) or its inverse. 
            * ** Done only once in a search? **  
            */
           void computeNormalConstants(bool dualF);
@@ -179,12 +180,15 @@ namespace LatticeTester {
           virtual void buildBasis (int dim);
 
           /**
-           * Creates and returns the normalizer corresponding to the normalization
-           * type `norma`. The argument `alpha` = \f$\alpha\f$ is used only for the 
+           * Creates and returns a Normalizer corresponding to the normalization
+           * type `norma` and the density of the current lattice. 
+           * The argument `alpha` = \f$\alpha\f$ is used only for the 
            * \f$P_{\alpha}\f$ measure. For all other cases, it is unused.
-           *  **  Replaced getNormalizer by  setNormaliser **
+           * The returned Normalizer is returned but not stored in this object.
+           * It contains the complete normalization constants for the number of dimensions
+           * of this lattice. 
            */
-          LatticeTester::Normalizer<RealRed> * setNormalizer (NormaType norma,
+          LatticeTester::Normalizer<RealRed> * getNormalizer (NormaType norma,
               int alpha, bool dualF);
 
           /**
@@ -500,7 +504,7 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int, typename Real, typename RealRed>
-      Normalizer<RealRed> * IntLattice<Int, Real, RealRed>::setNormalizer(
+      Normalizer<RealRed> * IntLattice<Int, Real, RealRed>::getNormalizer(
           NormaType norma, int alpha, bool dualF)
     {
       int dim = this->getDim();
@@ -514,6 +518,8 @@ namespace LatticeTester {
       else // primal basis
         logDensity = m_order * NTL::log(this->m_modulo);
 
+      // We create a normalizer normal for the given density, and return it.
+      // This normalizer is not stored in this object.
       switch (norma) {
         case BESTLAT:
           normal = new NormaBestLat<RealRed> (logDensity, dim);

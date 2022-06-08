@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
-// LatticeTester
-// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2022  The LatticeTester authors, under the occasional supervision
+// of Pierre L'Ecuyer at Université de Montréal.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -28,8 +28,8 @@ namespace LatticeTester {
    * \f$P_{\alpha}\f$ for a lattice (see class <tt>Palpha</tt>).
    *
    */
-  template<typename Int, typename RedDbl>
-    class NormaPalpha : public Normalizer<RedDbl> {
+  template<typename Int, typename RealRed>
+    class NormaPalpha : public Normalizer<RealRed> {
       public:
 
         /**
@@ -62,7 +62,7 @@ namespace LatticeTester {
          * void init (int alpha);
          * ''
          */
-        using Normalizer<RedDbl>::init;
+        using Normalizer<RealRed>::init;
 
         /**
          * Initializes the bounds for the Palpha normalization.
@@ -89,10 +89,10 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RedDbl>
-    NormaPalpha<Int, RedDbl>::NormaPalpha (const Int & m, int alpha, int s,
+  template<typename Int, typename RealRed>
+    NormaPalpha<Int, RealRed>::NormaPalpha (const Int & m, int alpha, int s,
         NormType norm):
-      Normalizer<RedDbl> (s, "Palpha", norm, 1.0)
+      Normalizer<RealRed> (s, "Palpha", norm, 1.0)
     {
       if (s > this->MAX_DIM)
         throw std::invalid_argument("NormaPalpha:   dimension > MAX_DIM");
@@ -102,8 +102,8 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename Int, typename RedDbl>
-    void NormaPalpha<Int, RedDbl>::init (int alpha)
+  template<typename Int, typename RealRed>
+    void NormaPalpha<Int, RealRed>::init (int alpha)
     /*
      * Computes the vector m_bounds that corresponds to the upper bound for a 
      * rank 1 lattice of density \f$m\f$ (prime number). The bound doesn't exit 
@@ -117,8 +117,8 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename Int, typename RedDbl>
-    double NormaPalpha<Int, RedDbl>::calcBound (int alpha, int dim)
+  template<typename Int, typename RealRed>
+    double NormaPalpha<Int, RealRed>::calcBound (int alpha, int dim)
     {
       double Res;
 

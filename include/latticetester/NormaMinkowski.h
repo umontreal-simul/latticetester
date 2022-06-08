@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
-// LatticeTester
-// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2022  The LatticeTester authors, under the occasional supervision
+// of Pierre L'Ecuyer at Université de Montréal.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,8 +32,8 @@ namespace LatticeTester {
    * are given by \f$\ell_t^* = \gamma_t^{1/2} n^{-1/t}\f$, where the 
    * \f$\gamma_t\f$ are the *Minkowski* lattice constants.
    */
-  template<typename RedDbl>
-    class NormaMinkowski : public Normalizer<RedDbl> {
+  template<typename RealRed>
+    class NormaMinkowski : public Normalizer<RealRed> {
       public:
 
         /**
@@ -44,7 +44,7 @@ namespace LatticeTester {
          * Note this class stores the log value of the density to handle larger values.
          * Restriction: \f$t \le48\f$.
          */
-        NormaMinkowski (RedDbl & logDensity, int t, double beta = 1);
+        NormaMinkowski (RealRed & logDensity, int t, double beta = 1);
 
         /**
          * Returns the value of the lattice constant \f$\gamma_j\f$ in
@@ -57,7 +57,7 @@ namespace LatticeTester {
          * Lattice constants \f$\gamma_j\f$ for the Minkowski lattices in each
          * dimension \f$j\f$.
          */
-        static const double m_gamma[1 + Normalizer<RedDbl>::MAX_DIM];
+        static const double m_gamma[1 + Normalizer<RealRed>::MAX_DIM];
     }; // End class NormaMinkowski
 
   //===========================================================================
@@ -65,8 +65,8 @@ namespace LatticeTester {
   /*
    * This is (2/V_n)^(2/n) which seems wrong.
    * */
-  template<typename RedDbl>
-    const double NormaMinkowski<RedDbl>::m_gamma[ ] =
+  template<typename RealRed>
+    const double NormaMinkowski<RealRed>::m_gamma[ ] =
     {
       /* GamMinkowski[0] = */     0.00000000000000,
       /* GamMinkowski[1] = */     0.00000000000000,
@@ -123,21 +123,21 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename RedDbl>
-    NormaMinkowski<RedDbl>::NormaMinkowski (RedDbl & logDensity, int t,
+  template<typename RealRed>
+    NormaMinkowski<RealRed>::NormaMinkowski (RealRed & logDensity, int t,
         double beta):
-      Normalizer<RedDbl> (logDensity, t, "Minkowski", L2NORM, beta)
+      Normalizer<RealRed> (logDensity, t, "Minkowski", L2NORM, beta)
     {
       if (t > this->MAX_DIM)
         throw std::invalid_argument("NormaMinkowski:   dimension > MAX_DIM");
-      Normalizer<RedDbl>::init (logDensity, beta);
+      Normalizer<RealRed>::init (logDensity, beta);
     }
 
 
   /*=========================================================================*/
 
-  template<typename RedDbl>
-    inline double NormaMinkowski<RedDbl>::getGamma (int j) const
+  template<typename RealRed>
+    inline double NormaMinkowski<RealRed>::getGamma (int j) const
     {
       if (j < 1 || j > this->MAX_DIM)
         throw std::out_of_range("NormaMinkowski::getGamma");

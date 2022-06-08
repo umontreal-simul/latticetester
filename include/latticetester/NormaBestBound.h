@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
-// LatticeTester
-// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2022  The LatticeTester authors, under the occasional supervision
+// of Pierre L'Ecuyer at Université de Montréal.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -39,8 +39,8 @@ namespace LatticeTester {
    * This class is to be used with the L2NORM (the Euclidian norm) exclusively.
    * Note this class stores the log value of the density to handle larger values.
    */
-  template<typename RedDbl>
-    class NormaBestBound : public Normalizer<RedDbl> {
+  template<typename RealRed>
+    class NormaBestBound : public Normalizer<RealRed> {
       public:
 
         /**
@@ -58,7 +58,7 @@ namespace LatticeTester {
          * 
          * There is a restriction for `t` to be \f$\le48\f$.
          */
-        NormaBestBound (RedDbl & logDensity, int t, double beta = 1);
+        NormaBestBound (RealRed & logDensity, int t, double beta = 1);
 
         /**
          * Destructor.
@@ -76,7 +76,7 @@ namespace LatticeTester {
          * Precomputed lattice constants \f$\gamma_j\f$ for the Rogers bounds
          * in each dimension \f$j \le48\f$.
          */
-        static const double m_gamma[1 + Normalizer<RedDbl>::MAX_DIM];
+        static const double m_gamma[1 + Normalizer<RealRed>::MAX_DIM];
 
     }; // End class NormaBestBound
 
@@ -88,8 +88,8 @@ namespace LatticeTester {
    * by taking gamma[n] = 4 * ( bound / V_n )^(n/2) where V_n is the volume of
    * an n dimensional sphere of radius 1.
    */
-  template<typename RedDbl>
-          const double NormaBestBound<RedDbl>::m_gamma[ ] =
+  template<typename RealRed>
+          const double NormaBestBound<RealRed>::m_gamma[ ] =
   {
     /* GammaBestBound[0] = */     0.0,
     /* GammaBestBound[1] = */     1.0,
@@ -145,24 +145,24 @@ namespace LatticeTester {
 
   /*=======================================================================*/
 
-  template<typename RedDbl>
-    NormaBestBound<RedDbl>::NormaBestBound (RedDbl & logDensity, int t, double beta)
-    : Normalizer<RedDbl> (logDensity, t, "Best", L2NORM, beta)
+  template<typename RealRed>
+    NormaBestBound<RealRed>::NormaBestBound (RealRed & logDensity, int t, double beta)
+    : Normalizer<RealRed> (logDensity, t, "Best", L2NORM, beta)
     {
-      Normalizer<RedDbl>::init (logDensity, beta);
+      Normalizer<RealRed>::init (logDensity, beta);
     }
 
   /*=========================================================================*/
 
-  template<typename RedDbl>
-    NormaBestBound<RedDbl>::~NormaBestBound()
+  template<typename RealRed>
+    NormaBestBound<RealRed>::~NormaBestBound()
     {
     }
 
   /*=========================================================================*/
 
-  template<typename RedDbl>
-    inline double NormaBestBound<RedDbl>::getGamma (int j) const
+  template<typename RealRed>
+    inline double NormaBestBound<RealRed>::getGamma (int j) const
     {
       if (j < 1 || j > this->m_maxDim)
         throw std::out_of_range("NormaBestBound::getGamma");

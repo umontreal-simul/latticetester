@@ -55,8 +55,8 @@ namespace LatticeTester {
    * This class is to be used with the L2NORM (the Euclidian norm) exclusively.
    * Note this class stores the log value of the density to handle larger values.
    */
-  template<typename RedDbl>
-    class NormaLaminated : public Normalizer<RedDbl> {
+  template<typename RealRed>
+    class NormaLaminated : public Normalizer<RealRed> {
       public:
 
         /**
@@ -74,7 +74,7 @@ namespace LatticeTester {
          * 
          * There is a restriction for `t` to be \f$\le48\f$.
          */
-        NormaLaminated (RedDbl & logDensity, int t, double beta = 1);
+        NormaLaminated (RealRed & logDensity, int t, double beta = 1);
 
         /**
          * Returns the value of the bound on the Hermite's constant \f$\gamma_j\f$
@@ -87,7 +87,7 @@ namespace LatticeTester {
          * Lattice constants \f$\gamma_j\f$ for the laminated lattices in each
          * dimension \f$j\f$.
          */
-        static const double m_gamma[1 + Normalizer<RedDbl>::MAX_DIM];
+        static const double m_gamma[1 + Normalizer<RealRed>::MAX_DIM];
     }; // End class NormaLaminated
 
   //=============================================================================
@@ -98,8 +98,8 @@ namespace LatticeTester {
    *    - equation (47) page 20 of chapter 1
    *    - table 6.1 page 158 of chapter 6
    */
-  template<typename RedDbl>
-          const double NormaLaminated<RedDbl>::m_gamma[] =
+  template<typename RealRed>
+          const double NormaLaminated<RealRed>::m_gamma[] =
   {
     /* Gamma[0] = */    0.00000000000000,
     /* Gamma[1] = */    1.00000000000000,
@@ -156,21 +156,21 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename RedDbl>
-    NormaLaminated<RedDbl>::NormaLaminated (RedDbl & logDensity, int t,
+  template<typename RealRed>
+    NormaLaminated<RealRed>::NormaLaminated (RealRed & logDensity, int t,
         double beta):
-      Normalizer<RedDbl> (logDensity, t, "Laminated", L2NORM, beta)
+      Normalizer<RealRed> (logDensity, t, "Laminated", L2NORM, beta)
     {
       if (t > this->MAX_DIM)
         throw std::invalid_argument("NormaLaminated:   dimension > this->MAX_DIM");
-      Normalizer<RedDbl>::init (logDensity, beta);
+      Normalizer<RealRed>::init (logDensity, beta);
     }
 
 
   /*=========================================================================*/
 
-  template<typename RedDbl>
-    inline double NormaLaminated<RedDbl>::getGamma (int j) const
+  template<typename RealRed>
+    inline double NormaLaminated<RealRed>::getGamma (int j) const
     {
       if (j < 1 || j > this->MAX_DIM)
         throw std::out_of_range("NormaLaminated::getGamma");

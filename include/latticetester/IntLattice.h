@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
 // Copyright (C) 2012-2022  The LatticeTester authors, under the occasional supervision
-// of Pierre L'Ecuyer at Université de Montréal.
+// of Pierre L'Ecuyer at Universitï¿½ de Montrï¿½al.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -46,29 +46,30 @@ namespace LatticeTester {
    * implemented in subclasses.
    *
    * In particular, there is a method to construct the lattice defined as the
-   * projection of the full lattice on a subset of coordinates
-   * \f$\{x_i\}_{ 0 \leq i}\f$, a method to dualize the lattice
+   * projection of the full lattice on a subset  \f$I\f$  of coordinates indices
+   * defined by a `Coordinates` object, a method to dualize the lattice
    * (exchange the basis with the m-dual basis),
    * and a virtual method that should be implemented in subclasses to
-   * recompute the basis for different numbers of dimensions and subsets 
+   * recompute a basis for different numbers of dimensions and subsets
    * of coordinates. 
    *
-   * The lattices considered here are assumed to have a special structure, which is used
-   * for the computation of the lattice density and the normaliation constants in the 
+   * REMOVE: The lattices considered here are assumed to have a special structure, which is used
+   * for the computation of the lattice density and the normalization constants in the
    * figures of merit.  It is assumed that the lattice has rank \f$k\f$ and that the
    * rescaling was done by multiplying the primal basis vectors by \f$m\f$.
    * All the lattices considered in the LatMRG and LatNet Builder software tools 
    * have this property. 
    *  
-   * 
-   * A lattice of rank \f$k\f$ with integer vectors modulo \f$m\f$ contains
+   * REMOVE: A lattice of rank \f$k\f$ with integer vectors modulo \f$m\f$ contains
    * \f$m^k\f$ distinct vectors (modulo $m$). If we divide the basis vectors by \f$m\f$,
    * this gives \f$m^k\f$ vectors per unit of volume, so \f$m^k\f$ is the density of the 
-   * original (unscaled) lattice. This number is used to obtain bounds on the shortest vector length,
+   * original (non-scaled) lattice. This number is used to obtain bounds on the shortest vector length,
    * which are used to normalize the shortest vector length in the spectral test.
    * This class offers methods to compute and store the constants
-   * \f$ \log_2(m^{2i}) \f$ for \f$ 1 \leq i \leq k \f$ to speed up the normalization.
+   * \f$ \log_2(m^{2i}) \f$ for \f$ 1 \leq i \leq k \f$,
+   * which are used elsewhere to compute the normalization constants.
    */
+
   template<typename Int, typename Real, typename RealRed>
       class IntLattice : public IntLatticeBase<Int, Real, RealRed> {
         private:
@@ -82,13 +83,13 @@ namespace LatticeTester {
            * identity matrix. The dimension of the lattice is set to `maxDim` 
            * and the norm type is set to `norm`.
            * @param m The scaling factor `m` for the integer coordinates
-           * @param k The rank of the lattice to be constructed
+           *   @param k The rank of the lattice to be constructed
            * @param maxDim The maximal dimension for which this lattice can be
            * expanded/tested
            * @param withDual Specifies whether this object contains a dual or not
            * @param norm  The type of d to measure the vector lengths.
            */
-          IntLattice (Int m, int k, int maxDim, bool withDual,
+          IntLattice (Int m, int maxDim, bool withDual,
               NormType norm = L2NORM);
 
           /**
@@ -110,16 +111,9 @@ namespace LatticeTester {
           virtual ~IntLattice ();
 
           /**
-           * Allocates space to the vectors used internally. This should probably be
-           * private or protected because it should not be called directly by the user;
-           * It is called by the constructors and copy methods.
-           */
-          void init ();
-
-          /**
            * This returns the rank (order) of the lattice.
            */
-          int getOrder() const { return m_order; }
+          // int getOrder() const { return m_order; }
 
           /**
            * Increments the dimension of the basis and dual basis vectors by 
@@ -131,21 +125,19 @@ namespace LatticeTester {
           virtual void incDim ();
 
           /**
-           * Computes and stores the logarithm in base 2 of the normalization factors
+           * Computes and stores the logarithm of the normalization factors
            * (<tt>m_lgVolDual2</tt>) in all dimensions up to `MaxDim`, for this
            * lattice. Here, `lgm2` must be \f$\log_g m^2\f$ and the computed values are
            * those returned by `getLgVolDual2` below.
            * These normalization contants are for the Euclidean norm only. 
-           * They are the log in base 2 of the 
            */
-          void calcLgVolDual2 (double lgm2);
+          // void calcLgVolDual2 (double lgm2);
 
           /**
-           * Returns \f$\log_2 m^{2i}\f = i \log_2 m^2$  for \f$1\le i \le k\f$,
-           * and \f$\log_2 m^{2k}\f$ otherwise,
-           * where \f$k\f$ is the lattice rank (or order).
+           * Returns \f$\log m^{2i}\f = i \log m^2$  for \f$1\le i \le k\f$,
+           * and \f$\log m^{2k}\f$ otherwise, where \f$k\f$ is the lattice rank (or order).
            */
-          double getLgVolDual2 (int i) const { return m_lgVolDual2[i]; }
+          // double getLgVolDual2 (int i) const { return m_lgVolDual2[i]; }
 
           /**
            * Exchange the primal and m-dual bases.
@@ -155,14 +147,14 @@ namespace LatticeTester {
           void dualize ();
 
           /**
-           * This method is called to precompute the normalization constants used to get
+           * REMOVE: This method precomputes the log of the lattice density (or of its dual),
+           * as a function of the dimension.  These values are part of the normalization constants used to get
            * the normalized merit from the shortest vectors in the lattice. If
-           * `dualF` is `true`, the normalization constants are computed for the m-dual
+           * `dualF` is `true`, the values are computed for the m-dual
            * lattice, otherwise they are computed for the primal lattice.
-           * ** Done only once in a search? **  
            */
-          void computeNormalConstants(bool dualF);
-          //  void fixLatticeNormalization (bool dualF);
+          // void computeNormalConstants(bool dualF);
+          //    void fixLatticeNormalization (bool dualF);
 
           /**
            * Builds the basis (and perhaps m-dual basis) for the projection `proj` for this
@@ -173,19 +165,23 @@ namespace LatticeTester {
               const Coordinates & proj);
 
           /**
-           * This virtual method builds the basis for the lattice in `dim` dimensions.
+           * This virtual method builds a basis for the lattice in `dim` dimensions.
            * It must be implemented in subclasses.
            */
           virtual void buildBasis (int dim);
 
           /**
-           * Creates and returns the normalizer corresponding to the normalization
-           * type `norma`. The argument `alpha` = \f$\alpha\f$ is used only for the 
+           * REMOVE:  This depends on the lattice only via the density.
+           * Creates and returns a Normalizer corresponding to the normalization
+           * type `norma` and the density of the current lattice. 
+           * The argument `alpha` = \f$\alpha\f$ is used only for the 
            * \f$P_{\alpha}\f$ measure. For all other cases, it is unused.
-           *  **  Replaced getNormalizer by  setNormaliser **
+           * The returned Normalizer is returned but not stored in this object.
+           * It contains the complete normalization constants for the number of dimensions
+           * of this lattice. 
            */
-          LatticeTester::Normalizer<RealRed> * setNormalizer (NormaType norma,
-              int alpha, bool dualF);
+          // LatticeTester::Normalizer<RealRed> * getNormalizer (NormaType norma,
+          //    int alpha, bool dualF);
 
           /**
            * A virtual utility method to store a vector of indices with lacunary values
@@ -207,9 +203,16 @@ namespace LatticeTester {
           virtual void kill ();
 
           /**
-           * The order (rank) of the basis. Usually defined in subclasses.
+           * Allocates space to the vectors used internally.
+           * This should not be called directly by the user.
+           * It is called by the constructors and copy methods.
            */
-          int m_order;
+          void init ();
+
+          /**
+           * REMOVE?  The order (rank) of the basis. Usually defined in subclasses.
+           */
+          // int m_order;
 
           /**
            * The maximum Dimension for the basis (for tests)
@@ -219,12 +222,12 @@ namespace LatticeTester {
           /**
            * A vector of normalization constants.  See `calcLgVolDual2`.
            */
-          double *m_lgVolDual2;
+          // double *m_lgVolDual2;
 
           /**
            * \f$\log_2 (m^2)\f$.
            */
-          double m_lgm2;
+          // double m_lgm2;
 
           /**
            * The m-dual basis of the current projection.
@@ -238,23 +241,23 @@ namespace LatticeTester {
 
           /**
            * Working Variables used in MRGLattice.h
-           * **  WHAT ARE THEY DOING HERE? MOVE THEM.  **
+           * **  WHAT ARE THEY DOING HERE? MOVE THEM TO WHERE THEY BELONG.  **
            */
-          Int m_t1, m_t2, m_t3;
+          // Int m_t1, m_t2, m_t3;
 
       }; // Class IntLattice
 
   //===========================================================================
 
   template<typename Int, typename Real, typename RealRed>
-      IntLattice<Int, Real, RealRed>::IntLattice ( Int modulo, int k,
+      IntLattice<Int, Real, RealRed>::IntLattice (Int modulo,
           int maxDim, bool withDual, NormType norm): 
       IntLatticeBase<Int, Real, RealRed>(maxDim, norm)
   {
     this->m_dim = maxDim;
     this->m_withDual = withDual;
     this->m_modulo = modulo;
-    m_order = k;
+    // m_order = k;
     init ();
     this->m_basis.resize(this->m_dim,this->m_dim);
     this->m_vecNorm.resize(this->m_dim);
@@ -274,7 +277,7 @@ namespace LatticeTester {
       IntLatticeBase<Int, Real, RealRed>(lat)
   {
     this->m_withDual = lat.withDual();
-    m_order = lat.m_order;
+    // m_order = lat.m_order;
     init ();
     m_vSI = lat.m_vSI;
     if (this->m_withDual){
@@ -294,14 +297,12 @@ namespace LatticeTester {
       double temp;
       NTL::conv (temp, this->m_modulo);
       m_vSI.resize(dim, dim);
-
       if (this->m_withDual) {
-        m_lgVolDual2 = new double[dim+1];
-        m_lgm2 = 2.0 * Lg (temp);
-        m_lgVolDual2[1] = m_lgm2;
+        // m_lgVolDual2 = new double[dim+1];
+        // m_lgm2 = 2.0 * Lg (temp);
+        // m_lgVolDual2[1] = m_lgm2;
         m_wSI.resize(dim, dim);
       }
-
     }
 
   //===========================================================================
@@ -310,12 +311,6 @@ namespace LatticeTester {
       void IntLattice<Int, Real, RealRed>::kill ()
     {
       IntLatticeBase<Int, Real, RealRed>::kill();
-      if (this->m_withDual){
-        if (m_lgVolDual2 == 0)
-          return;
-        delete [] m_lgVolDual2;
-        m_lgVolDual2 = 0;
-      }
       // m_vSI.clear();
     }
 
@@ -325,14 +320,7 @@ namespace LatticeTester {
   template<typename Int, typename Real, typename RealRed>
       IntLattice<Int, Real, RealRed>::~IntLattice ()
     {
-      // kill ();
       IntLatticeBase<Int, Real, RealRed>::kill();
-      if (this->m_withDual){
-        if (m_lgVolDual2 == 0)
-          return;
-        delete [] m_lgVolDual2;
-        m_lgVolDual2 = 0;
-      }
     }
 
   //===========================================================================
@@ -342,24 +330,14 @@ namespace LatticeTester {
     {
       IntLattice<Int, Real, RealRed> lattmp (*this);
       int dim = this->getDim();
-
-      // std::int64_t sizemat = m_basis.size1();
-      // declared as an "unused variable" by the compiler
-
       this->m_basis.resize(dim+1, dim+1);
       this->m_vecNorm.resize(dim+1);
-
       if (this->m_withDual) {
-        if(this->m_lgVolDual2 != 0)
-          delete[] this->m_lgVolDual2;
-        this->m_lgVolDual2 = new double[dim+2]();
-        this->calcLgVolDual2 (m_lgm2);
         this->m_dualbasis.resize(dim+1, dim+1);
         this->m_dualvecNorm.resize(dim+1);
       }
-
-      for(int i = 0; i < dim; i++){
-        for(int j = 0; j < dim; j++){
+      for (int i = 0; i < dim; i++){
+        for (int j = 0; j < dim; j++){
           this->m_basis(i,j) = lattmp.m_basis(i,j);
           if (this->m_withDual)
             this->m_dualbasis(i,j) = lattmp.m_dualbasis(i,j);
@@ -376,7 +354,7 @@ namespace LatticeTester {
     }
 
   //===========================================================================
-
+  /**
   template<typename Int, typename Real, typename RealRed>
       void IntLattice<Int, Real, RealRed>::calcLgVolDual2 (double lgm2)
     {
@@ -391,6 +369,7 @@ namespace LatticeTester {
       for (int r = rmax + 1; r <= dim; r++)
         m_lgVolDual2[r] = m_lgVolDual2[r - 1];
     }
+  */
 
   //===========================================================================
 
@@ -405,6 +384,7 @@ namespace LatticeTester {
 
   //===========================================================================
 
+  /**
   template<typename Int, typename Real, typename RealRed>
       void IntLattice<Int, Real, RealRed>::computeNormalConstants(
           bool dualF)
@@ -419,6 +399,7 @@ namespace LatticeTester {
       //   for (int i = 1; i <= getMaxDim(); i++)
       //      std::cout << " fix  " << m_lgVolDual2[i] << endl;
     }
+  */
 
   //===========================================================================
 
@@ -437,9 +418,9 @@ namespace LatticeTester {
         }
         ++i;
       }
-
+      // Constructs a basis for the projection `lattice`.
       lattice->setDim (static_cast<int>(proj.size()));
-      lattice->m_order = m_order;
+      // lattice->m_order = m_order;
       BasisConstruction<Int> constr;
       constr.LLLConstruction(temp);
       temp.SetDims(lattice->getDim(), lattice->getDim());
@@ -478,6 +459,7 @@ namespace LatticeTester {
   template<typename Int, typename Real, typename RealRed>
       void IntLattice<Int, Real, RealRed>::buildBasis (int d)
     {
+	  // To be re-implemented in subclasses.
       MyExit(1, " buildBasis(d) does nothing");
       d++;  // eliminates compiler warning
     }
@@ -488,7 +470,7 @@ namespace LatticeTester {
       void IntLattice<Int, Real, RealRed>::copy (
           const IntLattice<Int, Real, RealRed> & lat)
     {
-      m_order = lat.getOrder();
+      // m_order = lat.getOrder();
       this->m_modulo = lat.m_modulo;
       //m_m2 = lat.m_m2;
       this->m_basis = lat.m_basis;
@@ -499,8 +481,9 @@ namespace LatticeTester {
 
   //===========================================================================
 
+  /**
   template<typename Int, typename Real, typename RealRed>
-      Normalizer<RealRed> * IntLattice<Int, Real, RealRed>::setNormalizer(
+      Normalizer<RealRed> * IntLattice<Int, Real, RealRed>::getNormalizer(
           NormaType norma, int alpha, bool dualF)
     {
       int dim = this->getDim();
@@ -514,6 +497,8 @@ namespace LatticeTester {
       else // primal basis
         logDensity = m_order * NTL::log(this->m_modulo);
 
+      // We create a normalizer normal for the given density, and return it.
+      // This normalizer is not stored in this object.
       switch (norma) {
         case BESTLAT:
           normal = new NormaBestLat<RealRed> (logDensity, dim);
@@ -542,13 +527,15 @@ namespace LatticeTester {
       }
       return normal;
     }
+    */
 
   //===========================================================================
 
   template<typename Int, typename Real, typename RealRed>
       std::string IntLattice<Int, Real, RealRed>::toString() const
     {
-      assert (0);
+      // To be re-implemented in subclasses.
+	  assert (0);
       return std::string();
     }
 

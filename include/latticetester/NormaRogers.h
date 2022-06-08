@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
-// LatticeTester
-// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2022  The LatticeTester authors, under the occasional supervision
+// of Pierre L'Ecuyer at Université de Montréal.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -54,8 +54,8 @@ namespace LatticeTester {
    * This class is to be used with the L2NORM (the Euclidian norm) exclusively.
    * Note this class stores the log value of the density to handle larger values.
    */
-  template<typename RedDbl>
-    class NormaRogers : public Normalizer<RedDbl> {
+  template<typename RealRed>
+    class NormaRogers : public Normalizer<RealRed> {
       public:
 
         /**
@@ -73,7 +73,7 @@ namespace LatticeTester {
          * 
          * There is a restriction for `t` to be \f$\le48\f$.
          */
-        NormaRogers (RedDbl & logDensity, int t, double beta = 1);
+        NormaRogers (RealRed & logDensity, int t, double beta = 1);
 
         /**
          * Destructor.
@@ -97,7 +97,7 @@ namespace LatticeTester {
          * Precomputed lattice constants \f$\gamma_j\f$ for the Rogers bounds
          * in each dimension \f$j \le48\f$.
          */
-        static const double m_gamma0[1 + Normalizer<RedDbl>::MAX_DIM];
+        static const double m_gamma0[1 + Normalizer<RealRed>::MAX_DIM];
 
         /**
          * Computes the Rogers bound in dimension \f$d\f$.
@@ -115,8 +115,8 @@ namespace LatticeTester {
    *    - equation (47) page 20 of chapter 1
    *    - table 1.2 page 15 of chapter 1
    */
-  template<typename RedDbl>
-          const double NormaRogers<RedDbl>::m_gamma0[ ] =
+  template<typename RealRed>
+          const double NormaRogers<RealRed>::m_gamma0[ ] =
   {
     /* GamRogers[0] = */    0.0,
     /* GamRogers[1] = */    1.0,
@@ -172,8 +172,8 @@ namespace LatticeTester {
 
   /*=======================================================================*/
 
-  template<typename RedDbl>
-    double NormaRogers<RedDbl>::calcGamma (int dim)
+  template<typename RealRed>
+    double NormaRogers<RealRed>::calcGamma (int dim)
     {
       static const double pi = 3.1415926535897932384;
       static const double e = 2.7182818284590452353;
@@ -197,9 +197,9 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename RedDbl>
-    NormaRogers<RedDbl>::NormaRogers (RedDbl & logDensity, int t, double beta)
-    : Normalizer<RedDbl> (logDensity, t, "Rogers", L2NORM, beta)
+  template<typename RealRed>
+    NormaRogers<RealRed>::NormaRogers (RealRed & logDensity, int t, double beta)
+    : Normalizer<RealRed> (logDensity, t, "Rogers", L2NORM, beta)
     {
       m_gamma = new double[t + 1];
 
@@ -211,21 +211,21 @@ namespace LatticeTester {
       for (int i = t0 + 1; i <= t; i++)
         m_gamma[i] = calcGamma(i);
 
-      Normalizer<RedDbl>::init (logDensity, beta);
+      Normalizer<RealRed>::init (logDensity, beta);
     }
 
   /*=========================================================================*/
 
-  template<typename RedDbl>
-    NormaRogers<RedDbl>::~NormaRogers()
+  template<typename RealRed>
+    NormaRogers<RealRed>::~NormaRogers()
     {
       delete[] m_gamma;
     }
 
   /*=========================================================================*/
 
-  template<typename RedDbl>
-    inline double NormaRogers<RedDbl>::getGamma (int j) const
+  template<typename RealRed>
+    inline double NormaRogers<RealRed>::getGamma (int j) const
     {
       if (j < 1 || j > this->m_maxDim)
         throw std::out_of_range("NormaRogers::getGamma");

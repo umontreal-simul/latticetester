@@ -483,13 +483,13 @@ namespace LatticeTester {
 
   /**
   template<typename Int, typename Real, typename RealRed>
-      Normalizer<RealRed> * IntLattice<Int, Real, RealRed>::getNormalizer(
+      Normalizer<Real> * IntLattice<Int, Real, RealRed>::getNormalizer(
           NormaType norma, int alpha, bool dualF)
     {
       int dim = this->getDim();
-      Normalizer<RealRed> *normal;
+      Normalizer<Real> *normal;
 
-      RealRed logDensity;
+      Real logDensity;
 
       // The primal lattice density is assumed to be m^k, and m^{-k} for the dual.
       if (dualF) // dual basis 

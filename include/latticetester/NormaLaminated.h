@@ -56,7 +56,7 @@ namespace LatticeTester {
    * Note this class stores the log value of the density to handle larger values.
    */
   template<typename RealRed>
-    class NormaLaminated : public Normalizer<RealRed> {
+    class NormaLaminated : public Normalizer {
       public:
 
         /**
@@ -87,7 +87,7 @@ namespace LatticeTester {
          * Lattice constants \f$\gamma_j\f$ for the laminated lattices in each
          * dimension \f$j\f$.
          */
-        static const double m_gamma[1 + Normalizer<RealRed>::MAX_DIM];
+        static const double m_gamma[1 + Normalizer::MAX_DIM];
     }; // End class NormaLaminated
 
   //=============================================================================
@@ -99,7 +99,7 @@ namespace LatticeTester {
    *    - table 6.1 page 158 of chapter 6
    */
   template<typename RealRed>
-          const double NormaLaminated<RealRed>::m_gamma[] =
+          const double NormaLaminated::m_gamma[] =
   {
     /* Gamma[0] = */    0.00000000000000,
     /* Gamma[1] = */    1.00000000000000,
@@ -157,20 +157,20 @@ namespace LatticeTester {
   /*=========================================================================*/
 
   template<typename RealRed>
-    NormaLaminated<RealRed>::NormaLaminated (RealRed & logDensity, int t,
+    NormaLaminated::NormaLaminated (RealRed & logDensity, int t,
         double beta):
-      Normalizer<RealRed> (logDensity, t, "Laminated", L2NORM, beta)
+      Normalizer (logDensity, t, "Laminated", L2NORM, beta)
     {
       if (t > this->MAX_DIM)
         throw std::invalid_argument("NormaLaminated:   dimension > this->MAX_DIM");
-      Normalizer<RealRed>::init (logDensity, beta);
+      Normalizer::init (logDensity, beta);
     }
 
 
   /*=========================================================================*/
 
   template<typename RealRed>
-    inline double NormaLaminated<RealRed>::getGamma (int j) const
+    inline double NormaLaminated::getGamma (int j) const
     {
       if (j < 1 || j > this->MAX_DIM)
         throw std::out_of_range("NormaLaminated::getGamma");

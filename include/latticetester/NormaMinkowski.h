@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
 // Copyright (C) 2012-2022  The LatticeTester authors, under the occasional supervision
-// of Pierre L'Ecuyer at Université de Montréal.
+// of Pierre L'Ecuyer at Universitï¿½ de Montrï¿½al.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ namespace LatticeTester {
    * \f$\gamma_t\f$ are the *Minkowski* lattice constants.
    */
   template<typename RealRed>
-    class NormaMinkowski : public Normalizer<RealRed> {
+    class NormaMinkowski : public Normalizer {
       public:
 
         /**
@@ -57,7 +57,7 @@ namespace LatticeTester {
          * Lattice constants \f$\gamma_j\f$ for the Minkowski lattices in each
          * dimension \f$j\f$.
          */
-        static const double m_gamma[1 + Normalizer<RealRed>::MAX_DIM];
+        static const double m_gamma[1 + Normalizer::MAX_DIM];
     }; // End class NormaMinkowski
 
   //===========================================================================
@@ -66,7 +66,7 @@ namespace LatticeTester {
    * This is (2/V_n)^(2/n) which seems wrong.
    * */
   template<typename RealRed>
-    const double NormaMinkowski<RealRed>::m_gamma[ ] =
+    const double NormaMinkowski::m_gamma[ ] =
     {
       /* GamMinkowski[0] = */     0.00000000000000,
       /* GamMinkowski[1] = */     0.00000000000000,
@@ -124,20 +124,20 @@ namespace LatticeTester {
   /*=========================================================================*/
 
   template<typename RealRed>
-    NormaMinkowski<RealRed>::NormaMinkowski (RealRed & logDensity, int t,
+    NormaMinkowski::NormaMinkowski (RealRed & logDensity, int t,
         double beta):
-      Normalizer<RealRed> (logDensity, t, "Minkowski", L2NORM, beta)
+      Normalizer (logDensity, t, "Minkowski", L2NORM, beta)
     {
       if (t > this->MAX_DIM)
         throw std::invalid_argument("NormaMinkowski:   dimension > MAX_DIM");
-      Normalizer<RealRed>::init (logDensity, beta);
+      Normalizer::init (logDensity, beta);
     }
 
 
   /*=========================================================================*/
 
   template<typename RealRed>
-    inline double NormaMinkowski<RealRed>::getGamma (int j) const
+    inline double NormaMinkowski::getGamma (int j) const
     {
       if (j < 1 || j > this->MAX_DIM)
         throw std::out_of_range("NormaMinkowski::getGamma");

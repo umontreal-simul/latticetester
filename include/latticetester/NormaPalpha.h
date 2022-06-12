@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
 // Copyright (C) 2012-2022  The LatticeTester authors, under the occasional supervision
-// of Pierre L'Ecuyer at Université de Montréal.
+// of Pierre L'Ecuyer at Universitï¿½ de Montrï¿½al.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ namespace LatticeTester {
    *
    */
   template<typename Int, typename RealRed>
-    class NormaPalpha : public Normalizer<RealRed> {
+    class NormaPalpha : public Normalizer {
       public:
 
         /**
@@ -62,7 +62,7 @@ namespace LatticeTester {
          * void init (int alpha);
          * ''
          */
-        using Normalizer<RealRed>::init;
+        using Normalizer::init;
 
         /**
          * Initializes the bounds for the Palpha normalization.
@@ -92,7 +92,7 @@ namespace LatticeTester {
   template<typename Int, typename RealRed>
     NormaPalpha<Int, RealRed>::NormaPalpha (const Int & m, int alpha, int s,
         NormType norm):
-      Normalizer<RealRed> (s, "Palpha", norm, 1.0)
+      Normalizer (s, "Palpha", norm, 1.0)
     {
       if (s > this->MAX_DIM)
         throw std::invalid_argument("NormaPalpha:   dimension > MAX_DIM");

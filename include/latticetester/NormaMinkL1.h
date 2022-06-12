@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
 // Copyright (C) 2012-2022  The LatticeTester authors, under the occasional supervision
-// of Pierre L'Ecuyer at Université de Montréal.
+// of Pierre L'Ecuyer at Universitï¿½ de Montrï¿½al.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -41,7 +41,7 @@ namespace LatticeTester {
    */
 
   template<typename RealRed>
-    class NormaMinkL1 : public Normalizer<RealRed> {
+    class NormaMinkL1 : public Normalizer {
       public:
 
         /**
@@ -75,7 +75,7 @@ namespace LatticeTester {
          * Precomputed lattice constants \f$\gamma_j\f$ for the Marsagliaâ€™s bounds
          * in each dimension \f$j \le48\f$.
          */
-        static const double m_gamma0[1 + Normalizer<RealRed>::MAX_DIM];
+        static const double m_gamma0[1 + Normalizer::MAX_DIM];
 
         /**
          * Computes the MinkL1 bound in dimension \f$d\f$.
@@ -86,7 +86,7 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename RealRed>
-    const double NormaMinkL1<RealRed>::m_gamma0[] =
+    const double NormaMinkL1::m_gamma0[] =
     {         //  GamMinkL1[t] = (t!)^{2/t}
       /* GamMinkL1[0] = */  0.00000000000000,
         /* GamMinkL1[1] = */  1.00000000000000,
@@ -142,7 +142,7 @@ namespace LatticeTester {
   /*=========================================================================*/
 
   template<typename RealRed>
-    double NormaMinkL1<RealRed>::calcGamma (int dim)
+    double NormaMinkL1::calcGamma (int dim)
     {
       double gamma = 0.0;
       for (int i = 1; i <= dim; i++)
@@ -155,8 +155,8 @@ namespace LatticeTester {
   /*=========================================================================*/
 
   template<typename RealRed>
-    NormaMinkL1<RealRed>::NormaMinkL1 (RealRed & logDensity, int t, double beta)
-    : Normalizer<RealRed> (logDensity, t, "MinkL1", L1NORM, beta)
+    NormaMinkL1::NormaMinkL1 (RealRed & logDensity, int t, double beta)
+    : Normalizer (logDensity, t, "MinkL1", L1NORM, beta)
     {
       m_gamma = new double[t + 1];
 
@@ -168,20 +168,20 @@ namespace LatticeTester {
       for (int i = t0 + 1; i <= t; i++)
         m_gamma[i] = calcGamma(i);
 
-      Normalizer<RealRed>::init (logDensity, beta);
+      Normalizer::init (logDensity, beta);
     }
 
   /*=========================================================================*/
 
   template<typename RealRed>
-    NormaMinkL1<RealRed>::~NormaMinkL1()
+    NormaMinkL1::~NormaMinkL1()
     {
       delete[] m_gamma;
     }
   /*=========================================================================*/
 
   template<typename RealRed>
-    inline double NormaMinkL1<RealRed>::getGamma (int j) const
+    inline double NormaMinkL1::getGamma (int j) const
     {
       if (j < 1 || j > this->m_maxDim)
         throw std::out_of_range("NormaMinkL1::getGamma");

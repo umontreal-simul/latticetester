@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
-// LatticeTester
-// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2022  The LatticeTester authors, under the supervision
+// of Pierre L'Ecuyer at Universit� de Montr�al.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,29 +25,15 @@
 namespace LatticeTester {
 
   /**
-   * \relates Weights
-   * Scalar weight type.
-   *
-   * \note We could have used \c Weight, but it might be wise to leave this \c
-   * typedef in case we decide to use <tt>std::int64_t Weight</tt> at some point.
+   * A scalar weight type.
    */
   typedef double Weight;
 
   /**
-   * Abstract class representing Weights for figures of merit. Typically, if one
-   * wants to analyze a lattice, there are multiple figures of merit available.
-   * This class presents an interface to give weights to all those figures of
-   * merit so that a global figure of merit can be calculated as a weighted mean
-   * of many figures of merit.
-   *
-   * This abstract class is the basis for different kinds of weights used to
-   * accentuate the importance of some projections when computing
-   * figures of merit for lattices or point sets. For more insight on what can
-   * be done with weights, look what the subclasses implement. These classes are
-   * not used directly by LatticeTester since LatticeTester does not implement
-   * calculations of figure of merit for different projections of a point set.
-   * For example usages, one should look at the LatNetBuilder and the LatMRG
-   * software.
+   * Abstract class that defines an interface to specify Weights given to projections
+   * in figures of merit. This class and its subclasses are not used directly by
+   * LatticeTester since LatticeTester does not implement figures of merit.
+   * For examples of usages, one may look at LatNetBuilder and LatMRG.
    */
   class Weights {
     public:
@@ -75,7 +61,6 @@ namespace LatticeTester {
     protected:
       /**
        * Identifies the type of weights, formats them and outputs them on \c os.
-       *
        * Subclasses that implement Weights should identify themselves in the output.
        */
       virtual void format(std::ostream& os) const = 0;

@@ -42,17 +42,24 @@ namespace LatticeTester {
       public:
 
         /**
-         * Constructs a `NormaBestLat` for up to `t` dimensions, by assuming that the
+         * Constructs a `NormaBestLat` for up to `maxDim` dimensions, by assuming that the
          * log density is `logDensity` in all dimensions.
-         * Restriction: \f$t \le 48\f$.
+         * Restriction: `maxDim`\f$ \le 48\f$.
          */
-        NormaBestLat (double logDensity, int t);
+        NormaBestLat (double logDensity, int maxDim);
 
-        /**
-         * Constructs a `NormaBestLat` for up to `t` dimensions, without computing the bounds.
-         * Restriction: \f$t \le 48\f$.
+    	/**
+    	 * This constructor assumes that the primal lattice has scaling factor \f$m\f$
+    	 * and order \f$k\f$, so its density is \f$m^k\f$ for \f$t\geq k\f$, and cannot
+    	 * exceed  \f$m^s\f$ for projections in \f$s < k\f$ dimensions.
+    	 */
+    	NormaBestLat (double logm, int k, int maxDim);
+
+    	/**
+         * Constructs a `NormaBestLat` for up to `maxDim` dimensions, without computing the bounds.
+         * Restriction: `maxDim`\f$ \le 48\f$.
          */
-        NormaBestLat (int t);
+        NormaBestLat (int maxDim);
 
         /**
          * Returns the value of the bound on the Hermite's constant \f$\gamma_j\f$
@@ -134,7 +141,17 @@ namespace LatticeTester {
       Normalizer::computeBounds (logDensity);
     }
 
-  /*=========================================================================*/
+    /*=========================================================================*/
+
+      NormaBestLat::NormaBestLat (double logm, int k, int maxDim)
+      : Normalizer (maxDim, "BestLat", L2NORM)
+      {
+        if (maxDim > this->MAX_DIM)
+          throw std::invalid_argument("NormaBestLat:   dimension > MAXDIM");
+        Normalizer::computeBounds (logm, k);
+      }
+
+    /*=========================================================================*/
 
     NormaBestLat::NormaBestLat (int maxDim)
     : Normalizer (maxDim, "BestLat", L2NORM)

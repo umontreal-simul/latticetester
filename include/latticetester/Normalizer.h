@@ -102,6 +102,7 @@ public:
 	 * This constructor creates a `Normalizer` by assuming that the density is
 	 * \f$\eta=\exp(\text{logDensity})\f$ in all dimensions.
 	 * The bounds will be computed in up to `maxDim` dimensions.
+	 * To compute bounds for the dual, use `-logDensity` instead of `logDensity`.
 	 * Only subclasses can actually compute the bounds.
 	 * The `name` parameter gives name that will be printed by the ToString() method.
 	 * The `norm` parameter is the `NormType` used by this object.
@@ -113,11 +114,11 @@ public:
 	 * This constructor assumes that the primal lattice has scaling factor \f$m\f$
 	 * and order \f$k\f$, so its density is \f$m^k\f$ for \f$t\geq k\f$, and cannot
 	 * exceed  \f$m^s\f$ for projections in \f$s < k\f$ dimensions.
-	 * The bounds \f$ d_t^*(\eta)\f$ (if `dualF=0`) or \f$ \ell_t^*(\eta)\f$ (if `dualF=1`)
-	 * will then be computed by assuming those densities.
+	 * The bounds \f$ d_t^*(\eta)\f$ will then be computed by assuming those densities.
+	 * To compute bounds for the dual, pass `-logm` instead of `logm`.
 	 * The values of \f$\log m\f$ (in natural basis) and \f$k\f$ must be given as inputs.
 	 */
-	Normalizer(double logm, int k, bool dualF, int maxDim, std::string name,
+	Normalizer(double logm, int k, int maxDim, std::string name,
 			NormType norm = L2NORM);
 
 	/**
@@ -139,23 +140,23 @@ public:
 	 * return, by assuming that the log density is `logDensity` for all
 	 * dimensions up to the maximal dimension `maxDim`.
 	 * This will become the new `logDensity` in this object.
-	 * The bounds \f$ d_t^*(\eta)\f$ (if `dualF=0`) or \f$ \ell_t^*(\eta)\f$ (if `dualF=1`)
+	 * To compute bounds for the dual, use `-logDensity` instead of `logDensity`.
 	 * This method is called by the constructors of subclasses, in which the constants
 	 * `gamma_t` are known.  The bounds can be retrieved via `getBounds()` or `getBound(j)`.
 	 */
-	virtual void computeBounds(double logDensity, bool dualF, int maxDim);
+	virtual void computeBounds(double logDensity);
 
 	/**
-	 * Computes the bounds that this normalizer will eturn, by assuming that
+	 * Computes the bounds that this normalizer will return, by assuming that
 	 * the primal lattice has scaling factor \f$m\f$
 	 * and order \f$k\f$, so its density is \f$m^k\f$ for \f$t\geq k\f$, and cannot
 	 * exceed  \f$m^s\f$ for projections in \f$s < k\f$ dimensions.
 	 * The values of \f$\log m\f$ (in natural basis) and \f$k\f$ must be given as inputs.
-	 * The bounds \f$ d_t^*(\eta)\f$ (if `dualF=0`) or \f$ \ell_t^*(\eta)\f$ (if `dualF=1`)
+	 * To compute bounds for the dual, pass `-logm` instead of `logm`.
 	 * This method is called by the constructors of subclasses, in which the constants
 	 * `gamma_t` are known.  The bounds can be retrieved via `getBounds()` or `getBound(j)`.
 	 */
-	virtual void computeBounds(double logm, int k, bool dualF, int maxDim);
+	virtual void computeBounds(double logm, int k);
 
 	/**
 	 * Returns a string that describes this object.
@@ -266,25 +267,20 @@ m_maxDim(maxDim), m_name(name), m_norm(norm),
 
 /*-------------------------------------------------------------------------*/
 
-void Normalizer<Real>::computeBounds(double logDensity, bool dualF) {
-	// m_bounds = new double[maxDim + 1];
-	double logdens = logDensity;
-	if (dualF)
-		logdens = -logdens;
+void Normalizer<Real>::computeBounds(double logDensity) {
 	double x;
 	for (int j = 1; j <= m_maxDim; j++) {
-		x = 0.5 * log(getGamma(j)) - (1.0 / j) * logdens;
+		x = 0.5 * log(getGamma(j)) - (1.0 / j) * logDensity;
 		m_bounds[j] = exp(x);
 	}
 }
 
 /*-------------------------------------------------------------------------*/
 
-void Normalizer::computeBounds(double logm, int k, bool dualF) {
-	// m_bounds = new double[maxDim + 1];
+void Normalizer::computeBounds(double logm, int k) {
 	//  double logm =  NTL::log(m);
-	if (dualF)
-		logm = -logm;
+	// 	 * The bounds \f$ d_t^*(\eta)\f$ (if `dualF=0`) or \f$ \ell_t^*(\eta)\f$ (if `dualF=1`)
+    // if (dualF)  logm = -logm;
 	double x;
 	for (int j = 1; j <= m_maxDim; j++) {
 		x = 0.5 * log(getGamma(j)) - (1.0 / j) * (min(k, j) * logm);

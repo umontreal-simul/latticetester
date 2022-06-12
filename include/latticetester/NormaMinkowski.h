@@ -26,35 +26,38 @@ namespace LatticeTester {
 
   /**
    * This class implements Minkowski’s theoretical **LOWER** bound on the length
-   * of the shortest non-zero vector in a lattice. The length of a vector is
-   * computed using the \f${\mathcal{L}}_2\f$ norm. The bounding lengths, for a
-   * lattice containing \f$n\f$ points per unit volume in dimension \f$t\f$, 
-   * are given by \f$\ell_t^* = \gamma_t^{1/2} n^{-1/t}\f$, where the 
-   * \f$\gamma_t\f$ are the *Minkowski* lattice constants.
+   * of the shortest non-zero vector in a lattice, with the \f${\mathcal{L}}_2\f$ norm.
+   * The Hermite constants \f$\gamma_s\f$ are approximated using this bound.
+   * This class is to be used with the L2NORM (the Euclidean norm) exclusively.
    */
   template<typename RealRed>
     class NormaMinkowski : public Normalizer {
       public:
 
         /**
-         * Constructor for the bounds obtained for Minkowski lattices. The lattices
-         * have \f$n\f$ points per unit volume, in all dimensions \f$\le t\f$. 
-         * The bias factor `beta` \f$= \beta\f$ gives more weight to some of the 
-         * dimensions. 
-         * Note this class stores the log value of the density to handle larger values.
-         * Restriction: \f$t \le48\f$.
+		 * Constructs a `NormaMinkowski` for up to `maxDim` dimensions, by assuming that the
+		 * log density is `logDensity` in all dimensions.
+		 * Restriction: `maxDim`\f$ \le 48\f$.
          */
-        NormaMinkowski (RealRed & logDensity, int t, double beta = 1);
+        NormaMinkowski (double logDensity, int maxDim);
 
-        /**
+    	/**
+    	 * This constructor assumes that the primal lattice has scaling factor \f$m\f$
+    	 * and order \f$k\f$, so its density is \f$m^k\f$ for \f$t\geq k\f$, and cannot
+    	 * exceed  \f$m^s\f$ for projections in \f$s < k\f$ dimensions.
+    	 */
+    	NormaMinkowski (double logm, int k, int maxDim);
+
+    	/**
          * Returns the value of the lattice constant \f$\gamma_j\f$ in
          * dimension \f$j\f$.
          */
         double getGamma (int j) const;
+
       private:
 
         /**
-         * Lattice constants \f$\gamma_j\f$ for the Minkowski lattices in each
+         * Constants \f$\gamma_j\f$ for the Minkowski bounds in each
          * dimension \f$j\f$.
          */
         static const double m_gamma[1 + Normalizer::MAX_DIM];
@@ -123,29 +126,32 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename RealRed>
-    NormaMinkowski::NormaMinkowski (RealRed & logDensity, int t,
-        double beta):
-      Normalizer (logDensity, t, "Minkowski", L2NORM, beta)
+    NormaMinkowski::NormaMinkowski (double logDensity, int maxDim):
+      Normalizer (logDensity, maxDim, "Minkowski", L2NORM)
     {
       if (t > this->MAX_DIM)
         throw std::invalid_argument("NormaMinkowski:   dimension > MAX_DIM");
-      Normalizer::init (logDensity, beta);
+      Normalizer::computeBounds (logDensity);
     }
 
+    /*=========================================================================*/
+
+      NormaMinkowski::NormaMinkowski (double logm, int k, int maxDim)
+      : Normalizer (maxDim, "BestLat", L2NORM)
+      {
+        if (maxDim > this->MAX_DIM)
+          throw std::invalid_argument("NormaBestLat:   dimension > MAXDIM");
+        Normalizer::computeBounds (logm, k);
+      }
 
   /*=========================================================================*/
 
-  template<typename RealRed>
     inline double NormaMinkowski::getGamma (int j) const
     {
       if (j < 1 || j > this->MAX_DIM)
         throw std::out_of_range("NormaMinkowski::getGamma");
       return m_gamma[j];
     }
-
-  extern template class NormaMinkowski<double>;
-  extern template class NormaMinkowski<NTL::RR>;
 
 }
 

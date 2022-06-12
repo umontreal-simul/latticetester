@@ -152,6 +152,11 @@ namespace LatticeTester {
            * the normalized merit from the shortest vectors in the lattice. If
            * `dualF` is `true`, the values are computed for the m-dual
            * lattice, otherwise they are computed for the primal lattice.
+<<<<<<< HEAD
+=======
+           * Currently, this only computes the log of m^(k/dim) or its inverse. 
+           * ** Done only once in a search? **  
+>>>>>>> 80726e1a9e1d0aa373820dc56e41d7405580ed7c
            */
           // void computeNormalConstants(bool dualF);
           //    void fixLatticeNormalization (bool dualF);
@@ -171,7 +176,10 @@ namespace LatticeTester {
           virtual void buildBasis (int dim);
 
           /**
+<<<<<<< HEAD
            * REMOVE:  This depends on the lattice only via the density.
+=======
+>>>>>>> 80726e1a9e1d0aa373820dc56e41d7405580ed7c
            * Creates and returns a Normalizer corresponding to the normalization
            * type `norma` and the density of the current lattice. 
            * The argument `alpha` = \f$\alpha\f$ is used only for the 
@@ -180,8 +188,13 @@ namespace LatticeTester {
            * It contains the complete normalization constants for the number of dimensions
            * of this lattice. 
            */
+<<<<<<< HEAD
           // LatticeTester::Normalizer<RealRed> * getNormalizer (NormaType norma,
           //    int alpha, bool dualF);
+=======
+          LatticeTester::Normalizer<RealRed> * getNormalizer (NormaType norma,
+              int alpha, bool dualF);
+>>>>>>> 80726e1a9e1d0aa373820dc56e41d7405580ed7c
 
           /**
            * A virtual utility method to store a vector of indices with lacunary values
@@ -483,7 +496,11 @@ namespace LatticeTester {
 
   /**
   template<typename Int, typename Real, typename RealRed>
+<<<<<<< HEAD
       Normalizer<Real> * IntLattice<Int, Real, RealRed>::getNormalizer(
+=======
+      Normalizer<RealRed> * IntLattice<Int, Real, RealRed>::getNormalizer(
+>>>>>>> 80726e1a9e1d0aa373820dc56e41d7405580ed7c
           NormaType norma, int alpha, bool dualF)
     {
       int dim = this->getDim();

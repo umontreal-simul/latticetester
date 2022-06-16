@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
-// LatticeTester
-// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2022  The LatticeTester authors, under the supervision
+// of Pierre L'Ecuyer at Universit� de Montr�al.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,17 +26,15 @@
 namespace LatticeTester {
 
   /**
-   * This class represents a set of indices with lacunary values. This class
-   * stores the values of those indices as a vector, and they can be accessed
-   * via the `[]` operator. There also is a method to construct a set with
-   * values spaced in a certain way. This class is present here to be used with
-   * the subclasses of IntLattice.
+   * This class represents a set of indices with lacunary values, usually with the
+   * values spaced in a certain systematic way. It is typically used by subclasses
+   * of `IntLattice`.  The values of the lacunary indices are stored in a vector
+   * and can be accessed via the `[]` operator.
    *
    * \remark As it is, this class could be replaced by a simple vector when it
    * occurs. It does not implement any feature that a basic vector class
    * does not have. This class was part of the legacy code base but removing the
-   * instances where it is used would take more time than we are currently
-   * willing to spend on this library.
+   * instances where it is used would take time ...
    */
   template<typename Int>
     class Lacunary {
@@ -57,7 +55,7 @@ namespace LatticeTester {
         }
 
         /**
-         * Constructor for an empty set of \f$t\f$ lacunary indices. This
+         * Constructor of an empty set of \f$t\f$ lacunary indices. This
          * constructor set the value of the indices to `0`. To set indices, one
          * should use either one `[]` or `getLac`, or the `calcIndicesStreams()`
          * method.

@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
-// LatticeTester
-// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2022  The LatticeTester authors, under the supervision
+// of Pierre L'Ecuyer at Universit� de Montr�al.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,9 +25,7 @@
 
 namespace LatticeTester {
   /**
-   * This class is used to implement the same weight for all projections. It
-   * represents the trivial case of no weight. The weights can all be chosen as
-   * 1.
+   * Specifies projection weights that are the same (usually 1) for all projections.
    */
   class UniformWeights : public Weights {
     protected:
@@ -39,7 +37,7 @@ namespace LatticeTester {
       /**
        * Constructs uniform weights.
        *
-       * \param weight     Weight for all projections.
+       * \param weight     Weight given to all projections.
        */
       explicit UniformWeights (Weight weight)
       { m_weight = weight; }

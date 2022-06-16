@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
-// LatticeTester
-// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2022  The LatticeTester authors, under the supervision
+// of Pierre L'Ecuyer at Universit� de Montr�al.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -27,11 +27,11 @@
 namespace LatticeTester {
 
   /**
-   * This is basically a `std::set<std::size_t>`. It also implements an output
-   * and an input operator, but it is useless to have a class for that.
-   * This class is used to store the vector of coordinates used when
-   * computing the projections with lacunary indices. Objects of this class are
-   * created and returned by the classes in the CoordinateSets namespace.
+   * This is basically a `std::set<std::size_t>`.
+   * An object of this class is used to store a set of coordinates that represents
+   * a projection, usually with lacunary indices.  These types of objects are created
+   * and returned by the classes in the `CoordinateSets` namespace.
+   * This class also offers some input and output operators.
    */
 
   class Coordinates : public std::set<std::size_t> {

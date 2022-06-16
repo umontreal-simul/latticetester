@@ -1,11 +1,7 @@
 // This file is part of LatticeTester.
 //
 // Copyright (C) 2012-2022  The LatticeTester authors, under the occasional supervision
-<<<<<<< HEAD
 // of Pierre L'Ecuyer at Universitï¿½ de Montrï¿½al.
-=======
-// of Pierre L'Ecuyer at Université de Montréal.
->>>>>>> 80726e1a9e1d0aa373820dc56e41d7405580ed7c
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.

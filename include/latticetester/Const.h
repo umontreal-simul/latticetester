@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
-// LatticeTester
-// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2022  The LatticeTester authors, under the supervision
+// of Pierre L'Ecuyer at Universit� de Montr�al.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 /*
  * \file latticetester/Const.h
  *
- * This module contains global constants used in LatticeTester.
+ * This class contains enumeration types and global constants used in LatticeTester.
  */
 
 #ifndef LATTICETESTER__CONST_H
@@ -29,36 +29,34 @@
 namespace LatticeTester {
 
   /**
-   * Indicates which norm is used to measure the length of vectors. For \f$X =
-   * (x_1,…,x_t)\f$,
-   *
-   * `SUPNORM` corresponds to
-   * \f$\Vert X\Vert= \max(|x_1|,…,|x_t|)\f$.<br> `L1NORM` corresponds to
-   * \f$\Vert X\Vert= |x_1|+\cdots+|x_t|\f$.<br> `L2NORM` corresponds to
-   * \f$\Vert X\Vert= (x_1^2+\cdots+x_t^2)^{1/2}\f$.<br> `ZAREMBANORM`
-   * corresponds to \f$\Vert X\Vert= \max(1, |x_1|)\cdots\max(1, |x_t|)\f$.
+   * The norm types that are available to measure the length of vectors. For \f$X =
+   * (x_1,…,x_t)\f$:<br>
+   * `SUPNORM` corresponds to \f$\Vert X\Vert= \max(|x_1|,…,|x_t|)\f$.<br>
+   * `L1NORM` corresponds to \f$\Vert X\Vert= |x_1|+\cdots+|x_t|\f$.<br>
+   * `L2NORM` corresponds to \f$\Vert X\Vert= (x_1^2+\cdots+x_t^2)^{1/2}\f$.<br>
+   * `ZAREMBANORM` corresponds to \f$\Vert X\Vert= \max(1, |x_1|)\cdots\max(1, |x_t|)\f$.
    */
   enum NormType { SUPNORM = 1, L1NORM = 2, L2NORM = 3, ZAREMBANORM = 4 };
 
   /**
-   * Indicates in which form and where the results will be sent.
+   * Different choices of output formats.
    *
    * `TERM`: the results will appear only on the terminal screen.<br>
    * `RES`: the results will be in plain text format and sent to a file with
    * extension `.res`.<br>
    * `TEX`: the results will be in LaTeX format and sent to a file with extension
-   * `.tex`.\n
+   * `.tex`.<br>
    * `GEN`: the results will be sent to a file with extension `.gen`.
    */
   enum OutputType { TERM, RES, TEX, GEN };
 
   /**
-   * An enum listing the problems that LatticeTester can solve.
+   * An enum listing some problems that LatticeTester can handle.
    * */
   enum ProblemType {BASIS, DUAL, REDUCTION, SHORTEST, MERIT};
 
   /**
-   * Indicates in which precision the NTL algorithms will be perfoms :
+   * Different types of precision that the NTL algorithms can use:
    * `DOUBLE` -- double
    * `QUADRUPLE` -- quad_float (quasi quadruple precision)
    *         this is useful when roundoff errors can cause problems
@@ -78,7 +76,8 @@ namespace LatticeTester {
   enum PrimeType { UNKNOWN, PRIME, PROB_PRIME, COMPOSITE };
 
   /**
-   * Gives the merit criterion for ranking generators or lattices.
+   * Merit criteria to measure the quality of generators or lattices.
+   * Note: this list is not very clear.
    *
    * `LENGTH`: Only using the length of the shortest vector as a criterion.
    * `BEYER`: the figure of merit is the Beyer quotient \f$Q_T\f$.<br>
@@ -91,12 +90,12 @@ namespace LatticeTester {
   enum CriterionType { LENGTH, SPECTRAL, BEYER, PALPHA, BOUND_JS };
 
   /**
-   * Indicates which normalization is used to compute \f$S_t\f$ in the spectral
-   * test, for each dimension \f$t\f$.
+   * Different types of normalizations that can be used for shortest-vector lengths.
+   * Corresponds to different ways of approximating the Hermite constants `gamma_t`.
    *
    * `BESTLAT`: the value used for \f$d_t^*\f$ corresponds to the best
    * lattice.<br>
-   * `BESTLAT`: the value used for \f$d_t^*\f$ corresponds to the best
+   * `BESTBOUND`: the value used for \f$d_t^*\f$ corresponds to the best
    * bound known to us.<br>
    * `LAMINATED`: the value used for \f$d_t^*\f$ corresponds to the best
    * *laminated* lattice.<br>
@@ -110,8 +109,7 @@ namespace LatticeTester {
    * \f${\mathcal{L}}_1\f$ norm.<br>
    * `NONE`: no normalization will be used.<br>
    */
-  enum NormaType { BESTLAT, BESTBOUND, LAMINATED, ROGERS, MINK, MINKL1,
-    L1, L2 , NONE};
+  enum NormaType { BESTLAT, BESTBOUND, LAMINATED, ROGERS, MINKOWSKI, MINKL1, NONE };
 
   /**
    * Indicates which type of calculation is considered for the
@@ -127,7 +125,7 @@ namespace LatticeTester {
   enum CalcType { PAL, NORMPAL, BAL, SEEKPAL };
 
   /**
-   * A list of all the possible lattice reduction implemented in `LatticeTester`.
+   * A list of all the possible lattice reductions implemented in `LatticeTester`.
    *
    * `NORPRERED`: no reduction
    * `DIETER`: Pairwise reduction
@@ -155,7 +153,6 @@ namespace LatticeTester {
   std::string toStringPreRed (PreReductionType);
   std::string toStringOutput (OutputType);
   std::string toStringPrecision (PrecisionType);
-
 
   /**
    * @}

@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
-// LatticeTester
-// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2022  The LatticeTester authors, under the supervision
+// of Pierre L'Ecuyer at Universit� de Montr�al.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -124,7 +124,7 @@ namespace LatticeTester {
   namespace CoordinateSets {
 
     /**
-     * A CoordinateSets for coordinates within a given range.
+     * A `CoordinateSets` for coordinates within a given range.
      * This contains ways to build all subsets of coordinates of a given size
      * in an interval \f$\{\mathtt{minCoord}, \dots, \mathtt{maxCoord}\}\f$.
      * The intended usage of this class is to generate subsets of different 
@@ -155,7 +155,7 @@ namespace LatticeTester {
         // from which the subset can be drawn.
         RangeMap m_ranges;
 
-        // Having a private getter is not that usefull.
+        // Having a private getter is not that useful.
         const RangeMap& ranges() const {return m_ranges;}
 
       public:
@@ -350,8 +350,8 @@ namespace LatticeTester {
     }; // End class FromRanges
 
     /**
-     * This class implements a CoordinateSets that will build all the subsets
-     * of a Coordinates object that are of a cardinality in a certain range.
+     * This class implements a `CoordinateSets` object that will build all the subsets
+     * of a `Coordinates` object that are of a cardinality in a certain range.
      * This is a less flexible class than `FromRanges` but, in the
      * example `Subsets.cc` it has been slightly faster in our tests.
      *
@@ -400,7 +400,7 @@ namespace LatticeTester {
           struct end_tag {};
 
           /**
-           * Constructor for an iterator at the begining of the list of sets that
+           * Constructor for an iterator at the beginning of the list of sets that
            * `seq` contains.
            * */
           explicit const_iterator(const Subsets& seq):

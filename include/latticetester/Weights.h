@@ -45,7 +45,7 @@ namespace LatticeTester {
       { }
 
       /**
-       * Returns the weight of the projection specified by `projection`.
+       * Returns the weight of the projection (subset of coordinates) specified by `projection`.
        */
       virtual Weight getWeight (const Coordinates & projection) const = 0;
 

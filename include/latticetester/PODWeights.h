@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
-// LatticeTester
-// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2022  The LatticeTester authors, under the supervision
+// of Pierre L'Ecuyer at Universit� de Montr�al.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,11 +25,8 @@
 
 namespace LatticeTester {
   /**
-   * Product and order-dependent (POD) weights.
-   *
-   * This class implements POD weights.
-   * The weight of a projection depends on the order of the projection and on the
-   * coordinates that are in the projection.
+   * Defines product and order-dependent (POD) weights.
+   * The weight of a projection is the sum of a product weight and an order-dependent weight.
    */
   class PODWeights : public Weights {
     protected:
@@ -40,7 +37,7 @@ namespace LatticeTester {
     public:
 
       /**
-       * Constructs order-dependent weights with default weight.
+       * Constructs POD weights with default weight.
        */
       PODWeights();
 
@@ -51,7 +48,7 @@ namespace LatticeTester {
       { }
       
       /**
-       * Returns the weight of the projection specified by \c projection.
+       * Returns the weight of the projection specified by `projection`.
        */
       virtual Weight getWeight (const Coordinates & projection) const;
 

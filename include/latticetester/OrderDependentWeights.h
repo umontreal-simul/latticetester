@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
 // Copyright (C) 2012-2022  The LatticeTester authors, under the occasional supervision
-// of Pierre L'Ecuyer at Université de Montréal.
+// of Pierre L'Ecuyer at Universitï¿½ de Montrï¿½al.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -24,12 +24,8 @@
 
 namespace LatticeTester {
   /**
-   * Order-dependent weights.
-   *
-   * This class implements order dependent  weights.
-   * The weight of a projection depends only on the order of the projection,
-   * i.e. the dimension of the projection.
-   */
+   * Defines order-dependent weights.
+   * The weight of a projection depends only on the order (cardinality) of the projection.   */
   class OrderDependentWeights : public Weights {
     protected:
 
@@ -52,18 +48,18 @@ namespace LatticeTester {
       { }
 
       /**
-       * Returns the weight of the projection specified by \c projection.
+       * Returns the weight of the projection specified by `projection`.
        */
       virtual Weight getWeight (const Coordinates & projection) const;
 
       /**
-       * Returns the weight associated to the given order.
+       * Returns the weight associated to the given `order`.
        */
       virtual Weight getWeightForOrder (Coordinates::size_type order) const
       { return order < m_weights.size() ? m_weights[order] : m_defaultWeight; }
 
       /**
-       * Sets the weight for the order specified by \c order.
+       * Sets the weight for the order specified by `order`.
        */
       virtual void setWeightForOrder (Coordinates::size_type order, Weight weight);
 

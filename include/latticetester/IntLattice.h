@@ -496,11 +496,7 @@ namespace LatticeTester {
 
   /**
   template<typename Int, typename Real, typename RealRed>
-<<<<<<< HEAD
       Normalizer<Real> * IntLattice<Int, Real, RealRed>::getNormalizer(
-=======
-      Normalizer<RealRed> * IntLattice<Int, Real, RealRed>::getNormalizer(
->>>>>>> 80726e1a9e1d0aa373820dc56e41d7405580ed7c
           NormaType norma, int alpha, bool dualF)
     {
       int dim = this->getDim();

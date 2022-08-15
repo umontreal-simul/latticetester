@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
 // Copyright (C) 2012-2022  The LatticeTester authors, under the occasional supervision
-// of Pierre L'Ecuyer at Université de Montréal.
+// of Pierre L'Ecuyer at Universitï¿½ de Montrï¿½al.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ namespace LatticeTester {
  * and offers constructors to build a lattice from an arbitrary basis.
  * The class `IntLattice` extends this class and contains virtual methods that must
  * be defined in its subclasses.
- * An object of this class is an integral lattice, with its basis and `m`-dual basis.
+ * An `IntLatticeBase` object is an integral lattice, with its basis and `m`-dual basis.
  * There are tools to perform simple manipulations on those lattice bases.
  * The value of `m` is always chosen in a way that all coordinates of the basis and
  * of its `m`-dual are integers, so they can be represented exactly.
@@ -47,7 +47,9 @@ namespace LatticeTester {
  * Euclidean norm.
  * Methods and attributes are offered to compute and store the norms of the basis and dual basis vectors,
  * to permute basis vectors, sort them by length and do the corresponding changes in the dual, etc.
- *
+ * The `IntLatticeBase` object contains several protected variables to store all these quantities.
+ * For better efficiency, we should avoid creating too many of these objects, for example when
+ * making searches for good lattices.
  */
 template<typename Int, typename Real, typename RealRed>
 class IntLatticeBase {
@@ -100,14 +102,15 @@ public:
 	 * Makes a deep copy of the lattice `lat` into this object.
 	 * CHANGED: WE NOW COPY EVERYTHING!
 	 */
-	void copyLattice(const IntLatticeBase<Int, Real, RealRed> &lat);
+	void copyLattice(const IntLatticeBase<Int, Real, RealRed> &lat, int dim=0);
 
 	/*
-	 * Copy the `n` first elements of the basis of the lattice `lat` into this
-	 * object. The object into which `lat` is copied has to be of dimension `n` already.
-	 * SEEMS BIZARRE AND APPARENTLY NEVER USED.
-	// void copyLattice(const IntLatticeBase<Int, Real, RealRed> &lat, long n);
+	 * Copy the first `dim` elements of the primal basis of the lattice `lat` into this
+	 * object.  It also undefines the norm, the dual basis, etc.
+	 * The object into which `lat` is copied has to be of dimension `dim` already,
+	 * otherwise nothing is done.  Nothing else is changed.   ??????
 	 */
+	void copyBasis(const IntLatticeBase<Int, Real, RealRed> &lat, int dim=0);
 
 	/**
 	 * Initializes a vector containing the norms of the basis vectors to -1
@@ -139,7 +142,7 @@ public:
 	/**
 	 * Returns the `NormType` used by this lattice.
 	 */
-	NormType getNorm() const {
+	NormType getNormType() const {
 		return m_norm;
 	}
 
@@ -438,7 +441,7 @@ IntLatticeBase<Int, Real, RealRed>::IntLatticeBase(const IntMat primalbasis,
 template<typename Int, typename Real, typename RealRed>
 IntLatticeBase<Int, Real, RealRed>::IntLatticeBase(
 		const IntLatticeBase<Int, Real, RealRed> &lat) {
-//		: m_dim(lat.getDim()), m_norm(lat.getNorm())
+//		: m_dim(lat.getDim()), m_norm(lat.getNormType())
 	copyLattice(lat);
 }
 
@@ -462,6 +465,7 @@ void IntLatticeBase<Int, Real, RealRed>::kill() {
 
 /*=========================================================================*/
 
+//  Is this really a deep copy?
 template<typename Int, typename Real, typename RealRed>
 void IntLatticeBase<Int, Real, RealRed>::copyLattice(
 		const IntLatticeBase<Int, Real, RealRed> &lat) {
@@ -477,11 +481,10 @@ void IntLatticeBase<Int, Real, RealRed>::copyLattice(
 
 /*=========================================================================*/
 
-/*
 template<typename Int, typename Real, typename RealRed>
 void IntLatticeBase<Int, Real, RealRed>::copyLattice(
 		const IntLatticeBase<Int, Real, RealRed> &lat, long n) {
-	if (this->m_dim == n) {
+	if (this->m_dim == n) {     // What if n < m_dim ?       ***********
 		CopyMatr(this->m_basis, lat.m_basis, n);
 		CopyVect(this->m_vecNorm, lat.m_vecNorm, n);
 		this->m_withDual = lat.m_withDual;
@@ -495,7 +498,6 @@ void IntLatticeBase<Int, Real, RealRed>::copyLattice(
 		this->m_modulo = lat.m_modulo;
 	}
 }
-*/
 
 /*=========================================================================*/
 

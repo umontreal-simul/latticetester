@@ -142,7 +142,7 @@ namespace LatticeTester {
    *
    * @{
    *
-   * Returns the `enum` constants in this module as strings.
+   * Returns the value of the `enum` variable given as input as a string.
    */
   std::string toStringNorm (NormType);
   std::string toStringPrime (PrimeType);

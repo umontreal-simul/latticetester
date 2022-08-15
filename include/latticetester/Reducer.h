@@ -41,6 +41,7 @@ namespace LatticeTester {
  * To reduce the m-dual basis or find a shortest nonzero vector in it,
  * one should first dualize the lattice; the method `IntLattice::dualize` does that.
  * Some of the lattice reduction methods are NTL wraps.
+ * For those, the `Int` type can only be `ZZ`, because NTL offers no other option.
  * For LLL, we have both our simple implementation and implementations from
  * NTL, which are usually more efficient; see redLLLNTL and redLLLNTLExact.
  * The method redBKZ is also a wrapper for NTL algorithm for BKZ reduction.
@@ -51,9 +52,10 @@ namespace LatticeTester {
  * the BB search.
  *
  * To use these facilities, one should create an instance of `Reducer` by passing a
- * `IntLatticeBase` object to the constructor. Then, applying the methods of the
- * `Reducer` object will modify the `IntLatticeBase` object to which it refers
- * (by a pointer).
+ * `IntLatticeBase` object to the constructor. This reducer will always work on this
+ * `IntLatticeBase` object. That is, applying the methods of the `Reducer` object will
+ * modify the `IntLatticeBase` object to which it refers internally by a pointer
+ * which is accessible via `getIntLatticeBase`.
  */
 
 template<typename Int, typename Real, typename RealRed>
@@ -132,7 +134,7 @@ public:
 	 * during the branch-and-bound, the method aborts and returns
 	 * `false`. Otherwise, it returns `true`. If the reduction was
 	 * successful, the new reduced basis can be accessed as desired via
-	 * `getIntLatticeBasis()`.
+	 * `getIntLatticeBase()`.
 	 *
 	 * It is strongly recommended to use `redBKZ` or `redLLLNTL` to pre-reduce
 	 * the basis before invoking this method.
@@ -154,10 +156,10 @@ public:
 	void redDieterRandomized(int dim, int seed);
 
 	/**
-	 * Performs a LLL (Lenstra-Lenstra-Lovasz) basis reduction with factor `delta`
-	 * \cite iLEC22l.
-	 * The reduction is applied to the first `dim` basis vectors when `dim > 0`,
-	 * and to the entire basis (all vectors) when `dim=0`.
+	 * Performs a LLL basis reduction with factor `delta` \cite iLEC22l.
+	 * The reduction is applied to the first `dim` basis vectors and coordinates
+	 * when `dim > 0`, and to the entire basis (all vectors) when `dim=0`.
+	 * It always uses the Euclidean norm.
 	 * The factor `delta` must be between 1/2 and 1. The closer it is to 1,
 	 * the more the basis is reduced, in the sense that the LLL
 	 * algorithm will enforce tighter conditions on the basis,
@@ -168,7 +170,6 @@ public:
 	 * This is our simple implementation of the LLL reduction.
 	 * For NTL types, it is considerably slower than what is
 	 * available through NTL, but it performs well on standard C++ types.
-	 * This implementation always uses the Euclidean norm.
 	 */
 	void redLLL(double delta = 0.999999, std::int64_t maxcpt = 1000000000,
 			int dim = 0);
@@ -179,9 +180,9 @@ public:
 	 * The factor `delta` has the same meaning as in `redLLL`.
 	 * The parameter `precision` specifies the precision of the floating point numbers
 	 * that the algorithm will use. `Const.h` provides a list of the possible values,
-	 * but their description is done in the module `LLL` of NTL.
+	 * and their description is done in the module `LLL` of NTL.
 	 * The reduction is applied to the first `dim` basis vectors when `dim > 0`,
-	 * and to the entire basis (all vectors) when `dim=0`.
+	 * and to the entire basis (all vectors and coordinates) when `dim=0`.
 	 */
 	void redLLLNTL(double delta = 0.999999, PrecisionType precision = QUADRUPLE,
 			int dim = 0);
@@ -193,7 +194,7 @@ public:
 	void redLLLNTLExact(double delta);
 
 	/**
-	 * This is the NTL implementation of the floating point version of the
+	 * This calls the NTL implementation of the floating point version of the
 	 * BKZ reduction algorithm presented in \cite mSCH91a,
 	 * with reduction factor `delta` and block size `blocksize`; see \cite iLEC22l.
 	 * The factor `delta` has a similar meaning as in `redLLL`.
@@ -202,7 +203,7 @@ public:
 	 * reduction. Roughly, larger blocks means a stronger condition.
 	 * A `blocksize` of 2 is equivalent to LLL reduction.
 	 */
-	void redBKZ(double delta = 0.999999, std::int64_t blocksize = 10,
+	void redBKZ(double delta = 0.999999, int blocksize = 10,
 			PrecisionType precision = QUADRUPLE, int dim = 0);
 
 	/**
@@ -219,7 +220,7 @@ public:
 	 * Returns the length of the current shortest basis vector in the lattice.
 	 */
 	Real getMinLength() {
-		if (m_lat->getNorm() == L2NORM)
+		if (m_lat->getNormType() == L2NORM)
 			return sqrt(m_lMin2);
 		else
 			return m_lMin;
@@ -229,7 +230,7 @@ public:
 	 * Returns the length of the current longest basis vector in the lattice.
 	 */
 	Real getMaxLength() {
-		if (m_lat->getNorm() == L2NORM)
+		if (m_lat->getNormType() == L2NORM)
 			return sqrt(m_lat->getVecNorm(m_lat->getDim() - 1));
 		else
 			return m_lat->getVecNorm(m_lat->getDim() - 1);
@@ -279,24 +280,29 @@ private:
 	 * Contains specialized implementations of member methods depending on
 	 * the types given to the `Reducer` template. This is private
 	 * because it is possible to call specialized method at an higher level.
-	 *  ** P.L.: I do not understand the rationale for this. It SEEMS AWKWARD. **
+	 * We do this because NTL offers reductions only for ZZ type.
+	 *  ** P.L.: I really do not like this. I think NTL should be able to promote
+	 *     the int64_t to ZZ to apply the methods.   **
 	 */
 	struct specReducer<Int, Real, RealRed> spec;
 
 	/*
 	 * Method used in `ShortestVector` to perform a transformation of
-	 * stage 3 described in \cite rAFF85a. Assumes that
-	 * \f$\sum_{i=1}^t z_i V_i\f$ is a
-	 * short vector that will enter the basis. Tries to reduce some vectors
+	 * stage 3 described in \cite rAFF85a.
+	 * We call this when we have found a shorter vector which is a linear combination of the
+     * previous basis vectors with coefficients given in z. This procedure updates the basis
+     * so that the new shortest vector is in first and the other vectors are adjusted accordingly.
+     * With the L2 norm, an alternative might be to add the new shortest vector to
+     * the basis to get dim+1 generating vectors, and apply LLL to recover a new basis.
+	 * Here, we assume that \f$\sum_{i=1}^t z_i V_i\f$ is a
+	 * short vector that will enter the basis. Then we try to reduce some vectors
 	 * by looking for indices \f$i < j\f$ such that \f$|z_j| > 1\f$ and
 	 * \f$q=\lfloor z_i/z_j\rfloor\not0\f$, and adding \f$q V_i\f$ to
-	 * \f$V_j\f$ when this happens. Returns in \f$k\f$ the last index
+	 * \f$V_j\f$ when this happens. We return in \f$k\f$ the last index
 	 * \f$j\f$ such that \f$|z_j|=1\f$.
-	 *   **This method does not change the m-dual.
-	 *   **It is probably useless for SV, because we have a guaranteed SV anyway.
-
+	 * This method does not change the m-dual.
+     */
 	 void transformStage3ShortVec(std::vector<std::int64_t> &z, int &k);
-	 */
 
 	/**
 	 * Method used in `reductMinkowski` to perform a transformation of
@@ -399,12 +405,11 @@ private:
 	void tracePrintBases(char *mess);
 
 	/**
-	 * a vector that contains a lower bound on the acceptable (squared) length
+	 * A vector that contains a lower bound on the acceptable (squared) length
 	 * of the shortest vector, for each number of dimensions.
 	 * If any vector of the lattice is shorter than this bound,
 	 * we stop the reduction immediately and reject this lattice since
 	 * we already know that its shortest vector is too small.
-	 *
 	 * This is used in `RedBBShortVec`, and useful for the seek procedure in LatMRG.
 	 * We could also just check this after the BKZ reduction and after the BB,
 	 * in the seek procedures.
@@ -452,19 +457,20 @@ private:
 	static bool PreRedLLLMink;
 
 	/*
-	 * Some working variables for this class.
+	 * Some local working variables for this class.
+	 * They are used inside the basis reduction and short vector methods, and
+	 * are declared here to avoid passing them as parameters across the methods.
 	 */
 	Int m_bs;
 	IntVec m_bv;       // Saves current shorter vector in primal basis
 	IntVec m_bw;       // Saves current shorter vector in dual basis
 	Real m_lMin;       // The norm of the shortest vector in the primal basis
 					   // according to the norm considered
-	Real m_lMin2;     // Squared norm of the shortest vector in the primal basis
-					  // according to the norm L2
+	Real m_lMin2;      // Squared L2-norm of the shortest vector in the primal basis
 	Real m_ns;
 	RealVec m_nv;
 
-	//RealRed m_rs;
+	// RealRed m_rs;
 	RealRedVec m_zLR, m_n2, m_dc2;
 	RealRedMat m_c0, m_c2, m_cho2, m_gramVD;
 	int *m_IC;             // Indices in Cholesky
@@ -475,7 +481,7 @@ private:
 	std::int64_t m_countDieter; // Number of attempts since last successful
 								// Dieter transformation
 	std::int64_t m_cpt;  // Number of successes in pre-reduction transformations
-	bool m_foundZero;      // = true -> the zero vector has been found
+	bool m_foundZero;    // = true -> the zero vector has been found
 
 };
 // End class Reducer
@@ -495,7 +501,7 @@ struct specReducer<std::int64_t, Real, RealRed> {
 		std::cout
 				<< "** WARNING: redLLLNTLExact cannot be used with std::int64_t.\n";
 		std::cout << "** We are now using redLLL instead.\n";
-		red.redLLL(delta, 1000000, red.getIntLatticeBasis()->getDim());
+		red.redLLL(delta, 1000000, red.getIntLatticeBase()->getDim());
 	}
 
 	void redBKZ(Reducer<std::int64_t, Real, RealRed> &red, double delta,
@@ -503,17 +509,17 @@ struct specReducer<std::int64_t, Real, RealRed> {
 		IntLatticeBase<std::int64_t, std::int64_t, Real, RealRed> *lattmp = 0;
 		if (dim > 0) {
 			lattmp = new IntLatticeBase<std::int64_t, std::int64_t, Real,
-					RealRed>(dim, red.getIntLatticeBasis()->getNorm());
-			lattmp->copyLattice(*red.getIntLatticeBasis(), dim);
+					RealRed>(dim, red.getIntLatticeBase()->getNormType());
+			lattmp->copyLattice(*red.getIntLatticeBase(), dim);
 		} else
-			lattmp = red.getIntLatticeBasis();
+			lattmp = red.getIntLatticeBase();
 		std::cout
 				<< "\n** WARNING: redBKZ cannot be used with std::int64_t integers;\n";
 		std::cout
 				<< "** it requires the ZZ type. We are now using redLLL instead.\n";
 		std::cout << "** It does not do the same thing.\n";
 		std::cout << std::endl;
-		red.redLLL(delta, 1000000, red.getIntLatticeBasis()->getDim());
+		red.redLLL(delta, 1000000, red.getIntLatticeBase()->getDim());
 		if (dim > 0)
 			delete lattmp;
 	}
@@ -522,68 +528,72 @@ struct specReducer<std::int64_t, Real, RealRed> {
 	 * performs NTL LLL reduction is faster than our own LLL.
 	 * If it is, we should re-implement our LLL to match what is done in NTL.
 	 */
-	void redLLLNTL(Reducer<std::int64_t, std::int64_t, Real, RealRed> &red,
+	void redLLLNTL(Reducer<std::int64_t, Real, RealRed> &red,
 			double delta, PrecisionType precision, int dim) {
-		IntLatticeBase<NTL::ZZ, NTL::ZZ, Real, RealRed> *lattmp = 0;
-		NTL::matrix<std::int64_t> basis = red.getIntLatticeBasis()->getBasis();
-		NTL::mat_ZZ U;
-		U.SetDims(basis.NumRows(), basis.NumCols());
+		// Here we create a new temporary lattice, new NTL matrices, and then destroy them.
+		// That's a lot of object creations, probably very ineffective.
+		IntLatticeBase<NTL::ZZ, Real, RealRed> *lattmp = 0;
+		NTL::matrix<std::int64_t> basis = red.getIntLatticeBase()->getBasis();
+		// We copy the basis in B, for all the dimensions!
+		NTL::mat_ZZ B;
+		B.SetDims(basis.NumRows(), basis.NumCols());
 		for (int i = 0; i < basis.NumRows(); i++) {
 			for (int j = 0; j < basis.NumCols(); j++) {
-				U[i][j] = basis[i][j];
+				B[i][j] = basis[i][j];
 			}
 		}
-		lattmp = new IntLatticeBase<NTL::ZZ, NTL::ZZ, Real, RealRed>(U, dim,
-				red.getIntLatticeBasis()->getNorm());
-		U.kill();
+		lattmp = new IntLatticeBase<NTL::ZZ, Real, RealRed>(B, dim,
+				red.getIntLatticeBase()->getNormType());
+		B.kill();
 
 		switch (precision) {
 		case DOUBLE:
-			LLL_FP(lattmp->getBasis(), U, delta, 0, 0);
+			LLL_FP(lattmp->getBasis(), delta);
 			break;
 		case QUADRUPLE:
-			LLL_QP(lattmp->getBasis(), U, delta, 0, 0);
+			LLL_QP(lattmp->getBasis(), delta);
 			break;
 		case EXPONENT:
-			LLL_XD(lattmp->getBasis(), U, delta, 0, 0);
+			LLL_XD(lattmp->getBasis(), delta);
 			break;
 		case ARBITRARY:
-			LLL_RR(lattmp->getBasis(), U, delta, 0, 0);
+			LLL_RR(lattmp->getBasis(), delta);
 			break;
 		case EXACT:
 			break;
 		default:
 			MyExit(1, "Undefined PrecisionType for LLL");
 		}
+		// Here we replace the old basis for all the dimensions!  This looks incorrect.
 		for (int i = 0; i < basis.NumRows(); i++) {
 			for (int j = 0; j < basis.NumCols(); j++) {
-				red.getIntLatticeBasis()->getBasis()[i][j] = NTL::trunc_long(
+				red.getIntLatticeBase()->getBasis()[i][j] = NTL::trunc_long(
 						lattmp->getBasis()[i][j], 63);
-				red.getIntLatticeBasis()->getBasis()[i][j] *= NTL::sign(
+				red.getIntLatticeBase()->getBasis()[i][j] *= NTL::sign(
 						lattmp->getBasis()[i][j]);
 			}
 		}
-		red.getIntLatticeBasis()->updateVecNorm();
+		red.getIntLatticeBase()->updateVecNorm();
 		delete lattmp;
 	}
 
 	/*
-	 * void redLLLNTL(Reducer<std::int64_t, std::int64_t, Real, RealRed>& red,
+	 * void redLLLNTL(Reducer<std::int64_t, Real, RealRed>& red,
 	 *     double delta, PrecisionType precision, int dim)
 	 * {
-	 *   IntLatticeBase<std::int64_t, std::int64_t, Real, RealRed> *lattmp = 0;
+	 *   IntLatticeBase<std::int64_t, Real, RealRed> *lattmp = 0;
 	 *   if(dim > 0){
-	 *     lattmp = new IntLatticeBase<std::int64_t, std::int64_t, Real, RealRed>(
-	 *                dim, red.getIntLatticeBasis()->getNorm());
-	 *     lattmp->copyLattice(*red.getIntLatticeBasis(), dim);
+	 *     lattmp = new IntLatticeBase<std::int64_t, Real, RealRed>(
+	 *                dim, red.getIntLatticeBase()->getNorm(Type));
+	 *     lattmp->copyLattice(*red.getIntLatticeBase(), dim);
 	 *   }
 	 *   else
-	 *     lattmp = red.getIntLatticeBasis();
+	 *     lattmp = red.getIntLatticeBase();
 	 *   std::cout << "\n**** WARNING redLLLNTL cannot be use with std::int64_t integers\n";
 	 *   std::cout << "** It requires the ZZ type. Instead, LLL reduction is performed\n";
 	 *   std::cout << "** with our algorithm, which can be slower.\n";
 	 *   std::cout << std::endl;
-	 *   red.redLLL(delta, 1000000, red.getIntLatticeBasis()->getDim ());
+	 *   red.redLLL(delta, 1000000, red.getIntLatticeBase()->getDim ());
 	 *   if (dim>0) delete lattmp;
 	 * }
 	 * */
@@ -592,83 +602,79 @@ struct specReducer<std::int64_t, Real, RealRed> {
 // Specialization for the case where Int is NTL::ZZ
 //
 template<typename Real, typename RealRed>
-struct specReducer<NTL::ZZ, NTL::ZZ, Real, RealRed> {
+struct specReducer<NTL::ZZ, Real, RealRed> {
 
-	void redLLLNTLExact(Reducer<NTL::ZZ, NTL::ZZ, Real, RealRed> &red,
+	void redLLLNTLExact(Reducer<NTL::ZZ, Real, RealRed> &red,
 			double delta) {
 		NTL::ZZ det(0);
-		NTL::LLL(det, red.getIntLatticeBasis()->getBasis(), 99999, 100000);
-		// These numbers should not be hardcoded !!!
+		int64_t denum;
+		denum = round (1.0 / (1.0-delta));  // We want (denum-1)/denum \approx delta.
+		NTL::LLL(det, red.getIntLatticeBase()->getBasis(), denum-1, denum);
 	}
 
-	void redBKZ(Reducer<NTL::ZZ, NTL::ZZ, Real, RealRed> &red, double delta,
+	void redBKZ(Reducer<NTL::ZZ, Real, RealRed> &red, double delta,
 			std::int64_t blocksize, PrecisionType precision, int dim) {
-		IntLatticeBase<NTL::ZZ, NTL::ZZ, Real, RealRed> *lattmp = 0;
+		IntLatticeBase<NTL::ZZ, Real, RealRed> *lattmp = 0;
 		if (dim > 0) {
-			lattmp = new IntLatticeBase<NTL::ZZ, NTL::ZZ, Real, RealRed>(dim,
-					red.getIntLatticeBasis()->getNorm());
-			lattmp->copyLattice(*red.getIntLatticeBasis(), dim);
+			lattmp = new IntLatticeBase<NTL::ZZ, Real, RealRed>(dim,
+					red.getIntLatticeBase()->getNormType());
+			lattmp->copyLattice(*red.getIntLatticeBase(), dim);
 		} else
-			lattmp = red.getIntLatticeBasis();
-
-		NTL::mat_ZZ U;
-		U.SetDims(lattmp->getBasis().size1(), lattmp->getBasis().size2());
+			lattmp = red.getIntLatticeBase();  // dim=0 means we use the full dimension.
 
 		switch (precision) {
 		case DOUBLE:
-			NTL::BKZ_FP(lattmp->getBasis(), U, delta, blocksize);
+			NTL::BKZ_FP(lattmp->getBasis(), delta, blocksize);
 			break;
 		case QUADRUPLE:
-			NTL::BKZ_QP(lattmp->getBasis(), U, delta, blocksize);
+			NTL::BKZ_QP(lattmp->getBasis(), delta, blocksize);
 			break;
 		case EXPONENT:
-			NTL::BKZ_XD(lattmp->getBasis(), U, delta, blocksize);
+			NTL::BKZ_XD(lattmp->getBasis(), delta, blocksize);
 			break;
 		case ARBITRARY:
-			NTL::BKZ_RR(lattmp->getBasis(), U, delta, blocksize);
+			NTL::BKZ_RR(lattmp->getBasis(), delta, blocksize);
 			break;
 		default:
 			MyExit(1, "Undefined precision type for BKZ");
 		}
-		red.getIntLatticeBasis()->copyLattice(*lattmp, dim);
+		red.getIntLatticeBase()->copyLattice(*lattmp, dim);
 		if (dim > 0)
 			delete lattmp;
 	}
 
-	void redLLLNTL(Reducer<NTL::ZZ, NTL::ZZ, Real, RealRed> &red, double delta,
+	void redLLLNTL(Reducer<NTL::ZZ, Real, RealRed> &red, double delta,
 			PrecisionType precision, int dim) {
-		IntLatticeBase<NTL::ZZ, NTL::ZZ, Real, RealRed> *lattmp = 0;
+		IntLatticeBase<NTL::ZZ, Real, RealRed> *lattmp = 0;
 		if (dim > 0) {
-			lattmp = new IntLatticeBase<NTL::ZZ, NTL::ZZ, Real, RealRed>(dim,
-					red.getIntLatticeBasis()->getNorm());
-			lattmp->copyLattice(*red.getIntLatticeBasis(), dim);
+			// We should copy only the basis matrix, not the whole IntLatticeBase object !   ******
+			lattmp = new IntLatticeBase<NTL::ZZ, Real, RealRed>(dim,
+					red.getIntLatticeBase()->getNormType());
+			lattmp->copyLattice(*red.getIntLatticeBase(), dim);
 		} else
-			lattmp = red.getIntLatticeBasis();
+			lattmp = red.getIntLatticeBase();
 		if (precision == EXACT)
 			red.redLLLNTLExact(delta);
 		else {
-			NTL::mat_ZZ U;
-			U.SetDims(lattmp->getBasis().NumRows(),
-					lattmp->getBasis().NumCols());
 			switch (precision) {
 			case DOUBLE:
-				LLL_FP(lattmp->getBasis(), U, delta, 0, 0);
+				LLL_FP(lattmp->getBasis(), delta, 0, 0);
 				break;
 			case QUADRUPLE:
-				LLL_QP(lattmp->getBasis(), U, delta, 0, 0);
+				LLL_QP(lattmp->getBasis(), delta, 0, 0);
 				break;
 			case EXPONENT:
-				LLL_XD(lattmp->getBasis(), U, delta, 0, 0);
+				LLL_XD(lattmp->getBasis(), delta, 0, 0);
 				break;
 			case ARBITRARY:
-				LLL_RR(lattmp->getBasis(), U, delta, 0, 0);
+				LLL_RR(lattmp->getBasis(), delta, 0, 0);
 				break;
 			case EXACT:
 				break;
 			default:
 				MyExit(1, "LLL PrecisionType:   NO SUCH CASE");
 			}
-			red.getIntLatticeBasis()->copyLattice(*lattmp, dim);
+			red.getIntLatticeBase()->copyLattice(*lattmp, dim);
 		}
 		if (dim > 0)
 			delete lattmp;
@@ -1853,12 +1859,12 @@ bool Reducer<Int, Real, RealRed>::tryZShortVec(int j, bool &smaller)
 						}
 					}
 					// The new vector is now in m_bv.
-					if (m_lat->getNorm() == L2NORM) {
+					if (m_lat->getNormType() == L2NORM) {
 						ProdScal<Int>(m_bv, m_bv, dim, x);
 					} else {
 						// Compute the square length for the L1 norm.
 						CalcNorm<IntVec, RealRed>(m_bv, dim, x,
-								m_lat->getNorm());
+								m_lat->getNormType());
 						x = x * x;
 					}
 					if (x < m_lMin2) {

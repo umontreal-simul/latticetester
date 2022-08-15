@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
-// LatticeTester
-// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2022  The LatticeTester authors, under the supervision
+// of Pierre L'Ecuyer at Universit� de Montr�al.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ namespace LatticeTester
       case ZAREMBANORM:
         return "ZAREMBANORM";
       default:
-        return "***** NormType: IMPOSSIBLE CASE ";
+        return "***** NormType: UNDEFINED CASE ";
     }
   }
 
@@ -72,7 +72,7 @@ namespace LatticeTester
       case PALPHA:
         return "PALPHA";
       default:
-        return "***** CriterionType: IMPOSSIBLE CASE ";
+        return "***** CriterionType: UNDEFINED CASE ";
     }
   }
 
@@ -92,7 +92,7 @@ namespace LatticeTester
       case MERIT:
         return "MERIT";
       default:
-        return "***** ProblemType: IMPOSSIBLE CASE ";
+        return "***** ProblemType: UNDEFINED CASE ";
     }
   }
 
@@ -121,7 +121,7 @@ namespace LatticeTester
       case NONE:
         return "NONE";
       default:
-        return "***** NormaType: IMPOSSIBLE CASE ";
+        return "***** NormaType: UNDEFINED CASE ";
     }
   }
 
@@ -140,7 +140,7 @@ namespace LatticeTester
       case SEEKPAL:
         return "SEEKPAL";
       default:
-        return "***** CalcType: IMPOSSIBLE CASE ";
+        return "***** CalcType: UNDEFINED CASE ";
     }
   }
 
@@ -160,7 +160,7 @@ namespace LatticeTester
       case NOPRERED:
         return "NOPRERED";
       default:
-        return "***** PreReductionType: IMPOSSIBLE CASE ";
+        return "***** PreReductionType: UNDEFINED CASE ";
     }
   }
 
@@ -181,7 +181,7 @@ namespace LatticeTester
       case EXACT:
         return "EXACT";
       default:
-        return "***** PrecisionType: IMPOSSIBLE CASE ";
+        return "***** PrecisionType: UNDEFINED CASE ";
     }
   }
 
@@ -200,7 +200,7 @@ namespace LatticeTester
       case GEN:
         return "GEN";
       default:
-        return "***** OutputType: IMPOSSIBLE CASE ";
+        return "***** OutputType: UNDEFINED CASE ";
     }
   }
 

@@ -53,7 +53,8 @@ namespace LatticeTester {
    * recompute a basis for different numbers of dimensions and subsets
    * of coordinates. 
    *
-   * REMOVE: The lattices considered here are assumed to have a special structure, which is used
+   * REMOVE (I do not think we need to have this here, but only where we compute the FOMs):
+   * The lattices considered here are assumed to have a special structure, which is used
    * for the computation of the lattice density and the normalization constants in the
    * figures of merit.  It is assumed that the lattice has rank \f$k\f$ and that the
    * rescaling was done by multiplying the primal basis vectors by \f$m\f$.
@@ -140,7 +141,7 @@ namespace LatticeTester {
           // double getLgVolDual2 (int i) const { return m_lgVolDual2[i]; }
 
           /**
-           * Exchange the primal and m-dual bases.
+           * Exchange the primal and m-dual bases.   ***  Put in IntLatticeBase ?
            * If the dual is not defined, does nothing!
            *  ** Add Error message ? **
            */

@@ -44,7 +44,7 @@ namespace LatticeTester {
  * For those, the `Int` type can only be `ZZ`, because NTL offers no other option.
  * For LLL, we have both our simple implementation and implementations from
  * NTL, which are usually more efficient; see redLLLNTL and redLLLNTLExact.
- * The method redBKZ is also a wrapper for NTL algorithm for BKZ reduction.
+ * The method redBKZ is also a wrapper for the NTL algorithm for BKZ reduction.
  *
  * The `shortestVector` method does not apply any pre-reduction by itself.
  * Before calling it, one should always reduce the basis separately beforehand
@@ -53,9 +53,9 @@ namespace LatticeTester {
  *
  * To use these facilities, one should create an instance of `Reducer` by passing a
  * `IntLatticeBase` object to the constructor. This reducer will always work on this
- * `IntLatticeBase` object. That is, applying the methods of the `Reducer` object will
- * modify the `IntLatticeBase` object to which it refers internally by a pointer
- * which is accessible via `getIntLatticeBase`.
+ * `IntLatticeBase` object, which is accessible internally via a pointer.
+ * This pointer is also accessible via `getIntLatticeBase`.
+ * The methods of the `Reducer` object will modify this `IntLatticeBase` object.
  */
 
 template<typename Int, typename Real, typename RealRed>
@@ -137,7 +137,7 @@ public:
 	 * `getIntLatticeBase()`.
 	 *
 	 * It is strongly recommended to use `redBKZ` or `redLLLNTL` to pre-reduce
-	 * the basis before invoking this method.
+	 * the basis before invoking this method; this is not done automatically.
 	 */
 	bool shortestVector(NormType norm);
 

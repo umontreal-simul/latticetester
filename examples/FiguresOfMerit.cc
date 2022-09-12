@@ -1,19 +1,18 @@
 /**
- * This example presents how to use LatticeTester to make a figure of merit that
- * is a weighted sum, maximum, minimum or average of a mesure on projections on
- * a lattice. This examples shows how to use the weight classes, how to build
- * projections of a basis, but also how to normalize a computation. Typically,
- * when building figures of merit, mesures need to be rescalled to the same
+ * This example shows how to use `LatticeTester` to implement a figure of merit that
+ * is a weighted sum, maximum, minimum or average of a measure on projections on
+ * a lattice. It shows how to use the `Weights` classes, how to build
+ * projections of a basis, and how to normalize a computation. Typically,
+ * when building figures of merit, measures need to be rescaled to the same
  * interval to be compared with one another, this is what is called
  * normalization.
  * 
- * This example computes a simple spectral test on all projections of a lattice
- * in dimension 10, normalizes it between 0 and 1 and then takes the minimal
+ * This program computes a simple spectral test on all projections of a lattice
+ * in 10 dimensions, normalizes it between 0 and 1 and then takes the minimal
  * value observed as a figure of merit for that lattice.
- *
- * This example outputs only the figure of merit for the lattice for two
+ * It outputs only the figure of merit for the lattice for two
  * different normalizers. This is not really interesting in itself, hence it is
- * not included here. To get interesting informations on a figure of merit like
+ * not included here (???). To get interesting informations on a figure of merit like
  * this one, it would be possible to store an few of the worst projections and
  * print them after the test. 
  * */

@@ -30,12 +30,17 @@ namespace LatticeTester {
    * `LatticeAnalysis` object to perform a computation. This class is a little
    * bare bones to avoid the confusion of having too many parameters when
    * working with higher level classes.
+   *
+   * Note: A "configuration" contains a basis and dual basis (but not an IntLattice object),
+   * info on what we want to compute with this lattice (construct a basis, the m-dual,
+   * compute a shortest vector, compute an FOM, etc.), and which method we want to use for that.
+   *
    * */
   template<typename Int, typename IntMat>
     class Config {
       public:
         /*
-         * Each `Config` object stores exactly one of those classes to store the
+         * Each `Config` object stores exactly one of the following classes to store the
          * information that is specific to its problem.
          * */
         class BasisConfig {
@@ -105,12 +110,12 @@ namespace LatticeTester {
         BasIntMat dual_basis;
 
         /**
-         * The rescalling factor used (if it was needed by the test).
+         * The scaling factor m used (if it was needed by the test).
          * */
         Int m;
 
         /**
-         * This will store the infomration specific to the problem this `Config`
+         * This will store the information specific to the problem this `Config`
          * object is for.
          * */
         union Configuration {

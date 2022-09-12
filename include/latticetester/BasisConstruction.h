@@ -48,17 +48,17 @@ struct LLLConstr {
  * the basis is upper-triangular.
  * The methods `Util::Triangularization` and `Util::CalcDual` do essentially the same
  * things; however, the methods given here perform more verifications.
- * We should compare the speeds
+ *  ***  We should compare the speeds
  *
  * A few tips about the usage of this class:
  * - Prefer the usage of NTL types when using this module. The methods here do not
  *   have any kind of overflow detection.
  * - Reduce the basis before doing a triangularization. Reducing a basis with
  *   LLL is much faster than the GCDConstruction and seems to make this operation
- *   easier to perform.
+ *   easier to perform.    ***  To be tested again.
  * - Use specialized methods. With a more in depth knowledge of your problem, it
  *   is possible that there are much more efficient ways to build a basis and its
- *   dual (and/or that those matrices will already be triangular).
+ *   dual (and/or those matrices may already be triangular).
  */
 
 template<typename Int> class BasisConstruction {
@@ -94,6 +94,7 @@ public:
 	 * coefficients in the matrix.
 	 * Warning: In this implementation, the numbers below the diagonal can grow
 	 * very large, so the method may require a lot of memory.
+	 *  ***  But everything should be done modulo m ???
 	 */
 	void GCDTriangularBasis(IntMat &matrix);
 
@@ -130,7 +131,7 @@ public:
 	 * This function assumes that `matrix` contains a basis of the primal lattice
 	 * scaled by the factor `m`, not necessarily triangular.
 	 * It computes and returns the `m`-dual basis in `dualMatrix`.
-	 * **  TO BE IMPLEMENTED **
+	 * ***  TO BE IMPLEMENTED **
 	 */
 	void mDualComputation(IntMat &matrix, IntMat &dualMatrix, Int m);
 

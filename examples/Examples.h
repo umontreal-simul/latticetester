@@ -2,6 +2,7 @@
 #define EXAMPLES_H
 /**
  * This file defines functions and constants used in all examples.
+ * ***  Bad class name!
  * */
 
 const int many_primes = 6;
@@ -10,7 +11,7 @@ const std::string primes[] = {"1021", "1048573", "1073741827", "1099511627791",
 
 /* This function does 3 things.
  * It computes the sum of the first `dim` elements in time and returns the width(+1)
- * (number of caracters needed to write it) of the resulting integer in base 10.
+ * (number of characters needed to write it) of the resulting integer in base 10.
  * This stores that sum in totals[ind].
  * Finally this prints message on std::cout in a column of the width computed
  * above.

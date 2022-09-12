@@ -54,7 +54,8 @@ namespace LatticeTester {
  * to obtain standardized measures that lie between 0 and 1.
  * For the best lattices, these measures should be close to 1.
  *
- * Subclasses of this abstract class provide facilities to compute the bounds
+ * Subclasses of this abstract class provide specific approximations for the \f$ \gamma_t \f$
+ * and facilities to compute the bounds
  * \f$ d_t^*(\eta)\f$ or \f$ \ell_t^*(\eta)\f$ for a selected range of dimensions \f$ t \f$.
  * One constructor will take this range (the maximum dimension) and the log of the density,
  * \f$ \log \eta \f$, as inputs. We work with the log density instead of the density itself
@@ -63,7 +64,7 @@ namespace LatticeTester {
  * Note that the log density of an arbitrary integral lattice with basis `V` can be computed
  * via `-log(abs(det(V)))`.
  *
- * But sometimes, the density may depend on the dimension.
+ * Sometimes, the density may depend on the dimension.
  * This occurs for example for the lattice obtained from an MRG with modulus \f$ m\f$ and order \f$ k\f$,
  * whose density is typically \f$ m^k\f$ in \f$ s\ge k\f$ dimensions, and \f$ m^s\f$
  * in \f$ s < k\f$ dimensions.  The bounds can then be computed by taking this into account.
@@ -85,7 +86,7 @@ namespace LatticeTester {
  * \endcode
  *
  * Important: when making a search and examining millions of lattices, it is important
- * NOT to construct a new Normalizer object and to recompute the constants for each lattice.
+ * NOT to construct a new Normalizer object and recompute the constants for each lattice.
  */
 
 template<typename Int>
@@ -202,6 +203,7 @@ public:
 	 * Returns the bound for dimension `j` as computed in Normalizer::init().
 	 */
 	// double getPreComputedBound (int j) const;
+
 	/**
 	 * Returns the bound on the length of the shortest nonzero vector in `j` dimensions.
 	 */
@@ -221,7 +223,7 @@ protected:
 	std::string m_name;
 
 	/**
-	 * Norm associated with this object.
+	 * Norm type associated with this object.
 	 */
 	NormType m_norm;
 

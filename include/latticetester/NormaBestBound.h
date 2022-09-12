@@ -80,7 +80,6 @@ namespace LatticeTester {
 	 * by taking gamma[n] = 4 * ( bound / V_n )^(n/2) where V_n is the volume of
 	 * an n dimensional sphere of radius 1.
 	 */
-	template<typename RealRed>
 	const double NormaBestBound::m_gamma[ ] =
 	{
 		/* GammaBestBound[0] = */0.0,

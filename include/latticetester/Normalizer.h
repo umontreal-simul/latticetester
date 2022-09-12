@@ -269,7 +269,7 @@ m_maxDim(maxDim), m_name(name), m_norm(norm),
 
 /*-------------------------------------------------------------------------*/
 
-void Normalizer<Real>::computeBounds(double logDensity) {
+void Normalizer::computeBounds(double logDensity) {
 	double x;
 	for (int j = 1; j <= m_maxDim; j++) {
 		x = 0.5 * log(getGamma(j)) - (1.0 / j) * logDensity;

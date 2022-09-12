@@ -54,7 +54,7 @@ struct LLLConstr {
  * - Prefer the usage of NTL types when using this module. The methods here do not
  *   have any kind of overflow detection.
  * - Reduce the basis before doing a triangularization. Reducing a basis with
- *   LLL is much faster than the GCDConstruction and seems to make this operation
+ *   LLL is much faster than the GCDTriangularBasis and seems to make this operation
  *   easier to perform.    ***  To be tested again.
  * - Use specialized methods. With a more in depth knowledge of your problem, it
  *   is possible that there are much more efficient ways to build a basis and its

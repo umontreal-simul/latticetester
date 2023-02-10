@@ -20,6 +20,6 @@
 #include "latticetester/NormaRogers.h"
 
 namespace LatticeTester {
-  template class NormaRogers<double>;
-  template class NormaRogers<NTL::RR>;
+//  template class NormaRogers<double>;
+ // template class NormaRogers<NTL::RR>;
 }

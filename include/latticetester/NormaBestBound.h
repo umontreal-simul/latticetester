@@ -80,6 +80,10 @@ namespace LatticeTester {
 	 * by taking gamma[n] = 4 * ( bound / V_n )^(n/2) where V_n is the volume of
 	 * an n dimensional sphere of radius 1.
 	 */
+//<<<<<<< HEAD
+	//template<typename RealRed>
+//=======
+//>>>>>>> b23681ea0112bce9ba98c1463251528b775075a4
 	const double NormaBestBound::m_gamma[ ] =
 	{
 		/* GammaBestBound[0] = */0.0,
@@ -136,7 +140,7 @@ namespace LatticeTester {
 	/*=======================================================================*/
 
 	NormaBestBound::NormaBestBound (double logDensity, int maxDim)
-	: Normalizer (logDensity, maxDim, "Best", L2NORM) {
+	: Normalizer (maxDim, "Best", L2NORM) { //Normalizer (logDensity, maxDim, "Best", L2NORM
 		Normalizer::computeBounds (logDensity);
 	}
 

@@ -1,0 +1,12 @@
+# This is a comment. This will not count thowards the line count once getLines() has been used.
+# The matrix below is a random non-singular matrix of integers <= 2^31-1
+1 0 0 0 943 663 207 454 496 455 
+0 1 0 0 447 818 247 360 658 866 
+0 0 1 0 1004 777 478 927 653 965 
+0 0 0 1 598 114 662 407 483 161 
+0 0 0 0 503 0 0 0 0 0 
+0 0 0 0 0 503 0 0 0 0 
+0 0 0 0 0 0 503 0 0 0 
+0 0 0 0 0 0 0 503 0 0 
+0 0 0 0 0 0 0 0 503 0 
+0 0 0 0 0 0 0 0 0 503 

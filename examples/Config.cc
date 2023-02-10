@@ -17,9 +17,16 @@
 
 #include <NTL/ZZ.h>
 
-#include "latticetester/Config.h"
+//#include "latticetester/Config.h"
+#include "../examples/Config.h"
+
+
 
 namespace LatticeTester{
   template class Config<std::int64_t, NTL::matrix<std::int64_t>>;
   template class Config<NTL::ZZ, NTL::matrix<NTL::ZZ>>;
+}
+
+int main() {
+  return 0;
 }

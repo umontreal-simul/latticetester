@@ -67,7 +67,8 @@ namespace LatticeTester {
    * Generally speaking, the choice `DOUBLE` will be the fastest,
    * but may be prone to roundoff errors and/or overflow.
    */
-  enum PrecisionType { DOUBLE, QUADRUPLE, EXPONENT, ARBITRARY, EXACT };
+ // enum PrecisionType { DOUBLE, QUADRUPLE, EXPONENT, ARBITRARY, EXACT };
+  enum PrecisionType { DOUBLE, QUADRUPLE, XDOUBLE, RR};
 
   /**
    * Indicates whether an integer is prime, probably prime, composite or its
@@ -109,7 +110,8 @@ namespace LatticeTester {
    * \f${\mathcal{L}}_1\f$ norm.<br>
    * `NONE`: no normalization will be used.<br>
    */
-  enum NormaType { BESTLAT, BESTBOUND, LAMINATED, ROGERS, MINKOWSKI, MINKL1, NONE };
+ // enum NormaType { BESTLAT, BESTBOUND, LAMINATED, ROGERS, MINKOWSKI, MINKL1, MINK,L1,L2, NONE };
+  enum NormaType { BESTLAT, BESTBOUND, LAMINATED, ROGERS, MINKL1, MINKL2, NONE };
 
   /**
    * Indicates which type of calculation is considered for the

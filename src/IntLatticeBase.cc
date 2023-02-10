@@ -23,5 +23,6 @@
 namespace LatticeTester{
   template class IntLatticeBase<std::int64_t, double, double>;
   template class IntLatticeBase<NTL::ZZ, double, double>;
-  template class IntLatticeBase<NTL::ZZ, NTL::RR, NTL::RR>;
+  template class IntLatticeBase<std::int64_t, NTL::RR, NTL::RR>;
+    template class IntLatticeBase<NTL::ZZ, NTL::RR, NTL::RR>;
 }

@@ -18,10 +18,14 @@
 #include <NTL/ZZ.h>
 #include <NTL/RR.h>
 
-#include "latticetester/LatticeAnalysis.h"
+#include "../examples/LatticeAnalysis.h"
 
 namespace LatticeTester{
+//namespace examples{  
   template class LatticeAnalysis<std::int64_t, double, double>;
   template class LatticeAnalysis<NTL::ZZ, double, double>;
   template class LatticeAnalysis<NTL::ZZ, NTL::RR, NTL::RR>;
+}
+int main() {
+  return 0;
 }

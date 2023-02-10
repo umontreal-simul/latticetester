@@ -20,6 +20,6 @@
 #include "latticetester/NormaBestLat.h"
 
 namespace LatticeTester {
-  template class NormaBestLat<double>;
-  template class NormaBestLat<NTL::RR>;
+ // template class NormaBestLat<double>;
+  //template class NormaBestLat<NTL::RR>;
 }

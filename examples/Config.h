@@ -101,13 +101,13 @@ namespace LatticeTester {
         /**
          * The basis matrix read from the file.
          * */
-        BasIntMat basis;
+        IntMat basis;
 
         /**
          * The dual matrix to the basis matrix read from the file. This stores
          * the dual so that the results can be reprinted.
          * */
-        BasIntMat dual_basis;
+        IntMat dual_basis;
 
         /**
          * The scaling factor m used (if it was needed by the test).

@@ -91,7 +91,7 @@ namespace LatticeTester {
    *    - equation (47) page 20 of chapter 1
    *    - table 1.2 page 15 of chapter 1
    */
-  template<typename RealRed>
+ // template<typename RealRed>
           const double NormaRogers::m_gamma0[ ] =
   {
     /* GamRogers[0] = */    0.0,
@@ -165,7 +165,7 @@ namespace LatticeTester {
   /*=========================================================================*/
 
     NormaRogers::NormaRogers (double logDensity, int maxDim)
-    : Normalizer (logDensity, maxDim, "Rogers", L2NORM)
+    : Normalizer (maxDim, "Rogers", L2NORM)
     {
       m_gamma = new double[maxDim + 1];
       int t0 = maxDim;

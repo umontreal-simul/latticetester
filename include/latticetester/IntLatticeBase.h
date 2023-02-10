@@ -104,15 +104,25 @@ public:
 	 * Makes a deep copy of the lattice `lat` into this object.
 	 * CHANGED: WE NOW COPY EVERYTHING!
 	 */
-	void copyLattice(const IntLatticeBase<Int, Real, RealRed> &lat, int dim=0);
+	//void copyLattice(const IntLatticeBase<Int, Real, RealRed> &lat, int dim=0);
+	void copyLattice(const IntLatticeBase<Int, Real, RealRed> &lat);
 
 	/*
+<<<<<<< HEAD
+	 * Copy the `n` first elements of the basis of the lattice `lat` into this
+	 * object. The object into which `lat` is copied has to be of dimension `n` already.
+	 * SEEMS BIZARRE AND APPARENTLY NEVER USED.
+	 *  */
+	 void copyLattice(const IntLatticeBase<Int, Real, RealRed> &lat, long n);
+	 
+/***=======
 	 * Copy the first `dim` elements of the primal basis of the lattice `lat` into this
 	 * object.  It also undefines the norm, the dual basis, etc.
 	 * The object into which `lat` is copied has to be of dimension `dim` already,
 	 * otherwise nothing is done.  Nothing else is changed.   ??????
 	 */
 	void copyBasis(const IntLatticeBase<Int, Real, RealRed> &lat, int dim=0);
+///>>>>>>> b23681ea0112bce9ba98c1463251528b775075a4
 
 	/**
 	 * Initializes a vector containing the norms of the basis vectors to -1
@@ -374,10 +384,7 @@ protected:
 	 */
 	IntMat m_dualbasis;
 
-	/**
-	 * The scaling factor `m` used for rescaling the lattice. It is 0 when undefined.
-	 */
-	Int m_modulo=0;
+
 
 	/**
 	 * The dimension of the lattice, which is the number of (independent) vectors
@@ -402,6 +409,15 @@ protected:
 	 */
 	RealVec m_dualvecNorm;
 
+
+    	/**
+	 * The scaling factor `m` used for rescaling the lattice. It is 0 when undefined.
+	 */
+	//Int m_modulo=0;
+	Int m_modulo;
+
+
+
 	/**
 	 * This `m_withDual` variable is `true` iff an m-dual basis is available.
 	 */
@@ -425,7 +441,7 @@ IntLatticeBase<Int, Real, RealRed>::IntLatticeBase(const int dim, NormType norm)
 template<typename Int, typename Real, typename RealRed>
 IntLatticeBase<Int, Real, RealRed>::IntLatticeBase(const IntMat basis,
 		const int dim, NormType norm) :
-		m_basis(basis), m_dim(dim), m_norm(norm), m_modulo(0), m_withDual(false) {
+		m_basis(basis), m_dim(dim), m_norm(norm),  m_modulo(0), m_withDual(false) {
 	this->m_vecNorm.resize(dim);
 	initVecNorm();
 }
@@ -437,10 +453,11 @@ IntLatticeBase<Int, Real, RealRed>::IntLatticeBase(const IntMat primalbasis,
 		const IntMat dualbasis, const Int m, const int dim, NormType norm) :
 		IntLatticeBase<Int, Real, RealRed>(primalbasis, dim, norm) {
 	this->m_dualbasis = IntMat(dualbasis);
-	this->m_withDual = true;
 	this->m_dualvecNorm.resize(dim);
-	setDualNegativeNorm();
 	this->m_modulo = m;
+	this->m_withDual = true;
+	setDualNegativeNorm();
+	
 }
 
 /*=========================================================================*/
@@ -448,7 +465,11 @@ IntLatticeBase<Int, Real, RealRed>::IntLatticeBase(const IntMat primalbasis,
 template<typename Int, typename Real, typename RealRed>
 IntLatticeBase<Int, Real, RealRed>::IntLatticeBase(
 		const IntLatticeBase<Int, Real, RealRed> &lat) {
+//<<<<<<< HEAD
+		//: m_dim(lat.getDim()), m_norm(lat.getNorm())
+//=======
 //		: m_dim(lat.getDim()), m_norm(lat.getNormType())
+//>>>>>>> b23681ea0112bce9ba98c1463251528b775075a4
 	copyLattice(lat);
 }
 
@@ -482,12 +503,17 @@ void IntLatticeBase<Int, Real, RealRed>::copyLattice(
 	this->m_norm = lat.m_norm;
 	this->m_vecNorm = RealVec(lat.m_vecNorm);
 	this->m_dualvecNorm = RealVec(lat.m_dualvecNorm);
-	this->m_withDual = lat.m_withDual;
 	this->m_modulo = lat.m_modulo;
+	this->m_withDual = lat.m_withDual;
+	
 }
 
 /*=========================================================================*/
 
+/***<<<<<<< HEAD
+
+=======
+>>>>>>> b23681ea0112bce9ba98c1463251528b775075a4**/
 template<typename Int, typename Real, typename RealRed>
 void IntLatticeBase<Int, Real, RealRed>::copyLattice(
 		const IntLatticeBase<Int, Real, RealRed> &lat, long n) {
@@ -505,6 +531,10 @@ void IntLatticeBase<Int, Real, RealRed>::copyLattice(
 		this->m_modulo = lat.m_modulo;
 	}
 }
+/***<<<<<<< HEAD
+
+=======
+>>>>>>> b23681ea0112bce9ba98c1463251528b775075a4**/
 
 /*=========================================================================*/
 
@@ -849,9 +879,14 @@ std::string IntLatticeBase<Int, Real, RealRed>::toStringDualBasis() const {
 	return os.str();
 }
 
-extern template class IntLatticeBase<std::int64_t, std::int64_t, double, double> ;
-extern template class IntLatticeBase<NTL::ZZ, NTL::ZZ, double, double> ;
-extern template class IntLatticeBase<NTL::ZZ, NTL::ZZ, NTL::RR, NTL::RR> ;
+//extern template class IntLatticeBase<std::int64_t, std::int64_t, double, double> ;
+//extern template class IntLatticeBase<NTL::ZZ, NTL::ZZ, double, double> ;
+//extern template class IntLatticeBase<NTL::ZZ, NTL::ZZ, NTL::RR, NTL::RR> ;
+
+
+extern template class IntLatticeBase<std::int64_t, double, double> ;
+extern template class IntLatticeBase<NTL::ZZ, double, double> ;
+extern template class IntLatticeBase<NTL::ZZ, NTL::RR, NTL::RR> ;
 
 } // namespace LatticeTester
 

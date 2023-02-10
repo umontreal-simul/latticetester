@@ -21,7 +21,7 @@
 #include "latticetester/NormaPalpha.h"
 
 namespace LatticeTester {
-  template class NormaPalpha<std::int64_t, double>;
-  template class NormaPalpha<NTL::ZZ, double>;
-  template class NormaPalpha<NTL::ZZ, NTL::RR>;
+ // template class NormaPalpha<std::int64_t, double>;
+  //template class NormaPalpha<NTL::ZZ, double>;
+  //template class NormaPalpha<NTL::ZZ, NTL::RR>;
 }

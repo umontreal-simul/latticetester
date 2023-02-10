@@ -19,6 +19,6 @@
 #include "latticetester/Normalizer.h"
 
 namespace LatticeTester {
-  template class Normalizer<double>;
-  template class Normalizer<NTL::RR>;
+//  template class Normalizer<double>;
+ // template class Normalizer<NTL::RR>;
 }

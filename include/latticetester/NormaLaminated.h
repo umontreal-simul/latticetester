@@ -143,17 +143,17 @@ namespace LatticeTester {
   /*=========================================================================*/
 
     NormaLaminated::NormaLaminated (double logDensity, int maxDim):
-      Normalizer (logDensity, maxDim, "Laminated", L2NORM)
+      Normalizer (maxDim, "Laminated", L2NORM)
     {
-      if (t > this->MAX_DIM)
+      if (maxDim > this->MAX_DIM)
         throw std::invalid_argument("NormaLaminated:   dimension > this->MAX_DIM");
       Normalizer::computeBounds (logDensity);
     }
 
     /*=========================================================================*/
 
-      NormaBestLat::NormaLaminated (double logm, int k, int maxDim)
-      : Normalizer (maxDim, "Laminated", L2NORM)
+      NormaLaminated::NormaLaminated (double logm, int k, int maxDim):
+       Normalizer (maxDim, "Laminated", L2NORM)
       {
         if (maxDim > this->MAX_DIM)
           throw std::invalid_argument("NormaLaminated:   dimension > MAXDIM");

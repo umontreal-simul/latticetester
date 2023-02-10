@@ -20,6 +20,7 @@
 
 #include "latticetester/Normalizer.h"
 #include "latticetester/IntFactor.h"
+//#include "NTL/ZZ.h"
 
 namespace LatticeTester {
 
@@ -63,10 +64,18 @@ namespace LatticeTester {
          */
         using Normalizer::computeBounds;
 
+   
         /**
          * Initializes the bounds for the Palpha normalization.
          */
         void computeBounds (int alpha);
+
+           /**
+         * Initializes the bounds for the Palpha normalization.
+         */
+        void computeBounds ();
+
+
 
         /**
          * Returns the value of \f$\alpha\f$.
@@ -94,19 +103,19 @@ namespace LatticeTester {
     {
       if (maxDim > this->MAX_DIM)
         throw std::invalid_argument("NormaPalpha:   dimension > MAX_DIM");
-      m_m = m;
+      m_m = maxDim;
       m_alpha = alpha;
       computeBounds();
     }
 
   /*=========================================================================*/
 
-    void NormaPalpha::computeBounds ()
-    /*
+        /*
      * Computes the vector m_bounds that corresponds to the upper bound for a 
      * rank 1 lattice of density \f$m\f$ (prime number). The bound does not exist
      * for dimension < 2.
      */
+    void NormaPalpha::computeBounds ()
     {
       for (int j = 2; j <= this->m_maxDim; j++)
         this->m_bounds[j] = calcBound (m_alpha, j);
@@ -126,7 +135,7 @@ namespace LatticeTester {
         std::cout << "NormaPalpha::calcBound:  alpha < 2.   Returns -1" << std:: endl;
         return -1;
       }
-      int stat = IntFactor::isPrime (m_m, 0);
+      int stat = IntFactor<int64_t>::isPrime (m_m, 0);
       if (stat != PRIME) {
         std::cout << "NormaPalpha::calcBound:  m is not prime.   Returns -1" << std:: endl;
         return -1;

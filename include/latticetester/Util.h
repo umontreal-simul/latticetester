@@ -37,13 +37,15 @@
 #include <cstdlib>
 #include <cstdint>
 #include <type_traits>
+#include <vector>
 
 #include "NTL/tools.h"
 #include "NTL/ZZ.h"
 #include "NTL/RR.h"
+#include <NTL/mat_GF2.h>
 
 #include "latticetester/Const.h"
-#include "latticetester/ntlwrap.h"
+#include "latticetester/NTLWrap.h"
 
 namespace NTL {
 
@@ -232,6 +234,13 @@ namespace LatticeTester {
 
 #define SEPAR "===============================================================\n"
 
+
+//	typedef NTL::vector<Int> IntVec;
+//	typedef NTL::matrix<Int> IntMat;
+
+ 
+ 
+ 
   /**
    * Maximum integer that can be represented exactly as a `double`:
    * \f$2^{53}\f$.
@@ -461,7 +470,7 @@ namespace LatticeTester {
       //exit(1);
       r = fmod (a, b);
       if (r < 0) {
-        if (b < 0)
+        if (b <= 0)
           r -= b;
         else
           r += b;
@@ -493,6 +502,48 @@ namespace LatticeTester {
     if (r < 0)
       r -= b;
   }
+
+ /*void ModuloVec ( NTL::vector<NTL::ZZ>  &a,  NTL::ZZ & b)
+ // void ModuloVec ( NTL::vector<NTL::ZZ>  &a, const NTL::ZZ & b, NTL::ZZ & r)
+  {
+    for(long i=0;i<a.length();i++)
+      a[i] = a[i] % b;
+    
+  }*/
+
+
+/**
+   * This remplace each element $a[i]$ of the vector $a$ by a[i] modulo m.
+   **But we don't compute the modulo for me_i vector
+   */
+
+
+/**
+ template <typename IntVec, typename Int>
+ void ModuloVec ( IntVec  &a,  Int & m)
+ // void ModuloVec ( NTL::vector<NTL::ZZ>  &a, const NTL::ZZ & b, NTL::ZZ & r)
+  {  Int r;
+
+    if(!IsMei(a,m)){
+      for(int i=0;i<a.length();i++)
+       {  r = a[i] % m;
+          if(a[i]<0)
+            a[i]=r-m;
+          else
+             a[i]=r; 
+       }
+    }
+  }
+  **/
+  
+template <typename IntVec, typename Int>
+ void ModuloVec ( IntVec  &a,  Int & m)
+  {  
+   for(int i=0;i<a.length();i++)
+       Modulo (a[i], m, a[i]);
+  }
+  
+
   /// \endcond
 
   /**
@@ -682,12 +733,324 @@ namespace LatticeTester {
         Y = X * D;
         F += Y;
       }
+      
+      }
 
-      //cout << "             " << C << " x A + " << D << " x B = " << G << endl;
-      //cout << "             " << E << " x A + " << F << " x B = 0" << endl;
-      //cout << "      outputs: A=" << A << ", B=" << B << ", C=" << C << ", D=" << D << ", E=" << E << ", F=" << F << ", G=" << G << endl;
-      //cout << endl;
+    template<typename Int>
+ void Euclide (const Int & A, const Int & B, Int & C, Int & D, Int & G)
+    {
+      //Int oldA = A;
+      //Int oldB = B;
+
+      Int X, Y, Z, E,F;
+      G = A;
+      Z = B;
+      NTL::set (C);
+      NTL::clear (D);
+      NTL::clear (E);
+      NTL::set (F);
+
+ 
+      if (NTL::IsZero(A)) {
+        swap9<Int>(G, Z);
+        swap9<Int>(C, E);
+        swap9<Int>(D, F);
+        return;
+      }
+
+      while (!NTL::IsZero(Z)) {
+        swap9<Int>(G, Z);
+        swap9<Int>(C, E);
+        swap9<Int>(D, F);
+        Quotient (Z, G, X);
+        X = -X;
+        Y = X * G;
+        Z += Y;
+        Y = X * C;
+       E += Y;
+       Y = X * D;
+       F += Y;
+      }
+
     }
+
+ 
+  /**
+   * Takes a set of generating vectors in the matrix `mat` and iteratively
+   * transforms it into an upper triangular lattice basis into the matrix `mat2`.
+   * `mat` and `mat2` have to have the same number of rows and the same number of columns.
+   *  All the computations will be done modulo `mod`, which means that you
+   * must know the rescaling factor for the vector system to call this function.
+   * After the execution, `mat` will be a matrix containing irrelevant information
+   * and `mat2` will contain an upper triangular basis.
+   *
+   * For more details please look at \cite latTesterGide. This algorithm basically
+   * implements what is written in this guide. The matrix
+   * `mat` contains the set of vectors that is used and modified at each step to
+   * get a new vector from the basis.
+   */
+
+   /*
+   template<typename IntMat,typename IntVec,typename Int > 
+   void Triangularization2(IntMat &mat, IntMat &mat2, Int &mod){
+     IntVec coeff, vl,v2; 
+     Int C, D, val, gcd;  
+     int pc, pl, k;
+     int dim1=mat.NumRows();
+     int dim2=mat.NumCols();
+
+     pl=0;
+     pc=0;
+     while(pl<dim1 && pc<dim2){
+           for(int i=0;i<dim1;i++)
+             Modulo (mat(i,pc), mod, mat(i,pc));
+                
+            coeff.SetLength(dim2);
+            k=0;     
+            while( k<dim1 && mat(k,pc)==0)
+             { coeff[k]=0; 
+               k++;
+             }
+                
+           if(k<dim1)
+            { gcd=mat(k,pc);
+              coeff[k]=1;
+              val=gcd;
+             
+             for(int i=k+1;i<dim1; i++){
+               if(mat(i,pc)==0)
+               { coeff[i]= 0;
+                 continue;
+                }   
+           
+              Euclide (val, mat(i,pc), C, D , gcd);
+              coeff[i]= D;
+              for(int j=0;j<i;j++) 
+                  coeff[j]*=C;
+              val=gcd; 
+              }     
+            
+              int coeffN[dim2];
+              int nb=0;
+              for(int a=0;a<dim1;a++) 
+              { if(coeff[a]!=0)
+                 { coeffN[nb]=a;
+                   nb++;
+                  }
+               } 
+             
+            vl.SetLength(dim2);
+            int ind=0;
+            for(int j=0;j<dim2;j++) {
+              for(int i=0;i<nb;i++)
+              { ind=coeffN[i];
+                 vl[j]=vl[j]+coeff[ind]*mat(ind,j);   
+                 
+              } 
+              Modulo (vl[j], mod, vl[j]);  
+             }
+
+             for(int i=0;i<dim1;i++)
+             {  if(mat(i,pc)!=0){
+                v2= (mat(i,pc)/gcd)*vl;
+                for(int j=pc;j<dim2;j++)
+                    Modulo (v2[j], mod, v2[j]);
+                for(int j=pc;j<dim2;j++)
+                 {   
+                   mat(i,j)=mat(i,j)-v2[j];  
+                   Modulo (mat(i,j), mod, mat(i,j));
+                 } 
+                }    
+             }
+             mat2[pl]=vl; 
+          }
+          else
+          {  for (int j1 = 0; j1 < dim2; j1++) {
+             if (j1 != pl)
+               NTL::clear (mat2(pl,j1));
+             else
+               mat2(pl,j1) = mod;
+             }   
+          }
+          coeff.clear();
+          vl.clear();
+          pl++; 
+          pc++;
+       }
+    }
+  */
+ 
+ 
+  
+  ///Lower triangularization
+
+   /*
+   *Put the natrix transpose of 'mat' into 'mat2'
+   */
+   template<typename IntMat> 
+   void TransposeMatrix(IntMat &mat, IntMat &mat2){
+     int dim1=mat.size1();
+     int dim2=mat.size2();
+     for(int i=0;i<dim1;i++)
+     { for(int j=0;j<dim2;j++)
+          mat2(i,j)=mat(j,i);   
+     }
+   }
+
+
+
+/*
+* Compute the gcd of 'a' and 'b' and put this value in 'gcd'.
+* 'x' and 'y' contains some values that help to compute the 'a'
+* inverse modulo of 'b'. 
+* This method is called to in 'modIverse' method
+*/
+/*
+template<typename Int> 
+void gcdExtended(Int &a, Int &b, Int &x, Int &y, Int &gcd)
+{  
+  //Int z(0);
+  if(b==0)
+   {  x=0;
+      y=1;
+      gcd=a;  
+    }
+   else{
+   Int x1, y1, r;
+   Modulo(a,b,r);
+   gcdExtended(b,r,x1,y1,gcd);
+   x=y1-(a/b)*x1;
+   y=x1;
+   } 
+}
+*/  
+
+/*
+* Compute the 'M' modulo inverse of 'A' if it exist and put it to 'res'
+* If the modulo inverse of A does not exist return a message 
+*/ 
+/*
+template<typename Int> 
+void modInverse(Int &A, Int &M, Int &res){
+   Int x, y, gcd;
+   gcdExtended(M,A,x,y, gcd);
+   if(gcd!=1)
+    {  std::cout <<"modulo inverse of"<<A<<" does not exist"<<std::endl; 
+        return ;
+    }
+    else
+    {  Int r1;
+       Modulo(x,M,r1);
+       Modulo(r1,M,res);
+
+    }
+  }	
+*/ 
+
+  /**
+   * Takes a set of generating vectors in the matrix `mat` and iteratively
+   * transforms it into a lower triangular lattice basis into the matrix `mat2`.
+   * `mat` and `mat2` have to have the same number of rows and the same number of columns.
+   *  All the computations will be done modulo `mod`, which means that you
+   * must know the rescaling factor for the vector system to call this function.
+   * After the execution, `mat` will be a matrix containing irrelevant information
+   * and `mat2` will contain an upper triangular basis.
+   *
+   * For more details please look at \cite latTesterGide. This algorithm basically
+   * implements what is written in this guide. The matrix
+   * `mat` contains the set of vectors that is used and modified at each step to
+   * get a new vector from the basis.
+   */
+
+  /*
+   template<typename IntMat,typename IntVec,typename Int > 
+   void TriangularizationLower(IntMat &mat, IntMat &mat2, Int &mod){
+     IntVec coeff, vl,v2; 
+     Int C, D, val, gcd;  
+     int pc, pl, k;
+     int dim1=mat.NumRows();
+     int dim2=mat.NumCols();
+    
+     pl=dim1-1;
+     pc=dim2-1;
+     while(pl>=0 && pc>=0){
+           for(int i=0;i<dim1;i++)
+              Modulo (mat(i,pc), mod, mat(i,pc));
+            
+            coeff.SetLength(dim2);
+            k=0;     
+            while( k<dim1 && mat(k,pc)==0)
+             { coeff[k]=0; 
+               k++;
+             }
+                
+           if(k<dim1)
+            { gcd=mat(k,pc);
+              coeff[k]=1;
+              val=gcd;
+             
+             for(int i=k+1;i<dim1; i++){
+               if(mat(i,pc)==0)
+               { coeff[i]= 0;
+                 continue;
+                }   
+           
+              Euclide (val, mat(i,pc), C, D , gcd);
+              coeff[i]= D;
+              for(int j=0;j<i;j++) 
+                  coeff[j]*=C;
+              val=gcd; 
+              }     
+            
+              int coeffN[dim2];
+              int nb=0;
+              for(int a=0;a<dim1;a++) 
+              { if(coeff[a]!=0)
+                 { coeffN[nb]=a;
+                   nb++;
+                  }
+               } 
+             
+            vl.SetLength(dim2);
+            int ind=0;
+            for(int j=0;j<dim2;j++) {
+              for(int i=0;i<nb;i++)
+              { ind=coeffN[i];
+                 vl[j]=vl[j]+coeff[ind]*mat(ind,j);   
+                 
+              } 
+              Modulo (vl[j], mod, vl[j]);  
+             }
+
+             for(int i=0;i<dim1;i++)
+             {  if(mat(i,pc)!=0){
+                v2= (mat(i,pc)/gcd)*vl;
+                for(int j=0;j<dim2;j++)
+                    Modulo (v2[j], mod, v2[j]);
+                for(int j=0;j<dim2;j++)
+                 {   
+                   mat(i,j)=mat(i,j)-v2[j];  
+                   Modulo (mat(i,j), mod, mat(i,j));
+                 } 
+                }    
+             }
+             mat2[pl]=vl; 
+          }
+          else
+          {  for (int j1 = 0; j1 < dim2; j1++) {
+             if (j1 != pl)
+               NTL::clear (mat2(pl,j1));
+             else
+               mat2(pl,j1) = mod;
+             }   
+          }
+          coeff.clear();
+          vl.clear();
+          pl--; 
+          pc--;
+       }
+   }
+ */
 
   /**
    * @}
@@ -768,6 +1131,30 @@ namespace LatticeTester {
       for (int i = 0; i < d; i++)
         A[i] = 0;
     }
+
+      /**
+   * Sets the first `d` components of `A` to 0.
+   */
+ /*   template <typename Vect>
+    inline bool IsZero (Vect & A)
+    {
+      for (int i = 0; i < A.length(); i++)
+        if( A[i] != 0)
+          return false;
+      return true;    
+    }*/
+
+
+
+//IsZero(NTL::vector<long int>&)’
+ // template <typename IntVec>
+  /*** bool IsZero2 (NTL::vector<NTL::ZZ>  A)
+    {
+      for (int i = 0; i < A.length(); i++)
+        if( A[i] != 0)
+          return false;
+      return true;    
+    }**/
 
   /**
    * Sets the first `d` components of `A` to the value `x`.
@@ -1143,7 +1530,8 @@ namespace LatticeTester {
    * `W` contains the set of vectors that is used and modified at each step to
    * get a new vector from the basis.
    */
-  template <typename Matr, typename Int>
+ 
+template <typename Matr, typename Int>
     void Triangularization (Matr & W, Matr & V, int lin, int col,
         const Int & m)    {
       Int T1, T2, T3, T4, T5, T6, T7, T8;
@@ -1195,23 +1583,50 @@ namespace LatticeTester {
           }
         } else {
           Euclide (W(lin-1,j), m, T1, T2, T3, T4, V(j,j));
+          
           for (int j1 = 0; j1 < j; j1++)
             NTL::clear (V(j,j1));
           for (int j1 = j + 1; j1 < col; j1++) {
             T2 = W(lin-1,j1) * T1;
             Modulo (T2, m, V(j,j1));
+            
           }
-          Quotient (m, V(j,j), T1);
+         Quotient (m, V(j,j), T1);
           for (int j1 = j + 1; j1 < col; j1++) {
             W(lin-1,j1) *= T1;
             Modulo (W(lin-1,j1), m, W(lin-1,j1));
           }
         }
+
       }
       //  CheckTriangular (V, col, m);
     }
 
-
+  
+    /**
+   * Takes a basis `A` and computes an m-dual lattice basis B.
+   * The matrix B is the m-dual basis of A.
+   */
+  /*
+    template <typename Matr, typename Int>
+    void CalcDual2(const Matr & A, Matr & B, const Int & m) {
+      Int d, mult;
+      Matr C;
+      int dim1=A.NumRows();
+      int dim2=A.NumCols();
+      C.SetDims(dim1, dim2);
+      inv(d,B,A);
+      transpose(C,B);
+      for (int i = 0; i < dim1; i++) {
+        for (int j = 0; j < dim2; j++){
+          B(i,j)= (m*C(i,j))/d;
+          Modulo(B(i,j),m, B(i,j));
+         }
+      }
+     }
+     */
+  
+  
   /**
    * Takes an upper triangular basis `A` and computes an m-dual lattice basis
    * to this matrix. For this algorithm to work, `A` has to be upper
@@ -1224,8 +1639,9 @@ namespace LatticeTester {
    * we simply have to recursively take for each line
    * \f[B_{i,j} = -\frac{1}{A_{j,j}}\sum_{k=j+1}^i A_{j,k} B_{i,k}.\f]
    */
-  template <typename Matr, typename Int>
-    void CalcDual (const Matr & A, Matr & B, int d, const Int & m) {
+  
+   template <typename Matr, typename Int>
+    void calcDual (const Matr & A, Matr & B, int d, const Int & m) {
       for (int i = 0; i < d; i++) {
         for (int j = i + 1; j < d; j++)
           NTL::clear (B(i,j));
@@ -1240,6 +1656,7 @@ namespace LatticeTester {
         }
       }
     }
+    
 
   /**
    * @}
@@ -1336,6 +1753,80 @@ namespace LatticeTester {
   /**
    * @}
    */
+/*
+* copy NTL::matrix<NTL::ZZ> A to NTL::Mat<NTL::ZZ> B
+*/
+/*void copyMatrixToMat(NTL::matrix<NTL::ZZ> & A, NTL::Mat<NTL::ZZ> & B){
+  int l=A.NumRows();
+  int c=A.NumCols();
+  for(int i=0;i<l;i++){
+    for(int j=0;j<c;j++)
+        B[i][j]=NTL::conv<NTL::ZZ>(A[i][j]);
+  }  
+
+}
+*/
+
+template <typename Matr1, typename Matr2>
+void copyMatrixToMat(Matr1 & A, Matr2 & B){
+  int l=A.NumRows();
+  int c=A.NumCols();
+  for(int i=0;i<l;i++){
+    for(int j=0;j<c;j++)
+        B[i][j]=NTL::conv<NTL::ZZ>(A[i][j]);
+  }  
+
+}
+
+
+
+template <typename IntMat>
+void printBase(IntMat bas_mat)
+{
+  //int l = bas_mat.size1();
+ // int c = bas_mat.size2();
+  int l= bas_mat.NumRows();
+  int c= bas_mat.NumCols();
+  for (int i = 0; i < l; i++)
+  {
+    for (int j = 0; j < c; j++)
+    {
+      std::cout << bas_mat(i, j) << "   ";
+    }
+    std::cout << "" << std::endl;
+  }
+}
+
+
+template <typename IntMat>
+void printBase2(IntMat bas_mat)
+{
+ //int l = bas_mat.size1();
+ // int c = bas_mat.size2();
+  int l= bas_mat.NumRows();
+  int c= bas_mat.NumCols();
+  for (int i = 1; i <= l; i++)
+  {
+    for (int j = 1; j <= c; j++)
+    {
+      std::cout << bas_mat(i, j) << "   ";
+    }
+    std::cout << "" << std::endl;
+  }
+}
+
+template <typename IntMat>
+void copy(IntMat &b1, IntMat &b2)
+{
+
+  for (int i = 0; i < b1.size1(); i++)
+  {
+    for (int j = 0; j < b1.size2(); j++)
+    {
+      b2(i, j) = b1(i, j);
+    }
+  }
+}
 
 }     // namespace LatticeTester
 

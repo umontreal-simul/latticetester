@@ -38,18 +38,18 @@ using namespace LatticeTester;
 int main() {
   //! Reading a matrix to use the normalizer class
   int min_dim = 0, max_dim = 10;
-  ParamReader<MScal, BScal, RScal> reader("./44matrixEx.dat");
+  ParamReader<Int, RealRed> reader("./44matrixEx.dat");
   reader.getLines();
-  BMat matrix(max_dim,max_dim);
+  IntMat matrix(max_dim,max_dim);
   unsigned int ln = 0;
   reader.readBMat(matrix, ln, 0, max_dim);
-  IntLatticeBase<MScal, BScal, NScal, RScal> lat_basis(matrix, max_dim);
+  IntLatticeBase<Int, Real, RealRed> lat_basis(matrix, max_dim);
   double merit1 = 1.0, merit2 = 1.0;
 
   // The variables specific to the construction of a figure of merit
   UniformWeights weights(1.0); // This just puts a weight of 1 to everything
-  BasisConstruction<BScal> constructor; // Computes projections basis
-  IntLatticeBase<MScal, BScal, NScal, RScal> proj_basis(max_dim); // To store projections
+  BasisConstruction<Int> constructor; // Computes projections basis
+  IntLatticeBase<Int, Real, RealRed> proj_basis(max_dim); // To store projections
   // CoordinateSets namespace contains classes to create iterators on sets of coordinates
   CoordinateSets::FromRanges coord(min_dim+1, max_dim, min_dim, max_dim-1);
 
@@ -61,22 +61,24 @@ int main() {
     //! Computing the shortest vector in the lattice spanned by matrix
     proj_basis.updateVecNorm();
     proj_basis.sort(0);
-    Reducer<MScal, BScal, NScal, RScal> red(proj_basis);
+    Reducer<Int, Real, RealRed> red(proj_basis);
     red.redBKZ();
-    red.shortestVector(L2NORM);
+     std::string ch("cholesky");
+    red.shortestVector(L2NORM,ch);
     double shortest = NTL::conv<double>(red.getMinLength());
 
     // Instanciating the normalizers
     // The prefered way of doing this is descibed in Normalizer documentation
-    RScal log_density=-log(abs(NTL::determinant(proj_basis.getBasis())));
-    Normalizer<RScal>* norma = new NormaBestLat<RScal>(log_density, max_dim);
+  //  RealRed log_density=-log(abs(NTL::determinant(proj_basis.getBasis())));
+    double log_density=(double)(-log(abs(NTL::determinant(proj_basis.getBasis()))));
+    Normalizer* norma = new NormaBestLat(log_density, max_dim);
 
     // Computing the figure of merit for this projection
     double merit = weights.getWeight(*it) * shortest/norma->getBound((*it).size());
     // Testing if it is the minimum as of now
     if (merit < merit1) merit1 = merit;
     delete norma;
-    norma = new NormaBestBound<RScal>(log_density, max_dim);
+    norma = new NormaBestBound(log_density, max_dim);
     merit = weights.getWeight(*it) * shortest/norma->getBound((*it).size());
     if (merit < merit2) merit2 = merit;
     delete norma;

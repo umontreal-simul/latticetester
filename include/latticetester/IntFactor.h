@@ -102,6 +102,9 @@ namespace LatticeTester {
          */
         std::string toString () const;
 
+
+  
+
       private:
 
         /**
@@ -127,6 +130,7 @@ namespace LatticeTester {
     };    // class IntFactor
 
   //===========================================================================
+
 
   template<typename Int>
     std::string IntFactor<Int>::toString () const

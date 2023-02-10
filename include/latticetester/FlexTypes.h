@@ -23,6 +23,7 @@
 
 #include <NTL/vector.h>
 #include <NTL/matrix.h>
+#include <NTL/RR.h>
 
 #include "latticetester/NTLWrap.h"
 
@@ -44,6 +45,15 @@
    */
 
 namespace LatticeTester {
+
+    typedef NTL::ZZ       Int;
+    typedef std::int64_t  Int;
+    typedef NTL::RR       Real;
+    typedef double        Real;
+    typedef double        RealRed;
+    typedef NTL::RR       RealRed;
+
+
    typedef NTL::vector<Int> IntVec;
    typedef NTL::matrix<Int> IntMat;
    typedef NTL::vector<Real> RealVec;
@@ -52,4 +62,4 @@ namespace LatticeTester {
    typedef NTL::matrix<RealRed> RealRedMat;
 }
 
-
+#endif

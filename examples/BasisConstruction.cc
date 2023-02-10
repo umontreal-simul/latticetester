@@ -28,7 +28,7 @@
 #include <iostream>
 #include <ctime>
 
-#include "latticetester/Types.h"
+#include "latticetester/Types.h" 
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/Util.h"
 #include "latticetester/ParamReader.h"
@@ -57,20 +57,21 @@ int main() {
   }
 
   // Defining constants for the execution of the algorithms
-  BasisConstruction<BScal> constr; // The basis constructor we will use
-  BMat bas_mat, dua_mat;
+  BasisConstruction<Int> constr; // The basis constructor we will use
+  IntMat bas_mat, dua_mat;
+  Int mod(1021);
 
   clock_t tmp;
   for (int j = 0; j < max_dim; j++) {
     for (int k = 0; k < 10; k++) {
       //! Reader shenanigans
       std::string name = "bench/" + prime + "_" + std::to_string((j+1)*5) + "_" + std::to_string(k);
-      ParamReader<MScal, BScal, RScal> reader(name + ".dat");
+      ParamReader<Int, RealRed> reader(name + ".dat");
       reader.getLines();
       int numlines;
       unsigned int ln;
       reader.readInt(numlines, 0, 0);
-      BMat bas_mat, dua_mat;
+      IntMat bas_mat, dua_mat;
       bas_mat.SetDims(numlines, numlines);
       dua_mat.SetDims(numlines, numlines);
       ln = 1;
@@ -78,7 +79,7 @@ int main() {
       reader.readBMat(bas_mat, ln, 0, numlines);
 
       // Creating a lattice basis
-      IntLatticeBase<MScal, BScal, NScal, RScal> lattice(bas_mat, numlines);
+      IntLatticeBase<Int, Real, RealRed> lattice(bas_mat, numlines);
 
       //! We want to avoid singular matrix because we can't compute the dual, and
       //! IntLatticeBase only really supports square matrices.
@@ -89,25 +90,25 @@ int main() {
 
       // Timing GCDConstruction first
       tmp = clock();
-      constr.GCDConstruction(bas_mat);
-      MScal modulo(1);
+      constr.GCDTriangularBasis(bas_mat,mod);
+      Int modulo(1);
       gcd_time[j] += clock() - tmp;
 
-      // Timing DualConstruction
+      // Timing mDualTriangular
       tmp = clock();
-      constr.DualConstruction(bas_mat, dua_mat, modulo);
+      constr.mDualTriangular(bas_mat, dua_mat, modulo);
       dual1_time[j] += clock() - tmp;
 
       // Timing LLLConstruction next
       tmp = clock();
       constr.LLLConstruction(lattice.getBasis());
-      modulo = MScal(1);
+      modulo = Int(1);
       lll_time[j] += clock() - tmp;
 
       // The following works, but does not set all the properties of lattice to
       // properly work with a dual.
       tmp = clock();
-      constr.DualConstruction(lattice.getBasis(), lattice.getDualBasis(), modulo);
+      constr.mDualTriangular(lattice.getBasis(), lattice.getDualBasis(), modulo);
       dual2_time[j] += clock() - tmp;
       // This sets the lattice to know it has a dual. Computing the norm of the
       // vectors in the lattice would also be wise.

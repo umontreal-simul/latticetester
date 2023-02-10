@@ -16,6 +16,7 @@
 // limitations under the License.
 
 #include "NTL/ZZ.h"
+#include "NTL/mat_GF2.h"
 
 #include "latticetester/BasisConstruction.h"
 
@@ -36,12 +37,30 @@ namespace LatticeTester {
       exit(1);
     }
 
+  template <>
+    void LLLConstr<NTL::matrix<std::int64_t>>::LLLConstruction(
+        NTL::matrix<std::int64_t>& matrix, double delta) {
+      std::cerr << "LLL Construction can only be done with NTL::ZZ integers.\n";
+      std::cerr << "Aborting.\n";
+      exit(1);
+    }
   //============================================================================
 
   template <>
     void LLLConstr<NTL::matrix<NTL::ZZ>>::LLLConstruction(
         NTL::matrix<NTL::ZZ>& matrix) {
       long rank = NTL::LLL_XD(matrix);
+      long num = matrix.NumRows();
+      for (long i = 0; i < rank; i++) {
+        NTL::swap(matrix[i], matrix[num-rank+i]);
+      }
+      matrix.SetDims(rank, matrix.NumCols());
+    }
+
+    template <>
+    void LLLConstr<NTL::matrix<NTL::ZZ>>::LLLConstruction(
+        NTL::matrix<NTL::ZZ>& matrix, double delta) {
+      long rank = NTL::LLL_XD(matrix,delta);
       long num = matrix.NumRows();
       for (long i = 0; i < rank; i++) {
         NTL::swap(matrix[i], matrix[num-rank+i]);

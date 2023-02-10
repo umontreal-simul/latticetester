@@ -19,16 +19,35 @@
 #define LATTICETESTER_REDUCER_H
 
 #include "NTL/LLL.h"
+#include "NTL/tools.h"
+#include "NTL/ZZ.h"
+#include "NTL/RR.h"
 
 #include "latticetester/Const.h"
 #include "latticetester/Util.h"
 #include "latticetester/IntLatticeBase.h"
+#include "latticetester/BasisConstruction.h"
+#include "latticetester/NTLWrap.h"
+#include "latticetester/Types.h"
 
 #include <fstream>
 #include <sstream>
 #include <vector>
 #include <limits>
 #include <cstdint>
+#include <iostream>
+#include <ctime>
+#include <string>
+#include <iomanip>
+#include <set>
+#include <map>
+#include <cmath>
+#include <cstdlib>
+#include <type_traits>
+
+
+
+
 
 namespace LatticeTester {
 
@@ -138,8 +157,10 @@ public:
 	 *
 	 * It is strongly recommended to use `redBKZ` or `redLLLNTL` to pre-reduce
 	 * the basis before invoking this method; this is not done automatically.
+	 * The param 'decomp' acepted are 'cholesky' or 'triangular'. It specify 
+	 * the decompistion used in the Branch-and-Bound algorithm.
 	 */
-	bool shortestVector(NormType norm);
+	bool shortestVector(NormType norm,std::string decomp);
 
 	/**
 	 * This method performs pairwise reduction sequentially on all vectors
@@ -277,6 +298,7 @@ private:
 	 * The lattice that this object is working on.
 	 */
 	IntLatticeBase<Int, Real, RealRed> *m_lat;
+//	IntLatticeBase<Int, Real, RealRed> *m_lat2;
 
 	/**
 	 * Contains specialized implementations of member methods depending on
@@ -346,8 +368,10 @@ private:
 	/**
 	 * Tries to shorten the smallest vector of the primal basis using
 	 * branch-and-bound.  Used in `shortestVector`.
+	 * The param 'decomp' accepted are only 'cholesky' and 'triangular' decompostion. 
+	 * The branch-and-bound is more faster with 'cholesky' than  'triangular'.
 	 */
-	bool redBBShortVec(NormType norm);
+	bool redBBShortVec(NormType norm,std::string decomp);
 
 	/**
 	 * Tries to find shorter vectors; recursive procedure used in `reductMinkowski`.
@@ -356,8 +380,10 @@ private:
 
 	/**
 	 * Tries to find a shorter vector; recursive procedure used in `shortestVector`.
+	 * The param 'decomp' accepted are only 'cholesky' and 'triangular'. The better
+	 * The 'cholesky' decomposition is more faster than the triangular decomposition .  
 	 */
-	bool tryZShortVec(int j, bool &smaller);
+	bool tryZShortVec(int j, bool &smaller, NormType norm, std::string decomp);
 
 	/**
 	 * Computes a Cholesky decomposition of the basis. Returns in `C0` the
@@ -441,9 +467,10 @@ private:
 	 * Maximum number of transformations in the method `PreRedDieter`.
 	 * After <tt>MAX_PRE_RED</tt> successful transformations have been
 	 * performed, the prereduction is stopped.
-	 *
+	 * 
+	 * */
 	 static const std::int64_t MAX_PRE_RED = 1000000;
-	 */
+	
 
 	/**
 	 * Whenever the number of nodes in the branch-and-bound tree exceeds
@@ -489,7 +516,7 @@ private:
 };
 // End class Reducer
 
-//============================================================================
+
 
 /// \cond specReducerSpec
 // Structure specialization
@@ -509,9 +536,9 @@ struct specReducer<std::int64_t, Real, RealRed> {
 
 	void redBKZ(Reducer<std::int64_t, Real, RealRed> &red, double delta,
 			std::int64_t blocksize, PrecisionType precision, int dim) {
-		IntLatticeBase<std::int64_t, std::int64_t, Real, RealRed> *lattmp = 0;
+		IntLatticeBase<std::int64_t, Real, RealRed> *lattmp = 0;
 		if (dim > 0) {
-			lattmp = new IntLatticeBase<std::int64_t, std::int64_t, Real,
+			lattmp = new IntLatticeBase<std::int64_t, Real,
 					RealRed>(dim, red.getIntLatticeBase()->getNormType());
 			lattmp->copyLattice(*red.getIntLatticeBase(), dim);
 		} else
@@ -556,14 +583,14 @@ struct specReducer<std::int64_t, Real, RealRed> {
 		case QUADRUPLE:
 			LLL_QP(lattmp->getBasis(), delta);
 			break;
-		case EXPONENT:
+		case XDOUBLE:
 			LLL_XD(lattmp->getBasis(), delta);
 			break;
-		case ARBITRARY:
+		case RR:
 			LLL_RR(lattmp->getBasis(), delta);
 			break;
-		case EXACT:
-			break;
+		//case EXACT:
+		//	break;
 		default:
 			MyExit(1, "Undefined PrecisionType for LLL");
 		}
@@ -631,10 +658,10 @@ struct specReducer<NTL::ZZ, Real, RealRed> {
 		case QUADRUPLE:
 			NTL::BKZ_QP(lattmp->getBasis(), delta, blocksize);
 			break;
-		case EXPONENT:
+		case XDOUBLE:
 			NTL::BKZ_XD(lattmp->getBasis(), delta, blocksize);
 			break;
-		case ARBITRARY:
+		case RR:
 			NTL::BKZ_RR(lattmp->getBasis(), delta, blocksize);
 			break;
 		default:
@@ -655,9 +682,9 @@ struct specReducer<NTL::ZZ, Real, RealRed> {
 			lattmp->copyLattice(*red.getIntLatticeBase(), dim);
 		} else
 			lattmp = red.getIntLatticeBase();
-		if (precision == EXACT)
-			red.redLLLNTLExact(delta);
-		else {
+		//if (precision == EXACT)
+		//	red.redLLLNTLExact(delta);
+		//else {
 			switch (precision) {
 			case DOUBLE:
 				LLL_FP(lattmp->getBasis(), delta, 0, 0);
@@ -665,19 +692,19 @@ struct specReducer<NTL::ZZ, Real, RealRed> {
 			case QUADRUPLE:
 				LLL_QP(lattmp->getBasis(), delta, 0, 0);
 				break;
-			case EXPONENT:
+			case XDOUBLE:
 				LLL_XD(lattmp->getBasis(), delta, 0, 0);
 				break;
-			case ARBITRARY:
+			case RR:
 				LLL_RR(lattmp->getBasis(), delta, 0, 0);
 				break;
-			case EXACT:
-				break;
+			//case EXACT:
+			//	break;
 			default:
 				MyExit(1, "LLL PrecisionType:   NO SUCH CASE");
 			}
 			red.getIntLatticeBase()->copyLattice(*lattmp, dim);
-		}
+		//}
 		if (dim > 0)
 			delete lattmp;
 
@@ -905,6 +932,7 @@ bool Reducer<Int, Real, RealRed>::calculCholesky(RealRedVec &DC2,
 	//  d = dim / 2; // If we use the Dual, we compute Cholesky
 	// with the Dual
 
+
 	// Compute the d first lines of C0 with the primal Basis.
 	for (i = 0; i < d; i++) {
 		m_lat->updateScalL2Norm(i);
@@ -916,17 +944,26 @@ bool Reducer<Int, Real, RealRed>::calculCholesky(RealRedVec &DC2,
 				NTL::matrix_row<IntMat> row2(m_lat->getBasis(), j);
 				ProdScal<Int>(row1, row2, dim, m_c2(i, j));
 			}
+			
 			for (k = 0; k < i; k++)
 				m_c2(i, j) -= C0(k, i) * m_c2(k, j);
 			if (i == j) {
 				DC2[i] = m_c2(i, i);
 				if (DC2[i] < 0.0) {
-					negativeCholesky();
+					//negativeCholesky();
 					return false;
 				}
 			} else
 				C0(i, j) = m_c2(i, j) / DC2[i];
+		//add for test		
+		/**  if(i!=j && i<j)		
+	       std::cout<< "C0("<<i<<","<<j<<")="<<C0(i,j)<<" ";	
+		  else if (i==j) 	
+		    std::cout<< "C0("<<i<<","<<j<<")="<<DC2[i]<<" ";	
+		  else
+		     std::cout<< "C0("<<i<<","<<j<<")="<<"0"<<" ";	*/		
 		}
+	  // std::cout<<""<<std::endl;
 	}
 
 	// Compute the d last lines of C0 with the dual Basis.
@@ -1231,9 +1268,9 @@ void Reducer<Int, Real, RealRed>::redLLLNTLExact(double delta) {
 }
 
 //=========================================================================
-
+//std::int64_t 
 template<typename Int, typename Real, typename RealRed>
-void Reducer<Int, Real, RealRed>::redBKZ(double delta, std::int64_t blocksize,
+void Reducer<Int, Real, RealRed>::redBKZ(double delta, int blocksize,
 		PrecisionType precision, int dim) {
 	spec.redBKZ(*this, delta, blocksize, precision, dim);
 }
@@ -1755,8 +1792,12 @@ bool Reducer<Int, Real, RealRed>::redBBMink(int i, int d, int Stage,
 
 //=========================================================================
 
+/**
+* @decomp take std::string Choles("cholesky") or std::string Triang("triangular");
+* @norm take value 'L1NORM' or 'L2NORM'
+*/
 template<typename Int, typename Real, typename RealRed>
-bool Reducer<Int, Real, RealRed>::tryZShortVec(int j, bool &smaller) {
+bool Reducer<Int, Real, RealRed>::tryZShortVec(int j, bool &smaller, NormType norm, std::string decomp) {
 	/*
 	 * This recursive procedure uses the Cholesky decomposition and works for the
 	 * L1NORM and L2NORM.  It is called initially with j=dim-1 by redBBShortVec
@@ -1775,6 +1816,10 @@ bool Reducer<Int, Real, RealRed>::tryZShortVec(int j, bool &smaller) {
 	bool high; // Indicates if we are on the right (true) or the left of the center.
 	int k;
 	std::int64_t temp;
+	//
+	std::string Choles("cholesky");
+	std::string Triang("triangular");
+
 
 	const int dim = m_lat->getDim();
 	++m_countNodes;
@@ -1783,17 +1828,36 @@ bool Reducer<Int, Real, RealRed>::tryZShortVec(int j, bool &smaller) {
 				<< std::endl;
 		return false;
 	}
+	
+	
 	/* Compute an interval that contains the admissible values of zj. */
 	/* This computation is for the L2 norm, but also works for the L1 norm. */
 	/* 1. Compute the center of the interval.  */
-	center = 0.0;
-	for (k = j + 1; k < dim; ++k)
-		center -= m_c0(j, k) * m_zLR[k];
-
+	if (decomp==Choles){
+	   center = 0.0;
+	   for (k = j + 1; k < dim; ++k)
+		  center -= m_c0(j, k) * m_zLR[k];
+		  
 	// Distance from the center to the boundaries.
 	// m_lMin2 contains the square length of current shortest vector with the selected norm.
-	dc = sqrt((m_lMin2 - m_n2[j]) / m_dc2[j]);
-
+	    dc = sqrt((m_lMin2 - m_n2[j]) / m_dc2[j]);
+	 }
+	 if(decomp==Triang && norm==L2NORM){    
+        center = 0.0;
+	    for (k = j + 1; k < dim; ++k)
+	 		center -= m_c0(k,j) * m_zLR[k];
+       	  dc = sqrt((m_lMin2 - m_n2[j]) / m_dc2[j]);
+	  
+	  }	
+     if(decomp==Triang && norm==L1NORM){
+           
+       center = 0.0;
+	   for (k = j + 1; k < dim; ++k)
+		  center -= m_c0(k, j) * m_zLR[k];
+     
+	    dc = (m_lMin - m_n2[j])  / m_c0(j,j);
+	  
+	  }	
 	// Compute two integers min0 and max0 that are the min and max integers in the interval.
 	if (!m_foundZero)
 		min0 = 0;     // We are at the beginning, min will be zero.
@@ -1808,6 +1872,8 @@ bool Reducer<Int, Real, RealRed>::tryZShortVec(int j, bool &smaller) {
 	if (x < 0.0)
 		--max0;
 
+
+    //   std::cout << "Borne Min="<<min0<<"     Borne Max="<<max0<<"     j="<<j<<std::endl;
 	// Compute initial values of zlow and zhigh, the search pointers on each side of the interval.
 	if (min0 > max0)
 		return true;
@@ -1828,6 +1894,7 @@ bool Reducer<Int, Real, RealRed>::tryZShortVec(int j, bool &smaller) {
 	}
 
 	// We try each zj in the interval, starting in the center and alternating between left and right.
+
 	while (zlow >= min0 || zhigh <= max0) {
 		if (high)
 			m_zLI[j] = zhigh;
@@ -1873,7 +1940,7 @@ bool Reducer<Int, Real, RealRed>::tryZShortVec(int j, bool &smaller) {
 		} else if (m_lMin2 > m_n2[j] + x * x * m_dc2[j]) {
 			// There is still hope; we continue the recursion.
 			m_n2[j - 1] = m_n2[j] + x * x * m_dc2[j];
-			if (!tryZShortVec(j - 1, smaller))
+			if (!tryZShortVec(j - 1, smaller,norm, decomp))
 				return false;
 		} else
 			m_n2[j - 1] = m_n2[j] + x * x * m_dc2[j];
@@ -1886,20 +1953,32 @@ bool Reducer<Int, Real, RealRed>::tryZShortVec(int j, bool &smaller) {
 			if (zhigh <= max0)
 				high = true;
 		}
-	}
+	}  
+	
 	return true;
 }
 
 //=========================================================================
 
+
+/**
+* @decomp take std::string Choles("cholesky") or std::string Triang("triangular");
+* @norm take value 'L1NORM' or 'L2NORM'
+*/
+
 template<typename Int, typename Real, typename RealRed>
-bool Reducer<Int, Real, RealRed>::redBBShortVec(NormType norm) {
+bool Reducer<Int, Real, RealRed>::redBBShortVec(NormType norm, std::string decomp) {
 	/*
 	 * Finds shortest non-zero vector, using branch-and-bound, with L1 or L2 norm.
 	 * Stops and returns false if not finished after examining MaxNodesBB nodes in the
 	 * branch-and-bound tree.  When succeeds, returns true, and the squared shortest
 	 * vector length will be in m_lMin2.
 	 */
+     
+    std::string cholesky("cholesky");
+	std::string triangular("triangular");
+
+
 	if ((norm != L1NORM) & (norm != L2NORM)) {
 		std::cerr << "RedBBShortVec: only L1 and L2 norms are supported";
 		return false;
@@ -1930,23 +2009,57 @@ bool Reducer<Int, Real, RealRed>::redBBShortVec(NormType norm) {
 	}
 
 	/* If we already have a shorter vector than the minimum threshold, we stop right away.
-	 * This is useful for the seek programs in LatMRG.
+	 * This is useful for the seek programs in LatMRG.sss
 	 */
 	if (m_lMin2 <= m_BoundL2[dim - 1])
 		return false;
 
-	/* Perform the Cholesky decomposition; if it fails we exit. */
-	if (!calculCholesky(m_dc2, m_c0))
-		return false;
-	/*   ***   Alternative:  triangular basis.   ****
 
-	/* Perform the branch and bound.  */
+    if(decomp==cholesky){
+    /* Perform the Cholesky decomposition; if it fails we exit. */
+         if (!calculCholesky(m_dc2, m_c0))
+           return false;    
+    }
+    else if(decomp==triangular){
+		/* Perform a triangular decomposition */
+		 BasisConstruction<Int> constr;
+		 IntMat m_v, m_v2;
+		 m_v.resize(dim, dim);
+		 m_v2.resize(dim, dim);
+		 Int mod=m_lat->getModulo();
+	  	 CopyMatr(m_v,m_lat->getBasis(), dim, dim);
+        // TriangularizationLower<IntMat,IntVec,Int>(m_v, m_v2 ,mod);
+	 	 constr.lowerTriangular(m_v, m_v2 ,mod);	
+		// CopyMatr(m_lat->getBasis(), m_v2,dim, dim);
+	     for (int i = 0; i < dim; i++){
+		   for (int j = 0; j < dim; j++){
+			if(i!=j){
+			  m_c0(i,j)=NTL::conv<RealRed>(m_v2(i,j))/NTL::conv<RealRed>(m_v2(i,i));		
+		     }
+		    else{
+			   m_c0(i,j)=NTL::conv<RealRed>(m_v2(i,j));
+		     }
+		    
+		   } 
+        }
+  
+        for (int i = 0; i < dim; i++) {
+          m_dc2[i] = m_c0(i, i)*m_c0(i, i);
+		  }
+  
+   }
+   else{
+        std::cerr << "RedBBShortVec:decomp only 'cholesky' and 'triangular' decomposition are supported";
+	    return false;
+   }
+       
+    /* Perform the branch and bound.  */
 	/* m_n2[j] will be the sum of terms |z*k|^2 ||v*k||^2 for k > j.  */
 	m_n2[dim - 1] = 0.0;
 	m_countNodes = 0;
 	smaller = false;
 	m_foundZero = false;
-	if (!tryZShortVec(dim - 1, smaller))   // Here we search for a shortest vector.
+	if (!tryZShortVec(dim - 1, smaller,norm, decomp))   // Here we search for a shortest vector.
 		return false;
 	if (smaller) {
 		// We found a shorter vector. Its square length is in m_lMin2.
@@ -2042,8 +2155,10 @@ bool Reducer<Int, Real, RealRed>::reductMinkowski(int d) {
 
 // On successful exit, the basis vectors are sorted by lengths and the norms are updated.
 // The square length of the shortest vector can be recovered in m_lMin2.
+// The acepted param for 'decomp' are 'cholesky' or 'triangular'. 
+// It specify the decompisition basis matrix using in Brach-and-Bound.
 template<typename Int, typename Real, typename RealRed>
-bool Reducer<Int, Real, RealRed>::shortestVector(NormType norm) {
+bool Reducer<Int, Real, RealRed>::shortestVector(NormType norm,std::string decomp) {
 
 	if (norm != L2NORM) {
 		m_lat->setNegativeNorm();
@@ -2052,7 +2167,7 @@ bool Reducer<Int, Real, RealRed>::shortestVector(NormType norm) {
 	/* The L2 norm is used for the Cholesky decomposition and BB bounds. */
 	bool ok;
 	if (norm == L1NORM || norm == L2NORM) {
-		ok = redBBShortVec (norm);
+		ok = redBBShortVec (norm,decomp);
 	} else {
 		ok = false;
 		std::cerr << "RedLattice::shortestVector: this norm is not supported";
@@ -2065,10 +2180,10 @@ bool Reducer<Int, Real, RealRed>::shortestVector(NormType norm) {
 
 //============================================================================
 
-extern template class Reducer<std::int64_t, std::int64_t, double, double> ;
-extern template class Reducer<NTL::ZZ, NTL::ZZ, double, double> ;
-extern template class Reducer<NTL::ZZ, NTL::ZZ, NTL::RR, NTL::RR> ;
+extern template class Reducer< std::int64_t, double, double> ;
+extern template class Reducer< NTL::ZZ, double, double> ;
+extern template class Reducer< NTL::ZZ, NTL::RR, NTL::RR> ;
 
 }     // namespace LatticeTester
 
-#endif // REDUCER_H
+#endif 

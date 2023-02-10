@@ -112,12 +112,12 @@ namespace LatticeTester
         return "ROGERS";
       case MINKL1:
         return "MINKL1";
-      case MINK:
-        return "MINK";
-      case L1:
-        return "L1";
-      case L2:
-        return "L2";
+      case MINKL2:
+        return "MINKL2";
+    //  case L1:
+     //   return "L1";
+    //  case L2:
+    //    return "L2";
       case NONE:
         return "NONE";
       default:
@@ -174,12 +174,12 @@ namespace LatticeTester
         return "DOUBLE";
       case QUADRUPLE:
         return "QUADRUPLE";
-      case EXPONENT:
-        return "EXPONENT";
-      case ARBITRARY:
-        return "ARBITRARY";
-      case EXACT:
-        return "EXACT";
+      case XDOUBLE:
+        return "XDOUBLE";
+      case RR:
+        return "RR";
+     // case EXACT:
+      //  return "EXACT";
       default:
         return "***** PrecisionType: UNDEFINED CASE ";
     }

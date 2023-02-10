@@ -158,7 +158,7 @@ namespace LatticeTester {
 	/*=========================================================================*/
 
 	NormaMinkL1::NormaMinkL1 (double logDensity, int maxDim)
-	: Normalizer (logDensity, maxDim, "MinkL1", L1NORM) {
+	: Normalizer ( maxDim, "MinkL1", L1NORM) {
 		m_gamma = new double[maxDim + 1];
 		int t0 = maxDim;
 		if (t0 > this->MAX_DIM)
@@ -172,7 +172,7 @@ namespace LatticeTester {
 
 	/*=========================================================================*/
 
-	NormaBestLat::NormaMinkL1 (double logm, int k, int maxDim)
+	NormaMinkL1::NormaMinkL1 (double logm, int k, int maxDim)
 	: Normalizer (maxDim, "MinkL1", L1NORM) {
 		m_gamma = new double[maxDim + 1];
 		int t0 = maxDim;

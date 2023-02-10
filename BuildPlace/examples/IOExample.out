@@ -1,0 +1,44 @@
+We can write messages in the file.
+Here is one way to write a matrix.
+   [[1 0 0 0 943 663 207 454 496]
+    [0 1 0 0 447 818 247 360 658]
+    [0 0 1 0 1004 777 478 927 653]
+    [0 0 0 1 598 114 662 407 483]
+    [0 0 0 0 503 0 0 0 0]
+    [0 0 0 0 0 503 0 0 0]
+    [0 0 0 0 0 0 503 0 0]
+    [0 0 0 0 0 0 0 503 0]
+    [0 0 0 0 0 0 0 0 503]]
+
+  Here is another one.
+  [1 0 0 0 943 663 207 454 496]
+  [0 1 0 0 447 818 247 360 658]
+  [0 0 1 0 1004 777 478 927 653]
+  [0 0 0 1 598 114 662 407 483]
+  [0 0 0 0 503 0 0 0 0]
+  [0 0 0 0 0 503 0 0 0]
+  [0 0 0 0 0 0 503 0 0]
+  [0 0 0 0 0 0 0 503 0]
+  [0 0 0 0 0 0 0 0 503]
+  
+
+It's also possible to use *ToString() methods to write stuff in the output
+file.
+The matrix and its vectors norms:
+Primal Basis:
+  Dim = 9 
+    [ 0 0 0 0 503 0 0 0 0 ]
+    [ 0 0 0 0 0 503 0 0 0 ]
+    [ 0 0 0 0 0 0 503 0 0 ]
+    [ 0 0 0 0 0 0 0 503 0 ]
+    [ 0 0 0 0 0 0 0 0 503 ]
+    [ 0 0 0 1 598 114 662 407 483 ]
+    [ 0 1 0 0 447 818 247 360 658 ]
+    [ 1 0 0 0 943 663 207 454 496 ]
+    [ 0 0 1 0 1004 777 478 927 653 ]
+  Norms:
+    [253009 253009 253009 253009 253009 1207783 1492507 1823800 3125968 ]
+
+Writers can be used as the program progresses, just likeusing a standard
+output print, but also can be created at the end of theexecution to print the
+result of the execution, making them quiteflexible.

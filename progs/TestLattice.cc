@@ -41,11 +41,31 @@
 #include "latticetester/Util.h"
 #include "latticetester/Const.h"
 #include "latticetester/IntFactor.h"
-#include "latticetester/IntLatticeBasis.h"
+#include "latticetester/IntLatticeBase.h"
 #include "latticetester/Reducer.h"
 #include "latticetester/ParamReader.h"
-#include "latticetester/Config.h"
-#include "latticetester/LatticeAnalysis.h"
+//#include "latticetester/Config.h"
+#include "../examples/LatticeAnalysis.h"
+//#include "LatticeAnalysis.h"
+#include "latticetester/Util.h"
+#include "latticetester/Const.h"
+#include "latticetester/IntLatticeBase.h"
+#include "latticetester/Normalizer.h"
+#include "latticetester/NormaBestLat.h"
+#include "latticetester/NormaBestBound.h"
+#include "latticetester/NormaLaminated.h"
+#include "latticetester/NormaMinkL2.h"
+#include "latticetester/NormaMinkL1.h"
+#include "latticetester/NormaPalpha.h"
+#include "latticetester/NormaRogers.h"
+#include "latticetester/Reducer.h"
+#include "latticetester/Writer.h"
+#include "latticetester/WriterRes.h"
+#include "../examples/Config.h"
+#include "latticetester/ParamReader.h"
+#include "latticetester/BasisConstruction.h"
+#include "latticetester/NTLWrap.h"
+
 
 // Include NTL Header
 #include <NTL/tools.h>
@@ -64,7 +84,7 @@ using namespace std;
 using namespace LatticeTester;
 
 int ZZRR(int argc, char* argv[]) {
-  LatticeAnalysis<NTL::ZZ, NTL::ZZ, NTL::RR, NTL::RR> latAnalysis;
+  LatticeAnalysis< NTL::ZZ, NTL::RR, NTL::RR> latAnalysis;
   struct stat buf; // properties of a file or directory
   int status = 0;
 
@@ -84,7 +104,7 @@ int ZZRR(int argc, char* argv[]) {
   return 1;
 }
 int ZZDD(int argc, char* argv[]) {
-  LatticeAnalysis<NTL::ZZ, NTL::ZZ, double, double> latAnalysis;
+  LatticeAnalysis<NTL::ZZ, double, double> latAnalysis;
   struct stat buf; // properties of a file or directory
   int status = 0;
 
@@ -104,7 +124,7 @@ int ZZDD(int argc, char* argv[]) {
   return 1;
 }
 int LLDD(int argc, char* argv[]) {
-  LatticeAnalysis<std::int64_t, std::int64_t, double, double> latAnalysis;
+  LatticeAnalysis< std::int64_t, double, double> latAnalysis;
   struct stat buf; // properties of a file or directory
   int status = 0;
 

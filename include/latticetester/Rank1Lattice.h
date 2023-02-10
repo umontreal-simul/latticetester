@@ -52,9 +52,8 @@ namespace LatticeTester {
     class Rank1Lattice: public IntLattice<Int, Real, RealRed> {
 
       private:
-        typedef NTL::vector<Int> IntVec;
-        typedef NTL::vector<Int> IntVec;
-        typedef NTL::matrix<Int> IntMat;
+        typedef NTL::vector<Int>  IntVec;
+        typedef NTL::matrix<Int>  IntMat;
         typedef NTL::vector<Real> RealVec;
 
       public:
@@ -126,7 +125,7 @@ namespace LatticeTester {
   template<typename Int, typename Real, typename RealRed>
     Rank1Lattice<Int, Real, RealRed>::Rank1Lattice (
         const Int & m, const IntVec & a, int maxDim, NormType norm):
-      IntLattice<Int, Real, RealRed> (m, 1, maxDim, true, norm)
+      IntLattice<Int, Real, RealRed> (m, maxDim, true, norm)
   {
     this->m_a = a;
     init();
@@ -171,7 +170,7 @@ namespace LatticeTester {
     Rank1Lattice<Int, Real, RealRed>::Rank1Lattice (
         const Rank1Lattice<Int, Real, RealRed> & lat):
       IntLattice<Int, Real, RealRed> (
-          lat.m_modulo, lat.getOrder (), lat.getDim (), lat.getNorm ())
+          lat.m_modulo, lat.getDim (), lat.getNormType ())
   {
     // MyExit (1, "Rank1Lattice:: constructor is incomplete" );
     init ();
@@ -231,8 +230,8 @@ namespace LatticeTester {
              this->m_basis, this->m_dualbasis, d, d, this->m_modulo);
          dualize ();
       }
-      //constr.DualConstruction(this->m_basis, this->m_dualbasis, this->m_modulo);
-      CalcDual (this->m_basis, this->m_dualbasis, d, this->m_modulo);
+      //constr.mDualTriangular(this->m_basis, this->m_dualbasis, this->m_modulo);
+      calcDual (this->m_basis, this->m_dualbasis, d, this->m_modulo);
       this->setNegativeNorm ();
       this->setDualNegativeNorm ();
     }
@@ -247,9 +246,9 @@ namespace LatticeTester {
       this->m_dualbasis = tmps;
     }
 
-  extern template class Rank1Lattice<std::int64_t, std::int64_t, double, double>;
-  extern template class Rank1Lattice<NTL::ZZ, NTL::ZZ, double, double>;
-  extern template class Rank1Lattice<NTL::ZZ, NTL::ZZ, NTL::RR, NTL::RR>;
+  extern template class Rank1Lattice<std::int64_t, double, double>;
+  extern template class Rank1Lattice<NTL::ZZ, double, double>;
+  extern template class Rank1Lattice<NTL::ZZ, NTL::RR, NTL::RR>;
 
 } // End namespace LatticeTester
 

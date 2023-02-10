@@ -338,7 +338,7 @@ merit.
 \item [-] Figure of Merit <Normalization> ~ {\footnotesize $[$SPECTRAL <BESTLAT, LAMINATED, ROGERS, MINKOWSKI, MINKL1,
 PALPHA\_N, NORMA\_GENERIC> , BEYER, L1, L2$]$ }
 
-\item [-] Pre-reduction Type <Precision> <Fact> <Blocksize> ~ {\footnotesize $[$LenstraLL <DOUBLE, QUADRUPLE, EXPONENT, ARBITRARY> <double>, BKZ <DOUBLE, QUADRUPLE, EXPONENT, ARBITRARY> <double> <int>, PreRedDieter$]$ }
+\item [-] Pre-reduction Type <Precision> <Fact> <Blocksize> ~ {\footnotesize $[$LenstraLL <DOUBLE, QUADRUPLE, XDOUBLE, RR> <double>, BKZ <DOUBLE, QUADRUPLE, XDOUBLE, RR> <double> <int>, PreRedDieter$]$ }
 
 \item [-] Matrix Dimension ~ {\footnotesize $[$int$]$ }
 

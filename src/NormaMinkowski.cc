@@ -17,9 +17,9 @@
 
 #include <NTL/RR.h>
 
-#include "latticetester/NormaMinkowski.h"
+#include "latticetester/NormaMinkL2.h"
 
 namespace LatticeTester{
-  template class NormaMinkowski<double>;
-  template class NormaMinkowski<NTL::RR>;
+ // template class NormaMinkL2<double>;
+ // template class NormaMinkL2<NTL::RR>;
 }

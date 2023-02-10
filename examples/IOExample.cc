@@ -73,7 +73,7 @@ using namespace LatticeTester;
 int main() {
   int size = 9;
   // Those two lines create a reader and ready it to be used.
-  ParamReader<MScal, BScal, RScal> reader("44matrixEx.dat");
+  ParamReader<Int, RealRed> reader("44matrixEx.dat");
   reader.getLines();
   /** To use a reader, you simply need, once you've called getLines(), to have
    * a variable in which to store the object you read, and to know where to get
@@ -83,12 +83,12 @@ int main() {
    * incremented during execution.
    * */
   // Reading a matrix as an examples
-  BMat matrix(size, size); // The "recipient"
+  IntMat matrix(size, size); // The "recipient"
   unsigned int ln = 0; // The line counter
   reader.readBMat(matrix, ln, 0, size);
 
   // Creation of a writer object for file IOExample.out
-  WriterRes<MScal> writer("IOExample.out");
+  WriterRes<Int> writer("IOExample.out");
 
   // Writing to the file
   writer.writeString("We can write messages in the file.");
@@ -122,7 +122,7 @@ int main() {
   //! non-singular)
   //! It is also possible to specify give a modulo and an dual basis when creating
   //! an IntLattice, but we will not use them here.
-  IntLatticeBase<MScal, BScal, NScal, RScal> lat_basis(matrix, size);
+  IntLatticeBase<Int, Real, RealRed> lat_basis(matrix, size);
   //! We can evaluate and print the lenght of the vectors of this basis
   lat_basis.updateVecNorm();
   lat_basis.sort(0);

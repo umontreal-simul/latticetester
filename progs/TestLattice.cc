@@ -39,7 +39,7 @@
 
 // Include LatticeTester Header
 #include "latticetester/Util.h"
-#include "latticetester/Const.h"
+#include "latticetester/EnumTypes.h"
 #include "latticetester/IntFactor.h"
 #include "latticetester/IntLatticeBase.h"
 #include "latticetester/Reducer.h"
@@ -48,7 +48,7 @@
 #include "../examples/LatticeAnalysis.h"
 //#include "LatticeAnalysis.h"
 #include "latticetester/Util.h"
-#include "latticetester/Const.h"
+#include "latticetester/EnumTypes.h"
 #include "latticetester/IntLatticeBase.h"
 #include "latticetester/Normalizer.h"
 #include "latticetester/NormaBestLat.h"

@@ -26,7 +26,7 @@
 #include <cstdint>
 
 #include "latticetester/Util.h"
-#include "latticetester/Const.h"
+#include "latticetester/EnumTypes.h"
 #include "latticetester/IntLatticeBase.h"
 #include "latticetester/Normalizer.h"
 #include "latticetester/NormaBestLat.h"

@@ -19,7 +19,7 @@
 #define LATTICETESTER_NORMALIZER_H
 
 #include "latticetester/Util.h"
-#include "latticetester/Const.h"
+#include "latticetester/EnumTypes.h"
 
 #include <cassert>
 #include <string>

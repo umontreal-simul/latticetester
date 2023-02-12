@@ -18,7 +18,7 @@
 #ifndef LATTICETESTER_CONFIG_H
 #define LATTICETESTER_CONFIG_H
 
-#include "latticetester/Const.h"
+#include "latticetester/EnumTypes.h"
 #include "latticetester/Util.h"
 
 #include <cstdint>

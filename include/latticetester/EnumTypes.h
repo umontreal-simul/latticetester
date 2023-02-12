@@ -16,7 +16,7 @@
 // limitations under the License.
 
 /*
- * \file latticetester/Const.h
+ * \file latticetester/EnumTypes.h
  *
  * This class contains enumeration types and global constants used in LatticeTester.
  */

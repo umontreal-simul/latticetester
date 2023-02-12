@@ -28,7 +28,7 @@
 #include "latticetester/ParamReader.h"
 #include "latticetester/IntLatticeBase.h"
 #include "latticetester/Reducer.h"
-#include "latticetester/Const.h"
+#include "latticetester/EnumTypes.h"
 #include "Examples.h"
 
 using namespace LatticeTester;

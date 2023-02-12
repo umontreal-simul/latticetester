@@ -23,7 +23,7 @@
 #include "NTL/ZZ.h"
 #include "NTL/RR.h"
 
-#include "latticetester/Const.h"
+#include "latticetester/EnumTypes.h"
 #include "latticetester/Util.h"
 #include "latticetester/IntLatticeBase.h"
 #include "latticetester/BasisConstruction.h"
@@ -196,7 +196,7 @@ public:
 	 * LLL reduction algorithm presented in \cite mSCH91a.
 	 * The factor `delta` has the same meaning as in `redLLL`.
 	 * The parameter `precision` specifies the precision of the floating point numbers
-	 * that the algorithm will use. `Const.h` provides a list of the possible values,
+	 * that the algorithm will use. `EnumTypes.h` provides a list of the possible values,
 	 * and their description is done in the module `LLL` of NTL.
 	 * The reduction is applied to the first `dim` basis vectors when `dim > 0`,
 	 * and to the entire basis (all vectors and coordinates) when `dim=0`.

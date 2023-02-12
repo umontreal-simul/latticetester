@@ -28,7 +28,7 @@
 #include "NTL/ZZ.h"
 #include "NTL/RR.h"
 
-#include "latticetester/Const.h"
+#include "latticetester/EnumTypes.h"
 #include "latticetester/NTLWrap.h"
 #include <string>
 #include <sstream>
@@ -43,14 +43,11 @@
 #include <type_traits>
 
 
-
-
-
 namespace LatticeTester {
 
 template<typename IntMat>
 struct LLLConstr {
-	void LLLConstruction(IntMat &matrix);
+  void LLLConstruction(IntMat &matrix);
   void LLLConstruction(IntMat &matrix, double delta);
 };
 

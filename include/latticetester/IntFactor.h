@@ -23,7 +23,7 @@
 #include <cstdint>
 #include <sstream>
 
-#include "latticetester/Const.h"
+#include "latticetester/EnumTypes.h"
 
 #include <NTL/ZZ.h>
 

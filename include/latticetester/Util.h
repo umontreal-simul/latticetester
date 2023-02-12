@@ -44,7 +44,7 @@
 #include "NTL/RR.h"
 #include <NTL/mat_GF2.h>
 
-#include "latticetester/Const.h"
+#include "latticetester/EnumTypes.h"
 #include "latticetester/NTLWrap.h"
 
 namespace NTL {

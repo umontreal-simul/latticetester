@@ -19,7 +19,7 @@
 #define LATTICETESTER_RANK1LATTICE_H
 
 #include "latticetester/Util.h"
-#include "latticetester/Const.h"
+#include "latticetester/EnumTypes.h"
 #include "latticetester/IntLattice.h"
 
 namespace LatticeTester {

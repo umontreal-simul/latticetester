@@ -84,7 +84,7 @@ using namespace std;
 using namespace LatticeTester;
 
 int ZZRR(int argc, char* argv[]) {
-  LatticeAnalysis< NTL::ZZ, NTL::RR, NTL::RR> latAnalysis;
+  LatticeAnalysis< NTL::ZZ, NTL::RR> latAnalysis;
   struct stat buf; // properties of a file or directory
   int status = 0;
 
@@ -104,7 +104,7 @@ int ZZRR(int argc, char* argv[]) {
   return 1;
 }
 int ZZDD(int argc, char* argv[]) {
-  LatticeAnalysis<NTL::ZZ, double, double> latAnalysis;
+  LatticeAnalysis<NTL::ZZ, double> latAnalysis;
   struct stat buf; // properties of a file or directory
   int status = 0;
 
@@ -124,7 +124,7 @@ int ZZDD(int argc, char* argv[]) {
   return 1;
 }
 int LLDD(int argc, char* argv[]) {
-  LatticeAnalysis< std::int64_t, double, double> latAnalysis;
+  LatticeAnalysis< std::int64_t, double> latAnalysis;
   struct stat buf; // properties of a file or directory
   int status = 0;
 

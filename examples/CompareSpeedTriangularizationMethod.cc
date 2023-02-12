@@ -79,7 +79,7 @@ int main()
     for (int k = 0; k < 10; k++)
     {
       //! Variables definition
-      ParamReader<Int, RealRed> reader;
+      ParamReader<Int, Real> reader;
       BasisConstruction<Int> constr; // The basis constructor we will use
       std::string name;
       int numlines;
@@ -90,7 +90,7 @@ int main()
       name = "bench/" + prime + "_" + std::to_string(5 * (j + 1)) + "_" + std::to_string(k);
       //std::cout << name << std::endl;
     
-      reader = ParamReader<Int, RealRed>(name + ".dat");
+      reader = ParamReader<Int, Real>(name + ".dat");
       reader.getLines();
       reader.readInt(numlines, 0, 0);
       matrix1.SetDims(numlines, numlines);
@@ -123,7 +123,7 @@ int main()
     for (int k = 0; k < 10; k++)
     {
 
-      ParamReader<Int, RealRed> reader;
+      ParamReader<Int, Real> reader;
       std::string name;
       int numlines;
       IntMat matrix1, matrix2;
@@ -133,7 +133,7 @@ int main()
       name = "bench/" + prime + "_" + std::to_string(5 * (j + 1)) + "_" + std::to_string(k);
       //std::cout << name << std::endl;
 
-      reader = ParamReader<Int, RealRed>(name + ".dat");
+      reader = ParamReader<Int, Real>(name + ".dat");
       reader.getLines();
       reader.readInt(numlines, 0, 0);
       matrix1.SetDims(numlines, numlines);

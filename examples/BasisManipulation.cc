@@ -40,7 +40,7 @@ namespace
 
 int main()
 {
-  IntLatticeBase<Int, Real, RealRed> *lattice;
+  IntLatticeBase<Int, Real> *lattice;
   BasisConstruction<Int> constr; // The basis constructor we will use
   IntMat bas_mat, dua_mat;
   IntMat w_copie, m_v, m_v2;
@@ -51,7 +51,7 @@ int main()
   // The file that contain the basis
   std::string name = "bench/" + prime + "_10_1";
   // An objet that contain the basis data
-  ParamReader<Int, RealRed> reader(name + ".dat");
+  ParamReader<Int, Real> reader(name + ".dat");
 
   reader.getLines();
   int numlines;
@@ -77,8 +77,8 @@ int main()
   reader.readBMat(bas_mat, ln, 0, numlines);
 
   // Creating a lattice basis
-  // lattice = new IntLatticeBase<Int, Real, RealRed>(bas_mat, bas_mat, m, numlines);
-  lattice = new IntLatticeBase<Int, Real, RealRed>(bas_mat, numlines);
+  // lattice = new IntLatticeBase<Int, Real>(bas_mat, bas_mat, m, numlines);
+  lattice = new IntLatticeBase<Int, Real>(bas_mat, numlines);
   std::cout << " The initial base\n";
   printBase(lattice->getBasis()); // The primal basi is 'bas_mat'
 

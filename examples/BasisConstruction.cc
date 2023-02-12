@@ -66,7 +66,7 @@ int main() {
     for (int k = 0; k < 10; k++) {
       //! Reader shenanigans
       std::string name = "bench/" + prime + "_" + std::to_string((j+1)*5) + "_" + std::to_string(k);
-      ParamReader<Int, RealRed> reader(name + ".dat");
+      ParamReader<Int, Real> reader(name + ".dat");
       reader.getLines();
       int numlines;
       unsigned int ln;
@@ -79,7 +79,7 @@ int main() {
       reader.readBMat(bas_mat, ln, 0, numlines);
 
       // Creating a lattice basis
-      IntLatticeBase<Int, Real, RealRed> lattice(bas_mat, numlines);
+      IntLatticeBase<Int, Real> lattice(bas_mat, numlines);
 
       //! We want to avoid singular matrix because we can't compute the dual, and
       //! IntLatticeBase only really supports square matrices.

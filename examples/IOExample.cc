@@ -73,7 +73,7 @@ using namespace LatticeTester;
 int main() {
   int size = 9;
   // Those two lines create a reader and ready it to be used.
-  ParamReader<Int, RealRed> reader("44matrixEx.dat");
+  ParamReader<Int, Real> reader("44matrixEx.dat");
   reader.getLines();
   /** To use a reader, you simply need, once you've called getLines(), to have
    * a variable in which to store the object you read, and to know where to get
@@ -122,7 +122,7 @@ int main() {
   //! non-singular)
   //! It is also possible to specify give a modulo and an dual basis when creating
   //! an IntLattice, but we will not use them here.
-  IntLatticeBase<Int, Real, RealRed> lat_basis(matrix, size);
+  IntLatticeBase<Int, Real> lat_basis(matrix, size);
   //! We can evaluate and print the lenght of the vectors of this basis
   lat_basis.updateVecNorm();
   lat_basis.sort(0);

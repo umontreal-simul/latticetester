@@ -185,11 +185,11 @@ public:
 	 * overwrite the lattice basis in `out`, changing also the dimension.
 	 * The returned basis is not triangular in general.
 	 */
-	//template<typename Int, typename Real, typename RealRed>
+	//template<typename Int, typename Real>
 	//template<typename Int>
-  template<typename Real, typename RealRed>
-	void ProjectionConstruction(IntLatticeBase<Int, Real, RealRed> &in,
-			IntLatticeBase<Int, Real, RealRed> &out, const Coordinates &proj);
+  template<typename Real>
+	void ProjectionConstruction(IntLatticeBase<Int, Real> &in,
+			IntLatticeBase<Int, Real> &out, const Coordinates &proj);
 
 
 
@@ -494,12 +494,12 @@ void BasisConstruction<Int>::mDualComputation(IntMat &matrix,
 //============================================================================
 
 //template<typename Int>s
-//template<typename Int, typename Real, typename RealRed>
+//template<typename Int, typename Real>
 template<typename Int>
-template<typename Real, typename RealRed>
+template<typename Real>
 void BasisConstruction<Int>::ProjectionConstruction(
-		IntLatticeBase<Int, Real, RealRed>& in,
-		IntLatticeBase<Int, Real, RealRed> &out, const Coordinates& proj) {
+		IntLatticeBase<Int, Real>& in,
+		IntLatticeBase<Int, Real> &out, const Coordinates& proj) {
 	std::size_t dim = proj.size();
 	unsigned int lat_dim = in.getDim();
 	if (dim > lat_dim)
@@ -517,7 +517,7 @@ void BasisConstruction<Int>::ProjectionConstruction(
 	}
 	new_basis = NTL::transpose(new_basis);
 	LLLConstruction(new_basis);
-	out = IntLatticeBase<Int, Real, RealRed>(new_basis, dim, in.getNormType());
+	out = IntLatticeBase<Int, Real>(new_basis, dim, in.getNormType());
 }
 
 

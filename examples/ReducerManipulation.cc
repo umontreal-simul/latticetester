@@ -31,11 +31,11 @@ int main()
 {
   std::string prime = primes[0];
   clock_t timer, tmp;
-  IntLatticeBase<Int, Real, RealRed> *basis;
-  Reducer<Int, Real, RealRed> *red;
+  IntLatticeBase<Int, Real> *basis;
+  Reducer<Int, Real> *red;
   // BasisConstruction<Int> constr; // The basis constructor we will use
   //! Variables definition
-  ParamReader<Int, RealRed> reader, reader2;
+  ParamReader<Int, Real> reader, reader2;
   std::string name;
   int numlines;
   // The primal basis
@@ -47,7 +47,7 @@ int main()
   std::string s1("cholesky");
   std::string s2("triangular");
   name = "bench/" + prime + "_4" + "_002";
-  reader = ParamReader<Int, RealRed>(name + ".dat");
+  reader = ParamReader<Int, Real>(name + ".dat");
   reader.getLines();
   reader.readInt(numlines, 0, 0);
   //For the primal basis
@@ -59,9 +59,9 @@ int main()
 
 
   Int m(101);
- // basis = new IntLatticeBase<Int, Real, RealRed>(matrix1, matrix2, m, numlines);
-  basis = new IntLatticeBase<Int, Real, RealRed>(matrix1, numlines);
-  red = new Reducer<Int, Real, RealRed>(*basis);
+ // basis = new IntLatticeBase<Int, Real>(matrix1, matrix2, m, numlines);
+  basis = new IntLatticeBase<Int, Real>(matrix1, numlines);
+  red = new Reducer<Int, Real>(*basis);
   std::cout << " The base before reduction\n";
   printBase((red->getIntLatticeBase())->getBasis());
  
@@ -91,10 +91,10 @@ int main()
  //  comput the shortest vector using Cholesky decompisition method
  //The method can be very slow. It's not the recommanded one
 
-  basis = new IntLatticeBase<Int, Real, RealRed>(matrix1, matrix2, m, numlines);
+  basis = new IntLatticeBase<Int, Real>(matrix1, matrix2, m, numlines);
   std::cout << " The base before reduction\n";
   printBase((red->getIntLatticeBase())->getBasis());
-  red = new Reducer<Int, Real, RealRed>(*basis);
+  red = new Reducer<Int, Real>(*basis);
   red->redBKZ(0.9, 10, QUADRUPLE, 0);
   std::cout << " The base after reduction\n";
   printBase((red->getIntLatticeBase())->getBasis());

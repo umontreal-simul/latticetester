@@ -21,7 +21,7 @@
 #include "latticetester/IntLattice.h"
 
 namespace LatticeTester{
-  template class IntLattice<std::int64_t, double, double>;
-  template class IntLattice<NTL::ZZ, double, double>;
-  template class IntLattice<NTL::ZZ, NTL::RR, NTL::RR>;
+  template class IntLattice<std::int64_t, double>;
+  template class IntLattice<NTL::ZZ, double>;
+  template class IntLattice<NTL::ZZ, NTL::RR>;
 }

@@ -38,18 +38,18 @@ using namespace LatticeTester;
 int main() {
   //! Reading a matrix to use the normalizer class
   int min_dim = 0, max_dim = 10;
-  ParamReader<Int, RealRed> reader("./44matrixEx.dat");
+  ParamReader<Int, Real> reader("./44matrixEx.dat");
   reader.getLines();
   IntMat matrix(max_dim,max_dim);
   unsigned int ln = 0;
   reader.readBMat(matrix, ln, 0, max_dim);
-  IntLatticeBase<Int, Real, RealRed> lat_basis(matrix, max_dim);
+  IntLatticeBase<Int, Real> lat_basis(matrix, max_dim);
   double merit1 = 1.0, merit2 = 1.0;
 
   // The variables specific to the construction of a figure of merit
   UniformWeights weights(1.0); // This just puts a weight of 1 to everything
   BasisConstruction<Int> constructor; // Computes projections basis
-  IntLatticeBase<Int, Real, RealRed> proj_basis(max_dim); // To store projections
+  IntLatticeBase<Int, Real> proj_basis(max_dim); // To store projections
   // CoordinateSets namespace contains classes to create iterators on sets of coordinates
   CoordinateSets::FromRanges coord(min_dim+1, max_dim, min_dim, max_dim-1);
 
@@ -61,7 +61,7 @@ int main() {
     //! Computing the shortest vector in the lattice spanned by matrix
     proj_basis.updateVecNorm();
     proj_basis.sort(0);
-    Reducer<Int, Real, RealRed> red(proj_basis);
+    Reducer<Int, Real> red(proj_basis);
     red.redBKZ();
      std::string ch("cholesky");
     red.shortestVector(L2NORM,ch);
@@ -69,7 +69,7 @@ int main() {
 
     // Instanciating the normalizers
     // The prefered way of doing this is descibed in Normalizer documentation
-  //  RealRed log_density=-log(abs(NTL::determinant(proj_basis.getBasis())));
+  //  Real log_density=-log(abs(NTL::determinant(proj_basis.getBasis())));
     double log_density=(double)(-log(abs(NTL::determinant(proj_basis.getBasis()))));
     Normalizer* norma = new NormaBestLat(log_density, max_dim);
 

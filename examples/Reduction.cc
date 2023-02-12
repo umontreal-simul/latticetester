@@ -83,11 +83,11 @@ int main() {
       // We dynamically allocate memory to these two pointers every time we need to
       // create an object of their type. This is because of the OOP approach
       // to lattice reduction.
-      IntLatticeBase<Int, Real, RealRed>* basis;
-      Reducer<Int, Real, RealRed>* red;
+      IntLatticeBase<Int, Real>* basis;
+      Reducer<Int, Real>* red;
 
       //! Variables definition
-      ParamReader<Int, RealRed> reader;
+      ParamReader<Int, Real> reader;
       std::string name;
       int numlines;
       IntMat matrix1;
@@ -97,7 +97,7 @@ int main() {
 
       //! Reader shenanigans
       name = "bench/" + prime + "_" + std::to_string(5*(j+1)) + "_" + std::to_string(k);
-      reader = ParamReader<Int, RealRed>(name + ".dat");
+      reader = ParamReader<Int, Real>(name + ".dat");
       reader.getLines();
       reader.readInt(numlines, 0, 0);
       matrix1.SetDims(numlines, numlines);
@@ -106,8 +106,8 @@ int main() {
 
       // Dieter reduction before shortest vector search
       tmp = clock();
-      basis = new IntLatticeBase<Int, Real,  RealRed>(matrix1, numlines);
-      red = new Reducer<Int, Real, RealRed>(*basis);
+      basis = new IntLatticeBase<Int, Real,  Real>(matrix1, numlines);
+      red = new Reducer<Int, Real>(*basis);
       red->redDieter(0);
       die_time[j] += clock() - tmp;
       basis->updateVecNorm();
@@ -123,8 +123,8 @@ int main() {
 
       // LLL reduction before shortest vector search
       tmp = clock();
-      basis = new IntLatticeBase<Int, Real, RealRed>(matrix1, numlines);
-      red = new Reducer<Int, Real, RealRed>(*basis);
+      basis = new IntLatticeBase<Int, Real>(matrix1, numlines);
+      red = new Reducer<Int, Real>(*basis);
       red->redLLLNTL();
       lll_time[j] += clock() - tmp;
       basis->updateVecNorm();
@@ -140,8 +140,8 @@ int main() {
 
       // BKZ reduction before shortest vector search
       tmp = clock();
-      basis = new IntLatticeBase<Int, Real, RealRed>(matrix1, numlines);
-      red = new Reducer<Int, Real, RealRed>(*basis);
+      basis = new IntLatticeBase<Int, Real>(matrix1, numlines);
+      red = new Reducer<Int, Real>(*basis);
       red->redBKZ();
       bkz_time[j] += clock() - tmp;
       basis->updateVecNorm();

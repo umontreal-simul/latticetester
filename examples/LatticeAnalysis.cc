@@ -22,9 +22,9 @@
 
 namespace LatticeTester{
 //namespace examples{  
-  template class LatticeAnalysis<std::int64_t, double, double>;
-  template class LatticeAnalysis<NTL::ZZ, double, double>;
-  template class LatticeAnalysis<NTL::ZZ, NTL::RR, NTL::RR>;
+  template class LatticeAnalysis<std::int64_t, double>;
+  template class LatticeAnalysis<NTL::ZZ, double>;
+  template class LatticeAnalysis<NTL::ZZ, NTL::RR>;
 }
 int main() {
   return 0;

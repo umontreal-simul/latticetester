@@ -74,11 +74,11 @@ int main() {
       // We dynamically allocate memory to these two pointers every time we need to
       // create an object of their type. This is because of the OOP approach
       // to lattice reduction.
-      IntLatticeBase<Int, Real, RealRed>* basis;
-      Reducer<Int, Real, RealRed>* red;
+      IntLatticeBase<Int, Real>* basis;
+      Reducer<Int, Real>* red;
 
       //! Variables definition
-      ParamReader<Int, RealRed> reader, reader2;
+      ParamReader<Int, Real> reader, reader2;
       std::string name;
       int numlines;
       IntMat matrix1;
@@ -97,7 +97,7 @@ int main() {
       //  name = "bench/" + prime+ "_2" + "_002" ;
 
 
-      reader = ParamReader<Int, RealRed>(name + ".dat");
+      reader = ParamReader<Int, Real>(name + ".dat");
       reader.getLines();
       reader.readInt(numlines, 0, 0);
       matrix1.SetDims(numlines, numlines);
@@ -107,8 +107,8 @@ int main() {
 
       // BKZ reduction before shortest vector search
       Int m(1021);
-      basis = new IntLatticeBase<Int, Real, RealRed>(matrix1,matrix1,m, numlines);
-      red = new Reducer<Int, Real, RealRed>(*basis);
+      basis = new IntLatticeBase<Int, Real>(matrix1,matrix1,m, numlines);
+      red = new Reducer<Int, Real>(*basis);
 
       std::cout << " The base before reduction\n"; 
       printBase((red->getIntLatticeBase())->getBasis()); 

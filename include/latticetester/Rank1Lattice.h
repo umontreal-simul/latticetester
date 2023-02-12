@@ -48,8 +48,8 @@ namespace LatticeTester {
    * When searching for lattices that satisfy this condition, one may assume
    * without loss of generality generality that \f$a_1 = 1\f$.
    */
-  template<typename Int, typename Real, typename RealRed>
-    class Rank1Lattice: public IntLattice<Int, Real, RealRed> {
+  template<typename Int, typename Real>
+    class Rank1Lattice: public IntLattice<Int, Real> {
 
       private:
         typedef NTL::vector<Int>  IntVec;
@@ -71,12 +71,12 @@ namespace LatticeTester {
         /**
          * Copy constructor.
          */
-        Rank1Lattice (const Rank1Lattice<Int, Real, RealRed> & Lat);
+        Rank1Lattice (const Rank1Lattice<Int, Real> & Lat);
 
         /**
          * Assigns `Lat` to this object.
         */
-        Rank1Lattice & operator= (const Rank1Lattice<Int, Real, RealRed>
+        Rank1Lattice & operator= (const Rank1Lattice<Int, Real>
             & Lat);
 
         /**
@@ -122,10 +122,10 @@ namespace LatticeTester {
 
   //============================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-    Rank1Lattice<Int, Real, RealRed>::Rank1Lattice (
+  template<typename Int, typename Real>
+    Rank1Lattice<Int, Real>::Rank1Lattice (
         const Int & m, const IntVec & a, int maxDim, NormType norm):
-      IntLattice<Int, Real, RealRed> (m, maxDim, true, norm)
+      IntLattice<Int, Real> (m, maxDim, true, norm)
   {
     this->m_a = a;
     init();
@@ -133,28 +133,28 @@ namespace LatticeTester {
 
   //============================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-    Rank1Lattice<Int, Real, RealRed>::~Rank1Lattice()
+  template<typename Int, typename Real>
+    Rank1Lattice<Int, Real>::~Rank1Lattice()
     {
       this->m_a.clear ();
     }
 
   //============================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-    void Rank1Lattice<Int, Real, RealRed>::init()
+  template<typename Int, typename Real>
+    void Rank1Lattice<Int, Real>::init()
     {
-      IntLattice<Int, Real, RealRed>::init();
+      IntLattice<Int, Real>::init();
       // for (int r = 1; r < this->getDim(); r++)
       //   this->m_lgVolDual2[r] = this->m_lgVolDual2[r - 1];
     }
 
   //============================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-    Rank1Lattice<Int, Real, RealRed> &
-    Rank1Lattice<Int, Real, RealRed>::operator= (
-        const Rank1Lattice<Int, Real, RealRed> & lat)
+  template<typename Int, typename Real>
+    Rank1Lattice<Int, Real> &
+    Rank1Lattice<Int, Real>::operator= (
+        const Rank1Lattice<Int, Real> & lat)
     {
       if (this == &lat)
         return * this;
@@ -166,10 +166,10 @@ namespace LatticeTester {
 
   //============================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-    Rank1Lattice<Int, Real, RealRed>::Rank1Lattice (
-        const Rank1Lattice<Int, Real, RealRed> & lat):
-      IntLattice<Int, Real, RealRed> (
+  template<typename Int, typename Real>
+    Rank1Lattice<Int, Real>::Rank1Lattice (
+        const Rank1Lattice<Int, Real> & lat):
+      IntLattice<Int, Real> (
           lat.m_modulo, lat.getDim (), lat.getNormType ())
   {
     // MyExit (1, "Rank1Lattice:: constructor is incomplete" );
@@ -179,16 +179,16 @@ namespace LatticeTester {
 
   //============================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-    std::string Rank1Lattice<Int, Real, RealRed>::toStringCoef ()const
+  template<typename Int, typename Real>
+    std::string Rank1Lattice<Int, Real>::toStringCoef ()const
     {
       return toString (this->m_a, 0, this->getDim ());
     }
 
   //============================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-    void Rank1Lattice<Int, Real, RealRed>::incDim ()
+  template<typename Int, typename Real>
+    void Rank1Lattice<Int, Real>::incDim ()
     {
       assert(1 + this->getDim() <= this->m_maxDim);
       buildBasis (1 + this->getDim ());
@@ -198,8 +198,8 @@ namespace LatticeTester {
 
   //============================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-    void Rank1Lattice<Int, Real,RealRed>::buildBasis (long d)
+  template<typename Int, typename Real>
+    void Rank1Lattice<Int, Real>::buildBasis (long d)
     {
       assert(d <= this->m_maxDim);
       this->setDim (d);
@@ -238,17 +238,17 @@ namespace LatticeTester {
 
   //============================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-    void Rank1Lattice<Int, Real, RealRed>::dualize ()
+  template<typename Int, typename Real>
+    void Rank1Lattice<Int, Real>::dualize ()
     {
       IntMat tmps(this->m_basis);
       this->m_basis = this->m_dualbasis;
       this->m_dualbasis = tmps;
     }
 
-  extern template class Rank1Lattice<std::int64_t, double, double>;
-  extern template class Rank1Lattice<NTL::ZZ, double, double>;
-  extern template class Rank1Lattice<NTL::ZZ, NTL::RR, NTL::RR>;
+  extern template class Rank1Lattice<std::int64_t, double>;
+  extern template class Rank1Lattice<NTL::ZZ, double>;
+  extern template class Rank1Lattice<NTL::ZZ, NTL::RR>;
 
 } // End namespace LatticeTester
 

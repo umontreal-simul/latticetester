@@ -32,16 +32,15 @@
    * and high-precision real numbers, as well as vectors and arrays of such numbers.
    * Those flexible types are used in templates when instantiating objects.
    *
-   * The type `Int` represents a flexible integer. It can be either `std::int64_t`
+   * The flexible type `Int` represents an integer. It can be either `std::int64_t`
    * or the NTL integer type `NTL::ZZ`. The types `IntVec` and `IntMat` represent
    * vectors and matrices of such flexible integers, respectively.
-   *
-   * For the real numbers, we use the two flexible representations `Real` and `RealRed`.
-   * Each one can be either `double` or the NTL real type `NTL::RR`.
-   * The types `RealVec`, `RealRedVec`, `RealMat`, and `RealRedMat` represent vectors
-   * and matrices of such real numbers.  The `RealRed` type is used for the Cholesky
-   * decomposition (which can be very sensitive to accuracy) and to compute bounds
-   * in the BB algorithm, whereas `Real` is used for other real numbers.
+   * The flexible type `Real` represents a real number.
+   * It can be either `double` or the NTL real type `NTL::RR`.
+   * The types `RealVec` and `RealMat` represent vectors
+   * and matrices of such real numbers.  The `Real` type is used for the Cholesky
+   * decomposition (which can be very sensitive to accuracy), to compute bounds
+   * in the BB algorithm, and for vector norms.
    */
 
 namespace LatticeTester {
@@ -50,16 +49,11 @@ namespace LatticeTester {
     typedef std::int64_t  Int;
     typedef NTL::RR       Real;
     typedef double        Real;
-    typedef double        RealRed;
-    typedef NTL::RR       RealRed;
-
 
    typedef NTL::vector<Int> IntVec;
    typedef NTL::matrix<Int> IntMat;
    typedef NTL::vector<Real> RealVec;
    typedef NTL::matrix<Real> RealMat;
-   typedef NTL::vector<RealRed> RealRedVec;
-   typedef NTL::matrix<RealRed> RealRedMat;
 }
 
 #endif

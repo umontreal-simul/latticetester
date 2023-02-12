@@ -91,9 +91,7 @@ namespace LatticeTester {
    *    - equation (47) page 20 of chapter 1
    *    - table 1.2 page 15 of chapter 1
    */
- // template<typename RealRed>
-          const double NormaRogers::m_gamma0[ ] =
-  {
+   const double NormaRogers::m_gamma0[ ] = {
     /* GamRogers[0] = */    0.0,
     /* GamRogers[1] = */    1.0,
     /* GamRogers[2] = */    1.15472,

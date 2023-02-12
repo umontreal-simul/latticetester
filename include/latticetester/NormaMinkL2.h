@@ -30,8 +30,7 @@ namespace LatticeTester {
    * The Hermite constants \f$\gamma_s\f$ are approximated using this bound.
    * This class is to be used with the L2NORM (the Euclidean norm) exclusively.
    */
-  //template<typename RealRed>
-    class NormaMinkL2 : public Normalizer {
+  class NormaMinkL2 : public Normalizer {
       public:
 
         /**
@@ -68,7 +67,6 @@ namespace LatticeTester {
   /*
    * This is (2/V_n)^(2/n) which seems wrong.
    * */
-  //template<typename RealRed>
     const double NormaMinkL2::m_gamma[ ] =
     {
       /* GamMinkowski[0] = */     0.00000000000000,

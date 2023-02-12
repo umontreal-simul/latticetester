@@ -72,14 +72,14 @@ namespace LatticeTester {
    * field will contain the figure of merit that was asked for.
    */
 
-  template<typename Int, typename Real, typename RealRed>
+  template<typename Int, typename Real>
      class LatticeAnalysis {
         private:
           typedef NTL::vector<Int> IntVec;
           typedef NTL::matrix<Int> IntMat;
           typedef NTL::vector<Real> RealVec;
-          typedef NTL::vector<RealRed> RealRedVec;
-          typedef NTL::matrix<RealRed> RealRedMat;
+          typedef NTL::vector<Real> RealVec;
+          typedef NTL::matrix<Real> RealMat;
         public:
 
           /**
@@ -299,16 +299,16 @@ namespace LatticeTester {
   //===========================================================================
   // Class implementation
 
-  template<typename Int, typename Real, typename RealRed>
-      LatticeAnalysis<Int, Real, RealRed>::LatticeAnalysis ()
+  template<typename Int, typename Real>
+      LatticeAnalysis<Int, Real>::LatticeAnalysis ()
     {
       m_config = NULL;
     }
 
   //===========================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-      LatticeAnalysis<Int, Real, RealRed>::LatticeAnalysis (
+  template<typename Int, typename Real>
+      LatticeAnalysis<Int, Real>::LatticeAnalysis (
           Config<Int, IntMat>& config)
     {
       m_config = &config;
@@ -320,8 +320,8 @@ namespace LatticeTester {
    * This is a big ugly function that will print the results after the program
    * execution.
    * */
-  template<typename Int, typename Real, typename RealRed>
-      void LatticeAnalysis<Int, Real, RealRed>::printTestResults (const char* infile)
+  template<typename Int, typename Real>
+      void LatticeAnalysis<Int, Real>::printTestResults (const char* infile)
     {
       // putting the results in the output stream
       Writer<Int>* rw = createWriter (infile, m_config->outputType);
@@ -405,15 +405,15 @@ namespace LatticeTester {
    * "poil.dat", then infile is "poil".
    * Data files must always have the extension "dat".
    */
-  template<typename Int, typename Real, typename RealRed>
-      int LatticeAnalysis<Int, Real, RealRed>::doTestFromInputFile (
+  template<typename Int, typename Real>
+      int LatticeAnalysis<Int, Real>::doTestFromInputFile (
         const char *infile)
     {   
       bool result = false;
       // parameters reading
       std::string fname (infile);
       fname += ".dat";
-      ParamReader<Int, RealRed> paramRdr (fname.c_str ());
+      ParamReader<Int, Real> paramRdr (fname.c_str ());
       fname.clear ();
 
       Config<Int, IntMat> config;
@@ -427,8 +427,8 @@ namespace LatticeTester {
 
   //============================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-    bool LatticeAnalysis<Int, Real, RealRed>::doTest(
+  template<typename Int, typename Real>
+    bool LatticeAnalysis<Int, Real>::doTest(
         Config<Int, IntMat>& config) {
       m_config = &config;
       bool result = false;
@@ -448,8 +448,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-    bool LatticeAnalysis<Int, Real, RealRed>::performBasis(
+  template<typename Int, typename Real>
+    bool LatticeAnalysis<Int, Real>::performBasis(
         Config<Int, IntMat>& config) {
           Int m(1021);
       BasisConstruction<Int> basis;
@@ -463,8 +463,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-    bool LatticeAnalysis<Int, Real, RealRed>::performDual(
+  template<typename Int, typename Real>
+    bool LatticeAnalysis<Int, Real>::performDual(
         Config<Int, IntMat>& config) {
       config.m = 1;
       BasisConstruction<Int> basis;
@@ -474,13 +474,13 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-    bool LatticeAnalysis<Int, Real, RealRed>::performReduction(
+  template<typename Int, typename Real>
+    bool LatticeAnalysis<Int, Real>::performReduction(
         Config<Int, IntMat>& config) {
 
-      IntLatticeBase<Int, Real, RealRed>
+      IntLatticeBase<Int, Real>
         Basis(config.basis, config.NumCols);
-      Reducer<Int, Real, RealRed> Red(Basis);
+      Reducer<Int, Real> Red(Basis);
       PreReductionType reduction = config.config.reduct.method;
 
       if (reduction == BKZ) {
@@ -496,13 +496,13 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-    bool LatticeAnalysis<Int, Real, RealRed>::performShortest(
+  template<typename Int, typename Real>
+    bool LatticeAnalysis<Int, Real>::performShortest(
         Config<Int, IntMat>& config) {
       bool result = false;
-      IntLatticeBase<Int, Real, RealRed>
+      IntLatticeBase<Int, Real>
         Basis(config.basis, config.NumCols);
-      Reducer<Int, Real, RealRed> Red(Basis);
+      Reducer<Int, Real> Red(Basis);
 
       if (config.config.shortest.reduction) {
         PreReductionType reduction = config.config.shortest.method;
@@ -524,14 +524,14 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-      bool LatticeAnalysis<Int, Real, RealRed>::performMerit (
+  template<typename Int, typename Real>
+      bool LatticeAnalysis<Int, Real>::performMerit (
           Config<Int, IntMat>& config)
     {
       bool result = false;
-      IntLatticeBase<Int, Real, RealRed>
+      IntLatticeBase<Int, Real>
         Basis(config.basis, config.NumCols);
-      Reducer<Int, Real, RealRed> Red(Basis);
+      Reducer<Int, Real> Red(Basis);
 
       if (config.config.merit.reduction) {
         PreReductionType reduction = config.config.merit.method;
@@ -553,7 +553,7 @@ namespace LatticeTester {
         result = Red.shortestVector(L2NORM,ch);
         // calculating the Figure of Merit
         NormaType norma(config.config.merit.norma);
-        //RealRed density = RealRed(-log(abs(NTL::determinant(config.basis))));
+        //Real density = Real(-log(abs(NTL::determinant(config.basis))));
         double density = (double)(-log(abs(NTL::determinant(config.basis))));
         Normalizer* normalizer = NULL;
         m_shortest = NTL::conv<double>(Red.getMinLength());
@@ -592,8 +592,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-      int LatticeAnalysis<Int, Real, RealRed>::doTestFromDirectory (
+  template<typename Int, typename Real>
+      int LatticeAnalysis<Int, Real>::doTestFromDirectory (
         const char *dirname)
     {
       std::string dir = std::string (dirname);
@@ -612,8 +612,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-      Writer<Int>* LatticeAnalysis<Int, Real, RealRed>::
+  template<typename Int, typename Real>
+      Writer<Int>* LatticeAnalysis<Int, Real>::
       createWriter (const char *infile, OutputType ot)
     {
       Writer<Int> *rw = 0;
@@ -637,9 +637,9 @@ namespace LatticeTester {
       return rw;
     }
 
-  extern template class LatticeAnalysis<std::int64_t, double, double>;
-  extern template class LatticeAnalysis<NTL::ZZ, double, double>;
-  extern template class LatticeAnalysis<NTL::ZZ, NTL::RR, NTL::RR>;
+  extern template class LatticeAnalysis<std::int64_t, double>;
+  extern template class LatticeAnalysis<NTL::ZZ, double>;
+  extern template class LatticeAnalysis<NTL::ZZ, NTL::RR>;
 
 } // end namespace
 

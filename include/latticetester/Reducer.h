@@ -46,9 +46,6 @@
 #include <type_traits>
 
 
-
-
-
 namespace LatticeTester {
 
 /**
@@ -77,7 +74,7 @@ namespace LatticeTester {
  * The methods of the `Reducer` object will modify this `IntLatticeBase` object.
  */
 
-template<typename Int, typename Real, typename RealRed>
+template<typename Int, typename Real>
 class Reducer;
 
 /// \cond specReducerDec
@@ -93,17 +90,17 @@ class Reducer;
  * only this structure.
  *
  */
-template<typename Int, typename Real, typename RealRed>
+template<typename Int, typename Real>
 struct specReducer {
-	void redLLLNTL(Reducer<Int, Real, RealRed> &red, double delta,
+	void redLLLNTL(Reducer<Int, Real> &red, double delta,
 			PrecisionType precision, int dim);
-	void redLLLNTLExact(Reducer<Int, Real, RealRed> &red, double delta);
-	void redBKZ(Reducer<Int, Real, RealRed> &red, double delta,
+	void redLLLNTLExact(Reducer<Int, Real> &red, double delta);
+	void redBKZ(Reducer<Int, Real> &red, double delta,
 			std::int64_t blocksize, PrecisionType precision, int dim);
 };
 /// \endcond
 
-template<typename Int, typename Real, typename RealRed>
+template<typename Int, typename Real>
 class Reducer {
 
 private:
@@ -111,20 +108,19 @@ private:
 	typedef NTL::vector<Int> IntVec;
 	typedef NTL::matrix<Int> IntMat;
 	typedef NTL::vector<Real> RealVec;
-	typedef NTL::vector<RealRed> RealRedVec;
-	typedef NTL::matrix<RealRed> RealRedMat;
+	typedef NTL::matrix<Real> RealMat;
 
 public:
 
 	/**
 	 * Constructor that initializes the reducer to work on the lattice `lat`.
 	 */
-	Reducer(IntLatticeBase<Int, Real, RealRed> &lat);
+	Reducer(IntLatticeBase<Int, Real> &lat);
 
 	/**
 	 * Copy constructor.
 	 */
-	Reducer(const Reducer<Int, Real, RealRed> &red);
+	Reducer(const Reducer<Int, Real> &red);
 
 	/**
 	 * Destructor.
@@ -135,13 +131,13 @@ public:
 	 * Assignment operator that makes a deep copy of `red`
 	 * into the current object, using `copy`.
 	 */
-	Reducer<Int, Real, RealRed>& operator=(
-			const Reducer<Int, Real, RealRed> &red);
+	Reducer<Int, Real>& operator=(
+			const Reducer<Int, Real> &red);
 
 	/**
 	 * Copies `red` into the current object.
 	 */
-	void copy(const Reducer<Int, Real, RealRed> &red);
+	void copy(const Reducer<Int, Real> &red);
 
 	/**
 	 * Computes a shortest non-zero vector in the `IntLatticeBase` lattice stored
@@ -279,7 +275,7 @@ public:
 	/**
 	 * Returns the lattice that this object is working on.
 	 * */
-	IntLatticeBase<Int, Real, RealRed>* getIntLatticeBase() {
+	IntLatticeBase<Int, Real>* getIntLatticeBase() {
 		return m_lat;
 	}
 
@@ -297,8 +293,8 @@ private:
 	/**
 	 * The lattice that this object is working on.
 	 */
-	IntLatticeBase<Int, Real, RealRed> *m_lat;
-//	IntLatticeBase<Int, Real, RealRed> *m_lat2;
+	IntLatticeBase<Int, Real> *m_lat;
+//	IntLatticeBase<Int, Real> *m_lat2;
 
 	/**
 	 * Contains specialized implementations of member methods depending on
@@ -308,7 +304,7 @@ private:
 	 *  ** P.L.: I really do not like this.  Perhaps NTL should be able to promote
 	 *     the int64_t to ZZ to apply the methods.   **
 	 */
-	struct specReducer<Int, Real, RealRed> spec;
+	struct specReducer<Int, Real> spec;
 
 	/*
 	 * Method used in `shortestVector` to perform a transformation of
@@ -391,7 +387,7 @@ private:
 	 * decomposition that are above the diagonal. Returns in `DC2` the
 	 * squared elements of the diagonal.
 	 */
-	bool calculCholesky(RealRedVec &DC2, RealRedMat &C0);
+	bool calculCholesky(RealVec &DC2, RealMat &C0);
 
 	/**
 	 * Permutes the \f$i^{th}\f$ and the \f$j^{th}\f$ line, and the
@@ -500,9 +496,9 @@ private:
 	Real m_ns;
 	RealVec m_nv;
 
-	// RealRed m_rs;
-	RealRedVec m_zLR, m_n2, m_dc2;
-	RealRedMat m_c0, m_c2, m_cho2, m_gramVD;
+	// Real m_rs;
+	RealVec m_zLR, m_n2, m_dc2;
+	RealMat m_c0, m_c2, m_cho2, m_gramVD;
 	int *m_IC;             // Indices in Cholesky
 
 	std::vector<std::int64_t> m_zLI;
@@ -523,10 +519,10 @@ private:
 
 // Specialization for the case where Int is int64_t
 //
-template<typename Real, typename RealRed>
-struct specReducer<std::int64_t, Real, RealRed> {
+template<typename Real>
+struct specReducer<std::int64_t, Real> {
 
-	void redLLLNTLExact(Reducer<std::int64_t, Real, RealRed> &red,
+	void redLLLNTLExact(Reducer<std::int64_t, Real> &red,
 			double delta) {
 		std::cout
 				<< "** WARNING: redLLLNTLExact cannot be used with std::int64_t.\n";
@@ -534,12 +530,12 @@ struct specReducer<std::int64_t, Real, RealRed> {
 		red.redLLL(delta, 1000000, red.getIntLatticeBase()->getDim());
 	}
 
-	void redBKZ(Reducer<std::int64_t, Real, RealRed> &red, double delta,
+	void redBKZ(Reducer<std::int64_t, Real> &red, double delta,
 			std::int64_t blocksize, PrecisionType precision, int dim) {
-		IntLatticeBase<std::int64_t, Real, RealRed> *lattmp = 0;
+		IntLatticeBase<std::int64_t, Real> *lattmp = 0;
 		if (dim > 0) {
 			lattmp = new IntLatticeBase<std::int64_t, Real,
-					RealRed>(dim, red.getIntLatticeBase()->getNormType());
+					Real>(dim, red.getIntLatticeBase()->getNormType());
 			lattmp->copyLattice(*red.getIntLatticeBase(), dim);
 		} else
 			lattmp = red.getIntLatticeBase();
@@ -558,11 +554,11 @@ struct specReducer<std::int64_t, Real, RealRed> {
 	 * performs NTL LLL reduction is faster than our own LLL.
 	 * If it is, we should re-implement our LLL to match what is done in NTL.
 	 */
-	void redLLLNTL(Reducer<std::int64_t, Real, RealRed> &red, double delta,
+	void redLLLNTL(Reducer<std::int64_t, Real> &red, double delta,
 			PrecisionType precision, int dim) {
 		// Here we create a new temporary lattice, new NTL matrices, and then destroy them.
 		// That's a lot of object creations, probably very ineffective.
-		IntLatticeBase<NTL::ZZ, Real, RealRed> *lattmp = 0;
+		IntLatticeBase<NTL::ZZ, Real> *lattmp = 0;
 		NTL::matrix<std::int64_t> basis = red.getIntLatticeBase()->getBasis();
 		// We copy the basis in B, for all the dimensions!
 		NTL::mat_ZZ B;
@@ -572,7 +568,7 @@ struct specReducer<std::int64_t, Real, RealRed> {
 				B[i][j] = basis[i][j];
 			}
 		}
-		lattmp = new IntLatticeBase<NTL::ZZ, Real, RealRed>(B, dim,
+		lattmp = new IntLatticeBase<NTL::ZZ, Real>(B, dim,
 				red.getIntLatticeBase()->getNormType());
 		B.kill();
 
@@ -608,12 +604,12 @@ struct specReducer<std::int64_t, Real, RealRed> {
 	}
 
 	/*
-	 * void redLLLNTL(Reducer<std::int64_t, Real, RealRed>& red,
+	 * void redLLLNTL(Reducer<std::int64_t, Real>& red,
 	 *     double delta, PrecisionType precision, int dim)
 	 * {
-	 *   IntLatticeBase<std::int64_t, Real, RealRed> *lattmp = 0;
+	 *   IntLatticeBase<std::int64_t, Real> *lattmp = 0;
 	 *   if(dim > 0){
-	 *     lattmp = new IntLatticeBase<std::int64_t, Real, RealRed>(
+	 *     lattmp = new IntLatticeBase<std::int64_t, Real>(
 	 *                dim, red.getIntLatticeBase()->getNorm(Type));
 	 *     lattmp->copyLattice(*red.getIntLatticeBase(), dim);
 	 *   }
@@ -631,21 +627,21 @@ struct specReducer<std::int64_t, Real, RealRed> {
 
 // Specialization for the case where Int is NTL::ZZ
 //
-template<typename Real, typename RealRed>
-struct specReducer<NTL::ZZ, Real, RealRed> {
+template<typename Real>
+struct specReducer<NTL::ZZ, Real> {
 
-	void redLLLNTLExact(Reducer<NTL::ZZ, Real, RealRed> &red, double delta) {
+	void redLLLNTLExact(Reducer<NTL::ZZ, Real> &red, double delta) {
 		NTL::ZZ det(0);
 		int64_t denum;
 		denum = round(1.0 / (1.0 - delta)); // We want (denum-1)/denum \approx delta.
 		NTL::LLL(det, red.getIntLatticeBase()->getBasis(), denum - 1, denum);
 	}
 
-	void redBKZ(Reducer<NTL::ZZ, Real, RealRed> &red, double delta,
+	void redBKZ(Reducer<NTL::ZZ, Real> &red, double delta,
 			std::int64_t blocksize, PrecisionType precision, int dim) {
-		IntLatticeBase<NTL::ZZ, Real, RealRed> *lattmp = 0;
+		IntLatticeBase<NTL::ZZ, Real> *lattmp = 0;
 		if (dim > 0) {
-			lattmp = new IntLatticeBase<NTL::ZZ, Real, RealRed>(dim,
+			lattmp = new IntLatticeBase<NTL::ZZ, Real>(dim,
 					red.getIntLatticeBase()->getNormType());
 			lattmp->copyLattice(*red.getIntLatticeBase(), dim);
 		} else
@@ -672,12 +668,12 @@ struct specReducer<NTL::ZZ, Real, RealRed> {
 			delete lattmp;
 	}
 
-	void redLLLNTL(Reducer<NTL::ZZ, Real, RealRed> &red, double delta,
+	void redLLLNTL(Reducer<NTL::ZZ, Real> &red, double delta,
 			PrecisionType precision, int dim) {
-		IntLatticeBase<NTL::ZZ, Real, RealRed> *lattmp = 0;
+		IntLatticeBase<NTL::ZZ, Real> *lattmp = 0;
 		if (dim > 0) {
 			// We should copy only the basis matrix, not the whole IntLatticeBase object !   ******
-			lattmp = new IntLatticeBase<NTL::ZZ, Real, RealRed>(dim,
+			lattmp = new IntLatticeBase<NTL::ZZ, Real>(dim,
 					red.getIntLatticeBase()->getNormType());
 			lattmp->copyLattice(*red.getIntLatticeBase(), dim);
 		} else
@@ -716,15 +712,15 @@ struct specReducer<NTL::ZZ, Real, RealRed> {
 
 // Initialization of non-const static members
 //
-template<typename Int, typename Real, typename RealRed>
-bool Reducer<Int, Real, RealRed>::PreRedLLLMink = false;
-template<typename Int, typename Real, typename RealRed>
-std::int64_t Reducer<Int, Real, RealRed>::maxNodesBB = 1000000000;
+template<typename Int, typename Real>
+bool Reducer<Int, Real>::PreRedLLLMink = false;
+template<typename Int, typename Real>
+std::int64_t Reducer<Int, Real>::maxNodesBB = 1000000000;
 
 //=========================================================================
 
-template<typename Int, typename Real, typename RealRed>
-Reducer<Int, Real, RealRed>::Reducer(IntLatticeBase<Int, Real, RealRed> &lat) {
+template<typename Int, typename Real>
+Reducer<Int, Real>::Reducer(IntLatticeBase<Int, Real> &lat) {
 	// Squared length of vectors must not overflow max(double)
 	m_lat = &lat;
 	const int dim1 = m_lat->getDim();
@@ -762,16 +758,16 @@ Reducer<Int, Real, RealRed>::Reducer(IntLatticeBase<Int, Real, RealRed> &lat) {
 
 //=========================================================================
 
-template<typename Int, typename Real, typename RealRed>
-Reducer<Int, Real, RealRed>::Reducer(const Reducer<Int, Real, RealRed> &red) {
+template<typename Int, typename Real>
+Reducer<Int, Real>::Reducer(const Reducer<Int, Real> &red) {
 	copy(red);
 }
 
 //=========================================================================
 
-template<typename Int, typename Real, typename RealRed>
-Reducer<Int, Real, RealRed>&
-Reducer<Int, Real, RealRed>::operator=(const Reducer<Int, Real, RealRed> &red) {
+template<typename Int, typename Real>
+Reducer<Int, Real>&
+Reducer<Int, Real>::operator=(const Reducer<Int, Real> &red) {
 	if (this != &red)
 		copy(red);
 	return *this;
@@ -779,8 +775,8 @@ Reducer<Int, Real, RealRed>::operator=(const Reducer<Int, Real, RealRed> &red) {
 
 //=========================================================================
 
-template<typename Int, typename Real, typename RealRed>
-void Reducer<Int, Real, RealRed>::copy(const Reducer<Int, Real, RealRed> &red) {
+template<typename Int, typename Real>
+void Reducer<Int, Real>::copy(const Reducer<Int, Real> &red) {
 	m_lat = red.m_lat;
 	m_c0 = red.m_c0;
 	m_c2 = red.m_c2;
@@ -806,8 +802,8 @@ void Reducer<Int, Real, RealRed>::copy(const Reducer<Int, Real, RealRed> &red) {
 
 //=========================================================================
 
-template<typename Int, typename Real, typename RealRed>
-Reducer<Int, Real, RealRed>::~Reducer() {
+template<typename Int, typename Real>
+Reducer<Int, Real>::~Reducer() {
 	m_c0.clear();
 	m_c2.clear();
 	m_cho2.clear();
@@ -826,8 +822,8 @@ Reducer<Int, Real, RealRed>::~Reducer() {
 
 //=========================================================================
 
-template<typename Int, typename Real, typename RealRed>
-void Reducer<Int, Real, RealRed>::setBoundL2(const RealVec &thresholds,
+template<typename Int, typename Real>
+void Reducer<Int, Real>::setBoundL2(const RealVec &thresholds,
 		int dim1, int dim2) {
 	m_BoundL2.resize(dim2);
 	for (int i = dim1; i < dim2; i++)
@@ -836,8 +832,8 @@ void Reducer<Int, Real, RealRed>::setBoundL2(const RealVec &thresholds,
 
 //=========================================================================
 
-template<typename Int, typename Real, typename RealRed>
-void Reducer<Int, Real, RealRed>::permuteGramVD(int i, int j, int n) {
+template<typename Int, typename Real>
+void Reducer<Int, Real>::permuteGramVD(int i, int j, int n) {
 	int k;
 	for (k = 0; k < n; k++) {
 		std::swap(m_gramVD(i, k), m_gramVD(j, k));
@@ -849,8 +845,8 @@ void Reducer<Int, Real, RealRed>::permuteGramVD(int i, int j, int n) {
 
 //=========================================================================
 
-template<typename Int, typename Real, typename RealRed>
-void Reducer<Int, Real, RealRed>::calculCholesky2LLL(int n, int j) {
+template<typename Int, typename Real>
+void Reducer<Int, Real>::calculCholesky2LLL(int n, int j) {
 	// Recalcule les n premieres entrees de la colonne j de la matrice de
 	// Cholesky d'ordre 2.   Pour redLLL.
 	m_cho2(0, j) = m_gramVD(0, j);
@@ -864,8 +860,8 @@ void Reducer<Int, Real, RealRed>::calculCholesky2LLL(int n, int j) {
 
 //=========================================================================
 
-template<typename Int, typename Real, typename RealRed>
-inline void Reducer<Int, Real, RealRed>::calculCholesky2Ele(int i, int j) {
+template<typename Int, typename Real>
+inline void Reducer<Int, Real>::calculCholesky2Ele(int i, int j) {
 	// Recalcule l'entree (i,j) de la matrice de Cholesky d'ordre 2.
 	m_cho2(i, j) = m_gramVD(i, j);
 	for (int k = 0; k < i; k++) {
@@ -879,8 +875,8 @@ inline void Reducer<Int, Real, RealRed>::calculCholesky2Ele(int i, int j) {
 
 //=========================================================================
 
-template<typename Int, typename Real, typename RealRed>
-inline void Reducer<Int, Real, RealRed>::calculGramVD() {
+template<typename Int, typename Real>
+inline void Reducer<Int, Real>::calculGramVD() {
 	// Retourne dans m_gramVD la matrice des produits scalaires m_lat->V[i]*m_lat->V[j].
 	// Note: m_lat->V.vecNorm ne contient que les m_lat->V[i]*m_lat->V[i].
 	const int dim = m_lat->getDim();
@@ -896,8 +892,8 @@ inline void Reducer<Int, Real, RealRed>::calculGramVD() {
 
 //=========================================================================
 
-template<typename Int, typename Real, typename RealRed>
-inline void Reducer<Int, Real, RealRed>::miseAJourGramVD(int j) {
+template<typename Int, typename Real>
+inline void Reducer<Int, Real>::miseAJourGramVD(int j) {
 	// Recalcule la j-ieme ligne et la j-ieme colonne de la matrice des
 	// produits scalaires.  Pour redLLL.
 	const int dim = m_lat->getDim();
@@ -911,9 +907,9 @@ inline void Reducer<Int, Real, RealRed>::miseAJourGramVD(int j) {
 
 //=========================================================================
 
-template<typename Int, typename Real, typename RealRed>
-bool Reducer<Int, Real, RealRed>::calculCholesky(RealRedVec &DC2,
-		RealRedMat &C0) {
+template<typename Int, typename Real>
+bool Reducer<Int, Real>::calculCholesky(RealVec &DC2,
+		RealMat &C0) {
 	/*
 	 * Returns in C0 the elements of the upper triangular matrix of the
 	 * Cholesky decomposition that are above the diagonal. Returns in DC2 the
@@ -922,7 +918,7 @@ bool Reducer<Int, Real, RealRed>::calculCholesky(RealRedVec &DC2,
 	 */
 	const int dim = m_lat->getDim();
 	int k, j, i;
-	RealRed m2;
+	Real m2;
 	// C2(i,j) = C0(i,j) * C2(i,i) if i != j.
 	// C2(i,i) = DC2[i].
 	NTL::conv(m2, m_lat->getModulo());
@@ -931,7 +927,6 @@ bool Reducer<Int, Real, RealRed>::calculCholesky(RealRedVec &DC2,
 	//if(m_lat->withDual())
 	//  d = dim / 2; // If we use the Dual, we compute Cholesky
 	// with the Dual
-
 
 	// Compute the d first lines of C0 with the primal Basis.
 	for (i = 0; i < d; i++) {
@@ -1008,8 +1003,8 @@ bool Reducer<Int, Real, RealRed>::calculCholesky(RealRedVec &DC2,
 
 //=========================================================================
 
-template<typename Int, typename Real, typename RealRed>
-void Reducer<Int, Real, RealRed>::tracePrintBases(char *message) {
+template<typename Int, typename Real>
+void Reducer<Int, Real>::tracePrintBases(char *message) {
 	std::cout << std::endl << "================================= " << message
 			<< std::endl;
 	//std::cout << "dim = " << m_lat->getDim () << std::endl;
@@ -1023,8 +1018,8 @@ void Reducer<Int, Real, RealRed>::tracePrintBases(char *message) {
 
 //===========================================================================
 
-template<typename Int, typename Real, typename RealRed>
-void Reducer<Int, Real, RealRed>::pairwiseRedPrimal(int i, int d, bool xx[]) {
+template<typename Int, typename Real>
+void Reducer<Int, Real>::pairwiseRedPrimal(int i, int d, bool xx[]) {
 	const int dim = m_lat->getDim();
 	++m_countDieter;
 	m_lat->updateScalL2Norm(i);
@@ -1092,8 +1087,8 @@ void Reducer<Int, Real, RealRed>::pairwiseRedPrimal(int i, int d, bool xx[]) {
 
 //=========================================================================
 
-template<typename Int, typename Real, typename RealRed>
-void Reducer<Int, Real, RealRed>::pairwiseRedDual(int i, bool xx[]) {
+template<typename Int, typename Real>
+void Reducer<Int, Real>::pairwiseRedDual(int i, bool xx[]) {
 	int j;
 	const int dim = m_lat->getDim();
 
@@ -1147,8 +1142,8 @@ void Reducer<Int, Real, RealRed>::pairwiseRedDual(int i, bool xx[]) {
 
 //=========================================================================
 
-template<typename Int, typename Real, typename RealRed>
-void Reducer<Int, Real, RealRed>::redDieter(int d, bool xx[]) {
+template<typename Int, typename Real>
+void Reducer<Int, Real>::redDieter(int d, bool xx[]) {
 	std::int64_t BoundCount;
 	const int dim = m_lat->getDim();
 	bool withDual = m_lat->withDual();
@@ -1172,8 +1167,8 @@ void Reducer<Int, Real, RealRed>::redDieter(int d, bool xx[]) {
 
 //=========================================================================
 
-template<typename Int, typename Real, typename RealRed>
-void Reducer<Int, Real, RealRed>::redDieterRandomized(int d, int seed) {
+template<typename Int, typename Real>
+void Reducer<Int, Real>::redDieterRandomized(int d, int seed) {
 	std::int64_t BoundCount;
 	const int dim = m_lat->getDim();
 	bool withDual = m_lat->withDual();
@@ -1203,8 +1198,8 @@ void Reducer<Int, Real, RealRed>::redDieterRandomized(int d, int seed) {
  * Reduce the Cholesky matrix with adding a multiple of the i-th vector
  * to the j-th vector. It updates the Gram Schmidt matrix.
  */
-template<typename Int, typename Real, typename RealRed>
-void Reducer<Int, Real, RealRed>::reductionFaible(int i, int j)
+template<typename Int, typename Real>
+void Reducer<Int, Real>::reductionFaible(int i, int j)
 /*
  * Reduit la matrice de Cholesky (d'ordre 2) en ajoutant un multiple du
  * vecteur i au vecteur j, si possible.  Modifie le vecteur dual W_i en
@@ -1212,7 +1207,7 @@ void Reducer<Int, Real, RealRed>::reductionFaible(int i, int j)
  * Utilise par redLLL.
  */
 {
-	RealRed cte;
+	Real cte;
 	std::int64_t cteLI;
 	//bool withDual = m_lat->withDual();
 	cte = m_cho2(i, j) / m_cho2(i, i);
@@ -1262,31 +1257,31 @@ void Reducer<Int, Real, RealRed>::reductionFaible(int i, int j)
 
 //=========================================================================
 
-template<typename Int, typename Real, typename RealRed>
-void Reducer<Int, Real, RealRed>::redLLLNTLExact(double delta) {
+template<typename Int, typename Real>
+void Reducer<Int, Real>::redLLLNTLExact(double delta) {
 	spec.redLLLNTLExact(*this, delta);
 }
 
 //=========================================================================
 //std::int64_t 
-template<typename Int, typename Real, typename RealRed>
-void Reducer<Int, Real, RealRed>::redBKZ(double delta, int blocksize,
+template<typename Int, typename Real>
+void Reducer<Int, Real>::redBKZ(double delta, int blocksize,
 		PrecisionType precision, int dim) {
 	spec.redBKZ(*this, delta, blocksize, precision, dim);
 }
 
 //=========================================================================
 
-template<typename Int, typename Real, typename RealRed>
-void Reducer<Int, Real, RealRed>::redLLLNTL(double delta,
+template<typename Int, typename Real>
+void Reducer<Int, Real>::redLLLNTL(double delta,
 		PrecisionType precision, int dim) {
 	spec.redLLLNTL(*this, delta, precision, dim);
 }
 
 //=========================================================================
 
-template<typename Int, typename Real, typename RealRed>
-void Reducer<Int, Real, RealRed>::redLLL(double delta, std::int64_t maxcpt,
+template<typename Int, typename Real>
+void Reducer<Int, Real>::redLLL(double delta, std::int64_t maxcpt,
 		int Max) {
 	// Effectue la pre-reduction de B au sens de Lenstra-Lenstra-Lovasz. N'utilise
 	// pas les vecteurs m_lat->getBasis().vecNorm, Wm_lat->getDualBasis().
@@ -1294,8 +1289,8 @@ void Reducer<Int, Real, RealRed>::redLLL(double delta, std::int64_t maxcpt,
 	//bool withDual = m_lat->withDual();
 	const int REDBAS_e = 40;
 	int i, j, k, h;
-	RealRed Cho0ij;
-	RealRed limite;
+	Real Cho0ij;
+	Real limite;
 	std::int64_t cpt;
 
 	const int dim = m_lat->getDim();
@@ -1390,8 +1385,8 @@ void Reducer<Int, Real, RealRed>::redLLL(double delta, std::int64_t maxcpt,
 
 //=========================================================================
 
-template<typename Int, typename Real, typename RealRed>
-void Reducer<Int, Real, RealRed>::transformStage3Mink(
+template<typename Int, typename Real>
+void Reducer<Int, Real>::transformStage3Mink(
 		std::vector<std::int64_t> &z, int &k) {
 	int j, i;
 	std::int64_t q;
@@ -1446,8 +1441,8 @@ void Reducer<Int, Real, RealRed>::transformStage3Mink(
  * Note that an alternative for the L2 norm might be to add the new shortest vector to
  * the basis to get dim+1 generating vectors, and apply LLL to recover a new basis.
  */
-template<typename Int, typename Real, typename RealRed>
-void Reducer<Int, Real, RealRed>::transformStage3ShortVec(
+template<typename Int, typename Real>
+void Reducer<Int, Real>::transformStage3ShortVec(
 		std::vector<std::int64_t> &z, int &k) {
 	int j, i;
 	std::int64_t q;
@@ -1482,18 +1477,18 @@ void Reducer<Int, Real, RealRed>::transformStage3ShortVec(
 
 //=========================================================================
 
-template<typename Int, typename Real, typename RealRed>
-bool Reducer<Int, Real, RealRed>::tryZMink(int j, int i, int Stage,
+template<typename Int, typename Real>
+bool Reducer<Int, Real>::tryZMink(int j, int i, int Stage,
 		bool &smaller, const IntMat &WTemp)
 		// If m_countNodes > MaxNodesBB, returns false, otherwise returns true.
 		{
 	std::int64_t max0, min0;
-	RealRed x, dc;
-	RealRed center;
+	Real x, dc;
+	Real center;
 	std::int64_t zhigh, zlow, h;
 	bool high;
 	int k;
-	RealRed S1, S2, S3, S4, mR;
+	Real S1, S2, S3, S4, mR;
 
 	const int dim = m_lat->getDim();
 	NTL::conv(mR, m_lat->getModulo());
@@ -1580,7 +1575,7 @@ bool Reducer<Int, Real, RealRed>::tryZMink(int j, int i, int Stage,
 		x = m_zLR[j] - center;
 
 		if (j == 0) {
-			RealRed tmps_n2 = m_n2[0] + x * x * m_dc2[0];
+			Real tmps_n2 = m_n2[0] + x * x * m_dc2[0];
 			if (tmps_n2 < m_lMin2) {
 				// On verifie si on a vraiment trouve un vecteur plus court
 				NTL::matrix_row<const IntMat> row1(m_lat->getBasis(), dim - 1);
@@ -1663,8 +1658,8 @@ bool Reducer<Int, Real, RealRed>::tryZMink(int j, int i, int Stage,
 
 //=========================================================================
 
-template<typename Int, typename Real, typename RealRed>
-bool Reducer<Int, Real, RealRed>::redBBMink(int i, int d, int Stage,
+template<typename Int, typename Real>
+bool Reducer<Int, Real>::redBBMink(int i, int d, int Stage,
 		bool &smaller, bool xx[])
 		/*
 		 * Tries to shorten m_lat->getBasis()[i] using branch-and-bound.
@@ -1796,8 +1791,8 @@ bool Reducer<Int, Real, RealRed>::redBBMink(int i, int d, int Stage,
 * @decomp take std::string Choles("cholesky") or std::string Triang("triangular");
 * @norm take value 'L1NORM' or 'L2NORM'
 */
-template<typename Int, typename Real, typename RealRed>
-bool Reducer<Int, Real, RealRed>::tryZShortVec(int j, bool &smaller, NormType norm, std::string decomp) {
+template<typename Int, typename Real>
+bool Reducer<Int, Real>::tryZShortVec(int j, bool &smaller, NormType norm, std::string decomp) {
 	/*
 	 * This recursive procedure uses the Cholesky decomposition and works for the
 	 * L1NORM and L2NORM.  It is called initially with j=dim-1 by redBBShortVec
@@ -1810,7 +1805,7 @@ bool Reducer<Int, Real, RealRed>::tryZShortVec(int j, bool &smaller, NormType no
 
 	/* Pour une implantation non recursive, ces variables devraient
 	 etre des tableaux indices par j. */
-	RealRed dc, x, center;
+	Real dc, x, center;
 	std::int64_t min0, max0;     // Bornes de l'intervalle pour les z_j.
 	std::int64_t zlow, zhigh; // Valeur courante a gauche et a droite du centre.
 	bool high; // Indicates if we are on the right (true) or the left of the center.
@@ -1924,7 +1919,7 @@ bool Reducer<Int, Real, RealRed>::tryZShortVec(int j, bool &smaller, NormType no
 						ProdScal<Int>(m_bv, m_bv, dim, x);
 					} else {
 						// Compute the square length for the L1 norm.
-						CalcNorm<IntVec, RealRed>(m_bv, dim, x,
+						CalcNorm<IntVec, Real>(m_bv, dim, x,
 								m_lat->getNormType());
 						x = x * x;
 					}
@@ -1966,8 +1961,8 @@ bool Reducer<Int, Real, RealRed>::tryZShortVec(int j, bool &smaller, NormType no
 * @norm take value 'L1NORM' or 'L2NORM'
 */
 
-template<typename Int, typename Real, typename RealRed>
-bool Reducer<Int, Real, RealRed>::redBBShortVec(NormType norm, std::string decomp) {
+template<typename Int, typename Real>
+bool Reducer<Int, Real>::redBBShortVec(NormType norm, std::string decomp) {
 	/*
 	 * Finds shortest non-zero vector, using branch-and-bound, with L1 or L2 norm.
 	 * Stops and returns false if not finished after examining MaxNodesBB nodes in the
@@ -1986,7 +1981,7 @@ bool Reducer<Int, Real, RealRed>::redBBShortVec(NormType norm, std::string decom
 	bool smaller = false;  // Found a smaller vector?
 	int k, h;
 	const int dim = m_lat->getDim();  // Lattice dimension
-	RealRed x;
+	Real x;
     // Here we sort the basis, otherwise Cholesky will fail more rapidly
     // due to floating-point errors.
 	m_lat->updateScalL2Norm(0, dim);
@@ -2034,10 +2029,10 @@ bool Reducer<Int, Real, RealRed>::redBBShortVec(NormType norm, std::string decom
 	     for (int i = 0; i < dim; i++){
 		   for (int j = 0; j < dim; j++){
 			if(i!=j){
-			  m_c0(i,j)=NTL::conv<RealRed>(m_v2(i,j))/NTL::conv<RealRed>(m_v2(i,i));		
+			  m_c0(i,j)=NTL::conv<Real>(m_v2(i,j))/NTL::conv<Real>(m_v2(i,i));		
 		     }
 		    else{
-			   m_c0(i,j)=NTL::conv<RealRed>(m_v2(i,j));
+			   m_c0(i,j)=NTL::conv<Real>(m_v2(i,j));
 		     }
 		    
 		   } 
@@ -2090,8 +2085,8 @@ bool Reducer<Int, Real, RealRed>::redBBShortVec(NormType norm, std::string decom
 //=========================================================================
 
 // This works only for the L2 norm.
-template<typename Int, typename Real, typename RealRed>
-bool Reducer<Int, Real, RealRed>::reductMinkowski(int d) {
+template<typename Int, typename Real>
+bool Reducer<Int, Real>::reductMinkowski(int d) {
 	bool withDual = m_lat->withDual();
 	const int dim = m_lat->getDim();
 	int i;
@@ -2157,8 +2152,8 @@ bool Reducer<Int, Real, RealRed>::reductMinkowski(int d) {
 // The square length of the shortest vector can be recovered in m_lMin2.
 // The acepted param for 'decomp' are 'cholesky' or 'triangular'. 
 // It specify the decompisition basis matrix using in Brach-and-Bound.
-template<typename Int, typename Real, typename RealRed>
-bool Reducer<Int, Real, RealRed>::shortestVector(NormType norm,std::string decomp) {
+template<typename Int, typename Real>
+bool Reducer<Int, Real>::shortestVector(NormType norm,std::string decomp) {
 
 	if (norm != L2NORM) {
 		m_lat->setNegativeNorm();
@@ -2180,9 +2175,9 @@ bool Reducer<Int, Real, RealRed>::shortestVector(NormType norm,std::string decom
 
 //============================================================================
 
-extern template class Reducer< std::int64_t, double, double> ;
-extern template class Reducer< NTL::ZZ, double, double> ;
-extern template class Reducer< NTL::ZZ, NTL::RR, NTL::RR> ;
+extern template class Reducer< std::int64_t, double> ;
+extern template class Reducer< NTL::ZZ, double> ;
+extern template class Reducer< NTL::ZZ, NTL::RR> ;
 
 }     // namespace LatticeTester
 

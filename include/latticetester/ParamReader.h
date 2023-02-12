@@ -52,7 +52,7 @@ namespace LatticeTester {
    * method because the program curently simply crashes without explanation if 
    * this class is misued.
    */
-  template<typename Int, typename RealRed>
+  template<typename Int, typename Real>
     class ParamReader { 
       private:
         typedef NTL::vector<Int> IntVec;
@@ -178,10 +178,10 @@ namespace LatticeTester {
         void readMScal (Int & field, unsigned int ln, unsigned int pos);
 
         /**
-         * Reads a `RealRed` from the <tt>pos</tt>-th token of the <tt>ln</tt>-th
+         * Reads a `Real` from the <tt>pos</tt>-th token of the <tt>ln</tt>-th
          * line into `field`.
          */
-        void readRealRed (RealRed & field, unsigned int ln, unsigned int pos);
+        void readReal (Real & field, unsigned int ln, unsigned int pos);
 
         /**
          * Reads `num` tokens (from the <tt>pos</tt>-th token of the
@@ -360,8 +360,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    ParamReader<Int, RealRed>::ParamReader()
+  template<typename Int, typename Real>
+    ParamReader<Int, Real>::ParamReader()
     {
       m_fileName.reserve(MAX_WORD_SIZE);
     }
@@ -369,8 +369,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    ParamReader<Int, RealRed>::ParamReader(
+  template<typename Int, typename Real>
+    ParamReader<Int, Real>::ParamReader(
         std::string fileName)
     {
       m_fileName.reserve(fileName.length());
@@ -380,8 +380,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    ParamReader<Int, RealRed>::~ParamReader()
+  template<typename Int, typename Real>
+    ParamReader<Int, Real>::~ParamReader()
     {
       for (int i = 0; i < (int) m_lines.size(); i++)
         m_lines[i].clear();
@@ -391,8 +391,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::getLines()
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::getLines()
     {
       std::ifstream inFile(m_fileName.c_str());
       if (inFile.fail()) {
@@ -416,8 +416,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::getToken(
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::getToken(
         std::string& field, unsigned int ln, unsigned int pos)
     {
       std::vector<std::string> tokens;
@@ -437,8 +437,8 @@ namespace LatticeTester {
   //===========================================================================
   // Specializations for different problems reading.
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readBasisConfig(
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readBasisConfig(
         Config<Int, IntMat> & config, unsigned int& ln)
     {
       config.config.basis = {};
@@ -458,8 +458,8 @@ namespace LatticeTester {
   //===========================================================================
 
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readDualConfig(
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readDualConfig(
         Config<Int, IntMat> & config, unsigned int& ln)
     {
       config.config.dual = {};
@@ -472,8 +472,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readReductionConfig(
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readReductionConfig(
         Config<Int, IntMat> & config, unsigned int& ln)
     {
       config.config.reduct = {};
@@ -487,8 +487,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readShortestConfig(
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readShortestConfig(
         Config<Int, IntMat> & config, unsigned int& ln)
     {
       config.config.shortest = {};
@@ -504,8 +504,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readMeritConfig(
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readMeritConfig(
         Config<Int, IntMat> & config, unsigned int& ln)
     {
       config.config.merit = {};
@@ -522,8 +522,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    int ParamReader<Int, RealRed>::tokenize(
+  template<typename Int, typename Real>
+    int ParamReader<Int, Real>::tokenize(
         std::vector<std::string>& tokens, unsigned int ln)
     {
       if (ln >= m_lines.size()) {
@@ -566,8 +566,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    bool ParamReader<Int, RealRed>::isDelim(char c)
+  template<typename Int, typename Real>
+    bool ParamReader<Int, Real>::isDelim(char c)
     {
       const std::string delim = " ?!,\t\n";
       bool bRetVal = 0;
@@ -584,8 +584,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readBool(
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readBool(
         bool & field, unsigned int ln, unsigned int pos)
     {
       std::string val;
@@ -602,8 +602,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readString(
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readString(
         std::string & field, unsigned int ln, unsigned int pos)
     {
       std::string val;
@@ -614,8 +614,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readChar(
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readChar(
         char & field, unsigned int ln, unsigned int pos)
     {
       std::string val;
@@ -625,8 +625,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readNumber3 (
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readNumber3 (
         Int & m, std::int64_t & m1, std::int64_t & m2, std::int64_t & m3, unsigned int ln, 
         unsigned int pos)
     {
@@ -662,8 +662,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readInt(
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readInt(
         int& field, unsigned int ln, unsigned int pos)
     {
       std::string val;
@@ -674,8 +674,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readLong(
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readLong(
         std::int64_t& field, unsigned int ln, unsigned int pos)
     {
       std::string val;
@@ -686,8 +686,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readZZ(
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readZZ(
         NTL::ZZ & field, unsigned int ln, int pos)
     {
       std::string val;
@@ -698,8 +698,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readDouble(
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readDouble(
         double& field, unsigned int ln, unsigned int pos)
     {
       std::string val;
@@ -710,8 +710,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readMScal(
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readMScal(
         Int & field, unsigned int ln, unsigned int pos)
     {
       std::string val;
@@ -721,8 +721,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readBScal(
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readBScal(
         Int& field, unsigned int ln, int pos)
     {
       std::string val;
@@ -732,8 +732,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readMVect(
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readMVect(
         IntVec & fields, unsigned int & ln, unsigned int pos,
         unsigned int numPos, int j)
     {
@@ -745,8 +745,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readBMat(
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readBMat(
         IntMat & fields, unsigned int & ln, unsigned int pos,
         unsigned int numPos, unsigned int numCols)
     {
@@ -761,8 +761,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readBMat(
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readBMat(
         IntMat & fields, unsigned int & ln, unsigned int pos,
         unsigned int numPos)
     {
@@ -777,8 +777,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readIntVect (
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readIntVect (
         int* fields, unsigned int ln, unsigned int pos, unsigned int num, int j)
     {
       for (unsigned int i = pos; i < num; i++) {
@@ -789,8 +789,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readDoubleVect(
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readDoubleVect(
         double* fields, unsigned int ln, unsigned int pos, unsigned int numPos,
         int j)
     {
@@ -817,8 +817,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readProblemType(
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readProblemType(
         ProblemType& field, unsigned int ln, unsigned int pos)
     {
       std::string val;
@@ -843,8 +843,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readCriterionType(
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readCriterionType(
         CriterionType& field, unsigned int ln, unsigned int pos)
     {
       std::string val;
@@ -865,8 +865,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readNormType (
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readNormType (
         NormType & field, unsigned int ln, unsigned int pos)
     {
       std::string val;
@@ -891,8 +891,8 @@ namespace LatticeTester {
   //===========================================================================
 
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readNormaType(
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readNormaType(
         NormaType& field, unsigned int ln, unsigned int pos)
     {
       std::string val;
@@ -923,8 +923,8 @@ namespace LatticeTester {
   //===========================================================================
 
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readPrecisionType(
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readPrecisionType(
         PrecisionType& field, unsigned int ln, unsigned int pos)
     {
       std::string val;
@@ -949,8 +949,8 @@ namespace LatticeTester {
   //===========================================================================
 
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readOutputType(
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readOutputType(
         OutputType & field, unsigned int ln, unsigned int pos)
     {
       std::string val;
@@ -973,8 +973,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::readPreRed(
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::readPreRed(
         PreReductionType& field, unsigned int ln, unsigned int pos)
     {
       std::string val;
@@ -996,8 +996,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename RealRed>
-    void ParamReader<Int, RealRed>::read (
+  template<typename Int, typename Real>
+    void ParamReader<Int, Real>::read (
         Config<Int, IntMat> & config)
     {
       getLines ();

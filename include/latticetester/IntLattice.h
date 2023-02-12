@@ -71,8 +71,8 @@ namespace LatticeTester {
    * which are used elsewhere to compute the normalization constants.
    */
 
-  template<typename Int, typename Real, typename RealRed>
-      class IntLattice : public IntLatticeBase<Int, Real, RealRed> {
+  template<typename Int, typename Real>
+      class IntLattice : public IntLatticeBase<Int, Real> {
         private:
           typedef NTL::vector<Int> IntVec;
           typedef NTL::matrix<Int> IntMat;
@@ -97,14 +97,14 @@ namespace LatticeTester {
            * Copy constructor that makes a copy of `lat`. The maximal dimension 
            * of the created basis is set equal to the current dimension in `lat`.
            */
-          IntLattice (const IntLattice<Int, Real, RealRed> & lat);
+          IntLattice (const IntLattice<Int, Real> & lat);
 
           /**
            * Copies `lattice` into this object. This should be equivalent to
            * the creation of a new `IntLattice` object using the copy constructor with
            * `lattice` as an argument.
            */
-          void copy (const IntLattice<Int, Real, RealRed> & lattice);
+          void copy (const IntLattice<Int, Real> & lattice);
 
           /**
            * Destructor.
@@ -172,7 +172,7 @@ namespace LatticeTester {
            * 
            * 
            */
-          virtual void buildProjection (IntLattice<Int, Real, RealRed>* lattice,
+          virtual void buildProjection (IntLattice<Int, Real>* lattice,
               const Coordinates & proj);
 
           /**
@@ -192,19 +192,8 @@ namespace LatticeTester {
            * It contains the complete normalization constants for the number of dimensions
            * of this lattice. 
            */
-//<<<<<<< HEAD
-//<<<<<<< HEAD
-          // LatticeTester::Normalizer<RealRed> * getNormalizer (NormaType norma,
-          //    int alpha, bool dualF);
-//=======
           LatticeTester::Normalizer * getNormalizer (NormaType norma,
               int alpha, bool dualF);
-//>>>>>>> 80726e1a9e1d0aa373820dc56e41d7405580ed7c
-//=======
-          // LatticeTester::Normalizer<RealRed> * getNormalizer (NormaType norma,
-          //    int alpha, bool dualF);
-
-//>>>>>> b23681ea0112bce9ba98c1463251528b775075a4
 
           /**
            * A virtual utility method to store a vector of indices with lacunary values
@@ -272,10 +261,10 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-      IntLattice<Int, Real, RealRed>::IntLattice (Int modulo,
+  template<typename Int, typename Real>
+      IntLattice<Int, Real>::IntLattice (Int modulo,
           int maxDim, bool withDual, NormType norm): 
-      IntLatticeBase<Int, Real, RealRed>(maxDim, norm)
+      IntLatticeBase<Int, Real>(maxDim, norm)
   {
     this->m_dim = maxDim;
     this->m_withDual = withDual;
@@ -294,10 +283,10 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-      IntLattice<Int, Real, RealRed>::IntLattice (
-          const IntLattice<Int, Real, RealRed> & lat):
-      IntLatticeBase<Int, Real, RealRed>(lat)
+  template<typename Int, typename Real>
+      IntLattice<Int, Real>::IntLattice (
+          const IntLattice<Int, Real> & lat):
+      IntLatticeBase<Int, Real>(lat)
   {
     this->m_withDual = lat.withDual();
     // m_order = lat.m_order;
@@ -312,11 +301,11 @@ namespace LatticeTester {
   //===========================================================================
 
 
-  template<typename Int, typename Real, typename RealRed>
-      void IntLattice<Int, Real, RealRed>::init ()
+  template<typename Int, typename Real>
+      void IntLattice<Int, Real>::init ()
     {
       int dim = this->getDim ();
-      IntLatticeBase<Int, Real, RealRed>::initVecNorm();
+      IntLatticeBase<Int, Real>::initVecNorm();
       double temp;
       NTL::conv (temp, this->m_modulo);
       m_vSI.resize(dim, dim);
@@ -330,28 +319,28 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-      void IntLattice<Int, Real, RealRed>::kill ()
+  template<typename Int, typename Real>
+      void IntLattice<Int, Real>::kill ()
     {
-     // IntLatticeBase<Int, Real, RealRed>::kill();
+     // IntLatticeBase<Int, Real>::kill();
       // m_vSI.clear();
     }
 
 
   //===========================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-      IntLattice<Int, Real, RealRed>::~IntLattice ()
+  template<typename Int, typename Real>
+      IntLattice<Int, Real>::~IntLattice ()
     {
-      //sIntLatticeBase<Int, Real, RealRed>::kill();
+      //sIntLatticeBase<Int, Real>::kill();
     }
 
   //===========================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-      void IntLattice<Int, Real, RealRed>::incDim ()
+  template<typename Int, typename Real>
+      void IntLattice<Int, Real>::incDim ()
     {
-      IntLattice<Int, Real, RealRed> lattmp (*this);
+      IntLattice<Int, Real> lattmp (*this);
       int dim = this->getDim();
       this->m_basis.resize(dim+1, dim+1);
       this->m_vecNorm.resize(dim+1);
@@ -378,8 +367,8 @@ namespace LatticeTester {
 
   //===========================================================================
   /**
-  template<typename Int, typename Real, typename RealRed>
-      void IntLattice<Int, Real, RealRed>::calcLgVolDual2 (double lgm2)
+  template<typename Int, typename Real>
+      void IntLattice<Int, Real>::calcLgVolDual2 (double lgm2)
     {
       if(!(this->m_withDual)) return;
       int dim = this->getDim();
@@ -396,8 +385,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-      void IntLattice<Int, Real, RealRed>::dualize ()
+  template<typename Int, typename Real>
+      void IntLattice<Int, Real>::dualize ()
     {
       if(!(this->m_withDual)) return;
       std::swap(this->m_basis, this->m_dualbasis);
@@ -408,8 +397,8 @@ namespace LatticeTester {
   //===========================================================================
 
   /**
-  template<typename Int, typename Real, typename RealRed>
-      void IntLattice<Int, Real, RealRed>::computeNormalConstants(
+  template<typename Int, typename Real>
+      void IntLattice<Int, Real>::computeNormalConstants(
           bool dualF)
     {
       // Normalization factor: dual to primal : m^(k/dim) -> 1/m^(k/dim)
@@ -426,9 +415,9 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-      void IntLattice<Int, Real, RealRed>::buildProjection (
-          IntLattice<Int, Real, RealRed>* lattice, const Coordinates  & proj)
+  template<typename Int, typename Real>
+      void IntLattice<Int, Real>::buildProjection (
+          IntLattice<Int, Real>* lattice, const Coordinates  & proj)
     {
       const int dim = this->getDim ();
       //  std::cout << "      ESPION_2\n";  getPrimalBasis ().write();
@@ -479,8 +468,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-      void IntLattice<Int, Real, RealRed>::buildBasis (int d)
+  template<typename Int, typename Real>
+      void IntLattice<Int, Real>::buildBasis (int d)
     {
 	  // To be re-implemented in subclasses.
       MyExit(1, " buildBasis(d) does nothing");
@@ -489,9 +478,9 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-      void IntLattice<Int, Real, RealRed>::copy (
-          const IntLattice<Int, Real, RealRed> & lat)
+  template<typename Int, typename Real>
+      void IntLattice<Int, Real>::copy (
+          const IntLattice<Int, Real> & lat)
     {
       // m_order = lat.getOrder();
       this->m_modulo = lat.m_modulo;
@@ -505,8 +494,8 @@ namespace LatticeTester {
   //===========================================================================
 
   /**
-  template<typename Int, typename Real, typename RealRed>
-      Normalizer<Real> * IntLattice<Int, Real, RealRed>::getNormalizer(
+  template<typename Int, typename Real>
+      Normalizer<Real> * IntLattice<Int, Real>::getNormalizer(
           NormaType norma, int alpha, bool dualF)
     {
       int dim = this->getDim();
@@ -524,25 +513,25 @@ namespace LatticeTester {
       // This normalizer is not stored in this object.
       switch (norma) {
         case BESTLAT:
-          normal = new NormaBestLat<RealRed> (logDensity, dim);
+          normal = new NormaBestLat<Real> (logDensity, dim);
           break;
         case BESTBOUND:
-          normal = new NormaBestBound<RealRed> (logDensity, dim);
+          normal = new NormaBestBound<Real> (logDensity, dim);
           break;
         case LAMINATED:
-          normal = new NormaLaminated<RealRed> (logDensity, dim);
+          normal = new NormaLaminated<Real> (logDensity, dim);
           break;
         case ROGERS:
-          normal = new NormaRogers<RealRed> (logDensity, dim);
+          normal = new NormaRogers<Real> (logDensity, dim);
           break;
         case MINKL1:
-          normal = new NormaMinkL1<RealRed> (logDensity, dim);
+          normal = new NormaMinkL1<Real> (logDensity, dim);
           break;
         case MINK:
-          normal = new NormaMinkL2<RealRed> (logDensity, dim);
+          normal = new NormaMinkL2<Real> (logDensity, dim);
           break;
         case NONE:
-          normal = new Normalizer<RealRed> (logDensity, dim, "Norma_generic");
+          normal = new Normalizer<Real> (logDensity, dim, "Norma_generic");
           break;
         default:
           std::cout << "normalizer:   no such case";
@@ -554,8 +543,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  template<typename Int, typename Real, typename RealRed>
-      std::string IntLattice<Int, Real, RealRed>::toString() const
+  template<typename Int, typename Real>
+      std::string IntLattice<Int, Real>::toString() const
     {
       // To be re-implemented in subclasses.
 	  assert (0);
@@ -564,13 +553,13 @@ namespace LatticeTester {
 
   //===========================================================================
 
-  //extern template class IntLattice<std::int64_t, std::int64_t, double, double>;
-  //extern template class IntLattice<NTL::ZZ, NTL::ZZ, double, double>;
-  //extern template class IntLattice<NTL::ZZ, NTL::ZZ, NTL::RR, NTL::RR>;
+  //extern template class IntLattice<std::int64_t, std::int64_t, double>;
+  //extern template class IntLattice<NTL::ZZ, NTL::ZZ, double>;
+  //extern template class IntLattice<NTL::ZZ, NTL::ZZ, NTL::RR>;
 
-  extern template class IntLattice<std::int64_t, double, double>;
-  extern template class IntLattice<NTL::ZZ, double, double>;
-  extern template class IntLattice<NTL::ZZ, NTL::RR, NTL::RR>;
+  extern template class IntLattice<std::int64_t, double>;
+  extern template class IntLattice<NTL::ZZ, double>;
+  extern template class IntLattice<NTL::ZZ, NTL::RR>;
 
 } // End namespace LatticeTester
 

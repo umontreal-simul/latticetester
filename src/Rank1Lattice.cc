@@ -21,7 +21,7 @@
 #include "latticetester/Rank1Lattice.h"
 
 namespace LatticeTester{
-  template class Rank1Lattice<std::int64_t, double, double>;
-  template class Rank1Lattice<NTL::ZZ, double, double>;
-  template class Rank1Lattice<NTL::ZZ, NTL::RR, NTL::RR>;
+  template class Rank1Lattice<std::int64_t, double>;
+  template class Rank1Lattice<NTL::ZZ, double>;
+  template class Rank1Lattice<NTL::ZZ, NTL::RR>;
 }

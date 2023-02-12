@@ -51,13 +51,12 @@ namespace LatticeTester {
  * For better efficiency, we should avoid creating too many of these objects, for example when
  * making searches for good lattices.
  */
-template<typename Int, typename Real, typename RealRed>
+template<typename Int, typename Real>
 class IntLatticeBase {
 
 private:
 	// Forward definition of types to be used in this class.
-	//  Could this be replaced by just importing FlexTypes.h   ????
-	//  Also, RealRed is never used in this class.
+	// This should be replaced by just importing FlexTypes.h   ????
 	typedef NTL::vector<Int> IntVec;
 	typedef NTL::matrix<Int> IntMat;
 	typedef NTL::vector<Real> RealVec;
@@ -87,7 +86,7 @@ public:
 	/**
 	 * Copy constructor. Makes a deep copy of `lat` into `*this`.
 	 */
-	IntLatticeBase(const IntLatticeBase<Int, Real, RealRed> &lat);
+	IntLatticeBase(const IntLatticeBase<Int, Real> &lat);
 
 	/**
 	 * Destructor.
@@ -104,8 +103,8 @@ public:
 	 * Makes a deep copy of the lattice `lat` into this object.
 	 * CHANGED: WE NOW COPY EVERYTHING!
 	 */
-	//void copyLattice(const IntLatticeBase<Int, Real, RealRed> &lat, int dim=0);
-	void copyLattice(const IntLatticeBase<Int, Real, RealRed> &lat);
+	//void copyLattice(const IntLatticeBase<Int, Real> &lat, int dim=0);
+	void copyLattice(const IntLatticeBase<Int, Real> &lat);
 
 	/*
 <<<<<<< HEAD
@@ -113,7 +112,7 @@ public:
 	 * object. The object into which `lat` is copied has to be of dimension `n` already.
 	 * SEEMS BIZARRE AND APPARENTLY NEVER USED.
 	 *  */
-	 void copyLattice(const IntLatticeBase<Int, Real, RealRed> &lat, long n);
+	 void copyLattice(const IntLatticeBase<Int, Real> &lat, long n);
 	 
 /***=======
 	 * Copy the first `dim` elements of the primal basis of the lattice `lat` into this
@@ -121,7 +120,7 @@ public:
 	 * The object into which `lat` is copied has to be of dimension `dim` already,
 	 * otherwise nothing is done.  Nothing else is changed.   ??????
 	 */
-	void copyBasis(const IntLatticeBase<Int, Real, RealRed> &lat, int dim=0);
+	void copyBasis(const IntLatticeBase<Int, Real> &lat, int dim=0);
 ///>>>>>>> b23681ea0112bce9ba98c1463251528b775075a4
 
 	/**
@@ -428,8 +427,8 @@ protected:
 
 //===========================================================================
 
-template<typename Int, typename Real, typename RealRed>
-IntLatticeBase<Int, Real, RealRed>::IntLatticeBase(const int dim, NormType norm) :
+template<typename Int, typename Real>
+IntLatticeBase<Int, Real>::IntLatticeBase(const int dim, NormType norm) :
 		m_dim(dim), m_norm(norm), m_modulo(0), m_withDual(false) {
 	this->m_basis.resize(dim, dim);
 	this->m_vecNorm.resize(dim);
@@ -438,8 +437,8 @@ IntLatticeBase<Int, Real, RealRed>::IntLatticeBase(const int dim, NormType norm)
 
 //===========================================================================
 
-template<typename Int, typename Real, typename RealRed>
-IntLatticeBase<Int, Real, RealRed>::IntLatticeBase(const IntMat basis,
+template<typename Int, typename Real>
+IntLatticeBase<Int, Real>::IntLatticeBase(const IntMat basis,
 		const int dim, NormType norm) :
 		m_basis(basis), m_dim(dim), m_norm(norm),  m_modulo(0), m_withDual(false) {
 	this->m_vecNorm.resize(dim);
@@ -448,35 +447,30 @@ IntLatticeBase<Int, Real, RealRed>::IntLatticeBase(const IntMat basis,
 
 /*=========================================================================*/
 
-template<typename Int, typename Real, typename RealRed>
-IntLatticeBase<Int, Real, RealRed>::IntLatticeBase(const IntMat primalbasis,
+template<typename Int, typename Real>
+IntLatticeBase<Int, Real>::IntLatticeBase(const IntMat primalbasis,
 		const IntMat dualbasis, const Int m, const int dim, NormType norm) :
-		IntLatticeBase<Int, Real, RealRed>(primalbasis, dim, norm) {
+		IntLatticeBase<Int, Real>(primalbasis, dim, norm) {
 	this->m_dualbasis = IntMat(dualbasis);
 	this->m_dualvecNorm.resize(dim);
 	this->m_modulo = m;
 	this->m_withDual = true;
 	setDualNegativeNorm();
-	
 }
 
 /*=========================================================================*/
 
-template<typename Int, typename Real, typename RealRed>
-IntLatticeBase<Int, Real, RealRed>::IntLatticeBase(
-		const IntLatticeBase<Int, Real, RealRed> &lat) {
-//<<<<<<< HEAD
-		//: m_dim(lat.getDim()), m_norm(lat.getNorm())
-//=======
+template<typename Int, typename Real>
+IntLatticeBase<Int, Real>::IntLatticeBase(
+		const IntLatticeBase<Int, Real> &lat) {
 //		: m_dim(lat.getDim()), m_norm(lat.getNormType())
-//>>>>>>> b23681ea0112bce9ba98c1463251528b775075a4
 	copyLattice(lat);
 }
 
 /*=========================================================================*/
 
-template<typename Int, typename Real, typename RealRed>
-IntLatticeBase<Int, Real, RealRed>::~IntLatticeBase() {
+template<typename Int, typename Real>
+IntLatticeBase<Int, Real>::~IntLatticeBase() {
 	// kill();
 	this->m_basis.IntMat::clear();
 	this->m_dualbasis.IntMat::clear();
@@ -486,17 +480,17 @@ IntLatticeBase<Int, Real, RealRed>::~IntLatticeBase() {
 
 /*=========================================================================
 
-template<typename Int, typename Real, typename RealRed>
-void IntLatticeBase<Int, Real, RealRed>::kill() {
+template<typename Int, typename Real>
+void IntLatticeBase<Int, Real>::kill() {
 }
 */
 
 /*=========================================================================*/
 
 //  Is this really a deep copy?
-template<typename Int, typename Real, typename RealRed>
-void IntLatticeBase<Int, Real, RealRed>::copyLattice(
-		const IntLatticeBase<Int, Real, RealRed> &lat) {
+template<typename Int, typename Real>
+void IntLatticeBase<Int, Real>::copyLattice(
+		const IntLatticeBase<Int, Real> &lat) {
 	this->m_dim = lat.m_dim;
 	this->m_basis = IntMat(lat.m_basis);
 	this->m_dualbasis = IntMat(lat.m_dualbasis);
@@ -514,9 +508,9 @@ void IntLatticeBase<Int, Real, RealRed>::copyLattice(
 
 =======
 >>>>>>> b23681ea0112bce9ba98c1463251528b775075a4**/
-template<typename Int, typename Real, typename RealRed>
-void IntLatticeBase<Int, Real, RealRed>::copyLattice(
-		const IntLatticeBase<Int, Real, RealRed> &lat, long n) {
+template<typename Int, typename Real>
+void IntLatticeBase<Int, Real>::copyLattice(
+		const IntLatticeBase<Int, Real> &lat, long n) {
 	if (this->m_dim == n) {     // What if n < m_dim ?    Error message?   ***********
 		CopyMatr(this->m_basis, lat.m_basis, n);
 		CopyVect(this->m_vecNorm, lat.m_vecNorm, n);
@@ -538,8 +532,8 @@ void IntLatticeBase<Int, Real, RealRed>::copyLattice(
 
 /*=========================================================================*/
 
-template<typename Int, typename Real, typename RealRed>
-void IntLatticeBase<Int, Real, RealRed>::initVecNorm() {
+template<typename Int, typename Real>
+void IntLatticeBase<Int, Real>::initVecNorm() {
 	for (int i = 0; i < this->m_dim; i++) {
 		this->m_vecNorm[i] = -1;
 	}
@@ -547,8 +541,8 @@ void IntLatticeBase<Int, Real, RealRed>::initVecNorm() {
 
 /*=========================================================================*/
 
-template<typename Int, typename Real, typename RealRed>
-void IntLatticeBase<Int, Real, RealRed>::setNegativeNorm() {
+template<typename Int, typename Real>
+void IntLatticeBase<Int, Real>::setNegativeNorm() {
 	for (int i = 0; i < this->m_dim; i++) {
 		this->m_vecNorm[i] = -1;
 	}
@@ -556,8 +550,8 @@ void IntLatticeBase<Int, Real, RealRed>::setNegativeNorm() {
 
 /*=========================================================================*/
 
-template<typename Int, typename Real, typename RealRed>
-void IntLatticeBase<Int, Real, RealRed>::setDualNegativeNorm() {
+template<typename Int, typename Real>
+void IntLatticeBase<Int, Real>::setDualNegativeNorm() {
 	for (int i = 0; i < this->m_dim; i++) {
 		this->m_dualvecNorm[i] = -1;
 	}
@@ -565,15 +559,15 @@ void IntLatticeBase<Int, Real, RealRed>::setDualNegativeNorm() {
 
 /*=========================================================================*/
 
-template<typename Int, typename Real, typename RealRed>
-void IntLatticeBase<Int, Real, RealRed>::updateVecNorm() {
+template<typename Int, typename Real>
+void IntLatticeBase<Int, Real>::updateVecNorm() {
 	updateVecNorm(0);
 }
 
 /*=========================================================================*/
 
-template<typename Int, typename Real, typename RealRed>
-void IntLatticeBase<Int, Real, RealRed>::updateVecNorm(const int &d) {
+template<typename Int, typename Real>
+void IntLatticeBase<Int, Real>::updateVecNorm(const int &d) {
 	assert(d >= 0);
 	for (int i = d; i < this->m_dim; i++) {
 		NTL::matrix_row<IntMat> row(this->m_basis, i);
@@ -588,15 +582,15 @@ void IntLatticeBase<Int, Real, RealRed>::updateVecNorm(const int &d) {
 
 /*=========================================================================*/
 
-template<typename Int, typename Real, typename RealRed>
-void IntLatticeBase<Int, Real, RealRed>::updateDualVecNorm() {
+template<typename Int, typename Real>
+void IntLatticeBase<Int, Real>::updateDualVecNorm() {
 	updateDualVecNorm(0);
 }
 
 /*=========================================================================*/
 
-template<typename Int, typename Real, typename RealRed>
-void IntLatticeBase<Int, Real, RealRed>::updateDualVecNorm(const int &d) {
+template<typename Int, typename Real>
+void IntLatticeBase<Int, Real>::updateDualVecNorm(const int &d) {
 	assert(d >= 0);
 	for (int i = d; i < this->m_dim; i++) {
 		NTL::matrix_row<IntMat> row(this->m_dualbasis, i);
@@ -611,16 +605,16 @@ void IntLatticeBase<Int, Real, RealRed>::updateDualVecNorm(const int &d) {
 
 /*=========================================================================*/
 
-template<typename Int, typename Real, typename RealRed>
-void IntLatticeBase<Int, Real, RealRed>::updateScalL2Norm(const int i) {
+template<typename Int, typename Real>
+void IntLatticeBase<Int, Real>::updateScalL2Norm(const int i) {
 	NTL::matrix_row<IntMat> row(this->m_basis, i);
 	ProdScal<Int>(row, row, this->m_dim, this->m_vecNorm[i]);
 }
 
 /*=========================================================================*/
 
-template<typename Int, typename Real, typename RealRed>
-void IntLatticeBase<Int, Real, RealRed>::updateScalL2Norm(const int k1,
+template<typename Int, typename Real>
+void IntLatticeBase<Int, Real>::updateScalL2Norm(const int k1,
 		const int k2) {
 	for (int i = k1; i < k2; i++) {
 		updateScalL2Norm(i);
@@ -629,16 +623,16 @@ void IntLatticeBase<Int, Real, RealRed>::updateScalL2Norm(const int k1,
 
 /*=========================================================================*/
 
-template<typename Int, typename Real, typename RealRed>
-void IntLatticeBase<Int, Real, RealRed>::updateDualScalL2Norm(const int i) {
+template<typename Int, typename Real>
+void IntLatticeBase<Int, Real>::updateDualScalL2Norm(const int i) {
 	NTL::matrix_row<IntMat> row(this->m_dualbasis, i);
 	ProdScal<Int>(row, row, this->m_dim, this->m_dualvecNorm[i]);
 }
 
 /*=========================================================================*/
 
-template<typename Int, typename Real, typename RealRed>
-void IntLatticeBase<Int, Real, RealRed>::updateDualScalL2Norm(const int k1,
+template<typename Int, typename Real>
+void IntLatticeBase<Int, Real>::updateDualScalL2Norm(const int k1,
 		const int k2) {
 	for (int i = k1; i < k2; i++) {
 		updateDualScalL2Norm(i);
@@ -647,8 +641,8 @@ void IntLatticeBase<Int, Real, RealRed>::updateDualScalL2Norm(const int k1,
 
 /*=========================================================================*/
 
-template<typename Int, typename Real, typename RealRed>
-void IntLatticeBase<Int, Real, RealRed>::permute(int i, int j) {
+template<typename Int, typename Real>
+void IntLatticeBase<Int, Real>::permute(int i, int j) {
 	if (i == j)
 		return;
 	for (int k = 0; k < this->m_dim; k++) {
@@ -665,8 +659,8 @@ void IntLatticeBase<Int, Real, RealRed>::permute(int i, int j) {
 
 /*=========================================================================*/
 
-template<typename Int, typename Real, typename RealRed>
-void IntLatticeBase<Int, Real, RealRed>::permuteNoDual(int i, int j) {
+template<typename Int, typename Real>
+void IntLatticeBase<Int, Real>::permuteNoDual(int i, int j) {
 	if (i == j)
 		return;
 	for (int k = 0; k < this->m_dim; k++) {
@@ -677,8 +671,8 @@ void IntLatticeBase<Int, Real, RealRed>::permuteNoDual(int i, int j) {
 
 /*=========================================================================*/
 
-template<typename Int, typename Real, typename RealRed>
-bool IntLatticeBase<Int, Real, RealRed>::checkDuality() {
+template<typename Int, typename Real>
+bool IntLatticeBase<Int, Real>::checkDuality() {
 	if (!this->m_withDual) {
 		std::cout << "Calling IntLatticeBase::checkDuality with undefined m-dual"
 				<< std::endl;
@@ -711,8 +705,8 @@ bool IntLatticeBase<Int, Real, RealRed>::checkDuality() {
 
 /*=========================================================================*/
 
-template<typename Int, typename Real, typename RealRed>
-void IntLatticeBase<Int, Real, RealRed>::sort(int d)
+template<typename Int, typename Real>
+void IntLatticeBase<Int, Real>::sort(int d)
 /*
  * We assume that the (square) lengths are already updated.
  * This gives flexibility to the user to put something else than
@@ -740,8 +734,8 @@ void IntLatticeBase<Int, Real, RealRed>::sort(int d)
 
 /*=========================================================================*/
 
-template<typename Int, typename Real, typename RealRed>
-void IntLatticeBase<Int, Real, RealRed>::sortNoDual(int d)
+template<typename Int, typename Real>
+void IntLatticeBase<Int, Real>::sortNoDual(int d)
 /*
  * We assume that the (square) lengths are already updated.
  * This gives flexibility to the user to use something else than
@@ -768,8 +762,8 @@ void IntLatticeBase<Int, Real, RealRed>::sortNoDual(int d)
 
 /*=========================================================================*/
 
-template<typename Int, typename Real, typename RealRed>
-void IntLatticeBase<Int, Real, RealRed>::write() const {
+template<typename Int, typename Real>
+void IntLatticeBase<Int, Real>::write() const {
 	std::cout << "Dim = " << this->m_dim << " \n \n";
 	std::cout << std::setprecision(10) << "Primal basis vectors:\n";
 	for (int i = 0; i < this->m_dim; i++) {
@@ -827,8 +821,8 @@ void IntLatticeBase<Int, Real, RealRed>::write() const {
 
 /*=========================================================================*/
 
-template<typename Int, typename Real, typename RealRed>
-std::string IntLatticeBase<Int, Real, RealRed>::toStringBasis() const {
+template<typename Int, typename Real>
+std::string IntLatticeBase<Int, Real>::toStringBasis() const {
 	std::ostringstream os;
 	os << "Primal Basis:\n";
 	os << "  Dim = " << this->m_dim << " \n";
@@ -854,8 +848,8 @@ std::string IntLatticeBase<Int, Real, RealRed>::toStringBasis() const {
 
 /*=========================================================================*/
 
-template<typename Int, typename Real, typename RealRed>
-std::string IntLatticeBase<Int, Real, RealRed>::toStringDualBasis() const {
+template<typename Int, typename Real>
+std::string IntLatticeBase<Int, Real>::toStringDualBasis() const {
 	std::ostringstream os;
 	os << "m-Dual Basis:\n";
 	os << "  Dim = " << this->m_dim << " \n";
@@ -879,14 +873,14 @@ std::string IntLatticeBase<Int, Real, RealRed>::toStringDualBasis() const {
 	return os.str();
 }
 
-//extern template class IntLatticeBase<std::int64_t, std::int64_t, double, double> ;
-//extern template class IntLatticeBase<NTL::ZZ, NTL::ZZ, double, double> ;
-//extern template class IntLatticeBase<NTL::ZZ, NTL::ZZ, NTL::RR, NTL::RR> ;
+//extern template class IntLatticeBase<std::int64_t, std::int64_t, double> ;
+//extern template class IntLatticeBase<NTL::ZZ, NTL::ZZ, double> ;
+//extern template class IntLatticeBase<NTL::ZZ, NTL::ZZ, NTL::RR> ;
 
 
-extern template class IntLatticeBase<std::int64_t, double, double> ;
-extern template class IntLatticeBase<NTL::ZZ, double, double> ;
-extern template class IntLatticeBase<NTL::ZZ, NTL::RR, NTL::RR> ;
+extern template class IntLatticeBase<std::int64_t, double> ;
+extern template class IntLatticeBase<NTL::ZZ, double> ;
+extern template class IntLatticeBase<NTL::ZZ, NTL::RR> ;
 
 } // namespace LatticeTester
 

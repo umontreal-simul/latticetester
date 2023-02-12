@@ -29,8 +29,8 @@ void negativeCholeski()
       << std::endl;
   }
 
-  template class Reducer<std::int64_t, double, double>;
-  template class Reducer<NTL::ZZ, double, double>;
-  template class Reducer<NTL::ZZ, NTL::RR, NTL::RR>;
+  template class Reducer<std::int64_t, double>;
+  template class Reducer<NTL::ZZ, double>;
+  template class Reducer<NTL::ZZ, NTL::RR>;
 
 }

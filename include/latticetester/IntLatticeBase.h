@@ -30,7 +30,7 @@
 namespace LatticeTester {
 
 /**
- * This class acts as a base class for `IntLattice`. It contains a subset of the methods
+ * This is a base class for `IntLattice`. It contains a subset of the methods
  * and offers constructors to build a lattice from an arbitrary basis.
  * The class `IntLattice` extends this class and contains virtual methods that must
  * be defined in its subclasses.
@@ -42,7 +42,7 @@ namespace LatticeTester {
  * Typically, `m` is the smallest integer with this property.
  *
  * The dimension $t$ of the lattice is the number of independent vectors that form a basis.
- * Usually, these vectors also have $t$ coordinates, but in general they may have more.      (???)
+ * Usually, these vectors also have $t$ coordinates, but in general they may have more.
  * A norm is also chosen in `NormType` to measure the vector lengths; by default it is the
  * Euclidean norm.
  * Methods and attributes are offered to compute and store the norms of the basis and dual basis vectors,
@@ -95,34 +95,27 @@ public:
 
 	/**
 	 * Cleans and releases all the memory allocated to this lattice.
-	 * **This method SEEMS TO DO NOTHING!**
+	 * **Deprecated: REMOVE!**
 	 */
 	// void kill();
 
 	/**
-	 * Makes a deep copy of the lattice `lat` into this object.
-	 * CHANGED: WE NOW COPY EVERYTHING!
+	 * Makes a full deep copy of the lattice `lat` into this object.
+	 * New matrix and vector objects are constructed to store the bases and norms.
 	 */
-	//void copyLattice(const IntLatticeBase<Int, Real> &lat, int dim=0);
 	void copyLattice(const IntLatticeBase<Int, Real> &lat);
 
 	/*
-<<<<<<< HEAD
-	 * Copy the `n` first elements of the basis of the lattice `lat` into this
-	 * object. The object into which `lat` is copied has to be of dimension `n` already.
-	 * SEEMS BIZARRE AND APPARENTLY NEVER USED.
-	 *  */
-	 void copyLattice(const IntLatticeBase<Int, Real> &lat, long n);
-	 
-/***=======
-	 * Copy the first `dim` elements of the primal basis of the lattice `lat` into this
-	 * object.  It also undefines the norm, the dual basis, etc.
-	 * The object into which `lat` is copied has to be of dimension `dim` already,
-	 * otherwise nothing is done.  Nothing else is changed.   ??????
+	 * Previously named `copyLattice`.
+	 * Overwrites the first `n` elements of the basis of the lattice `lat` over the elements
+	 * of the basis of the current object. The latter must have dimension `n` already,
+	 * otherwise an error message is printed and nothing also is done!
+	 * The vector norms and the dual basis (if available) are also overwritten.
+	 * The difference with `copyLattice` is that here, no new matrix or vector is constructed;
+	 * the previous ones are re-used.
 	 */
-	void copyBasis(const IntLatticeBase<Int, Real> &lat, int dim=0);
-///>>>>>>> b23681ea0112bce9ba98c1463251528b775075a4
-
+	 void overwriteLattice(const IntLatticeBase<Int, Real> &lat, long n);
+	 
 	/**
 	 * Initializes a vector containing the norms of the basis vectors to -1
 	 * for all components.  It means the norms are no longer up to date.
@@ -195,7 +188,7 @@ public:
 	}
 
 	/**
-	 * Sets the dimension of the basis to `dim`. This won't change any of the
+	 * Sets the dimension of the basis to `dim`. This does not change any of the
 	 * basis vectors, but only the dimension variable.
 	 * Warning: After calling this method, the size of the basis matrix may no longer agree with the dimension.
 	 */
@@ -212,17 +205,16 @@ public:
 	}
 
 	/**
-	 * Sets the norm of the `i`-th component of the basis to `value`.
-	 * Using `updateVecNorm(const int&)` is recommended over this function.
-	 *   ***  Do we really need this ???  ***
+	 * Sets the norm of the `i`-th component of the basis to `value`, which is assumed to
+	 * be the correct value.  To recompute the norm, use `updateVecNorm(const int&)` instead.
 	 */
 	void setVecNorm(const Real &value, const int &i) {
 		m_vecNorm[i] = value;
 	}
 
 	/**
-	 * Sets the norm of the `i`-th component of the m-dual basis to `value`.
-	 * Using `updateDualVecNorm(const int&)` is recommended over this function.
+	 * Sets the norm of the `i`-th component of the m-dual basis to `value`,  which is assumed to
+	 * be the correct value.  To recompute the norm, use `updateDualVecNorm(const int&)` instead.
 	 */
 	void setDualVecNorm(const Real &value, const int &i) {
 		m_dualvecNorm[i] = value;
@@ -237,7 +229,7 @@ public:
 
 	/**
 	 * Sets the `withDual` flag to `flag`. This flag indicates whether or
-	 * not this IntLatticeBase contains an m-dual basis. It is the flag
+	 * not this IntLatticeBase contains an up-to-date m-dual basis. It is the flag
 	 * returned by `withDual()`.
 	 */
 	void setDualFlag(bool flag) {
@@ -246,8 +238,7 @@ public:
 
 	/**
 	 * Sets all the values in the array containing the norms of the basis vectors to -1.
-	 * This means that these norms are not up to date (they still have to be computed).
-	 *   ***   Seems to be the same as  initVecNorm ???
+	 * This means that these norms are no longer up to date.
 	 */
 	void setNegativeNorm();
 
@@ -261,7 +252,7 @@ public:
 
 	/**
 	 * Sets all the values in the array containing the norms of the dual basis
-	 * vectors to -1.
+	 * vectors to -1, to indicate that these norms are no longer up to date.
 	 */
 	void setDualNegativeNorm();
 
@@ -275,19 +266,20 @@ public:
 
 	/**
 	 * Updates the array containing the basis vectors norms by recomputing them.
-	 * */
+	 */
 	void updateVecNorm();
 
 	/**
 	 * Updates the array containing the basis vectors norms from the `d`-th
 	 * component to the last, by recomputing them.
 	 * Putting `d=0` recomputes all the norms.
-	 * */
+	 */
 	void updateVecNorm(const int &d);
 
 	/**
 	 * Updates the array containing the m-dual basis vectors norms by recomputing them.
-	 * */
+	 * Assumes that the dual basis is available.
+	 */
 	void updateDualVecNorm();
 
 	/**
@@ -364,10 +356,14 @@ public:
 	std::string toStringDualBasis() const;
 
 	/**
-	 * Writes the lattice and its parameters on standard output. This prints
-	 * the dimension, the norm used, the basis and m-dual basis vectors and
+	 * Returns a string that represents the lattice and its parameters.
+	 * It contains the dimension, the norm used, the basis and m-dual basis vectors and
 	 * the basis and dual basis vector norms.
-	 *  ***   This should return a string instead !!!!   ***
+	 */
+	std::string toString() const;
+
+	/**
+	 * Writes on standard output the string returned by `toString`.
 	 */
 	void write() const;
 
@@ -380,25 +376,25 @@ protected:
 
 	/**
 	 * The rows of this matrix are the m-dual basis vectors.  May not be initialized.
+	 * When m_withDual = true, it must be initialized.
 	 */
 	IntMat m_dualbasis;
 
-
-
 	/**
 	 * The dimension of the lattice, which is the number of (independent) vectors
-	 * in the basis, and cannot exceed the number of coordinates in those vectors.
+	 * in the basis. It cannot exceed the number of coordinates in those vectors.
 	 */
 	int m_dim;
 
 	/**
-	 * The NormType used to measure the vector lengths (and in the reduction) for this lattice.
+	 * The NormType used to measure the vector lengths for this lattice.
+	 * It is used for the basis reduction and compute a shortest vector, for example.
 	 */
 	NormType m_norm;
 
 	/**
 	 * A vector that stores the norm of each basis vector.
-	 * In case of the L_2 norm, it contains the square norm.
+	 * In case of the L_2 norm, it contains the square norm instead.
 	 * A value of -1 means that the norm is not up to date.
 	 */
 	RealVec m_vecNorm;
@@ -408,14 +404,10 @@ protected:
 	 */
 	RealVec m_dualvecNorm;
 
-
-    	/**
+    /**
 	 * The scaling factor `m` used for rescaling the lattice. It is 0 when undefined.
 	 */
-	//Int m_modulo=0;
 	Int m_modulo;
-
-
 
 	/**
 	 * This `m_withDual` variable is `true` iff an m-dual basis is available.
@@ -463,7 +455,6 @@ IntLatticeBase<Int, Real>::IntLatticeBase(const IntMat primalbasis,
 template<typename Int, typename Real>
 IntLatticeBase<Int, Real>::IntLatticeBase(
 		const IntLatticeBase<Int, Real> &lat) {
-//		: m_dim(lat.getDim()), m_norm(lat.getNormType())
 	copyLattice(lat);
 }
 
@@ -478,16 +469,8 @@ IntLatticeBase<Int, Real>::~IntLatticeBase() {
 	this->m_dualvecNorm.clear();
 }
 
-/*=========================================================================
-
-template<typename Int, typename Real>
-void IntLatticeBase<Int, Real>::kill() {
-}
-*/
-
 /*=========================================================================*/
 
-//  Is this really a deep copy?
 template<typename Int, typename Real>
 void IntLatticeBase<Int, Real>::copyLattice(
 		const IntLatticeBase<Int, Real> &lat) {
@@ -499,19 +482,14 @@ void IntLatticeBase<Int, Real>::copyLattice(
 	this->m_dualvecNorm = RealVec(lat.m_dualvecNorm);
 	this->m_modulo = lat.m_modulo;
 	this->m_withDual = lat.m_withDual;
-	
 }
 
 /*=========================================================================*/
 
-/***<<<<<<< HEAD
-
-=======
->>>>>>> b23681ea0112bce9ba98c1463251528b775075a4**/
 template<typename Int, typename Real>
-void IntLatticeBase<Int, Real>::copyLattice(
+void IntLatticeBase<Int, Real>::overwriteLattice(
 		const IntLatticeBase<Int, Real> &lat, long n) {
-	if (this->m_dim == n) {     // What if n < m_dim ?    Error message?   ***********
+	if (this->m_dim == n) {
 		CopyMatr(this->m_basis, lat.m_basis, n);
 		CopyVect(this->m_vecNorm, lat.m_vecNorm, n);
 		this->m_withDual = lat.m_withDual;
@@ -524,11 +502,10 @@ void IntLatticeBase<Int, Real>::copyLattice(
 		}
 		this->m_modulo = lat.m_modulo;
 	}
-}
-/***<<<<<<< HEAD
-
-=======
->>>>>>> b23681ea0112bce9ba98c1463251528b775075a4**/
+	else
+		std::cout << "Calling IntLatticeBase::overwriteLattice with wrong dimension"
+				<< std::endl;
+	}
 
 /*=========================================================================*/
 
@@ -763,60 +740,69 @@ void IntLatticeBase<Int, Real>::sortNoDual(int d)
 /*=========================================================================*/
 
 template<typename Int, typename Real>
-void IntLatticeBase<Int, Real>::write() const {
-	std::cout << "Dim = " << this->m_dim << " \n \n";
-	std::cout << std::setprecision(10) << "Primal basis vectors:\n";
+std::string IntLatticeBase<Int, Real>::toString() const {
+	std::ostringstream os;
+	os << "Dim = " << this->m_dim << " \n \n";
+	os << std::setprecision(10) << "Primal basis vectors:\n";
 	for (int i = 0; i < this->m_dim; i++) {
-		std::cout << this->m_basis[i];
+		os << this->m_basis[i];
 		//for (int j = 0; j < this->m_dim; j++) {
-		//  std::cout <<  this->m_basis(i,j);
+		//  os <<  this->m_basis(i,j);
 		//}
-		std::cout << "\n";
+		os << "\n";
 	}
-	std::cout << "\nm-Dual basis vectors:\n";
+	os << "\nm-Dual basis vectors:\n";
 	for (int i = 0; i < this->m_dim; i++) {
 		if (this->m_withDual) {
-			std::cout << this->m_dualbasis[i];
+			os << this->m_dualbasis[i];
 			//for (int j = 0; j < this->m_dim; j++) {
-			//  std::cout << this->m_dualbasis(i,j);
+			//  os << this->m_dualbasis(i,j);
 			//}
-			std::cout << "\n";
+			os << "\n";
 		}
 	}
-	std::cout << "\n";
-	std::cout << "Norm used: " << toStringNorm(this->m_norm) << "\n"
+	os << "\n";
+	os << "Norm used: " << toStringNorm(this->m_norm) << "\n"
 			<< std::endl;
-	std::cout << "Norm of each Basis vector: \n";
-	std::cout << "Primal";
+	os << "Norm of each Basis vector: \n";
+	os << "Primal";
 	if (this->m_withDual)
-		std::cout << "\t\tDual\n";
-	std::cout << "\n";
+		os << "\t\tDual\n";
+	os << "\n";
 
 	for (int i = 0; i < this->m_dim; i++) {
 		if (this->m_vecNorm[i] < 0) {
-			std::cout << "NaN OR Not computed";
+			os << "NaN OR Not computed";
 		} else {
 			if (this->m_norm == L2NORM) {
-				std::cout << NTL::sqrt(this->m_vecNorm[i]);
+				os << NTL::sqrt(this->m_vecNorm[i]);
 			} else {
-				std::cout << this->m_vecNorm[i];
+				os << this->m_vecNorm[i];
 			}
 		}
-		std::cout << "\t";
+		os << "\t";
 		if (this->m_withDual) {
 			if (this->m_dualvecNorm[i] < 0)
-				std::cout << "NaN OR Not computed";
+				os << "NaN OR Not computed";
 			else {
 				if (this->m_norm == L2NORM) {
-					std::cout << NTL::sqrt(this->m_dualvecNorm[i]);
+					os << NTL::sqrt(this->m_dualvecNorm[i]);
 				} else {
-					std::cout << this->m_dualvecNorm[i];
+					os << this->m_dualvecNorm[i];
 				}
 			}
 		}
-		std::cout << "\n";
+		os << "\n";
 	}
-	std::cout << std::endl;
+	os << std::endl;
+	return os.str();
+}
+
+/*=========================================================================*/
+
+template<typename Int, typename Real>
+void IntLatticeBase<Int, Real>::write() const {
+	std::cout << this->toString() << "\n";
 }
 
 /*=========================================================================*/
@@ -872,11 +858,6 @@ std::string IntLatticeBase<Int, Real>::toStringDualBasis() const {
 	os << "]" << std::endl;
 	return os.str();
 }
-
-//extern template class IntLatticeBase<std::int64_t, std::int64_t, double> ;
-//extern template class IntLatticeBase<NTL::ZZ, NTL::ZZ, double> ;
-//extern template class IntLatticeBase<NTL::ZZ, NTL::ZZ, NTL::RR> ;
-
 
 extern template class IntLatticeBase<std::int64_t, double> ;
 extern template class IntLatticeBase<NTL::ZZ, double> ;

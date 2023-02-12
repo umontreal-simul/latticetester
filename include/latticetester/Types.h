@@ -86,12 +86,12 @@ namespace LatticeTester {
    * - `BScal -> Int`
    * - `BVect -> IntVec`
    * - `BMat  -> IntMat`
-   * - `NScal -> Dbl`
-   * - `NVect -> DblVec`
-   * - `NMat  -> DblMat`
-   * - `RScal -> RedDbl`
-   * - `RVect -> RedDblVec`
-   * - `RMat  -> RedDblMat`
+   * - `NScal -> Real`
+   * - `NVect -> RealVec`
+   * - `NMat  -> RealMat`
+   * - `RScal -> RedReal`
+   * - `RVect -> RedRealVec`
+   * - `RMat  -> RedRealMat`
    *
    * The typedefs are defined as follow for the different values of the
    * NTL_TYPES_CODE constant.

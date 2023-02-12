@@ -536,7 +536,7 @@ struct specReducer<std::int64_t, Real> {
 		if (dim > 0) {
 			lattmp = new IntLatticeBase<std::int64_t, Real,
 					Real>(dim, red.getIntLatticeBase()->getNormType());
-			lattmp->copyLattice(*red.getIntLatticeBase(), dim);
+			lattmp->overwriteLattice(*red.getIntLatticeBase(), dim);
 		} else
 			lattmp = red.getIntLatticeBase();
 		std::cout
@@ -611,7 +611,7 @@ struct specReducer<std::int64_t, Real> {
 	 *   if(dim > 0){
 	 *     lattmp = new IntLatticeBase<std::int64_t, Real>(
 	 *                dim, red.getIntLatticeBase()->getNorm(Type));
-	 *     lattmp->copyLattice(*red.getIntLatticeBase(), dim);
+	 *     lattmp->overwriteLattice(*red.getIntLatticeBase(), dim);
 	 *   }
 	 *   else
 	 *     lattmp = red.getIntLatticeBase();
@@ -643,7 +643,7 @@ struct specReducer<NTL::ZZ, Real> {
 		if (dim > 0) {
 			lattmp = new IntLatticeBase<NTL::ZZ, Real>(dim,
 					red.getIntLatticeBase()->getNormType());
-			lattmp->copyLattice(*red.getIntLatticeBase(), dim);
+			lattmp->overwriteLattice(*red.getIntLatticeBase(), dim);
 		} else
 			lattmp = red.getIntLatticeBase(); // dim=0 means we use the full dimension.
 
@@ -663,7 +663,7 @@ struct specReducer<NTL::ZZ, Real> {
 		default:
 			MyExit(1, "Undefined precision type for BKZ");
 		}
-		red.getIntLatticeBase()->copyLattice(*lattmp, dim);
+		red.getIntLatticeBase()->overwriteLattice(*lattmp, dim);
 		if (dim > 0)
 			delete lattmp;
 	}
@@ -675,7 +675,7 @@ struct specReducer<NTL::ZZ, Real> {
 			// We should copy only the basis matrix, not the whole IntLatticeBase object !   ******
 			lattmp = new IntLatticeBase<NTL::ZZ, Real>(dim,
 					red.getIntLatticeBase()->getNormType());
-			lattmp->copyLattice(*red.getIntLatticeBase(), dim);
+			lattmp->overwriteLattice(*red.getIntLatticeBase(), dim);
 		} else
 			lattmp = red.getIntLatticeBase();
 		//if (precision == EXACT)
@@ -699,7 +699,7 @@ struct specReducer<NTL::ZZ, Real> {
 			default:
 				MyExit(1, "LLL PrecisionType:   NO SUCH CASE");
 			}
-			red.getIntLatticeBase()->copyLattice(*lattmp, dim);
+			red.getIntLatticeBase()->overwriteLattice(*lattmp, dim);
 		//}
 		if (dim > 0)
 			delete lattmp;

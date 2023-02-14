@@ -534,8 +534,7 @@ struct specReducer<std::int64_t, Real> {
 			std::int64_t blocksize, PrecisionType precision, int dim) {
 		IntLatticeBase<std::int64_t, Real> *lattmp = 0;
 		if (dim > 0) {
-			lattmp = new IntLatticeBase<std::int64_t, Real,
-					Real>(dim, red.getIntLatticeBase()->getNormType());
+			lattmp = new IntLatticeBase<std::int64_t, Real>(dim, red.getIntLatticeBase()->getNormType());
 			lattmp->overwriteLattice(*red.getIntLatticeBase(), dim);
 		} else
 			lattmp = red.getIntLatticeBase();

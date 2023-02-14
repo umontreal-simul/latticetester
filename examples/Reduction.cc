@@ -106,7 +106,7 @@ int main() {
 
       // Dieter reduction before shortest vector search
       tmp = clock();
-      basis = new IntLatticeBase<Int, Real,  Real>(matrix1, numlines);
+      basis = new IntLatticeBase<Int, Real>(matrix1, numlines);
       red = new Reducer<Int, Real>(*basis);
       red->redDieter(0);
       die_time[j] += clock() - tmp;

@@ -45,15 +45,27 @@
 
 namespace LatticeTester {
 
-    typedef NTL::ZZ       Int;
-    typedef std::int64_t  Int;
-    typedef NTL::RR       Real;
-    typedef double        Real;
+  #if NTL_TYPES_CODE == 1
+   
+     typedef std::int64_t  Int;
+     typedef double        Real;
 
-   typedef NTL::vector<Int> IntVec;
-   typedef NTL::matrix<Int> IntMat;
-   typedef NTL::vector<Real> RealVec;
-   typedef NTL::matrix<Real> RealMat;
+     typedef NTL::vector<Int> IntVec;
+     typedef NTL::matrix<Int> IntMat;
+     typedef NTL::vector<Real> RealVec;
+     typedef NTL::matrix<Real> RealMat;
+
+   #elif NTL_TYPES_CODE == 2
+       
+      typedef NTL::ZZ       Int;
+      typedef NTL::RR       Real;
+
+      typedef NTL::vector<Int> IntVec;
+      typedef NTL::matrix<Int> IntMat;
+      typedef NTL::vector<Real> RealVec;
+      typedef NTL::matrix<Real> RealMat;
+      
+   #endif
 }
 
 #endif

@@ -23,12 +23,14 @@
 
 // This should always use Types 2 or 3, because we get too big numbers with GCD
 // elimination.
+
 #define NTL_TYPES_CODE 2
 
 #include <iostream>
 #include <ctime>
 
-#include "latticetester/Types.h" 
+//#include "latticetester/Types.h" 
+#include "latticetester/FlexTypes.h" 
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/Util.h"
 #include "latticetester/ParamReader.h"

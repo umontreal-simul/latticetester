@@ -28,7 +28,7 @@
 #include "latticetester/IntLatticeBase.h"
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/NTLWrap.h"
-#include "latticetester/Types.h"
+// #include "latticetester/Types.h"
 
 #include <fstream>
 #include <sstream>

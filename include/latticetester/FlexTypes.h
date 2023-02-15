@@ -15,45 +15,17 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #ifndef LATTICETESTER__FLEXTYPES_H
 #define LATTICETESTER__FLEXTYPES_H
 
-#include <cstdint>
-
-#include <NTL/vector.h>
-#include <NTL/matrix.h>
-#include <NTL/RR.h>
-
-#include "latticetester/NTLWrap.h"
-
   /**
-   * Here we describe the flexible types used by LatticeTester to large integers
-   * and high-precision real numbers, as well as vectors and arrays of such numbers.
-   * Those flexible types are used in templates when instantiating objects.
-   *
-   * The flexible type `Int` represents an integer. It can be either `std::int64_t`
-   * or the NTL integer type `NTL::ZZ`. The types `IntVec` and `IntMat` represent
-   * vectors and matrices of such flexible integers, respectively.
-   * The flexible type `Real` represents a real number.
-   * It can be either `double` or the NTL real type `NTL::RR`.
-   * The types `RealVec` and `RealMat` represent vectors
-   * and matrices of such real numbers.  The `Real` type is used for the Cholesky
-   * decomposition (which can be very sensitive to accuracy), to compute bounds
-   * in the BB algorithm, and for vector norms.
+   * The following macros define shorter names for vectors and matrices of Int or Real.
+   * This file is used only to avoid repeating these four lines in several class files.
    */
 
-namespace LatticeTester {
-
-    typedef NTL::ZZ       Int;
-    typedef std::int64_t  Int;
-    typedef NTL::RR       Real;
-    typedef double        Real;
-
-   typedef NTL::vector<Int> IntVec;
-   typedef NTL::matrix<Int> IntMat;
-   typedef NTL::vector<Real> RealVec;
-   typedef NTL::matrix<Real> RealMat;
-}
+#define IntVec NTL::vector<Int>
+#define IntMat NTL::matrix<Int>
+#define RealVec NTL::vector<Real>
+#define RealMat NTL::matrix<Real>
 
 #endif

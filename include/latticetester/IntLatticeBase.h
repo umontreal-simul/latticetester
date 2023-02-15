@@ -15,9 +15,10 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#ifndef LATTICETESTER_INTLATTICEBASIS_H
-#define LATTICETESTER_INTLATTICEBASIS_H
+#ifndef LATTICETESTER_INTLATTICEBASE_H
+#define LATTICETESTER_INTLATTICEBASE_H
 
+#include "latticetester/FlexTypes.h"
 #include "latticetester/EnumTypes.h"
 #include "latticetester/Util.h"
 #include "latticetester/NTLWrap.h"
@@ -55,11 +56,10 @@ template<typename Int, typename Real>
 class IntLatticeBase {
 
 private:
-	// Forward definition of types to be used in this class.
-	// This should be replaced by just importing FlexTypes.h   ????
-	typedef NTL::vector<Int> IntVec;
-	typedef NTL::matrix<Int> IntMat;
-	typedef NTL::vector<Real> RealVec;
+//	typedef NTL::vector<Int> IntVec;
+//	typedef NTL::matrix<Int> IntMat;
+//	typedef NTL::vector<Real> RealVec;
+//	typedef NTL::matrix<Real> RealMat;
 
 public:
 

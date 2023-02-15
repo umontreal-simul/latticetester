@@ -21,14 +21,14 @@
  * Dim    35 21994254 221505 168412442 13860037
  * */
 
-// This should always use Types 2 or 3, because we get too big numbers with GCD
-// elimination.
-#define NTL_TYPES_CODE 2
+// Here we need NTL::ZZ because the integers get larger the 63 bits (CHECK THIS ***)
+typedef NTL::ZZ Int;
+typedef double  Real;
 
 #include <iostream>
 #include <ctime>
 
-#include "latticetester/Types.h" 
+#include "latticetester/FlexTypes.h"
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/Util.h"
 #include "latticetester/ParamReader.h"

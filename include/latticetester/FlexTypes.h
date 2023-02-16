@@ -22,10 +22,18 @@
    * The following macros define shorter names for vectors and matrices of Int or Real.
    * This file is used only to avoid repeating these four lines in several class files.
    */
+// Simple macros for the preprocessor:
+//
+// #define IntVec NTL::vector<Int>
+// #define IntMat NTL::matrix<Int>
+// #define RealVec NTL::vector<Real>
+// #define RealMat NTL::matrix<Real>
 
-#define IntVec NTL::vector<Int>
-#define IntMat NTL::matrix<Int>
-#define RealVec NTL::vector<Real>
-#define RealMat NTL::matrix<Real>
+// Other option (typedef):
+//
+	typedef NTL::vector<Int> IntVec;
+	typedef NTL::matrix<Int> IntMat;
+	typedef NTL::vector<Real> RealVec;
+	typedef NTL::matrix<Real> RealMat;
 
 #endif

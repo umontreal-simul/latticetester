@@ -18,7 +18,6 @@
 #ifndef LATTICETESTER_INTLATTICEBASE_H
 #define LATTICETESTER_INTLATTICEBASE_H
 
-#include "latticetester/FlexTypes.h"
 #include "latticetester/EnumTypes.h"
 #include "latticetester/Util.h"
 #include "latticetester/NTLWrap.h"
@@ -56,10 +55,10 @@ template<typename Int, typename Real>
 class IntLatticeBase {
 
 private:
-//	typedef NTL::vector<Int> IntVec;
-//	typedef NTL::matrix<Int> IntMat;
-//	typedef NTL::vector<Real> RealVec;
-//	typedef NTL::matrix<Real> RealMat;
+	typedef NTL::vector<Int> IntVec;
+	typedef NTL::matrix<Int> IntMat;
+	typedef NTL::vector<Real> RealVec;
+	typedef NTL::matrix<Real> RealMat;
 
 public:
 

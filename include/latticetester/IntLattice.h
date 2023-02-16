@@ -75,10 +75,10 @@ namespace LatticeTester {
   template<typename Int, typename Real>
   class IntLattice : public IntLatticeBase<Int, Real> {
      private:
-//		typedef NTL::vector<Int> IntVec;
-//		typedef NTL::matrix<Int> IntMat;
-//		typedef NTL::vector<Real> RealVec;
-//		typedef NTL::matrix<Real> RealMat;
+		typedef NTL::vector<Int> IntVec;
+		typedef NTL::matrix<Int> IntMat;
+		typedef NTL::vector<Real> RealVec;
+		typedef NTL::matrix<Real> RealMat;
 
      public:
 

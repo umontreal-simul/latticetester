@@ -18,6 +18,9 @@
 #ifndef LATTICETESTER_BASISCONSTRUCTION_H
 #define LATTICETESTER_BASISCONSTRUCTION_H
 
+typedef NTL::ZZ Int;
+typedef double  Real;
+
 #include "NTL/LLL.h"
 #include <NTL/mat_GF2.h>
 #include "latticetester/IntLatticeBase.h"

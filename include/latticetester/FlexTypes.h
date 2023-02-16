@@ -19,14 +19,6 @@
 #ifndef LATTICETESTER__FLEXTYPES_H
 #define LATTICETESTER__FLEXTYPES_H
 
-#include <cstdint>
-
-#include <NTL/vector.h>
-#include <NTL/matrix.h>
-#include <NTL/RR.h>
-
-#include "latticetester/NTLWrap.h"
-
   /**
    * Here we describe the flexible types used by LatticeTester to large integers
    * and high-precision real numbers, as well as vectors and arrays of such numbers.
@@ -42,30 +34,13 @@
    * decomposition (which can be very sensitive to accuracy), to compute bounds
    * in the BB algorithm, and for vector norms.
    */
-
-namespace LatticeTester {
-
-  #if NTL_TYPES_CODE == 1
    
-     typedef std::int64_t  Int;
-     typedef double        Real;
 
-     typedef NTL::vector<Int> IntVec;
-     typedef NTL::matrix<Int> IntMat;
-     typedef NTL::vector<Real> RealVec;
-     typedef NTL::matrix<Real> RealMat;
-
-   #elif NTL_TYPES_CODE == 2
-       
-      typedef NTL::ZZ       Int;
-      typedef NTL::RR       Real;
-
-      typedef NTL::vector<Int> IntVec;
-      typedef NTL::matrix<Int> IntMat;
-      typedef NTL::vector<Real> RealVec;
-      typedef NTL::matrix<Real> RealMat;
-      
-   #endif
-}
+     #define IntVec   NTL::vector<Int> 
+     #define IntMat   NTL::matrix<Int> 
+     #define RealVec  NTL::vector<Real> 
+     #define RealMat  NTL::matrix<Real> 
+     
+  
 
 #endif

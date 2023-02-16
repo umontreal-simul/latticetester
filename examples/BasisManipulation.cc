@@ -18,11 +18,19 @@
  * and the speed of 'BasisConstruction::LLLConstruction'
  * *
  **/
-#define NTL_TYPES_CODE 2
+//#define NTL_TYPES_CODE 2
 #include <iostream>
 #include <ctime>
 #include <NTL/mat_GF2.h>
-#include "latticetester/Types.h"
+
+#include <cstdint>
+#include <NTL/vector.h>
+#include <NTL/matrix.h>
+#include <NTL/ZZ.h>
+#include <NTL/RR.h>
+
+
+//#include "latticetester/Types.h"
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/Util.h"
 #include "latticetester/ParamReader.h"
@@ -31,6 +39,11 @@
 #include "latticetester/EnumTypes.h"
 #include "Examples.h"
 
+
+typedef Int    NTL::ZZ
+typedef Real   NTL::RR
+
+#include <FlexTypes.h> 
 using namespace LatticeTester;
 
 namespace

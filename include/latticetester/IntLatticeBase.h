@@ -18,8 +18,10 @@
 #ifndef LATTICETESTER_INTLATTICEBASIS_H
 #define LATTICETESTER_INTLATTICEBASIS_H
 
+//#define NTL_TYPES_CODE 1
 #include "latticetester/EnumTypes.h"
 #include "latticetester/Util.h"
+#include "latticetester/FlexTypes.h"
 #include "latticetester/NTLWrap.h"
 
 #include <string>
@@ -57,9 +59,10 @@ class IntLatticeBase {
 private:
 	// Forward definition of types to be used in this class.
 	// This should be replaced by just importing FlexTypes.h   ????
-	typedef NTL::vector<Int> IntVec;
-	typedef NTL::matrix<Int> IntMat;
-	typedef NTL::vector<Real> RealVec;
+
+	//typedef NTL::vector<Int> IntVec;
+	//typedef NTL::matrix<Int> IntMat;
+	//typedef NTL::vector<Real> RealVec;
 
 public:
 

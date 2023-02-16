@@ -20,7 +20,7 @@
 
 #include "NTL/LLL.h"
 #include <NTL/mat_GF2.h>
-#include "latticetester/IntLatticeBase.h"
+#include "latticetester/IntLattice.h"
 #include "latticetester/NTLWrap.h"
 #include "latticetester/Util.h"
 #include "latticetester/Coordinates.h"
@@ -185,8 +185,8 @@ public:
 	//template<typename Int, typename Real>
 	//template<typename Int>
   template<typename Real>
-	void ProjectionConstruction(IntLatticeBase<Int, Real> &in,
-			IntLatticeBase<Int, Real> &out, const Coordinates &proj);
+	void ProjectionConstruction(IntLattice<Int, Real> &in,
+			IntLattice<Int, Real> &out, const Coordinates &proj);
 
 
 
@@ -495,8 +495,8 @@ void BasisConstruction<Int>::mDualComputation(IntMat &matrix,
 template<typename Int>
 template<typename Real>
 void BasisConstruction<Int>::ProjectionConstruction(
-		IntLatticeBase<Int, Real>& in,
-		IntLatticeBase<Int, Real> &out, const Coordinates& proj) {
+		IntLattice<Int, Real>& in,
+		IntLattice<Int, Real> &out, const Coordinates& proj) {
 	std::size_t dim = proj.size();
 	unsigned int lat_dim = in.getDim();
 	if (dim > lat_dim)
@@ -514,7 +514,7 @@ void BasisConstruction<Int>::ProjectionConstruction(
 	}
 	new_basis = NTL::transpose(new_basis);
 	LLLConstruction(new_basis);
-	out = IntLatticeBase<Int, Real>(new_basis, dim, in.getNormType());
+	out = IntLattice<Int, Real>(new_basis, dim, in.getNormType());
 }
 
 

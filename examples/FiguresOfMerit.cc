@@ -22,7 +22,7 @@
 #include <iostream>
 
 #include "latticetester/Types.h"
-#include "latticetester/IntLatticeBase.h"
+#include "latticetester/IntLattice.h"
 #include "latticetester/Reducer.h"
 #include "latticetester/ParamReader.h"
 
@@ -43,13 +43,13 @@ int main() {
   IntMat matrix(max_dim,max_dim);
   unsigned int ln = 0;
   reader.readBMat(matrix, ln, 0, max_dim);
-  IntLatticeBase<Int, Real> lat_basis(matrix, max_dim);
+  IntLattice<Int, Real> lat_basis(matrix, max_dim);
   double merit1 = 1.0, merit2 = 1.0;
 
   // The variables specific to the construction of a figure of merit
   UniformWeights weights(1.0); // This just puts a weight of 1 to everything
   BasisConstruction<Int> constructor; // Computes projections basis
-  IntLatticeBase<Int, Real> proj_basis(max_dim); // To store projections
+  IntLattice<Int, Real> proj_basis(max_dim); // To store projections
   // CoordinateSets namespace contains classes to create iterators on sets of coordinates
   CoordinateSets::FromRanges coord(min_dim+1, max_dim, min_dim, max_dim-1);
 

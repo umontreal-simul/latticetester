@@ -28,7 +28,7 @@ namespace LatticeTester {
   /**
    * This class represents a set of indices with lacunary values, usually with the
    * values spaced in a certain systematic way (see `calcIndicesStreams`).
-   * It is typically used by subclasses of `IntLattice`.
+   * It is typically used by subclasses of `IntLatticeExt`.
    * The values of the lacunary indices are stored in a vector
    * and can be accessed via the `[]` operator.
    *

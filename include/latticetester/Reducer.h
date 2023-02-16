@@ -25,10 +25,9 @@
 
 #include "latticetester/EnumTypes.h"
 #include "latticetester/Util.h"
-#include "latticetester/IntLatticeBase.h"
+#include "latticetester/IntLattice.h"
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/NTLWrap.h"
-// #include "latticetester/Types.h"
 
 #include <fstream>
 #include <sstream>
@@ -50,12 +49,12 @@ namespace LatticeTester {
 
 /**
  * This `Reducer` class provides facilities to reduce the basis of a lattice
- * (an `IntLatticeBase` object) in different ways (pairwise, LLL, BKZ, Minkowski
+ * (an `IntLattice` object) in different ways (pairwise, LLL, BKZ, Minkowski
  * \cite rDIE75a, \cite mLEN82a, \cite mSCH91a),
  * and find a shortest nonzero vector in the lattice using a BB algorithm \cite rFIN85a.
  * Most of the methods do not use or change the m-dual lattice.
  * To reduce the m-dual basis or find a shortest nonzero vector in it,
- * one should first dualize the lattice; the method `IntLattice::dualize` does that.
+ * one should first dualize the lattice; the method `IntLatticeExt::dualize` does that.
  * Some of the lattice reduction methods are NTL wraps.
  * For those, the `Int` type can only be `ZZ`, because NTL offers no other option.
  * For LLL, we have both our simple implementation and implementations from
@@ -68,10 +67,10 @@ namespace LatticeTester {
  * the BB search.
  *
  * To use these facilities, one should create an instance of `Reducer` by passing a
- * `IntLatticeBase` object to the constructor. This reducer will always work on this
- * `IntLatticeBase` object, which is accessible internally via a pointer.
+ * `IntLattice` object to the constructor. This reducer will always work on this
+ * `IntLattice` object, which is accessible internally via a pointer.
  * This pointer is also accessible via `getIntLatticeBase`.
- * The methods of the `Reducer` object will modify this `IntLatticeBase` object.
+ * The methods of the `Reducer` object will modify this `IntLattice` object.
  */
 
 template<typename Int, typename Real>
@@ -115,7 +114,7 @@ public:
 	/**
 	 * Constructor that initializes the reducer to work on the lattice `lat`.
 	 */
-	Reducer(IntLatticeBase<Int, Real> &lat);
+	Reducer(IntLattice<Int, Real> &lat);
 
 	/**
 	 * Copy constructor.
@@ -140,11 +139,11 @@ public:
 	void copy(const Reducer<Int, Real> &red);
 
 	/**
-	 * Computes a shortest non-zero vector in the `IntLatticeBase` lattice stored
+	 * Computes a shortest non-zero vector in the `IntLattice` lattice stored
 	 * in this object, with respect to norm type `norm`, using the BB
 	 * algorithm described in \cite rLEC97c.
 	 * The admissible norm types here are `L1NORM` and `L2NORM`.
-	 * The `NormType` attribute of this `IntLatticeBase`
+	 * The `NormType` attribute of this `IntLattice`
 	 * object will be changed to `norm`. If `MaxNodesBB` is exceeded
 	 * during the branch-and-bound, the method aborts and returns
 	 * `false`. Otherwise, it returns `true`. If the reduction was
@@ -275,7 +274,7 @@ public:
 	/**
 	 * Returns the lattice that this object is working on.
 	 * */
-	IntLatticeBase<Int, Real>* getIntLatticeBase() {
+	IntLattice<Int, Real>* getIntLatticeBase() {
 		return m_lat;
 	}
 
@@ -293,8 +292,8 @@ private:
 	/**
 	 * The lattice that this object is working on.
 	 */
-	IntLatticeBase<Int, Real> *m_lat;
-//	IntLatticeBase<Int, Real> *m_lat2;
+	IntLattice<Int, Real> *m_lat;
+//	IntLattice<Int, Real> *m_lat2;
 
 	/**
 	 * Contains specialized implementations of member methods depending on
@@ -532,9 +531,9 @@ struct specReducer<std::int64_t, Real> {
 
 	void redBKZ(Reducer<std::int64_t, Real> &red, double delta,
 			std::int64_t blocksize, PrecisionType precision, int dim) {
-		IntLatticeBase<std::int64_t, Real> *lattmp = 0;
+		IntLattice<std::int64_t, Real> *lattmp = 0;
 		if (dim > 0) {
-			lattmp = new IntLatticeBase<std::int64_t, Real>(dim, red.getIntLatticeBase()->getNormType());
+			lattmp = new IntLattice<std::int64_t, Real>(dim, red.getIntLatticeBase()->getNormType());
 			lattmp->overwriteLattice(*red.getIntLatticeBase(), dim);
 		} else
 			lattmp = red.getIntLatticeBase();
@@ -557,7 +556,7 @@ struct specReducer<std::int64_t, Real> {
 			PrecisionType precision, int dim) {
 		// Here we create a new temporary lattice, new NTL matrices, and then destroy them.
 		// That's a lot of object creations, probably very ineffective.
-		IntLatticeBase<NTL::ZZ, Real> *lattmp = 0;
+		IntLattice<NTL::ZZ, Real> *lattmp = 0;
 		NTL::matrix<std::int64_t> basis = red.getIntLatticeBase()->getBasis();
 		// We copy the basis in B, for all the dimensions!
 		NTL::mat_ZZ B;
@@ -567,7 +566,7 @@ struct specReducer<std::int64_t, Real> {
 				B[i][j] = basis[i][j];
 			}
 		}
-		lattmp = new IntLatticeBase<NTL::ZZ, Real>(B, dim,
+		lattmp = new IntLattice<NTL::ZZ, Real>(B, dim,
 				red.getIntLatticeBase()->getNormType());
 		B.kill();
 
@@ -606,9 +605,9 @@ struct specReducer<std::int64_t, Real> {
 	 * void redLLLNTL(Reducer<std::int64_t, Real>& red,
 	 *     double delta, PrecisionType precision, int dim)
 	 * {
-	 *   IntLatticeBase<std::int64_t, Real> *lattmp = 0;
+	 *   IntLattice<std::int64_t, Real> *lattmp = 0;
 	 *   if(dim > 0){
-	 *     lattmp = new IntLatticeBase<std::int64_t, Real>(
+	 *     lattmp = new IntLattice<std::int64_t, Real>(
 	 *                dim, red.getIntLatticeBase()->getNorm(Type));
 	 *     lattmp->overwriteLattice(*red.getIntLatticeBase(), dim);
 	 *   }
@@ -638,9 +637,9 @@ struct specReducer<NTL::ZZ, Real> {
 
 	void redBKZ(Reducer<NTL::ZZ, Real> &red, double delta,
 			std::int64_t blocksize, PrecisionType precision, int dim) {
-		IntLatticeBase<NTL::ZZ, Real> *lattmp = 0;
+		IntLattice<NTL::ZZ, Real> *lattmp = 0;
 		if (dim > 0) {
-			lattmp = new IntLatticeBase<NTL::ZZ, Real>(dim,
+			lattmp = new IntLattice<NTL::ZZ, Real>(dim,
 					red.getIntLatticeBase()->getNormType());
 			lattmp->overwriteLattice(*red.getIntLatticeBase(), dim);
 		} else
@@ -669,10 +668,10 @@ struct specReducer<NTL::ZZ, Real> {
 
 	void redLLLNTL(Reducer<NTL::ZZ, Real> &red, double delta,
 			PrecisionType precision, int dim) {
-		IntLatticeBase<NTL::ZZ, Real> *lattmp = 0;
+		IntLattice<NTL::ZZ, Real> *lattmp = 0;
 		if (dim > 0) {
-			// We should copy only the basis matrix, not the whole IntLatticeBase object !   ******
-			lattmp = new IntLatticeBase<NTL::ZZ, Real>(dim,
+			// We should copy only the basis matrix, not the whole IntLattice object !   ******
+			lattmp = new IntLattice<NTL::ZZ, Real>(dim,
 					red.getIntLatticeBase()->getNormType());
 			lattmp->overwriteLattice(*red.getIntLatticeBase(), dim);
 		} else
@@ -719,7 +718,7 @@ std::int64_t Reducer<Int, Real>::maxNodesBB = 1000000000;
 //=========================================================================
 
 template<typename Int, typename Real>
-Reducer<Int, Real>::Reducer(IntLatticeBase<Int, Real> &lat) {
+Reducer<Int, Real>::Reducer(IntLattice<Int, Real> &lat) {
 	// Squared length of vectors must not overflow max(double)
 	m_lat = &lat;
 	const int dim1 = m_lat->getDim();

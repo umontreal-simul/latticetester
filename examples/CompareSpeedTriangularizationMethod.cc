@@ -47,7 +47,7 @@
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/Util.h"
 #include "latticetester/ParamReader.h"
-#include "latticetester/IntLatticeBase.h"
+#include "latticetester/IntLattice.h"
 #include "latticetester/Reducer.h"
 #include "latticetester/EnumTypes.h"
 #include "NTL/tools.h"

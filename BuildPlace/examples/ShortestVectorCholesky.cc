@@ -6,7 +6,7 @@
 #include "latticetester/ParamReader.h"
 #include "latticetester/Types.h"
 #include "latticetester/Reducer.h"
-#include "latticetester/IntLatticeBase.h"
+#include "latticetester/IntLattice.h"
 #include "latticetester/WriterRes.h"
 #include "latticetester/Util.h"
 
@@ -74,7 +74,7 @@ int main() {
       // We dynamically allocate memory to these two pointers every time we need to
       // create an object of their type. This is because of the OOP approach
       // to lattice reduction.
-      IntLatticeBase<Int, Real>* basis;
+      IntLattice<Int, Real>* basis;
       Reducer<Int, Real>* red;
 
       //! Variables definition
@@ -107,7 +107,7 @@ int main() {
 
       // BKZ reduction before shortest vector search
       Int m(1021);
-      basis = new IntLatticeBase<Int, Real>(matrix1,matrix1,m, numlines);
+      basis = new IntLattice<Int, Real>(matrix1,matrix1,m, numlines);
       red = new Reducer<Int, Real>(*basis);
 
       std::cout << " The base before reduction\n"; 

@@ -20,12 +20,12 @@
 
 #include "latticetester/Util.h"
 #include "latticetester/EnumTypes.h"
-#include "latticetester/IntLattice.h"
+#include "latticetester/IntLatticeExt.h"
 
 namespace LatticeTester {
 
   /**
-   * This subclass of `IntLattice` defines a general rank 1 lattice rule in \f$d\f$ dimensions,
+   * This subclass of `IntLatticeExt` defines a general rank 1 lattice rule in \f$d\f$ dimensions,
    * whose points \f$\mathbb{u}_i\f$ are defined by
    * \f{equation}{
    *    \mathbf{u}_i = (i \mathbf{a} \mod m)/m,
@@ -49,7 +49,7 @@ namespace LatticeTester {
    * without loss of generality generality that \f$a_1 = 1\f$.
    */
   template<typename Int, typename Real>
-    class Rank1Lattice: public IntLattice<Int, Real> {
+    class Rank1Lattice: public IntLatticeExt<Int, Real> {
 
       private:
         typedef NTL::vector<Int>  IntVec;
@@ -108,7 +108,7 @@ namespace LatticeTester {
       protected:
 
         /**
-         * Initializes the rank 1 lattice. This just invokes `IntLattice::init()`.
+         * Initializes the rank 1 lattice. This just invokes `IntLatticeExt::init()`.
          */
         void init();
 
@@ -125,7 +125,7 @@ namespace LatticeTester {
   template<typename Int, typename Real>
     Rank1Lattice<Int, Real>::Rank1Lattice (
         const Int & m, const IntVec & a, int maxDim, NormType norm):
-      IntLattice<Int, Real> (m, maxDim, true, norm)
+      IntLatticeExt<Int, Real> (m, maxDim, true, norm)
   {
     this->m_a = a;
     init();
@@ -144,7 +144,7 @@ namespace LatticeTester {
   template<typename Int, typename Real>
     void Rank1Lattice<Int, Real>::init()
     {
-      IntLattice<Int, Real>::init();
+      IntLatticeExt<Int, Real>::init();
       // for (int r = 1; r < this->getDim(); r++)
       //   this->m_lgVolDual2[r] = this->m_lgVolDual2[r - 1];
     }
@@ -169,7 +169,7 @@ namespace LatticeTester {
   template<typename Int, typename Real>
     Rank1Lattice<Int, Real>::Rank1Lattice (
         const Rank1Lattice<Int, Real> & lat):
-      IntLattice<Int, Real> (
+      IntLatticeExt<Int, Real> (
           lat.m_modulo, lat.getDim (), lat.getNormType ())
   {
     // MyExit (1, "Rank1Lattice:: constructor is incomplete" );

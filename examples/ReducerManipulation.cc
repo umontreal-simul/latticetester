@@ -15,7 +15,7 @@
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/Util.h"
 #include "latticetester/ParamReader.h"
-#include "latticetester/IntLatticeBase.h"
+#include "latticetester/IntLattice.h"
 #include "latticetester/Reducer.h"
 #include "latticetester/EnumTypes.h"
 #include "Examples.h"
@@ -31,7 +31,7 @@ int main()
 {
   std::string prime = primes[0];
   clock_t timer, tmp;
-  IntLatticeBase<Int, Real> *basis;
+  IntLattice<Int, Real> *basis;
   Reducer<Int, Real> *red;
   // BasisConstruction<Int> constr; // The basis constructor we will use
   //! Variables definition
@@ -59,8 +59,8 @@ int main()
 
 
   Int m(101);
- // basis = new IntLatticeBase<Int, Real>(matrix1, matrix2, m, numlines);
-  basis = new IntLatticeBase<Int, Real>(matrix1, numlines);
+ // basis = new IntLattice<Int, Real>(matrix1, matrix2, m, numlines);
+  basis = new IntLattice<Int, Real>(matrix1, numlines);
   red = new Reducer<Int, Real>(*basis);
   std::cout << " The base before reduction\n";
   printBase((red->getIntLatticeBase())->getBasis());
@@ -91,7 +91,7 @@ int main()
  //  comput the shortest vector using Cholesky decompisition method
  //The method can be very slow. It's not the recommanded one
 
-  basis = new IntLatticeBase<Int, Real>(matrix1, matrix2, m, numlines);
+  basis = new IntLattice<Int, Real>(matrix1, matrix2, m, numlines);
   std::cout << " The base before reduction\n";
   printBase((red->getIntLatticeBase())->getBasis());
   red = new Reducer<Int, Real>(*basis);

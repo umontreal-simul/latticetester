@@ -1,7 +1,7 @@
 
 /**In this example, we show the use of most of the method in class BasisConstruction.
  * We begin by reading a file that contains the basis information and create an
- * 'IntLatticeBase' object. The basis have 10x10 dimension, the base is modulo  1021.
+ * 'IntLattice' object. The basis have 10x10 dimension, the base is modulo  1021.
  * The name of the dat file is '1021_10_1.dat'. It is in the 'examples' folder of LatticeTester.
  * The absolue path is 'examples/bench/1021_10_1'.
  *
@@ -26,7 +26,7 @@
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/Util.h"
 #include "latticetester/ParamReader.h"
-#include "latticetester/IntLatticeBase.h"
+#include "latticetester/IntLattice.h"
 #include "latticetester/Reducer.h"
 #include "latticetester/EnumTypes.h"
 #include "Examples.h"
@@ -40,7 +40,7 @@ namespace
 
 int main()
 {
-  IntLatticeBase<Int, Real> *lattice;
+  IntLattice<Int, Real> *lattice;
   BasisConstruction<Int> constr; // The basis constructor we will use
   IntMat bas_mat, dua_mat;
   IntMat w_copie, m_v, m_v2;
@@ -77,8 +77,8 @@ int main()
   reader.readBMat(bas_mat, ln, 0, numlines);
 
   // Creating a lattice basis
-  // lattice = new IntLatticeBase<Int, Real>(bas_mat, bas_mat, m, numlines);
-  lattice = new IntLatticeBase<Int, Real>(bas_mat, numlines);
+  // lattice = new IntLattice<Int, Real>(bas_mat, bas_mat, m, numlines);
+  lattice = new IntLattice<Int, Real>(bas_mat, numlines);
   std::cout << " The initial base\n";
   printBase(lattice->getBasis()); // The primal basi is 'bas_mat'
 

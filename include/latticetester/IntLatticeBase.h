@@ -18,6 +18,12 @@
 #ifndef LATTICETESTER_INTLATTICEBASE_H
 #define LATTICETESTER_INTLATTICEBASE_H
 
+#include <cstdint>
+#include <NTL/vector.h>
+#include <NTL/matrix.h>
+#include <NTL/ZZ.h>
+#include <NTL/RR.h>
+
 //#define NTL_TYPES_CODE 1
 //typedef std::int64_t  Int;  
 typedef NTL::ZZ  Int;
@@ -26,7 +32,7 @@ typedef double        Real;
 
 #include "latticetester/EnumTypes.h"
 #include "latticetester/Util.h"
-#include "latticetester/FlexTypes.h"
+//#include "latticetester/FlexTypes.h"
 #include "latticetester/NTLWrap.h"
 
 #include <string>

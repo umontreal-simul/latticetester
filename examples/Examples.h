@@ -1,5 +1,7 @@
 #ifndef EXAMPLES_H
 #define EXAMPLES_H
+
+
 /**
  * This file defines functions and constants used in all examples.
  * ***  Bad class name!
@@ -23,7 +25,7 @@ int getWidth(clock_t time[], int dim, std::string message, clock_t totals[], int
     tmp += time[i];
   }
   int width = log10(tmp) + 2;
-  std::cout << std::setw(width) << message;
+ // std::cout << std::setw(width) << message;
   totals[ind] = tmp;
   return width;
 }

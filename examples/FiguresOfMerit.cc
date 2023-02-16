@@ -17,11 +17,21 @@
  * print them after the test. 
  * */
 
-#define NTL_TYPES_CODE 2
+//#define NTL_TYPES_CODE 2
 
 #include <iostream>
+#include <cstdint>
+#include <NTL/vector.h>
+#include <NTL/matrix.h>
+#include <NTL/ZZ.h>
+#include <NTL/RR.h>
 
-#include "latticetester/Types.h"
+typedef Int    NTL::ZZ
+typedef Real   NTL::RR
+
+
+
+#include "latticetester/FlexTypes.h"
 #include "latticetester/IntLatticeBase.h"
 #include "latticetester/Reducer.h"
 #include "latticetester/ParamReader.h"

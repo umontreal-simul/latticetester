@@ -19,12 +19,11 @@
 #include <NTL/RR.h>
 
 //#define NTL_TYPES_CODE 2
-typedef Int    NTL::ZZ
-typedef Real   NTL::RR
+
 
 #include <iostream>
 #include <ctime>
-#include "latticetester/FlexTypes.h"
+
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/Util.h"
 #include "latticetester/ParamReader.h"
@@ -33,6 +32,10 @@ typedef Real   NTL::RR
 #include "latticetester/EnumTypes.h"
 #include "Examples.h"
 #include "latticetester/WriterRes.h"
+
+typedef Int    NTL::ZZ
+typedef Real   NTL::RR
+#include "latticetester/FlexTypes.h"
 
 using namespace LatticeTester;
 namespace

@@ -56,12 +56,20 @@
  * output print, but also can be created at the end of theexecution to print the
  * result of the execution, making them quiteflexible.
  * */
-#define NTL_TYPES_CODE 1
-
+//#define NTL_TYPES_CODE 1
 #include <iostream>
+#include <cstdint>
+#include <NTL/vector.h>
+#include <NTL/matrix.h>
+#include <NTL/ZZ.h>
+#include <NTL/RR.h>
+
+typedef Int    NTL::ZZ;
+typedef Real   NTL::RR;
+
 
 #include "latticetester/ParamReader.h"
-#include "latticetester/Types.h"
+#include "latticetester/FlexTypes.h"
 #include "latticetester/Reducer.h"
 #include "latticetester/IntLatticeBase.h"
 #include "latticetester/WriterRes.h"

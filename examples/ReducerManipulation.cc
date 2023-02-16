@@ -7,11 +7,24 @@
 * The absolue path is '/BuildPlace/examples/bench/1021_4_002'.
 */
 
-#define NTL_TYPES_CODE 2
 
 #include <iostream>
 #include <ctime>
-#include "latticetester/Types.h"
+#include <NTL/mat_GF2.h>
+
+#include <cstdint>
+#include <NTL/vector.h>
+#include <NTL/matrix.h>
+#include <NTL/ZZ.h>
+#include <NTL/RR.h>
+
+//#define NTL_TYPES_CODE 2
+typedef Int    NTL::ZZ
+typedef Real   NTL::RR
+
+#include <iostream>
+#include <ctime>
+#include "latticetester/FlexTypes.h"
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/Util.h"
 #include "latticetester/ParamReader.h"

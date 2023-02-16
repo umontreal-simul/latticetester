@@ -50,10 +50,10 @@ namespace LatticeTester {
    * defined by a `Coordinates` object, a method to dualize the lattice
    * (exchange the basis with the m-dual basis),
    * and a virtual method that should be implemented in subclasses to
-   * recompute a basis for different numbers of dimensions and subsets
-   * of coordinates. 
+   * recompute a basis for different numbers of dimensions and subsets of coordinates.
    *
-   * REMOVE (I do not think we need to have this here, but only where we compute the FOMs):
+   * **REMOVE:**
+   * (I do not think we need to have this here, but only where we compute the FOMs.)
    * The lattices considered here are assumed to have a special structure, which is used
    * for the computation of the lattice density and the normalization constants in the
    * figures of merit.  It is assumed that the lattice has rank \f$k\f$ and that the
@@ -61,7 +61,8 @@ namespace LatticeTester {
    * All the lattices considered in the LatMRG and LatNet Builder software tools 
    * have this property. 
    *  
-   * REMOVE: A lattice of rank \f$k\f$ with integer vectors modulo \f$m\f$ contains
+   * **REMOVE:**
+   * A lattice of rank \f$k\f$ with integer vectors modulo \f$m\f$ contains
    * \f$m^k\f$ distinct vectors (modulo $m$). If we divide the basis vectors by \f$m\f$,
    * this gives \f$m^k\f$ vectors per unit of volume, so \f$m^k\f$ is the density of the 
    * original (non-scaled) lattice. This number is used to obtain bounds on the shortest vector length,
@@ -72,23 +73,24 @@ namespace LatticeTester {
    */
 
   template<typename Int, typename Real>
-      class IntLattice : public IntLatticeBase<Int, Real> {
-        private:
-          typedef NTL::vector<Int> IntVec;
-          typedef NTL::matrix<Int> IntMat;
-          typedef NTL::vector<Real> RealVec;
-        public:
+  class IntLattice : public IntLatticeBase<Int, Real> {
+     private:
+		typedef NTL::vector<Int> IntVec;
+		typedef NTL::matrix<Int> IntMat;
+		typedef NTL::vector<Real> RealVec;
+		typedef NTL::matrix<Real> RealMat;
+
+     public:
 
           /**
            * A constructor that initializes the primal and dual bases with the
            * identity matrix. The dimension of the lattice is set to `maxDim` 
            * and the norm type is set to `norm`.
            * @param m The scaling factor `m` for the integer coordinates
-           *   @param k The rank of the lattice to be constructed
            * @param maxDim The maximal dimension for which this lattice can be
            * expanded/tested
            * @param withDual Specifies whether this object contains a dual or not
-           * @param norm  The type of d to measure the vector lengths.
+           * @param norm  The norm type to measure the vector lengths.
            */
           IntLattice (Int m, int maxDim, bool withDual,
               NormType norm = L2NORM);
@@ -100,14 +102,14 @@ namespace LatticeTester {
           IntLattice (const IntLattice<Int, Real> & lat);
 
           /**
-           * Copies `lattice` into this object. This should be equivalent to
-           * the creation of a new `IntLattice` object using the copy constructor with
-           * `lattice` as an argument.
+           * Makes a *shallow* copy of `lattice` into this object.  Does not make a copy of the
+           * internal vectors and matrices, but just copies the pointers!
+           * NOTE: should it be `called` shallowCopy to make it clear?
            */
           void copy (const IntLattice<Int, Real> & lattice);
 
           /**
-           * Destructor.
+           * Destructor. Depends on specific subclass.
            */
           virtual ~IntLattice ();
 
@@ -164,20 +166,12 @@ namespace LatticeTester {
            * Builds the basis (and perhaps m-dual basis) for the projection `proj` for this
            * lattice. The result is placed in the `lattice` object. The LLL algorithm is 
            * applied to recover a proper basis. 
-           * 
-           * 
-           * 
-           * 
-           * 
-           * 
-           * 
            */
           virtual void buildProjection (IntLattice<Int, Real>* lattice,
               const Coordinates & proj);
 
           /**
            * This virtual method builds a basis for the lattice in `dim` dimensions.
-           * It must be implemented in subclasses.
            */
           virtual void buildBasis (int dim);
 
@@ -196,8 +190,7 @@ namespace LatticeTester {
               int alpha, bool dualF);
 
           /**
-           * A virtual utility method to store a vector of indices with lacunary values
-           * in subclasses of this one.
+           * Selects and stores a vector of indices with lacunary values.
            */
           virtual void setLac (const Lacunary<Int> &) {};
 
@@ -262,20 +255,19 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int, typename Real>
-      IntLattice<Int, Real>::IntLattice (Int modulo,
+       IntLattice<Int, Real>::IntLattice (Int m,
           int maxDim, bool withDual, NormType norm): 
-      IntLatticeBase<Int, Real>(maxDim, norm)
-  {
+       IntLatticeBase<Int, Real>(maxDim, norm)  {
     this->m_dim = maxDim;
     this->m_withDual = withDual;
-    this->m_modulo = modulo;
+    this->m_modulo = m;
     // m_order = k;
     init ();
-    this->m_basis.resize(this->m_dim,this->m_dim);
+    this->m_basis.resize(this->m_dim, this->m_dim);
     this->m_vecNorm.resize(this->m_dim);
     this->setNegativeNorm();
     if (withDual) {
-      this->m_dualbasis.resize(this->m_dim,this->m_dim);
+      this->m_dualbasis.resize(this->m_dim, this->m_dim);
       this->m_dualvecNorm.resize(this->m_dim);
       this->setDualNegativeNorm();
     }
@@ -284,10 +276,8 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int, typename Real>
-      IntLattice<Int, Real>::IntLattice (
-          const IntLattice<Int, Real> & lat):
-      IntLatticeBase<Int, Real>(lat)
-  {
+  IntLattice<Int, Real>::IntLattice (const IntLattice<Int, Real> & lat):
+      IntLatticeBase<Int, Real>(lat)  {
     this->m_withDual = lat.withDual();
     // m_order = lat.m_order;
     init ();
@@ -300,10 +290,8 @@ namespace LatticeTester {
 
   //===========================================================================
 
-
   template<typename Int, typename Real>
-      void IntLattice<Int, Real>::init ()
-    {
+  void IntLattice<Int, Real>::init ()  {
       int dim = this->getDim ();
       IntLatticeBase<Int, Real>::initVecNorm();
       double temp;
@@ -480,14 +468,13 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
       void IntLattice<Int, Real>::copy (
-          const IntLattice<Int, Real> & lat)
-    {
+          const IntLattice<Int, Real> & lat) {
       // m_order = lat.getOrder();
       this->m_modulo = lat.m_modulo;
       //m_m2 = lat.m_m2;
       this->m_basis = lat.m_basis;
       if(lat.withDual())
-        this->m_dualbasis = lat.m_dualbasis;
+         this->m_dualbasis = lat.m_dualbasis;
       init ();
     }
 
@@ -552,10 +539,6 @@ namespace LatticeTester {
     }
 
   //===========================================================================
-
-  //extern template class IntLattice<std::int64_t, std::int64_t, double>;
-  //extern template class IntLattice<NTL::ZZ, NTL::ZZ, double>;
-  //extern template class IntLattice<NTL::ZZ, NTL::ZZ, NTL::RR>;
 
   extern template class IntLattice<std::int64_t, double>;
   extern template class IntLattice<NTL::ZZ, double>;

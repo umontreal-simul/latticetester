@@ -43,7 +43,7 @@
 typedef Int    NTL::ZZ
 typedef Real   NTL::RR
 
-#include <FlexTypes.h> 
+#include "latticetester/FlexTypes.h" 
 using namespace LatticeTester;
 
 namespace

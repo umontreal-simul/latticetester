@@ -28,7 +28,7 @@
 #include "latticetester/IntLatticeBase.h"
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/NTLWrap.h"
-#include "latticetester/FlexTypes.h"
+#include "latticetester/Types.h"
 
 #include <fstream>
 #include <sstream>
@@ -105,10 +105,11 @@ class Reducer {
 
 private:
 	// Local typedefs for matrix and vector types needed in the class.
-	//typedef NTL::vector<Int> IntVec;
-	//typedef NTL::matrix<Int> IntMat;
-	//typedef NTL::vector<Real> RealVec;
-	//typedef NTL::matrix<Real> RealMat;
+	//
+	typedef NTL::vector<Int> IntVec;
+	typedef NTL::matrix<Int> IntMat;
+	typedef NTL::vector<Real> RealVec;
+	typedef NTL::matrix<Real> RealMat;
 
 public:
 

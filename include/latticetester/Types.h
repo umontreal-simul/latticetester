@@ -201,7 +201,6 @@ typedef NTL::vec_zz_p MVectP; // This appears nowhere
 typedef NTL::mat_zz_p MMatP; // This appears only once
 //typedef std::int64_t  BScal;
 typedef double        Real; // NScal
-typedef double        Real; //RScal
 typedef NTL::zz_pX    PolX; // This appears nowhere
 typedef NTL::zz_pE    PolE; // This appears nowhere
 

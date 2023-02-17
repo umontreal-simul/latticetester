@@ -16,8 +16,8 @@
 // limitations under the License.
 
 
-#ifndef LATTICETESTER_INTLATTICE_H
-#define LATTICETESTER_INTLATTICE_H
+#ifndef LATTICETESTER_INTLATTICEEXT_H
+#define LATTICETESTER_INTLATTICEEXT_H
 
 #include "latticetester/IntLattice.h"
 /*
@@ -207,7 +207,7 @@ namespace LatticeTester {
           virtual void kill ();
 
           /**
-           * Allocates space to the vectors m_vSI and m_wSI used internally to store
+           * Allocates space to the vectors m_basisProj and m_dualbasisProj used internally to store
            * the bases for the current projection, and updates the norms.
            * This should not be called directly by the user.
            * It is called by the constructors and the copy method.
@@ -215,12 +215,13 @@ namespace LatticeTester {
           void init ();
 
           /**
-           * REMOVE?  The order (rank) of the basis. Usually defined in subclasses.
+           * REMOVE?  The order (rank) of the basis. Only defined in certain subclasses.
            */
           // int m_order;
 
           /**
-           * The maximum Dimension for the basis (for tests)
+           * The maximum Dimension for the basis (for the full lattice).
+           * The considered projections cannot have more coordinates than this.
            */
           int m_maxDim;
 
@@ -235,20 +236,14 @@ namespace LatticeTester {
           // double m_lgm2;
 
           /**
-           * The m-dual basis of the current projection.
-           */
-          IntMat m_wSI;
-
-          /**
            * The primal basis of the current projection.
            */
-          IntMat m_vSI;
+          IntMat m_basisProj;
 
           /**
-           * Working Variables used in MRGLattice.h
-           * **  WHAT ARE THEY DOING HERE? MOVE THEM TO WHERE THEY BELONG.  **
+           * The m-dual basis of the current projection.
            */
-          // Int m_t1, m_t2, m_t3;
+          IntMat m_dualbasisProj;
 
       }; // Class IntLatticeExt
 
@@ -262,6 +257,7 @@ namespace LatticeTester {
     this->m_withDual = withDual;
     this->m_modulo = m;
     // m_order = k;
+    // Reserves space for the lattice and the projections in up to maxDim dimensions.
     init ();
     this->m_basis.resize(this->m_dim, this->m_dim);
     this->m_vecNorm.resize(this->m_dim);
@@ -281,10 +277,10 @@ namespace LatticeTester {
     this->m_withDual = lat.withDual();
     // m_order = lat.m_order;
     init ();
-    m_vSI = lat.m_vSI;
+    m_basisProj = lat.m_basisProj;
     if (this->m_withDual){
       this->setDualNegativeNorm();
-      m_wSI = lat.m_wSI;
+      m_dualbasisProj = lat.m_dualbasisProj;
     }
   }
 
@@ -292,35 +288,35 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
   void IntLatticeExt<Int, Real>::init ()  {
+	  // Reserves space for the projections in up to the dimension dim of the full lattice.
       int dim = this->getDim ();
       IntLattice<Int, Real>::initVecNorm();
       // double temp;   // Used only for m_lgVolDual2.
       // NTL::conv (temp, this->m_modulo);
-      m_vSI.resize(dim, dim);
+      m_basisProj.resize(dim, dim);
       if (this->m_withDual) {
         // m_lgVolDual2 = new double[dim+1];
         // m_lgm2 = 2.0 * Lg (temp);
         // m_lgVolDual2[1] = m_lgm2;
-        m_wSI.resize(dim, dim);
+        m_dualbasisProj.resize(dim, dim);
       }
     }
 
   //===========================================================================
 
   template<typename Int, typename Real>
-      void IntLatticeExt<Int, Real>::kill ()
-    {
+      void IntLatticeExt<Int, Real>::kill () {
      // IntLattice<Int, Real>::kill();
-      // m_vSI.clear();
     }
 
 
   //===========================================================================
 
   template<typename Int, typename Real>
-      IntLatticeExt<Int, Real>::~IntLatticeExt ()
-    {
-      //sIntLatticeBase<Int, Real>::kill();
+      IntLatticeExt<Int, Real>::~IntLatticeExt () {
+	  	this->m_basis.IntMatProj::clear();
+	  	this->m_dualbasis.IntMatProj::clear();
+        IntLattice<Int, Real>::~IntLattice();
     }
 
   //===========================================================================
@@ -407,13 +403,12 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int, typename Real>
-      void IntLatticeExt<Int, Real>::buildProjection (
-          IntLatticeExt<Int, Real>* lattice, const Coordinates  & proj)
-    {
+  void IntLatticeExt<Int, Real>::buildProjection (
+          IntLatticeExt<Int, Real>* lattice, const Coordinates  & proj) {
       const int dim = this->getDim ();
       //  std::cout << "      ESPION_2\n";  getPrimalBasis ().write();
       int i = 0;
-      IntMat temp;
+      IntMat temp, temp2;
       temp.SetDims(dim, dim);
       for (auto iter = proj.begin(); iter != proj.end(); ++iter) {
         for (int j = 0; j < dim; j++){
@@ -421,19 +416,21 @@ namespace LatticeTester {
         }
         ++i;
       }
-      // Constructs a basis for the projection `lattice` using the LLL construction.
+      // The generating vectors of proj are now in temp.
+      // We will construct a triangular basis for the projection `lattice` in temp2.
       lattice->setDim (static_cast<int>(proj.size()));
       // lattice->m_order = m_order;
-      BasisConstruction<Int> constr;
-      constr.LLLConstruction(temp);
-      temp.SetDims(lattice->getDim(), lattice->getDim());
+      BasisConstruction<Int> basisConstr;
+      basisConstr.upperTriangularBasis(temp, temp2, m_modulo);
+      // Are we assuming that the dimension is always the projection size?  ************
+      temp2.SetDims(lattice->getDim(), lattice->getDim());
       lattice->setNegativeNorm ();
-      lattice->m_basis = temp;
+      lattice->m_basis = temp2;
 
       lattice->m_withDual = this->m_withDual;
       if (this->m_withDual) {
     	 // For the dual, we use the triangular method?  Why?   **************
-        constr.mDualTriangular(lattice->m_basis, lattice->m_dualbasis, this->m_modulo);
+        basisConstr.mDualTriangular(lattice->m_basis, lattice->m_dualbasis, this->m_modulo);
         lattice->setDualNegativeNorm ();
       }
 

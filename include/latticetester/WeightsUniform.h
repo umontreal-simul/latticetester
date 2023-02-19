@@ -27,7 +27,7 @@ namespace LatticeTester {
   /**
    * Specifies projection weights that are the same (usually 1) for all projections.
    */
-  class UniformWeights : public Weights {
+  class WeightsUniform : public Weights {
     protected:
 
       Weight m_weight;
@@ -39,13 +39,13 @@ namespace LatticeTester {
        *
        * \param weight     Weight given to all projections.
        */
-      explicit UniformWeights (Weight weight)
+      explicit WeightsUniform (Weight weight)
       { m_weight = weight; }
 
       /**
        * Destructor.
        */
-      virtual ~UniformWeights()
+      virtual ~WeightsUniform()
       { }
 
       /**
@@ -56,7 +56,7 @@ namespace LatticeTester {
     protected:
       /// \copydoc LatticeTester::Weights::format()
       virtual void format(std::ostream& os) const {
-        os << "UniformWeights(" << m_weight << ")";
+        os << "WeightsUniform(" << m_weight << ")";
       }
   };
 

@@ -29,7 +29,7 @@
 // #define RealVec NTL::vector<Real>
 // #define RealMat NTL::matrix<Real>
 
-// Other option (typedef):
+// Other option (typedef), which require Int and Real to be defined before:
 //
 	typedef NTL::vector<Int> IntVec;
 	typedef NTL::matrix<Int> IntMat;

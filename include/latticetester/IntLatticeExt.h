@@ -158,12 +158,11 @@ namespace LatticeTester {
           //    void fixLatticeNormalization (bool dualF);
 
           /**
-           * Builds the basis (and perhaps m-dual basis) for the projection `proj` for this
-           * lattice. The result is placed in the `lattice` object. The LLL algorithm is 
-           * applied to recover a proper basis for the primal, and the riangular method for the dual.
-           * WHY ?   ***************
+           * Builds an upper triangular basis for the projection `proj` for this lattice
+           * and places this lattice projection in the `lattice` object.
+           * If the latter maintains a dual basis, then this (triangular) dual basis is also updated.
            */
-          virtual void buildProjection (IntLatticeExt<Int, Real>* lattice,
+          void buildProjection (IntLatticeExt<Int, Real>* lattice,
               const Coordinates & proj);
 
           /**
@@ -417,43 +416,25 @@ namespace LatticeTester {
         ++i;
       }
       // The generating vectors of proj are now in temp.
-      // We will construct a triangular basis for the projection `lattice` in temp2.
+      // We construct a triangular basis for the projection `lattice` and put it in temp2.
+      // For now, the dimension of this projection is assumed to be the projection size.
       lattice->setDim (static_cast<int>(proj.size()));
       // lattice->m_order = m_order;
-      BasisConstruction<Int> basisConstr;
-      basisConstr.upperTriangularBasis(temp, temp2, m_modulo);
+      BasisConstruction<Int> bc;
+      bc.upperTriangularBasis(temp, temp2, m_modulo);
       // Are we assuming that the dimension is always the projection size?  ************
+      // This is not always true!  Perhaps we should check the number of indep rows in temp2.
       temp2.SetDims(lattice->getDim(), lattice->getDim());
       lattice->setNegativeNorm ();
       lattice->m_basis = temp2;
+      // temp2 is a square matrix, but it may have some zero rows and then no inverse.
 
       lattice->m_withDual = this->m_withDual;
       if (this->m_withDual) {
-    	 // For the dual, we use the triangular method?  Why?   **************
-        basisConstr.mDualTriangular(lattice->m_basis, lattice->m_dualbasis, this->m_modulo);
+        bc.mDualUpperTriangular(lattice->m_basis, lattice->m_dualbasis, this->m_modulo);
         lattice->setDualNegativeNorm ();
       }
-
-      //Triangularization<IntMat> (lattice->m_dualbasis, lattice->m_basis, dim,
-      //    static_cast<int>(proj.size()), this->m_modulo);
-      // lattice->trace("\nESPION_4");
-      /* std::cout << "  ***** build 2\n";
-         lattice->getPrimalBasis ().setNegativeNorm (true);
-         lattice->getPrimalBasis ().updateScalL2Norm (1,proj.size());
-         lattice->getPrimalBasis ().write();*/
-      // calcDual<IntMat> (lattice->m_basis, lattice->m_dualbasis,
-      //     static_cast<int>(proj.size()), this->m_modulo);
-      /*
-         std::cout << "  ***** build 3\n";
-         lattice->getDualBasis ().setNegativeNorm (true);
-         lattice->getDualBasis ().updateScalL2Norm (1,proj.size());
-         lattice->getDualBasis ().write();
-         */
-
-      //lattice->updateDualScalL2Norm (0, proj.size());
-      //lattice->updateScalL2Norm (0,proj.size());
-      //lattice->setNegativeNorm ();
-    }
+   }
 
   //===========================================================================
 

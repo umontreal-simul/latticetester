@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "latticetester/ProductWeights.h"
+#include "latticetester/WeightsProduct.h"
 #include "latticetester/Util.h"
 #include <sstream>
 
@@ -25,14 +25,14 @@ namespace LatticeTester
 
   //===========================================================================
 
-  ProductWeights::ProductWeights (Weight defaultWeight)
+  WeightsProduct::WeightsProduct (Weight defaultWeight)
     : m_defaultWeight(defaultWeight)
   {
   }
 
   //===========================================================================
 
-  void ProductWeights::setWeightForCoordinate (Coordinates::size_type coordinate, Weight weight)
+  void WeightsProduct::setWeightForCoordinate (Coordinates::size_type coordinate, Weight weight)
   {
     if (coordinate >= m_weights.size())
       m_weights.resize(coordinate + 1);
@@ -41,7 +41,7 @@ namespace LatticeTester
 
   //===========================================================================
 
-  Weight ProductWeights::getWeight (const Coordinates & projection) const
+  Weight WeightsProduct::getWeight (const Coordinates & projection) const
   {
     if (projection.empty())
       return m_defaultWeight;
@@ -57,10 +57,10 @@ namespace LatticeTester
 
   //===========================================================================
 
-  void ProductWeights::format(std::ostream& os) const
+  void WeightsProduct::format(std::ostream& os) const
   {
     using LatticeTester::operator<<;
-    os << "ProductWeights(" << m_weights << ", default=" << m_defaultWeight << ")";
+    os << "WeightsProduct(" << m_weights << ", default=" << m_defaultWeight << ")";
   }
 
 } // namespace LatticeTester
@@ -73,9 +73,9 @@ namespace LatticeTester
 // namespace LatticeTester
 // {
 // 
-//   ProductWeights* ProductWeights::createFromXML (const pugi::xml_node & root)
+//   WeightsProduct* WeightsProduct::createFromXML (const pugi::xml_node & root)
 //   {
-//     ProductWeights* o = new ProductWeights();
+//     WeightsProduct* o = new WeightsProduct();
 // 
 //     pugi::xml_node node;
 // 

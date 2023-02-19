@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "latticetester/OrderDependentWeights.h"
+#include "latticetester/WeightsOrderDependent.h"
 #include "latticetester/Weights.h"
 #include "latticetester/Util.h"
 
@@ -27,14 +27,14 @@ namespace LatticeTester
 
   //===========================================================================
 
-  OrderDependentWeights::OrderDependentWeights (Weight defaultWeight)
+  WeightsOrderDependent::WeightsOrderDependent (Weight defaultWeight)
     : m_defaultWeight(defaultWeight)
   {
   }
 
   //===========================================================================
 
-  void OrderDependentWeights::setWeightForOrder (Coordinates::size_type order, Weight weight)
+  void WeightsOrderDependent::setWeightForOrder (Coordinates::size_type order, Weight weight)
   {
     if (order >= m_weights.size())
       m_weights.resize(order + 1);
@@ -43,17 +43,17 @@ namespace LatticeTester
 
   //===========================================================================
 
-  Weight OrderDependentWeights::getWeight (const Coordinates& projection) const
+  Weight WeightsOrderDependent::getWeight (const Coordinates& projection) const
   {
     return getWeightForOrder(projection.size());
   }
 
   //===========================================================================
 
-  void OrderDependentWeights::format(std::ostream& os) const
+  void WeightsOrderDependent::format(std::ostream& os) const
   {
     using LatticeTester::operator<<;
-    os << "OrderDependentWeights(" << m_weights << ", default=" << m_defaultWeight << ")";
+    os << "WeightsOrderDependent(" << m_weights << ", default=" << m_defaultWeight << ")";
   }
 
 } // namespace LatticeTester
@@ -66,9 +66,9 @@ namespace LatticeTester
 // namespace LatticeTester
 // {
 // 
-//   OrderDependentWeights* OrderDependentWeights::createFromXML (const pugi::xml_node& root)
+//   WeightsOrderDependent* WeightsOrderDependent::createFromXML (const pugi::xml_node& root)
 //   {
-//     OrderDependentWeights* o = new OrderDependentWeights();
+//     WeightsOrderDependent* o = new WeightsOrderDependent();
 // 
 //     pugi::xml_node node;
 // 

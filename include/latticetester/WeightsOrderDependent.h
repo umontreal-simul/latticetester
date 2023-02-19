@@ -26,7 +26,7 @@ namespace LatticeTester {
   /**
    * Defines order-dependent weights.
    * The weight of a projection depends only on the order (cardinality) of the projection.   */
-  class OrderDependentWeights : public Weights {
+  class WeightsOrderDependent : public Weights {
     protected:
 
       Weight m_defaultWeight;
@@ -39,12 +39,12 @@ namespace LatticeTester {
        *
        * \param defaultWeight   Default weight.
        */
-      explicit OrderDependentWeights (Weight defaultWeight = 0.0);
+      explicit WeightsOrderDependent (Weight defaultWeight = 0.0);
 
       /**
        * Destructor.
        */
-      virtual ~OrderDependentWeights()
+      virtual ~WeightsOrderDependent()
       { }
 
       /**
@@ -78,10 +78,10 @@ namespace LatticeTester {
 
 // #ifdef WITH_XML
 //       /**
-//        * Static factory method; create a \c OrderDependentWeights object by
+//        * Static factory method; create a \c WeightsOrderDependent object by
 //        * parsing XML data.
 //        */
-//       static OrderDependentWeights* createFromXML (const pugi::xml_node & node);
+//       static WeightsOrderDependent* createFromXML (const pugi::xml_node & node);
 // #endif
 
     protected:

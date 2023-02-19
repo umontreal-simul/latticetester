@@ -27,7 +27,7 @@ namespace LatticeTester {
    * The weight of a projection is equal to the product of the individual weights
    * of each coordinate involved.
    */
-  class ProductWeights : public Weights {
+  class WeightsProduct : public Weights {
     protected:
 
       Weight m_defaultWeight;
@@ -40,12 +40,12 @@ namespace LatticeTester {
        *
        * \param defaultWeight    Default weight.
        */
-      explicit ProductWeights (Weight defaultWeight = 0.0);
+      explicit WeightsProduct (Weight defaultWeight = 0.0);
 
       /**
        * Destructor.
        */
-      virtual ~ProductWeights()  {}
+      virtual ~WeightsProduct()  {}
 
       /**
        * Returns the weight of the projection specified by `projection`.
@@ -97,10 +97,10 @@ namespace LatticeTester {
 
 // #ifdef WITH_XML
 //       /**
-//        * Static factory method; create a \c ProductWeights object by
+//        * Static factory method; create a \c WeightsProduct object by
 //        * parsing XML data.
 //        */
-//       static ProductWeights* createFromXML (const pugi::xml_node & node);
+//       static WeightsProduct* createFromXML (const pugi::xml_node & node);
 // #endif
 
     protected:

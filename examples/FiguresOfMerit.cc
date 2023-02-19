@@ -30,7 +30,7 @@
 #include "latticetester/NormaBestLat.h"
 #include "latticetester/NormaBestBound.h"
 #include "latticetester/CoordinateSets.h"
-#include "latticetester/UniformWeights.h"
+#include "latticetester/WeightsUniform.h"
 #include "latticetester/BasisConstruction.h"
 
 using namespace LatticeTester;
@@ -47,7 +47,7 @@ int main() {
   double merit1 = 1.0, merit2 = 1.0;
 
   // The variables specific to the construction of a figure of merit
-  UniformWeights weights(1.0); // This just puts a weight of 1 to everything
+  WeightsUniform weights(1.0); // This just puts a weight of 1 to everything
   BasisConstruction<Int> constructor; // Computes projections basis
   IntLattice<Int, Real> proj_basis(max_dim); // To store projections
   // CoordinateSets namespace contains classes to create iterators on sets of coordinates

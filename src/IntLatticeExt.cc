@@ -23,5 +23,6 @@
 namespace LatticeTester{
   template class IntLatticeExt<std::int64_t, double>;
   template class IntLatticeExt<NTL::ZZ, double>;
+  template class IntLatticeExt<std::int64_t, NTL::RR>;
   template class IntLatticeExt<NTL::ZZ, NTL::RR>;
 }

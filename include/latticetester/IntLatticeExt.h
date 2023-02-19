@@ -417,18 +417,15 @@ namespace LatticeTester {
       }
       // The generating vectors of proj are now in temp.
       // We construct a triangular basis for the projection `lattice` and put it in temp2.
-      // For now, the dimension of this projection is assumed to be the projection size.
+      // The dimension of this projection is assumed to be the projection size,
+      // so `temp2` will be a square invertible matrix.
       lattice->setDim (static_cast<int>(proj.size()));
       // lattice->m_order = m_order;
       BasisConstruction<Int> bc;
       bc.upperTriangularBasis(temp, temp2, m_modulo);
-      // Are we assuming that the dimension is always the projection size?  ************
-      // This is not always true!  Perhaps we should check the number of indep rows in temp2.
       temp2.SetDims(lattice->getDim(), lattice->getDim());
       lattice->setNegativeNorm ();
       lattice->m_basis = temp2;
-      // temp2 is a square matrix, but it may have some zero rows and then no inverse.
-
       lattice->m_withDual = this->m_withDual;
       if (this->m_withDual) {
         bc.mDualUpperTriangular(lattice->m_basis, lattice->m_dualbasis, this->m_modulo);

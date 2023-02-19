@@ -98,20 +98,17 @@ public:
 	 * This functions takes a set of generating vectors of a vector space and
 	 * finds a basis for this space by applying LLL reduction with the given value of `delta`,
 	 * using the NTL implementation.
+	 * This function *does not* assume that all vectors m e_i belong to the lattice, and
+	 * it may return a basis matrix that has fewer rows than columns!   TRUE?    ****************
 	 */
 	void LLLConstruction(IntMat &matrix, double delta);
 
-	/**
-	 * This is the old implementation from Marc-Antoine. Too slow!
-	 * Uses a form of Gaussian elimination to obtain an upper triangular basis
-	 * for the smallest lattice that contains the generating vectors which are the
-	 * rows of the given matrix `matrix`.
-	 */
-    void GCDTriangularBasis(IntMat &matrix);
-
   	/**
-	 * Same as `GCDTriangularBasis(IntMat &matrix)`, but all computations are done modulo 'm'.
-	 * REMOVE ???
+	 * This is an old implementationSame that uses a form of Gaussian elimination to
+	 * obtain an upper triangular basis for the smallest lattice that contains the generating
+	 * vectors which are the rows of the given `matrix`. It returns the basis in the same `matrix`.
+	 * This function *does not* assume that all vectors `m e_i` belong to the lattice, and
+	 * it may return a basis matrix that has fewer rows than columns!
 	 */
   	void GCDTriangularBasis(IntMat &matrix, Int m);
 
@@ -138,14 +135,16 @@ public:
 	//void mDualComputation(IntMat &matrix, IntMat &dualMatrix, Int m);
 
     /**
-     * THE NAMES OF MATRICES SHOULD BE UNIFORM ACROSS ALL METHODS and ALL CLASSES!   *************
+     * THE NAMES OF PARAMETERS SHOULD BE SIGNIFICANT AND UNIFORM ACROSS ALL METHODS and ALL CLASSES,
+     * as much as possible!   *************
      * Takes a set of generating vectors in the matrix `gen` and iteratively
      * transforms it into a lower triangular lattice basis into the matrix `basis`.
      * `gen` and `basis` must have the same number of rows and the same number of columns.
      * All the computations are done modulo the scaling factor `m`.
      * After the execution, `gen` will contain irrelevant information (garbage)
      * and `basis` will contain an upper triangular basis.
-     * Perhaps with zero rows at the end ???                *****************
+     * Perhaps with zero rows at the end, in general, unless we assume implicitly that
+     * all vectors of the form m e_i are in the generating set.  ???  *****************
      * The algorithm is explained in the \lattester{} guide.
      * Why pass &m instead of just m as elsewhere?  We cannot pass sometimes &m and sometimes m,
      * this is confusing and dangerous.                     **************
@@ -159,18 +158,18 @@ public:
 
     /**
      * Takes an upper triangular basis matrix `matrix` and computes the m-dual basis `dualMatrix`.
-     * The method assumes that each coefficient on the diagonal of `matrix` divides `m`.
+     * The method assumes that each coefficient on the diagonal of `matrix` is nonzero and divides `m`.
      * The algorithm is described in the Lattice Tester guide \cite iLEC22l.
-     * What is `d`?  Note that the dual exists only if `matrix` is invertible.   ******************
+     * What is `d`?  Note that the dual exists only if `matrix` is invertible.
+     * So we must assume that there are no zeros on the diagonal.         *************
      */
     void mDualUpperTriangular (const IntMat &matrix, IntMat &matrixDual, int d, const Int &m);
 
     /**
-	 * This function does essentially the same thing as `mDualUpperTriangular`.
-	 * It uses the method described in \cite rCOU96a.
-	 * WHICH ONE DO WE KEEP?   ****************************
+	 * This function does essentially the same thing as `mDualUpperTriangular`, but it is
+	 * slightly slower. It uses the method described in \cite rCOU96a.
 	 */
-	void mDualTriangular(IntMat &matrix, IntMat &matrixDual, Int m);
+	void mDualUpperTriangular96(IntMat &matrix, IntMat &matrixDual, Int m);
 
 	/**
 	 * This function assumes that `matrix` contains a basis of the primal lattice
@@ -224,10 +223,9 @@ void BasisConstruction<Int>::LLLConstruction(IntMat &matrix, double delta) {
 	spec.LLLConstruction(matrix, delta);
 }
 
-// Is this function correct ???   ****************
 template<typename Int>
 void BasisConstruction<Int>::GCDTriangularBasis(IntMat &matrix, Int m) {
-	// It is important to note that the lines of matrix are the basis vectors
+	// On exit, the rows of matrix are the basis vectors.
 	long rows = matrix.NumRows();
 	long cols = matrix.NumCols();
 	long max_rank = rows < cols ? rows : cols;
@@ -246,50 +244,6 @@ void BasisConstruction<Int>::GCDTriangularBasis(IntMat &matrix, Int m) {
 				for(int k=0;k<max_rank;k++)
 				  Modulo(matrix[j][k], m, matrix[j][k]);
 			}
-		}
-		// We make sure that the coefficients are positive.
-		// This is because the algorithms we use work for positive vectors.
-		// if (matrix[i][i] < 0) matrix[i] *= -1;
-		// for (long j = i-1; j >= 0; j--) {
-		//   if (matrix[j][i] < 0) {
-		//     if (-matrix[j][i] > matrix[i][i]){
-		//       q = -matrix[j][i]/matrix[i][i] + 1;
-		//       matrix[j] += q * matrix[i];
-		//     } else {
-		//       matrix[j] += matrix[i];
-		//     }
-		//   }
-		// }
-		if (matrix[i][i] != 0) {
-			rank++;
-			if (matrix[i][i] < 0)
-				matrix[i] *= Int(-1);
-		}
-	}
-	// We remove zero vectors from the basis.
-	matrix.SetDims(rank, cols);
-}
-
-//  This seems to repeat much of the previous code!  Bad.   **********************
-template<typename Int>
-void BasisConstruction<Int>::GCDTriangularBasis(IntMat &matrix) {
-	// It is important to note that the lines of matrix are the basis vectors
-	long rows = matrix.NumRows();
-	long cols = matrix.NumCols();
-	long max_rank = rows < cols ? rows : cols;
-	long rank = 0;
-	// The basis will have at most max_rank vectors.
-	Int q;
-	//Int r;
-	for (long i = 0; i < max_rank; i++) {
-		// We find gcd(matrix[i][i], ..., matrix[rows-1][i]) using Euclid
-		// algorithm and applying transformations to the matrix
-		for (long j = i + 1; j < rows; j++) {
-			while (matrix[j][i] != 0) {
-				matrix[i].swap(matrix[j]);
-				q = matrix[j][i] / matrix[i][i];
-				matrix[j] -= q * matrix[i];
- 			}
 		}
 		// We make sure that the coefficients are positive.
 		// This is because the algorithms we use work for positive vectors.
@@ -525,9 +479,9 @@ void BasisConstruction<Int>::GCDTriangularBasis(IntMat &matrix) {
 
    //======================================================
 
-   // This seems to be the version from Marc-Antoine.  Right?
+   // This is the old version from Couture and L'Ecuyer (1996).
    template<typename Int>
-   void BasisConstruction<Int>::mDualTriangular(IntMat &matrix, IntMat &dualMatrix,
+   void BasisConstruction<Int>::mDualUpperTriangular96(IntMat &matrix, IntMat &dualMatrix,
    		Int m) {
    	// We need to have a triangular basis matrix
    	if (!CheckTriangular(matrix, matrix.NumRows(), Int(0)))
@@ -572,7 +526,7 @@ void BasisConstruction<Int>::GCDTriangularBasis(IntMat &matrix) {
    //===================================================
 
    /**
-    * Is this the version that we want to keep?    ****************
+    * This is the version that we recommend.    ****************
     *
    * For `B` to be `m`-dual to `A`, we have to have that \f$AB^t = mI\f$. It
    * is quite easy to show that, knowing `A` is upper triangular, `B` will be a
@@ -601,7 +555,7 @@ void BasisConstruction<Int>::GCDTriangularBasis(IntMat &matrix) {
 
    //===================================================
 
-    // Here, Matr can be either IntMat or RealMat.
+    // Here, Matr can be either IntMat or RealMat.  Why do we need that?   **********
     template <typename Matr,typename Int >
     void mDualBasis (Matr & A, Matr & B,  Int & m) {
       Int  d;
@@ -619,7 +573,7 @@ void BasisConstruction<Int>::GCDTriangularBasis(IntMat &matrix) {
 
     //===================================================
 
-    // This one seems to be too specific!
+    // This one seems to be too specific!    ***************
     template<typename Int>  // There is no Int in this function!
     void BasisConstruction<Int>::mDualBasis(const NTL::Mat<NTL::ZZ>  & A, NTL::Mat<NTL::ZZ>  & B, const NTL::ZZ & m) {
       NTL::ZZ d;

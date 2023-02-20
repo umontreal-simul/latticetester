@@ -90,16 +90,18 @@ private:
 public:
 
 	/**
-	 * Same as `LLLConstruction(IntMat &matrix, 0.99999)` (the default value of `delta`).
+	 * Same as `LLLConstruction(IntMat &matrix, 0.999999)` (the default value of `delta`).  ?????  *****
 	 */
 	void LLLConstruction(IntMat &matrix);
 
 	/**
 	 * This functions takes a set of generating vectors of a vector space and
 	 * finds a basis for this space by applying LLL reduction with the given value of `delta`,
-	 * using the NTL implementation.
+	 * using the NTL implementation. It is implemented only for the \texttt{NTL::ZZ} type.
 	 * This function *does not* assume that all vectors m e_i belong to the lattice, and
-	 * it may return a basis matrix that has fewer rows than columns!   TRUE?    ****************
+	 * it may return a basis matrix that has fewer rows than columns!   TRUE?    ***********
+	 * If we want to make sure that these vectors belong to the lattice, we can add them
+	 * explicitly to the set of generating vectors.
 	 */
 	void LLLConstruction(IntMat &matrix, double delta);
 

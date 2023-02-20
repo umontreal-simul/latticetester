@@ -26,13 +26,13 @@ namespace LatticeTester {
   template class BasisConstruction<NTL::ZZ>;
   
   //============================================================================
-  // Specialization of LLLConstr
+  // Specialization of LLLConstruction
   //============================================================================
 
   template <>
     void LLLConstr<NTL::matrix<std::int64_t>>::LLLConstruction(
         NTL::matrix<std::int64_t>& matrix) {
-      std::cerr << "LLL Construction can only be done with NTL::ZZ integers.\n";
+      std::cerr << "LLLConstruction can only be done with NTL::ZZ integers.\n";
       std::cerr << "Aborting.\n";
       exit(1);
     }
@@ -40,7 +40,7 @@ namespace LatticeTester {
   template <>
     void LLLConstr<NTL::matrix<std::int64_t>>::LLLConstruction(
         NTL::matrix<std::int64_t>& matrix, double delta) {
-      std::cerr << "LLL Construction can only be done with NTL::ZZ integers.\n";
+      std::cerr << "LLLConstruction can only be done with NTL::ZZ integers.\n";
       std::cerr << "Aborting.\n";
       exit(1);
     }
@@ -60,7 +60,7 @@ namespace LatticeTester {
     template <>
     void LLLConstr<NTL::matrix<NTL::ZZ>>::LLLConstruction(
         NTL::matrix<NTL::ZZ>& matrix, double delta) {
-      long rank = NTL::LLL_XD(matrix,delta);
+      long rank = NTL::LLL_XD(matrix, delta);
       long num = matrix.NumRows();
       for (long i = 0; i < rank; i++) {
         NTL::swap(matrix[i], matrix[num-rank+i]);

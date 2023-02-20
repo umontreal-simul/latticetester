@@ -555,15 +555,18 @@ void BasisConstruction<Int>::GCDTriangularBasis(IntMat &matrix, Int m) {
 
    //===================================================
 
-    // Here, Matr can be either IntMat or RealMat.  Why do we need that?   **********
-    template <typename Matr,typename Int >
+    // Here, Matr can be either IntMat or RealMat?  Why do we need that?   **********
+    // Is this actually working only for NTL::ZZ integers?    ****************
+    // This must be explained and clarified!           *********************
+    // Note: for the dual to exist, the basis must be a square invertible matrix!   ********
+   template <typename Matr, typename Int >
     void mDualBasis (Matr & A, Matr & B,  Int & m) {
       Int  d;
       Matr C;
       int dim1=A.NumRows();
       int dim2=A.NumCols();
       C.SetDims(dim1, dim2);
-      inv(d, B, A);
+      inv(d, B, A);   // What is B and what is d ?
       transpose(C, B);
       for (int i = 0; i < dim1; i++) {
         for (int j = 0; j < dim2; j++)
@@ -574,7 +577,7 @@ void BasisConstruction<Int>::GCDTriangularBasis(IntMat &matrix, Int m) {
     //===================================================
 
     // This one seems to be too specific!    ***************
-    template<typename Int>  // There is no Int in this function!
+    template<typename Int>    // There is no Int in this function!
     void BasisConstruction<Int>::mDualBasis(const NTL::Mat<NTL::ZZ>  & A, NTL::Mat<NTL::ZZ>  & B, const NTL::ZZ & m) {
       NTL::ZZ d;
       //  Int d;// mult;

@@ -18,12 +18,13 @@
 #ifndef LATTICETESTER_BASISCONSTRUCTION_H
 #define LATTICETESTER_BASISCONSTRUCTION_H
 
-typedef NTL::ZZ Int;
-typedef double  Real;
+//typedef NTL::ZZ Int;
+//typedef double  Real;
 
 #include "NTL/LLL.h"
+#include <NTL/mat_ZZ.h>
 #include <NTL/mat_GF2.h>
-#include "latticetester/IntLatticeBase.h"
+#include "latticetester/IntLattice.h"
 #include "latticetester/NTLWrap.h"
 #include "latticetester/Util.h"
 #include "latticetester/Coordinates.h"
@@ -188,8 +189,8 @@ public:
 	//template<typename Int, typename Real>
 	//template<typename Int>
   template<typename Real>
-	void ProjectionConstruction(IntLatticeBase<Int, Real> &in,
-			IntLatticeBase<Int, Real> &out, const Coordinates &proj);
+	void ProjectionConstruction(IntLattice<Int, Real> &in,
+			IntLattice<Int, Real> &out, const Coordinates &proj);
 
 
 
@@ -255,6 +256,9 @@ public:
    */
   // template <typename IntMat>
     void calcDual (const IntMat & A, IntMat & B, const Int & m);
+
+      // template <typename IntMat>
+    void calcDual22 (const IntMat & A, IntMat & B, const Int & m);
         
     void calcDual(const NTL::Mat<NTL::ZZ>  & A, NTL::Mat<NTL::ZZ>  & B, const NTL::ZZ & m);   
    /**
@@ -498,8 +502,8 @@ void BasisConstruction<Int>::mDualComputation(IntMat &matrix,
 template<typename Int>
 template<typename Real>
 void BasisConstruction<Int>::ProjectionConstruction(
-		IntLatticeBase<Int, Real>& in,
-		IntLatticeBase<Int, Real> &out, const Coordinates& proj) {
+		IntLattice<Int, Real>& in,
+		IntLattice<Int, Real> &out, const Coordinates& proj) {
 	std::size_t dim = proj.size();
 	unsigned int lat_dim = in.getDim();
 	if (dim > lat_dim)
@@ -517,7 +521,7 @@ void BasisConstruction<Int>::ProjectionConstruction(
 	}
 	new_basis = NTL::transpose(new_basis);
 	LLLConstruction(new_basis);
-	out = IntLatticeBase<Int, Real>(new_basis, dim, in.getNormType());
+	out = IntLattice<Int, Real>(new_basis, dim, in.getNormType());
 }
 
 
@@ -737,27 +741,39 @@ void BasisConstruction<Int>::ProjectionConstruction(
            B(i,j)= (m*C(i,j))/d;     
         }
      }
-           
-   // template <typename Int>
-  /**
+
+
+
+    
    template<typename Int> 
-   void BasisConstruction<Int>::calcDual(const NTL::Mat<NTL::GF2>  & A, NTL::Mat<NTL::GF2>  & B, const NTL::GF2 & m) {
-      NTL::GF2 d;
-    //  Int d;// mult;
-    //  IntMat C;
-      NTL::Mat<NTL::GF2> C;
+   void BasisConstruction<Int>::calcDual22 (const IntMat & A, IntMat & B, const Int & m) {
+      Int d;
+      //Matr C;
       int dim1=A.NumRows();
       int dim2=A.NumCols();
-      C.SetDims(dim1, dim2);
-      inv(d,B,A);
-      transpose(C,B);
-      for (int i = 1; i < dim1; i++) {
-        for (int j = 1; j < dim2; j++)
-           B(i,j)= (m*C(i,j))/d;
-          
-        }
-     }
-   */
+
+      NTL::Mat<NTL::ZZ> A1,C1,B1;
+      NTL::Mat<NTL::ZZ> B2;
+      A1.SetDims(dim1, dim2);
+      B1.SetDims(dim1, dim2);
+      C1.SetDims(dim1, dim2);
+      for(int i=0;i<dim1;i++){
+       for(int j=0;j<dim2;j++)
+        A1[i][j]=NTL::conv<NTL::ZZ>(A[i][j]);
+      }  
+
+      //C.SetDims(dim1, dim2);
+      inv(d,B1,A1);
+      transpose(C1,B1);
+      for (int i = 0; i < dim1; i++) {
+        for (int j = 0; j < dim2; j++)
+        {  B1(i,j)= (m*C1(i,j))/d;  
+           B[i][j]=NTL::conv<Int>(B1[i][j]);
+        }   
+      }
+     }  
+
+           
 
    template<typename Int> 
    void BasisConstruction<Int>::calcDual(const NTL::Mat<NTL::ZZ>  & A, NTL::Mat<NTL::ZZ>  & B, const NTL::ZZ & m) {
@@ -777,6 +793,8 @@ void BasisConstruction<Int>::ProjectionConstruction(
         }
      }
    
+
+ 
 
 
    //  void BasisConstruction<std::int64_t>::

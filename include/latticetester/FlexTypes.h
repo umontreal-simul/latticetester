@@ -18,24 +18,105 @@
 #ifndef LATTICETESTER__FLEXTYPES_H
 #define LATTICETESTER__FLEXTYPES_H
 
+#include <cstdint>
+#include <NTL/vector.h>
+#include <NTL/matrix.h>
+#include <NTL/ZZ.h>
+#include <NTL/RR.h>
+#include "latticetester/NTLWrap.h"
+
+
   /**
    * The following macros define shorter names for vectors and matrices of Int or Real.
    * This file is used only to avoid repeating these four lines in several class files.
    */
 // Simple macros for the preprocessor:
 //
-// #define IntVec NTL::vector<Int>
-// #define IntMat NTL::matrix<Int>
-// #define RealVec NTL::vector<Real>
-// #define RealMat NTL::matrix<Real>
 
 // Other option (typedef):
-//
-	typedef NTL::vector<Int> IntVec;
-	typedef NTL::matrix<Int> IntMat;
-	typedef NTL::vector<Real> RealVec;
-	typedef NTL::matrix<Real> RealMat;
-      
 
+
+//-----------------------------------------
+ 
+
+     #include "NTL/ZZ.h"
+     #include "NTL/vec_ZZ.h"
+     #include "NTL/mat_ZZ.h"
+     #include "NTL/RR.h"
+     #include "NTL/vec_RR.h"
+     #include "NTL/mat_RR.h"
+     #include <NTL/matrix.h>
+     #include <NTL/vector.h>
+     
+     
+     #if  TYPES_CODE  ==   LD 
+
+        #include "NTL/lzz_p.h"
+        #include "NTL/vec_lzz_p.h"
+        #include "NTL/mat_lzz_p.h"
+        #include "NTL/lzz_pX.h"
+        #include "NTL/lzz_pE.h"
+        #include "NTL/lzz_pEX.h"
+    
+
+	   typedef std::int64_t  Int;  
+        typedef double  Real; 
+
+
+     #elif  FLEX_TYPE  == ZD 
+
+          #include "NTL/ZZ.h"
+          #include "NTL/vec_ZZ.h"
+          #include "NTL/mat_ZZ.h"
+          #include "NTL/ZZ_p.h"
+          #include "NTL/vec_ZZ_p.h"
+          #include "NTL/mat_ZZ_p.h"
+          #include "NTL/ZZ_pE.h"
+          #include "NTL/ZZ_pX.h"
+          #include "NTL/ZZ_pEX.h"
+
+
+	     typedef NTL::ZZ Int;
+          typedef double Real;
+    
+     #elif   TYPES_CODE == ZR
+
+          #include "NTL/ZZ.h"
+          #include "NTL/vec_ZZ.h"
+          #include "NTL/mat_ZZ.h"
+          #include "NTL/ZZ_p.h"
+          #include "NTL/vec_ZZ_p.h"
+          #include "NTL/mat_ZZ_p.h"
+          #include "NTL/ZZ_pE.h"
+          #include "NTL/ZZ_pX.h"
+          #include "NTL/ZZ_pEX.h"
+
+	     typedef NTL::ZZ Int;
+          typedef NTL::RR Real;
+
+     
+     #elif  TYPES_CODE  ==  LR 
+
+          #include "NTL/ZZ.h"
+          #include "NTL/vec_ZZ.h"
+          #include "NTL/mat_ZZ.h"
+          #include "NTL/ZZ_p.h"
+          #include "NTL/vec_ZZ_p.h"
+          #include "NTL/mat_ZZ_p.h"
+          #include "NTL/ZZ_pE.h"
+          #include "NTL/ZZ_pX.h"
+          #include "NTL/ZZ_pEX.h"
+
+	 	typedef std::int64_t  Int;  
+          typedef NTL::RR Real;
+	 
+     #endif
+
+     #ifdef TYPES_CODE
+       typedef NTL::vector<Int> IntVec;
+       typedef NTL::matrix<Int> IntMat;
+       typedef NTL::vector<Real> RealVec;
+       typedef NTL::matrix<Real> RealMat;
+     #endif
 
 #endif

@@ -27,7 +27,7 @@
 
 #include "latticetester/Util.h"
 #include "latticetester/EnumTypes.h"
-#include "latticetester/IntLatticeBase.h"
+#include "latticetester/IntLattice.h"
 #include "latticetester/Normalizer.h"
 #include "latticetester/NormaBestLat.h"
 #include "latticetester/NormaBestBound.h"
@@ -477,7 +477,7 @@ namespace LatticeTester {
     bool LatticeAnalysis<Int, Real>::performReduction(
         Config<Int, IntMat>& config) {
 
-      IntLatticeBase<Int, Real>
+      IntLattice<Int, Real>
         Basis(config.basis, config.NumCols);
       Reducer<Int, Real> Red(Basis);
       PreReductionType reduction = config.config.reduct.method;
@@ -499,7 +499,7 @@ namespace LatticeTester {
     bool LatticeAnalysis<Int, Real>::performShortest(
         Config<Int, IntMat>& config) {
       bool result = false;
-      IntLatticeBase<Int, Real>
+      IntLattice<Int, Real>
         Basis(config.basis, config.NumCols);
       Reducer<Int, Real> Red(Basis);
 
@@ -528,7 +528,7 @@ namespace LatticeTester {
           Config<Int, IntMat>& config)
     {
       bool result = false;
-      IntLatticeBase<Int, Real>
+      IntLattice<Int, Real>
         Basis(config.basis, config.NumCols);
       Reducer<Int, Real> Red(Basis);
 

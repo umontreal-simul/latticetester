@@ -40,14 +40,16 @@
    file used /examples/bench/1073741827_75_0.dat to /examples/bench/1073741827_75_9.dat
  **/
 
-#define NTL_TYPES_CODE 2
+
+//#define NTL_TYPES_CODE 2
+#define TYPES_CODE  ZR
 #include <iostream>
 #include <ctime>
-#include "latticetester/Types.h"
+#include "latticetester/FlexTypes.h"
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/Util.h"
 #include "latticetester/ParamReader.h"
-#include "latticetester/IntLatticeBase.h"
+#include "latticetester/IntLattice.h"
 #include "latticetester/Reducer.h"
 #include "latticetester/EnumTypes.h"
 #include "NTL/tools.h"

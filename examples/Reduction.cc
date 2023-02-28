@@ -30,15 +30,17 @@
 // We define the numeric types.
 // It is possible to use this example with TYPES 2 and 3. For now 1 calls the
 // same function for both execution and we look forward to change that.
-#define NTL_TYPES_CODE 2
+//#define NTL_TYPES_CODE 2
+#define TYPES_CODE  ZR
+
 
 #include <iostream>
 #include <ctime>
 
 #include "latticetester/ParamReader.h"
-#include "latticetester/Types.h"
+#include "latticetester/FlexTypes.h"
 #include "latticetester/Reducer.h"
-#include "latticetester/IntLatticeBase.h"
+#include "latticetester/IntLattice.h"
 #include "latticetester/WriterRes.h"
 
 #include "Examples.h"
@@ -83,7 +85,7 @@ int main() {
       // We dynamically allocate memory to these two pointers every time we need to
       // create an object of their type. This is because of the OOP approach
       // to lattice reduction.
-      IntLatticeBase<Int, Real>* basis;
+      IntLattice<Int, Real>* basis;
       Reducer<Int, Real>* red;
 
       //! Variables definition
@@ -106,7 +108,7 @@ int main() {
 
       // Dieter reduction before shortest vector search
       tmp = clock();
-      basis = new IntLatticeBase<Int, Real>(matrix1, numlines);
+      basis = new IntLattice<Int, Real>(matrix1, numlines);
       red = new Reducer<Int, Real>(*basis);
       red->redDieter(0);
       die_time[j] += clock() - tmp;
@@ -123,7 +125,7 @@ int main() {
 
       // LLL reduction before shortest vector search
       tmp = clock();
-      basis = new IntLatticeBase<Int, Real>(matrix1, numlines);
+      basis = new IntLattice<Int, Real>(matrix1, numlines);
       red = new Reducer<Int, Real>(*basis);
       red->redLLLNTL();
       lll_time[j] += clock() - tmp;
@@ -140,7 +142,7 @@ int main() {
 
       // BKZ reduction before shortest vector search
       tmp = clock();
-      basis = new IntLatticeBase<Int, Real>(matrix1, numlines);
+      basis = new IntLattice<Int, Real>(matrix1, numlines);
       red = new Reducer<Int, Real>(*basis);
       red->redBKZ();
       bkz_time[j] += clock() - tmp;

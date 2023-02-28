@@ -1,7 +1,7 @@
 
 /**In this example, we show the use of most of the method in class BasisConstruction.
  * We begin by reading a file that contains the basis information and create an
- * 'IntLatticeBase' object. The basis have 10x10 dimension, the base is modulo  1021.
+ * 'IntLattice' object. The basis have 10x10 dimension, the base is modulo  1021.
  * The name of the dat file is '1021_10_1.dat'. It is in the 'examples' folder of LatticeTester.
  * The absolue path is 'examples/bench/1021_10_1'.
  *
@@ -19,6 +19,7 @@
  * *
  **/
 //#define NTL_TYPES_CODE 2
+#define TYPES_CODE  ZD
 #include <iostream>
 #include <ctime>
 #include <NTL/mat_GF2.h>
@@ -30,20 +31,20 @@
 #include <NTL/RR.h>
 
 
-//#include "latticetester/Types.h"
+#include "latticetester/FlexTypes.h"
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/Util.h"
 #include "latticetester/ParamReader.h"
-#include "latticetester/IntLatticeBase.h"
+#include "latticetester/IntLattice.h"
 #include "latticetester/Reducer.h"
 #include "latticetester/EnumTypes.h"
 #include "Examples.h"
 
 
-typedef Int    NTL::ZZ
-typedef Real   NTL::RR
+//typedef Int    NTL::ZZ
+//typedef Real   NTL::RR
+//#include "latticetester/FlexTypes.h" 
 
-#include "latticetester/FlexTypes.h" 
 using namespace LatticeTester;
 
 namespace
@@ -53,11 +54,12 @@ namespace
 
 int main()
 {
-  IntLatticeBase<Int, Real> *lattice;
+  IntLattice<Int, Real> *lattice;
   BasisConstruction<Int> constr; // The basis constructor we will use
   IntMat bas_mat, dua_mat;
   IntMat w_copie, m_v, m_v2;
-  NTL::Mat<NTL::ZZ> m_dual, w_copie2;
+ // NTL::Mat<NTL::ZZ> m_dual, w_copie2;  //today
+  IntMat  m_dual, w_copie2;
   Int m(1021);
   clock_t tmps;
 
@@ -90,8 +92,8 @@ int main()
   reader.readBMat(bas_mat, ln, 0, numlines);
 
   // Creating a lattice basis
-  // lattice = new IntLatticeBase<Int, Real>(bas_mat, bas_mat, m, numlines);
-  lattice = new IntLatticeBase<Int, Real>(bas_mat, numlines);
+  // lattice = new IntLattice<Int, Real>(bas_mat, bas_mat, m, numlines);
+  lattice = new IntLattice<Int, Real>(bas_mat, numlines);
   std::cout << " The initial base\n";
   printBase(lattice->getBasis()); // The primal basi is 'bas_mat'
 
@@ -118,15 +120,20 @@ int main()
   constr.LLLConstruction(w_copie, 0.99999);
   printBase(w_copie);
 
-  NTL::ZZ mm(1021);
+  //NTL::ZZ mm(1021); //today
+   Int mm(1021);
+
+
   // The copy w_copie 'NTL::Mat' basis for which we compute the m-dual
-  copyMatrixToMat(bas_mat, w_copie2);
+  
+  //copyMatrixToMat(bas_mat, w_copie2); //today
+
   // std::cout << " The basis initial \n";
   // printBase(bas_mat);
   std::cout << " The copy w_copie 'NTL::Mat' basis for which we compute the m-dual \n";
   printBase2(w_copie2);
   // computing the m-dual with a non-triangular basis
-  constr.calcDual(w_copie2, m_dual, mm);
+  constr.calcDual22(w_copie2, m_dual, mm);
   // printBase2(m_dual);
   // Copy basis for the m-dual
   copy(bas_mat, w_copie);
@@ -160,6 +167,7 @@ int main()
   tps = (double)(clock() - tmps) / (CLOCKS_PER_SEC);
   std::cout << " Time (in second) to compute 100 m-dual from upper triangular basis: " << tps << std::endl;
 
+  
   tmps = clock();
   for (int i = 0; i < 100; i++)
   {
@@ -167,7 +175,8 @@ int main()
   }
   tps = (double)(clock() - tmps) / (CLOCKS_PER_SEC);
   std::cout << " Time (in second) to compute 100 m-dual from non-traingular basis: " << tps << std::endl;
-
+  
+ 
   /*
    * To compare the speed of triangular 'BasisConstruction::upperTriangular'
    * and the speed of 'BasisConstruction::LLLConstruction'

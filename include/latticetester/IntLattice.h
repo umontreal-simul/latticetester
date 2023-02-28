@@ -15,535 +15,871 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-
 #ifndef LATTICETESTER_INTLATTICE_H
 #define LATTICETESTER_INTLATTICE_H
 
-#include "latticetester/IntLatticeBase.h"
-#include "latticetester/NormaBestLat.h"
-#include "latticetester/NormaBestBound.h"
-#include "latticetester/NormaLaminated.h"
-#include "latticetester/NormaRogers.h"
-#include "latticetester/NormaMinkL1.h"
-#include "latticetester/NormaPalpha.h"
-#include "latticetester/NormaMinkL2.h"
-#include "latticetester/Normalizer.h"
-#include "latticetester/Coordinates.h"
-#include "latticetester/Lacunary.h"
+#include "latticetester/EnumTypes.h"
 #include "latticetester/Util.h"
-#include "latticetester/BasisConstruction.h"
-#include <cassert>
+#include "latticetester/NTLWrap.h"
 
+#include <string>
+#include <sstream>
+#include <iomanip>
+#include <cassert>
 
 namespace LatticeTester {
 
-  /**
-   * This abstract class extends `IntLatticeBase` and is a skeleton for the
-   * specialized classes that define specific types of lattices.
-   * It is not intended to be used directly, but only via subclasses.
-   * An `IntLattice` is an integral lattice object jut like in `IntLatticeBase`,
-   * but the present class offers additional (virtual) methods that must be
-   * implemented in subclasses.
-   *
-   * In particular, there is a method to construct the lattice defined as the
-   * projection of the full lattice on a subset  \f$I\f$  of coordinates indices
-   * defined by a `Coordinates` object, a method to dualize the lattice
-   * (exchange the basis with the m-dual basis),
-   * and a virtual method that should be implemented in subclasses to
-   * recompute a basis for different numbers of dimensions and subsets of coordinates.
-   *
-   * **REMOVE:**
-   * (I do not think we need to have this here, but only where we compute the FOMs.)
-   * The lattices considered here are assumed to have a special structure, which is used
-   * for the computation of the lattice density and the normalization constants in the
-   * figures of merit.  It is assumed that the lattice has rank \f$k\f$ and that the
-   * rescaling was done by multiplying the primal basis vectors by \f$m\f$.
-   * All the lattices considered in the LatMRG and LatNet Builder software tools 
-   * have this property. 
-   *  
-   * **REMOVE:**
-   * A lattice of rank \f$k\f$ with integer vectors modulo \f$m\f$ contains
-   * \f$m^k\f$ distinct vectors (modulo $m$). If we divide the basis vectors by \f$m\f$,
-   * this gives \f$m^k\f$ vectors per unit of volume, so \f$m^k\f$ is the density of the 
-   * original (non-scaled) lattice. This number is used to obtain bounds on the shortest vector length,
-   * which are used to normalize the shortest vector length in the spectral test.
-   * This class offers methods to compute and store the constants
-   * \f$ \log_2(m^{2i}) \f$ for \f$ 1 \leq i \leq k \f$,
-   * which are used elsewhere to compute the normalization constants.
-   */
+/**
+ * An `IntLattice` object is an integral lattice, with its basis and `m`-dual basis
+ * (the latter is optional). There are tools to perform simple manipulations on those lattice bases.
+ * The value of `m` is always chosen in a way that all coordinates of the basis and
+ * of its `m`-dual are integers, so they can be represented exactly.
+ * The basis or its dual is rescaled by `m`, which is typically the smallest integer with this property.
+ *
+ * The dimension $t$ of the lattice is the number of independent vectors that form a basis.
+ * Usually, these vectors also have $t$ coordinates, but in general they may have more.
+ * A norm is also chosen in `NormType` to measure the vector lengths; by default it is the
+ * Euclidean norm.
+ * Methods and attributes are offered to compute and store the norms of the basis and dual basis vectors,
+ * to permute basis vectors, sort them by length and do the corresponding changes in the dual, etc.
+ * An `IntLattice` object contains several protected variables to store all these quantities.
+ * For better efficiency, we should avoid creating too many of these objects, for example when
+ * making searches for good lattices.
+ *
+ * The class `IntLatticeExt` extends this class and contains virtual methods that must
+ * be defined in its subclasses.
+ */
+template<typename Int, typename Real>
+class IntLattice {
 
-  template<typename Int, typename Real>
-  class IntLattice : public IntLatticeBase<Int, Real> {
-     private:
-		typedef NTL::vector<Int> IntVec;
-		typedef NTL::matrix<Int> IntMat;
-		typedef NTL::vector<Real> RealVec;
-		typedef NTL::matrix<Real> RealMat;
+private:
+	typedef NTL::vector<Int> IntVec;
+	typedef NTL::matrix<Int> IntMat;
+	typedef NTL::vector<Real> RealVec;
+	typedef NTL::matrix<Real> RealMat;
 
-     public:
+public:
 
-          /**
-           * A constructor that initializes the primal and dual bases with the
-           * identity matrix. The dimension of the lattice is set to `maxDim` 
-           * and the norm type is set to `norm`.
-           * @param m The scaling factor `m` for the integer coordinates
-           * @param maxDim The maximal dimension for which this lattice can be
-           * expanded/tested
-           * @param withDual Specifies whether this object contains a dual or not
-           * @param norm  The norm type to measure the vector lengths.
-           */
-          IntLattice (Int m, int maxDim, bool withDual,
-              NormType norm = L2NORM);
+	/**
+	 * Constructs a lattice whose basis is the identity, in `dim` dimensions,
+	 * with the specified norm type, and the scaling factor `m` and dual basis undefined.
+	 */
+	IntLattice(const int dim, NormType norm = L2NORM);
 
-          /**
-           * Copy constructor that makes a copy of `lat`. The maximal dimension 
-           * of the created basis is set equal to the current dimension in `lat`.
-           */
-          IntLattice (const IntLattice<Int, Real> & lat);
+	/**
+	 * Constructs a lattice with the given basis, in `dim` dimensions,
+	 * and with the specified norm type. The dual basis and `m` are not initialized.
+	 * The `basis` matrix must be a `dim` by `dim` square integer matrix.
+	 */
+	IntLattice(const IntMat basis, const int dim, NormType norm = L2NORM);
 
-          /**
-           * Makes a *shallow* copy of `lattice` into this object.  Does not make a copy of the
-           * internal vectors and matrices, but just copies the pointers!
-           * NOTE: should it be `called` shallowCopy to make it clear?
-           */
-          void copy (const IntLattice<Int, Real> & lattice);
+	/**
+	 * Constructs a lattice with the given basis and given m-dual basis for the given `m`,
+	 * in `dim` dimensions, and with the specified norm type.
+	 */
+	IntLattice(const IntMat primalbasis, const IntMat dualbasis,
+			const Int m, const int dim, NormType norm = L2NORM);
 
-          /**
-           * Destructor. Depends on specific subclass.
-           */
-          virtual ~IntLattice ();
+	/**
+	 * Copy constructor. Makes a deep copy of `lat` into `*this`.
+	 */
+	IntLattice(const IntLattice<Int, Real> &lat);
 
-          /**
-           * This returns the rank (order) of the lattice.
-           */
-          // int getOrder() const { return m_order; }
+	/**
+	 * Destructor.
+	 */
+	~IntLattice();
 
-          /**
-           * Increments the dimension of the basis and dual basis vectors by 
-           * one. This initializes the added components to `0` and does not 
-           * compute the value taken by the added components and vector. It also
-           * resets vectors containing the norms. The implementation in this
-           * class is meant to be overriden by subclasses.
-           */
-          virtual void incDim ();
+	/**
+	 * Cleans and releases all the memory allocated to this lattice.
+	 * **Deprecated: REMOVE!**
+	 */
+	// void kill();
 
-          /**
-           * Computes and stores the logarithm of the normalization factors
-           * (<tt>m_lgVolDual2</tt>) in all dimensions up to `MaxDim`, for this
-           * lattice. Here, `lgm2` must be \f$\log_g m^2\f$ and the computed values are
-           * those returned by `getLgVolDual2` below.
-           * These normalization contants are for the Euclidean norm only. 
-           */
-          // void calcLgVolDual2 (double lgm2);
+	/**
+	 * Makes a full deep copy of the lattice `lat` into this object.
+	 * New matrix and vector objects are constructed to store the bases and norms.
+	 */
+	void copyLattice(const IntLattice<Int, Real> &lat);
 
-          /**
-           * Returns \f$\log m^{2i}\f = i \log m^2$  for \f$1\le i \le k\f$,
-           * and \f$\log m^{2k}\f$ otherwise, where \f$k\f$ is the lattice rank (or order).
-           */
-          // double getLgVolDual2 (int i) const { return m_lgVolDual2[i]; }
+	/*
+	 * Previously named `copyLattice`.
+	 * Overwrites the first `n` elements of the basis of the lattice `lat` over the elements
+	 * of the basis of the current object. The latter must have dimension `n` already,
+	 * otherwise an error message is printed and nothing also is done!
+	 * The vector norms and the dual basis (if available) are also overwritten.
+	 * The difference with `copyLattice` is that here, no new matrix or vector is constructed;
+	 * the previous ones are re-used.
+	 */
+	 void overwriteLattice(const IntLattice<Int, Real> &lat, long n);
+	 
+	/**
+	 * Initializes a vector containing the norms of the basis vectors to -1
+	 * for all components.  It means the norms are no longer up to date.
+	 */
+	void initVecNorm();
 
-          /**
-           * Exchange the primal and m-dual bases.   ***  Put in IntLatticeBase ?
-           * If the dual is not defined, does nothing!
-           *  ** Add Error message ? **
-           */
-          void dualize ();
+	/**
+	 * Returns the basis represented in a matrix.
+	 */
+	IntMat& getBasis() {
+		return m_basis;
+	}
 
-          /**
-           * REMOVE: This method precomputes the log of the lattice density (or of its dual),
-           * as a function of the dimension.  These values are part of the normalization constants used to get
-           * the normalized merit from the shortest vectors in the lattice. If
-           * `dualF` is `true`, the values are computed for the m-dual
-           * lattice, otherwise they are computed for the primal lattice.
-           *
-           * Currently, this only computes the log of m^(k/dim) or its inverse. 
-           * ** Done only once in a search? **  
-           */
-          // void computeNormalConstants(bool dualF);
-          //    void fixLatticeNormalization (bool dualF);
+	/**
+	 * Returns the m-dual basis represented in a matrix.
+	 */
+	IntMat& getDualBasis() {
+		return m_dualbasis;
+	}
 
-          /**
-           * Builds the basis (and perhaps m-dual basis) for the projection `proj` for this
-           * lattice. The result is placed in the `lattice` object. The LLL algorithm is 
-           * applied to recover a proper basis. 
-           */
-          virtual void buildProjection (IntLattice<Int, Real>* lattice,
-              const Coordinates & proj);
+	/**
+	 * Returns the dimension of the lattice, which is the dimension of the basis vectors,
+	 * and also usually the number of independent vectors in the basis.
+	 */
+	int getDim() const {
+		return m_dim;
+	}
 
-          /**
-           * This virtual method builds a basis for the lattice in `dim` dimensions.
-           */
-          virtual void buildBasis (int dim);
+	/**
+	 * Returns the `NormType` used by this lattice.
+	 */
+	NormType getNormType() const {
+		return m_norm;
+	}
 
-          /**
-           * REMOVE:  This depends on the lattice only via the density.
+	/**
+	 * Returns the norm (squared in case of the L^2 norm) of the i-th vector of the basis,
+	 * with the index i starting at 0.
+	 */
+	Real getVecNorm(const int &i) {
+		return m_vecNorm[i];
+	}
 
-           * Creates and returns a Normalizer corresponding to the normalization
-           * type `norma` and the density of the current lattice. 
-           * The argument `alpha` = \f$\alpha\f$ is used only for the 
-           * \f$P_{\alpha}\f$ measure. For all other cases, it is unused.
-           * The returned Normalizer is returned but not stored in this object.
-           * It contains the complete normalization constants for the number of dimensions
-           * of this lattice. 
-           */
-          LatticeTester::Normalizer * getNormalizer (NormaType norma,
-              int alpha, bool dualF);
+	/**
+	 * Returns the norm (squared in case of the L^2 norm) of each basis vector, in a vector.
+	 */
+	RealVec getVecNorm() const {
+		return m_vecNorm;
+	}
 
-          /**
-           * Selects and stores a vector of indices with lacunary values.
-           */
-          virtual void setLac (const Lacunary<Int> &) {};
+	/**
+	 * Returns the norm (squared in case of the L^2 norm) of the i-th vector of the m-dual basis.
+	 */
+	Real getDualVecNorm(const int &i) {
+		return m_dualvecNorm[i];
+	}
 
-          /**
-           * Returns a string describing the lattice. 
-           */
-          virtual std::string toString() const;
+	/**
+	 * Returns the norm (squared in case of the L^2 norm) of each vector of the m-dual basis, in a vector.
+	 */
+	RealVec getDualVecNorm() const {
+		return m_dualvecNorm;
+	}
 
-        protected:
+	/**
+	 * Returns the scaling factor `m`, which is 1 by default.
+	 */
+	Int getModulo() const {
+		return m_modulo;
+	}
 
-          /**
-           * \copydoc LatticeTester::IntLatticeBase::kill()
-           *  ** USEFUL ? **
-           */
-          virtual void kill ();
+	/**
+	 * Sets the dimension of the basis to `dim`. This does not change any of the
+	 * basis vectors, but only the dimension variable.
+	 * Warning: After calling this method, the size of the basis matrix may no longer agree with the dimension.
+	 */
+	void setDim(const int &dim) {
+		if (dim > 0)
+			m_dim = dim;
+	}
 
-          /**
-           * Allocates space to the vectors used internally.
-           * This should not be called directly by the user.
-           * It is called by the constructors and copy methods.
-           */
-          void init ();
+	/**
+	 * Sets the `NormType` used by this lattice to `norm`.
+	 */
+	void setNormType(const NormType &norm) {
+		m_norm = norm;
+	}
 
-          /**
-           * REMOVE?  The order (rank) of the basis. Usually defined in subclasses.
-           */
-          // int m_order;
+	/**
+	 * Sets the norm of the `i`-th component of the basis to `value`, which is assumed to
+	 * be the correct value.  To recompute the norm, use `updateVecNorm(const int&)` instead.
+	 */
+	void setVecNorm(const Real &value, const int &i) {
+		m_vecNorm[i] = value;
+	}
 
-          /**
-           * The maximum Dimension for the basis (for tests)
-           */
-          int m_maxDim;
+	/**
+	 * Sets the norm of the `i`-th component of the m-dual basis to `value`,  which is assumed to
+	 * be the correct value.  To recompute the norm, use `updateDualVecNorm(const int&)` instead.
+	 */
+	void setDualVecNorm(const Real &value, const int &i) {
+		m_dualvecNorm[i] = value;
+	}
 
-          /**
-           * A vector of normalization constants.  See `calcLgVolDual2`.
-           */
-          // double *m_lgVolDual2;
+	/**
+	 * Returns `true` iff an m-dual basis is available.
+	 */
+	bool withDual() const {
+		return m_withDual;
+	}
 
-          /**
-           * \f$\log_2 (m^2)\f$.
-           */
-          // double m_lgm2;
+	/**
+	 * Sets the `withDual` flag to `flag`. This flag indicates whether or
+	 * not this IntLattice contains an up-to-date m-dual basis. It is the flag
+	 * returned by `withDual()`.
+	 */
+	void setDualFlag(bool flag) {
+		m_withDual = flag;
+	}
 
-          /**
-           * The m-dual basis of the current projection.
-           */
-          IntMat m_wSI;
+	/**
+	 * Sets all the values in the array containing the norms of the basis vectors to -1.
+	 * This means that these norms are no longer up to date.
+	 */
+	void setNegativeNorm();
 
-          /**
-           * The primal basis of the current projection.
-           */
-          IntMat m_vSI;
+	/**
+	 * Sets the value of the `i`-th component in the array containing the
+	 * norms of the basis vectors to -1.
+	 */
+	void setNegativeNorm(const int &i) {
+		m_vecNorm[i] = -1;
+	}
 
-          /**
-           * Working Variables used in MRGLattice.h
-           * **  WHAT ARE THEY DOING HERE? MOVE THEM TO WHERE THEY BELONG.  **
-           */
-          // Int m_t1, m_t2, m_t3;
+	/**
+	 * Sets all the values in the array containing the norms of the dual basis
+	 * vectors to -1, to indicate that these norms are no longer up to date.
+	 */
+	void setDualNegativeNorm();
 
-      }; // Class IntLattice
+	/**
+	 * Sets the value of the `i`-th component in the array containing the
+	 * norms of the m-dual basis vectors to -1.
+	 */
+	void setDualNegativeNorm(const int &i) {
+		m_dualvecNorm[i] = -1;
+	}
 
-  //===========================================================================
+	/**
+	 * Updates the array containing the basis vectors norms by recomputing them.
+	 */
+	void updateVecNorm();
 
-  template<typename Int, typename Real>
-       IntLattice<Int, Real>::IntLattice (Int m,
-          int maxDim, bool withDual, NormType norm): 
-       IntLatticeBase<Int, Real>(maxDim, norm)  {
-    this->m_dim = maxDim;
-    this->m_withDual = withDual;
-    this->m_modulo = m;
-    // m_order = k;
-    init ();
-    this->m_basis.resize(this->m_dim, this->m_dim);
-    this->m_vecNorm.resize(this->m_dim);
-    this->setNegativeNorm();
-    if (withDual) {
-      this->m_dualbasis.resize(this->m_dim, this->m_dim);
-      this->m_dualvecNorm.resize(this->m_dim);
-      this->setDualNegativeNorm();
-    }
+	/**
+	 * Updates the array containing the basis vectors norms from the `d`-th
+	 * component to the last, by recomputing them.
+	 * Putting `d=0` recomputes all the norms.
+	 */
+	void updateVecNorm(const int &d);
+
+	/**
+	 * Updates the array containing the m-dual basis vectors norms by recomputing them.
+	 * Assumes that the dual basis is available.
+	 */
+	void updateDualVecNorm();
+
+	/**
+	 * Updates the array containing the m-dual basis vectors norms from the `d`-th
+	 * component to the last by recomputing them.
+	 * */
+	void updateDualVecNorm(const int &d);
+
+	/**
+	 * Updates the `i`-th value of the array containing the square norms of the
+	 * basis vectors by recomputing it using the `L2NORM`.
+	 */
+	void updateScalL2Norm(const int i);
+
+	/**
+	 * Updates the `k1`-th to the `k2-1`-th values of the array containing
+	 * the square norms of the basis vectors by recomputing them using the `L2NORM`.
+	 */
+	void updateScalL2Norm(const int k1, const int k2);
+
+	/**
+	 * Updates the `i`-th value of the array containing the square norms of the
+	 * m-dual basis vectors by recomputing it using the `L2NORM`.
+	 */
+	void updateDualScalL2Norm(const int i);
+
+	/**
+	 * Updates the `k1`-th to the `k2-1`-th values of the array containing
+	 * the square norms of the m-dual basis vectors by recomputing them using the `L2NORM`.
+	 */
+	void updateDualScalL2Norm(const int k1, const int k2);
+
+	/**
+	 * Exchanges vectors `i` and `j` in the basis. This also changes the
+	 * m-dual basis vectors and the arrays containing secondary information
+	 * about the two basis (like the norms) accordingly.
+	 */
+	void permute(int i, int j);
+
+	/**
+	 * Exchanges vectors `i` and `j` in the basis without changing the m-dual.
+	 * See `permute()`.
+	 */
+	void permuteNoDual(int i, int j);
+
+    /**
+     * Exchange the primal and m-dual bases.
+     * If the dual is not defined, exits with an error message.
+     */
+    void dualize ();
+
+    /**
+	 * Returns `true` iff the m-dual basis contained in the object really is
+	 * the m-dual of the basis.  This also returns false
+	 * if no dual has been specified.
+	 */
+	bool checkDuality();
+
+	/**
+	 * Sorts the basis vectors with indices greater of equal to `d` by
+	 * increasing length. The m-dual vectors are permuted accordingly. Assumes
+	 * that the lengths (norms) of the corresponding basis vectors are up to date.
+	 */
+	void sort(int d);
+
+	/**
+	 * Sorts the basis vectors with indices greater of equal to `d` by
+	 * increasing length. The m-dual vectors are **not** permuted. See `sort()`.
+	 */
+	void sortNoDual(int d);
+
+	/**
+	 * Returns a string that contains the primal basis vectors and their norms.
+	 */
+	std::string toStringBasis() const;
+
+	/**
+	 * Returns a string with the m-dual basis vectors and their norms.
+	 */
+	std::string toStringDualBasis() const;
+
+	/**
+	 * Returns a string that represents the lattice and its parameters.
+	 * It contains the dimension, the norm used, the basis and m-dual basis vectors and
+	 * the basis and dual basis vector norms.
+	 */
+	std::string toString() const;
+
+	/**
+	 * Writes on standard output the string returned by `toString`.
+	 */
+	void write() const;
+
+protected:
+
+	/**
+	 * The rows of this matrix are the primal basis vectors.
+	 */
+	IntMat m_basis;
+
+	/**
+	 * The rows of this matrix are the m-dual basis vectors.  May not be initialized.
+	 * When m_withDual = true, it must be initialized.
+	 */
+	IntMat m_dualbasis;
+
+	/**
+	 * The dimension of the lattice, which is the number of (independent) vectors
+	 * in the basis. It cannot exceed the number of coordinates in those vectors.
+	 */
+	int m_dim;
+
+	/**
+	 * The NormType used to measure the vector lengths for this lattice.
+	 * It is used for the basis reduction and compute a shortest vector, for example.
+	 */
+	NormType m_norm;
+
+	/**
+	 * A vector that stores the norm of each basis vector.
+	 * In case of the L_2 norm, it contains the square norm instead.
+	 * A value of -1 means that the norm is not up to date.
+	 */
+	RealVec m_vecNorm;
+
+	/**
+	 * Similar to vecNorm, but for the m-dual basis.
+	 */
+	RealVec m_dualvecNorm;
+
+    /**
+	 * The scaling factor `m` used for rescaling the lattice. It is 0 when undefined.
+	 */
+	Int m_modulo;
+
+	/**
+	 * This `m_withDual` variable is `true` iff an m-dual basis is available.
+	 */
+	bool m_withDual;
+};
+
+// class IntLattice
+
+//===========================================================================
+
+template<typename Int, typename Real>
+IntLattice<Int, Real>::IntLattice(const int dim, NormType norm) :
+		m_dim(dim), m_norm(norm), m_modulo(0), m_withDual(false) {
+	this->m_basis.resize(dim, dim);
+	this->m_vecNorm.resize(dim);
+	initVecNorm();
+}
+
+//===========================================================================
+
+template<typename Int, typename Real>
+IntLattice<Int, Real>::IntLattice(const IntMat basis,
+		const int dim, NormType norm) :
+		m_basis(basis), m_dim(dim), m_norm(norm),  m_modulo(0), m_withDual(false) {
+	this->m_vecNorm.resize(dim);
+	initVecNorm();
+}
+
+/*=========================================================================*/
+
+template<typename Int, typename Real>
+IntLattice<Int, Real>::IntLattice(const IntMat primalbasis,
+		const IntMat dualbasis, const Int m, const int dim, NormType norm) :
+		IntLattice<Int, Real>(primalbasis, dim, norm) {
+	this->m_dualbasis = IntMat(dualbasis);
+	this->m_dualvecNorm.resize(dim);
+	this->m_modulo = m;
+	this->m_withDual = true;
+	setDualNegativeNorm();
+}
+
+/*=========================================================================*/
+
+template<typename Int, typename Real>
+IntLattice<Int, Real>::IntLattice(
+		const IntLattice<Int, Real> &lat) {
+	copyLattice(lat);
+}
+
+/*=========================================================================*/
+
+template<typename Int, typename Real>
+IntLattice<Int, Real>::~IntLattice() {
+	// kill();
+	this->m_basis.IntMat::clear();
+	this->m_dualbasis.IntMat::clear();
+	this->m_vecNorm.clear();
+	this->m_dualvecNorm.clear();
+}
+
+/*=========================================================================*/
+
+template<typename Int, typename Real>
+void IntLattice<Int, Real>::copyLattice(
+		const IntLattice<Int, Real> &lat) {
+	this->m_dim = lat.m_dim;
+	this->m_basis = IntMat(lat.m_basis);
+	this->m_dualbasis = IntMat(lat.m_dualbasis);
+	this->m_norm = lat.m_norm;
+	this->m_vecNorm = RealVec(lat.m_vecNorm);
+	this->m_dualvecNorm = RealVec(lat.m_dualvecNorm);
+	this->m_modulo = lat.m_modulo;
+	this->m_withDual = lat.m_withDual;
+}
+
+/*=========================================================================*/
+
+template<typename Int, typename Real>
+void IntLattice<Int, Real>::overwriteLattice(
+		const IntLattice<Int, Real> &lat, long n) {
+	if (this->m_dim == n) {
+		CopyMatr(this->m_basis, lat.m_basis, n);
+		CopyVect(this->m_vecNorm, lat.m_vecNorm, n);
+		this->m_withDual = lat.m_withDual;
+		if (this->m_withDual) {
+			this->m_dualbasis.resize(this->m_basis.size1(),
+					this->m_basis.size1());
+			this->m_dualvecNorm.resize(this->m_basis.size1());
+			CopyMatr(this->m_dualbasis, lat.m_dualbasis, n);
+			CopyVect(this->m_dualvecNorm, lat.m_dualvecNorm, n);
+		}
+		this->m_modulo = lat.m_modulo;
+	}
+	else
+		std::cout << "Calling IntLattice::overwriteLattice with wrong dimension"
+				<< std::endl;
+	}
+
+/*=========================================================================*/
+
+template<typename Int, typename Real>
+void IntLattice<Int, Real>::initVecNorm() {
+	for (int i = 0; i < this->m_dim; i++) {
+		this->m_vecNorm[i] = -1;
+	}
+}
+
+/*=========================================================================*/
+
+template<typename Int, typename Real>
+void IntLattice<Int, Real>::setNegativeNorm() {
+	for (int i = 0; i < this->m_dim; i++) {
+		this->m_vecNorm[i] = -1;
+	}
+}
+
+/*=========================================================================*/
+
+template<typename Int, typename Real>
+void IntLattice<Int, Real>::setDualNegativeNorm() {
+	for (int i = 0; i < this->m_dim; i++) {
+		this->m_dualvecNorm[i] = -1;
+	}
+}
+
+/*=========================================================================*/
+
+template<typename Int, typename Real>
+void IntLattice<Int, Real>::updateVecNorm() {
+	updateVecNorm(0);
+}
+
+/*=========================================================================*/
+
+template<typename Int, typename Real>
+void IntLattice<Int, Real>::updateVecNorm(const int &d) {
+	assert(d >= 0);
+	for (int i = d; i < this->m_dim; i++) {
+		NTL::matrix_row<IntMat> row(this->m_basis, i);
+		if (this->m_norm == L2NORM) {
+			ProdScal<Int>(row, row, this->m_dim, this->m_vecNorm[i]);
+		} else {
+			CalcNorm<IntVec, Real>(row, this->m_dim, this->m_vecNorm[i],
+					this->m_norm);
+		}
+	}
+}
+
+/*=========================================================================*/
+
+template<typename Int, typename Real>
+void IntLattice<Int, Real>::updateDualVecNorm() {
+	updateDualVecNorm(0);
+}
+
+/*=========================================================================*/
+
+template<typename Int, typename Real>
+void IntLattice<Int, Real>::updateDualVecNorm(const int &d) {
+	assert(d >= 0);
+	for (int i = d; i < this->m_dim; i++) {
+		NTL::matrix_row<IntMat> row(this->m_dualbasis, i);
+		if (this->m_norm == L2NORM) {
+			ProdScal<Int>(row, row, this->m_dim, this->m_dualvecNorm[i]);
+		} else {
+			CalcNorm<IntVec, Real>(row, this->m_dim, this->m_dualvecNorm[i],
+					this->m_norm);
+		}
+	}
+}
+
+/*=========================================================================*/
+
+template<typename Int, typename Real>
+void IntLattice<Int, Real>::updateScalL2Norm(const int i) {
+	NTL::matrix_row<IntMat> row(this->m_basis, i);
+	ProdScal<Int>(row, row, this->m_dim, this->m_vecNorm[i]);
+}
+
+/*=========================================================================*/
+
+template<typename Int, typename Real>
+void IntLattice<Int, Real>::updateScalL2Norm(const int k1,
+		const int k2) {
+	for (int i = k1; i < k2; i++) {
+		updateScalL2Norm(i);
+	}
+}
+
+/*=========================================================================*/
+
+template<typename Int, typename Real>
+void IntLattice<Int, Real>::updateDualScalL2Norm(const int i) {
+	NTL::matrix_row<IntMat> row(this->m_dualbasis, i);
+	ProdScal<Int>(row, row, this->m_dim, this->m_dualvecNorm[i]);
+}
+
+/*=========================================================================*/
+
+template<typename Int, typename Real>
+void IntLattice<Int, Real>::updateDualScalL2Norm(const int k1,
+		const int k2) {
+	for (int i = k1; i < k2; i++) {
+		updateDualScalL2Norm(i);
+	}
+}
+
+/*=========================================================================*/
+
+template<typename Int, typename Real>
+void IntLattice<Int, Real>::permute(int i, int j) {
+	if (i == j)
+		return;
+	for (int k = 0; k < this->m_dim; k++) {
+		swap9(this->m_basis(j, k), this->m_basis(i, k));
+		if (this->m_withDual) {
+			swap9(this->m_dualbasis(j, k), this->m_dualbasis(i, k));
+		}
+	}
+	swap9(this->m_vecNorm[i], this->m_vecNorm[j]);
+	if (this->m_withDual) {
+		swap9(this->m_dualvecNorm[i], this->m_dualvecNorm[j]);
+	}
+}
+
+/*=========================================================================*/
+
+template<typename Int, typename Real>
+void IntLattice<Int, Real>::permuteNoDual(int i, int j) {
+	if (i == j)
+		return;
+	for (int k = 0; k < this->m_dim; k++) {
+		swap9(this->m_basis(j, k), this->m_basis(i, k));
+	}
+	swap9(this->m_vecNorm[i], this->m_vecNorm[j]);
+}
+
+//===========================================================================
+
+template<typename Int, typename Real>
+    void IntLattice<Int, Real>::dualize () {
+    if(!(this->m_withDual)) {
+	    std::cout << "\n***** ERROR: calling dualize while dual basis is not defined."
+          << std::endl;
+	    return;
+		}
+    std::swap(this->m_basis, this->m_dualbasis);
+    this->setNegativeNorm ();
+    this->setDualNegativeNorm ();
   }
 
-  //===========================================================================
+/*=========================================================================*/
 
-  template<typename Int, typename Real>
-  IntLattice<Int, Real>::IntLattice (const IntLattice<Int, Real> & lat):
-      IntLatticeBase<Int, Real>(lat)  {
-    this->m_withDual = lat.withDual();
-    // m_order = lat.m_order;
-    init ();
-    m_vSI = lat.m_vSI;
-    if (this->m_withDual){
-      this->setDualNegativeNorm();
-      m_wSI = lat.m_wSI;
-    }
-  }
+template<typename Int, typename Real>
+bool IntLattice<Int, Real>::checkDuality() {
+	if (!this->m_withDual) {
+		std::cout << "Calling IntLattice::checkDuality with undefined m-dual"
+				<< std::endl;
+		return false;
+	}
+	Int S;
+	int dim = getDim();
 
-  //===========================================================================
+	for (int i = 0; i < dim; i++) {
+		for (int j = 0; j < dim; j++) {
+			NTL::matrix_row<const IntMat> row1(this->m_basis, i);
+			NTL::matrix_row<const IntMat> row2(this->m_dualbasis, j);
+			ProdScal<Int>(row1, row2, dim, S);
+			if (j != i) {
+				if (S != 0) {
+					std::cout << "******  checkDuality failed for V[" << i
+							<< "] and W[" << j << "]" << std::endl;
+					return false;
+				}
+			} else if (S != this->m_modulo) {
+				std::cout << "******  checkDuality failed for i, j = " << i
+						<< " , " << j << std::endl;
+				return false;
+			}
+		}
+	}
+	return true;
 
-  template<typename Int, typename Real>
-  void IntLattice<Int, Real>::init ()  {
-      int dim = this->getDim ();
-      IntLatticeBase<Int, Real>::initVecNorm();
-      double temp;
-      NTL::conv (temp, this->m_modulo);
-      m_vSI.resize(dim, dim);
-      if (this->m_withDual) {
-        // m_lgVolDual2 = new double[dim+1];
-        // m_lgm2 = 2.0 * Lg (temp);
-        // m_lgVolDual2[1] = m_lgm2;
-        m_wSI.resize(dim, dim);
-      }
-    }
+}
 
-  //===========================================================================
+/*=========================================================================*/
 
-  template<typename Int, typename Real>
-      void IntLattice<Int, Real>::kill ()
-    {
-     // IntLatticeBase<Int, Real>::kill();
-      // m_vSI.clear();
-    }
+template<typename Int, typename Real>
+void IntLattice<Int, Real>::sort(int d)
+/*
+ * We assume that the (square) lengths are already updated.
+ * This gives flexibility to the user to put something else than
+ * the square Euclidean length in vecNorm.
+ */
+{
+	int dim = getDim();
+	for (int i = 0; i < dim; i++) {
+		if (getVecNorm(i) < 0) {
+			std::cout << "\n***** ERROR: in sort, Negative norm for i = " << i
+					<< ",  dim = " << dim << std::endl;
+		}
+	}
 
+	for (int i = d; i < dim; i++) {
+		int k = i;
+		for (int j = i + 1; j < dim; j++) {
+			if (getVecNorm(j) < getVecNorm(k))
+				k = j;
+		}
+		if (i != k)
+			permute(i, k);
+	}
+}
 
-  //===========================================================================
+/*=========================================================================*/
 
-  template<typename Int, typename Real>
-      IntLattice<Int, Real>::~IntLattice ()
-    {
-      //sIntLatticeBase<Int, Real>::kill();
-    }
+template<typename Int, typename Real>
+void IntLattice<Int, Real>::sortNoDual(int d)
+/*
+ * We assume that the (square) lengths are already updated.
+ * This gives flexibility to the user to use something else than
+ * the square Euclidean length.
+ */
+{
+	int dim = getDim();
+	for (int i = 0; i < dim; i++) {
+		if (getVecNorm(i) < 0) {
+			std::cout << "\n***** ERROR: sort   Negative norm for i = " << i
+					<< ",  dim = " << dim << std::endl;
+		}
+	}
+	for (int i = d; i < dim; i++) {
+		int k = i;
+		for (int j = i + 1; j < dim; j++) {
+			if (getVecNorm(j) < getVecNorm(k))
+				k = j;
+		}
+		if (i != k)
+			permuteNoDual(i, k);
+	}
+}
 
-  //===========================================================================
+/*=========================================================================*/
 
-  template<typename Int, typename Real>
-      void IntLattice<Int, Real>::incDim ()
-    {
-      IntLattice<Int, Real> lattmp (*this);
-      int dim = this->getDim();
-      this->m_basis.resize(dim+1, dim+1);
-      this->m_vecNorm.resize(dim+1);
-      if (this->m_withDual) {
-        this->m_dualbasis.resize(dim+1, dim+1);
-        this->m_dualvecNorm.resize(dim+1);
-      }
-      for (int i = 0; i < dim; i++){
-        for (int j = 0; j < dim; j++){
-          this->m_basis(i,j) = lattmp.m_basis(i,j);
-          if (this->m_withDual)
-            this->m_dualbasis(i,j) = lattmp.m_dualbasis(i,j);
-        }
-        this->m_vecNorm(i) = lattmp.m_vecNorm(i);
-        if (this->m_withDual)
-          this->m_dualvecNorm(i) = lattmp.m_dualvecNorm(i);
-      }
-      this->setNegativeNorm(dim);
-      if (this->m_withDual)
-        this->setDualNegativeNorm(dim);
-      this->setDim(dim+1);
-      return;
-    }
+template<typename Int, typename Real>
+std::string IntLattice<Int, Real>::toString() const {
+	std::ostringstream os;
+	os << "Dim = " << this->m_dim << " \n \n";
+	os << std::setprecision(10) << "Primal basis vectors:\n";
+	for (int i = 0; i < this->m_dim; i++) {
+		os << this->m_basis[i];
+		//for (int j = 0; j < this->m_dim; j++) {
+		//  os <<  this->m_basis(i,j);
+		//}
+		os << "\n";
+	}
+	os << "\nm-Dual basis vectors:\n";
+	for (int i = 0; i < this->m_dim; i++) {
+		if (this->m_withDual) {
+			os << this->m_dualbasis[i];
+			//for (int j = 0; j < this->m_dim; j++) {
+			//  os << this->m_dualbasis(i,j);
+			//}
+			os << "\n";
+		}
+	}
+	os << "\n";
+	os << "Norm used: " << toStringNorm(this->m_norm) << "\n"
+			<< std::endl;
+	os << "Norm of each Basis vector: \n";
+	os << "Primal";
+	if (this->m_withDual)
+		os << "\t\tDual\n";
+	os << "\n";
 
-  //===========================================================================
-  /**
-  template<typename Int, typename Real>
-      void IntLattice<Int, Real>::calcLgVolDual2 (double lgm2)
-    {
-      if(!(this->m_withDual)) return;
-      int dim = this->getDim();
-      int rmax = std::min(m_order, dim);
+	for (int i = 0; i < this->m_dim; i++) {
+		if (this->m_vecNorm[i] < 0) {
+			os << "NaN OR Not computed";
+		} else {
+			if (this->m_norm == L2NORM) {
+				os << NTL::sqrt(this->m_vecNorm[i]);
+			} else {
+				os << this->m_vecNorm[i];
+			}
+		}
+		os << "\t";
+		if (this->m_withDual) {
+			if (this->m_dualvecNorm[i] < 0)
+				os << "NaN OR Not computed";
+			else {
+				if (this->m_norm == L2NORM) {
+					os << NTL::sqrt(this->m_dualvecNorm[i]);
+				} else {
+					os << this->m_dualvecNorm[i];
+				}
+			}
+		}
+		os << "\n";
+	}
+	os << std::endl;
+	return os.str();
+}
 
-      m_lgVolDual2[1] = lgm2;
-      for (int r = 2; r <= rmax; r++)
-        m_lgVolDual2[r] = m_lgVolDual2[r - 1] + lgm2;
-      // WARNING [David]: one version had `m_order` instead of `rmax`.
-      for (int r = rmax + 1; r <= dim; r++)
-        m_lgVolDual2[r] = m_lgVolDual2[r - 1];
-    }
-  */
+/*=========================================================================*/
 
-  //===========================================================================
+template<typename Int, typename Real>
+void IntLattice<Int, Real>::write() const {
+	std::cout << this->toString() << "\n";
+}
 
-  template<typename Int, typename Real>
-      void IntLattice<Int, Real>::dualize ()
-    {
-      if(!(this->m_withDual)) return;
-      std::swap(this->m_basis, this->m_dualbasis);
-      this->setNegativeNorm ();
-      this->setDualNegativeNorm ();
-    }
+/*=========================================================================*/
 
-  //===========================================================================
+template<typename Int, typename Real>
+std::string IntLattice<Int, Real>::toStringBasis() const {
+	std::ostringstream os;
+	os << "Primal Basis:\n";
+	os << "  Dim = " << this->m_dim << " \n";
+	for (int i = 0; i < this->m_dim; i++) {
+		os << "    [";
+		for (int j = 0; j < this->m_dim; j++)
+			os << " " << std::setprecision(15) << this->m_basis(i, j);
+		os << " ]\n";
+	}
 
-  /**
-  template<typename Int, typename Real>
-      void IntLattice<Int, Real>::computeNormalConstants(
-          bool dualF)
-    {
-      // Normalization factor: dual to primal : m^(k/dim) -> 1/m^(k/dim)
-	  // This is the part of the normalization that depends on the lattice density.
-      if (( dualF && m_lgVolDual2[1] < 0.0) ||
-          (!dualF && m_lgVolDual2[1] > 0.0)) {
-        for (int i = 0; i < this->getDim(); i++)
-          m_lgVolDual2[i] = -m_lgVolDual2[i];
-      }
-      //   for (int i = 1; i <= getMaxDim(); i++)
-      //      std::cout << " fix  " << m_lgVolDual2[i] << endl;
-    }ss
-  */
+	os << "  Norms:\n";
+	os << "    [";
+	for (int i = 0; i < this->m_dim; i++) {
+		if (this->m_vecNorm[i] < 0) {
+			os << "-1" << " ";
+		} else {
+			os << this->m_vecNorm[i] << " ";
+		}
+	}
+	os << "]" << std::endl;
+	return os.str();
+}
 
-  //===========================================================================
+/*=========================================================================*/
 
-  template<typename Int, typename Real>
-      void IntLattice<Int, Real>::buildProjection (
-          IntLattice<Int, Real>* lattice, const Coordinates  & proj)
-    {
-      const int dim = this->getDim ();
-      //  std::cout << "      ESPION_2\n";  getPrimalBasis ().write();
-      int i = 0;
-      IntMat temp;
-      temp.SetDims(dim, dim);
-      for (auto iter = proj.begin(); iter != proj.end(); ++iter) {
-        for (int j = 0; j < dim; j++){
-          temp(j, i) = this->m_basis(j, (*iter));
-        }
-        ++i;
-      }
-      // Constructs a basis for the projection `lattice`.
-      lattice->setDim (static_cast<int>(proj.size()));
-      // lattice->m_order = m_order;
-      BasisConstruction<Int> constr;
-      constr.LLLConstruction(temp);
-      temp.SetDims(lattice->getDim(), lattice->getDim());
-      lattice->setNegativeNorm ();
-      lattice->m_basis = temp;
+template<typename Int, typename Real>
+std::string IntLattice<Int, Real>::toStringDualBasis() const {
+	std::ostringstream os;
+	os << "m-Dual Basis:\n";
+	os << "  Dim = " << this->m_dim << " \n";
+	for (int i = 0; i < this->m_dim; i++) {
+		os << "    [";
+		for (int j = 0; j < this->m_dim; j++)
+			os << " " << std::setprecision(15) << this->m_dualbasis(i, j);
+		os << " ]\n";
+	}
 
-      lattice->m_withDual = this->m_withDual;
-      if (this->m_withDual) {
-        constr.mDualTriangular(lattice->m_basis, lattice->m_dualbasis, this->m_modulo);
-        lattice->setDualNegativeNorm ();
-      }
+	os << "  Norms:\n";
+	os << "    [";
+	for (int i = 0; i < this->m_dim; i++) {
+		if (this->m_dualvecNorm[i] < 0) {
+			os << "-1" << " ";
+		} else {
+			os << this->m_dualvecNorm[i] << " ";
+		}
+	}
+	os << "]" << std::endl;
+	return os.str();
+}
 
-      //Triangularization<IntMat> (lattice->m_dualbasis, lattice->m_basis, dim,
-      //    static_cast<int>(proj.size()), this->m_modulo);
-      // lattice->trace("\nESPION_4");
-      /* std::cout << "  ***** build 2\n";
-         lattice->getPrimalBasis ().setNegativeNorm (true);
-         lattice->getPrimalBasis ().updateScalL2Norm (1,proj.size());
-         lattice->getPrimalBasis ().write();*/
-      // calcDual<IntMat> (lattice->m_basis, lattice->m_dualbasis,
-      //     static_cast<int>(proj.size()), this->m_modulo);
-      /*
-         std::cout << "  ***** build 3\n";
-         lattice->getDualBasis ().setNegativeNorm (true);
-         lattice->getDualBasis ().updateScalL2Norm (1,proj.size());
-         lattice->getDualBasis ().write();
-         */
+extern template class IntLattice<std::int64_t, double> ;
+extern template class IntLattice<NTL::ZZ, double> ;
+extern template class IntLattice<NTL::ZZ, NTL::RR> ;
 
-      //lattice->updateDualScalL2Norm (0, proj.size());
-      //lattice->updateScalL2Norm (0,proj.size());
-      //lattice->setNegativeNorm ();
-    }
-
-  //===========================================================================
-
-  template<typename Int, typename Real>
-      void IntLattice<Int, Real>::buildBasis (int d)
-    {
-	  // To be re-implemented in subclasses.
-      MyExit(1, " buildBasis(d) does nothing");
-      d++;  // eliminates compiler warning
-    }
-
-  //===========================================================================
-
-  template<typename Int, typename Real>
-      void IntLattice<Int, Real>::copy (
-          const IntLattice<Int, Real> & lat) {
-      // m_order = lat.getOrder();
-      this->m_modulo = lat.m_modulo;
-      //m_m2 = lat.m_m2;
-      this->m_basis = lat.m_basis;
-      if(lat.withDual())
-         this->m_dualbasis = lat.m_dualbasis;
-      init ();
-    }
-
-  //===========================================================================
-
-  /**
-  template<typename Int, typename Real>
-      Normalizer<Real> * IntLattice<Int, Real>::getNormalizer(
-          NormaType norma, int alpha, bool dualF)
-    {
-      int dim = this->getDim();
-      Normalizer<Real> *normal;
-
-      Real logDensity;
-
-      // The primal lattice density is assumed to be m^k, and m^{-k} for the dual.
-      if (dualF) // dual basis 
-        logDensity = - m_order * NTL::log(this->m_modulo);
-      else // primal basis
-        logDensity = m_order * NTL::log(this->m_modulo);
-
-      // We create a normalizer normal for the given density, and return it.
-      // This normalizer is not stored in this object.
-      switch (norma) {
-        case BESTLAT:
-          normal = new NormaBestLat<Real> (logDensity, dim);
-          break;
-        case BESTBOUND:
-          normal = new NormaBestBound<Real> (logDensity, dim);
-          break;
-        case LAMINATED:
-          normal = new NormaLaminated<Real> (logDensity, dim);
-          break;
-        case ROGERS:
-          normal = new NormaRogers<Real> (logDensity, dim);
-          break;
-        case MINKL1:
-          normal = new NormaMinkL1<Real> (logDensity, dim);
-          break;
-        case MINK:
-          normal = new NormaMinkL2<Real> (logDensity, dim);
-          break;
-        case NONE:
-          normal = new Normalizer<Real> (logDensity, dim, "Norma_generic");
-          break;
-        default:
-          std::cout << "normalizer:   no such case";
-          exit (2);
-      }
-      return normal;
-    }
-    */
-
-  //===========================================================================
-
-  template<typename Int, typename Real>
-      std::string IntLattice<Int, Real>::toString() const
-    {
-      // To be re-implemented in subclasses.
-	  assert (0);
-      return std::string();
-    }
-
-  //===========================================================================
-
-  extern template class IntLattice<std::int64_t, double>;
-  extern template class IntLattice<NTL::ZZ, double>;
-  extern template class IntLattice<NTL::ZZ, NTL::RR>;
-
-} // End namespace LatticeTester
+} // namespace LatticeTester
 
 #endif

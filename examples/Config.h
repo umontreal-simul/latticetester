@@ -31,7 +31,7 @@ namespace LatticeTester {
    * bare bones to avoid the confusion of having too many parameters when
    * working with higher level classes.
    *
-   * Note: A "configuration" contains a basis and dual basis (but not an IntLattice object),
+   * Note: A "configuration" contains a basis and dual basis (but not an IntLatticeExt object),
    * info on what we want to compute with this lattice (construct a basis, the m-dual,
    * compute a shortest vector, compute an FOM, etc.), and which method we want to use for that.
    *

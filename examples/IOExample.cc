@@ -57,6 +57,7 @@
  * result of the execution, making them quiteflexible.
  * */
 //#define NTL_TYPES_CODE 1
+#define TYPES_CODE  LD
 #include <iostream>
 #include <cstdint>
 #include <NTL/vector.h>
@@ -64,14 +65,14 @@
 #include <NTL/ZZ.h>
 #include <NTL/RR.h>
 
-typedef Int    NTL::ZZ;
-typedef Real   NTL::RR;
+//typedef Int    NTL::ZZ;
+//typedef Real   NTL::RR;
 
 
 #include "latticetester/ParamReader.h"
 #include "latticetester/FlexTypes.h"
 #include "latticetester/Reducer.h"
-#include "latticetester/IntLatticeBase.h"
+#include "latticetester/IntLattice.h"
 #include "latticetester/WriterRes.h"
 
 #include "NTL/LLL.h"
@@ -126,11 +127,11 @@ int main() {
   writer.writeString("It's also possible to use *ToString() methods to write"
       " stuff in the output\nfile.");
   writer.newLine();
-  //! Creating an IntLatticeBase with the matrix we just read as a basis (it is
+  //! Creating an IntLattice with the matrix we just read as a basis (it is
   //! non-singular)
   //! It is also possible to specify give a modulo and an dual basis when creating
-  //! an IntLattice, but we will not use them here.
-  IntLatticeBase<Int, Real> lat_basis(matrix, size);
+  //! an IntLatticeExt, but we will not use them here.
+  IntLattice<Int, Real> lat_basis(matrix, size);
   //! We can evaluate and print the lenght of the vectors of this basis
   lat_basis.updateVecNorm();
   lat_basis.sort(0);

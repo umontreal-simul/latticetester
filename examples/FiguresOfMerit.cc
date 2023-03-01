@@ -36,6 +36,7 @@
 #include "latticetester/IntLattice.h"
 #include "latticetester/Reducer.h"
 #include "latticetester/ParamReader.h"
+#include "latticetester/Util.h"
 
 // Application specific headers
 #include "latticetester/NormaBestLat.h"

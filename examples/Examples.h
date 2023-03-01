@@ -19,7 +19,9 @@ const std::string primes[] = {"1021", "1048573", "1073741827", "1099511627791",
  * above.
  * We abuse this function to format the output of the examples.
  * */
-int getWidth(clock_t time[], int dim, std::string message, clock_t totals[], int ind) {
+
+/*
+ int getWidth(clock_t time[], int dim, std::string message, clock_t totals[], int ind) {
   clock_t tmp = 0;
   for (int i = 0; i < dim; i++) {
     tmp += time[i];
@@ -29,5 +31,5 @@ int getWidth(clock_t time[], int dim, std::string message, clock_t totals[], int
   totals[ind] = tmp;
   return width;
 }
-
+*/
 #endif

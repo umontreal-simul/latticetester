@@ -38,22 +38,45 @@
 #include "latticetester/IntLattice.h"
 #include "latticetester/Reducer.h"
 #include "latticetester/EnumTypes.h"
-#include "Examples.h"
-
-
-//typedef Int    NTL::ZZ
-//typedef Real   NTL::RR
-//#include "latticetester/FlexTypes.h" 
+//#include "Examples.h"
 
 using namespace LatticeTester;
 
-namespace
-{
-  const std::string prime = primes[0];
-}
+ //The bases we used to test the functionnaly of LatticeTester are in a folder named 'examples/bench/'.
+  //The following array gives the possible modulo values for the basis examples.
+ // The nodulo are all prime values.
+
+  const int many_primes = 6;
+  const std::string primes[] = {"1021", "1048573", "1073741827", "1099511627791",
+                  "1125899906842597", "18446744073709551629"};
+
+
+  // Each file in 'examples/bench/' folder contain a basis, and the file is nameed as follows:
+  // 'prime_dimBasis_exanpleNumber' where 'prime' is modulo value of the basis, 
+  // 'dimBasis' is the dimension of the basis, and 'exampleNumber' is the number of the
+  // example for the bases of dimension 'dimBasis'.
+  
+  //use file use of basis values modulo 1021
+   const std::string prime = primes[0];
+
 
 int main()
 {
+
+  clock_t timer = clock();
+  // The different clocks we will use for benchmarking
+  // We use ctime for implementation simplicity
+  int max_dim = 6; // Actual max dim is 5*max_dim
+  clock_t gcd_time[max_dim], lll_time[max_dim],
+  dual1_time[max_dim], dual2_time[max_dim], totals[4];
+  for (int i = 0; i < max_dim; i++) {
+    gcd_time[i] = 0;
+    lll_time[i] = 0;
+    dual1_time[i] = 0;
+    dual2_time[i] = 0;
+  }
+
+
   IntLattice<Int, Real> *lattice;
   BasisConstruction<Int> constr; // The basis constructor we will use
   IntMat bas_mat, dua_mat;
@@ -61,12 +84,18 @@ int main()
  // NTL::Mat<NTL::ZZ> m_dual, w_copie2;  //today
   IntMat  m_dual, w_copie2;
   Int m(1021);
+  
   clock_t tmps;
+  
+for (int j = 0; j < max_dim; j++) {
+  for (int k = 0; k < 10; k++) {
+      //! Reader shenanigans
+    std::string name = "bench/" + prime + "_" + std::to_string((j+1)*5) + "_" + std::to_string(k);
+    ParamReader<Int, Real> reader(name + ".dat");
 
-  // The file that contain the basis
-  std::string name = "bench/" + prime + "_10_1";
-  // An objet that contain the basis data
-  ParamReader<Int, Real> reader(name + ".dat");
+
+ // std::string name = "bench/" + prime + "_10_1";
+  //ParamReader<Int, Real> reader(name + ".dat");
 
   reader.getLines();
   int numlines;
@@ -133,7 +162,9 @@ int main()
   std::cout << " The copy w_copie 'NTL::Mat' basis for which we compute the m-dual \n";
   printBase2(w_copie2);
   // computing the m-dual with a non-triangular basis
-  constr.calcDual22(w_copie2, m_dual, mm);
+ 
+ // constr.calcDual(w_copie2, m_dual, mm);
+ 
   // printBase2(m_dual);
   // Copy basis for the m-dual
   copy(bas_mat, w_copie);
@@ -167,7 +198,7 @@ int main()
   tps = (double)(clock() - tmps) / (CLOCKS_PER_SEC);
   std::cout << " Time (in second) to compute 100 m-dual from upper triangular basis: " << tps << std::endl;
 
-  
+ /* 
   tmps = clock();
   for (int i = 0; i < 100; i++)
   {
@@ -175,7 +206,7 @@ int main()
   }
   tps = (double)(clock() - tmps) / (CLOCKS_PER_SEC);
   std::cout << " Time (in second) to compute 100 m-dual from non-traingular basis: " << tps << std::endl;
-  
+  */
  
   /*
    * To compare the speed of triangular 'BasisConstruction::upperTriangular'
@@ -204,6 +235,11 @@ int main()
     copy(w_copie, bas_mat);
   }
   std::cout << " The LLL basis compute time: " << tps << std::endl;
+  
+    }
+  }
+
+
 
   return 0;
 }

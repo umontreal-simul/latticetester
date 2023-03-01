@@ -23,8 +23,6 @@
 
 #include <iostream>
 #include <ctime>  // template <typename IntMat>
-    void calcDual (const IntMat & A, IntMat & B, const Int & m);
-
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/Util.h"
 #include "latticetester/ParamReader.h"

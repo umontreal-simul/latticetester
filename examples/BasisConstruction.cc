@@ -41,13 +41,28 @@
 #include "latticetester/ParamReader.h"
 #include "latticetester/IntLattice.h"
 
-#include "Examples.h"
+//#include "Examples.h"
 
 using namespace LatticeTester;
 
-namespace {
+
+  //The bases we used to test the functionnaly of LatticeTester are in a folder named 'examples/bench/'.
+  //The following array gives the possible modulo values for the basis examples.
+ // The nodulo are all prime values.
+
+  const int many_primes = 6;
+  const std::string primes[] = {"1021", "1048573", "1073741827", "1099511627791",
+                  "1125899906842597", "18446744073709551629"};
+
+  // Each file in 'examples/bench/' folder contain a basis, and the file is nameed as follows:
+  // 'prime_dimBasis_exanpleNumber' where 'prime' is modulo value of the basis, 
+  // 'dimBasis' is the dimension of the basis, and 'exampleNumber' is the number of the
+  // example for the bases of dimension 'dimBasis'.
+  
+  //use file use of basis values modulo 1021
+
   const std::string prime = primes[0];
-}
+
 
 int main() {
   clock_t timer = clock();

@@ -745,6 +745,7 @@ void BasisConstruction<Int>::ProjectionConstruction(
 
 
     
+   /* 
    template<typename Int> 
    void BasisConstruction<Int>::calcDual22 (const IntMat & A, IntMat & B, const Int & m) {
       Int d;
@@ -772,7 +773,7 @@ void BasisConstruction<Int>::ProjectionConstruction(
         }   
       }
      }  
-
+*/
            
 
    template<typename Int> 

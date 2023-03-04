@@ -24,20 +24,18 @@
  * 'prime_dimBasis_exanpleNumber' where 'prime' is modulo value of the basis, 
  * 'dimBasis' is the dimension of the basis, and 'exampleNumber' is the number of the
  *  example for the bases of dimension 'dimBasis'.
+ *   // This is a sample output for TYPES_CODE ZD:
+ *  Total time  UPP    Low     LLL1   LLL2   Dual1 Dual2
+ * Dim     5   2049   2257    466    361    878   223
+ * Dim    10   7396   8419   1814   2089   2064   801
+ * Dim    15  18459  21048   4122   5983   5256  2119
+ * Dim    20  41071  47818   8670  13366  11358  4374
+ * Dim    25  72438  80001  15633  32268  18913  7216
+ * Dim    30 110689 134219  20085  40633  35397 11837
+ * Dim    35 164154 186050  27150  58239  52095 18252
+ * Dim    40 232165 267259  31969  70082  79393 25671
+ * Total time: 0.0569002 minutes
 */
-
-// This is a sample output for TYPES_CODE ZD:
-Total time  UPP    Low     LLL1   LLL2   Dual1 Dual2
-Dim     5   2049   2257    466    361    878   223
-Dim    10   7396   8419   1814   2089   2064   801
-Dim    15  18459  21048   4122   5983   5256  2119
-Dim    20  41071  47818   8670  13366  11358  4374
-Dim    25  72438  80001  15633  32268  18913  7216
-Dim    30 110689 134219  20085  40633  35397 11837
-Dim    35 164154 186050  27150  58239  52095 18252
-Dim    40 232165 267259  31969  70082  79393 25671
-Total time: 0.0569002 minutes
-
 
 
 

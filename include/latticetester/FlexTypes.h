@@ -24,47 +24,30 @@
 #include <NTL/ZZ.h>
 #include <NTL/RR.h>
 #include "latticetester/NTLWrap.h"
+#include "NTL/vec_ZZ.h"
+#include "NTL/mat_ZZ.h"
+#include "NTL/vec_RR.h"
+#include "NTL/mat_RR.h"
 
-
-  /**
-   * The following macros define shorter names for vectors and matrices of Int or Real.
-   * This file is used only to avoid repeating these four lines in several class files.
-   */
-// Simple macros for the preprocessor:
-//
-
-// Other option (typedef):
-
-
-//-----------------------------------------
- 
-
-     #include "NTL/ZZ.h"
-     #include "NTL/vec_ZZ.h"
-     #include "NTL/mat_ZZ.h"
-     #include "NTL/RR.h"
-     #include "NTL/vec_RR.h"
-     #include "NTL/mat_RR.h"
-     #include <NTL/matrix.h>
-     #include <NTL/vector.h>
-     
      
      #if  TYPES_CODE  ==   LD 
 
+       /*
         #include "NTL/lzz_p.h"
         #include "NTL/vec_lzz_p.h"
         #include "NTL/mat_lzz_p.h"
         #include "NTL/lzz_pX.h"
         #include "NTL/lzz_pE.h"
         #include "NTL/lzz_pEX.h"
-    
+       */ 
 
 	   typedef std::int64_t  Int;  
         typedef double  Real; 
 
 
-     #elif  FLEX_TYPE  == ZD 
+     #elif  TYPES_CODE  == ZD 
 
+         
           #include "NTL/ZZ.h"
           #include "NTL/vec_ZZ.h"
           #include "NTL/mat_ZZ.h"
@@ -74,13 +57,13 @@
           #include "NTL/ZZ_pE.h"
           #include "NTL/ZZ_pX.h"
           #include "NTL/ZZ_pEX.h"
-
+         
 
 	     typedef NTL::ZZ Int;
           typedef double Real;
     
      #elif   TYPES_CODE == ZR
-
+         /*
           #include "NTL/ZZ.h"
           #include "NTL/vec_ZZ.h"
           #include "NTL/mat_ZZ.h"
@@ -90,6 +73,7 @@
           #include "NTL/ZZ_pE.h"
           #include "NTL/ZZ_pX.h"
           #include "NTL/ZZ_pEX.h"
+          */
 
 	     typedef NTL::ZZ Int;
           typedef NTL::RR Real;
@@ -97,6 +81,7 @@
      
      #elif  TYPES_CODE  ==  LR 
 
+         /*
           #include "NTL/ZZ.h"
           #include "NTL/vec_ZZ.h"
           #include "NTL/mat_ZZ.h"
@@ -106,6 +91,8 @@
           #include "NTL/ZZ_pE.h"
           #include "NTL/ZZ_pX.h"
           #include "NTL/ZZ_pEX.h"
+
+          */   
 
 	 	typedef std::int64_t  Int;  
           typedef NTL::RR Real;

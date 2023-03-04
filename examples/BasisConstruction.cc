@@ -23,19 +23,15 @@
 
 // Here we need NTL::ZZ because the integers get larger the 63 bits (CHECK THIS ***)
 
-//#define Int  NTL::ZZ;
-//#define Real  NTL::RR;
-//typedef NTL::RR   Real;
-//typedef NTL::ZZ   Int;
-
-#define TYPES_CODE  ZR
+//#define TYPES_CODE  ZR
+#define NTL_TYPES_CODE  2
 
 #include <iostream>
 #include <ctime>
 
 
-//#include "latticetester/Types.h"
-#include "latticetester/FlexTypes.h"
+#include "latticetester/Types.h"
+//#include "latticetester/FlexTypes.h"
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/Util.h"
 #include "latticetester/ParamReader.h"
@@ -44,6 +40,20 @@
 //#include "Examples.h"
 
 using namespace LatticeTester;
+
+
+namespace {
+int getWidth(clock_t time[], int dim, std::string message, clock_t totals[], int ind) {
+  clock_t tmp = 0;
+  for (int i = 0; i < dim; i++) {
+    tmp += time[i];
+  }
+  int width = log10(tmp) + 2;
+ // std::cout << std::setw(width) << message;
+  totals[ind] = tmp;
+  return width;
+}
+}
 
 
   //The bases we used to test the functionnaly of LatticeTester are in a folder named 'examples/bench/'.
@@ -138,6 +148,7 @@ int main() {
     }
   }
 
+
   std::cout << "         ";
   int width1 = getWidth(gcd_time, max_dim, "GCD", totals, 0);
   int width2 = getWidth(lll_time, max_dim, "LLL", totals, 1);
@@ -156,6 +167,8 @@ int main() {
     std::cout << std::endl;
   }
   std::cout << "Total time: " << (double)(clock()-timer)/(CLOCKS_PER_SEC*60) << " minutes\n";
+
+
 
   return 0;
 }

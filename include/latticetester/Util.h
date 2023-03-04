@@ -1838,8 +1838,7 @@ void copy(IntMat &b1, IntMat &b2)
  * We abuse this function to format the output of the examples.
  * */
 
-
-int getWidth(clock_t time[], int dim, std::string message, clock_t totals[], int ind) {
+/*int getWidth(clock_t time[], int dim, std::string message, clock_t totals[], int ind) {
   clock_t tmp = 0;
   for (int i = 0; i < dim; i++) {
     tmp += time[i];
@@ -1849,8 +1848,13 @@ int getWidth(clock_t time[], int dim, std::string message, clock_t totals[], int
   totals[ind] = tmp;
   return width;
 }
+*/
 
 
 }     // namespace LatticeTester
+
+
+
+
 
 #endif

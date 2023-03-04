@@ -42,10 +42,17 @@
 #include "latticetester/Reducer.h"
 #include "latticetester/IntLattice.h"
 #include "latticetester/WriterRes.h"
+#include "latticetester/Util.h"
 
-#include "Examples.h"
+//#include "Examples.h"
 
-using namespace LatticeTester;
+using namespace LatticeTester;  
+
+const int many_primes = 6;
+  const std::string primes[] = {"1021", "1048573", "1073741827", "1099511627791",
+                  "1125899906842597", "18446744073709551629"};
+
+
 
 namespace {
   // Returns the average of the length of this vector
@@ -56,6 +63,18 @@ namespace {
     }
     return sum/Real(vector.length());
   }
+
+int getWidth(clock_t time[], int dim, std::string message, clock_t totals[], int ind) {
+  clock_t tmp = 0;
+  for (int i = 0; i < dim; i++) {
+    tmp += time[i];
+  }
+  int width = log10(tmp) + 2;
+ // std::cout << std::setw(width) << message;
+  totals[ind] = tmp;
+  return width;
+}
+
 }
 
 int main() {
@@ -160,6 +179,8 @@ int main() {
   }
 
   //! Printing the results in a somewhat formated way.
+
+  
   std::cout << "ALL THE RESULTS ARE NUMBERED IN TERMS OF SYSTEM CLOCK TICKS\n";
   std::cout << "          ";
   int width1 = getWidth(die_time, max_dim, "Dieter", total_times, 0);
@@ -197,6 +218,8 @@ int main() {
     <<std::endl;
 
   std::cout << "Total time: " << (double)(clock()-timer)/(CLOCKS_PER_SEC*60) << " minutes\n";
+  
+
   
   return 0;
 }

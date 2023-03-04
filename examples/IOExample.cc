@@ -64,11 +64,6 @@
 #include <NTL/matrix.h>
 #include <NTL/ZZ.h>
 #include <NTL/RR.h>
-
-//typedef Int    NTL::ZZ;
-//typedef Real   NTL::RR;
-
-
 #include "latticetester/ParamReader.h"
 #include "latticetester/FlexTypes.h"
 #include "latticetester/Reducer.h"

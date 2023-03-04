@@ -37,6 +37,11 @@
 //typedef Real   NTL::RR
 //#include "latticetester/FlexTypes.h"
 
+
+  const int many_primes = 6;
+  const std::string primes[] = {"1021", "1048573", "1073741827", "1099511627791",
+                  "1125899906842597", "18446744073709551629"};
+
 using namespace LatticeTester;
 namespace
 {

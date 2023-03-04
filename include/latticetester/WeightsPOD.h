@@ -19,8 +19,8 @@
 #define LATTICETESTER__POD_WEIGHTS_H
 
 #include "latticetester/Weights.h"
-#include "latticetester/OrderDependentWeights.h"
-#include "latticetester/ProductWeights.h"
+#include "latticetester/WeightsOrderDependent.h"
+#include "latticetester/WeightsProduct.h"
 #include <vector>
 
 namespace LatticeTester {
@@ -28,23 +28,23 @@ namespace LatticeTester {
    * Defines product and order-dependent (POD) weights.
    * The weight of a projection is the sum of a product weight and an order-dependent weight.
    */
-  class PODWeights : public Weights {
+  class WeightsPOD : public Weights {
     protected:
 
-      OrderDependentWeights m_orderDependentWeights;
-      ProductWeights m_productWeights;
+      WeightsOrderDependent m_orderDependentWeights;
+      WeightsProduct m_productWeights;
 
     public:
 
       /**
        * Constructs POD weights with default weight.
        */
-      PODWeights();
+      WeightsPOD();
 
       /**
        * Destructor.
        */
-      virtual ~PODWeights()
+      virtual ~WeightsPOD()
       { }
       
       /**
@@ -55,19 +55,19 @@ namespace LatticeTester {
       /**
        * Returns the order-dependent part of the weights.
        */
-      OrderDependentWeights& getOrderDependentWeights()
+      WeightsOrderDependent& getOrderDependentWeights()
       { return m_orderDependentWeights; }
 
-      const OrderDependentWeights& getOrderDependentWeights() const
+      const WeightsOrderDependent& getOrderDependentWeights() const
       { return m_orderDependentWeights; }
 
       /**
        * Returns the product part of the weights.
        */
-      ProductWeights& getProductWeights()
+      WeightsProduct& getProductWeights()
       { return m_productWeights; }
 
-      const ProductWeights& getProductWeights() const
+      const WeightsProduct& getProductWeights() const
       { return m_productWeights; }
 
       double getWeightForOrder (Coordinates::size_type order) const
@@ -82,10 +82,10 @@ namespace LatticeTester {
 
 // #ifdef WITH_XML
 //       /**
-//        * Static factory method; create a \c PODWeights object by
+//        * Static factory method; create a \c WeightsPOD object by
 //        * parsing XML data.
 //        */
-//       static PODWeights* createFromXML (const pugi::xml_node & node);
+//       static WeightsPOD* createFromXML (const pugi::xml_node & node);
 // #endif
 
     protected:

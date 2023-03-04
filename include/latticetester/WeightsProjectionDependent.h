@@ -30,7 +30,7 @@ namespace LatticeTester {
    * Internally, the weights are regrouped by largest coordinate index in
    * different `std::map` objects.  This is useful for use with CBC constructions.
    */
-  class ProjectionDependentWeights : public Weights {
+  class WeightsProjectionDependent : public Weights {
     protected:
 
       typedef std::map<Coordinates, Weight> WeightsMap;
@@ -46,17 +46,17 @@ namespace LatticeTester {
       /**
        * Constructs projection-dependent weights.
        */
-      ProjectionDependentWeights();
+      WeightsProjectionDependent();
 
       /**
        * Copy constructor.
        */
-      ProjectionDependentWeights (const ProjectionDependentWeights &);
+      WeightsProjectionDependent (const WeightsProjectionDependent &);
 
       /**
        * Destructor.
        */
-      virtual ~ProjectionDependentWeights()  {}
+      virtual ~WeightsProjectionDependent()  {}
 
       /**
        * Returns the weight of the projection specified by `projection`.
@@ -78,10 +78,10 @@ namespace LatticeTester {
 
 // #ifdef WITH_XML
 //       /**
-//        * Static factory method; create a ProjectionDependentWeights object by
+//        * Static factory method; create a WeightsProjectionDependent object by
 //        * parsing XML data.
 //        */
-//       static ProjectionDependentWeights* createFromXML (
+//       static WeightsProjectionDependent* createFromXML (
 //           const pugi::xml_node& node);
 // #endif
 
@@ -94,11 +94,11 @@ namespace LatticeTester {
       /// \copydoc LatticeTester::Weights::format()
       virtual void format(std::ostream& os) const;
 
-      friend std::istream& operator>> (std::istream&, ProjectionDependentWeights&);
+      friend std::istream& operator>> (std::istream&, WeightsProjectionDependent&);
   };
 
   /**
-   * \relates ProjectionDependentWeights
+   * \relates WeightsProjectionDependent
    * Reads formatted projection-dependent weights into the object \c weights.
    *
    * The input should be a sequence of projection-to-weight mappings, of the format:
@@ -125,7 +125,7 @@ namespace LatticeTester {
    *
    * \sa  #operator>>(std::istream&, LatticeTester::Coordinates&)
    */
-  std::istream& operator>> (std::istream& is, ProjectionDependentWeights& weights);
+  std::istream& operator>> (std::istream& is, WeightsProjectionDependent& weights);
 
 }
 #endif

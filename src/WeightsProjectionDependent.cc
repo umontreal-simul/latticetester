@@ -16,7 +16,7 @@
 // limitations under the License.
 
 #include "latticetester/Util.h"
-#include "latticetester/ProjectionDependentWeights.h"
+#include "latticetester/WeightsProjectionDependent.h"
 #include <iostream>
 #include <string>
 #include <cstdlib>
@@ -27,24 +27,24 @@ using namespace std;
 namespace LatticeTester
 {
 
-  const ProjectionDependentWeights::WeightsMap ProjectionDependentWeights::m_emptyWeights;
+  const WeightsProjectionDependent::WeightsMap WeightsProjectionDependent::m_emptyWeights;
 
   //===========================================================================
 
-  ProjectionDependentWeights::ProjectionDependentWeights():
+  WeightsProjectionDependent::WeightsProjectionDependent():
     Weights()
   {}
 
   //===========================================================================
 
-  ProjectionDependentWeights::ProjectionDependentWeights (const ProjectionDependentWeights & o):
+  WeightsProjectionDependent::WeightsProjectionDependent (const WeightsProjectionDependent & o):
     Weights(),
     m_weights (o.m_weights)
   {}
 
   //===========================================================================
 
-  void ProjectionDependentWeights::setWeight (const Coordinates & projection, Weight weight)
+  void WeightsProjectionDependent::setWeight (const Coordinates & projection, Weight weight)
   {
     // set weight only if it is non-zero
     if (weight) {
@@ -59,7 +59,7 @@ namespace LatticeTester
 
   //===========================================================================
 
-  Weight ProjectionDependentWeights::getWeight (const Coordinates& projection) const
+  Weight WeightsProjectionDependent::getWeight (const Coordinates& projection) const
   {
     if (projection.size() == 0){
       return 0.0;
@@ -79,7 +79,7 @@ namespace LatticeTester
 
   //===========================================================================
 
-  const ProjectionDependentWeights::WeightsMap& ProjectionDependentWeights::getWeightsForLargestIndex (Coordinates::value_type largestIndex) const
+  const WeightsProjectionDependent::WeightsMap& WeightsProjectionDependent::getWeightsForLargestIndex (Coordinates::value_type largestIndex) const
   {
     if (largestIndex < m_weights.size())
       return m_weights[largestIndex];
@@ -89,10 +89,10 @@ namespace LatticeTester
 
   //===========================================================================
 
-  void ProjectionDependentWeights::format(ostream& os) const
+  void WeightsProjectionDependent::format(ostream& os) const
   {
     using LatticeTester::operator<<;
-    os << "ProjectionDependentWeights(" << m_weights << ")";
+    os << "WeightsProjectionDependent(" << m_weights << ")";
 #if 0
     // line by line
     for (WeightsMap::const_iterator it = map.begin (); it != map.end (); it++)
@@ -140,7 +140,7 @@ namespace LatticeTester
 
   //===========================================================================
 
-  istream& operator>> (istream& is, ProjectionDependentWeights& weights)
+  istream& operator>> (istream& is, WeightsProjectionDependent& weights)
   {
     string whitespace = " \t\n\r";
     string sep = whitespace + ",";
@@ -181,7 +181,7 @@ namespace LatticeTester
             check_next_chars(is, "->") ||
             check_next_chars(is, "=>")))
         throw invalid_argument("invalid characters while parsing "
-            "ProjectionDependentWeights from input stream");
+            "WeightsProjectionDependent from input stream");
       skip_any(is, whitespace);
 
       // read weight
@@ -206,9 +206,9 @@ namespace LatticeTester
 // namespace LatticeTester
 // {
 // 
-//   ProjectionDependentWeights* ProjectionDependentWeights::createFromXML (const pugi::xml_node& root)
+//   WeightsProjectionDependent* WeightsProjectionDependent::createFromXML (const pugi::xml_node& root)
 //   {
-//     ProjectionDependentWeights* o = new ProjectionDependentWeights();
+//     WeightsProjectionDependent* o = new WeightsProjectionDependent();
 // 
 //     pugi::xml_node node;
 // 

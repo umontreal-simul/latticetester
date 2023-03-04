@@ -1,6 +1,6 @@
 // This file is part of LatticeTester.
 //
-// Copyright (C) 2012-2022  The LatticeTester authors, under the supervision
+// Copyright (C) 2012-2022  The LatticeTester authors, under the occasional supervision
 // of Pierre L'Ecuyer at Universit� de Montr�al.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,6 +36,7 @@ namespace LatticeTester {
 
   class Coordinates : public std::set<std::size_t> {
     public:
+
       /**
        * Constructs an empty set of coordinates.
        */
@@ -66,15 +67,13 @@ namespace LatticeTester {
       template<typename InputIterator>
         Coordinates(InputIterator first, InputIterator last):
           std::set<value_type>(first, last)
-    { }
+       { }
   };
-
 
   /**
    * \relates Coordinates
    * Formats the coordinate set `coords` and outputs it to `os`.
    */
-
   std::ostream& operator<< (std::ostream& os, const Coordinates& coords);
 
   /**

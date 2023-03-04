@@ -157,7 +157,7 @@ public:
 	 * The param 'decomp' acepted are 'cholesky' or 'triangular'. It specify 
 	 * the decompistion used in the Branch-and-Bound algorithm.
 	 */
-	bool shortestVector(NormType norm,std::string decomp);
+	bool shortestVector(NormType norm, std::string decomp);
 
 	/**
 	 * This method performs pairwise reduction sequentially on all vectors
@@ -202,7 +202,7 @@ public:
 	 * The reduction is applied to the first `dim` basis vectors when `dim > 0`,
 	 * and to the entire basis (all vectors and coordinates) when `dim=0`.
 	 */
-	void redLLLNTL(double delta = 0.999999, PrecisionType precision = QUADRUPLE,
+	void redLLLNTL(double delta = 0.999999, PrecisionType precision = DOUBLE,
 			int dim = 0);
 
 	/**
@@ -222,7 +222,7 @@ public:
 	 * A `blocksize` of 2 is equivalent to LLL reduction.
 	 */
 	void redBKZ(double delta = 0.999999, int blocksize = 10,
-			PrecisionType precision = QUADRUPLE, int dim = 0);
+			PrecisionType precision = DOUBLE, int dim = 0);
 
 	/**
 	 * Reduces the current basis to a Minkowski-reduced basis with respect

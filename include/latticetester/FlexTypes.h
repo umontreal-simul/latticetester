@@ -29,6 +29,7 @@
 #include "NTL/vec_RR.h"
 #include "NTL/mat_RR.h"
 
+<<<<<<< HEAD
      
      #if  TYPES_CODE  ==   LD 
 
@@ -105,5 +106,13 @@
        typedef NTL::vector<Real> RealVec;
        typedef NTL::matrix<Real> RealMat;
      #endif
+=======
+// Other option (typedef), which require Int and Real to be defined before:
+//
+	typedef NTL::vector<Int> IntVec;
+	typedef NTL::matrix<Int> IntMat;
+	typedef NTL::vector<Real> RealVec;
+	typedef NTL::matrix<Real> RealMat;
+>>>>>>> 59538ddb2464d5057f354d0dfd00ce0b3d48bd96
 
 #endif

@@ -15,7 +15,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "latticetester/PODWeights.h"
+#include "latticetester/WeightsPOD.h"
 #include <sstream>
 
 namespace LatticeTester
@@ -23,23 +23,23 @@ namespace LatticeTester
 
   //===========================================================================
 
-  PODWeights::PODWeights ()
+  WeightsPOD::WeightsPOD ()
   {
   }
 
   //===========================================================================
 
-  Weight PODWeights::getWeight (const Coordinates& projection) const
+  Weight WeightsPOD::getWeight (const Coordinates& projection) const
   {
     return m_orderDependentWeights.getWeight(projection) * m_productWeights.getWeight(projection);
   }
 
   //===========================================================================
 
-  void PODWeights::format(std::ostream& os) const
+  void WeightsPOD::format(std::ostream& os) const
   {
     using LatticeTester::operator<<;
-    os << "PODWeights(" << m_orderDependentWeights << ", " << m_productWeights << ")";
+    os << "WeightsPOD(" << m_orderDependentWeights << ", " << m_productWeights << ")";
   }
 
 } // namespace LatticeTester
@@ -52,9 +52,9 @@ namespace LatticeTester
 // namespace LatticeTester
 // {
 // 
-//   PODWeights* PODWeights::createFromXML (const pugi::xml_node& root)
+//   WeightsPOD* WeightsPOD::createFromXML (const pugi::xml_node& root)
 //   {
-//     PODWeights* o = new PODWeights();
+//     WeightsPOD* o = new WeightsPOD();
 // 
 //     pugi::xml_node node;
 // 
@@ -63,7 +63,7 @@ namespace LatticeTester
 //       node = root.child("order-dependent");
 //       if (!node)
 //         throw pugi::xml_error(root, "missing <order-dependent> element");
-//       OrderDependentWeights* odw = OrderDependentWeights::createFromXML(*node);
+//       WeightsOrderDependent* odw = WeightsOrderDependent::createFromXML(*node);
 //       o->m_orderDependentWeights = *odw;
 //       delete odw;
 // 
@@ -71,7 +71,7 @@ namespace LatticeTester
 //       node = root.child("product");
 //       if (!node)
 //         throw pugi::xml_error(root, "missing <product> element");
-//       ProductWeights* pw = ProductWeights::createFromXML(*node);
+//       WeightsProduct* pw = WeightsProduct::createFromXML(*node);
 //       o->m_productWeights = *pw;
 //       delete pw;
 // 

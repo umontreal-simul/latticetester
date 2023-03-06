@@ -313,9 +313,9 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
       IntLatticeExt<Int, Real>::~IntLatticeExt () {
-	  	this->m_basis.IntMatProj::clear();
-	  	this->m_dualbasis.IntMatProj::clear();
-        IntLattice<Int, Real>::~IntLattice();
+	  	this->m_basisProj.clear();
+	  	this->m_dualbasisProj.clear();
+       // IntLatticeExt<Int, Real>::~IntLatticeExt();
     }
 
   //===========================================================================
@@ -409,6 +409,7 @@ namespace LatticeTester {
       int i = 0;
       IntMat temp, temp2;
       temp.SetDims(dim, dim);
+      temp2.SetDims(dim, dim);
       for (auto iter = proj.begin(); iter != proj.end(); ++iter) {
         for (int j = 0; j < dim; j++){
           temp(j, i) = this->m_basis(j, (*iter));
@@ -422,13 +423,13 @@ namespace LatticeTester {
       lattice->setDim (static_cast<int>(proj.size()));
       // lattice->m_order = m_order;
       BasisConstruction<Int> bc;
-      bc.upperTriangularBasis(temp, temp2, m_modulo);
+      bc.upperTriangularBasis(temp, temp2, this->m_modulo);
       temp2.SetDims(lattice->getDim(), lattice->getDim());
       lattice->setNegativeNorm ();
       lattice->m_basis = temp2;
       lattice->m_withDual = this->m_withDual;
       if (this->m_withDual) {
-        bc.mDualUpperTriangular(lattice->m_basis, lattice->m_dualbasis, this->m_modulo);
+        bc.mDualUpperTriangular(lattice->m_basis, lattice->m_dualbasis, this->getDim (), this->m_modulo);
         lattice->setDualNegativeNorm ();
       }
    }

@@ -28,73 +28,31 @@
 #include "NTL/mat_ZZ.h"
 #include "NTL/vec_RR.h"
 #include "NTL/mat_RR.h"
+#define   LD  1
+#define   ZD  2
+#define   ZR  3
+#define   LR  4
 
-<<<<<<< HEAD
      
-     #if  TYPES_CODE  ==   LD 
-
-       /*
-        #include "NTL/lzz_p.h"
-        #include "NTL/vec_lzz_p.h"
-        #include "NTL/mat_lzz_p.h"
-        #include "NTL/lzz_pX.h"
-        #include "NTL/lzz_pE.h"
-        #include "NTL/lzz_pEX.h"
-       */ 
+     #if  TYPES_CODE  ==  LD 
 
 	   typedef std::int64_t  Int;  
         typedef double  Real; 
 
 
      #elif  TYPES_CODE  == ZD 
-
          
-          #include "NTL/ZZ.h"
-          #include "NTL/vec_ZZ.h"
-          #include "NTL/mat_ZZ.h"
-          #include "NTL/ZZ_p.h"
-          #include "NTL/vec_ZZ_p.h"
-          #include "NTL/mat_ZZ_p.h"
-          #include "NTL/ZZ_pE.h"
-          #include "NTL/ZZ_pX.h"
-          #include "NTL/ZZ_pEX.h"
-         
-
 	     typedef NTL::ZZ Int;
           typedef double Real;
     
-     #elif   TYPES_CODE == ZR
-         /*
-          #include "NTL/ZZ.h"
-          #include "NTL/vec_ZZ.h"
-          #include "NTL/mat_ZZ.h"
-          #include "NTL/ZZ_p.h"
-          #include "NTL/vec_ZZ_p.h"
-          #include "NTL/mat_ZZ_p.h"
-          #include "NTL/ZZ_pE.h"
-          #include "NTL/ZZ_pX.h"
-          #include "NTL/ZZ_pEX.h"
-          */
-
+     #elif   TYPES_CODE ==  ZR
+   
 	     typedef NTL::ZZ Int;
           typedef NTL::RR Real;
 
      
      #elif  TYPES_CODE  ==  LR 
-
-         /*
-          #include "NTL/ZZ.h"
-          #include "NTL/vec_ZZ.h"
-          #include "NTL/mat_ZZ.h"
-          #include "NTL/ZZ_p.h"
-          #include "NTL/vec_ZZ_p.h"
-          #include "NTL/mat_ZZ_p.h"
-          #include "NTL/ZZ_pE.h"
-          #include "NTL/ZZ_pX.h"
-          #include "NTL/ZZ_pEX.h"
-
-          */   
-
+  
 	 	typedef std::int64_t  Int;  
           typedef NTL::RR Real;
 	 
@@ -106,13 +64,5 @@
        typedef NTL::vector<Real> RealVec;
        typedef NTL::matrix<Real> RealMat;
      #endif
-=======
-// Other option (typedef), which require Int and Real to be defined before:
-//
-	typedef NTL::vector<Int> IntVec;
-	typedef NTL::matrix<Int> IntMat;
-	typedef NTL::vector<Real> RealVec;
-	typedef NTL::matrix<Real> RealMat;
->>>>>>> 59538ddb2464d5057f354d0dfd00ce0b3d48bd96
 
 #endif

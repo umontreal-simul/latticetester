@@ -40,6 +40,7 @@
 
 
 #define TYPES_CODE  ZD
+//#define NTL_TYPES_CODE  2
 
 #include <iostream>
 #include <ctime>
@@ -126,27 +127,22 @@ const std::string primes[] = {"1021", "1048573", "1073741827", "1099511627791",
   m_dual.SetDims(numlines, numlines);
   // A copie of lattice basis
   w_copie.SetDims(numlines, numlines);
-
   m_dual2.SetDims(numlines, numlines);
   // A copie of lattice basis
   w_copie2.SetDims(numlines, numlines);
-  
   //! Filling the matrix
   reader.readBMat(bas_mat, ln, 0, numlines);
-
   // Creating a lattice basis
   // lattice = new IntLattice<Int, Real>(bas_mat, bas_mat, m, numlines);
   lattice = new IntLattice<Int, Real>(bas_mat, numlines);
-
   copy(bas_mat, w_copie);
   tmp = clock();
-  constr.upperTriangular(w_copie, m_v, m);
+  constr.upperTriangularBasis(w_copie, m_v, m);
   upp_time[j] += clock() - tmp;
-
   copy(bas_mat, w_copie);
   // The construction of the lower triangular basis
   tmp = clock();
-  constr.lowerTriangular(w_copie, m_v2, m);
+  constr.lowerTriangularBasis(w_copie, m_v2, m);
   low_time[j] += clock() - tmp;
 
  // std::cout << " The LLL reduction basis with delta=0.8 \n";
@@ -165,25 +161,16 @@ const std::string primes[] = {"1021", "1048573", "1073741827", "1099511627791",
   // copyMatrixToMat(bas_mat, w_copie2); 
   copy(bas_mat, w_copie);
   tmp = clock();
-  constr.calcDual(w_copie, m_dual, m);
+  constr.mDualBasis(w_copie, m_dual, m);
   dual1_time[j] += clock() - tmp;
   
-
   copy(bas_mat, w_copie);
-  constr.upperTriangular(w_copie, m_v, m);
+  constr.upperTriangularBasis(w_copie, m_v, m);
   tmp = clock();
-  constr.calcDualUpperTriangular(m_v, m_v2, numlines, m);
+  constr.mDualUpperTriangular(m_v, m_v2, numlines, m);
   dual2_time[j] += clock() - tmp;
-  std::cout << " after calDualUpper \n";
- // std::cout << " The m-dual basis \n";
- // printBase(m_v2);
-
- //  std::cout << "####### Compare the speed of 'calcDualUpperTriangular' and 'calcDual' ############\n";
- //  std::cout << "####### Compare the speed of 'upperTriangular' and 'LLLConstruction' ############\n";
-
     }
   }
-
 
   std::cout << "         ";
   int width1 = getWidth(upp_time, leng, "UPPTR", totals, 0);

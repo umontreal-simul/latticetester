@@ -18,21 +18,8 @@
 #ifndef LATTICETESTER_BASISCONSTRUCTION_H
 #define LATTICETESTER_BASISCONSTRUCTION_H
 
-//typedef NTL::ZZ Int;
-//typedef double  Real;
-
 #include "NTL/LLL.h"
-#include <NTL/mat_ZZ.h>
 #include <NTL/mat_GF2.h>
-<<<<<<< HEAD
-#include <NTL/matrix.h>
-#include <NTL/vec_vec_GF2.h>
-#include "latticetester/IntLattice.h"
-#include "latticetester/NTLWrap.h"
-#include "latticetester/Util.h"
-#include "latticetester/Coordinates.h"
-=======
->>>>>>> 59538ddb2464d5057f354d0dfd00ce0b3d48bd96
 #include "NTL/tools.h"
 #include "NTL/ZZ.h"
 #include "NTL/RR.h"
@@ -188,33 +175,6 @@ public:
 
 	/**
 	 * This function assumes that `matrix` contains a basis of the primal lattice
-<<<<<<< HEAD
-	 * scaled by the factor `m`, not necessarily triangular.
-   * Takes a basis `A` and computes an m-dual lattice basis and put it to 'B'.
-   * The matrix B is the m-dual basis of A.
-   */
-  // template <typename IntMat>
-    //void calcDual (const IntMat & A, IntMat & B, const Int & m);
-
-      // template <typename IntMat>
-   // void calcDual(const IntMat & A, IntMat & B, const Int & m);
-        
-    void calcDual(const NTL::Mat<NTL::ZZ>  & A, NTL::Mat<NTL::ZZ>  & B, const NTL::ZZ & m); 
-
-   // void calcDual(const NTL::Mat<Int>  & A, NTL::Mat<Int>  & B, const Int & m);  
-
-   /**
-	 * This function does essentially the same thing as `CalcDualUpperTriangularBasis`.
-	 * It assumes that `matrix` contains a triangular basis of the primal lattice
-	 * scaled by the factor `m`.  It computes and returns the `m`-dual basis
-	 * in `dualMatrix`.  This function uses the method described in \cite rCOU96a.
-	 * Since `A=matrix` is upper triangular, `B=mdualMatrix` will be lower triangular
-	 * with `A(i,i)*B(i,i) = m` for all `i` and \f$ A_i \cdot B_j = 0\f$ for
-	 * \f$i\neq j\f$. To get the second condition, we simply have to
-	 * recursively take for each line
-	 * \f[B_{i,j} = -\frac{1}{A_{j,j}}\sum_{k=j+1}^i A_{j,k} B_{i,k}.\f]
-	 * This is much faster than a traditional solving of a linear system.
-=======
 	 * scaled by the factor `m`, not necessarily triangular, and it returns in `matrixDual`
 	 * the m-dual of matrix.
      */
@@ -228,8 +188,8 @@ public:
 	 * using LLLConstruction, and puts it in `out`. The basis is not triangular.
 	 * This will overwrite the lattice basis in `out` and change the dimension.
 	 * It does not update the dual.
->>>>>>> 59538ddb2464d5057f354d0dfd00ce0b3d48bd96
 	 */
+   template<typename Real>
     void projectionConstructionLLL(IntLattice<Int, Real> &in,
 			IntLattice<Int, Real> &out, const Coordinates &proj);
 
@@ -522,111 +482,6 @@ void BasisConstruction<Int>::GCDTriangularBasis(IntMat &matrix, Int m) {
 
    //======================================================
 
-<<<<<<< HEAD
-    /**
-   * Takes a basis `A` and computes an m-dual lattice basis B.
-   * The matrix B is the m-dual basis of A.
-   */
-   
-   // template <typename Int>
-  //  template <typename Int>
-  /*
-    template <typename Matr,typename Int >
-    void calcDual (Matr & A, Matr & B,  Int & m) {
-      Int  d;
-      Matr C;
-      int dim1=A.NumRows();
-      int dim2=A.NumCols();
-      C.SetDims(dim1, dim2);
-      inv(d,B,A);
-      transpose(C,B);
-      for (int i = 0; i < dim1; i++) {
-        for (int j = 0; j < dim2; j++)
-           B(i,j)= (m*C(i,j))/d;     
-        }
-     }
-   */
-
-    
-  /*  
-   template<typename Int> 
-   void BasisConstruction<Int>::calcDual (const IntMat & A, IntMat & B, const Int & m) {
-   // switch (typeof(Int)) { 
-    // case std::int64_t :   
-       //  std::cout << " Error  stg::int64_t not supported \n";
-        // break;
-   // default:    
-      NTL::ZZ d;
-      int dim1=A.NumRows();
-      int dim2=A.NumCols();
-      NTL::Mat<NTL::ZZ> A1,C1,B1;
-      NTL::Mat<NTL::ZZ> B2;
-      A1.SetDims(dim1, dim2);
-      B1.SetDims(dim1, dim2);
-      C1.SetDims(dim1, dim2);
-      for(int i=0;i<dim1;i++){
-       for(int j=0;j<dim2;j++)
-        A1[i][j]=NTL::conv<NTL::ZZ>(A[i][j]);
-      }  
-      inv(d,B1,A1);
-      transpose(C1,B1);
-      for (int i = 0; i < dim1; i++) {
-        for (int j = 0; j < dim2; j++)
-        {  B1(i,j)= (m*C1(i,j))/d;  
-           B[i][j]=NTL::conv<Int>(B1[i][j]);
-        }   
-      }
-  //break,
- //  }  
-
-     }       
-
-*/
-
-
-  
-   template<typename Int> 
-   void BasisConstruction<Int>::calcDual(const NTL::Mat<NTL::ZZ>  & A, NTL::Mat<NTL::ZZ>  & B, const NTL::ZZ & m) {
-      NTL::ZZ d;
-    //  Int d;// mult;
-    //  IntMat C;
-      NTL::Mat<NTL::ZZ> C;
-      int dim1=A.NumRows();
-      int dim2=A.NumCols();
-      C.SetDims(dim1, dim2);
-      inv(d,B,A);
-      transpose(C,B);
-      for (int i = 1; i < dim1; i++) {
-        for (int j = 1; j < dim2; j++)
-           B(i,j)= (m*C(i,j))/d;
-          
-        }
-     }
-    
-
-/*
-   template<typename Int> 
-   void BasisConstruction<Int>::calcDual(const NTL::Mat<Int>  & A, NTL::Mat<Int>  & B, const Int & m) {
-     // NTL::ZZ d;
-      Int d;// mult;
-    //  IntMat C;
-      NTL::Mat<Int> C;
-      int dim1=A.NumRows();
-      int dim2=A.NumCols();
-      C.SetDims(dim1, dim2);
-      inv(d,B,A);
-      transpose(C,B);
-      for (int i = 1; i < dim1; i++) {
-        for (int j = 1; j < dim2; j++)
-           B(i,j)= (m*C(i,j))/d;
-          
-        }
-     }
-   
-*/
-
- 
-=======
    // This is the old version from Couture and L'Ecuyer (1996).
    template<typename Int>
    void BasisConstruction<Int>::mDualUpperTriangular96(IntMat &matrix, IntMat &dualMatrix,
@@ -670,7 +525,6 @@ void BasisConstruction<Int>::GCDTriangularBasis(IntMat &matrix, Int m) {
    		}
    	 }
    }
->>>>>>> 59538ddb2464d5057f354d0dfd00ce0b3d48bd96
 
    //===================================================
 
@@ -702,30 +556,11 @@ void BasisConstruction<Int>::GCDTriangularBasis(IntMat &matrix, Int m) {
       }
     }
 
-   //===================================================
-
-    // Here, Matr can be either IntMat or RealMat?  Why do we need that?   **********
-    // Is this actually working only for NTL::ZZ integers?    ****************
-    // This must be explained and clarified!           *********************
-    // Note: for the dual to exist, the basis must be a square invertible matrix!   ********
-   template <typename Matr, typename Int >
-    void mDualBasis (Matr & A, Matr & B,  Int & m) {
-      Int  d;
-      Matr C;
-      int dim1=A.NumRows();
-      int dim2=A.NumCols();
-      C.SetDims(dim1, dim2);
-      inv(d, B, A);   // What is B and what is d ?
-      transpose(C, B);
-      for (int i = 0; i < dim1; i++) {
-        for (int j = 0; j < dim2; j++)
-           B(i,j)= (m*C(i,j)) / d;
-        }
-     }
-
+   
     //===================================================
 
     // This one seems to be too specific!    ***************
+    /*
     template<typename Int>    // There is no Int in this function!
     void BasisConstruction<Int>::mDualBasis(const NTL::Mat<NTL::ZZ>  & A, NTL::Mat<NTL::ZZ>  & B, const NTL::ZZ & m) {
       NTL::ZZ d;
@@ -744,14 +579,50 @@ void BasisConstruction<Int>::GCDTriangularBasis(IntMat &matrix, Int m) {
         }
      }
 
+    */
    //============================================================================
 
-   template<typename Int, typename Real>
-   void BasisConstruction<Int>::projectionConstruction(
+   template<typename Int> 
+   void BasisConstruction<Int>::mDualBasis(const IntMat & A, IntMat & B, const Int & m) {
+   // switch (typeof(Int)) { 
+    // case std::int64_t :   
+       //  std::cout << " Error  stg::int64_t not supported \n";
+        // break;
+   // default:    
+      NTL::ZZ d;
+      int dim1=A.NumRows();
+      int dim2=A.NumCols();
+      NTL::Mat<NTL::ZZ> A1,C1,B1,B2;
+     // NTL::Mat<NTL::ZZ> B2;
+      A1.SetDims(dim1, dim2);
+      B1.SetDims(dim1, dim2);
+      B2.SetDims(dim1, dim2);
+      C1.SetDims(dim1, dim2);
+      for(int i=0;i<dim1;i++){
+       for(int j=0;j<dim2;j++)
+        A1[i][j]=NTL::conv<NTL::ZZ>(A[i][j]);
+      }  
+      inv(d,B1,A1);
+      transpose(C1,B1);
+      NTL::ZZ mm=NTL::conv<NTL::ZZ>(m);
+      for (int i = 0; i < dim1; i++) {
+       for (int j = 0; j < dim2; j++){
+        B[i][j]= NTL::conv<Int>(mm*C1[i][j]/d);}   
+      }
+  //break,
+ //  }  
+
+     }       
+   //=================================================================================
+
+   
+   template<typename Int>
+   template<typename Real>
+   void BasisConstruction<Int>::projectionConstructionLLL(
    		IntLattice<Int, Real>& in,
    		IntLattice<Int, Real>& out, const Coordinates& proj) {
 	  std::size_t size = proj.size();
-   	  unsigned int lat_size = in.getDim();
+   	  unsigned int lat_dim = in.getDim();
    	  if (size > lat_dim)
    		 MyExit(1, "More projection coordinates than the dimension of `in`.");
    	  IntMat new_basis, tmp(NTL::transpose(in.getBasis()));

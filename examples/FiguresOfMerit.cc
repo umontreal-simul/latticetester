@@ -26,12 +26,6 @@
 #include <NTL/ZZ.h>
 #include <NTL/RR.h>
 
-//typedef Int    NTL::ZZ
-//typedef Real   NTL::RR
-
-
-
-//#include "latticetester/FlexTypes.h"
 #include "latticetester/FlexTypes.h"
 #include "latticetester/IntLattice.h"
 #include "latticetester/Reducer.h"
@@ -68,7 +62,7 @@ int main() {
   // For loop on the iterator built previously
   for(auto it = coord.begin(); it != coord.end(); it++){
     // Computing the projection
-    constructor.ProjectionConstruction(lat_basis, proj_basis, *it);
+    constructor.projectionConstructionLLL(lat_basis, proj_basis, *it);
 
     //! Computing the shortest vector in the lattice spanned by matrix
     proj_basis.updateVecNorm();

@@ -28,7 +28,6 @@
 #include "latticetester/IntLattice.h"
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/NTLWrap.h"
-#include "latticetester/Types.h"
 
 #include <fstream>
 #include <sstream>
@@ -105,7 +104,6 @@ class Reducer {
 
 private:
 	// Local typedefs for matrix and vector types needed in the class.
-	//
 	typedef NTL::vector<Int> IntVec;
 	typedef NTL::matrix<Int> IntMat;
 	typedef NTL::vector<Real> RealVec;
@@ -2024,7 +2022,7 @@ bool Reducer<Int, Real>::redBBShortVec(NormType norm, std::string decomp) {
 		 Int mod=m_lat->getModulo();
 	  	 CopyMatr(m_v,m_lat->getBasis(), dim, dim);
         // TriangularizationLower<IntMat,IntVec,Int>(m_v, m_v2 ,mod);
-	 	 constr.lowerTriangular(m_v, m_v2 ,mod);	
+	 	 constr.lowerTriangularBasis(m_v, m_v2 ,mod);	
 		// CopyMatr(m_lat->getBasis(), m_v2,dim, dim);
 	     for (int i = 0; i < dim; i++){
 		   for (int j = 0; j < dim; j++){

@@ -7,35 +7,24 @@
 * The absolue path is '/BuildPlace/examples/bench/1021_4_002'.
 */
 
+#define TYPES_CODE  ZD
 
 #include <iostream>
-#include <ctime>
+#include <ctime>  
 #include <NTL/mat_GF2.h>
-
 #include <cstdint>
 #include <NTL/vector.h>
 #include <NTL/matrix.h>
 #include <NTL/ZZ.h>
 #include <NTL/RR.h>
-
-//#define NTL_TYPES_CODE 2
-#define TYPES_CODE  ZD
-
-#include <iostream>
-#include <ctime>  // template <typename IntMat>
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/Util.h"
 #include "latticetester/ParamReader.h"
 #include "latticetester/IntLattice.h"
 #include "latticetester/Reducer.h"
 #include "latticetester/EnumTypes.h"
-#include "Examples.h"
 #include "latticetester/WriterRes.h"
 #include "latticetester/FlexTypes.h"
-
-//typedef Int    NTL::ZZ
-//typedef Real   NTL::RR
-//#include "latticetester/FlexTypes.h"
 
 
   const int many_primes = 6;
@@ -43,10 +32,8 @@
                   "1125899906842597", "18446744073709551629"};
 
 using namespace LatticeTester;
-namespace
-{
-  const std::string prime = primes[0];
-}
+
+const std::string prime = primes[0];
 
 int main()
 {
@@ -54,8 +41,7 @@ int main()
   clock_t timer, tmp;
   IntLattice<Int, Real> *basis;
   Reducer<Int, Real> *red;
-  // BasisConstruction<Int> constr; // The basis constructor we will use
-  //! Variables definition
+  
   ParamReader<Int, Real> reader, reader2;
   std::string name;
   int numlines;
@@ -77,7 +63,6 @@ int main()
   matrix2.SetDims(numlines, numlines);
   ln = 1;
   reader.readBMat(matrix1, ln, 0, numlines);
-
 
   Int m(101);
  // basis = new IntLattice<Int, Real>(matrix1, matrix2, m, numlines);
@@ -109,7 +94,7 @@ int main()
   std::cout << "The time to compute shortest vector = " <<(double)(tmp)/(CLOCKS_PER_SEC)<<"second"<<std::endl;
 
 
- //  comput the shortest vector using Cholesky decompisition method
+ //  comput the shortest vector using triqngulqr decompisition method
  //The method can be very slow. It's not the recommanded one
 
   basis = new IntLattice<Int, Real>(matrix1, matrix2, m, numlines);

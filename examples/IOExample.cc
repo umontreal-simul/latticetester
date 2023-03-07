@@ -11,6 +11,11 @@
  * to a file. Just as ParamReader, this can also convert data types into strings
  * to write directly in the file.
  *
+ *
+ * In this example we show how to print the basis, then a triangular basis, 
+ * then an LLL-reduced basis, in each case with the lengths of the basis vectors.
+ *
+ *
  * The output of this program look like this : 
  * We can write messages in the file.
  * Here is one way to write a matrix.
@@ -56,8 +61,8 @@
  * output print, but also can be created at the end of theexecution to print the
  * result of the execution, making them quiteflexible.
  * */
-//#define NTL_TYPES_CODE 1
-#define TYPES_CODE  LD
+
+#define TYPES_CODE  ZD
 #include <iostream>
 #include <cstdint>
 #include <NTL/vector.h>
@@ -69,15 +74,16 @@
 #include "latticetester/Reducer.h"
 #include "latticetester/IntLattice.h"
 #include "latticetester/WriterRes.h"
-
 #include "NTL/LLL.h"
 
 using namespace LatticeTester;
 
 int main() {
   int size = 9;
+  BasisConstruction<Int> constr; // The basis constructor we will use
   // Those two lines create a reader and ready it to be used.
   ParamReader<Int, Real> reader("44matrixEx.dat");
+ // ParamReader<Int, Real> reader("44matrix.dat");
   reader.getLines();
   /** To use a reader, you simply need, once you've called getLines(), to have
    * a variable in which to store the object you read, and to know where to get
@@ -88,11 +94,13 @@ int main() {
    * */
   // Reading a matrix as an examples
   IntMat matrix(size, size); // The "recipient"
+  IntMat matrixUpper(size, size); // The "recipient"
+  Int m(1021);
   unsigned int ln = 0; // The line counter
   reader.readBMat(matrix, ln, 0, size);
 
   // Creation of a writer object for file IOExample.out
-  WriterRes<Int> writer("IOExample.out");
+  WriterRes<Int> writer("IOExample1.out");
 
   // Writing to the file
   writer.writeString("We can write messages in the file.");
@@ -135,6 +143,20 @@ int main() {
   writer.newLine();
   writer.writeString(lat_basis.toStringBasis());
   writer.newLine();
+
+  //LLL reduction
+  constr.LLLConstruction(matrix, 0.99999);    
+  writer.newLine();
+  writer.writeString("Write the matrix after LLL reduction");
+  writer.newLine();
+  writer.writeMMat(matrix);
+
+  // construct an upper triangular matrix
+  constr.upperTriangularBasis(matrix, matrixUpper, m);
+  writer.newLine();
+  writer.writeString("Write the upper triangular matrix");
+  writer.newLine();
+  writer.writeMMat(matrixUpper);
 
   writer.writeString("Writers can be used as the program progresses, just like"
       "using a standard\noutput print, but also can be created at the end of the"

@@ -30,13 +30,11 @@
 // We define the numeric types.
 // It is possible to use this example with TYPES 2 and 3. For now 1 calls the
 // same function for both execution and we look forward to change that.
-//#define NTL_TYPES_CODE 2
+
+
 #define TYPES_CODE  ZR
-
-
 #include <iostream>
 #include <ctime>
-
 #include "latticetester/ParamReader.h"
 #include "latticetester/FlexTypes.h"
 #include "latticetester/Reducer.h"
@@ -44,42 +42,15 @@
 #include "latticetester/WriterRes.h"
 #include "latticetester/Util.h"
 
-//#include "Examples.h"
-
 using namespace LatticeTester;  
 
 const int many_primes = 6;
   const std::string primes[] = {"1021", "1048573", "1073741827", "1099511627791",
                   "1125899906842597", "18446744073709551629"};
 
-
-
-namespace {
-  // Returns the average of the length of this vector
-  Real average(RealVec vector) {
-    Real sum(0);
-    for (int i = 0; i<vector.length(); i++) {
-      sum += vector[i];
-    }
-    return sum/Real(vector.length());
-  }
-
-int getWidth(clock_t time[], int dim, std::string message, clock_t totals[], int ind) {
-  clock_t tmp = 0;
-  for (int i = 0; i < dim; i++) {
-    tmp += time[i];
-  }
-  int width = log10(tmp) + 2;
- // std::cout << std::setw(width) << message;
-  totals[ind] = tmp;
-  return width;
-}
-
-}
-
 int main() {
   clock_t timer = clock();
-  int max_dim = 10; //! Actual max dim is 5*max_dim
+  int max_dim = 6; //! Actual max dim is 5*max_dim
   //! This is basically the C method of timing a program. We time globally, but
   //! also for eache dimension and for each size of integers in the matrix.
   clock_t die_time[max_dim], lll_time[max_dim], bkz_time[max_dim],

@@ -1828,6 +1828,30 @@ void copy(IntMat &b1, IntMat &b2)
   }
 }
 
-}     // namespace LatticeTester
+
+ inline int getWidth(clock_t time[], int dim, std::string message, clock_t totals[], int ind) {
+  clock_t tmp = 0;
+  for (int i = 0; i < dim; i++) {
+    tmp += time[i];
+  }
+  int width = log10(tmp) + 2;
+ // std::cout << std::setw(width) << message;
+  totals[ind] = tmp;
+  return width;
+}
+
+  // Returns the average of the length of this vector
+ inline Real average(RealVec vector) {
+    Real sum(0);
+    for (int i = 0; i<vector.length(); i++) {
+      sum += vector[i];
+    }
+    return sum/Real(vector.length());
+  }
+
+
+
+}
+     // namespace LatticeTester
 
 #endif

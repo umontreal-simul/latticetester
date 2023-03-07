@@ -1,29 +1,37 @@
+/**
+ * This example showcases the usage of the BasisConstruction module. This reads
+ * matrices from files and builds a basis and a dual for an `IntLattice`
+ * object. The files this is set to use are in the `bench.zip` archive. To
+ * execute the program, the archive should be unziped and the `bench` folder
+ * should be put in the same directory from which the executable is called.
 
-/**In this example, we show the use of most of the method in class BasisConstruction.
- * We begin by reading a file that contains the basis information and create an
- * 'IntLattice' object. 
-
- * We show a use of BasisContruction::upperTriangular, BasisContruction::lowerTriangular,
- * BasisContruction::LLLConstruction with two differrent parametter of delta,
- * BasisContruction::calcDualUpperTriangular, BasisContruction::calcDual
+ * The bases we used to showcase of BasisConstruction methods are in a folder named 
+ * 'examples/bench/'. Each file in 'examples/bench/' folder contain a basis, and the 
+ * file is nameed as follows: 'prime_dimBasis_exanpleNumber' where 'prime' is modulo 
+ * value of the basis, 'dimBasis' is the dimension of the basis, and 'exampleNumber' 
+ * is the number of the example for the bases of dimension 'dimBasis'.
  *
- * In this example, we can compare the speed of  BasisConstruction::calcDual method
+ * This example reads matrices from files and performs the different construction
+ * algorithms in BasisConstruction on them. The program then prints the execution
+ * time of the various algorithms. Note that the execution of the program is not
+ * what you would expect in reality since bench contains random full matrices.
+ *
+ * We show a use of BasisContruction::upperTriangularBasis, 
+ * BasisContruction::lowerTriangularBasis, BasisContruction::LLLConstruction with 
+ * two differrent parametter of delta, BasisContruction::mDualUpperTriangular, 
+ *  BasisContruction::mDualBasis
+ *
+ * In this example, we can compare the speed of BasisConstruction::calcDual method
  * which compute an m-dual basis using any basis in input,
- * and BasisConstruction::calcDualUpperTriangular method which compute an m-dual basis
+ * and BasisConstruction::mDualUpperTriangular method which compute an m-dual basis
  * with an upper triangular basis.
  *
- * We can also compare the speed of 'BasisConstruction::upperTriangular'
+ * We can also compare the speed of 'BasisConstruction::upperTriangularBasis'
  * and the speed of 'BasisConstruction::LLLConstruction'
  * *
  **/
 
  /*
- *  The bases we used to test the functionnaly of LatticeTester are in a folder named 
- * 'examples/bench/'.
- *  Each file in 'examples/bench/' folder contain a basis, and the file is nameed as follows:
- * 'prime_dimBasis_exanpleNumber' where 'prime' is modulo value of the basis, 
- * 'dimBasis' is the dimension of the basis, and 'exampleNumber' is the number of the
- *  example for the bases of dimension 'dimBasis'.
  *   // This is a sample output for TYPES_CODE ZD:
  *  Total time  UPP    Low     LLL1   LLL2   Dual1 Dual2
  * Dim     5   2049   2257    466    361    878   223
@@ -40,7 +48,6 @@
 
 
 #define TYPES_CODE  ZD
-//#define NTL_TYPES_CODE  2
 
 #include <iostream>
 #include <ctime>
@@ -60,24 +67,12 @@
 
 using namespace LatticeTester;
 
-int getWidth(clock_t time[], int dim, std::string message, clock_t totals[], int ind) {
-  clock_t tmp = 0;
-  for (int i = 0; i < dim; i++) {
-    tmp += time[i];
-  }
-  int width = log10(tmp) + 2;
- // std::cout << std::setw(width) << message;
-  totals[ind] = tmp;
-  return width;
-}
-
- //  The following array gives the possible modulo values for the basis examples.
- //  The nodulo are all prime values.
+//  The following array gives the possible modulo values for the basis examples.
 const int many_primes = 6;
 const std::string primes[] = {"1021", "1048573", "1073741827", "1099511627791",
                   "1125899906842597", "18446744073709551629"};
 
- //use file use of basis values modulo 1021
+ //Use basis values modulo 1021
  const std::string prime = primes[0];
 
  int main()
@@ -85,7 +80,7 @@ const std::string primes[] = {"1021", "1048573", "1073741827", "1099511627791",
   clock_t timer = clock();
   // The different clocks we will use for benchmarking
   // We use ctime for implementation simplicity
-  int leng = 8; // Actual max dim is 5*leng
+  int leng = 8; 
   clock_t upp_time[leng],low_time[leng], lll1_time[leng],lll2_time[leng],
   dual1_time[leng], dual2_time[leng], totals[6];
   for (int i = 0; i < leng; i++) {
@@ -133,7 +128,6 @@ const std::string primes[] = {"1021", "1048573", "1073741827", "1099511627791",
   //! Filling the matrix
   reader.readBMat(bas_mat, ln, 0, numlines);
   // Creating a lattice basis
-  // lattice = new IntLattice<Int, Real>(bas_mat, bas_mat, m, numlines);
   lattice = new IntLattice<Int, Real>(bas_mat, numlines);
   copy(bas_mat, w_copie);
   tmp = clock();
@@ -148,7 +142,7 @@ const std::string primes[] = {"1021", "1048573", "1073741827", "1099511627791",
  // std::cout << " The LLL reduction basis with delta=0.8 \n";
   copy(bas_mat, w_copie);
   tmp = clock();
- constr.LLLConstruction(w_copie, 0.8);
+  constr.LLLConstruction(w_copie, 0.8);
   lll1_time[j] += clock() - tmp;
 
  // std::cout << " The LLL reduction basis with delta=0.99 \n";

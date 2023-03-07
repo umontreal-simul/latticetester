@@ -56,7 +56,7 @@
 #include "NTL/ZZ.h"
 #include "NTL/RR.h"
 #include "latticetester/NTLWrap.h"
-#include "Examples.h"
+//#include "Examples.h"
 
 using namespace LatticeTester;
 

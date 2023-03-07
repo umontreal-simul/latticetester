@@ -584,11 +584,9 @@ void BasisConstruction<Int>::GCDTriangularBasis(IntMat &matrix, Int m) {
 
    template<typename Int> 
    void BasisConstruction<Int>::mDualBasis(const IntMat & A, IntMat & B, const Int & m) {
-   // switch (typeof(Int)) { 
-    // case std::int64_t :   
-       //  std::cout << " Error  stg::int64_t not supported \n";
-        // break;
-   // default:    
+  // switch (typeof(Int)) { 
+
+  // case NTL::ZZ :    
       NTL::ZZ d;
       int dim1=A.NumRows();
       int dim2=A.NumCols();
@@ -609,8 +607,12 @@ void BasisConstruction<Int>::GCDTriangularBasis(IntMat &matrix, Int m) {
        for (int j = 0; j < dim2; j++){
         B[i][j]= NTL::conv<Int>(mm*C1[i][j]/d);}   
       }
-  //break,
- //  }  
+    //  break;
+  //  case std::int64_t :   
+   //      std::cout << " Error  stg::int64_t not supported \n";
+    //     break;
+
+   //  }  
 
      }       
    //=================================================================================

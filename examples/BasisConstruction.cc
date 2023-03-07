@@ -23,42 +23,18 @@
 
 // Here we need NTL::ZZ because the integers get larger the 63 bits (CHECK THIS ***)
 
-//#define TYPES_CODE  ZR
-#define NTL_TYPES_CODE  2
+#define TYPES_CODE  ZR
 
 #include <iostream>
 #include <ctime>
 
-
-#include "latticetester/Types.h"
-//#include "latticetester/FlexTypes.h"
+#include "latticetester/FlexTypes.h"
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/Util.h"
 #include "latticetester/ParamReader.h"
 #include "latticetester/IntLattice.h"
 
-//#include "Examples.h"
-
 using namespace LatticeTester;
-
-
-namespace {
-int getWidth(clock_t time[], int dim, std::string message, clock_t totals[], int ind) {
-  clock_t tmp = 0;
-  for (int i = 0; i < dim; i++) {
-    tmp += time[i];
-  }
-  int width = log10(tmp) + 2;
- // std::cout << std::setw(width) << message;
-  totals[ind] = tmp;
-  return width;
-}
-}
-
-
-  //The bases we used to test the functionnaly of LatticeTester are in a folder named 'examples/bench/'.
-  //The following array gives the possible modulo values for the basis examples.
- // The nodulo are all prime values.
 
   const int many_primes = 6;
   const std::string primes[] = {"1021", "1048573", "1073741827", "1099511627791",

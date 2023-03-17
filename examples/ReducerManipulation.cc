@@ -42,7 +42,7 @@ int main()
   IntLattice<Int, Real> *basis;
   Reducer<Int, Real> *red;
   
-  ParamReader<Int, Real> reader, reader2;
+  ParamReader<Int, Real> reader;
   std::string name;
   int numlines;
   // The primal basis
@@ -67,6 +67,7 @@ int main()
   Int m(101);
  // basis = new IntLattice<Int, Real>(matrix1, matrix2, m, numlines);
   basis = new IntLattice<Int, Real>(matrix1, numlines);
+  std::cout << " ok construct\n";
   red = new Reducer<Int, Real>(*basis);
   std::cout << " The base before reduction\n";
   printBase((red->getIntLatticeBase())->getBasis());
@@ -97,7 +98,9 @@ int main()
  //  comput the shortest vector using triqngulqr decompisition method
  //The method can be very slow. It's not the recommanded one
 
-  basis = new IntLattice<Int, Real>(matrix1, matrix2, m, numlines);
+  //basis = new IntLattice<Int, Real>(matrix1, matrix2, m, numlines);
+  basis = new IntLattice<Int, Real>(matrix1, numlines);
+
   std::cout << " The base before reduction\n";
   printBase((red->getIntLatticeBase())->getBasis());
   red = new Reducer<Int, Real>(*basis);

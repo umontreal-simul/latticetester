@@ -48,6 +48,18 @@ const int many_primes = 6;
   const std::string primes[] = {"1021", "1048573", "1073741827", "1099511627791",
                   "1125899906842597", "18446744073709551629"};
 
+ namespace {
+  // Returns the average of the length of this vector
+  Real average(RealVec vector) {
+    Real sum(0);
+    for (int i = 0; i<vector.length(); i++) {
+      sum += vector[i];
+    }
+    return sum/Real(vector.length());
+  }
+
+  }                 
+
 int main() {
   clock_t timer = clock();
   int max_dim = 6; //! Actual max dim is 5*max_dim

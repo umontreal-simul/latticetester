@@ -1840,18 +1840,6 @@ void copy(IntMat &b1, IntMat &b2)
   return width;
 }
 
-  // Returns the average of the length of this vector
- inline Real average(RealVec vector) {
-    Real sum(0);
-    for (int i = 0; i<vector.length(); i++) {
-      sum += vector[i];
-    }
-    return sum/Real(vector.length());
-  }
-
-
-
-}
-     // namespace LatticeTester
+}  // namespace LatticeTester
 
 #endif

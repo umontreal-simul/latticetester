@@ -46,39 +46,39 @@
 using namespace LatticeTester;  
 
 const int many_primes = 6;
-  const std::string primes[] = {"1021", "1048573", "1073741827", "1099511627791",
+const std::string primes[] = {"1021", "1048573", "1073741827", "1099511627791",
                   "1125899906842597", "18446744073709551629"};
 
 
 int main() {
   clock_t timer = clock();
-  int max_dim = 10; //! Actual max dim is 5*max_dim
+  int leng = 3; //! Actual max dim is 5*leng
   //! This is basically the C method of timing a program. We time globally, but
   //! also for eache dimension and for each size of integers in the matrix.
-  clock_t die_time[max_dim], lll_time[max_dim], bkz_time[max_dim],
-  sho_die[max_dim], sho_lll[max_dim], sho_bkz[max_dim], tmp;
-  clock_t total_times[6];
-  for (int i = 0; i < max_dim; i++){
+  clock_t  lll_time[leng], bkz_time[leng],
+  sho_cho[leng], sho_tri[leng], tmp;
+  clock_t total_times[4];
+  for (int i = 0; i < leng; i++){
     lll_time[i] = 0;
-    die_time[i] = 0;
     bkz_time[i] = 0;
-    sho_die[i] = 0;
-    sho_lll[i] = 0;
-    sho_bkz[i] = 0;
+    sho_cho[i] = 0;
+    sho_tri[i] = 0;
   }
-  int die_fails=0, lll_fails=0, bkz_fails=0;
+  int lll_fails=0, bkz_fails=0;
   Real vec_length[3];
   vec_length[0] = vec_length[1] = vec_length[2] = 0;
 
   std::string prime = primes[0];
 
-  for (int j = 0; j < max_dim; j++) {
-    for (int k = 0; k < 10; k++) {
-      // We dynamically allocate memory to these two pointers every time we need to
-      // create an object of their type. This is because of the OOP approach
-      // to lattice reduction.
-      IntLattice<Int, Real>* basis;
-      Reducer<Int, Real>* red;
+
+  // We dynamically allocate memory to these two pointers every time we need to
+  // create an object of their type. This is because of the OOP approach
+  // to lattice reduction.
+  IntLattice<Int, Real>* basis;     
+  Reducer<Int, Real>* red;
+
+  for (int j = 0; j < leng; j++) {
+    for (int k = 1; k < 2; k++) {
 
       //! Variables definition
       ParamReader<Int, Real> reader;
@@ -87,9 +87,8 @@ int main() {
       IntMat matrix1;
       unsigned int ln;
       std::string s1("cholesky");
-      std::string s2("GCDTriangular");
-
-      //! Reader shenanigans
+      std::string s2("triangular");
+      
       name = "bench/" + prime + "_" + std::to_string(5*(j+1)) + "_" + std::to_string(k);
       reader = ParamReader<Int, Real>(name + ".dat");
       reader.getLines();
@@ -98,55 +97,37 @@ int main() {
       ln = 1;
       reader.readBMat(matrix1, ln, 0, numlines);
 
-      // Dieter reduction before shortest vector search
       tmp = clock();
       basis = new IntLattice<Int, Real>(matrix1, numlines);
       red = new Reducer<Int, Real>(*basis);
-      red->redDieter(0);
-      die_time[j] += clock() - tmp;
-      basis->updateVecNorm();
-      vec_length[0] += average(basis->getVecNorm());
-      tmp = clock();
-      if (!red->shortestVector(L2NORM,s2)) {
-        die_fails++;
-      }
-      sho_die[j] += clock() - tmp;
-      delete red;
-      //std::cout << "Dieter: " << average(basis->getVecNorm()) << "\n";
-      delete basis;
-
       // LLL reduction before shortest vector search
-      tmp = clock();
-      basis = new IntLattice<Int, Real>(matrix1, numlines);
-      red = new Reducer<Int, Real>(*basis);
-      red->redLLLNTL();
+      red->redLLL();
+       
       lll_time[j] += clock() - tmp;
       basis->updateVecNorm();
-      vec_length[1] += average(basis->getVecNorm());
+      //vec_length[1] += average(basis->getVecNorm());
       tmp = clock();
       if (!red->shortestVector(L2NORM,s1)) {
         lll_fails++;
       }
-      sho_lll[j] += clock() - tmp;
+      sho_cho[j] += clock() - tmp;
       delete red;
       //std::cout << "LLL: " << average(basis->getVecNorm()) << "\n";
       delete basis;
-
       // BKZ reduction before shortest vector search
       tmp = clock();
       basis = new IntLattice<Int, Real>(matrix1, numlines);
       red = new Reducer<Int, Real>(*basis);
-      red->redBKZ();
+      red->redBKZ(0.999999, 10, DOUBLE, numlines);
       bkz_time[j] += clock() - tmp;
       basis->updateVecNorm();
-      vec_length[2] += average(basis->getVecNorm());
       tmp = clock();
-      if (!red->shortestVector(L2NORM,s1)) {
+      if (!red->shortestVector(L2NORM,s2)) {
         bkz_fails++;
       }
-      sho_bkz[j] += clock() - tmp;
+      sho_tri[j] += clock() - tmp;
+
       delete red;
-      //std::cout << "BKZ: " << average(basis->getVecNorm()) << "\n";
       delete basis;
     }
   }
@@ -156,39 +137,33 @@ int main() {
   
   std::cout << "ALL THE RESULTS ARE NUMBERED IN TERMS OF SYSTEM CLOCK TICKS\n";
   std::cout << "          ";
-  int width1 = getWidth(die_time, max_dim, "Dieter", total_times, 0);
-  int width2 = getWidth(lll_time, max_dim, "LLL", total_times, 1);
-  int width3 = getWidth(bkz_time, max_dim, "BKZ", total_times, 2);
-  int width4 = getWidth(sho_die, max_dim, "SV Dieter", total_times, 3);
-  int width5 = getWidth(sho_lll, max_dim, "SV LLL", total_times, 4);
-  int width6 = getWidth(sho_bkz, max_dim, "SV BKZ", total_times, 5);
+  int width1 = getWidth(lll_time, leng, "LLL", total_times, 0);
+  int width2 = getWidth(bkz_time, leng, "BKZ", total_times, 1);
+  int width3 = getWidth(sho_cho, leng, "SV CHO", total_times, 2);
+  int width4 = getWidth(sho_tri, leng, "SV TRI", total_times, 3);
   std::cout << std::endl;
 
   std::cout << "Total time" << std::setw(width1) << total_times[0]
     << std::setw(width2) << total_times[1]
     << std::setw(width3) << total_times[2]
-    << std::setw(width4) << total_times[3]
-    << std::setw(width5) << total_times[4]
-    << std::setw(width6) << total_times[5] << std::endl;
-  for (int i = 0; i < max_dim; i++) {
+    << std::setw(width4) << total_times[3] << std::endl;
+  
+  for (int i = 0; i < leng; i++) {
     std::cout << "Dim " << std::setw(6) << (i+1)*5 
-      << std::setw(width1) << die_time[i] 
-      << std::setw(width2) << lll_time[i] 
-      << std::setw(width3) << bkz_time[i] 
-      << std::setw(width4) << sho_die[i] 
-      << std::setw(width5) << sho_lll[i] 
-      << std::setw(width6) << sho_bkz[i] 
+      << std::setw(width1) << lll_time[i] 
+      << std::setw(width2) << bkz_time[i] 
+      << std::setw(width3) << sho_cho[i] 
+      << std::setw(width3) << sho_tri[i] 
       << std::endl;
   }
   std::cout << "Fails     "
-    << std::setw(width1) << die_fails 
     << std::setw(width2) << lll_fails 
     << std::setw(width3) << bkz_fails 
     << std::endl;
 
-  std::cout << std::fixed << std::setprecision(2) << "Averages: " << std::setw(width1) << vec_length[0]/vec_length[1]
-    << std::setw(width2) << 1.0 << std::setw(width3) << vec_length[2]/vec_length[1]
-    <<std::endl;
+ // std::cout << std::fixed << std::setprecision(2) << "Averages: " << std::setw(width1) << vec_length[0]/vec_length[1]
+ //   << std::setw(width2) << 1.0 << std::setw(width3) << vec_length[2]/vec_length[1]
+  //  <<std::endl;
 
   std::cout << "Total time: " << (double)(clock()-timer)/(CLOCKS_PER_SEC*60) << " minutes\n";
   

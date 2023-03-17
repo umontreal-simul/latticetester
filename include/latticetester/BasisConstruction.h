@@ -189,6 +189,7 @@ public:
 	 * This will overwrite the lattice basis in `out` and change the dimension.
 	 * It does not update the dual.
 	 */
+   template<typename Real>
     void projectionConstructionLLL(IntLattice<Int, Real> &in,
 			IntLattice<Int, Real> &out, const Coordinates &proj);
 
@@ -555,30 +556,11 @@ void BasisConstruction<Int>::GCDTriangularBasis(IntMat &matrix, Int m) {
       }
     }
 
-   //===================================================
-
-    // Here, Matr can be either IntMat or RealMat?  Why do we need that?   **********
-    // Is this actually working only for NTL::ZZ integers?    ****************
-    // This must be explained and clarified!           *********************
-    // Note: for the dual to exist, the basis must be a square invertible matrix!   ********
-   template <typename Matr, typename Int >
-    void mDualBasis (Matr & A, Matr & B,  Int & m) {
-      Int  d;
-      Matr C;
-      int dim1=A.NumRows();
-      int dim2=A.NumCols();
-      C.SetDims(dim1, dim2);
-      inv(d, B, A);   // What is B and what is d ?
-      transpose(C, B);
-      for (int i = 0; i < dim1; i++) {
-        for (int j = 0; j < dim2; j++)
-           B(i,j)= (m*C(i,j)) / d;
-        }
-     }
-
+   
     //===================================================
 
     // This one seems to be too specific!    ***************
+    /*
     template<typename Int>    // There is no Int in this function!
     void BasisConstruction<Int>::mDualBasis(const NTL::Mat<NTL::ZZ>  & A, NTL::Mat<NTL::ZZ>  & B, const NTL::ZZ & m) {
       NTL::ZZ d;
@@ -597,14 +579,52 @@ void BasisConstruction<Int>::GCDTriangularBasis(IntMat &matrix, Int m) {
         }
      }
 
+    */
    //============================================================================
 
-   template<typename Int, typename Real>
-   void BasisConstruction<Int>::projectionConstruction(
+   template<typename Int> 
+   void BasisConstruction<Int>::mDualBasis(const IntMat & A, IntMat & B, const Int & m) {
+  // switch (typeof(Int)) { 
+
+  // case NTL::ZZ :    
+      NTL::ZZ d;
+      int dim1=A.NumRows();
+      int dim2=A.NumCols();
+      NTL::Mat<NTL::ZZ> A1,C1,B1,B2;
+     // NTL::Mat<NTL::ZZ> B2;
+      A1.SetDims(dim1, dim2);
+      B1.SetDims(dim1, dim2);
+      B2.SetDims(dim1, dim2);
+      C1.SetDims(dim1, dim2);
+      for(int i=0;i<dim1;i++){
+       for(int j=0;j<dim2;j++)
+        A1[i][j]=NTL::conv<NTL::ZZ>(A[i][j]);
+      }  
+      inv(d,B1,A1);
+      transpose(C1,B1);
+      NTL::ZZ mm=NTL::conv<NTL::ZZ>(m);
+      for (int i = 0; i < dim1; i++) {
+       for (int j = 0; j < dim2; j++){
+        B[i][j]= NTL::conv<Int>(mm*C1[i][j]/d);}   
+      }
+    //  break;
+  //  case std::int64_t :   
+   //      std::cout << " Error  stg::int64_t not supported \n";
+    //     break;
+
+   //  }  
+
+     }       
+   //=================================================================================
+
+   
+   template<typename Int>
+   template<typename Real>
+   void BasisConstruction<Int>::projectionConstructionLLL(
    		IntLattice<Int, Real>& in,
    		IntLattice<Int, Real>& out, const Coordinates& proj) {
 	  std::size_t size = proj.size();
-   	  unsigned int lat_size = in.getDim();
+   	  unsigned int lat_dim = in.getDim();
    	  if (size > lat_dim)
    		 MyExit(1, "More projection coordinates than the dimension of `in`.");
    	  IntMat new_basis, tmp(NTL::transpose(in.getBasis()));

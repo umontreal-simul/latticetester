@@ -652,7 +652,7 @@ void IntLattice<Int, Real>::permuteNoDual(int i, int j) {
 //===========================================================================
 
 template<typename Int, typename Real>
-    void IntLatticeExt<Int, Real>::dualize () {
+    void IntLattice<Int, Real>::dualize () {
     if(!(this->m_withDual)) {
 	    std::cout << "\n***** ERROR: calling dualize while dual basis is not defined."
           << std::endl;

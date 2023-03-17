@@ -1837,8 +1837,8 @@ bool Reducer<Int, Real>::tryZShortVec(int j, bool &smaller, NormType norm, std::
 	 }
 	 if(decomp==Triang && norm==L2NORM){    
         center = 0.0;
-	    for (k = j + 1; k < dim; ++k)
-	 		center -= m_c0(k,j) * m_zLR[k];
+	    for (k = 0 ; k<j; ++k)
+	 		center -= m_c0(j,k) * m_zLR[k];
        	  dc = sqrt((m_lMin2 - m_n2[j]) / m_dc2[j]);
 	  
 	  }	
@@ -2020,9 +2020,8 @@ bool Reducer<Int, Real>::redBBShortVec(NormType norm, std::string decomp) {
 		 m_v.resize(dim, dim);
 		 m_v2.resize(dim, dim);
 		 Int mod=m_lat->getModulo();
-	  	 CopyMatr(m_v,m_lat->getBasis(), dim, dim);
-        // TriangularizationLower<IntMat,IntVec,Int>(m_v, m_v2 ,mod);
-	 	 constr.lowerTriangular(m_v, m_v2 ,mod);	
+	     CopyMatr(m_v,m_lat->getBasis(), dim, dim);
+	 	 constr.lowerTriangularBasis(m_v, m_v2 ,mod);	
 		// CopyMatr(m_lat->getBasis(), m_v2,dim, dim);
 	     for (int i = 0; i < dim; i++){
 		   for (int j = 0; j < dim; j++){

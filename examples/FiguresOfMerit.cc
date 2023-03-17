@@ -17,14 +17,20 @@
  * print them after the test. 
  * */
 
-#define NTL_TYPES_CODE 2
-
+//#define NTL_TYPES_CODE 2
+#define TYPES_CODE  ZD
 #include <iostream>
+#include <cstdint>
+#include <NTL/vector.h>
+#include <NTL/matrix.h>
+#include <NTL/ZZ.h>
+#include <NTL/RR.h>
 
-#include "latticetester/Types.h"
+#include "latticetester/FlexTypes.h"
 #include "latticetester/IntLattice.h"
 #include "latticetester/Reducer.h"
 #include "latticetester/ParamReader.h"
+#include "latticetester/Util.h"
 
 // Application specific headers
 #include "latticetester/NormaBestLat.h"
@@ -56,7 +62,7 @@ int main() {
   // For loop on the iterator built previously
   for(auto it = coord.begin(); it != coord.end(); it++){
     // Computing the projection
-    constructor.ProjectionConstruction(lat_basis, proj_basis, *it);
+    constructor.projectionConstructionLLL(lat_basis, proj_basis, *it);
 
     //! Computing the shortest vector in the lattice spanned by matrix
     proj_basis.updateVecNorm();

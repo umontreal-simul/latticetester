@@ -30,22 +30,25 @@
 // We define the numeric types.
 // It is possible to use this example with TYPES 2 and 3. For now 1 calls the
 // same function for both execution and we look forward to change that.
-#define NTL_TYPES_CODE 2
 
+
+#define TYPES_CODE  ZR
 #include <iostream>
 #include <ctime>
-
 #include "latticetester/ParamReader.h"
-#include "latticetester/Types.h"
+#include "latticetester/FlexTypes.h"
 #include "latticetester/Reducer.h"
 #include "latticetester/IntLattice.h"
 #include "latticetester/WriterRes.h"
+#include "latticetester/Util.h"
 
-#include "Examples.h"
+using namespace LatticeTester;  
 
-using namespace LatticeTester;
+const int many_primes = 6;
+  const std::string primes[] = {"1021", "1048573", "1073741827", "1099511627791",
+                  "1125899906842597", "18446744073709551629"};
 
-namespace {
+ namespace {
   // Returns the average of the length of this vector
   Real average(RealVec vector) {
     Real sum(0);
@@ -54,11 +57,12 @@ namespace {
     }
     return sum/Real(vector.length());
   }
-}
+
+  }                 
 
 int main() {
   clock_t timer = clock();
-  int max_dim = 10; //! Actual max dim is 5*max_dim
+  int max_dim = 6; //! Actual max dim is 5*max_dim
   //! This is basically the C method of timing a program. We time globally, but
   //! also for eache dimension and for each size of integers in the matrix.
   clock_t die_time[max_dim], lll_time[max_dim], bkz_time[max_dim],
@@ -158,6 +162,8 @@ int main() {
   }
 
   //! Printing the results in a somewhat formated way.
+
+  
   std::cout << "ALL THE RESULTS ARE NUMBERED IN TERMS OF SYSTEM CLOCK TICKS\n";
   std::cout << "          ";
   int width1 = getWidth(die_time, max_dim, "Dieter", total_times, 0);
@@ -195,6 +201,8 @@ int main() {
     <<std::endl;
 
   std::cout << "Total time: " << (double)(clock()-timer)/(CLOCKS_PER_SEC*60) << " minutes\n";
+  
+
   
   return 0;
 }

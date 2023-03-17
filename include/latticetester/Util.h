@@ -1828,6 +1828,18 @@ void copy(IntMat &b1, IntMat &b2)
   }
 }
 
-}     // namespace LatticeTester
+
+ inline int getWidth(clock_t time[], int dim, std::string message, clock_t totals[], int ind) {
+  clock_t tmp = 0;
+  for (int i = 0; i < dim; i++) {
+    tmp += time[i];
+  }
+  int width = log10(tmp) + 2;
+ // std::cout << std::setw(width) << message;
+  totals[ind] = tmp;
+  return width;
+}
+
+}  // namespace LatticeTester
 
 #endif

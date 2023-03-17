@@ -18,22 +18,51 @@
 #ifndef LATTICETESTER__FLEXTYPES_H
 #define LATTICETESTER__FLEXTYPES_H
 
-  /**
-   * The following macros define shorter names for vectors and matrices of Int or Real.
-   * This file is used only to avoid repeating these four lines in several class files.
-   */
-// Simple macros for the preprocessor:
-//
-// #define IntVec NTL::vector<Int>
-// #define IntMat NTL::matrix<Int>
-// #define RealVec NTL::vector<Real>
-// #define RealMat NTL::matrix<Real>
+#include <cstdint>
+#include <NTL/vector.h>
+#include <NTL/matrix.h>
+#include <NTL/ZZ.h>
+#include <NTL/RR.h>
+#include "latticetester/NTLWrap.h"
+#include "NTL/vec_ZZ.h"
+#include "NTL/mat_ZZ.h"
+#include "NTL/vec_RR.h"
+#include "NTL/mat_RR.h"
+#define   LD  1
+#define   ZD  2
+#define   ZR  3
+#define   LR  4
 
-// Other option (typedef), which require Int and Real to be defined before:
-//
-	typedef NTL::vector<Int> IntVec;
-	typedef NTL::matrix<Int> IntMat;
-	typedef NTL::vector<Real> RealVec;
-	typedef NTL::matrix<Real> RealMat;
+     
+     #if  TYPES_CODE  ==  LD 
+
+	   typedef std::int64_t  Int;  
+        typedef double  Real; 
+
+
+     #elif  TYPES_CODE  == ZD 
+         
+	     typedef NTL::ZZ Int;
+          typedef double Real;
+    
+     #elif   TYPES_CODE ==  ZR
+   
+	     typedef NTL::ZZ Int;
+          typedef NTL::RR Real;
+
+     
+     #elif  TYPES_CODE  ==  LR 
+  
+	 	typedef std::int64_t  Int;  
+          typedef NTL::RR Real;
+	 
+     #endif
+
+     #ifdef TYPES_CODE
+       typedef NTL::vector<Int> IntVec;
+       typedef NTL::matrix<Int> IntMat;
+       typedef NTL::vector<Real> RealVec;
+       typedef NTL::matrix<Real> RealMat;
+     #endif
 
 #endif

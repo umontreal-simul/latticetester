@@ -22,13 +22,16 @@
 
 namespace LatticeTester {
   // Instantiation of supported types for the class
-  template class BasisConstruction<std::int64_t>;
-  template class BasisConstruction<NTL::ZZ>;
+  // template class BasisConstruction<std::int64_t>;
+  // template class BasisConstruction<NTL::ZZ>;
   
   //============================================================================
   // Specialization of LLLConstruction
   //============================================================================
 
+
+  /*
+   *
   template <>
     void LLLConstr<NTL::matrix<std::int64_t>>::LLLConstruction(
         NTL::matrix<std::int64_t>& matrix) {
@@ -67,5 +70,7 @@ namespace LatticeTester {
       }
       matrix.SetDims(rank, matrix.NumCols());
     }
+
+    */
 
 }

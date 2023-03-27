@@ -28,31 +28,33 @@
  *
  * We can also compare the speed of 'BasisConstruction::upperTriangularBasis'
  * and the speed of 'BasisConstruction::LLLConstruction'
- * *
+ *
+ * RESULTS with m = 1021:
+ *
+ *  dim:        10      20       30       40
+
+UppTri       6590    40472   175472   561106
+LowTri       7070    46714   194587   593768
+TriGCD       5048    61863   438167  1762391
+Tri96        5233    38514   166644   537749
+LLL5          233      589     1272     2226
+LLL8          263     1106     2801     3858
+LLL9          313     1903     5016     9633
+DualUT        909     3902    34482   347704
+DualUT96     1443     6203    63702   502523
+Dual         1261     6574    18648    45761
+
+Total time: 7.55269 seconds
+
  **/
-
- /*
- *   // This is a sample output for TYPES_CODE ZD:
- *  Total time  UPP    Low     LLL1   LLL2   Dual1 Dual2
- * Dim     5   2049   2257    466    361    878   223
- * Dim    10   7396   8419   1814   2089   2064   801
- * Dim    15  18459  21048   4122   5983   5256  2119
- * Dim    20  41071  47818   8670  13366  11358  4374
- * Dim    25  72438  80001  15633  32268  18913  7216
- * Dim    30 110689 134219  20085  40633  35397 11837
- * Dim    35 164154 186050  27150  58239  52095 18252
- * Dim    40 232165 267259  31969  70082  79393 25671
- * Total time: 0.0569002 minutes
-*/
-
 
 
 #define TYPES_CODE  ZD
 
 #include <iostream>
-#include <ctime>
-#include <NTL/mat_GF2.h>
 #include <cstdint>
+#include <ctime>
+// #include <NTL/mat_GF2.h>
 #include <NTL/vector.h>
 #include <NTL/matrix.h>
 #include <NTL/ZZ.h>
@@ -69,127 +71,120 @@ using namespace LatticeTester;
 
 //  The following array gives the possible modulo values for the basis examples.
 const int many_primes = 6;
-const std::string primes[] = {"1021", "1048573", "1073741827", "1099511627791",
-                  "1125899906842597", "18446744073709551629"};
+const std::string primes[] = { "1021", "1048573", "1073741827", "1099511627791",
+		"1125899906842597", "18446744073709551629" };
 
- //Use basis values modulo 1021
- const std::string prime = primes[0];
+//Use basis values modulo 1021
+const std::string prime = primes[0];
+Int m(1021);      // Modulus
+const PrecisionType prec = DOUBLE;  // For LLL construction.
+const int numSizes = 4; // Number of matrix sizes (choices of dimension).
+const int numRep = 10;  // Number of replications for each case.
+const int numMeth = 10;    // Number of methods, and their names.
+std::string names[numMeth] = {"UppTri  ", "LowTri  ", "TriGCD  ", "Tri96   ",
+		 "LLL5    ", "LLL8    ", "LLL9    ", "DualUT  ", "DualUT96", "Dual    "};
+const int dimensions[numSizes] = {10, 20, 30, 40};
 
- int main()
- {
-  clock_t timer = clock();
-  // The different clocks we will use for benchmarking
-  // We use ctime for implementation simplicity
-  int leng = 8; 
-  clock_t upp_time[leng],low_time[leng], lll1_time[leng],lll2_time[leng],
-  dual1_time[leng], dual2_time[leng], totals[6];
-  for (int i = 0; i < leng; i++) {
-    upp_time[i] = 0;
-    low_time[i] = 0;
-    lll1_time[i] = 0;
-    lll2_time[i] = 0;
-    dual1_time[i] = 0;
-    dual2_time[i] = 0;
-  }
+int main() {
+	// We use ctime for implementation simplicity
+	clock_t totalTime = clock();  // Global timer for total time.
+	clock_t timer[numMeth][numSizes];
+	clock_t tmp;
 
-  IntLattice<Int, Real> *lattice;
-  BasisConstruction<Int> constr; // The basis constructor we will use
-  IntMat bas_mat, dua_mat;
-  NTL::Mat<NTL::ZZ> w_copie2, m_dual2;
-  IntMat w_copie, m_v, m_v2,m_dual;
-  Int m(1021);
-  
-  clock_t tmp;
-  
- for (int j = 0; j < leng; j++) {
-   for (int k = 0; k < 10; k++) {
-    std::string name = "bench/" + prime + "_" + std::to_string((j+1)*5) + "_" + std::to_string(k);
-  
-  ParamReader<Int, Real> reader(name + ".dat");
+	BasisConstruction<Int> constr; // The basis constructor we use.
+	IntMat bas_mat, bas_copy, m_v, m_v2;
+    int d;
 
-  reader.getLines();
-  int numlines;
-  unsigned int ln=1;
-  reader.readInt(numlines, 0, 0);
+	for (d = 0; d < numSizes; d++) {  // Each matrix size
+		unsigned int dim = dimensions[d]; // The corresponding dimension.
+		bas_mat.SetDims(dim, dim);
+		bas_copy.SetDims(dim, dim);
+		m_v.SetDims(dim, dim);
+		m_v2.SetDims(dim, dim);
+		for (int meth = 0; meth < numMeth; meth++)
+			timer[meth][d] = 0;
+	    for (int r = 0; r < numRep; r++) {
+	    	// We use a different file for each rep.
+		    std::string name = "bench/" + prime + "_"
+		       + std::to_string(dim) + "_" + std::to_string(r);
+		    ParamReader<Int, Real> reader(name + ".dat");
+	        reader.getLines();
+	        int thisdim;
+			reader.readInt(thisdim, 0, 0);
+			unsigned int ln=1;
+			reader.readBMat(bas_mat, ln, 0, dim);
 
-  bas_mat.SetDims(numlines, numlines);
-  dua_mat.SetDims(numlines, numlines);
-  // for the upper triangular  basis
-  m_v.SetDims(numlines, numlines);
-  // for the lower triangular  basis
-  m_v2.SetDims(numlines, numlines);
-  // for the m-dual  basis
-  m_dual.SetDims(numlines, numlines);
-  // A copie of lattice basis
-  w_copie.SetDims(numlines, numlines);
-  m_dual2.SetDims(numlines, numlines);
-  // A copie of lattice basis
-  w_copie2.SetDims(numlines, numlines);
-  //! Filling the matrix
-  reader.readBMat(bas_mat, ln, 0, numlines);
-  // Creating a lattice basis
-  lattice = new IntLattice<Int, Real>(bas_mat, numlines);
-  copy(bas_mat, w_copie);
-  tmp = clock();
-  constr.upperTriangularBasis(w_copie, m_v, m);
-  upp_time[j] += clock() - tmp;
-  copy(bas_mat, w_copie);
-  // The construction of the lower triangular basis
-  tmp = clock();
-  constr.lowerTriangularBasis(w_copie, m_v2, m);
-  low_time[j] += clock() - tmp;
+			copy(bas_mat, bas_copy);
+			tmp = clock();
+			constr.upperTriangularBasis(bas_copy, m_v, m);
+			timer[0][d] += clock() - tmp;
 
- // std::cout << " The LLL reduction basis with delta=0.8 \n";
-  copy(bas_mat, w_copie);
-  tmp = clock();
-  constr.LLLConstruction(w_copie, 0.8);
-  lll1_time[j] += clock() - tmp;
+			copy(bas_mat, bas_copy);
+			tmp = clock();
+			constr.lowerTriangularBasis(bas_copy, m_v, m);
+			timer[1][d] += clock() - tmp;
 
- // std::cout << " The LLL reduction basis with delta=0.99 \n";
-  copy(bas_mat, w_copie);
-  tmp = clock();
-  constr.LLLConstruction(w_copie, 0.99999);
-  lll2_time[j] += clock() - tmp;
+			copy(bas_mat, bas_copy);
+			tmp = clock();
+			constr.GCDTriangularBasis(bas_copy, m);
+			timer[2][d] += clock() - tmp;
 
-  // NTL::ZZ mm(1021);
-  // copyMatrixToMat(bas_mat, w_copie2); 
-  copy(bas_mat, w_copie);
-  tmp = clock();
-  constr.mDualBasis(w_copie, m_dual, m);
-  dual1_time[j] += clock() - tmp;
-  
-  copy(bas_mat, w_copie);
-  constr.upperTriangularBasis(w_copie, m_v, m);
-  tmp = clock();
-  constr.mDualUpperTriangular(m_v, m_v2, numlines, m);
-  dual2_time[j] += clock() - tmp;
-    }
-  }
+			copy(bas_mat, bas_copy);
+			tmp = clock();
+			// This one is in Util.h, it is the old method from 1996.
+			Triangularization(bas_copy, m_v, dim, dim, m);
+			timer[3][d] += clock() - tmp;
 
-  std::cout << "         ";
-  int width1 = getWidth(upp_time, leng, "UPPTR", totals, 0);
-  int width2 = getWidth(low_time, leng, "LOWTR", totals, 1);
-  int width3 = getWidth(lll1_time, leng, "LLL1", totals, 2);
-  int width4 = getWidth(lll2_time, leng, "LLL2", totals, 3);
-  int width5 = getWidth(dual1_time, leng, "DUAL1", totals, 4);
-  int width6 = getWidth(dual2_time, leng, "DUAL2", totals, 5);
-  std::cout << std::endl;
+			// std::cout << " The LLL construction with delta=0.5 \n";
+			copy(bas_mat, bas_copy);
+			tmp = clock();
+			constr.LLLConstruction(bas_copy, 0.5, prec);
+			timer[4][d] += clock() - tmp;
 
-  std::cout << "Total time" << std::setw(width1) << totals[0]
-    << std::setw(width2) << totals[1]
-    << std::setw(width3) << totals[2]
-    << std::setw(width4) << totals[3]
-    << std::setw(width5) << totals[4]
-    << std::setw(width6) << totals[5] << std::endl;
-  for (int i = 0; i < leng; i++) {
-    std::cout << "Dim" << std::setw(6) << (i+1)*5
-      << std::setw(width1) << upp_time[i] << std::setw(width2) << low_time[i]
-      << std::setw(width3) << lll1_time[i] << std::setw(width4) << lll2_time[i]
-      << std::setw(width5) << dual1_time[i] << std::setw(width6) << dual2_time[i];
-    std::cout << std::endl;
-  }
-  std::cout << "Total time: " << (double)(clock()-timer)/(CLOCKS_PER_SEC*60) << " minutes\n";
+			// std::cout << " The LLL construction with delta=0.8 \n";
+			copy(bas_mat, bas_copy);
+			tmp = clock();
+			constr.LLLConstruction(bas_copy, 0.8, prec);
+			timer[5][d] += clock() - tmp;
 
+			// std::cout << " The LLL constructio with delta=0.99999 \n";
+			copy(bas_mat, bas_copy);
+			tmp = clock();
+			constr.LLLConstruction(bas_copy, 0.99999, prec);
+			timer[6][d] += clock() - tmp;
 
-  return 0;
-}
+			copy(bas_mat, bas_copy);
+			constr.upperTriangularBasis(bas_copy, m_v, m);
+			tmp = clock();
+			constr.mDualUpperTriangular(m_v, m_v2, m);
+			timer[7][d] += clock() - tmp;
+
+			copy(bas_mat, bas_copy);
+			constr.upperTriangularBasis(bas_copy, m_v, m);
+			tmp = clock();
+			constr.mDualUpperTriangular96(m_v, m_v2, m);
+			timer[8][d] += clock() - tmp;
+
+			copy(bas_mat, bas_copy);
+			tmp = clock();
+            constr.mDualBasis(bas_copy, m_v, m);
+			timer[9][d] += clock() - tmp;
+		}
+	}
+
+	std::cout << " dim:  ";
+	for (d = 0; d < numSizes; d++)
+	    std::cout << std::setw(6) << dimensions[d] << " ";
+	std::cout << std::endl << std::endl;
+	for (int meth = 0; meth < numMeth; meth++) {
+	    std::cout  << names[meth] << " ";
+	    for (d = 0; d < numSizes; d++)
+		   std::cout << std::setw(8) << timer[meth][d] << " ";
+		std::cout << std::endl;
+	}
+	std::cout << std::endl;
+	std::cout << "Total time: " << (double) (clock() - totalTime) / (CLOCKS_PER_SEC)
+			<< " seconds\n";
+	return 0;
+	}
+

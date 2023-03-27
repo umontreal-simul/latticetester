@@ -45,14 +45,6 @@
 
 namespace LatticeTester {
 
-/*
-template<typename IntMat>
-struct LLLConstr {
-	void LLLConstruction(IntMat &matrix);
-	void LLLConstruction(IntMat &matrix, double delta);
-};
-*/
-
 /**
  * This class offers methods to construct a basis from a set of generating
  * vectors that are not necessarily independent, to construct a triangular basis,
@@ -69,7 +61,9 @@ struct LLLConstr {
  * the basis is upper-triangular.
  * The methods `Util::Triangularization` and `Util::calcDual` do essentially the same
  * things; however, the methods given here perform more verifications.
- *  ***  We should compare the speeds
+ *  ***  We should compare the speeds.
+ *
+ *  UPDATE THIS AFTER THE TESTS:
  *
  * A few tips about the usage of this class:
  * - Prefer the usage of NTL types when using this module. The methods here do not
@@ -87,7 +81,6 @@ template<typename Int> class BasisConstruction {
 private:
 	typedef NTL::vector<Int> IntVec;
 	typedef NTL::matrix<Int> IntMat;
-//	struct LLLConstr<IntMat> spec;   // Why this?
 
 public:
 
@@ -101,9 +94,11 @@ public:
 	 * it may return a basis matrix that has fewer rows than columns!
 	 * To make sure that these vectors belong to the lattice, we can add them
 	 * explicitly beforehand to the set of generating vectors.
+	 * The construction is done only for the projection over the first `dim` coordinates when `dim > 0`,
+	 * and for all the coordinates when `dim=0`.
 	 */
-	void LLLConstruction(IntMat &gen, PrecisionType prec = XDOUBLE,
-			double delta = 0.99999);
+	void LLLConstruction(IntMat &gen, double delta = 0.999999,
+			PrecisionType precision = DOUBLE);
 
 	/**
 	 * Takes a set of generating vectors in the matrix `gen` and iteratively
@@ -130,7 +125,7 @@ public:
 	 * This function *does not* assume that all vectors `m e_i` belong to the lattice, and
 	 * it may return a basis matrix that has fewer rows than columns!
 	 */
-	void GCDTriangularBasis(IntMat &gen, const Int &m);
+	void GCDTriangularBasis(IntMat &gen, Int &m);
 
 	/**
 	 * Takes an upper triangular basis matrix `basis` and computes the m-dual basis `basisDual`.
@@ -146,14 +141,14 @@ public:
 	 * This function does essentially the same thing as `mDualUpperTriangular`, but it is
 	 * slightly different and slower. It uses the method described in \cite rCOU96a.
 	 */
-	void mDualUpperTriangular96(IntMat &basis, IntMat &basisDual, const Int &m);
+	void mDualUpperTriangular96(IntMat &basis, IntMat &basisDual, Int &m);
 
 	/**
 	 * This function assumes that `basis` contains a basis of the primal lattice
 	 * scaled by the factor `m`, not necessarily triangular, and it returns in `basisDual`
 	 * the m-dual basis.
 	 */
-	void mDualBasis(const IntMat &basis, IntMat &basisDual, const Int &m);
+	void mDualBasis(IntMat &basis, IntMat &basisDual, Int &m);
 
 	/**
 	 * Constructs a basis for the projection `proj` of the lattice `in`,
@@ -170,36 +165,9 @@ public:
 //============================================================================
 // Implementation
 
-// Do we need all of these?  Why?   ***************
-//
-/*
- template<>
- void LLLConstr<NTL::matrix<std::int64_t>>::LLLConstruction(
- NTL::matrix<std::int64_t> &matrix);
-
- template<>
- void LLLConstr<NTL::matrix<std::int64_t>>::LLLConstruction(
- NTL::matrix<std::int64_t> &matrix, double delta);
-
- template<>
- void LLLConstr<NTL::matrix<NTL::ZZ>>::LLLConstruction(
- NTL::matrix<NTL::ZZ> &matrix);
-
- template<>
- void LLLConstr<NTL::matrix<NTL::ZZ>>::LLLConstruction(
- NTL::matrix<NTL::ZZ> &matrix, double delta);
-
- template<typename Int>
- void BasisConstruction<Int>::LLLConstruction(IntMat &matrix) {
- spec.LLLConstruction(matrix);
- }
- */
-
-//void BasisConstruction<NTL::ZZ>::LLLConstruction(
-//   NTL::matrix<NTL::ZZ> &matrix, PrecisionType prec=XDOUBLE, double delta=0.99999);
-
 template<typename Int>
-void BasisConstruction<Int>::LLLConstruction(IntMat &gen, PrecisionType prec, double delta) {
+void BasisConstruction<Int>::LLLConstruction(IntMat &gen, double delta,
+		PrecisionType prec) {
 	std::cerr << "LLLConstruction can only be done with NTL::ZZ integers.\n";
 	std::cerr << "Aborting.\n";
 	exit(1);
@@ -207,7 +175,7 @@ void BasisConstruction<Int>::LLLConstruction(IntMat &gen, PrecisionType prec, do
 
 template<>
 void BasisConstruction<NTL::ZZ>::LLLConstruction(NTL::matrix<NTL::ZZ> &gen,
-		PrecisionType prec, double delta) {
+		double delta, PrecisionType prec) {
 	long rank;
 	switch (prec) {
 	case DOUBLE:
@@ -231,7 +199,6 @@ void BasisConstruction<NTL::ZZ>::LLLConstruction(NTL::matrix<NTL::ZZ> &gen,
 	}
 	gen.SetDims(rank, gen.NumCols());
 }
-
 
 //===================================================================
 
@@ -319,7 +286,8 @@ void BasisConstruction<Int>::upperTriangularBasis(IntMat &gen, IntMat &basis,
 //==============================================================================
 
 template<typename Int>
-void BasisConstruction<Int>::lowerTriangularBasis(IntMat &gen, IntMat &basis, Int &m) {
+void BasisConstruction<Int>::lowerTriangularBasis(IntMat &gen, IntMat &basis,
+		Int &m) {
 	IntVec coeff, vl, v2;
 	Int C, D, val, gcd;
 	int pc, pl, k;
@@ -398,7 +366,7 @@ void BasisConstruction<Int>::lowerTriangularBasis(IntMat &gen, IntMat &basis, In
 //======================================================
 
 template<typename Int>
-void BasisConstruction<Int>::GCDTriangularBasis(IntMat &gen, const Int &m) {
+void BasisConstruction<Int>::GCDTriangularBasis(IntMat &gen, Int &m) {
 	// On exit, the rows of matrix are the basis vectors.
 	long rows = gen.NumRows();
 	long cols = gen.NumCols();
@@ -433,10 +401,10 @@ void BasisConstruction<Int>::GCDTriangularBasis(IntMat &gen, const Int &m) {
 // This is the old version from Couture and L'Ecuyer (1996).
 template<typename Int>
 void BasisConstruction<Int>::mDualUpperTriangular96(IntMat &basis,
-		IntMat &basisDual, const Int &m) {
+		IntMat &basisDual, Int &m) {
 	// We must have a triangular basis matrix in the first place.
 	if (!CheckTriangular(basis, basis.NumRows(), Int(0)))
-		GCDTriangularBasis(basis, &m);
+		GCDTriangularBasis(basis, m);
 	long dim = basis.NumRows();
 	if (dim != basis.NumCols()) {
 		std::cout
@@ -505,16 +473,17 @@ void BasisConstruction<Int>::mDualUpperTriangular(const IntMat &A, IntMat &B,
 }
 
 template<typename Int>
-void BasisConstruction<Int>::mDualBasis(const IntMat &basis, IntMat &basisDual,
-		const Int &m) {
+void BasisConstruction<Int>::mDualBasis(IntMat &basis, IntMat &basisDual,
+		Int &m) {
 	std::cerr << "mDualBasis is implemented only for NTL::ZZ integers.\n";
 	std::cerr << "Aborting.\n";
 	exit(1);
 }
 
 // The specialization for the case where `Int = ZZ`.
-void mDualBasis(const NTL::matrix<NTL::ZZ> &basis,
-		NTL::matrix<NTL::ZZ> &basisDual, const NTL::ZZ &m) {
+template<>
+void BasisConstruction<NTL::ZZ>::mDualBasis(
+		NTL::matrix<NTL::ZZ> &basis, NTL::matrix<NTL::ZZ> &basisDual, NTL::ZZ &m) {
 	NTL::ZZ d;
 	NTL::Mat<NTL::ZZ> C;
 	int dim = basis.NumRows();
@@ -524,10 +493,11 @@ void mDualBasis(const NTL::matrix<NTL::ZZ> &basis,
 	}
 	C.SetDims(dim, dim);
 	inv(d, basisDual, basis);
+	NTL::ZZ m2 = m / d;
 	transpose(C, basis);
 	for (int i = 1; i < dim; i++) {
 		for (int j = 1; j < dim; j++)
-			basis(i, j) = (m * C(i, j)) / d;
+			basis(i, j) = (m2 * C(i, j));
 	}
 }
 
@@ -558,8 +528,10 @@ void BasisConstruction<Int>::projectionConstructionLLL(
 	out = IntLattice<Int, Real>(new_basis, size, in.getNormType());
 }
 
-extern template class BasisConstruction<std::int64_t> ;
-extern template class BasisConstruction<NTL::ZZ> ;
+template class BasisConstruction<std::int64_t>;
+template class BasisConstruction<NTL::ZZ>;
+// extern template class BasisConstruction<std::int64_t> ;
+// extern template class BasisConstruction<NTL::ZZ> ;
 
 } // end namespace LatticeTester
 

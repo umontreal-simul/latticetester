@@ -79,7 +79,7 @@ int main() {
       int numlines;
       unsigned int ln;
       reader.readInt(numlines, 0, 0);
-      IntMat bas_mat, dua_mat;
+      // IntMat bas_mat, dua_mat;
       bas_mat.SetDims(numlines, numlines);
       dua_mat.SetDims(numlines, numlines);
       ln = 1;
@@ -98,13 +98,13 @@ int main() {
 
       // Timing GCDConstruction first
       tmp = clock();
-      constr.GCDTriangularBasis(bas_mat,mod);
+      constr.GCDTriangularBasis(bas_mat, mod);
       Int modulo(1);
       gcd_time[j] += clock() - tmp;
        
       // Timing mDualTriangular
       tmp = clock();
-      constr.mDualUpperTriangular(bas_mat, dua_mat, numlines, modulo);
+      constr.mDualUpperTriangular(bas_mat, dua_mat, mod);
       dual1_time[j] += clock() - tmp;
       std::cout << name << " After mDual \n";
 

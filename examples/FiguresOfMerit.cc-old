@@ -69,13 +69,13 @@ int main() {
     proj_basis.sort(0);
     Reducer<Int, Real> red(proj_basis);
     red.redBKZ();
-     std::string ch("cholesky");
+    std::string ch("cholesky");
     red.shortestVector(L2NORM,ch);
     double shortest = NTL::conv<double>(red.getMinLength());
 
-    // Instanciating the normalizers
-    // The prefered way of doing this is descibed in Normalizer documentation
-  //  Real log_density=-log(abs(NTL::determinant(proj_basis.getBasis())));
+    // Instantiating the normalizers
+    // The prefered way of doing this is described in Normalizer documentation
+    //  Real log_density=-log(abs(NTL::determinant(proj_basis.getBasis())));
     double log_density=(double)(-log(abs(NTL::determinant(proj_basis.getBasis()))));
     Normalizer* norma = new NormaBestLat(log_density, max_dim);
 
@@ -94,7 +94,7 @@ int main() {
   std::cout << "Figure of merit with BestLat: " << merit1 << "\n";
   std::cout << "Figure of merit with BestBound: " << merit2 << std::endl;
   std::cout << "Figures of merit are different for different normalizers,"
-    " weights and projections choices\n";
+               " weights and projections choices\n";
 
   return 0;
 }

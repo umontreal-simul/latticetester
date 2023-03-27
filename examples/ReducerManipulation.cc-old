@@ -17,7 +17,7 @@
 #include <NTL/matrix.h>
 #include <NTL/ZZ.h>
 #include <NTL/RR.h>
-#include "latticetester/BasisConstruction.h"
+// #include "latticetester/BasisConstruction.h"
 #include "latticetester/Util.h"
 #include "latticetester/ParamReader.h"
 #include "latticetester/IntLattice.h"

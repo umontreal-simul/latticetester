@@ -107,7 +107,7 @@ int main()
       reader.readBMat(matrix1, ln, 0, numlines);
 
       tmp = clock();
-      constr.upperTriangularBasis(matrix1, matrix2, m);
+      // constr.upperTriangularBasis(matrix1, matrix2, m);
       tps = (double)(clock() - tmp); //(CLOCKS_PER_SEC);
       matTriangularTime(j, k) = tps;
     }

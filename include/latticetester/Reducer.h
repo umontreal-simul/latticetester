@@ -80,7 +80,7 @@ class Reducer;
 /*
  * This struct specializes some of the functions in a `Reducer`. This is a
  * workaround needed, implementation-wise, since we cannot specialize member
- * functions of a class without specializing the whole class.
+ * functions of a class without specializing the whole class.    ?????????????
  *
  * What this does is that this structure contains specific functions of the
  * original class Reducer that will act differently depending on the types of
@@ -89,6 +89,7 @@ class Reducer;
  * only this structure.
  *
  */
+
 template<typename Int, typename Real>
 struct specReducer {
 	void redLLLNTL(Reducer<Int, Real> &red, double delta,
@@ -97,6 +98,7 @@ struct specReducer {
 	void redBKZ(Reducer<Int, Real> &red, double delta,
 			std::int64_t blocksize, PrecisionType precision, int dim);
 };
+
 /// \endcond
 
 template<typename Int, typename Real>
@@ -181,7 +183,7 @@ public:
 	 * algorithm will enforce tighter conditions on the basis,
 	 * but this will require more work. The reduction algorithm is
 	 * applied until `maxcpt` successful transformations have been done,
-	 * or until the basis is correctly LLL reduced.
+	 * or until the basis is correctly LLL reduced with factor `delta`.
 	 *
 	 * This is our simple implementation of the LLL reduction.
 	 * For NTL types, it is considerably slower than what is
@@ -502,8 +504,8 @@ private:
 
 	std::vector<std::int64_t> m_zLI;
 	std::vector<std::int64_t> m_zShort;
-	std::int64_t m_countNodes;  // Counts number of nodes in the BB tree
-	std::int64_t m_countDieter; // Number of attempts since last successful
+	std::int64_t m_countNodes=0;  // Counts number of nodes in the BB tree
+	std::int64_t m_countDieter=0; // Number of attempts since last successful
 								// Dieter transformation
 	std::int64_t m_cpt;  // Number of successes in pre-reduction transformations
 	bool m_foundZero;    // = true -> the zero vector has been found
@@ -752,6 +754,9 @@ Reducer<Int, Real>::Reducer(IntLattice<Int, Real> &lat) {
 		m_IC[i] = -1;
 	}
 	m_countNodes = 0;
+	m_countDieter = 0;
+	m_foundZero = false;
+	m_cpt = 0;
 }
 
 //=========================================================================
@@ -1422,7 +1427,7 @@ void Reducer<Int, Real>::transformStage3Mink(
 				}
 			}
 			// Permutation.
-			std::swap < std::int64_t > (z[i], z[j]);
+			std::swap (z[i], z[j]);
 			m_lat->permute(i, j);
 		}
 		j = i;
@@ -1465,7 +1470,7 @@ void Reducer<Int, Real>::transformStage3ShortVec(
 				m_lat->setNegativeNorm(j);
 			}
 			// Permutation.
-			std::swap < std::int64_t > (z[i], z[j]);
+			std::swap (z[i], z[j]);
 			m_lat->permuteNoDual(i, j);
 		}
 		j = i;
@@ -2014,14 +2019,17 @@ bool Reducer<Int, Real>::redBBShortVec(NormType norm, std::string decomp) {
            return false;    
     }
     else if(decomp==triangular){
-		/* Perform a triangular decomposition */
+		/* Perform a triangular decomposition:
+		 * NOTE:  This is only temporary for testing.
+		 * Doing this creation would be extremely inefficient, because in a search we
+		 * call this method millions of times !!!  */
 		 BasisConstruction<Int> constr;
 		 IntMat m_v, m_v2;
 		 m_v.resize(dim, dim);
 		 m_v2.resize(dim, dim);
 		 Int mod=m_lat->getModulo();
 	     CopyMatr(m_v,m_lat->getBasis(), dim, dim);
-	 	 constr.lowerTriangularBasis(m_v, m_v2 ,mod);	
+	 	 constr.lowerTriangularBasis(m_v, m_v2, mod);
 		// CopyMatr(m_lat->getBasis(), m_v2,dim, dim);
 	     for (int i = 0; i < dim; i++){
 		   for (int j = 0; j < dim; j++){

@@ -51,19 +51,23 @@ namespace LatticeTester {
  * to construct the basis for a projection over a given subset of coordinates,
  * and to obtain the \f$m\f$-dual of a given basis.
  * The implementation relies on NTL and uses NTL matrices.
+ * When the basis turns out to have fewer rows than columns, some of the methods
+ * add implicitly the rescaled unit vectors to the set of generating vectors.
+ * Then the basis matrix is always square.
  *
  * NTL already offers a very efficient method to construct an LLL-reduced basis from a set
  * of generating vectors.  This is the most effective way of constructing a basis
- * and it is encapsulated in the `LLLConstruction` method given below.
+ * and it is encapsulated in the `LLLConstruction0` method given below.
  * We also offer an alternative that constructs a triangular basis, in `GCDTriangularBasis`.
  * To compute the $m$-dual of a given basis, we have a general method implemented in
  * `mDualComputation`, and a faster method in `mDualTriangular` that works only when
  * the basis is upper-triangular.
  * The methods `Util::Triangularization` and `Util::calcDual` do essentially the same
  * things; however, the methods given here perform more verifications.
- *  ***  We should compare the speeds.
  *
- *  UPDATE THIS AFTER THE TESTS:
+ *  ***  In the end, we want to remove these methods from Util and move them here!
+ *
+ *  UPDATE THIS AFTER WE ARE DONE WITH THE TESTS:
  *
  * A few tips about the usage of this class:
  * - Prefer the usage of NTL types when using this module. The methods here do not
@@ -93,11 +97,17 @@ public:
 	 * It *does not* assume that all vectors m e_i belong to the lattice, so
 	 * it may return a basis matrix that has fewer rows than columns!
 	 * To make sure that these vectors belong to the lattice, we can add them
-	 * explicitly beforehand to the set of generating vectors.
-	 * The construction is done only for the projection over the first `dim` coordinates when `dim > 0`,
-	 * and for all the coordinates when `dim=0`.
+	 * explicitly beforehand to the set of generating vectors, or call the next method.
 	 */
-	void LLLConstruction(IntMat &gen, double delta = 0.999999,
+	void LLLConstruction0(IntMat &gen, double delta = 0.999999,
+			PrecisionType precision = DOUBLE);
+
+   /**
+    * Similar to `LLLConstruction`, except that in case the set of generating
+    * vectors do not generate a full-dimensional lattice, it adds the vectors
+    * m e_i to the generating set, so it always returns a square matrix.
+    */
+	void LLLBasisConstruction(IntMat &gen, Int &m, double delta = 0.999999,
 			PrecisionType precision = DOUBLE);
 
 	/**
@@ -166,15 +176,15 @@ public:
 // Implementation
 
 template<typename Int>
-void BasisConstruction<Int>::LLLConstruction(IntMat &gen, double delta,
+void BasisConstruction<Int>::LLLConstruction0(IntMat &gen, double delta,
 		PrecisionType prec) {
-	std::cerr << "LLLConstruction can only be done with NTL::ZZ integers.\n";
+	std::cerr << "LLLConstruction0 can only be done with NTL::ZZ integers.\n";
 	std::cerr << "Aborting.\n";
 	exit(1);
 }
 
 template<>
-void BasisConstruction<NTL::ZZ>::LLLConstruction(NTL::matrix<NTL::ZZ> &gen,
+void BasisConstruction<NTL::ZZ>::LLLConstruction0(NTL::matrix<NTL::ZZ> &gen,
 		double delta, PrecisionType prec) {
 	long rank;
 	switch (prec) {
@@ -191,13 +201,44 @@ void BasisConstruction<NTL::ZZ>::LLLConstruction(NTL::matrix<NTL::ZZ> &gen,
 		rank = NTL::LLL_RR(gen, delta);
 		break;
 	default:
-		std::cerr << "LLLConstruction: unknown precision type.\n";
+		std::cerr << "LLLConstruction0: unknown precision type.\n";
 	}
 	long num = gen.NumRows();
 	for (long i = 0; i < rank; i++) {
 		NTL::swap(gen[i], gen[num - rank + i]);
 	}
 	gen.SetDims(rank, gen.NumCols());
+}
+
+//============================================================================
+// Implementation
+
+template<typename Int>
+void BasisConstruction<Int>::LLLBasisConstruction(IntMat &gen, Int &m, double delta,
+		PrecisionType prec) {
+	std::cerr << "LLLBasisConstruction can only be done with NTL::ZZ integers.\n";
+	std::cerr << "Aborting.\n";
+	exit(1);
+}
+
+template<>
+void BasisConstruction<NTL::ZZ>::LLLBasisConstruction(NTL::matrix<NTL::ZZ> &gen,
+		NTL::ZZ &m, double delta, PrecisionType prec) {
+	LLLConstruction0 (gen, delta, prec);
+	int rank = gen.NumRows();
+	int dim = gen.NumCols();
+	if (rank == dim)
+		return;
+    gen.SetDims(rank + dim, dim);
+    // We now add the m e_i vectors, and we redo the LLL.
+    int i, j;
+    for (i=rank; i < rank+dim; i++) {
+        for (j=0; j < dim; j++) {
+        	if (i==j) gen[i][j] = m; else gen[i][j] = 0;
+        }
+    }
+	LLLConstruction0 (gen, delta, prec);
+	std::cerr << "LLLBasisConstruction: we had to add some rows!\n";
 }
 
 //===================================================================
@@ -402,31 +443,30 @@ void BasisConstruction<Int>::GCDTriangularBasis(IntMat &gen, Int &m) {
 template<typename Int>
 void BasisConstruction<Int>::mDualUpperTriangular96(IntMat &basis,
 		IntMat &basisDual, Int &m) {
+	if (m < 1) {
+		std::cerr << "m has to be a positive integer.\n";
+		exit(1);  return;
+	}
 	// We must have a triangular basis matrix in the first place.
 	if (!CheckTriangular(basis, basis.NumRows(), Int(0)))
 		GCDTriangularBasis(basis, m);
 	long dim = basis.NumRows();
 	if (dim != basis.NumCols()) {
-		std::cout
-				<< ":mDualUpperTriangular96: the basis matrix must be square!.\n";
-		return;
-	}
-	if (m < 1) {
-		std::cerr << "m has to be a positive integer.\n";
-		exit(1);
+		std::cout << ":mDualUpperTriangular96: basis matrix must be square.\n";
 		return;
 	}
 	basisDual.SetDims(dim, dim);
+	Int mm = m;            // Local copy of m that can be changed.
 	for (int i = 0; i < dim; i++) {
 		for (int j = i + 1; j < dim; j++)
 			NTL::clear(basisDual(i, j));
 		if (!NTL::IsZero(basisDual(i, i))) {
-			Int gcd = NTL::GCD(m, basis(i, i));
-			m *= basis(i, i) / gcd;
+			Int gcd = NTL::GCD(mm, basis(i, i));
+			mm *= basis(i, i) / gcd;
 			basisDual *= basis(i, i) / gcd;
 		}
 
-		DivideRound(m, basis(i, i), basisDual(i, i));
+		DivideRound(mm, basis(i, i), basisDual(i, i));
 		for (int j = i - 1; j >= 0; j--) {
 			NTL::clear(basisDual(i, j));
 			for (int k = j + 1; k <= i; k++)
@@ -435,7 +475,7 @@ void BasisConstruction<Int>::mDualUpperTriangular96(IntMat &basis,
 				basisDual(i, j) = -basisDual(i, j);
 			if (!NTL::IsZero(basisDual(i, j) % basis(j, j))) {
 				Int gcd = NTL::GCD(basisDual(i, j), basis(j, j));
-				m *= basis(j, j) / gcd;
+				mm *= basis(j, j) / gcd;
 				basisDual *= basis(j, j) / gcd;
 			}
 			DivideRound(basisDual(i, j), basis(j, j), basisDual(i, j));
@@ -465,7 +505,7 @@ void BasisConstruction<Int>::mDualUpperTriangular(const IntMat &A, IntMat &B,
 			NTL::clear(B(i, j));
 			for (int k = j + 1; k <= i; k++)
 				B(i, j) += A(j, k) * B(i, k);
-			if (B(i, j) != 0)
+			if (B(i, j) < 0)
 				B(i, j) = -B(i, j);
 			DivideRound(B(i, j), A(j, j), B(i, j));
 		}

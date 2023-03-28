@@ -49,13 +49,12 @@
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/Util.h"
 #include "latticetester/ParamReader.h"
-#include "latticetester/IntLattice.h"
-#include "latticetester/Reducer.h"
-#include "latticetester/EnumTypes.h"
+//#include "latticetester/IntLattice.h"
+//#include "latticetester/EnumTypes.h"
 #include "NTL/tools.h"
 #include "NTL/ZZ.h"
 #include "NTL/RR.h"
-#include "latticetester/NTLWrap.h"
+//#include "latticetester/NTLWrap.h"
 //#include "Examples.h"
 
 using namespace LatticeTester;
@@ -107,7 +106,7 @@ int main()
       reader.readBMat(matrix1, ln, 0, numlines);
 
       tmp = clock();
-      // constr.upperTriangularBasis(matrix1, matrix2, m);
+      constr.upperTriangularBasis(matrix1, matrix2, m);
       tps = (double)(clock() - tmp); //(CLOCKS_PER_SEC);
       matTriangularTime(j, k) = tps;
     }

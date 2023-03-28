@@ -63,8 +63,7 @@ Total time: 7.55269 seconds
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/Util.h"
 #include "latticetester/ParamReader.h"
-#include "latticetester/IntLattice.h"
-#include "latticetester/Reducer.h"
+// #include "latticetester/IntLattice.h"
 #include "latticetester/EnumTypes.h"
 
 using namespace LatticeTester;
@@ -138,19 +137,19 @@ int main() {
 			// std::cout << " The LLL construction with delta=0.5 \n";
 			copy(bas_mat, bas_copy);
 			tmp = clock();
-			constr.LLLConstruction(bas_copy, 0.5, prec);
+			constr.LLLConstruction0(bas_copy, 0.5, prec);
 			timer[4][d] += clock() - tmp;
 
 			// std::cout << " The LLL construction with delta=0.8 \n";
 			copy(bas_mat, bas_copy);
 			tmp = clock();
-			constr.LLLConstruction(bas_copy, 0.8, prec);
+			constr.LLLConstruction0(bas_copy, 0.8, prec);
 			timer[5][d] += clock() - tmp;
 
 			// std::cout << " The LLL constructio with delta=0.99999 \n";
 			copy(bas_mat, bas_copy);
 			tmp = clock();
-			constr.LLLConstruction(bas_copy, 0.99999, prec);
+			constr.LLLConstruction0(bas_copy, 0.99999, prec);
 			timer[6][d] += clock() - tmp;
 
 			copy(bas_mat, bas_copy);

@@ -37,24 +37,24 @@
      #if  TYPES_CODE  ==  LD 
 
 	   typedef std::int64_t  Int;  
-        typedef double  Real; 
+       typedef double  Real;
 
 
      #elif  TYPES_CODE  == ZD 
          
 	     typedef NTL::ZZ Int;
-          typedef double Real;
+         typedef double Real;
     
      #elif   TYPES_CODE ==  ZR
    
 	     typedef NTL::ZZ Int;
-          typedef NTL::RR Real;
+         typedef NTL::RR Real;
 
      
      #elif  TYPES_CODE  ==  LR 
   
 	 	typedef std::int64_t  Int;  
-          typedef NTL::RR Real;
+        typedef NTL::RR Real;
 	 
      #endif
 

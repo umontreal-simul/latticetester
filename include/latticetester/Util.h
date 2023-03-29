@@ -1315,22 +1315,33 @@ inline void CopyMatr(Matr &A, const Matr &B, int line, int col) {
 }
 
 /**
- * Returns a string that is a representation of `mat`. This string will
- * represent the \f$d1 \times d2\f$ submatrix of the first lines and colums of
- * `mat`.
+ * Returns a string that is a representation of `mat`. This string represents
+ *  the \f$d1 \times d2\f$ submatrix of the first lines and columns of `mat`.
  */
 template<typename MatT>
-std::string toStr(const MatT &mat, int d1, int d2) {
+std::string toStr(const MatT &mat, int d1, int d2, int prec=2) {
 	std::ostringstream ostr;
 	for (int i = 0; i < d1; i++) {
 		ostr << "[";
 		for (int j = 0; j < d2; j++) {
-			ostr << std::setprecision(2) << std::setw(6) << mat[i][j]
+			ostr << std::setprecision(prec) << std::setw(6) << mat[i][j]
 					<< std::setw(2) << " ";
 		}
 		ostr << "]\n";
 	}
 	return ostr.str();
+}
+
+/**
+ * Returns the product of the diagonal elements of the matrix `A`,
+ * which is assumed to be square `dim x dim`.
+ */
+template<typename Int>
+void ProductDiagonal(const NTL::matrix<Int> &A, long dim, Int &prod) {
+	prod = 1;
+	for (int i = 1; i < dim; i++) {
+		prod *= A[i][i];
+	}
 }
 
 /**
@@ -1351,6 +1362,42 @@ bool CheckTriangular(const NTL::matrix<Int> &A, long dim, const Int m) {
 				if (A[i][j] != 0) {
 					return false;
 				}
+			}
+		}
+	}
+	return true;
+}
+
+/*=========================================================================*/
+
+/**
+ * Checks if A and B are m-dual to each other.
+ * They must be square with the same dimensions.
+ * Returns `true` if `AB = mI`, false otherwise.
+ */
+template<typename Int>
+bool checkInverseModm (const NTL::matrix<Int> &A, const NTL::matrix<Int> &B,
+		 const Int m) {
+	int dim = A.NumRows();
+	if ((dim != A.NumCols) | (dim != B.NumRows) | (dim != B.NumCols)) {
+		std::cout << "checkInverseModm: A and B must be square with same dimensions."
+			<< std::endl;
+		return false;
+	}
+    Int sProd;  // Scalar product of two rows.
+	for (int i = 0; i < dim; i++) {
+		for (int j = 0; j < dim; j++) {
+			ProdScal<Int>(A[i], B[j], dim, sProd);
+			if (j != i) {
+				if (sProd != 0) {
+					std::cout << "checkInverseModm failed for i, j = " << i
+						<< " , " << j << std::endl;
+					return false;
+				}
+			} else if (sProd != m) {
+				std::cout << "checkInverseModm failed for i, j = " << i
+						<< " , " << j << std::endl;
+				return false;
 			}
 		}
 	}

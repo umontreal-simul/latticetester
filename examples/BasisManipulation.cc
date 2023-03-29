@@ -54,7 +54,7 @@ Total time: 7.55269 seconds
 #include <iostream>
 #include <cstdint>
 #include <ctime>
-// #include <NTL/mat_GF2.h>
+#include <NTL/mat_GF2.h>
 #include <NTL/vector.h>
 #include <NTL/matrix.h>
 #include <NTL/ZZ.h>

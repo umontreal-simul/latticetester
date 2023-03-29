@@ -31,7 +31,7 @@
  * function names and indices.
  * This name conversion was meant to have the same function names in boost and NTL
  * and allows us to have LatticeTester work with either the boost or NTL library,
- * depending on preprocessing statements.
+ * depending on pre-processing statements.
  *
  * New functions have been implemented in this module as a way to overload a
  * few operators and methods of NTL (especially on matrix and vector types) to

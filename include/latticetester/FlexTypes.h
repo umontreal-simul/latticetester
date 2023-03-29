@@ -23,46 +23,32 @@
 #include <NTL/matrix.h>
 #include <NTL/ZZ.h>
 #include <NTL/RR.h>
-#include "latticetester/NTLWrap.h"
-#include "NTL/vec_ZZ.h"
-#include "NTL/mat_ZZ.h"
-#include "NTL/vec_RR.h"
-#include "NTL/mat_RR.h"
+#include "latticetester/NTLWrap.h"  // This one is needed for the vector and matrix types.
+
 #define   LD  1
 #define   ZD  2
 #define   ZR  3
 #define   LR  4
 
-     
-     #if  TYPES_CODE  ==  LD 
-
-	   typedef std::int64_t  Int;  
+#if TYPES_CODE  ==  LD
+	   typedef int64_t  Int;
        typedef double  Real;
+   #elif  TYPES_CODE  == ZD
+	   typedef NTL::ZZ Int;
+       typedef double Real;
+   #elif  TYPES_CODE ==  ZR
+       typedef NTL::ZZ Int;
+       typedef NTL::RR Real;
+   #elif  TYPES_CODE  ==  LR
+	   typedef int64_t  Int;
+       typedef NTL::RR Real;
+#endif
 
-
-     #elif  TYPES_CODE  == ZD 
-         
-	     typedef NTL::ZZ Int;
-         typedef double Real;
-    
-     #elif   TYPES_CODE ==  ZR
-   
-	     typedef NTL::ZZ Int;
-         typedef NTL::RR Real;
-
-     
-     #elif  TYPES_CODE  ==  LR 
-  
-	 	typedef std::int64_t  Int;  
-        typedef NTL::RR Real;
-	 
-     #endif
-
-     #ifdef TYPES_CODE
+#ifdef TYPES_CODE
        typedef NTL::vector<Int> IntVec;
        typedef NTL::matrix<Int> IntMat;
        typedef NTL::vector<Real> RealVec;
        typedef NTL::matrix<Real> RealMat;
-     #endif
+#endif
 
 #endif

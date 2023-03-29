@@ -129,11 +129,6 @@ int main() {
 			if (!CheckTriangular(m_v, dim, m)) {
 				std::cout << "Matrix not triangular! \n";
 			}
-			Int prod;
-			ProductDiagonal(m_v, dim, prod);
-			if (prod != m) {
-				std::cout << "Determinant is not equal to m.  Det = " << prod << "\n";
-			}
 			tmp = clock();
 			// constr.mDualUpperTriangular(m_v, m_v2, m);   // **** Float ERROR!!!
 			timer[7][d] += clock() - tmp;

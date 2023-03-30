@@ -54,17 +54,18 @@ Total time: 7.55269 seconds
 #include <iostream>
 #include <cstdint>
 #include <ctime>
-#include <NTL/mat_GF2.h>
 #include <NTL/vector.h>
 #include <NTL/matrix.h>
 #include <NTL/ZZ.h>
-#include <NTL/RR.h>
+#include <NTL/vec_ZZ.h>
+#include <NTL/mat_ZZ.h>
+
 #include "latticetester/FlexTypes.h"
-#include "latticetester/BasisConstruction.h"
-#include "latticetester/Util.h"
-#include "latticetester/ParamReader.h"
-// #include "latticetester/IntLattice.h"
 #include "latticetester/EnumTypes.h"
+#include "latticetester/NTLWrap.h"
+#include "latticetester/Util.h"
+#include "latticetester/BasisConstruction.h"
+#include "latticetester/ParamReader.h"
 
 using namespace LatticeTester;
 

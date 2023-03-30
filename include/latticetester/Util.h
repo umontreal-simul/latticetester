@@ -451,7 +451,7 @@ inline void Quotient(const NTL::ZZ &a, const NTL::ZZ &b, NTL::ZZ &q) {
 
 /**
  * Computes the remainder of a/b and stores its positive equivalent mod b in
- * r. This works with std::int64_t, NTL::ZZ and real valued numbers.
+ * r. This works with std::int64_t, NTL::ZZ and real numbers.
  * */
 template<typename Real>
 inline void Modulo(const Real &a, const Real &b, Real &r) {
@@ -486,10 +486,27 @@ inline void Modulo(const std::int64_t &a, const std::int64_t &b,
  */
 inline void Modulo(const NTL::ZZ &a, const NTL::ZZ &b, NTL::ZZ &r) {
 	r = a % b;
-	// if r < 0, we know that b < 0 because of the way NTL works
-	if (r < 0)
+    // if r < 0, we know that b < 0 because of the way NTL works
+    if (r < 0)
 		r -= b;
 }
+
+
+// This one assumes a priori that the modulo is positive; it saves a test.
+// inline void ModuloPos(const Int &a, const Int &b, Int &r) {
+//	r = a % b;
+// }
+
+// This one assumes a priori that the modulo is positive.
+inline void ModuloPos(const std::int64_t &a, const std::int64_t &b,
+		std::int64_t &r) {
+	r = a % b;
+}
+
+inline void ModuloPos(const NTL::ZZ &a, const NTL::ZZ &b, NTL::ZZ &r) {
+	r = a % b;
+}
+
 
 /*void ModuloVec ( NTL::vector<NTL::ZZ>  &a,  NTL::ZZ & b)
  // void ModuloVec ( NTL::vector<NTL::ZZ>  &a, const NTL::ZZ & b, NTL::ZZ & r)
@@ -499,28 +516,6 @@ inline void Modulo(const NTL::ZZ &a, const NTL::ZZ &b, NTL::ZZ &r) {
 
  }*/
 
-/**
- * This remplace each element $a[i]$ of the vector $a$ by a[i] modulo m.
- **But we don't compute the modulo for me_i vector
- */
-
-/**
- template <typename IntVec, typename Int>
- void ModuloVec ( IntVec  &a,  Int & m)
- // void ModuloVec ( NTL::vector<NTL::ZZ>  &a, const NTL::ZZ & b, NTL::ZZ & r)
- {  Int r;
-
- if(!IsMei(a,m)){
- for(int i=0;i<a.length();i++)
- {  r = a[i] % m;
- if(a[i]<0)
- a[i]=r-m;
- else
- a[i]=r;
- }
- }
- }
- **/
 
 template<typename IntVec, typename Int>
 void ModuloVec(IntVec &a, Int &m) {

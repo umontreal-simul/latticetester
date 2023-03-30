@@ -18,18 +18,6 @@
 #ifndef LATTICETESTER_BASISCONSTRUCTION_H
 #define LATTICETESTER_BASISCONSTRUCTION_H
 
-#include "NTL/LLL.h"
-#include <NTL/mat_GF2.h>
-#include "NTL/tools.h"
-#include "NTL/ZZ.h"
-#include "NTL/RR.h"
-
-#include "latticetester/EnumTypes.h"
-#include "latticetester/IntLattice.h"
-#include "latticetester/NTLWrap.h"
-#include "latticetester/Util.h"
-#include "latticetester/Coordinates.h"
-
 #include <string>
 #include <sstream>
 #include <iostream>
@@ -42,6 +30,19 @@
 #include <cstdlib>
 #include <cstdint>
 #include <type_traits>
+
+#include "NTL/tools.h"
+#include "NTL/ZZ.h"
+#include "NTL/RR.h"
+#include "NTL/LLL.h"
+#include "NTL/vec_ZZ.h"
+#include "NTL/mat_ZZ.h"
+
+#include "latticetester/NTLWrap.h"
+#include "latticetester/EnumTypes.h"
+#include "latticetester/IntLattice.h"
+#include "latticetester/Util.h"
+#include "latticetester/Coordinates.h"
 
 namespace LatticeTester {
 
@@ -423,14 +424,18 @@ void BasisConstruction<Int>::GCDTriangularBasis(IntMat &gen, Int &m) {
 				gen[i].swap(gen[j]);
 				q = gen[j][i] / gen[i][i];
 				gen[j] -= q * gen[i];
-				for (int k = 0; k < max_rank; k++)
-					Modulo(gen[j][k], m, gen[j][k]);
+				for (long k = 0; k < max_rank; k++)
+//              We want gen[j][k] -= q * gen[i][k] % m.  Should do in a single loop!
+//				    gen[j][k] = gen[j][k] % m;
+					ModuloPos(gen[j][k], m, gen[j][k]);
 			}
 		}
 		if (gen[i][i] != 0) {
 			rank++;
-			if (gen[i][i] < 0)
-				gen[i] *= Int(-1);
+			if (gen[i][i] < 0) {
+				// gen[i] = -gen[i];
+			    gen[i] *= Int(-1);
+			}
 		}
 	}
 	// We remove zero vectors from the basis.

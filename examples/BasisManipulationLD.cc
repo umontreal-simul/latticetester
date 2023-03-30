@@ -42,11 +42,9 @@
 #include <iostream>
 #include <cstdint>
 #include <ctime>
-#include <NTL/mat_GF2.h>
 #include <NTL/vector.h>
 #include <NTL/matrix.h>
 #include <NTL/ZZ.h>
-#include <NTL/RR.h>
 #include "latticetester/FlexTypes.h"
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/Util.h"

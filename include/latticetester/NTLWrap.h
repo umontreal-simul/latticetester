@@ -21,30 +21,36 @@
 #include <NTL/vector.h>
 #include <NTL/matrix.h>
 #include <NTL/ZZ.h>
+#include <NTL/vec_ZZ.h>
 #include <NTL/mat_ZZ.h>
 
 #include <cstdint>
 
 /**
- * This module contains extensions of certain classes in NTL. It was previously
+ * This module extends the `Vec` and `Mat` classes of NTL. It was previously
  * necessary because NTL and boost (an old dependency) did not use the same 
  * function names and indices.
- * This name conversion was meant to have the same function names in boost and NTL
- * and allows us to have LatticeTester work with either the boost or NTL library,
- * depending on pre-processing statements.
+ * Most of the methods below only define alias names for some NTL methods.
+ * This was done at the time to have the same names for methods that are in both
+ * boost and NTL, allowing LatticeTester to work with either the boost or NTL library,
+ * depending on pre-processing statements. But these alias could probably be removed
+ * because we no longer use boost in LatticeTester.
+ * However, they may still be used in LatNet Builder.                 **************
  *
- * New functions have been implemented in this module as a way to overload a
+ * New functions have also been implemented in this module as a way to overload a
  * few operators and methods of NTL (especially on matrix and vector types) to
  * the usage of `NTL::Mat<std::uint64_t>` because some basic utilities that we need
- * are not offered in NTL.
+ * for those integers are not offered in NTL.
  */
 
 namespace NTL {
 
 /**
- * A subclass of the `NTL::Vec<T>` class. It extends its parent with a few
- * methods and overloads a few others with more compatible defaults.
- * */
+ * A subclass of the `NTL::Vec<T>` class. It extends its parent with a some additional
+ * methods and overloads (changes) a few others for compatibility with boost.
+ * Suggestion: Avoid using these redefined methods, because this can be very confusing
+ * and dangerous. We should probably remove them!                            *********
+ */
 template<typename T> class vector: public Vec<T> {
 public:
 
@@ -94,6 +100,7 @@ public:
 	/**
 	 * Releases space and sets length to 0.
 	 * This uses `%NTL::%Vec<T>::%kill()`.
+	 * BAD RENAMING!   clear() should not be the same as kill().    **********
 	 */
 	void clear() {
 		this->kill();
@@ -135,7 +142,7 @@ public:
 	}
 
 	/**
-	 * return the last element, this one is for STL compatibility
+	 * return the last element, this one is for STL compatibility.   ?????
 	 */
 	T back() {
 		return (*(this->end() - 1));
@@ -197,9 +204,9 @@ public:
 
 	/**
 	 * Set the matrix dimensions to `size1`\f$\times\f$`size2`.
-	 * This uses `%NTL::%Mat<T>::%SetDims(size1, size2)`.
-	 * @param size1 New height of the matrix.
-	 * @param size2 New width of the matrix.
+	 * This is just an alis to `%NTL::%Mat<T>::%SetDims(size1, size2)`.
+	 * @param size1 New number of rows in the matrix.
+	 * @param size2 New number of columns in the matrix.
 	 */
 	void resize(size_type size1, size_type size2) {
 		this->SetDims(size1, size2);
@@ -208,19 +215,13 @@ public:
 	/**
 	 * Releases space and sets the matrix this size \f$0\times 0\f$.
 	 * This uses `NTL::Mat<T>::kill()`.
+	 *
+	 * NOT COMPATIBLE WITH clear() in NTL and ELSEWHERE !!!   *********
+	 * It should initialize to 0 but not destroy the object !!
 	 */
 	void clear() {
 		this->kill();
 	}
-
-	/*
-	 * The function in this comment adds nothing since NTL::Vec<T> now
-	 * implements a member function: `void swap(Mat<T>& other);`. It is kept
-	 * here for history.
-	 * Thanks to Ayman for pointing this out.
-	 *
-	 * inline void swap (matrix<T> &m) { NTL::swap(*this, m); }
-	 * */
 
 	/**
 	 * Returns the number of rows of the matrix.
@@ -323,7 +324,7 @@ void transpose(NTL::Mat<T> &X, const NTL::Mat<T> &A) {
 }
 
 /**
- * Another implementation of the `transpose` function.
+ * Another implementation of the `transpose` function.  Returns the ranspose of `a`.
  * */
 template<typename T>
 inline NTL::Mat<T> transpose(const NTL::Mat<T> &a) {

@@ -2,16 +2,6 @@
 
 namespace NTL {
 
-  void ident(Mat_64& mat, long dim) {
-    mat.SetDims(dim, dim);
-    for (long i = 0; i < dim; i++) {
-      for (long j = 0; j < dim; j++) {
-        if (i == j) mat[i][j] = 1;
-        else mat[i][j] = 0;
-      }
-    }
-  }
-
   Vec_64 operator*(const Vec_64& vec, std::int64_t a) {
     Vec_64 ret_vec = vec;
     long size = vec.length();
@@ -97,6 +87,16 @@ namespace NTL {
     return mat;
   }
 
+  void ident(Mat_64& mat, long dim) {
+    mat.SetDims(dim, dim);
+    for (long i = 0; i < dim; i++) {
+      for (long j = 0; j < dim; j++) {
+        if (i == j) mat[i][j] = 1;
+        else mat[i][j] = 0;
+      }
+    }
+  }
+
   double determinant(const NTL::matrix<std::int64_t>& mat) {
     NTL::matrix<NTL::ZZ> temp_mat;
     temp_mat.SetDims(mat.NumCols(), mat.NumCols());
@@ -106,7 +106,7 @@ namespace NTL {
       }
     }
     double temp;
-    NTL::conv(temp, NTL::determinant(temp_mat));
+    NTL::conv(temp, NTL::determinant(temp_mat));  // Why a `double`?
     return temp;
   }
 

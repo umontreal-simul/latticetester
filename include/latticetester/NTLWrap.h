@@ -25,6 +25,7 @@
 #include <NTL/mat_ZZ.h>
 
 #include <cstdint>
+#include <cmath>
 
 /**
  * This module extends the `Vec` and `Mat` classes of NTL. It was previously
@@ -39,7 +40,7 @@
  *
  * New functions have also been implemented in this module as a way to overload a
  * few operators and methods of NTL (especially on matrix and vector types) to
- * the usage of `NTL::Mat<std::uint64_t>` because some basic utilities that we need
+ * the usage of `NTL::Mat<std::int64_t>` because some basic utilities that we need
  * for those integers are not offered in NTL.
  */
 
@@ -48,7 +49,7 @@ namespace NTL {
 /**
  * A subclass of the `NTL::Vec<T>` class. It extends its parent with a some additional
  * methods and overloads (changes) a few others for compatibility with boost.
- * Suggestion: Avoid using these redefined methods, because this can be very confusing
+ * ** WARNING **: Avoid using these redefined methods, because this can be very confusing
  * and dangerous. We should probably remove them!                            *********
  */
 template<typename T> class vector: public Vec<T> {
@@ -100,11 +101,10 @@ public:
 	/**
 	 * Releases space and sets length to 0.
 	 * This uses `%NTL::%Vec<T>::%kill()`.
-	 * BAD RENAMING!   clear() should not be the same as kill().    **********
+	 * BAD RENAMING!  REMOVE !!!
+	 * clear() should not be the same as kill().    **********
 	 */
-	void clear() {
-		this->kill();
-	}
+	void clear() { this->clear(); }
 
 	/*
 	 * The function in this comment adds nothing since NTL::Vec<T> now
@@ -158,7 +158,7 @@ public:
 	/**
 	 * Change in the indexation reference for () operator to start from 0.
 	 * In `NTL::Vec<T>` the () operator starts from 1 which is not compatible
-	 * with boost.
+	 * with boost.               ** ALSO DANGEROUS.  USE [] instead. **
 	 */
 	const T& operator()(size_type i) const {
 		return (*this)[i];
@@ -167,7 +167,7 @@ public:
 		return (*this)[i];
 	}
 
-};
+};  // End class
 
 /**
  * A subclass of the `NTL::Mat<T>` class. It extends its parent with a few
@@ -219,9 +219,7 @@ public:
 	 * NOT COMPATIBLE WITH clear() in NTL and ELSEWHERE !!!   *********
 	 * It should initialize to 0 but not destroy the object !!
 	 */
-	void clear() {
-		this->kill();
-	}
+    void clear() { this->clear(); }
 
 	/**
 	 * Returns the number of rows of the matrix.
@@ -241,7 +239,7 @@ public:
 	 * Overload to change the indexation reference for (i,j) operator to start
 	 * from 0.
 	 * In NTL::Vec<T> the (i,j) operator starts from 1 which is not compatible
-	 * with boost.
+	 * with boost.             ** ALSO DANGEROUS.  USE [] instead. **
 	 */
 	T& operator()(size_type i, size_type j) {
 		return (*this)[i][j];
@@ -249,11 +247,14 @@ public:
 	const T& operator()(size_type i, size_type j) const {
 		return (*this)[i][j];
 	}
-};
+};   // End class
+
+/************************************************/
+
 
 /**
  * An extension of `NTL::vector<T>` implemented in this module to be used as
- * a matrix row.
+ * a matrix row.                     **  WHY THIS EXTENSION ?  REMOVE ? **
  */
 template<class M>
 class matrix_row: public vector<typename M::value_type> {
@@ -270,22 +271,9 @@ public:
 	inline ~matrix_row() {
 		this->_vec__rep = 0; /* avoid destruction in parent class */
 	}
-};
+};    // End class
 
 //============================================================================
-
-/// Renaming this supported type for convenience.
-typedef Mat<std::int64_t> Mat_64;
-/// Renaming this supported type for convenience.
-typedef Vec<std::int64_t> Vec_64;
-
-//============================================================================
-
-/**
- * Transforms `mat` into the identity matrix of dimensions
- * \f$\text{dim}\times\text{dim}\f$.
- * */
-void ident(Mat_64 &mat, long dim);
 
 /**
  * Transposes `A` into `X`.
@@ -294,7 +282,7 @@ void ident(Mat_64 &mat, long dim);
  * be necessary to implement the swap function for the type `T` for this to work.
  * */
 template<typename T>
-void transpose(NTL::Mat<T> &X, const NTL::Mat<T> &A) {
+static void transpose(NTL::Mat<T> &X, const NTL::Mat<T> &A) {
 	long n = A.NumRows();
 	long m = A.NumCols();
 
@@ -324,10 +312,12 @@ void transpose(NTL::Mat<T> &X, const NTL::Mat<T> &A) {
 }
 
 /**
- * Another implementation of the `transpose` function.  Returns the ranspose of `a`.
+ * Another implementation of the `transpose` function.  Returns the transpose of `a`.
+ *
+ * No need for this:  Just call NTL::transpose(x, a) directly!  *********
  * */
 template<typename T>
-inline NTL::Mat<T> transpose(const NTL::Mat<T> &a) {
+static inline NTL::Mat<T> transpose(const NTL::Mat<T> &a) {
 	NTL::Mat<T> x;
 	transpose(x, a);
 	return x;
@@ -335,12 +325,112 @@ inline NTL::Mat<T> transpose(const NTL::Mat<T> &a) {
 
 //============================================================================
 
+
+// Defining some aliases.
+
+// typedef std::int64_t int64_t;
+
+typedef NTL::matrix<int64_t> mat_long;
+typedef NTL::vector<int64_t> vec_long;
+
+typedef Mat<std::int64_t> Mat_64;
+typedef Vec<std::int64_t> Vec_64;
+
+//==========================================
+
+
+inline static void add(int64_t& x, const int64_t& a, const int64_t& b)
+   { x = a + b; }
+
+inline static void sub(int64_t& x, const int64_t& a, const int64_t& b)
+   { x = a - b; }
+
+// x = a - b;  assumes a >= b >= 0.
+inline static void SubPos(int64_t& x, const int64_t& a, const int64_t& b)
+   { x = a - b; }
+
+inline static void negate(int64_t& x, const int64_t& a)
+   { x = -a; }
+
+//inline static void abs(int64_t& x, const int64_t& a)
+//   { x = abs(a); }
+
+
+inline static void mul(long& x, const long a, const long b)
+   { x = a * b; }
+
+inline static void sqr(int64_t& x, const int64_t& a)
+   { x = a * a; }
+
+inline static void MulAddTo(int64_t& x, const long a, const long b)
+   { x += a * b; }
+
+inline static void MulSubFrom(int64_t& x, long a, long b)
+   { x -= a * b; }
+
+inline static void LeftShift(int64_t& x, const long a, long k)
+   { x = (a << k); }
+
+inline static void RightShift(int64_t& x, const long a, long k)
+   {  x = (a >> k); }
+
+// inline static bool IsZero(long x)
+//   {  return (x == 0); }
+
+/*
+double InnerProduct(double *a, double *b, long n) {
+   double s=0;
+   for (long i = 0; i < n; i++)
+      s += a[i]*b[i];
+   return s;
+}
+
+
+void InnerProduct(int64_t& xx, const vec_long& a, const vec_long& b) {
+   int64_t x = 0;
+   long n = min(a.length(), b.length());
+   long i;
+   for (i = 0; i < n; i++) {
+      x += a[i] * b[i];
+   }
+   xx = x;
+}
+*/
+
+/*
+void static mul(vec_long& x, const vec_long& a, const long b) {
+   long n = a.length();
+   x.SetLength(n);
+   long i;
+   for (i = 0; i < n; i++)
+      mul(x[i], a[i], b);
+}
+
+void static add(vec_long& x, const vec_long& a, const vec_long& b) {
+   long n = a.length();
+   if (b.length() != n) LogicError("vector add: dimension mismatch");
+   x.SetLength(n);
+   long i;
+   for (i = 0; i < n; i++)
+      add(x[i], a[i], b[i]);
+}
+*/
+
+void static sub(vec_long& x, const vec_long& a, const vec_long& b) {
+   long n = a.length();
+   if (b.length() != n) LogicError("vector sub: dimension mismatch");
+   x.SetLength(n);
+   long i;
+   for (i = 0; i < n; i++)
+      sub(x[i], a[i], b[i]);
+}
+
+
+
 /**
- * \name Operator overloads
- * @{
  * These are operator overloads for Mat_64 and Vec_64 types. Only the
  * overloads we currently use are defined.
- * */
+ */
 Vec_64 operator*(const Vec_64 &vec, std::int64_t a);
 Vec_64 operator*(std::int64_t a, const Vec_64 &vec);
 std::int64_t operator*(const Vec_64 &vec1, const Vec_64 &vec2);
@@ -349,11 +439,18 @@ Vec_64& operator-=(Vec_64 &vec1, const Vec_64 &vec2);
 Vec_64& operator*=(Vec_64 &vec, std::int64_t a);
 Mat_64& operator*=(Mat_64 &mat, std::int64_t a);
 Mat_64 operator*(const Mat_64 &mat1, const Mat_64 &mat2);
-/**
- * @}
- * */
 
-double determinant(const NTL::matrix<std::int64_t> &mat);
+
+/**
+ * Transforms `mat` into the identity matrix of dimensions
+ * \f$\text{dim}\times\text{dim}\f$.
+ */
+void ident(Mat_64 &mat, long dim);
+
+/**
+ * Computes and returns the determinant of `mat'.
+ */
+double determinant(const Mat_64 &mat);
 
 } // End namespace NTL
 

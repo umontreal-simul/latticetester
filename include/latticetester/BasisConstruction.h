@@ -297,23 +297,23 @@ void BasisConstruction<NTL::ZZ>::upperTriangularBasis(NTL::matrix<NTL::ZZ> &gen,
 	int dim1 = gen.NumRows();
 	int dim2 = gen.NumCols();
 	int k;
-		
+	
+	NTL_ZZNewRegister(gcd); 
+	NTL_ZZNewRegister(m);
+
+	m = n;
+	
 	//If necessary, the entries of the input matrix can be reduced. However, this costs some run time.
 	//for (int k = 0; k < dim1; k++) {
 	//	for (int j = 0; j < dim2; j++) {
-	//		gen(k,j) = gen(k, j) % m; 
+	//		rem(gen[k][j], gen[k][j], m); 
 	//	}
 	//}
 	
 	//Define dimensions of vectors
 	coeff_gcd.SetLength(dim2);
 	coeff_xi.SetLength(dim2);
-	xi.SetLength(dim2);
-	
-	NTL_ZZNewRegister(gcd);
-	NTL_ZZNewRegister(m);
-	
-	m = n;
+	xi.SetLength(dim2);	
 	
 	for (int i = 0; i < dim2; i++) {
 		
@@ -330,7 +330,7 @@ void BasisConstruction<NTL::ZZ>::upperTriangularBasis(NTL::matrix<NTL::ZZ> &gen,
 		
 		//Reduce the other generators as they are used often in the following
 		for (int j = k; j < dim1; j++) {
-				gen[j][i] = gen[j][i] % m; 
+				rem(gen[j][i], gen[j][i], m); 
 		}
 		
 		//The else-case adds m e_i to the basis matrix
@@ -355,7 +355,7 @@ void BasisConstruction<NTL::ZZ>::upperTriangularBasis(NTL::matrix<NTL::ZZ> &gen,
 			
 			//Reduce the coefficients found during the Euclidean algorithm
 			for (int j = 0; j < dim1; j++) {
-				coeff_gcd[j] = coeff_gcd[j] % m;
+				rem(coeff_gcd[j], coeff_gcd[j], m);
 			}
 			
 			//We have now found all the coefficients and can compute the vector x_i		
@@ -371,8 +371,8 @@ void BasisConstruction<NTL::ZZ>::upperTriangularBasis(NTL::matrix<NTL::ZZ> &gen,
 			//For that purpose, we at first calculate the coefficients with which x_i needs to be multiplied
 			for (int j = 0; j < dim1; j++) {
 				div(coeff_xi[j], gen[j][i], gcd);
-				coeff_xi[j] =  coeff_xi[j] % m;
-				xi[j] = xi[j] % m;
+				rem(coeff_xi[j], coeff_xi[j], m);
+				rem(xi[j], xi[j], m);
 			}
 			
 			//Update the v_i
@@ -676,21 +676,20 @@ template<>
 void BasisConstruction<NTL::ZZ>::mDualBasis(
 		NTL::matrix<NTL::ZZ> &basis, NTL::matrix<NTL::ZZ> &basisDual, NTL::ZZ &m) {
 	NTL::ZZ d;
-	NTL::Mat<NTL::ZZ> C;
+
 	int dim = basis.NumRows();
 	if (dim != basis.NumCols()) {
 		std::cerr << "mDualBasis: the given basis matrix must be square.\n";
 		exit(1);
 	}
-	C.SetDims(dim, dim);
 	inv(d, basisDual, basis);
-	NTL::ZZ m2 = m / d;
-	transpose(C, basis);
-	for (int i = 1; i < dim; i++) {
-		for (int j = 1; j < dim; j++)
-			basis(i, j) = (m2 * C(i, j));
+	NTL::matrix<NTL::ZZ> C = basisDual;
+	for (int i = 0; i < dim; i++) {
+		for (int j = 0; j < dim; j++)
+			rem(basisDual[i][j], C[j][i], m);
 	}
 }
+
 
 //=================================================================================
 

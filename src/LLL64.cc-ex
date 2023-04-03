@@ -6,16 +6,18 @@
 #include <NTL/vec_double.h>
 #include <NTL/vector.h>
 #include <NTL/matrix.h>
+
 #include <latticetester/NTLWrap.h>
 #include <latticetester/LLL64.h>
 
 NTL_START_IMPL
 
-//typedef NTL::Mat<int64_t> mat_long;
-//typedef NTL::Vec<int64_t> vec_long;
 
-typedef NTL::matrix<int64_t> mat_long;
-typedef NTL::vector<int64_t> vec_long;
+//typedef NTL::Mat<int64_t> matrix64;
+//typedef NTL::Vec<int64_t> vector64;
+
+//typedef NTL::matrix<int64_t> matrix64;
+//typedef NTL::vector<int64_t> vector64;
 
 // static inline bool IsZero(long x)
 //   {  return (x == 0); }
@@ -35,7 +37,7 @@ static double InnerProduct(double *a, double *b, long n) {
    return s;
 }
 
-static void InnerProduct(long &xx, const vec_long& a, const vec_long& b) {
+static void InnerProduct(long &xx, const vector64& a, const vector64& b) {
    long x = 0;
    long n = min(a.length(), b.length());
    long i;
@@ -45,7 +47,7 @@ static void InnerProduct(long &xx, const vec_long& a, const vec_long& b) {
    xx = x;
 }
 
-static void RowTransformSimple (vec_long& A, vec_long& B, long& MU1)
+static void RowTransformSimple (vector64& A, vector64& B, long& MU1)
 // x = x - y*MU
 {
    register long MU = MU1;
@@ -99,7 +101,7 @@ static void RowTransformStart(double *a, long *in_a, long& in_float, long n) {
 }
 
 
-static void RowTransformFinish(vec_long& A, double *a, long *in_a) {
+static void RowTransformFinish(vector64& A, double *a, long *in_a) {
    long n = A.length();
    long i;
 
@@ -115,7 +117,7 @@ static void RowTransformFinish(vec_long& A, double *a, long *in_a) {
 }
 
 
-static void RowTransform2(vec_long& A, vec_long& B, const long& MU1) {
+static void RowTransform2(vector64& A, vector64& B, const long& MU1) {
 // x = x + y*MU
 
    register long T, MU;
@@ -125,12 +127,12 @@ static void RowTransform2(vec_long& A, vec_long& B, const long& MU1) {
    MU = MU1;
 
    if (MU == 1) {
-      for (i = 1; i <= n; i++)
+      for (i = 0; i < n; i++)
          add(A[i], A[i], B[i]);
       return;
    }
    if (MU == -1) {
-      for (i = 1; i <= n; i++)
+      for (i = 0; i < n; i++)
          sub(A[i], A[i], B[i]);
       return;
    }
@@ -142,7 +144,7 @@ static void RowTransform2(vec_long& A, vec_long& B, const long& MU1) {
    }
 }
 
-static void ComputeGS(mat_long& B, double **B1, double **mu, double *b,
+static void ComputeGS(matrix64& B, double **B1, double **mu, double *b,
                double *c, long k, double bound, long st, double *buf) {
    long n = B.NumCols();
    long i, j;
@@ -181,26 +183,22 @@ static void ComputeGS(mat_long& B, double **B1, double **mu, double *b,
       }
 
       if (test) {
-         InnerProduct(T1, (vec_long)B(k), (vec_long)B(j));
+         InnerProduct(T1, (vector64)B[k], (vector64)B[j]);
          conv(s, T1);
       }
-
       double *mu_j = mu[j];
 
       t1 = 0;
       for (i = 1; i <= j-1; i++) {
          t1 += mu_j[i]*buf[i];
       }
-  
       mu_k[j] = (buf[j] = (s - t1))/c[j];
    }
 
 #if (!NTL_EXT_DOUBLE)
 
    // Kahan summation 
-
    double c1;
-
    s = c1 = 0;
    for (j = 1; j <= k-1; j++) {
       y = mu_k[j]*buf[j] - c1;
@@ -209,8 +207,6 @@ static void ComputeGS(mat_long& B, double **B1, double **mu, double *b,
       c1 = c1-y;
       s = t;
    }
-
-
 #else
 
    s = 0;
@@ -234,7 +230,7 @@ static NTL_CHEAP_THREAD_LOCAL double RR_GS_time = 0;
 static NTL_CHEAP_THREAD_LOCAL double StartTime = 0;
 static NTL_CHEAP_THREAD_LOCAL double LastTime = 0;
 
-void LLLStatus(long max_k, double t, long m, const mat_long& B) {
+void LLLStatus(long max_k, double t, long m, const matrix64& B) {
    cerr << "---- LLL_FP status ----\n";
    cerr << "elapsed time: ";
    PrintTime(cerr, t-StartTime);
@@ -289,7 +285,7 @@ static void inc_red_fudge()
 }
 
 
-static long ll_LLL_FP(mat_long& B, double delta,
+static long ll_LLL_FP(matrix64& B, double delta,
            double **B1, double **mu,
            double *b, double *c,
            long m, long init_k, long &quit) {
@@ -318,7 +314,7 @@ static long ll_LLL_FP(mat_long& B, double delta,
    k = init_k;
 
 
-   vec_long st_mem;
+   vector64 st_mem;
    st_mem.SetLength(m+2);
    long *st = st_mem.elts();
 
@@ -332,7 +328,7 @@ static long ll_LLL_FP(mat_long& B, double delta,
    buf_store.SetLength(m+1);
    double *buf = buf_store.get();
 
-   vec_long in_vec_mem;
+   vector64 in_vec_mem;
    in_vec_mem.SetLength(n+1);
    long *in_vec = in_vec_mem.elts();
 
@@ -486,7 +482,7 @@ static long ll_LLL_FP(mat_long& B, double delta,
                mu_k[j] -= mu1;
    
                conv(MU, mu1);
-               RowTransformSimple ((vec_long)B[k], (vec_long)B[j], MU);
+               RowTransformSimple (B[k], B[j], MU);
                // RowTransform(B(k), B(j), MU, B1[k], B1[j], in_vec,
                //             max_b[k], max_b[j], in_float);
             }
@@ -548,7 +544,7 @@ static long ll_LLL_FP(mat_long& B, double delta,
 }
 
 
-long LLL64_FP(NTL::matrix<int64_t>& B, double delta) {
+long LLL64_FP (NTL::matrix<int64_t>& B, double delta) {
    long m = B.NumRows();
    long n = B.NumCols();
 
@@ -605,61 +601,9 @@ long LLL64_FP(NTL::matrix<int64_t>& B, double delta) {
 }
 
 
-static vec_double BKZConstant;
-
-static void ComputeBKZConstant(long beta, long p)
-{
-   const double c_PI = 3.14159265358979323846264338328;
-   const double LogPI = 1.14472988584940017414342735135;
-
-   BKZConstant.SetLength(beta-1);
-
-   vec_double Log;
-   Log.SetLength(beta);
-
-
-   long i, j, k;
-   double x, y;
-
-   for (j = 1; j <= beta; j++) {
-      x = log(double(j));  Log(j) = x;
-   }
-   for (i = 1; i <= beta-1; i++) {
-      // First, we compute x = gamma(i/2)^{2/i}
-
-      k = i/2;
-
-      if ((i & 1) == 0) { // i even
-         x = 0;
-         for (j = 1; j <= k; j++)
-            x = x + Log(j);
-          
-         x = x * (1/double(k));
-
-         x = exp(x);
-      }
-      else { // i odd
-         x = 0;
-         for (j = k + 2; j <= 2*k + 2; j++)
-            x = x + Log(j);
-
-         x = 0.5*LogPI + x - 2*(k+1)*Log(2);
-         x = x * (2.0/double(i));
-         x = exp(x);
-      }
-
-      // Second, we compute y = 2^{2*p/i}
-
-      y = -(2*p/double(i))*Log(2);
-      y = exp(y);
-
-      BKZConstant[i] = x*y/c_PI;
-   }
-}
-
 /******************************************************/
 
-long BKZ64_FP(mat_long& BB, double delta, long beta) {
+long BKZ64_FP (matrix64& BB, double delta, long blockSize) {
    long m = BB.NumRows();
    long n = BB.NumCols();
    long m_orig = m;
@@ -673,11 +617,11 @@ long BKZ64_FP(mat_long& BB, double delta, long beta) {
    RR_GS_time = 0;
    NumSwaps = 0;
    if (delta < 0.50 || delta >= 1) LogicError("BKZ_FP: bad delta");
-   if (beta < 2) LogicError("BKZ_FP: bad block size");
+   if (blockSize < 2) LogicError("BKZ_FP: bad block size");
 
    init_red_fudge();
 
-   mat_long B;
+   matrix64 B;
    B = BB;
 
    B.SetDims(m+1, n);
@@ -768,17 +712,17 @@ long BKZ64_FP(mat_long& BB, double delta, long beta) {
    }
 
    if (!quit && m > 1) {
-      if (beta > m) beta = m;
+      if (blockSize > m) blockSize = m;
       z = 0;
       jj = 0;
    
       while (z < m-1) {
          jj++;
-         kk = min(jj+beta-1, m);
+         kk = min(jj+blockSize-1, m);
    
          if (jj == m) {
             jj = 1;
-            kk = beta;
+            kk = blockSize;
             clean = 1;
          }
    

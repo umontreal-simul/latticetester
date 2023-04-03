@@ -45,7 +45,7 @@
 #include <NTL/vector.h>
 #include <NTL/matrix.h>
 #include <NTL/ZZ.h>
-#include "latticetester/FlexTypes.h"
+#include "latticetester/FlexTypes.h"    // This defines Int = int64_t
 #include "latticetester/BasisConstruction.h"
 #include "latticetester/Util.h"
 #include "latticetester/ParamReader.h"

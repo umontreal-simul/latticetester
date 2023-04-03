@@ -207,9 +207,9 @@ inline double sqrt(const double &a) {
 	return std::sqrt(a);
 }
 
-inline double log(const double x) {
-	return std::log(x);
-}
+//inline double log(const double x) {
+//	return std::log(x);
+//}
 
 inline double inv(const double x) {
 	return 1. / x;
@@ -219,6 +219,8 @@ inline double inv(const double x) {
  * */
 
 }     // namespace NTL
+
+/****************************************************************/
 
 namespace LatticeTester {
 

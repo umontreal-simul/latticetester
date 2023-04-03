@@ -86,8 +86,8 @@ template<typename Int> class BasisConstruction {
 private:
 	typedef NTL::vector<Int> IntVec;
 	typedef NTL::matrix<Int> IntMat;
-	typedef NTL::matrix<int64_t> mat_long;
-	typedef NTL::vector<int64_t> vec_long;
+	// typedef NTL::matrix<int64_t> mat_long;
+	// typedef NTL::vector<int64_t> vec_long;
 public:
 
 	/**
@@ -201,12 +201,13 @@ void BasisConstruction<Int>::LLLConstruction0(IntMat &gen, double delta,
 
 template<>
 //void BasisConstruction<int64_t>::LLLConstruction0(NTL::Mat<int64_t> &gen,
-void BasisConstruction<int64_t>::LLLConstruction0(NTL::matrix<int64_t> &gen,
+void BasisConstruction<int64_t>::LLLConstruction0(NTL::matrix<std::int64_t> &gen,
 		double delta, PrecisionType prec) {
 	int64_t rank;
 	switch (prec) {
 	case DOUBLE:
 		rank = LLL64_FP(gen, delta);
+		rank = LLL64_FP(1.0, delta);
 		break;
 	default:
 		std::cerr << "LLLConstruction0 for int64_t: implemented only for prec=DOUBLE.\n";

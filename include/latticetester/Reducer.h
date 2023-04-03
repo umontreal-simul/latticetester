@@ -1074,26 +1074,6 @@ void redLLLNTLExact(Reducer<Int, Real> &red, double delta) {
     red.redLLL(delta, 1000000, red.getIntLatticeBase()->getDim());
 	}
 
-template<typename Int, typename Real>
-void redBKZ(Reducer<Int, Real> &red, double delta,
-			std::int64_t blocksize, PrecisionType precision, int dim) {
-	IntLattice<std::int64_t, Real> *lattmp = 0;
-	if (dim > 0) {
-			lattmp = new IntLattice<std::int64_t, Real>(dim, red.getIntLatticeBase()->getNormType());
-			lattmp->overwriteLattice(*red.getIntLatticeBase(), dim);
-		} else
-			lattmp = red.getIntLatticeBase();
-		std::cout
-				<< "\n** WARNING: redBKZ cannot be used with std::int64_t integers;\n";
-		std::cout
-				<< "** it requires the ZZ type. We are now using redLLL instead.\n";
-		std::cout << "** It does not do the same thing!!! \n";
-		std::cout << std::endl;
-		red.redLLL(delta, 1000000, red.getIntLatticeBase()->getDim());
-		if (dim > 0)
-			delete lattmp;
-	}
-
 	/* This is a test to see if making the program promote to NTL types and
 	 * performs NTL LLL reduction is faster than our own LLL.
 	 * If it is, we should re-implement our LLL to match what is done in NTL.
@@ -1156,6 +1136,27 @@ void redLLLNTLExact(Reducer<NTL::ZZ, Real> &red, double delta) {
 		denum = round(1.0 / (1.0 - delta)); // We want (denum-1)/denum \approx delta.
 		NTL::LLL(det, red.getIntLatticeBase()->getBasis(), denum - 1, denum);
 	}
+
+
+template<typename Int, typename Real>
+void redBKZ(Reducer<Int, Real> &red, double delta,
+			std::int64_t blocksize, PrecisionType precision, int dim) {
+	IntLattice<std::int64_t, Real> *lattmp = 0;
+	if (dim > 0) {
+			lattmp = new IntLattice<std::int64_t, Real>(dim, red.getIntLatticeBase()->getNormType());
+			lattmp->overwriteLattice(*red.getIntLatticeBase(), dim);
+	} else
+			lattmp = red.getIntLatticeBase();
+		std::cout
+				<< "\n** WARNING: redBKZ cannot be used with std::int64_t integers;\n";
+		std::cout
+				<< "** it requires the ZZ type. We are now using redLLL instead.\n";
+		std::cout << "** It does not do the same thing!!! \n";
+		std::cout << std::endl;
+		red.redLLL(delta, 1000000, red.getIntLatticeBase()->getDim());
+		if (dim > 0)
+			delete lattmp;
+}
 
 template<typename Real>
 void redBKZ(Reducer<NTL::ZZ, Real> &red, double delta,

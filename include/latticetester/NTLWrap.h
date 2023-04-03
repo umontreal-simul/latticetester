@@ -330,8 +330,8 @@ static inline NTL::Mat<T> transpose(const NTL::Mat<T> &a) {
 
 // typedef std::int64_t int64_t;
 
-typedef NTL::matrix<int64_t> mat_long;
-typedef NTL::vector<int64_t> vec_long;
+typedef NTL::matrix<int64_t> matrix64;
+typedef NTL::vector<int64_t> vector64;
 
 typedef Mat<std::int64_t> Mat_64;
 typedef Vec<std::int64_t> Vec_64;
@@ -386,7 +386,7 @@ double InnerProduct(double *a, double *b, long n) {
 }
 
 
-void InnerProduct(int64_t& xx, const vec_long& a, const vec_long& b) {
+void InnerProduct(int64_t& xx, const vector64& a, const vector64& b) {
    int64_t x = 0;
    long n = min(a.length(), b.length());
    long i;
@@ -398,7 +398,7 @@ void InnerProduct(int64_t& xx, const vec_long& a, const vec_long& b) {
 */
 
 /*
-void static mul(vec_long& x, const vec_long& a, const long b) {
+void static mul(vector64& x, const vector64& a, const long b) {
    long n = a.length();
    x.SetLength(n);
    long i;
@@ -406,7 +406,7 @@ void static mul(vec_long& x, const vec_long& a, const long b) {
       mul(x[i], a[i], b);
 }
 
-void static add(vec_long& x, const vec_long& a, const vec_long& b) {
+void static add(vector64& x, const vector64& a, const vector64& b) {
    long n = a.length();
    if (b.length() != n) LogicError("vector add: dimension mismatch");
    x.SetLength(n);
@@ -416,7 +416,7 @@ void static add(vec_long& x, const vec_long& a, const vec_long& b) {
 }
 */
 
-void static sub(vec_long& x, const vec_long& a, const vec_long& b) {
+void static sub(vector64& x, const vector64& a, const vector64& b) {
    long n = a.length();
    if (b.length() != n) LogicError("vector sub: dimension mismatch");
    x.SetLength(n);

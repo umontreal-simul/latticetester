@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
-// LatticeTester
-// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2022  The LatticeTester authors, under the supervision
+// of Pierre L'Ecuyer at Universit� de Montr�al.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,9 +17,9 @@
 
 #include <NTL/RR.h>
 
-#include "latticetester/NormaMinkowski.h"
+#include "latticetester/NormaMinkL2.h"
 
 namespace LatticeTester{
-  template class NormaMinkowski<double>;
-  template class NormaMinkowski<NTL::RR>;
+ // template class NormaMinkL2<double>;
+ // template class NormaMinkL2<NTL::RR>;
 }

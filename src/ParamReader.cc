@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
-// LatticeTester
-// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
+// Copyright (C) 2012-2022  The LatticeTester authors, under the supervision
+// of Pierre L'Ecuyer at Universit� de Montr�al.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
 #include "latticetester/ParamReader.h"
 
 namespace LatticeTester {
-  template class ParamReader<std::int64_t, std::int64_t, double>;
-  template class ParamReader<NTL::ZZ, NTL::ZZ, double>;
-  template class ParamReader<NTL::ZZ, NTL::ZZ, NTL::RR>;
+  template class ParamReader<std::int64_t, double>;
+  template class ParamReader<NTL::ZZ, double>;
+  template class ParamReader<NTL::ZZ, NTL::RR>;
 }

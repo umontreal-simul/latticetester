@@ -1,0 +1,22 @@
+This folder contains a bunch of matrices in different files.
+These matrices are random matrices generated with the genmat.py python3
+script.
+Even though random matrices are not the usual use case for LatticeTester, we
+use the matrices in this folder as a test set for our examples. Having random
+dense matrices pushes certain algorithms to their limits. If you want to
+execute the examples with limited ressources, it might be wise to create a
+smaller test set.
+
+About the file names:
+Matrices are stored in the files with a .dat extension. The first number in
+the name is a prime the was choosen to be close to (but smaller than) a
+particular power of 2:
+  - 1021                 is close to 1024                 = 2^10
+  - 1048573              is close to 1048576              = 2^20
+  - 1073741827           is close to 1073741824           = 2^30
+  - 1099511627791        is close to 1099511627776        = 2^40
+  - 1125899906842597     is close to 1125899906842624     = 2^50
+  - 18446744073709551629 is close to 18446744073709551616 = 2^64
+The second number is the dimension of the matrix contained in the file.
+the third number is the number of the matrix since 10 matrices have been
+generated for each prime/dimension combination.

@@ -61,7 +61,7 @@ const std::string primes[] = { "1021", "1048573", "1073741827", "1099511627791",
 
 //Use basis values modulo 1021
 const std::string prime = primes[0];
-Int m = 1021;      // Modulus
+int64_t m = 1021;      // Modulus
 const PrecisionType prec = DOUBLE;  // For LLL construction.
 const int numSizes = 4; // Number of matrix sizes (choices of dimension).
 const int numRep = 10;  // Number of replications for each case.
@@ -103,12 +103,12 @@ int main() {
 
 			copy(bas_mat, bas_copy);
 			tmp = clock();
-			constr.upperTriangularBasis(bas_copy, m_v, m);
+			// constr.upperTriangularBasis(bas_copy, m_v, m);
 			timer[0][d] += clock() - tmp;
 
 			copy(bas_mat, bas_copy);
 			tmp = clock();
-			constr.lowerTriangularBasis(bas_copy, m_v, m);
+			// constr.lowerTriangularBasis(bas_copy, m_v, m);
 			timer[1][d] += clock() - tmp;
 
 			copy(bas_mat, bas_copy);
@@ -122,8 +122,14 @@ int main() {
 			Triangularization(bas_copy, m_v, dim, dim, m);
 			timer[3][d] += clock() - tmp;
 
+			// std::cout << " The LLL construction with delta=0.5 \n";
 			copy(bas_mat, bas_copy);
-			constr.upperTriangularBasis(bas_copy, m_v, m);
+			tmp = clock();
+			constr.LLLConstruction0(bas_copy, 0.9);
+			timer[4][d] += clock() - tmp;
+
+			copy(bas_mat, bas_copy);
+			// constr.upperTriangularBasis(bas_copy, m_v, m);
 			if (!CheckTriangular(m_v, dim, m)) {
 				std::cout << "Matrix not triangular! \n";
 			}
@@ -132,12 +138,12 @@ int main() {
 			timer[7][d] += clock() - tmp;
 
 			copy(bas_mat, bas_copy);
-			constr.upperTriangularBasis(bas_copy, m_v, m);
+			// constr.upperTriangularBasis(bas_copy, m_v, m);
 			tmp = clock();
 			//  std::cout << "value of m = " << m << "\n";
 
             // This one was changing the value of m !!!!!
-		    constr.mDualUpperTriangular96(m_v, m_v2, m);
+		    // constr.mDualUpperTriangular96(m_v, m_v2, m);
 			timer[8][d] += clock() - tmp;
 
 		}

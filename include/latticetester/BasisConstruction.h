@@ -201,13 +201,15 @@ void BasisConstruction<Int>::LLLConstruction0(IntMat &gen, double delta,
 
 template<>
 //void BasisConstruction<int64_t>::LLLConstruction0(NTL::Mat<int64_t> &gen,
-void BasisConstruction<int64_t>::LLLConstruction0(NTL::matrix<std::int64_t> &gen,
+//void BasisConstruction<int64_t>::LLLConstruction0(NTL::matrix<std::int64_t> &gen,
+void BasisConstruction<int64_t>::LLLConstruction0(NTL::matrix<int64_t> &gen,
 		double delta, PrecisionType prec) {
 	int64_t rank;
 	switch (prec) {
 	case DOUBLE:
-		rank = LLL64_FP(gen, delta);
-		rank = LLL64_FP(1.0, delta);
+		rank = NTL::NTL::LLL64_FP(gen, delta);
+		// rank = LLL64_FP(1.0, delta);
+		//NTL::NTL::CheckFinite (2.0*);
 		break;
 	default:
 		std::cerr << "LLLConstruction0 for int64_t: implemented only for prec=DOUBLE.\n";
@@ -282,7 +284,7 @@ void BasisConstruction<NTL::ZZ>::LLLBasisConstruction(NTL::matrix<NTL::ZZ> &gen,
 template<typename Int>
 void BasisConstruction<Int>::upperTriangularBasis(IntMat &gen, IntMat &basis,
 		Int &m) {
-	std::cerr << "LLLBasisConstruction can only be done with NTL::ZZ integers.\n";
+	std::cerr << "upperTriangularBasis can only be done with NTL::ZZ integers.\n";
 	std::cerr << "Aborting.\n";
 	exit(1);
 }

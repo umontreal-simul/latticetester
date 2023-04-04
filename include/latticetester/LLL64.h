@@ -4,8 +4,8 @@
  * ordinary 64-bit integers.
  */
 
-#ifndef NTL_LLL64__H
-#define NTL_LLL64__H
+#ifndef LATTICETESTER_LLL64__H
+#define LATTICETESTER_LLL64__H
 
 #include <string>
 #include <sstream>
@@ -21,11 +21,12 @@
 #include <type_traits>
 
 #include "NTL/tools.h"
-
 #include <NTL/fileio.h>
 #include <NTL/vector.h>
 #include <NTL/matrix.h>
 #include <NTL/vec_double.h>
+#include <NTL/ZZ.h>
+
 #include <latticetester/NTLWrap.h>
 
 // namespace LatticeTester {
@@ -39,16 +40,16 @@ namespace NTL {
 // class LLL64 {
 
 
-typedef NTL::matrix<int64_t> matrix64;
-typedef NTL::vector<int64_t> vector64;
+//typedef NTL::matrix<int64_t> matrix64;
+//typedef NTL::vector<int64_t> vector64;
 
 // int64_t LatticeSolve(vec_int64_t& x, const mat_int64_t& A, const vec_int64_t& y, int64_t reduce=0);
 
-	int64_t LLL64_FP(double x, double delta = 0.999999);   // Bidon, just for testing
+// int64_t LLL64_FP(double x, double delta = 0.999999);   // Bidon, just for testing
 
-    int64_t LLL64_FP(NTL::matrix64 &B, double delta = 0.999999);
+   int64_t LLL64_FP(matrix64 &B, double delta = 0.999999);
 
-    int64_t BKZ64_FP(NTL::matrix64 &BB, double delta=0.999999, int64_t blockSize=10);
+   int64_t BKZ64_FP(NTL::matrix64 &BB, double delta=0.999999, int64_t blockSize=10);
 
 // };
 
@@ -126,7 +127,7 @@ static void RowTransformFinish(vector64& A, double *a, int64_t *in_a) {
 
 
 static void RowTransformSub (vector64& A, vector64& B, int64_t& MU1)
-// x = x - y*MU
+// A = A - B*MU1
 {
    register int64_t MU = MU1;
    int64_t n = A.length();
@@ -153,7 +154,7 @@ static void RowTransformSub (vector64& A, vector64& B, int64_t& MU1)
 }
 
 static void RowTransformAdd (vector64& A, vector64& B, const int64_t& MU1) {
-// x = x + y*MU
+// A = A + B*MU
 
    register int64_t T, MU = MU1;
    // int64_t k;
@@ -175,7 +176,7 @@ static void RowTransformAdd (vector64& A, vector64& B, const int64_t& MU1) {
    for (i = 0; i < n; i++) {
        // mul(T, B[i], MU);
        // add(A[i], A[i], T);
-       A[i] += MU * B[i];
+       T = MU * B[i];  A[i] += T;
    }
 }
 
@@ -260,9 +261,9 @@ static NTL_CHEAP_THREAD_LOCAL int64_t log_red = 0;
 // static NTL_CHEAP_THREAD_LOCAL int64_t verbose = 0;
 
 static NTL_CHEAP_THREAD_LOCAL uint64_t NumSwaps = 0;
-static NTL_CHEAP_THREAD_LOCAL double RR_GS_time = 0;
-static NTL_CHEAP_THREAD_LOCAL double StartTime = 0;
-static NTL_CHEAP_THREAD_LOCAL double LastTime = 0;
+//static NTL_CHEAP_THREAD_LOCAL double RR_GS_time = 0;
+//static NTL_CHEAP_THREAD_LOCAL double StartTime = 0;
+//static NTL_CHEAP_THREAD_LOCAL double LastTime = 0;
 
 static void init_red_fudge()
 {
@@ -277,9 +278,9 @@ static void inc_red_fudge()
 {
    red_fudge = red_fudge * 2;
    log_red--;
-   cerr << "LLL_FP: warning--relaxing reduction (" << log_red << ")\n";
+   cerr << "LLL64: warning--relaxing reduction (" << log_red << ")\n";
    if (log_red < 4)
-      ResourceError("LLL_FP: too much loss of precision...stop!");
+      ResourceError("LLL64: too much loss of precision...stop!");
 }
 
 
@@ -298,7 +299,6 @@ static int64_t ll_LLL_FP(matrix64& B, double delta,
    // int64_t T1;
    double *tp;
    static double bound = 0;
-
    if (bound == 0) {
       // we tolerate a 15% loss of precision in computing
       // inner products in ComputeGS.
@@ -306,19 +306,17 @@ static int64_t ll_LLL_FP(matrix64& B, double delta,
       for (i = 2*int64_t(0.15*NTL_DOUBLE_PRECISION); i > 0; i--)
          bound = bound * 2;
    }
-
    double half_plus_fudge = 0.5 + red_fudge;
 
    quit = 0;
    k = init_k;
 
    vector64 st_mem;
-   st_mem.SetLength(m+2);
+   st_mem.SetLength(m+2);           // ??
    int64_t *st = st_mem.elts();
 
    for (i = 0; i < k; i++)
       st[i] = i;
-
    for (i = k; i <= m; i++)
       st[i] = 1;
 
@@ -334,55 +332,51 @@ static int64_t ll_LLL_FP(matrix64& B, double delta,
    max_b_store.SetLength(m);
    double *max_b = max_b_store.get();
 
+   cerr << "LLL64: after creating UniqueArray's \n";
 
    for (i = 0; i < m; i++)
       max_b[i] = max_abs(B1[i], n);
 
    int64_t in_float;
-
    int64_t rst;
    int64_t counter;
    int64_t start_over;
-
    int64_t trigger_index;
    int64_t small_trigger;
    int64_t cnt;
-
    int64_t rr_st = 0;
    int64_t max_k = 0;
-
-   // double tt;
-
    int64_t swap_cnt = 0;
 
+   cerr << "LLL64: before first `while` on k. \n";
 
    while (k < m) {
       if (k > max_k) {
          max_k = k;
          swap_cnt = 0;
       }
-
       if (k < rr_st) rr_st = k;
 
       if (st[k] == k)
          rst = 0;
       else
          rst = k;
-
       if (st[k] < st[k+1]) st[k+1] = st[k];
+
       ComputeGS(B, B1, mu, b, c, k, bound, st[k], buf);
       CheckFinite(&c[k]);
       st[k] = k;
 
+      cerr << "LLL64: after ComputeGS, k = " << k << "\n";
+
       if (swap_cnt > 200000) {
-         cerr << "LLL_FP: swap loop?\n";
+         cerr << "LLL64: swap loop?\n";
       }
 
       counter = 0;
       trigger_index = k;
       small_trigger = 0;
       cnt = 0;
-
       int64_t thresh = 10;
       int64_t sz=0, new_sz;
 
@@ -397,14 +391,14 @@ static int64_t ll_LLL_FP(matrix64& B, double delta,
                sz = new_sz;
             }
             else {
-               cerr << "LLL_FP: warning--infinite loop?\n";
+               cerr << "LLL64: sz not smaller; warning--infinite loop? \n";
+               abort();
             }
          }
-
          Fc1 = 0;
          start_over = 0;
 
-         for (j = rst-1; j >= 0; j--) {   // rst should be 1 less
+         for (j = rst-1; j >= 0; j--) { // j and rst should be 1 less than in NTL
             t1 = fabs(mu[k][j]);
             if (t1 > half_plus_fudge) {
                if (!Fc1) {
@@ -453,7 +447,12 @@ static int64_t ll_LLL_FP(matrix64& B, double delta,
                }
                mu_k[j] -= mu1;
                conv(MU, mu1);
-               RowTransformSub (B[k], B[j], MU);
+
+               register int64_t T, MU2 = MU;
+               for (i = 0; i < n; i++) {
+            	  T = MU2 * B[j][i];   B[k][i] -= T;
+               }
+               // RowTransformSub (B[k], B[j], MU);
                // RowTransform(B(k), B(j), MU, B1[k], B1[j], in_vec,
                //             max_b[k], max_b[j], in_float);
             }
@@ -461,7 +460,9 @@ static int64_t ll_LLL_FP(matrix64& B, double delta,
 
 
          if (Fc1) {
-            RowTransformFinish(B[k], B1[k], in_vec);
+            vector64 temp = B[k];
+            RowTransformFinish(temp, B1[k], in_vec);
+            B[k] = temp;
             max_b[k] = max_abs(B1[k], n);
             b[k] = InnerProductD(B1[k], B1[k], n);
             CheckFinite(&b[k]);
@@ -474,7 +475,8 @@ static int64_t ll_LLL_FP(matrix64& B, double delta,
       if (b[k] == 0) {
          for (i = k; i < m-1; i++) {
             // swap i, i+1
-            NTL::swap(B[i], B[i+1]);
+            // swap(B[i], B[i+1]);
+            B[i].swap(B[i+1]);
             tp = B1[i]; B1[i] = B1[i+1]; B1[i+1] = tp;
             t1 = b[i]; b[i] = b[i+1]; b[i+1] = t1;
             t1 = max_b[i]; max_b[i] = max_b[i+1]; max_b[i+1] = t1;
@@ -509,6 +511,7 @@ static int64_t ll_LLL_FP(matrix64& B, double delta,
    return m;
 }
 
+/* ************************************************ */
 
 int64_t LLL64_FP (matrix64& B, double delta) {
    int64_t m = B.NumRows();
@@ -519,18 +522,20 @@ int64_t LLL64_FP (matrix64& B, double delta) {
    // int64_t MU;
    // int64_t T1;
 
-   RR_GS_time = 0;
+   // RR_GS_time = 0;
    NumSwaps = 0;
-   if (delta < 0.50 || delta >= 1) LogicError("LLL_FP: bad delta");
+   if (delta < 0.50 || delta >= 1) LogicError("LLL64: bad delta");
 
    init_red_fudge();
 
+   cerr << "LLL64: starting. \n";
+
    Unique2DArray<double> B1_store;
-   B1_store.SetDimsFrom1(m, n);
+   B1_store.SetDims(m, n);
    double **B1 = B1_store.get();  // approximates B
 
    Unique2DArray<double> mu_store;
-   mu_store.SetDimsFrom1(m, m);
+   mu_store.SetDims(m, m);
    double **mu = mu_store.get();
 
    UniqueArray<double> c_store;
@@ -541,7 +546,9 @@ int64_t LLL64_FP (matrix64& B, double delta) {
    b_store.SetLength(m);
    double *b = b_store.get(); // squared lengths of basis vectors
 
-   for (i = 0; i <m; i++)
+   cerr << "LLL64: UniqueArray's created. \n";
+
+   for (i = 0; i < m; i++)
       for (j = 0; j < n; j++) {
          conv(B1[i][j], B[i][j]);
          CheckFinite(&B1[i][j]);
@@ -550,10 +557,13 @@ int64_t LLL64_FP (matrix64& B, double delta) {
       b[i] = InnerProductD(B1[i], B1[i], n);
       CheckFinite(&b[i]);
    }
+   cerr << "LLL64: before ll_LLL \n";
 
    new_m = ll_LLL_FP(B, delta, B1, mu, b, c, m, 0, quit);
    dep = m - new_m;
    m = new_m;
+
+   cerr << "LLL64: after ll_LLL \n";
 
    if (dep > 0) {
       // for consistency, we move all of the zero rows to the front
@@ -571,14 +581,14 @@ int64_t BKZ64_FP (matrix64& BB, double delta, int64_t blockSize) {
    int64_t m = BB.NumRows();
    int64_t n = BB.NumCols();
    int64_t m_orig = m;
-   int64_t i, j;
+   int64_t i, j, ii;
    int64_t MU;
 
    double t1;
    // int64_t T1;
    double *tp;
 
-   RR_GS_time = 0;
+   // RR_GS_time = 0;
    NumSwaps = 0;
    if (delta < 0.50 || delta >= 1) LogicError("BKZ_FP: bad delta");
    if (blockSize < 2) LogicError("BKZ_FP: bad block size");
@@ -781,13 +791,16 @@ int64_t BKZ64_FP (matrix64& BB, double delta, int64_t blockSize) {
             }
             else {
                // the general case
-
+               register int64_t T;
                NumNonTrivial++;
                for (i = 0; i < n; i++) conv(B[m][i], 0);
                for (i = jj; i <= kk; i++) {
                   if (uvec[i] == 0) continue;
                   conv(MU, uvec[i]);
-                  RowTransformAdd (B[m], B[i], MU);
+                  // RowTransformAdd (B[m], B[i], MU);
+                  for (ii = 0; ii < n; ii++) {
+                      T = MU * B[i][ii];  B[m][ii] += T;
+                  }
                }
 
                for (i = m; i >= jj+1; i--) {
@@ -835,7 +848,6 @@ int64_t BKZ64_FP (matrix64& BB, double delta, int64_t blockSize) {
          else {
             // LLL_FP
             // cerr << "progress\n";
-
             NumNoOps++;
             if (!clean) {
                new_m = ll_LLL_FP(B, delta, B1, mu, b, c, h+1, h, quit);

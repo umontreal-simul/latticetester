@@ -43,6 +43,7 @@
 #include "latticetester/Util.h"
 #include "latticetester/Coordinates.h"
 #include "latticetester/LLL64.h"
+#include "latticetester/LLL_FPZZtest.h"
 
 namespace LatticeTester {
 
@@ -204,17 +205,17 @@ template<>
 //void BasisConstruction<int64_t>::LLLConstruction0(NTL::matrix<std::int64_t> &gen,
 void BasisConstruction<int64_t>::LLLConstruction0(NTL::matrix<int64_t> &gen,
 		double delta, PrecisionType prec) {
-	int64_t rank;
+	long num = gen.NumRows();
+	int64_t rank=num;
 	switch (prec) {
 	case DOUBLE:
-		rank = NTL::NTL::LLL64_FP(gen, delta);
+		rank = LLL64_FP(gen, delta);
 		// rank = LLL64_FP(1.0, delta);
 		//NTL::NTL::CheckFinite (2.0*);
 		break;
 	default:
 		std::cerr << "LLLConstruction0 for int64_t: implemented only for prec=DOUBLE.\n";
 	}
-	long num = gen.NumRows();
 	for (long i = 0; i < rank; i++) {
 		NTL::swap(gen[i], gen[num - rank + i]);
 	}
@@ -227,7 +228,8 @@ void BasisConstruction<NTL::ZZ>::LLLConstruction0(NTL::matrix<NTL::ZZ> &gen,
 	long rank;
 	switch (prec) {
 	case DOUBLE:
-		rank = NTL::LLL_FP(gen, delta);
+		// rank = NTL::LLL_FP(gen, delta);
+	    rank = LLL_FPZZtest(gen, delta);
 		break;
 	case QUADRUPLE:
 		rank = NTL::LLL_QP(gen, delta);

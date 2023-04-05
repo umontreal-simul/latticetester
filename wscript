@@ -87,7 +87,7 @@ def configure(ctx):
     #     env.detach()
 
     #     # release (default)
-    #     ctx.env.append_unique('CXXFLAGS', ['-O2'])
+    #     ctx.env.append_unique('CXXFLAGS', ['-O3'])
     #     ctx.define('NDEBUG', 1)
 
     #     ctx.setenv('debug', env)

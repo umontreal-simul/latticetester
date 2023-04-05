@@ -78,11 +78,12 @@ const std::string primes[] = { "1021", "1048573", "1073741827", "1099511627791",
 const std::string prime = primes[0];
 Int m(1021);      // Modulus
 const PrecisionType prec = DOUBLE;  // For LLL construction.
-const int numSizes = 4; // Number of matrix sizes (choices of dimension).
 const int numRep = 10;  // Number of replications for each case.
 const int numMeth = 10;    // Number of methods, and their names.
 std::string names[numMeth] = {"UppTri  ", "LowTri  ", "TriGCD  ", "Tri96   ",
 		 "LLL5    ", "LLL8    ", "LLL9    ", "DualUT  ", "DualUT96", "Dual    "};
+const int numSizes = 4; // Number of matrix sizes (choices of dimension).
+// const int dimensions[numSizes] = {10, 20};
 const int dimensions[numSizes] = {10, 20, 30, 40};
 
 int main() {
@@ -116,12 +117,12 @@ int main() {
 
 			copy(bas_mat, bas_copy);
 			tmp = clock();
-			constr.upperTriangularBasis(bas_copy, m_v, m);
+			//constr.upperTriangularBasis(bas_copy, m_v, m);
 			timer[0][d] += clock() - tmp;
 
 			copy(bas_mat, bas_copy);
 			tmp = clock();
-			constr.lowerTriangularBasis(bas_copy, m_v, m);
+			//constr.lowerTriangularBasis(bas_copy, m_v, m);
 			timer[1][d] += clock() - tmp;
 
 			copy(bas_mat, bas_copy);
@@ -154,20 +155,20 @@ int main() {
 			timer[6][d] += clock() - tmp;
 
 			copy(bas_mat, bas_copy);
-			constr.upperTriangularBasis(bas_copy, m_v, m);
+			//constr.upperTriangularBasis(bas_copy, m_v, m);
 			tmp = clock();
-			constr.mDualUpperTriangular(m_v, m_v2, m);
+			//constr.mDualUpperTriangular(m_v, m_v2, m);
 			timer[7][d] += clock() - tmp;
 
 			copy(bas_mat, bas_copy);
-			constr.upperTriangularBasis(bas_copy, m_v, m);
+			//constr.upperTriangularBasis(bas_copy, m_v, m);
 			tmp = clock();
-			constr.mDualUpperTriangular96(m_v, m_v2, m);
+			//constr.mDualUpperTriangular96(m_v, m_v2, m);
 			timer[8][d] += clock() - tmp;
 
 			copy(bas_mat, bas_copy);
 			tmp = clock();
-            constr.mDualBasis(bas_copy, m_v, m);
+            //constr.mDualBasis(bas_copy, m_v, m);
 			timer[9][d] += clock() - tmp;
 		}
 	}

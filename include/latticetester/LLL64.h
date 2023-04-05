@@ -30,7 +30,7 @@
 #include <latticetester/NTLWrap.h>
 
 // namespace LatticeTester {
-namespace NTL {
+// namespace NTL {
 
 // NTL_OPEN_NNS
 
@@ -39,17 +39,21 @@ namespace NTL {
 // template<typename Int>
 // class LLL64 {
 
+NTL_START_IMPL
 
-//typedef NTL::matrix<int64_t> matrix64;
-//typedef NTL::vector<int64_t> vector64;
+typedef NTL::matrix<int64_t> matrix64;
+typedef NTL::vector<int64_t> vector64;
 
 // int64_t LatticeSolve(vec_int64_t& x, const mat_int64_t& A, const vec_int64_t& y, int64_t reduce=0);
 
-// int64_t LLL64_FP(double x, double delta = 0.999999);   // Bidon, just for testing
+/**
+ * On input, the rows of B contain the initial generating vectors.
+ * On output, the rows of B form an LLL-reduced lattice basis.
+ */
+int64_t LLL64_FP(matrix64 &B, double delta = 0.999999);
 
-   int64_t LLL64_FP(matrix64 &B, double delta = 0.999999);
 
-   int64_t BKZ64_FP(NTL::matrix64 &BB, double delta=0.999999, int64_t blockSize=10);
+int64_t BKZ64_FP(matrix64 &BB, double delta=0.999999, int64_t blockSize=10);
 
 // };
 
@@ -58,15 +62,14 @@ namespace NTL {
 
 /**********************************************************************/
 
-NTL_START_IMPL
-
 //static inline void MulSubFrom(int64_t & x, int64_t a, int64_t b)
 //   { x -= a * b; }
 
-static inline void CheckFinite(double *p) {
+static inline void CheckFinite64(double *p) {
    if (!IsFinite(p)) ResourceError("LLL64_FP: numbers too big...use LLL_XD");
 }
 
+// Returns the inner product of two arrays of double of size n.
 static double InnerProductD(double *a, double *b, int64_t n) {
    double s = 0;
    int64_t i;
@@ -75,20 +78,21 @@ static double InnerProductD(double *a, double *b, int64_t n) {
    return s;
 }
 
-static void InnerProductV(int64_t &xx, const vector64& a, const vector64& b) {
+// Inner product of two vectors of integers a and b, returned in prod.
+static void InnerProductV(int64_t &prod, const vector64& a, const vector64& b) {
    int64_t x = 0;
    int64_t n = min(a.length(), b.length());
    int64_t i;
    for (i = 0; i < n; i++) {
       x += a[i] * b[i];
    }
-   xx = x;
+   prod = x;
 }
 
 #define TR_BND (NTL_FDOUBLE_PRECISION/2.0)
 // Just to be safe!!
 
-static double max_abs(double *v, int64_t n) {
+static double max_abs64(double *v, int64_t n) {
    int64_t i;
    double res, t;
    res = 0;
@@ -99,19 +103,19 @@ static double max_abs(double *v, int64_t n) {
    return res;
 }
 
-
-static void RowTransformStart(double *a, int64_t *in_a, int64_t& in_float, int64_t n) {
+// Check if all the |a[i]| are less than TR_BND.
+static void RowTransformStart64(double *a, int64_t *in_a, int64_t& in_float, int64_t n) {
    int64_t i;
    int64_t inf = 1;
    for (i = 0; i < n; i++) {
       in_a[i] = (a[i] < TR_BND && a[i] > -TR_BND);
       inf = inf & in_a[i];
    }
-   in_float = inf;    // Returns 1 if no a[i] is too large.
+   in_float = inf;    // Returns 1 if no |a[i]| is too large, 0 otherwise.
 }
 
 
-static void RowTransformFinish(vector64& A, double *a, int64_t *in_a) {
+static void RowTransformFinish64(vector64& A, double *a, int64_t *in_a) {
    int64_t n = A.length();
    int64_t i;
    for (i = 0; i < n; i++) {
@@ -120,15 +124,14 @@ static void RowTransformFinish(vector64& A, double *a, int64_t *in_a) {
       }
       else {
          conv(a[i], A[i]);
-         CheckFinite(&a[i]);
+         CheckFinite64(&a[i]);
       }
    }
 }
 
 
-static void RowTransformSub (vector64& A, vector64& B, int64_t& MU1)
 // A = A - B*MU1
-{
+static void RowTransformSub64 (vector64& A, vector64& B, int64_t& MU1) {
    register int64_t MU = MU1;
    int64_t n = A.length();
    int64_t i;
@@ -153,9 +156,8 @@ static void RowTransformSub (vector64& A, vector64& B, int64_t& MU1)
    }
 }
 
-static void RowTransformAdd (vector64& A, vector64& B, const int64_t& MU1) {
 // A = A + B*MU
-
+static void RowTransformAdd64 (vector64& A, vector64& B, const int64_t& MU1) {
    register int64_t T, MU = MU1;
    // int64_t k;
    int64_t n = A.length();
@@ -180,25 +182,161 @@ static void RowTransformAdd (vector64& A, vector64& B, const int64_t& MU1) {
    }
 }
 
+
+// A = A - B * MU1
+static void RowTransform64(vector64& A, vector64& B, const int64_t& MU1,
+                         double *a, double *b, long *in_a,
+                         double& max_a, double max_b, int64_t& in_float) {
+   register int64_t T, MU;
+   // int64_t k;
+   double mu;
+   conv(mu, MU1);
+   CheckFinite64(&mu);
+   int64_t n = A.length();
+   int64_t i;
+
+   if (in_float) {
+      double mu_abs = fabs(mu);
+      if (mu_abs > 0 && max_b > 0 && (mu_abs >= TR_BND || max_b >= TR_BND)) {
+         in_float = 0;
+      }
+      else {
+         max_a += mu_abs*max_b;
+         if (max_a >= TR_BND)
+            in_float = 0;
+      }
+   }
+   if (in_float) {
+      if (mu == 1) {
+         for (i = 0; i < n; i++)
+            a[i] -= b[i];
+         return;
+      }
+      if (mu == -1) {
+         for (i = 0; i < n; i++)
+            a[i] += b[i];
+         return;
+      }
+      if (mu == 0) return;
+
+      for (i = 0; i < n; i++)
+         a[i] -= mu * b[i];
+      return;
+   }
+
+   std::cout << "RowTransform64, not in_float! \n";
+
+   MU = MU1;
+   if (MU == 1) {
+      for (i = 0; i < n; i++) {
+         if (in_a[i] && a[i] < TR_BND && a[i] > -TR_BND &&
+               b[i] < TR_BND && b[i] > -TR_BND) {
+            a[i] -= b[i];
+         }
+         else {
+            if (in_a[i]) {
+               conv(A(i), a[i]);
+               in_a[i] = 0;
+            }
+            sub(A(i), A(i), B(i));
+         }
+      }
+      return;
+   }
+   if (MU == -1) {
+      for (i = 0; i < n; i++) {
+         if (in_a[i] && a[i] < TR_BND && a[i] > -TR_BND &&
+                b[i] < TR_BND && b[i] > -TR_BND) {
+            a[i] += b[i];
+         }
+         else {
+            if (in_a[i]) {
+               conv(A(i), a[i]);
+               in_a[i] = 0;
+            }
+            add(A(i), A(i), B(i));
+         }
+      }
+      return;
+   }
+   if (MU == 0) return;
+
+   double b_bnd = fabs(TR_BND/mu) - 1;
+   if (b_bnd < 0) b_bnd = 0;
+
+/*
+   if (NTL::NumTwos(MU) >= NTL_ZZ_NBITS)
+      k = MakeOdd(MU);
+   else
+      k = 0;
+   if (MU.WideSinglePrecision()) {
+      long mu1;
+      conv(mu1, MU);
+
+      if (k > 0) {
+         for (i = 1; i <= n; i++) {
+            if (in_a[i]) {
+               conv(A(i), a[i]);
+               in_a[i] = 0;
+            }
+
+            mul(T, B(i), mu1);
+            LeftShift(T, T, k);
+            sub(A(i), A(i), T);
+         }
+      }
+      else {
+         for (i = 1; i <= n; i++) {
+            if (in_a[i] && a[i] < TR_BND && a[i] > -TR_BND &&
+                b[i] < b_bnd && b[i] > -b_bnd) {
+
+               a[i] -= b[i]*mu;
+            }
+            else {
+               if (in_a[i]) {
+                  conv(A(i), a[i]);
+                  in_a[i] = 0;
+               }
+               MulSubFrom(A(i), B(i), mu1);
+            }
+         }
+      }
+   }
+   else {
+*/
+
+    for (i = 0; i < n; i++) {
+         if (in_a[i]) {
+            conv(A(i), a[i]);
+            in_a[i] = 0;
+         }
+         mul(T, B(i), MU);
+//         if (k > 0) LeftShift(T, T, k);
+         sub(A(i), A(i), T);
+//      }
+   }
+}
+
+
 static void ComputeGS(matrix64& B, double **B1, double **mu, double *b,
                double *c, int64_t k, double bound, int64_t st, double *buf) {
-	// k and st must be reduced by 1 compared with NTL version
+	// k and st are both reduced by 1 compared with NTL version
    int64_t n = B.NumCols();
    int64_t i, j;
    double s, t1, y, t;
-
    int64_t T1;
    int64_t test;
-
    double *mu_k = mu[k];
 
    if (st < k) {
       for (i = 0; i < st; i++)
          buf[i] = mu_k[i]*c[i];
    }
+   // std::cout << "ComputeGS, st = " << st << " k = " << k << "\n";
 
    for (j = st; j < k; j++) {
       s = InnerProductD(B1[k], B1[j], n);
+      // std::cout << "ComputeGS, j = " << j << " Inner product s = " << s << "\n";
 
       // test = b[k]*b[j] >= NTL_FDOUBLE_PRECISION^2
       test = (b[k]/NTL_FDOUBLE_PRECISION >= NTL_FDOUBLE_PRECISION/b[j]);
@@ -208,6 +346,7 @@ static void ComputeGS(matrix64& B, double **B1, double **mu, double *b,
       if (test && (y = fabs(s)) != 0) {
          t = y/b[j];
          t1 = b[k]/y;
+         // std::cout << "ComputeGS, t1 = " << t1 << "\n";
          if (t <= 1)
             test = (t*bound <= t1);
          else if (t1 >= 1)
@@ -217,8 +356,9 @@ static void ComputeGS(matrix64& B, double **B1, double **mu, double *b,
       }
 
       if (test) {
-         InnerProductV(T1, B[k], B[j]);
+         InnerProductV (T1, B[k], B[j]);
          conv(s, T1);
+         // std::cout << "ComputeGS, T1 = s = " << s << "\n";
       }
       double *mu_j = mu[j];
 
@@ -227,9 +367,8 @@ static void ComputeGS(matrix64& B, double **B1, double **mu, double *b,
          t1 += mu_j[i] * buf[i];
       }
       mu_k[j] = (buf[j] = (s - t1))/c[j];
+      // std::cout << "ComputeGS, mu_k[j] = " << mu_k[j] << "\n";
    }
-
-#if (!NTL_EXT_DOUBLE)
 
    // Kahan summation
    double c1;
@@ -241,84 +380,69 @@ static void ComputeGS(matrix64& B, double **B1, double **mu, double *b,
       c1 = c1-y;
       s = t;
    }
-#else
-
-   s = 0;
-   for (j = 0; j < k; j++)
-      s += mu_k[j]*buf[j];
-
-#endif
-
    c[k] = b[k] - s;
 }
 
 
-NTL_CHEAP_THREAD_LOCAL double LLLStatusInterval = 900.0;
-NTL_CHEAP_THREAD_LOCAL char *LLLDumpFile = 0;
+NTL_CHEAP_THREAD_LOCAL double LLLStatusInterval64 = 900.0;
+NTL_CHEAP_THREAD_LOCAL char *LLLDumpFile64 = 0;
 
-static NTL_CHEAP_THREAD_LOCAL double red_fudge = 0;
-static NTL_CHEAP_THREAD_LOCAL int64_t log_red = 0;
+static NTL_CHEAP_THREAD_LOCAL double red_fudge64 = 0;
+static NTL_CHEAP_THREAD_LOCAL int64_t log_red64 = 0;
 // static NTL_CHEAP_THREAD_LOCAL int64_t verbose = 0;
 
-static NTL_CHEAP_THREAD_LOCAL uint64_t NumSwaps = 0;
+static NTL_CHEAP_THREAD_LOCAL uint64_t NumSwaps64 = 0;
 //static NTL_CHEAP_THREAD_LOCAL double RR_GS_time = 0;
 //static NTL_CHEAP_THREAD_LOCAL double StartTime = 0;
 //static NTL_CHEAP_THREAD_LOCAL double LastTime = 0;
 
-static void init_red_fudge()
-{
+static void init_red_fudge64() {
    int64_t i;
-   log_red = int64_t(0.50*NTL_DOUBLE_PRECISION);
-   red_fudge = 1;
-   for (i = log_red; i > 0; i--)
-      red_fudge = red_fudge*0.5;
+   log_red64 = int64_t(0.50*NTL_DOUBLE_PRECISION);
+   red_fudge64 = 1;
+   for (i = log_red64; i > 0; i--)
+      red_fudge64 = red_fudge64*0.5;
 }
 
-static void inc_red_fudge()
-{
-   red_fudge = red_fudge * 2;
-   log_red--;
-   cerr << "LLL64: warning--relaxing reduction (" << log_red << ")\n";
-   if (log_red < 4)
+static void inc_red_fudge64() {
+   red_fudge64 = red_fudge64 * 2;
+   log_red64--;
+   cerr << "LLL64: warning--relaxing reduction (" << log_red64 << ")\n";
+   if (log_red64 < 4)
       ResourceError("LLL64: too much loss of precision...stop!");
 }
 
 
-static int64_t ll_LLL_FP(matrix64& B, double delta,
+static int64_t ll_LLL_FP64(matrix64& B, double delta,
            double **B1, double **mu,
            double *b, double *c,
            int64_t m, int64_t init_k, int64_t &quit) {
-	//  init_k and k should be one less compared with NTL.
+	// m is the number of rows (generating vectors), same value as in NTL
+	// init_k and k are one less compared with NTL.
 
    int64_t n = B.NumCols();
    int64_t i, j, k, Fc1;
    int64_t MU;
    double mu1;
-
    double t1;
-   // int64_t T1;
    double *tp;
-   static double bound = 0;
-   if (bound == 0) {
       // we tolerate a 15% loss of precision in computing
       // inner products in ComputeGS.
-      bound = 1;
-      for (i = 2*int64_t(0.15*NTL_DOUBLE_PRECISION); i > 0; i--)
+   static double bound = 1;
+   for (i = 2*int64_t(0.15*NTL_DOUBLE_PRECISION); i > 0; i--)
          bound = bound * 2;
-   }
-   double half_plus_fudge = 0.5 + red_fudge;
-
+   double half_plus_fudge = 0.5 + red_fudge64;
    quit = 0;
    k = init_k;
 
    vector64 st_mem;
-   st_mem.SetLength(m+2);           // ??
-   int64_t *st = st_mem.elts();
+   st_mem.SetLength(m+2);
+   int64_t *st = st_mem.elts();    // An array of integers.
 
    for (i = 0; i < k; i++)
       st[i] = i;
    for (i = k; i <= m; i++)
-      st[i] = 1;
+      st[i] = 0;    // With k=0, we do only this.
 
    UniqueArray<double> buf_store;
    buf_store.SetLength(m);
@@ -332,10 +456,10 @@ static int64_t ll_LLL_FP(matrix64& B, double delta,
    max_b_store.SetLength(m);
    double *max_b = max_b_store.get();
 
-   cerr << "LLL64: after creating UniqueArray's \n";
+   // cerr << "LLL64: after creating UniqueArray's \n";
 
    for (i = 0; i < m; i++)
-      max_b[i] = max_abs(B1[i], n);
+      max_b[i] = max_abs64(B1[i], n);
 
    int64_t in_float;
    int64_t rst;
@@ -344,33 +468,35 @@ static int64_t ll_LLL_FP(matrix64& B, double delta,
    int64_t trigger_index;
    int64_t small_trigger;
    int64_t cnt;
-   int64_t rr_st = 0;
+   // int64_t m_orig = m;
+   int64_t rr_st = 0;   // One less than in NTL.
    int64_t max_k = 0;
    int64_t swap_cnt = 0;
 
-   cerr << "LLL64: before first `while` on k. \n";
+   // cerr << "LLL64: before first `while` on k. \n";
 
    while (k < m) {
       if (k > max_k) {
          max_k = k;
          swap_cnt = 0;
       }
-      if (k < rr_st) rr_st = k;
+      if (k < rr_st) rr_st = k;  // Both are 1 less than in NTL.
 
       if (st[k] == k)
-         rst = 0;
+         rst = 0;   // 1 less than in NTL.
       else
          rst = k;
       if (st[k] < st[k+1]) st[k+1] = st[k];
 
+      // std::cout << "LLL64: before ComputeGS, B1[k][1] = " << B1[k][1] << "\n";
       ComputeGS(B, B1, mu, b, c, k, bound, st[k], buf);
-      CheckFinite(&c[k]);
+      CheckFinite64(&c[k]);
       st[k] = k;
-
-      cerr << "LLL64: after ComputeGS, k = " << k << "\n";
+      // std::cout << "LLL64: after ComputeGS, mu[k][0] = " << mu[k][0] << "\n";
 
       if (swap_cnt > 200000) {
          cerr << "LLL64: swap loop?\n";
+         // In NTL, there is more stuff here...
       }
 
       counter = 0;
@@ -383,11 +509,15 @@ static int64_t ll_LLL_FP(matrix64& B, double delta,
       do {
          // size reduction
          counter++;
-         if ((counter & 127) == 0) {
+     	 // std::cout << "do loop: (k  counter) =  " <<  k << "  " << counter << "  \n";
+     	 // std::cout <<  B << "  \n";
+         // cerr << " vector b = " << b[0] << "  " << b[1] << "  " << b[2] << "\n";
+
+     	 if ((counter & 127) == 0) {   // Should be 127
             new_sz = 0;
             for (j = 0; j < n; j++)
                new_sz += NumBits(B[k][j]);
-            if ((counter >> 7) == 1 || new_sz < sz) {
+            if ((counter >> 7) == 1 || new_sz < sz) {  // Should be 7
                sz = new_sz;
             }
             else {
@@ -398,22 +528,26 @@ static int64_t ll_LLL_FP(matrix64& B, double delta,
          Fc1 = 0;
          start_over = 0;
 
-         for (j = rst-1; j >= 0; j--) { // j and rst should be 1 less than in NTL
+         // std::cout << "rst = " << rst << "\n";
+         for (j = rst-1; j >= 0; j--) { // both j and rst are 1 less than in NTL.
             t1 = fabs(mu[k][j]);
+        	 // std::cout << "entered for loop: j =  " <<  j << "  \n";
+        	 // std::cout << "mu[k,j] =  " <<  mu[k][j] << "  t1 =  " <<  t1 << "  \n";
             if (t1 > half_plus_fudge) {
+            	 // std::cout << "we have t1 > half_plus_fudge, j =  " <<  j << "  \n";
                if (!Fc1) {
                   if (j > trigger_index ||
                         (j == trigger_index && small_trigger)) {
                      cnt++;
                      if (cnt > thresh) {
-                        if (log_red <= 15) {
-                           while (log_red > 10)
-                              inc_red_fudge();
-                           half_plus_fudge = 0.5 + red_fudge;
+                        if (log_red64 <= 15) {
+                           while (log_red64 > 10)
+                              inc_red_fudge64();
+                           half_plus_fudge = 0.5 + red_fudge64;
                         }
                         else {
-                           inc_red_fudge();
-                           half_plus_fudge = 0.5 + red_fudge;
+                           inc_red_fudge64();
+                           half_plus_fudge = 0.5 + red_fudge64;
                            cnt = 0;
                         }
                      }
@@ -422,7 +556,7 @@ static int64_t ll_LLL_FP(matrix64& B, double delta,
                   small_trigger = (t1 < 4);
                   Fc1 = 1;
                   if (k < rr_st) rr_st = k;
-                  RowTransformStart(B1[k], in_vec, in_float, n);
+                  RowTransformStart64(B1[k], in_vec, in_float, n);
                }
                mu1 = mu[k][j];
                if (mu1 >= 0)
@@ -434,43 +568,48 @@ static int64_t ll_LLL_FP(matrix64& B, double delta,
                double *mu_j = mu[j];
 
                if (mu1 == 1) {
-                  for (i = 0; i < j; i++)
+                  for (i = 0; i < j-1; i++)
                      mu_k[i] -= mu_j[i];
                }
                else if (mu1 == -1) {
-                  for (i = 0; i < j; i++)
+                  for (i = 0; i < j-1; i++)
                      mu_k[i] += mu_j[i];
                }
                else {
-                  for (i = 0; i < j; i++)
+                  for (i = 0; i < j-1; i++)
                      mu_k[i] -= mu1 * mu_j[i];
                }
                mu_k[j] -= mu1;
                conv(MU, mu1);
+               // std::cout << "Before row transform, mu1 = " << mu1 << " \n";
 
                register int64_t T, MU2 = MU;
                for (i = 0; i < n; i++) {
-            	  T = MU2 * B[j][i];   B[k][i] -= T;
+            	  T = MU2 * B1[j][i];
+            	  // mul(T, MU2, B1[j][i]);
+            	  B1[k][i] -= T;
                }
                // RowTransformSub (B[k], B[j], MU);
-               // RowTransform(B(k), B(j), MU, B1[k], B1[j], in_vec,
+               //RowTransform64 (B[k], B[j], MU, B1[k], B1[j], in_vec,
                //             max_b[k], max_b[j], in_float);
-            }
+               // std::cout << "After row transform, MU = " << MU << " \n";
+           	   // std::cout <<  B << "  \n";
+               }
          }
-
 
          if (Fc1) {
             vector64 temp = B[k];
-            RowTransformFinish(temp, B1[k], in_vec);
+            RowTransformFinish64(temp, B1[k], in_vec);
             B[k] = temp;
-            max_b[k] = max_abs(B1[k], n);
-            b[k] = InnerProductD(B1[k], B1[k], n);
-            CheckFinite(&b[k]);
-            ComputeGS(B, B1, mu, b, c, k, bound, 0, buf);
-            CheckFinite(&c[k]);
+            max_b[k] = max_abs64(B1[k], n);
+            b[k] = InnerProductD (B1[k], B1[k], n);
+            CheckFinite64(&b[k]);
+            ComputeGS (B, B1, mu, b, c, k, bound, 0, buf);
+            CheckFinite64(&c[k]);
             rst = k;
          }
-      } while (Fc1 || start_over);
+     	 // std::cout << "End of loop, B = " <<  B << "  \n";
+      } while (Fc1 || start_over);  // End of `do` loop.
 
       if (b[k] == 0) {
          for (i = k; i < m-1; i++) {
@@ -478,7 +617,7 @@ static int64_t ll_LLL_FP(matrix64& B, double delta,
             // swap(B[i], B[i+1]);
             B[i].swap(B[i+1]);
             tp = B1[i]; B1[i] = B1[i+1]; B1[i+1] = tp;
-            t1 = b[i]; b[i] = b[i+1]; b[i+1] = t1;
+            t1 = b[i];  b[i] = b[i+1];   b[i+1] = t1;
             t1 = max_b[i]; max_b[i] = max_b[i+1]; max_b[i+1] = t1;
          }
          for (i = k; i <= m; i++) st[i] = 0;
@@ -491,6 +630,7 @@ static int64_t ll_LLL_FP(matrix64& B, double delta,
       if (quit) break;
 
       // test LLL reduction condition
+      // std::cout << "Test reduction condition  \n";
       if (k > 0 && delta*c[k-1] > c[k] + mu[k][k-1]*mu[k][k-1]*c[k-1]) {
          // swap rows k, k-1
          swap(B[k], B[k-1]);
@@ -499,7 +639,7 @@ static int64_t ll_LLL_FP(matrix64& B, double delta,
          t1 = b[k]; b[k] = b[k-1]; b[k-1] = t1;
          t1 = max_b[k]; max_b[k] = max_b[k-1]; max_b[k-1] = t1;
          k--;
-         NumSwaps++;
+         NumSwaps64++;
          swap_cnt++;
          // cout << "-\n";
       }
@@ -514,21 +654,19 @@ static int64_t ll_LLL_FP(matrix64& B, double delta,
 /* ************************************************ */
 
 int64_t LLL64_FP (matrix64& B, double delta) {
-   int64_t m = B.NumRows();
-   int64_t n = B.NumCols();
-
+   int64_t m = B.NumRows();  // m is the number of generating vectors.
+   int64_t n = B.NumCols();  // n is the dimension of the vectors.
    int64_t i, j;
    int64_t new_m, dep, quit;
    // int64_t MU;
    // int64_t T1;
-
    // RR_GS_time = 0;
-   NumSwaps = 0;
+   NumSwaps64 = 0;
    if (delta < 0.50 || delta >= 1) LogicError("LLL64: bad delta");
 
-   init_red_fudge();
+   init_red_fudge64();
 
-   cerr << "LLL64: starting. \n";
+   //  cerr << "LLL64: starting. \n";
 
    Unique2DArray<double> B1_store;
    B1_store.SetDims(m, n);
@@ -546,27 +684,25 @@ int64_t LLL64_FP (matrix64& B, double delta) {
    b_store.SetLength(m);
    double *b = b_store.get(); // squared lengths of basis vectors
 
-   cerr << "LLL64: UniqueArray's created. \n";
+   // cerr << "LLL64: UniqueArray's created. \n";
 
    for (i = 0; i < m; i++)
       for (j = 0; j < n; j++) {
          conv(B1[i][j], B[i][j]);
-         CheckFinite(&B1[i][j]);
+         CheckFinite64(&B1[i][j]);
       }
    for (i = 0; i < m; i++) {
-      b[i] = InnerProductD(B1[i], B1[i], n);
-      CheckFinite(&b[i]);
+      b[i] = InnerProductD (B1[i], B1[i], n);
+      CheckFinite64(&b[i]);
    }
-   cerr << "LLL64: before ll_LLL \n";
 
-   new_m = ll_LLL_FP(B, delta, B1, mu, b, c, m, 0, quit);
-   dep = m - new_m;
-   m = new_m;
-
-   cerr << "LLL64: after ll_LLL \n";
+   // Indices in b and B1 start at 0, which is 1 less than in NTL.
+   new_m = ll_LLL_FP64(B, delta, B1, mu, b, c, m, 0, quit);
+   dep = m - new_m;   // Number of rows that are dependent on others.
+   m = new_m;         // Number of independent rows.
 
    if (dep > 0) {
-      // for consistency, we move all of the zero rows to the front
+      // for consistency, we move all of the zero rows to the front.
       for (i = 1; i <= m; i++) {
          swap(B[m+dep-i], B[m-i]);
       }
@@ -589,11 +725,11 @@ int64_t BKZ64_FP (matrix64& BB, double delta, int64_t blockSize) {
    double *tp;
 
    // RR_GS_time = 0;
-   NumSwaps = 0;
+   NumSwaps64 = 0;
    if (delta < 0.50 || delta >= 1) LogicError("BKZ_FP: bad delta");
    if (blockSize < 2) LogicError("BKZ_FP: bad block size");
 
-   init_red_fudge();
+   init_red_fudge64();
 
    matrix64 B;
    B = BB;
@@ -659,14 +795,14 @@ int64_t BKZ64_FP (matrix64& BB, double delta, int64_t blockSize) {
    for (i = 0; i < m; i++)
       for (j = 0; j < n; j++) {
          conv(B1[i][j], B[i][j]);
-         CheckFinite(&B1[i][j]);
+         CheckFinite64(&B1[i][j]);
       }
 
    for (i = 0; i < m; i++) {
       b[i] = InnerProductD(B1[i], B1[i], n);
-      CheckFinite(&b[i]);
+      CheckFinite64(&b[i]);
    }
-   m = ll_LLL_FP(B, delta, B1, mu, b, c, m, 0, quit);
+   m = ll_LLL_FP64(B, delta, B1, mu, b, c, m, 0, quit);
 
    // double tt;
    // double enum_time = 0;
@@ -759,7 +895,7 @@ int64_t BKZ64_FP (matrix64& BB, double delta, int64_t blockSize) {
 
          h = min(kk, m-1);   // h is 1 less than for NTL
 
-         if ((delta - 8*red_fudge)*c[jj] > cbar) {
+         if ((delta - 8*red_fudge64)*c[jj] > cbar) {
 
             clean = 0;
             // we treat the case that the new vector is b_s (jj < s <= kk)
@@ -785,7 +921,7 @@ int64_t BKZ64_FP (matrix64& BB, double delta, int64_t blockSize) {
                   t1 = b[i-1]; b[i-1] = b[i]; b[i] = t1;
                }
                // cerr << "special case\n";
-               new_m = ll_LLL_FP(B, delta, B1, mu, b, c, h, jj, quit);
+               new_m = ll_LLL_FP64(B, delta, B1, mu, b, c, h, jj, quit);
                if (new_m != h) LogicError("BKZ_FP: internal error");
                if (quit) break;
             }
@@ -812,18 +948,18 @@ int64_t BKZ64_FP (matrix64& BB, double delta, int64_t blockSize) {
 
                for (i = 0; i < n; i++) {
                   conv(B1[jj][i], B[jj-1][i]);
-                  CheckFinite(&B1[jj][i]);
+                  CheckFinite64(&B1[jj][i]);
                }
 
                b[jj] = InnerProductD(B1[jj], B1[jj], n);
-               CheckFinite(&b[jj]);
+               CheckFinite64(&b[jj]);
 
                if (b[jj] == 0) LogicError("BKZ_FP: internal error, b[jj]==0");
 
                // remove linear dependencies
 
                // cerr << "general case\n";
-               new_m = ll_LLL_FP(B, delta, B1, mu, b, c, kk+1, jj, quit);
+               new_m = ll_LLL_FP64(B, delta, B1, mu, b, c, kk+1, jj, quit);
 
                if (new_m != kk) LogicError("BKZ_FP: internal error, new_m != kk");
 
@@ -837,7 +973,7 @@ int64_t BKZ64_FP (matrix64& BB, double delta, int64_t blockSize) {
                }
                if (h > kk) {
                   // extend reduced basis
-                  new_m = ll_LLL_FP(B, delta, B1, mu, b, c, h+1, h, quit);
+                  new_m = ll_LLL_FP64(B, delta, B1, mu, b, c, h+1, h, quit);
 
                   if (new_m != h+1) LogicError("BKZ_FP: internal error, new_m != h");
                   if (quit) break;
@@ -850,7 +986,7 @@ int64_t BKZ64_FP (matrix64& BB, double delta, int64_t blockSize) {
             // cerr << "progress\n";
             NumNoOps++;
             if (!clean) {
-               new_m = ll_LLL_FP(B, delta, B1, mu, b, c, h+1, h, quit);
+               new_m = ll_LLL_FP64(B, delta, B1, mu, b, c, h+1, h, quit);
                if (new_m != h+1) LogicError("BKZ_FP: internal error, new_m != h");
                if (quit) break;
             }
@@ -876,6 +1012,6 @@ int64_t BKZ64_FP (matrix64& BB, double delta, int64_t blockSize) {
 
 NTL_END_IMPL
 
-} // end namespace
+//} // end namespace
 
 #endif

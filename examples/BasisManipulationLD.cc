@@ -61,17 +61,18 @@ const std::string primes[] = { "1021", "1048573", "1073741827", "1099511627791",
 
 //Use basis values modulo 1021
 const std::string prime = primes[0];
-int64_t m = 1021;      // Modulus
+int64_t m = 101;      // Modulus
 const PrecisionType prec = DOUBLE;  // For LLL construction.
-const int numSizes = 4; // Number of matrix sizes (choices of dimension).
-const int numRep = 10;  // Number of replications for each case.
-//const int numMeth = 10;    // Number of methods, and their names.
-//std::string names[numMeth] = {"UppTri  ", "LowTri  ", "TriGCD  ", "Tri96   ",
-//		 "LLL5    ", "LLL8    ", "LLL9    ", "DualUT  ", "DualUT96", "Dual    "};
+const int numRep = 5;  // Number of replications for each case.
 const int numMeth = 10;    // Number of methods, and their names.
 std::string names[numMeth] = {"UppTri  ", "LowTri  ", "TriGCD  ", "Tri96   ",
-		 "DualUT  ", "DualUT96"};
+		 "LLL5    ", "LLL8    ", "LLL9    ", "DualUT  ", "DualUT96", "Dual    "};
+//std::string names[numMeth] = {"UppTri  ", "LowTri  ", "TriGCD  ", "Tri96   ",
+//		 "DualUT  ", "DualUT96"};
+const int numSizes = 4; // Number of matrix sizes (choices of dimension).
+//const int dimensions[numSizes] = {10, 20};
 const int dimensions[numSizes] = {10, 20, 30, 40};
+
 
 int main() {
 	// We use ctime for implementation simplicity
@@ -80,10 +81,30 @@ int main() {
 	clock_t tmp;
 
 	BasisConstruction<Int> constr; // The basis constructor we use.
+
+/*
 	IntMat bas_mat, bas_copy, m_v, m_v2;
-    int d;
+    long dim = 3;
+	bas_mat.SetDims(dim, dim);
+	bas_copy.SetDims(dim, dim);
+	m_v.SetDims(dim, dim);
+	m_v2.SetDims(dim, dim);
+	long korBase[][3] = {{1, 12, 43}, {0, 101, 0}, {0, 0, 101}};
+    // NTL::conv (bas_mat, korBase);
+	long i, j;
+    for (i = 0; i < dim; i++) {
+	    for (j = 0; j < dim; j++) {
+            bas_mat[i][j] = korBase[i][j];
+	    }
+    }
+    copy(bas_mat, bas_copy);
+    constr.LLLConstruction0(bas_copy, 0.9);
+*/
+
+	IntMat bas_mat, bas_copy, m_v, m_v2;
+    long d;
 	for (d = 0; d < numSizes; d++) {  // Each matrix size
-		unsigned int dim = dimensions[d]; // The corresponding dimension.
+		long dim = dimensions[d]; // The corresponding dimension.
 		bas_mat.SetDims(dim, dim);
 		bas_copy.SetDims(dim, dim);
 		m_v.SetDims(dim, dim);
@@ -91,6 +112,7 @@ int main() {
 		for (int meth = 0; meth < numMeth; meth++)
 			timer[meth][d] = 0;
 	    for (int r = 0; r < numRep; r++) {
+
 	    	// We use a different file for each rep.
 		    std::string name = "bench/" + prime + "_"
 		       + std::to_string(dim) + "_" + std::to_string(r);
@@ -125,14 +147,26 @@ int main() {
 			// std::cout << " The LLL construction with delta=0.5 \n";
 			copy(bas_mat, bas_copy);
 			tmp = clock();
-			constr.LLLConstruction0(bas_copy, 0.9);
+			constr.LLLConstruction0(bas_copy, 0.5);
 			timer[4][d] += clock() - tmp;
+
+			// std::cout << " The LLL construction with delta=0.5 \n";
+			copy(bas_mat, bas_copy);
+			tmp = clock();
+			constr.LLLConstruction0(bas_copy, 0.8);
+			timer[5][d] += clock() - tmp;
+
+			// std::cout << " The LLL construction with delta=0.5 \n";
+			copy(bas_mat, bas_copy);
+			tmp = clock();
+			constr.LLLConstruction0(bas_copy, 0.99999);
+			timer[6][d] += clock() - tmp;
 
 			copy(bas_mat, bas_copy);
 			// constr.upperTriangularBasis(bas_copy, m_v, m);
-			if (!CheckTriangular(m_v, dim, m)) {
-				std::cout << "Matrix not triangular! \n";
-			}
+			//if (!CheckTriangular(m_v, dim, m)) {
+			//	std::cout << "Matrix not triangular! \n";
+			//}
 			tmp = clock();
 			// constr.mDualUpperTriangular(m_v, m_v2, m);   // **** Float ERROR!!!
 			timer[7][d] += clock() - tmp;
@@ -147,7 +181,8 @@ int main() {
 			timer[8][d] += clock() - tmp;
 
 		}
-	}
+   }
+
 
 	std::cout << " dim:  ";
 	for (d = 0; d < numSizes; d++)
@@ -163,5 +198,6 @@ int main() {
 	std::cout << "Total time: " << (double) (clock() - totalTime) / (CLOCKS_PER_SEC)
 			<< " seconds\n";
 	return 0;
+
 	}
 

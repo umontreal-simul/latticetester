@@ -49,7 +49,7 @@
  * redundant with their documentation. Instead, we point to the examples,
  * where their usage is demonstrated. We also point out to the following classes
  * without which the usage of the main classes would be difficult :
- * - `IntLatticeBasis` is a class representing a lattice basis. This is the
+ * - `IntLatticeBase` is a class representing a lattice basis. This is the
  * lowest level class available to represent a lattice in *LatticeTester* and it
  * is the class that is needed for the instanciation of a `Reducer`.
  * - `Config` stores all the configuration for the execution of a
@@ -70,8 +70,8 @@
  * \section sec_basis Basis manipulation
  *
  * The following example showcases the usage of `LatticeTester::BasisConstruction`, either
- * directly on matrices or on `IntLatticeBasis` objects. One of the repercutions
- * this has is that this example also showcases how to create an `IntLatticeBasis`
+ * directly on matrices or on `IntLatticeBase` objects. One of the repercutions
+ * this has is that this example also showcases how to create an `IntLatticeBase`
  * object.
  *
  * This example compares the execution time of the two different
@@ -84,15 +84,15 @@
  * \include BasisConstruction.cc
  *
  * There are two things to learn from this example. First is how to create an
- * `IntLatticeBasis`. Second is the way that the `BasisConstruction` class is
+ * `IntLatticeBase`. Second is the way that the `BasisConstruction` class is
  * used.
  *
  * When working only with `LatticeTester` it is recommended to represent
- * lattices only by using the `IntLatticeBasis` class instead of the `IntLattice`
+ * lattices only by using the `IntLatticeBase` class instead of the `IntLattice`
  * class. The reasoning is that `IntLattice` does not bring any new
  * functionnality by itself, it is a class that contains virtual methods
  * specifying an easily expandable interface for different lattice types. It is
- * also better to use `IntLatticeBasis` because the constructor is all that is
+ * also better to use `IntLatticeBase` because the constructor is all that is
  * needed to get a usable object as is done in this example. This is not the
  * case of the `IntLattice` class.
  *
@@ -153,11 +153,11 @@
  * \include Reduction.cc
  *
  * This example first showcases the usage of the `Reducer` class. This class is
- * one that is given a `LatticeTester::IntLatticeBasis` and then performs
+ * one that is given a `LatticeTester::IntLatticeBase` and then performs
  * various algorithms on it when its methods are called. The methods this class
  * implements perform what we call "reductions". Reductions are algorithms that
  * reduce, in one way or another, the length of the vectors in the basis stored
- * in the `IntLatticeBasis`. This example calls most of them, and the code
+ * in the `IntLatticeBase`. This example calls most of them, and the code
  * bellow links to the documentation of these methods.
  *
  * The program tests three reductions (Dieter, LLL and BKZ) in two ways. First,

@@ -1,0 +1,173 @@
+/**
+ * This is an example to the usage of the reducer class to perform reduction
+ * of lattices. This serves as a comparison between the different reduction
+ * methods when used before searching for the shortest vector. The output is
+ * formated to include the number of clock ticks spent on each algorithm as well
+ * as the number of times the program failed to find the shortest vector for
+ * each pre-reduction.
+ *
+ * This is an example ouput for the program:
+ * ALL THE RESULTS ARE NUMBERED IN TERMS OF SYSTEM CLOCK TICKS
+ *             Dieter    LLL     BKZ   SV Dieter     SV LLL     SV BKZ
+ * Total time 7479736 804050 2414321 11960009667 2665878917 2444318476
+ * Dim      5    3889    873     945         634        583        579
+ * Dim     10   25622   3104    4025        3012       2603       2582
+ * Dim     15   52247   6485   10449        8268       6081       6023
+ * Dim     20   94343  12015   23153       20410      12513      12014
+ * Dim     25  137098  22926   48952      262480      36137      29878
+ * Dim     30  195888  30963   87739      604659     141528     105142
+ * Dim     35  350096  44862  149397     9703739    1469959     968583
+ * Dim     40  468672  54571  176943    28913921    5581257    3571159
+ * Dim     45  619861  80332  229724   607680675   66124526   53250411
+ * Dim     50  839252  98698  269042  1260636786  110130393  102112537
+ * Dim     55 1119413 125894  364620  2351365585  186791907  204776212
+ * Dim     60 1591436 120304  420965  3423588351  416827286  371013095
+ * Dim     65 1981919 203023  628367  4277221147 1878754144 1708470261
+ * Fails           14      2       2
+ * Total time: 284.743 minutes
+ * */
+
+// We define the numeric types.
+// It is possible to use this example with TYPES 2 and 3. For now 1 calls the
+// same function for both execution and we look forward to change that.
+
+
+
+#define TYPES_CODE  ZR
+#include <iostream>
+#include <ctime>
+#include "latticetester/ParamReader.h"
+#include "latticetester/FlexTypes.h"
+#include "latticetester/Reducer.h"
+#include "latticetester/IntLattice.h"
+#include "latticetester/WriterRes.h"
+#include "latticetester/Util.h"
+
+using namespace LatticeTester;  
+
+const int many_primes = 6;
+const std::string primes[] = {"1021", "1048573", "1073741827", "1099511627791",
+                  "1125899906842597", "18446744073709551629"};
+
+
+int main() {
+  clock_t timer = clock();
+  int leng = 3; //! Actual max dim is 5*leng
+  //! This is basically the C method of timing a program. We time globally, but
+  //! also for eache dimension and for each size of integers in the matrix.
+  clock_t  lll_time[leng], bkz_time[leng],
+  sho_cho[leng], sho_tri[leng], tmp;
+  clock_t total_times[4];
+  for (int i = 0; i < leng; i++){
+    lll_time[i] = 0;
+    bkz_time[i] = 0;
+    sho_cho[i] = 0;
+    sho_tri[i] = 0;
+  }
+  int lll_fails=0, bkz_fails=0;
+  Real vec_length[3];
+  vec_length[0] = vec_length[1] = vec_length[2] = 0;
+
+  std::string prime = primes[0];
+
+
+  // We dynamically allocate memory to these two pointers every time we need to
+  // create an object of their type. This is because of the OOP approach
+  // to lattice reduction.
+  IntLattice<Int, Real>* basis;     
+  Reducer<Int, Real>* red;
+
+  for (int j = 0; j < leng; j++) {
+    for (int k = 1; k < 2; k++) {
+
+      //! Variables definition
+      ParamReader<Int, Real> reader;
+      std::string name;
+      int numlines;
+      IntMat matrix1;
+      unsigned int ln;
+      std::string s1("cholesky");
+      std::string s2("triangular");
+      
+      name = "bench/" + prime + "_" + std::to_string(5*(j+1)) + "_" + std::to_string(k);
+      reader = ParamReader<Int, Real>(name + ".dat");
+      reader.getLines();
+      reader.readInt(numlines, 0, 0);
+      matrix1.SetDims(numlines, numlines);
+      ln = 1;
+      reader.readBMat(matrix1, ln, 0, numlines);
+
+      tmp = clock();
+      basis = new IntLattice<Int, Real>(matrix1, numlines);
+      red = new Reducer<Int, Real>(*basis);
+      // LLL reduction before shortest vector search
+      red->redLLL();
+       
+      lll_time[j] += clock() - tmp;
+      basis->updateVecNorm();
+      //vec_length[1] += average(basis->getVecNorm());
+      tmp = clock();
+      if (!red->shortestVector(L2NORM,s1)) {
+        lll_fails++;
+      }
+      sho_cho[j] += clock() - tmp;
+      delete red;
+      //std::cout << "LLL: " << average(basis->getVecNorm()) << "\n";
+      delete basis;
+      // BKZ reduction before shortest vector search
+      tmp = clock();
+      basis = new IntLattice<Int, Real>(matrix1, numlines);
+      red = new Reducer<Int, Real>(*basis);
+      red->redBKZ(0.999999, 10, DOUBLE, numlines);
+      bkz_time[j] += clock() - tmp;
+      basis->updateVecNorm();
+      tmp = clock();
+      if (!red->shortestVector(L2NORM,s2)) {
+        bkz_fails++;
+      }
+      sho_tri[j] += clock() - tmp;
+
+      delete red;
+      delete basis;
+    }
+  }
+
+  //! Printing the results in a somewhat formated way.
+
+  
+  std::cout << "ALL THE RESULTS ARE NUMBERED IN TERMS OF SYSTEM CLOCK TICKS\n";
+  std::cout << "          ";
+  int width1 = getWidth(lll_time, leng, "LLL", total_times, 0);
+  int width2 = getWidth(bkz_time, leng, "BKZ", total_times, 1);
+  int width3 = getWidth(sho_cho, leng, "SV CHO", total_times, 2);
+  int width4 = getWidth(sho_tri, leng, "SV TRI", total_times, 3);
+  std::cout << std::endl;
+
+  std::cout << "Total time" << std::setw(width1) << total_times[0]
+    << std::setw(width2) << total_times[1]
+    << std::setw(width3) << total_times[2]
+    << std::setw(width4) << total_times[3] << std::endl;
+  
+  for (int i = 0; i < leng; i++) {
+    std::cout << "Dim " << std::setw(6) << (i+1)*5 
+      << std::setw(width1) << lll_time[i] 
+      << std::setw(width2) << bkz_time[i] 
+      << std::setw(width3) << sho_cho[i] 
+      << std::setw(width3) << sho_tri[i] 
+      << std::endl;
+  }
+  std::cout << "Fails     "
+    << std::setw(width2) << lll_fails 
+    << std::setw(width3) << bkz_fails 
+    << std::endl;
+
+ // std::cout << std::fixed << std::setprecision(2) << "Averages: " << std::setw(width1) << vec_length[0]/vec_length[1]
+ //   << std::setw(width2) << 1.0 << std::setw(width3) << vec_length[2]/vec_length[1]
+  //  <<std::endl;
+
+  std::cout << "Total time: " << (double)(clock()-timer)/(CLOCKS_PER_SEC*60) << " minutes\n";
+  
+
+  
+  return 0;
+}

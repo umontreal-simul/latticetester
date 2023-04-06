@@ -5,6 +5,9 @@ def build(ctx):
     src_dir = ctx.path.parent.find_dir('progs/')
     #inc_dir = ctx.path.parent.find_dir('analysis/include')
     lat_inc_dir = ctx.path.find_dir('../include')
+    lat_inc_dir2 = ctx.path.find_dir('../examples')
+    #ctx.env.append_value('CPPPATH', 'lat_inc_dir2')
+    use='TEST'
 
     ctx(features='cxx cxxprogram',
         source=src_dir.ant_glob('TestLattice.cc'),

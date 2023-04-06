@@ -7,6 +7,7 @@ out = 'build'
 from waflib import Utils
 
 import imp
+#import sys
 def waftool(name):
     return imp.load_module('waf_' + name, *imp.find_module(name, ['./waftools', './latticetester/waftools']))
 
@@ -31,6 +32,9 @@ def configure(ctx):
     ctx.env.append_unique('CXXFLAGS', ['-std=c++14', '-Wall'])
     ctx.check(features='c', cflags='-std=c99')
     ctx.env.append_unique('CFLAGS', ['-std=c99', '-Wall'])
+    ctx.env.INCLUDES_TEST      = ['examples'] #/usr/include
+
+
 
     # suppress Boost ublas warnings
     compiler.add_cxx_flag_if_supported(ctx, '-Wno-unused-local-typedefs')
@@ -83,7 +87,7 @@ def configure(ctx):
     #     env.detach()
 
     #     # release (default)
-    #     ctx.env.append_unique('CXXFLAGS', ['-O2'])
+    #     ctx.env.append_unique('CXXFLAGS', ['-O3'])
     #     ctx.define('NDEBUG', 1)
 
     #     ctx.setenv('debug', env)
@@ -118,7 +122,7 @@ def build(ctx):
     ctx.add_group('group6')
     ctx.set_group('group6')
     if not hasattr(ctx.options, 'nested') or not ctx.options.nested:
-        ctx.recurse('progs')
+        #ctx.recurse('progs')
         if ctx.env.BUILD_DOCS:
             ctx.recurse('doc') 
 

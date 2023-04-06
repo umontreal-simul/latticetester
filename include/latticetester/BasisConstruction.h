@@ -721,10 +721,10 @@ void BasisConstruction<NTL::ZZ>::mDualBasis(
 	}
 	inv(d, basisDual, basis);
 	NTL::matrix<NTL::ZZ> C = basisDual;
-	div(fac, m, d);
+	div(fac, d, m);
 	for (int i = 0; i < dim; i++) {
 		for (int j = 0; j < dim; j++) {
-			mul(basisDual[i][j], C[i][j], fac);
+			div(basisDual[i][j], C[i][j], fac);
 		}
 	}
 }

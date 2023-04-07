@@ -25,11 +25,17 @@
 namespace LatticeTester {
 
   /**
-   * This Normalizer class implements upper bounds on the length of the shortest nonzero
-   * vector in a lattice. The Hermite constants \f$\gamma_s\f$ are approximated
-   * by using the values that correspond to the laminated lattices \cite mCON99a.
-   * These lattices are not always the densest lattices available, but
-   * they are intuitive constructions dense lattices. In \cite mCON99a,
+   * This class implements upper bounds on the lenght of the shortest nonzero
+   * vector in a lattice. To obtain these bounds, this class contains hard-coded
+   * values of an approximation of the Hermite's constant \f$\gamma_s\f$ with
+   * the density of the laminated lattice of dimension `s`. These Hermite's
+   * constants are stored in a table accessible via the getGamma(int) const
+   * method.
+   *
+   * A laminated lattice in dimension `s` is, roughly speaking, the densest
+   * possible packing of a laminated lattice of dimension `s-1` with copies of
+   * itself. These lattices are not always the densest lattices available, but
+   * are a more instinctive construction of a dense lattice. In \cite mCON99a,
    * Table 6.1 gives the determinant \f$\lambda_s\f$ that can be used to recover
    * the center density \f$\delta_s = \lambda_s^{-1/2}\f$ of the densest
    * laminated lattice in dimension \f$s\f$.
@@ -37,45 +43,51 @@ namespace LatticeTester {
    * \f[
    *    \gamma_s = 4 \delta_s^{2/s}.
    * \f]
-   * This class is to be used with the L2NORM (the Euclidean norm) exclusively.
+   * The number \f$\gamma_n\f$ is the number returned by calling `getGamma(n)`.
+   * The init() method of this class inherited from `Normalizer` computes the
+   * upper bound on the shortest non-zero vector of the lattice as
+   * \f[
+   *    \gamma_s^{1/2} n^{-1/s}.
+   * \f]
+   * Here \f$n = \exp(\text{logDensity})\f$ is the density of the lattice to be
+   * analyzed passed as an argument to the constructor of this object.
+   *
+   * This class is to be used with the L2NORM (the Euclidian norm) exclusively.
+   * Note this class stores the log value of the density to handle larger values.
    */
-
-    class NormaLaminated : public Normalizer {
+  template<typename RedDbl>
+    class NormaLaminated : public Normalizer<RedDbl> {
       public:
 
         /**
-          * Constructs a `NormaLaminated` for up to `maxDim` dimensions, by assuming that the
-          * log density is `logDensity` in all dimensions.
-          * Restriction: `maxDim`\f$ \le 48\f$.
-          */
-         NormaLaminated (double logDensity, int maxDim);
+         * Constructor for this class. Suppose we want to use this normalizer
+         * on a lattice with it's basis in the lines of \f$V\f$ of dimension
+         * \f$t\f$. We can call this constructor as `NormaLaminated(abs(det(V)), t)`.
+         * getPreComputedBound(t) will then return an upper bound on the
+         * lenght of the shortest non-zero vector in dimension `t`. In the case
+         * where the lattice also has the same density in lower dimensions than
+         * `t`, pre-computed bounds will also be available.
+         *
+         * The bias factor `beta` gives more or less weight to some of the
+         * dimensions (see Normalizer for details). It is recommended to keep it
+         * at its default value because its usage is deprecated.
+         * 
+         * There is a restriction for `t` to be \f$\le48\f$.
+         */
+        NormaLaminated (RedDbl & logDensity, int t, double beta = 1);
 
-     	/**
-     	 * This constructor assumes that the primal lattice has scaling factor \f$m\f$
-     	 * and order \f$k\f$, so its density is \f$m^k\f$ for \f$t\geq k\f$, and cannot
-     	 * exceed  \f$m^s\f$ for projections in \f$s < k\f$ dimensions.
-     	 */
-     	NormaLaminated (double logm, int k, int maxDim);
-
-     	/**
-          * Constructs a `NormaLaminated` for up to `maxDim` dimensions, without computing the bounds.
-          * Restriction: `maxDim`\f$ \le 48\f$.
-          */
-        NormaLaminated (int maxDim);
-
-		/**
-          * Returns the value of the bound on the Hermite's constant \f$\gamma_j\f$
-          * in dimension \f$j\f$.
-          */
+        /**
+         * Returns the value of the bound on the Hermite's constant \f$\gamma_j\f$
+         * in dimension \f$j\f$.
+         */
         double getGamma (int j) const;
-
       private:
 
         /**
          * Lattice constants \f$\gamma_j\f$ for the laminated lattices in each
          * dimension \f$j\f$.
          */
-        static const double m_gamma[1 + Normalizer::MAX_DIM];
+        static const double m_gamma[1 + Normalizer<RedDbl>::MAX_DIM];
     }; // End class NormaLaminated
 
   //=============================================================================
@@ -86,7 +98,8 @@ namespace LatticeTester {
    *    - equation (47) page 20 of chapter 1
    *    - table 6.1 page 158 of chapter 6
    */
-          const double NormaLaminated::m_gamma[] =
+  template<typename RedDbl>
+          const double NormaLaminated<RedDbl>::m_gamma[] =
   {
     /* Gamma[0] = */    0.00000000000000,
     /* Gamma[1] = */    1.00000000000000,
@@ -140,34 +153,32 @@ namespace LatticeTester {
   };
 
 
+
   /*=========================================================================*/
 
-    NormaLaminated::NormaLaminated (double logDensity, int maxDim):
-      Normalizer (maxDim, "Laminated", L2NORM)
+  template<typename RedDbl>
+    NormaLaminated<RedDbl>::NormaLaminated (RedDbl & logDensity, int t,
+        double beta):
+      Normalizer<RedDbl> (logDensity, t, "Laminated", L2NORM, beta)
     {
-      if (maxDim > this->MAX_DIM)
+      if (t > this->MAX_DIM)
         throw std::invalid_argument("NormaLaminated:   dimension > this->MAX_DIM");
-      Normalizer::computeBounds (logDensity);
+      Normalizer<RedDbl>::init (logDensity, beta);
     }
 
-    /*=========================================================================*/
-
-      NormaLaminated::NormaLaminated (double logm, int k, int maxDim):
-       Normalizer (maxDim, "Laminated", L2NORM)
-      {
-        if (maxDim > this->MAX_DIM)
-          throw std::invalid_argument("NormaLaminated:   dimension > MAXDIM");
-        Normalizer::computeBounds (logm, k);
-      }
 
   /*=========================================================================*/
 
-    inline double NormaLaminated::getGamma (int j) const
+  template<typename RedDbl>
+    inline double NormaLaminated<RedDbl>::getGamma (int j) const
     {
       if (j < 1 || j > this->MAX_DIM)
         throw std::out_of_range("NormaLaminated::getGamma");
       return m_gamma[j];
     }
+
+  extern template class NormaLaminated<double>;
+  extern template class NormaLaminated<NTL::RR>;
 
 }
 

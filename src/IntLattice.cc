@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
-// Copyright (C) 2012-2022  The LatticeTester authors, under the supervision
-// of Pierre L'Ecuyer at Universit� de Montr�al.
+// LatticeTester
+// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -21,8 +21,7 @@
 #include "latticetester/IntLattice.h"
 
 namespace LatticeTester{
-  template class IntLattice<std::int64_t, double>;
-  template class IntLattice<NTL::ZZ, double>;
-  template class IntLattice<std::int64_t, NTL::RR>;
-  template class IntLattice<NTL::ZZ, NTL::RR>;
+  template class IntLattice<std::int64_t, std::int64_t, double, double>;
+  template class IntLattice<NTL::ZZ, NTL::ZZ, double, double>;
+  template class IntLattice<NTL::ZZ, NTL::ZZ, NTL::RR, NTL::RR>;
 }

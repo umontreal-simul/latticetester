@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
-// Copyright (C) 2012-2022  The LatticeTester authors, under the supervision
-// of Pierre L'Ecuyer at Universit� de Montr�al.
+// LatticeTester
+// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,16 +20,16 @@
 
 #include "latticetester/Normalizer.h"
 #include "latticetester/IntFactor.h"
-//#include "NTL/ZZ.h"
 
 namespace LatticeTester {
 
   /**
-   * This class implements some theoretical bounds on the values of
+   * This class implements theoretical bounds on the values of
    * \f$P_{\alpha}\f$ for a lattice (see class <tt>Palpha</tt>).
+   *
    */
-
-    class NormaPalpha : public Normalizer {
+  template<typename Int, typename RedDbl>
+    class NormaPalpha : public Normalizer<RedDbl> {
       public:
 
         /**
@@ -38,7 +38,7 @@ namespace LatticeTester {
          * lattices have rank \f$1\f$, with \f$m\f$ points per unit volume.
          * Restriction: \f$2 \le s \le48\f$, \f$\alpha\ge2\f$, and \f$m\f$ prime.
          */
-        NormaPalpha (const std::int64_t m, int alpha, int s, NormType norm = L2NORM);
+        NormaPalpha (const Int & m, int alpha, int s, NormType norm = L2NORM);
 
         /**
          * Computes and returns the bound \f$B_{\alpha}(s)\f$ given in
@@ -62,20 +62,12 @@ namespace LatticeTester {
          * void init (int alpha);
          * ''
          */
-        using Normalizer::computeBounds;
+        using Normalizer<RedDbl>::init;
 
-   
         /**
          * Initializes the bounds for the Palpha normalization.
          */
-        void computeBounds (int alpha);
-
-           /**
-         * Initializes the bounds for the Palpha normalization.
-         */
-        void computeBounds ();
-
-
+        void init (int alpha);
 
         /**
          * Returns the value of \f$\alpha\f$.
@@ -87,7 +79,7 @@ namespace LatticeTester {
         /**
          * The value of \f$\m\f$.
          */
-        std::int64_t m_m;
+        Int m_m;
 
         /**
          * The value of \f$\alpha\f$.
@@ -97,36 +89,43 @@ namespace LatticeTester {
 
   //===========================================================================
 
-    NormaPalpha::NormaPalpha (const std::int64_t, int alpha, int maxDim,
+  template<typename Int, typename RedDbl>
+    NormaPalpha<Int, RedDbl>::NormaPalpha (const Int & m, int alpha, int s,
         NormType norm):
-      Normalizer (maxDim, "Palpha", norm)
+      Normalizer<RedDbl> (s, "Palpha", norm, 1.0)
     {
-      if (maxDim > this->MAX_DIM)
+      if (s > this->MAX_DIM)
         throw std::invalid_argument("NormaPalpha:   dimension > MAX_DIM");
-      m_m = maxDim;
+      m_m = m;
       m_alpha = alpha;
-      computeBounds();
     }
 
   /*=========================================================================*/
 
-        /*
+  template<typename Int, typename RedDbl>
+    void NormaPalpha<Int, RedDbl>::init (int alpha)
+    /*
      * Computes the vector m_bounds that corresponds to the upper bound for a 
-     * rank 1 lattice of density \f$m\f$ (prime number). The bound does not exist
+     * rank 1 lattice of density \f$m\f$ (prime number). The bound doesn't exit 
      * for dimension < 2.
      */
-    void NormaPalpha::computeBounds ()
     {
+      m_alpha = alpha;
       for (int j = 2; j <= this->m_maxDim; j++)
-        this->m_bounds[j] = calcBound (m_alpha, j);
+        this->m_bounds[j] = calcBound (alpha, j);
     }
 
   /*=========================================================================*/
 
-    double NormaPalpha::calcBound (int alpha, int dim)
+  template<typename Int, typename RedDbl>
+    double NormaPalpha<Int, RedDbl>::calcBound (int alpha, int dim)
     {
       double Res;
+
       const double eBasis = 2.71828182845904523536;
+      double MM;
+      NTL::conv (MM, m_m);
+
       if (dim <= 1) {
         std::cout << "NormaPalpha::calcBound:  dim < 2.   Returns -1" << std:: endl;
         return -1;
@@ -135,12 +134,14 @@ namespace LatticeTester {
         std::cout << "NormaPalpha::calcBound:  alpha < 2.   Returns -1" << std:: endl;
         return -1;
       }
-      int stat = IntFactor<int64_t>::isPrime (m_m, 0);
+
+      int stat = IntFactor<Int>::isPrime (m_m,0);
       if (stat != PRIME) {
         std::cout << "NormaPalpha::calcBound:  m is not prime.   Returns -1" << std:: endl;
         return -1;
       }
-      double Term1 = log (m_m);
+
+      double Term1 = log (MM);
       if (Term1 <= alpha*dim /(alpha - 1)) {
         std::cout << "NormaPalpha::calcBound:" << std::endl;
         std::cout << "   m < exp(alpha*dim/(alpha - 1)) for dim = " << dim 
@@ -149,10 +150,16 @@ namespace LatticeTester {
         std::cout << "   Returns -1" << std::endl;
         return -1;
       }
+
       Term1 = (2.0 * Term1 + dim) * eBasis / dim;   
-      Res = alpha * dim * log(Term1) - alpha * log(m_m);
+      Res = alpha * dim * log(Term1) - alpha * log(MM);
+
       return exp(Res);
     }
+
+  extern template class NormaPalpha<std::int64_t, double>;
+  extern template class NormaPalpha<NTL::ZZ, double>;
+  extern template class NormaPalpha<NTL::ZZ, NTL::RR>;
 
 } // End namespace LatticeTester
 

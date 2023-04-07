@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
-// Copyright (C) 2012-2022  The LatticeTester authors, under the supervision
-// of Pierre L'Ecuyer at Universit� de Montr�al.
+// LatticeTester
+// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,47 +25,70 @@
 namespace LatticeTester {
 
   /**
-   * This class implements upper bounds on the length of the shortest nonzero
-   * vector in a lattice, in which the Hermite constants \f$\gamma_s\f$
-   * are approximated by their Rogers's bounds.
-   * These bounds are calculated as explained in \cite mCON99a,
-   * Eq. (47) on page 20, and in Table 1.2 on page 15.
-   * `NormaBestBound` provide tighter bounds in lower dimensions, up to 36, but Rogers
-   * bounds can be computed in higher dimensions.
-   * This class is to be used only with the L2NORM (the Euclidean norm).
+   * This class implements upper bounds on the lenght of the shortest nonzero
+   * vector in a lattice. To obtain these bounds, this class contains hard-coded
+   * values of an approximation of the Hermite's constants \f$\gamma_s\f$
+   * calculated with Rogers's bound. These Hermite's constants are stored in a
+   * table accessible via the getGamma(int) const method.
+   *
+   * Rogers bound has been introduced by Rogers in The Packing of Equal Spheres
+   * in 1958 (citation to add in bibliography). This is a classical bound that
+   * is implemented mainly for historical reasons. For thighter bounds, please
+   * use NormaBestBound. Note that, since the value of \f$\gamma_n\f$ is known
+   * exactly for \f$n \leq 8\f$, the Hermite's constant for these \f$n\f$ are
+   * **not** upper bounds.
+   * 
+   * From there, we get
+   * \f[
+   *    \gamma_s = 4 \delta_s^{2/s}.
+   * \f]
+   * The number \f$\gamma_n\f$ is the number returned by calling `getGamma(n)`.
+   * The init() method of this class inherited from `Normalizer` computes the
+   * upper bound on the shortest non-zero vector of the lattice as
+   * \f[
+   *    \gamma_s^{1/2} n^{-1/s}.
+   * \f]
+   * Here \f$n = \exp(\text{logDensity})\f$ is the density of the lattice to be
+   * analyzed passed as an argument to the constructor of this object.
+   *
+   * This class is to be used with the L2NORM (the Euclidian norm) exclusively.
+   * Note this class stores the log value of the density to handle larger values.
    */
-
-    class NormaRogers : public Normalizer {
+  template<typename RedDbl>
+    class NormaRogers : public Normalizer<RedDbl> {
       public:
 
         /**
-		 * Constructs a `NormaRogers` for up to `maxDim` dimensions, by assuming that the
-		 * log density is `logDensity` in all dimensions.
-        */
-        NormaRogers (double logDensity, int maxDim);
+         * Constructor for this class. Suppose we want to use this normalizer
+         * on a lattice with it's basis in the lines of \f$V\f$ of dimension
+         * \f$t\f$. We can call this constructor as `NormaRogers(abs(det(V)), t)`.
+         * getPreComputedBound(t) will then return an upper bound on the
+         * lenght of the shortest non-zero vector in dimension `t`. In the case
+         * where the lattice also has the same density in lower dimensions than
+         * `t`, pre-computed bounds will also be available.
+         *
+         * The bias factor `beta` gives more or less weight to some of the
+         * dimensions (see Normalizer for details). It is recommended to keep it
+         * at its default value because its usage is deprecated.
+         * 
+         * There is a restriction for `t` to be \f$\le48\f$.
+         */
+        NormaRogers (RedDbl & logDensity, int t, double beta = 1);
 
-    	/**
-    	 * This constructor assumes that the primal lattice has scaling factor \f$m\f$
-    	 * and order \f$k\f$, so its density is \f$m^k\f$ for \f$t\geq k\f$, and cannot
-    	 * exceed  \f$m^s\f$ for projections in \f$s < k\f$ dimensions.
-    	 */
-    	NormaRogers (double logm, int k, int maxDim);
-
-    	/**
+        /**
          * Destructor.
          */
         ~NormaRogers();
 
         /**
-         * Returns the value of the bound on the Hermite constant \f$\gamma_j\f$
+         * Returns the value of the bound on the Hermite's constant \f$\gamma_j\f$
          * in dimension \f$j\f$.
          */
         double getGamma (int j) const;
-
       private:
 
         /**
-         * The lattice constants \f$\gamma_j\f$ are obtained from the Rogers bounds in each
+         * The lattice constants \f$\gamma_j\f$ are the Rogers bounds in each
          * dimension \f$j\f$.
          */
         double *m_gamma;
@@ -74,24 +97,27 @@ namespace LatticeTester {
          * Precomputed lattice constants \f$\gamma_j\f$ for the Rogers bounds
          * in each dimension \f$j \le48\f$.
          */
-        static const double m_gamma0[1 + Normalizer::MAX_DIM];
+        static const double m_gamma0[1 + Normalizer<RedDbl>::MAX_DIM];
 
         /**
          * Computes the Rogers bound in dimension \f$d\f$.
          */
         double calcGamma (int d);
-
     }; // End class NormaRogers
 
   //===========================================================================
 
   /**
+   * This is not all the story, this has to be updated.
+   *
    * These Rogers gamma constants are calculated as defined in 
    * Conway and Sloane book (Sphere packing, Lattices and groups) : 
    *    - equation (47) page 20 of chapter 1
    *    - table 1.2 page 15 of chapter 1
    */
-   const double NormaRogers::m_gamma0[ ] = {
+  template<typename RedDbl>
+          const double NormaRogers<RedDbl>::m_gamma0[ ] =
+  {
     /* GamRogers[0] = */    0.0,
     /* GamRogers[1] = */    1.0,
     /* GamRogers[2] = */    1.15472,
@@ -146,7 +172,8 @@ namespace LatticeTester {
 
   /*=======================================================================*/
 
-    double NormaRogers::calcGamma (int dim)
+  template<typename RedDbl>
+    double NormaRogers<RedDbl>::calcGamma (int dim)
     {
       static const double pi = 3.1415926535897932384;
       static const double e = 2.7182818284590452353;
@@ -154,61 +181,60 @@ namespace LatticeTester {
       static const double s = 4.0 * e * pi;
       const double dimr = dim;
       double r;
+
       r = 0.5 * dimr * log2 (dimr / s) + 1.5 * log2 (dimr) - t + 5.25 / (dimr + 2.5);
       r = 4 * exp2(2 * r / dimr);
+
+      /*
+       * remark: 
+       * Why "r = 4 * ..." and not "r = 2 * ..." as described in Pierre's 
+       * course IFT6561 page 273 ?
+       */
+
       return r;
     }
 
 
   /*=========================================================================*/
 
-    NormaRogers::NormaRogers (double logDensity, int maxDim)
-    : Normalizer (maxDim, "Rogers", L2NORM)
+  template<typename RedDbl>
+    NormaRogers<RedDbl>::NormaRogers (RedDbl & logDensity, int t, double beta)
+    : Normalizer<RedDbl> (logDensity, t, "Rogers", L2NORM, beta)
     {
-      m_gamma = new double[maxDim + 1];
-      int t0 = maxDim;
+      m_gamma = new double[t + 1];
+
+      int t0 = t;
       if (t0 > this->MAX_DIM)
         t0 = this->MAX_DIM;
       for (int i = 0; i <= t0; i++)
         m_gamma[i] = m_gamma0[i];
-      for (int i = t0 + 1; i <= maxDim; i++)
+      for (int i = t0 + 1; i <= t; i++)
         m_gamma[i] = calcGamma(i);
-      Normalizer::computeBounds (logDensity);
+
+      Normalizer<RedDbl>::init (logDensity, beta);
     }
 
   /*=========================================================================*/
 
-      NormaRogers::NormaRogers (double logm, int k, int maxDim)
-      : Normalizer (maxDim, "BestLat", L2NORM)
-      {
-          m_gamma = new double[maxDim + 1];
-          int t0 = maxDim;
-          if (t0 > this->MAX_DIM)
-            t0 = this->MAX_DIM;
-          for (int i = 0; i <= t0; i++)
-            m_gamma[i] = m_gamma0[i];
-          for (int i = t0 + 1; i <= maxDim; i++)
-            m_gamma[i] = calcGamma(i);
-        Normalizer::computeBounds (logm, k);
-      }
-
-  /*=========================================================================*/
-
-    NormaRogers::~NormaRogers()
+  template<typename RedDbl>
+    NormaRogers<RedDbl>::~NormaRogers()
     {
       delete[] m_gamma;
     }
 
   /*=========================================================================*/
 
-    inline double NormaRogers::getGamma (int j) const
+  template<typename RedDbl>
+    inline double NormaRogers<RedDbl>::getGamma (int j) const
     {
       if (j < 1 || j > this->m_maxDim)
         throw std::out_of_range("NormaRogers::getGamma");
       return m_gamma[j];
     }
 
+  extern template class NormaRogers<double>;
+  extern template class NormaRogers<NTL::RR>;
+
 }
 
 #endif
-

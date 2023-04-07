@@ -4,7 +4,6 @@
 *.log
 __pycache__
 build/
-buildPlace/
 version*
 doc/html
 NOTES.md

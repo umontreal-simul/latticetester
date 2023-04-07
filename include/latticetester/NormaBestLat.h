@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
-// Copyright (C) 2012-2022  The LatticeTester authors, under the supervision
-// of Pierre L'Ecuyer at Universit� de Montr�al.
+// LatticeTester
+// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -25,58 +25,66 @@
 namespace LatticeTester {
 
   /**
-   * This Normalizer class implements upper bounds on the length of the shortest nonzero
-   * vector in a lattice. The Hermite constants \f$\gamma_s\f$ are approximated
-   * by using the largest known density values for lattices \cite mCON99a.
-   * These approximations are stored in a table accessible via the
-   * `getGamma(int)` const method. In \cite mCON99a, Table I.1(a) gives the center
+   * This class implements upper bounds on the lenght of the shortest nonzero
+   * vector in a lattice. To obtain these bounds, this class contains hard-coded
+   * values of an approximation of the Hermite's constant \f$\gamma_s\f$ with
+   * the density of the highest density lattices known as of \cite mCON99a.
+   * These Hermite's constants are stored in a table accessible via the
+   * getGamma(int) const method. In \cite mCON99a, Table I.1(a) gives the center
    * density \f$\delta_s\f$ of the densest known packings in dimension \f$s\f$.
    * We then have that
    * \f[
    *    \gamma_s = 4 \delta_s^{2/s}.
    * \f]
+   * The number \f$\gamma_n\f$ is the number returned by calling `getGamma(n)`.
+   * The init() method of this class inherited from `Normalizer` computes the
+   * upper bound on the shortest non-zero vector of the lattice as
+   * \f[
+   *    \gamma_s^{1/2} n^{-1/s}.
+   * \f]
+   * Here \f$n = \exp(\text{logDensity})\f$ is the density of the lattice to be
+   * analyzed passed as an argument to the constructor of this object.
+   *
    * This class is to be used with the L2NORM (the Euclidian norm) exclusively.
+   * Note this class stores the log value of the density to handle larger values.
    */
-
-    class NormaBestLat : public Normalizer {
+  template<typename RedDbl>
+    class NormaBestLat : public Normalizer<RedDbl> {
       public:
 
         /**
-         * Constructs a `NormaBestLat` for up to `maxDim` dimensions, by assuming that the
-         * log density is `logDensity` in all dimensions.
-         * Restriction: `maxDim`\f$ \le 48\f$.
+         * Constructor for this class. Suppose we want to use this normalizer
+         * on a lattice with it's basis in the lines of \f$V\f$ of dimension
+         * \f$t\f$. We can call this constructor as `NormaBestLat(abs(det(V)), t)`.
+         * getPreComputedBound(t) will then return an upper bound on the
+         * lenght of the shortest non-zero vector in dimension `t`. In the case
+         * where the lattice also has the same density in lower dimensions than
+         * `t`, pre-computed bounds will also be available.
+         *
+         * The bias factor `beta` gives more or less weight to some of the
+         * dimensions (see Normalizer for details). It is recommended to keep it
+         * at its default value because its usage is deprecated.
+         * 
+         * There is a restriction for `t` to be \f$\le48\f$.
          */
-        NormaBestLat (double logDensity, int maxDim);
-
-    	/**
-    	 * This constructor assumes that the primal lattice has scaling factor \f$m\f$
-    	 * and order \f$k\f$, so its density is \f$m^k\f$ for \f$t\geq k\f$, and cannot
-    	 * exceed  \f$m^s\f$ for projections in \f$s < k\f$ dimensions.
-    	 */
-    	NormaBestLat (double logm, int k, int maxDim);
-
-    	/**
-         * Constructs a `NormaBestLat` for up to `maxDim` dimensions, without computing the bounds.
-         * Restriction: `maxDim`\f$ \le 48\f$.
-         */
-        NormaBestLat (int maxDim);
+        NormaBestLat (RedDbl & logDensity, int t, double beta = 1);
 
         /**
          * Returns the value of the bound on the Hermite's constant \f$\gamma_j\f$
          * in dimension \f$j\f$.
          */
         double getGamma (int j) const;
-        
       private:
 
         /**
          * Lattice constants \f$\gamma_j\f$ for the most general lattices in each
          * dimension \f$j\f$.
          */
-        static const double m_gamma[1 + Normalizer::MAX_DIM];
+        static const double m_gamma[1 + Normalizer<RedDbl>::MAX_DIM];
     }; // End class NormaBestLat
 
-    const double NormaBestLat::m_gamma[] =
+  template<typename RedDbl>
+    const double NormaBestLat<RedDbl>::m_gamma[] =
     {
       /* GamBestLat[0] = */   0.0,
       /* GamBestLat[1] = */   1.0,
@@ -133,43 +141,29 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-    NormaBestLat::NormaBestLat (double logDensity, int maxDim)
-    : Normalizer (maxDim, "BestLat", L2NORM)
+  template<typename RedDbl>
+    NormaBestLat<RedDbl>::NormaBestLat (RedDbl & logDensity, int t, double beta)
+    : Normalizer<RedDbl> (logDensity, t, "BestLat", L2NORM, beta)
     {
-      if (maxDim > this->MAX_DIM)
+      if (t > this->MAX_DIM)
         throw std::invalid_argument("NormaBestLat:   dimension > MAXDIM");
-      Normalizer::computeBounds (logDensity);
+      Normalizer<RedDbl>::init (logDensity, beta);
     }
 
-    /*=========================================================================*/
-
-      NormaBestLat::NormaBestLat (double logm, int k, int maxDim)
-      : Normalizer (maxDim, "BestLat", L2NORM)
-      {
-        if (maxDim > this->MAX_DIM)
-          throw std::invalid_argument("NormaBestLat:   dimension > MAXDIM");
-        Normalizer::computeBounds (logm, k);
-      }
-
-    /*=========================================================================*/
-
-    NormaBestLat::NormaBestLat (int maxDim)
-    : Normalizer (maxDim, "BestLat", L2NORM)
-    {
-      if (maxDim > this->MAX_DIM)
-        throw std::invalid_argument("NormaBestLat:   dimension > MAXDIM");
-    }
 
   /*=========================================================================*/
 
-    inline double NormaBestLat::getGamma (int j) const
+  template<typename RedDbl>
+    inline double NormaBestLat<RedDbl>::getGamma (int j) const
     {
       if (j < 1 || j > this->MAX_DIM)
         throw std::out_of_range("NormaBestLat::getGamma");
       return m_gamma[j];
     }
 
+  extern template class NormaBestLat<double>;
+  extern template class NormaBestLat<NTL::RR>;
+
 } // End namespace LatticeTester
 
 #endif
-

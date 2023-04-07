@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
-// Copyright (C) 2012-2022  The LatticeTester authors, under the supervision
-// of Pierre L'Ecuyer at Universit� de Montr�al.
+// LatticeTester
+// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@
 #include <cstdint>
 #include <sstream>
 
-#include "latticetester/EnumTypes.h"
+#include "latticetester/Const.h"
 
 #include <NTL/ZZ.h>
 
@@ -32,6 +32,7 @@ namespace LatticeTester {
   /**
    * The objects of this class are the "prime" factors in the decomposition of
    * a positive integer.
+   *
    * The class also contains functions to determine whether a number is prime,
    * probably prime or composite. These methods can be used externally to test
    * the primality of an integer, or to test if this factor is prime.
@@ -102,9 +103,6 @@ namespace LatticeTester {
          */
         std::string toString () const;
 
-
-  
-
       private:
 
         /**
@@ -130,7 +128,6 @@ namespace LatticeTester {
     };    // class IntFactor
 
   //===========================================================================
-
 
   template<typename Int>
     std::string IntFactor<Int>::toString () const
@@ -173,7 +170,7 @@ namespace LatticeTester {
   template<typename Int>
     PrimeType IntFactor<Int>::isPrime (const Int & y, std::int64_t k)
     {
-      // NbPrem has to be instantiated if we use NTL types
+      // NbPrem has to be instanciated if we use NTL types
       Int NbPrem;
       NbPrem = 2;
       NTL::ZZ LIM;
@@ -190,7 +187,7 @@ namespace LatticeTester {
       if (y <= LIM)
         return PRIME;
 
-      /* A is divisible by none of the prime numbers smaller than 2^16. */
+      /* A n'est divisible par aucun des nombres premiers inf. a 2^16. */
       return isProbPrime (y, k);
     }
 

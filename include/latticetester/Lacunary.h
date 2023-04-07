@@ -1,7 +1,7 @@
 // This file is part of LatticeTester.
 //
-// Copyright (C) 2012-2022  The LatticeTester authors, under the supervision
-// of Pierre L'Ecuyer at Universit� de Montr�al.
+// LatticeTester
+// Copyright (C) 2012-2018  Pierre L'Ecuyer and Universite de Montreal
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@
 #ifndef LATTICETESTER_LACUNARY_H
 #define LATTICETESTER_LACUNARY_H
 #include "latticetester/Util.h"
-#include "latticetester/NTLWrap.h"
+#include "latticetester/ntlwrap.h"
 
 #include <string>
 #include <cstdint>
@@ -26,29 +26,30 @@
 namespace LatticeTester {
 
   /**
-   * This class represents a set of indices with lacunary values, usually with the
-   * values spaced in a certain systematic way (see `calcIndicesStreams`).
-   * It is typically used by subclasses of `IntLatticeExt`.
-   * The values of the lacunary indices are stored in a vector
-   * and can be accessed via the `[]` operator.
+   * This class represents a set of indices with lacunary values. This class
+   * stores the values of those indices as a vector, and they can be accessed
+   * via the `[]` operator. There also is a method to construct a set with
+   * values spaced in a certain way. This class is present here to be used with
+   * the subclasses of IntLattice.
    *
    * \remark As it is, this class could be replaced by a simple vector when it
    * occurs. It does not implement any feature that a basic vector class
    * does not have. This class was part of the legacy code base but removing the
-   * instances where it is used would take time ...
+   * instances where it is used would take more time than we are currently
+   * willing to spend on this library.
    */
-  template<typename Int>
+  template<typename BasInt>
     class Lacunary {
 
       private:
-        typedef NTL::vector<Int> IntVec;
+        typedef NTL::vector<BasInt> BasIntVec;
 
       public:
 
         /**
          * Constructor for a set of \f$t\f$ indices given in the vector `C`.
          */
-        Lacunary (const IntVec & C, int t)
+        Lacunary (const BasIntVec & C, int t)
         {
           m_dim = t; 
           CreateVect (m_lac, t);
@@ -56,7 +57,7 @@ namespace LatticeTester {
         }
 
         /**
-         * Constructor of an empty set of \f$t\f$ lacunary indices. This
+         * Constructor for an empty set of \f$t\f$ lacunary indices. This
          * constructor set the value of the indices to `0`. To set indices, one
          * should use either one `[]` or `getLac`, or the `calcIndicesStreams()`
          * method.
@@ -76,13 +77,13 @@ namespace LatticeTester {
          * Returns a reference to the value of <tt>m_lac[i]</tt>. (`m_lac` is
          * the underlying vector storing the set of indices.)
          */
-        Int & operator[] (int i) {return m_lac[i];}
+        BasInt & operator[] (int i) {return m_lac[i];}
 
         /**
          * Calling the `object.getLac(i)` gives the same result than calling
          * `object[i]`.
          */
-        Int & getLac (int i) {return m_lac[i];}
+        BasInt & getLac (int i) {return m_lac[i];}
 
         /**
          * Returns the size of the set, that is the number of elements in the
@@ -115,14 +116,14 @@ namespace LatticeTester {
          * The set of lacunary indices is <tt>m_lac[j]</tt> for \f$j = 0, 1,
          * \ldots,\f$ tt>m_dim</tt>.
          */
-        IntVec m_lac;
+        BasIntVec m_lac;
 
     }; // End class Lacunary
 
   /*=========================================================================*/
 
-  template<typename Int>
-    std::string Lacunary<Int>::toString () const
+  template<typename BasInt>
+    std::string Lacunary<BasInt>::toString () const
     {
       std::ostringstream out;
       out << "dim = " << m_dim;
@@ -136,8 +137,8 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-  template<typename Int>
-    bool Lacunary<Int>::calcIndicesStreams (int s, int w, int maxDim)
+  template<typename BasInt>
+    bool Lacunary<BasInt>::calcIndicesStreams (int s, int w, int maxDim)
     {
 
       if (m_dim < maxDim) {
@@ -146,9 +147,9 @@ namespace LatticeTester {
         m_dim = maxDim;
       }
 
-      Int t1;
+      BasInt t1;
       NTL::power2 (t1, (std::int64_t) w);
-      Int t;
+      BasInt t;
       t = 0;
       int i = 0;
       while (true) {

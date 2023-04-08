@@ -45,19 +45,19 @@ namespace LatticeTester {
 		 * Constructs a `NormaMinkL1` for up to `maxDim` dimensions, by assuming that the
 		 * log density is `logDensity` in all dimensions.
 		 */
-		NormaMinkL1 (double logDensity, int maxDim);
+		NormaMinkL1 (double logDensity, int64_t maxDim);
 
 		/**
 		 * This constructor assumes that the primal lattice has scaling factor \f$m\f$
 		 * and order \f$k\f$, so its density is \f$m^k\f$ for \f$t\geq k\f$, and cannot
 		 * exceed  \f$m^s\f$ for projections in \f$s < k\f$ dimensions.
 		 */
-		NormaMinkL1 (double logm, int k, int maxDim);
+		NormaMinkL1 (double logm, int64_t k, int64_t maxDim);
 
 		/**
 		 * Constructs a `NormaMinkL1` for up to `maxDim` dimensions, without computing the bounds.
 		 */
-		NormaMinkL1 (int maxDim);
+		NormaMinkL1 (int64_t maxDim);
 
 		/**
 		 * Destructor.
@@ -68,7 +68,7 @@ namespace LatticeTester {
 		 * Returns the value of the lattice constant \f$\gamma_j\f$ in
 		 * dimension \f$j\f$.
 		 */
-		double getGamma (int j) const;
+		double getGamma (int64_t j) const;
 
 	private:
 
@@ -87,7 +87,7 @@ namespace LatticeTester {
 		/**
 		 * Computes the MinkL1 bound in dimension \f$d\f$.
 		 */
-		double calcGamma (int d);
+		double calcGamma (int64_t d);
 	}; // End class NormaMinkL1
 
 	//===========================================================================
@@ -147,9 +147,9 @@ namespace LatticeTester {
 
 	/*=========================================================================*/
 
-	double NormaMinkL1::calcGamma (int dim) {
+	double NormaMinkL1::calcGamma (int64_t dim) {
 		double gamma = 0.0;
-		for (int i = 1; i <= dim; i++)
+		for (int64_t i = 1; i <= dim; i++)
 		gamma += log(i);
 		gamma *= 2.0 / dim;
 		return exp(gamma);
@@ -157,30 +157,30 @@ namespace LatticeTester {
 
 	/*=========================================================================*/
 
-	NormaMinkL1::NormaMinkL1 (double logDensity, int maxDim)
+	NormaMinkL1::NormaMinkL1 (double logDensity, int64_t maxDim)
 	: Normalizer ( maxDim, "MinkL1", L1NORM) {
 		m_gamma = new double[maxDim + 1];
-		int t0 = maxDim;
+		int64_t t0 = maxDim;
 		if (t0 > this->MAX_DIM)
 		t0 = this->MAX_DIM;
-		for (int i = 0; i <= t0; i++)
+		for (int64_t i = 0; i <= t0; i++)
 		m_gamma[i] = m_gamma0[i];
-		for (int i = t0 + 1; i <= maxDim; i++)
+		for (int64_t i = t0 + 1; i <= maxDim; i++)
 		m_gamma[i] = calcGamma(i);
 		Normalizer::computeBounds (logDensity);
 	}
 
 	/*=========================================================================*/
 
-	NormaMinkL1::NormaMinkL1 (double logm, int k, int maxDim)
+	NormaMinkL1::NormaMinkL1 (double logm, int64_t k, int64_t maxDim)
 	: Normalizer (maxDim, "MinkL1", L1NORM) {
 		m_gamma = new double[maxDim + 1];
-		int t0 = maxDim;
+		int64_t t0 = maxDim;
 		if (t0 > this->MAX_DIM)
 		t0 = this->MAX_DIM;
-		for (int i = 0; i <= t0; i++)
+		for (int64_t i = 0; i <= t0; i++)
 		m_gamma[i] = m_gamma0[i];
-		for (int i = t0 + 1; i <= maxDim; i++)
+		for (int64_t i = t0 + 1; i <= maxDim; i++)
 		m_gamma[i] = calcGamma(i);
 		Normalizer::computeBounds (logm, k);
 	}
@@ -193,7 +193,7 @@ namespace LatticeTester {
 
 	/*=========================================================================*/
 
-	inline double NormaMinkL1::getGamma (int j) const {
+	inline double NormaMinkL1::getGamma (int64_t j) const {
 		if (j < 1 || j > this->m_maxDim)
 		throw std::out_of_range("NormaMinkL1::getGamma");
 		return m_gamma[j];

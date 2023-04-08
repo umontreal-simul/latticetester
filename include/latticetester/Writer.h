@@ -144,7 +144,7 @@ namespace LatticeTester {
         /**
          * Writes an `int` on the stream.
          */
-        virtual void writeInt (const int & value);
+        virtual void writeInt (const int64_t & value);
 
         /**
          * Writes a `string` on the stream.
@@ -249,7 +249,7 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int>
-    void Writer<Int>::writeInt(const int & value)
+    void Writer<Int>::writeInt(const int64_t & value)
     {
       *m_stream << value;
     }
@@ -285,11 +285,11 @@ namespace LatticeTester {
     {
       std::int64_t sizeA = A.size1();
       *m_stream << "   [";
-      for (int i = 0; i < sizeA; i++) {
+      for (int64_t i = 0; i < sizeA; i++) {
         if (i == 0) { *m_stream << "["; }
         else { *m_stream << "    ["; }
 
-        for (int j = 0; j < (sizeA-1); j++)
+        for (int64_t j = 0; j < (sizeA-1); j++)
           *m_stream << A[i][j] << " ";
 
         if (i == (sizeA-1)) { *m_stream << A[i][sizeA-1] << "]"; }

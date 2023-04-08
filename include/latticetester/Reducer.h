@@ -92,10 +92,10 @@ class Reducer;
 template<typename Int, typename Real>
 struct specReducer {
 	void redLLLNTL(Reducer<Int, Real> &red, double delta,
-			PrecisionType precision, int dim);
+			PrecisionType precision, int64_t dim);
 	void redLLLNTLExact(Reducer<Int, Real> &red, double delta);
 	void redBKZ(Reducer<Int, Real> &red, double delta,
-			std::int64_t blocksize, PrecisionType precision, int dim);
+			std::int64_t blocksize, PrecisionType precision, int64_t dim);
 };
  */
 
@@ -164,14 +164,14 @@ public:
 	 * of the basis whose indices are greater of equal to `dim >=0`.
 	 * The boolean vector `xx[]` is used internally in Minkowski reduction.
 	 */
-	void redDieter(int dim, bool xx[] = NULL);
+	void redDieter(int64_t dim, bool xx[] = NULL);
 
 	/**
 	 * Same as `redDieter(dim)` but the choice of
 	 * vectors on which to perform pairwise reduction is randomized,
 	 * using a simple RNG from the standard C library, with the given integer seed.
 	 */
-	void redDieterRandomized(int dim, int seed);
+	void redDieterRandomized(int64_t dim, int64_t seed);
 
 	/**
 	 * Performs a LLL basis reduction with factor `delta` \cite iLEC22l.
@@ -190,7 +190,7 @@ public:
 	 * available through NTL, but it performs well on standard C++ types.
 	 */
 	void redLLL(double delta = 0.999999, std::int64_t maxcpt = 1000000000,
-			int dim = 0);
+			int64_t dim = 0);
 
 	/**
 	 * This is the NTL implementation of the floating point version of the
@@ -203,7 +203,7 @@ public:
 	 * and to the entire basis (all vectors and coordinates) when `dim=0`.
 	 */
 	void redLLLNTL(double delta = 0.999999, PrecisionType precision = DOUBLE,
-			int dim = 0);
+			int64_t dim = 0);
 
 	/**
 	 * This implements an exact algorithm to perform the original LLL reduction.
@@ -221,8 +221,8 @@ public:
 	 * reduction. Roughly, larger blocks means a stronger condition.
 	 * A `blocksize` of 2 is equivalent to LLL reduction.
 	 */
-	void redBKZ(double delta = 0.999999, int blocksize = 10,
-			PrecisionType precision = DOUBLE, int dim = 0);
+	void redBKZ(double delta = 0.999999, int64_t blocksize = 10,
+			PrecisionType precision = DOUBLE, int64_t dim = 0);
 
 	/**
 	 * Reduces the current basis to a Minkowski-reduced basis with respect
@@ -232,7 +232,7 @@ public:
 	 * Otherwise it returns `true`, the basis is reduced and sorted by
 	 * increasing vector lengths.
 	 */
-	bool reductMinkowski(int d);
+	bool reductMinkowski(int64_t d);
 
 	/**
 	 * Returns the length of the current shortest basis vector in the lattice.
@@ -271,7 +271,7 @@ public:
 	 * as a parameter to `shortestVector`?  Or even the value should be checked
 	 * just before and after calling `shortestVector`, for simplicity.  **
 	 */
-	void setBoundL2(const RealVec &thresholds, int dim1, int dim2);
+	void setBoundL2(const RealVec &thresholds, int64_t dim1, int64_t dim2);
 
 	/**
 	 * Returns the lattice that this object is working on.
@@ -324,7 +324,7 @@ private:
 	 * \f$j\f$ such that \f$|z_j|=1\f$.
 	 * This method does not change the m-dual.
 	 */
-	void transformStage3ShortVec(std::vector<std::int64_t> &z, int &k);
+	void transformStage3ShortVec(std::vector<std::int64_t> &z, int64_t &k);
 
 	/**
 	 * Method used in `reductMinkowski` to perform a transformation of
@@ -336,7 +336,7 @@ private:
 	 * \f$V_j\f$ when this happens. Returns in \f$k\f$ the last index
 	 * \f$j\f$ such that \f$|z_j|=1\f$.    **This method updates the m-dual.**
 	 */
-	void transformStage3Mink(std::vector<std::int64_t> &z, int &k);
+	void transformStage3Mink(std::vector<std::int64_t> &z, int64_t &k);
 
 	/**
 	 * Performs pairwise reductions. This method tries to reduce each basis
@@ -344,7 +344,7 @@ private:
 	 * adding to it a multiple of the \f$i\f$-th vector. Always uses the
 	 * Euclidean norm.
 	 */
-	void pairwiseRedPrimal(int i, int d, bool xx[] = NULL);
+	void pairwiseRedPrimal(int64_t i, int64_t d, bool xx[] = NULL);
 
 	/**
 	 * Performs pairwise reductions, trying to reduce every other vector of
@@ -354,13 +354,13 @@ private:
 	 * length of vector \f$i\f$ in the primal basis. Always uses the
 	 * Euclidean norm.
 	 */
-	void pairwiseRedDual(int i, bool xx[] = NULL);
+	void pairwiseRedDual(int64_t i, bool xx[] = NULL);
 
 	/**
 	 * Tries to shorten the vectors of the primal basis using
 	 * branch-and-bound, in `reductMinkowski`.
 	 */
-	bool redBBMink(int i, int d, int Stage, bool &smaller, bool xx[] = NULL);
+	bool redBBMink(int64_t i, int64_t d, int64_t Stage, bool &smaller, bool xx[] = NULL);
 
 	/**
 	 * Tries to shorten the smallest vector of the primal basis using
@@ -373,14 +373,14 @@ private:
 	/**
 	 * Tries to find shorter vectors; recursive procedure used in `reductMinkowski`.
 	 */
-	bool tryZMink(int j, int i, int Stage, bool &smaller, const IntMat &WTemp);
+	bool tryZMink(int64_t j, int64_t i, int64_t Stage, bool &smaller, const IntMat &WTemp);
 
 	/**
 	 * Tries to find a shorter vector; recursive procedure used in `shortestVector`.
 	 * The param 'decomp' accepted are only 'cholesky' and 'triangular'. The better
 	 * The 'cholesky' decomposition is more faster than the triangular decomposition .  
 	 */
-	bool tryZShortVec(int j, bool &smaller, NormType norm, std::string decomp);
+	bool tryZShortVec(int64_t j, bool &smaller, NormType norm, std::string decomp);
 
 	/**
 	 * Computes a Cholesky decomposition of the basis. Returns in `C0` the
@@ -394,23 +394,23 @@ private:
 	 * Permutes the \f$i^{th}\f$ and the \f$j^{th}\f$ line, and the
 	 * \f$i^{th}\f$ and the \f$j^{th}\f$ column of the scalar products matrix.
 	 */
-	void permuteGramVD(int i, int j, int n);
+	void permuteGramVD(int64_t i, int64_t j, int64_t n);
 
 	/**
 	 * Recalculates the first \f$n\f$ entries of the \f$j^{th}\f$ column of
 	 * the Cholesky matrix of order 2.
 	 */
-	void calculCholesky2LLL(int n, int j);
+	void calculCholesky2LLL(int64_t n, int64_t j);
 
 	/**
 	 * Recalculates the entry (\f$i\f$, \f$j\f$) of the Cholesky matrix of order 2.
 	 */
-	void calculCholesky2Ele(int i, int j);
+	void calculCholesky2Ele(int64_t i, int64_t j);
 
 	/*
 	 * Recomputes the element in row `j` and column `j` of the matrix of scalar products.
 	 */
-	void miseAJourGramVD(int j);
+	void miseAJourGramVD(int64_t j);
 
 	/*
 	 * Computes and stores in `m_gramVD` the matrix of scalar products `m_lat->V[i]*m_lat->V[j]`.
@@ -422,7 +422,7 @@ private:
 	 * Reduces the Cholesky matrix by adding a multiple of the i-th vector
 	 * to the j-th vector. It updates the Gram-Schmidt matrix.
 	 */
-	void reductionFaible(int i, int j);
+	void reductionFaible(int64_t i, int64_t j);
 
 	/**
 	 * Debug function that sorts and prints the primal and dual bases
@@ -500,7 +500,7 @@ private:
 	// Real m_rs;
 	RealVec m_zLR, m_n2, m_dc2;
 	RealMat m_c0, m_c2, m_cho2, m_gramVD;
-	int *m_IC;     // Indices in Cholesky
+	int64_t *m_IC;     // Indices in Cholesky
 
 	std::vector<std::int64_t> m_zLI;
 	std::vector<std::int64_t> m_zShort;
@@ -521,8 +521,8 @@ template<typename Int, typename Real>
 Reducer<Int, Real>::Reducer(IntLattice<Int, Real> &lat) {
 	// Squared length of vectors must not overflow max(double)
 	m_lat = &lat;
-	const int dim1 = m_lat->getDim();
-	int dim2 = dim1;
+	const int64_t dim1 = m_lat->getDim();
+	int64_t dim2 = dim1;
 	if (dim2 <= 2)
 		dim2++;
 
@@ -545,7 +545,7 @@ Reducer<Int, Real>::Reducer(IntLattice<Int, Real> &lat) {
 
 	m_lMin = std::numeric_limits<double>::max();
 	m_lMin2 = m_lMin;
-	for (int i = 0; i < dim1; i++) {
+	for (int64_t i = 0; i < dim1; i++) {
 		m_zLI[i] = -1;
 		m_zShort[i] = -1;
 		m_BoundL2[i] = -1;
@@ -599,7 +599,7 @@ void Reducer<Int, Real>::copy(const Reducer<Int, Real> &red) {
 	if (m_IC != 0)
 		delete[] m_IC;
 	m_IC = new int[3 + m_lat->getDim()];
-	for (int i = 0; i < 2 + m_lat->getDim(); i++)
+	for (int64_t i = 0; i < 2 + m_lat->getDim(); i++)
 		m_IC[i] = red.m_IC[i];
 }
 
@@ -627,17 +627,17 @@ Reducer<Int, Real>::~Reducer() {
 
 template<typename Int, typename Real>
 void Reducer<Int, Real>::setBoundL2(const RealVec &thresholds,
-		int dim1, int dim2) {
+		int64_t dim1, int64_t dim2) {
 	m_BoundL2.resize(dim2);
-	for (int i = dim1; i < dim2; i++)
+	for (int64_t i = dim1; i < dim2; i++)
 		m_BoundL2[i] = thresholds[i];
 }
 
 //=========================================================================
 
 template<typename Int, typename Real>
-void Reducer<Int, Real>::permuteGramVD(int i, int j, int n) {
-	int k;
+void Reducer<Int, Real>::permuteGramVD(int64_t i, int64_t j, int64_t n) {
+	int64_t k;
 	for (k = 0; k < n; k++) {
 		std::swap(m_gramVD(i, k), m_gramVD(j, k));
 	}
@@ -649,13 +649,13 @@ void Reducer<Int, Real>::permuteGramVD(int i, int j, int n) {
 //=========================================================================
 
 template<typename Int, typename Real>
-void Reducer<Int, Real>::calculCholesky2LLL(int n, int j) {
+void Reducer<Int, Real>::calculCholesky2LLL(int64_t n, int64_t j) {
 	// Recalcule les n premieres entrees de la colonne j de la matrice de
 	// Cholesky d'ordre 2.   Pour redLLL.
 	m_cho2(0, j) = m_gramVD(0, j);
-	for (int i = 1; i <= n; i++) {
+	for (int64_t i = 1; i <= n; i++) {
 		m_cho2(i, j) = m_gramVD(i, j);
-		for (int k = 0; k < i; k++) {
+		for (int64_t k = 0; k < i; k++) {
 			m_cho2(i, j) -= (m_cho2(k, j) / m_cho2(k, k)) * m_cho2(k, i);
 		}
 	}
@@ -664,10 +664,10 @@ void Reducer<Int, Real>::calculCholesky2LLL(int n, int j) {
 //=========================================================================
 
 template<typename Int, typename Real>
-inline void Reducer<Int, Real>::calculCholesky2Ele(int i, int j) {
+inline void Reducer<Int, Real>::calculCholesky2Ele(int64_t i, int64_t j) {
 	// Recalcule l'entree (i,j) de la matrice de Cholesky d'ordre 2.
 	m_cho2(i, j) = m_gramVD(i, j);
-	for (int k = 0; k < i; k++) {
+	for (int64_t k = 0; k < i; k++) {
 		m_cho2(i, j) -= m_cho2(k, i) * (m_cho2(k, j) / m_cho2(k, k));
 	}
 }
@@ -682,9 +682,9 @@ template<typename Int, typename Real>
 inline void Reducer<Int, Real>::calculGramVD() {
 	// Retourne dans m_gramVD la matrice des produits scalaires m_lat->V[i]*m_lat->V[j].
 	// Note: m_lat->V.vecNorm ne contient que les m_lat->V[i]*m_lat->V[i].
-	const int dim = m_lat->getDim();
-	for (int i = 0; i < dim; i++) {
-		for (int j = i; j < dim; j++) {
+	const int64_t dim = m_lat->getDim();
+	for (int64_t i = 0; i < dim; i++) {
+		for (int64_t j = i; j < dim; j++) {
 			NTL::matrix_row<IntMat> row1(m_lat->getBasis(), i);
 			NTL::matrix_row<IntMat> row2(m_lat->getBasis(), j);
 			ProdScal<Int>(row1, row2, dim, m_gramVD(i, j));
@@ -696,11 +696,11 @@ inline void Reducer<Int, Real>::calculGramVD() {
 //=========================================================================
 
 template<typename Int, typename Real>
-inline void Reducer<Int, Real>::miseAJourGramVD(int j) {
+inline void Reducer<Int, Real>::miseAJourGramVD(int64_t j) {
 	// Recalcule la j-ieme ligne et la j-ieme colonne de la matrice des
 	// produits scalaires.  Pour redLLL.
-	const int dim = m_lat->getDim();
-	for (int i = 0; i < dim; i++) {
+	const int64_t dim = m_lat->getDim();
+	for (int64_t i = 0; i < dim; i++) {
 		NTL::matrix_row<IntMat> row1(m_lat->getBasis(), i);
 		NTL::matrix_row<IntMat> row2(m_lat->getBasis(), j);
 		ProdScal<Int>(row1, row2, dim, m_gramVD(i, j));
@@ -724,14 +724,14 @@ bool Reducer<Int, Real>::calculCholesky(RealVec &DC2,
 	 * squared elements of the diagonal. These elements are rescaled by EchVV
 	 * when SISquares= true.
 	 */
-	const int dim = m_lat->getDim();
-	int k, j, i;
+	const int64_t dim = m_lat->getDim();
+	int64_t k, j, i;
 	Real m2;
 	// C2(i,j) = C0(i,j) * C2(i,i) if i != j.
 	// C2(i,i) = DC2[i].
 	NTL::conv(m2, m_lat->getModulo());
 	m2 = m2 * m2;
-	int d = dim;
+	int64_t d = dim;
 	//if(m_lat->withDual())
 	//  d = dim / 2; // If we use the Dual, we compute Cholesky
 	// with the Dual
@@ -827,13 +827,13 @@ void Reducer<Int, Real>::tracePrintBases(char *message) {
 //===========================================================================
 
 template<typename Int, typename Real>
-void Reducer<Int, Real>::pairwiseRedPrimal(int i, int d, bool xx[]) {
-	const int dim = m_lat->getDim();
+void Reducer<Int, Real>::pairwiseRedPrimal(int64_t i, int64_t d, bool xx[]) {
+	const int64_t dim = m_lat->getDim();
 	++m_countDieter;
 	m_lat->updateScalL2Norm(i);
 	bool modifFlag;
 
-	for (int j = d; j < dim; j++) {
+	for (int64_t j = d; j < dim; j++) {
 		if (i == j)
 			continue;
 		modifFlag = false;
@@ -896,9 +896,9 @@ void Reducer<Int, Real>::pairwiseRedPrimal(int i, int d, bool xx[]) {
 //=========================================================================
 
 template<typename Int, typename Real>
-void Reducer<Int, Real>::pairwiseRedDual(int i, bool xx[]) {
-	int j;
-	const int dim = m_lat->getDim();
+void Reducer<Int, Real>::pairwiseRedDual(int64_t i, bool xx[]) {
+	int64_t j;
+	const int64_t dim = m_lat->getDim();
 
 	++m_countDieter;
 	m_lat->updateDualScalL2Norm(i);
@@ -951,14 +951,14 @@ void Reducer<Int, Real>::pairwiseRedDual(int i, bool xx[]) {
 //=========================================================================
 
 template<typename Int, typename Real>
-void Reducer<Int, Real>::redDieter(int d, bool xx[]) {
+void Reducer<Int, Real>::redDieter(int64_t d, bool xx[]) {
 	std::int64_t BoundCount;
-	const int dim = m_lat->getDim();
+	const int64_t dim = m_lat->getDim();
 	bool withDual = m_lat->withDual();
 
 	m_lat->updateScalL2Norm(d, dim);
 	m_lat->sort(d);
-	int i = dim - 1;
+	int64_t i = dim - 1;
 	m_cpt = 0;
 	m_countDieter = 0;
 	BoundCount = 2 * dim - d;
@@ -976,15 +976,15 @@ void Reducer<Int, Real>::redDieter(int d, bool xx[]) {
 //=========================================================================
 
 template<typename Int, typename Real>
-void Reducer<Int, Real>::redDieterRandomized(int d, int seed) {
+void Reducer<Int, Real>::redDieterRandomized(int64_t d, int64_t seed) {
 	std::int64_t BoundCount;
-	const int dim = m_lat->getDim();
+	const int64_t dim = m_lat->getDim();
 	bool withDual = m_lat->withDual();
 
 	m_lat->updateScalL2Norm(d, dim);
 	//m_lat->getDualBasis ().updateScalL2Norm (d, dim);
 	m_lat->sort(d);
-	int i = dim - 1;
+	int64_t i = dim - 1;
 	m_cpt = 0;
 	m_countDieter = 0;
 	BoundCount = 2 * dim - d;
@@ -1007,7 +1007,7 @@ void Reducer<Int, Real>::redDieterRandomized(int d, int seed) {
  * to the j-th vector. It updates the Gram Schmidt matrix.
  */
 template<typename Int, typename Real>
-void Reducer<Int, Real>::reductionFaible(int i, int j)
+void Reducer<Int, Real>::reductionFaible(int64_t i, int64_t j)
 /*
  * Reduit la matrice de Cholesky (d'ordre 2) en ajoutant un multiple du
  * vecteur i au vecteur j, si possible.  Modifie le vecteur dual W_i en
@@ -1020,7 +1020,7 @@ void Reducer<Int, Real>::reductionFaible(int i, int j)
 	//bool withDual = m_lat->withDual();
 	cte = m_cho2(i, j) / m_cho2(i, i);
 
-	const int dim = m_lat->getDim();
+	const int64_t dim = m_lat->getDim();
 
 	if (abs(cte) < std::numeric_limits<double>::max()) {
 		// On peut representer cte en LONGINT.
@@ -1080,7 +1080,7 @@ void redLLLNTLExact(Reducer<Int, Real> &red, double delta) {
 	 */
 template<typename Int, typename Real>
 void redLLLNTL(Reducer<Int, Real> &red, double delta,
-		PrecisionType precision, int dim) {
+		PrecisionType precision, int64_t dim) {
   // Here we create a new temporary lattice, new NTL matrices, and then destroy them.
   // That's a lot of object creations, probably very ineffective.
   IntLattice<NTL::ZZ, Real> *lattmp = 0;
@@ -1088,8 +1088,8 @@ void redLLLNTL(Reducer<Int, Real> &red, double delta,
 		// We copy the basis in B, for all the dimensions!
 		NTL::mat_ZZ B;
 		B.SetDims(basis.NumRows(), basis.NumCols());
-		for (int i = 0; i < basis.NumRows(); i++) {
-			for (int j = 0; j < basis.NumCols(); j++) {
+		for (int64_t i = 0; i < basis.NumRows(); i++) {
+			for (int64_t j = 0; j < basis.NumCols(); j++) {
 				B[i][j] = basis[i][j];
 			}
 		}
@@ -1114,8 +1114,8 @@ void redLLLNTL(Reducer<Int, Real> &red, double delta,
 			MyExit(1, "Undefined PrecisionType for LLL");
 		}
 		// Here we replace the old basis for all the dimensions! This looks incorrect.
-		for (int i = 0; i < basis.NumRows(); i++) {
-			for (int j = 0; j < basis.NumCols(); j++) {
+		for (int64_t i = 0; i < basis.NumRows(); i++) {
+			for (int64_t j = 0; j < basis.NumCols(); j++) {
 				red.getIntLatticeBase()->getBasis()[i][j] = NTL::trunc_long(
 						lattmp->getBasis()[i][j], 63);
 				red.getIntLatticeBase()->getBasis()[i][j] *= NTL::sign(
@@ -1140,7 +1140,7 @@ void redLLLNTLExact(Reducer<NTL::ZZ, Real> &red, double delta) {
 
 template<typename Int, typename Real>
 void redBKZ(Reducer<Int, Real> &red, double delta,
-			std::int64_t blocksize, PrecisionType precision, int dim) {
+			std::int64_t blocksize, PrecisionType precision, int64_t dim) {
 	IntLattice<std::int64_t, Real> *lattmp = 0;
 	if (dim > 0) {
 			lattmp = new IntLattice<std::int64_t, Real>(dim, red.getIntLatticeBase()->getNormType());
@@ -1160,7 +1160,7 @@ void redBKZ(Reducer<Int, Real> &red, double delta,
 
 template<typename Real>
 void redBKZ(Reducer<NTL::ZZ, Real> &red, double delta,
-			std::int64_t blocksize, PrecisionType precision, int dim) {
+			std::int64_t blocksize, PrecisionType precision, int64_t dim) {
 		IntLattice<NTL::ZZ, Real> *lattmp = 0;
 		if (dim > 0) {
 			lattmp = new IntLattice<NTL::ZZ, Real>(dim,
@@ -1192,7 +1192,7 @@ void redBKZ(Reducer<NTL::ZZ, Real> &red, double delta,
 
 template<typename Real>
 void redLLLNTL(Reducer<NTL::ZZ, Real> &red, double delta,
-			PrecisionType precision, int dim) {
+			PrecisionType precision, int64_t dim) {
 		IntLattice<NTL::ZZ, Real> *lattmp = 0;
 		if (dim > 0) {
 			// We should copy only the basis matrix, not the whole IntLattice object !   ******
@@ -1229,19 +1229,19 @@ void redLLLNTL(Reducer<NTL::ZZ, Real> &red, double delta,
 
 template<typename Int, typename Real>
 void Reducer<Int, Real>::redLLL(double delta, std::int64_t maxcpt,
-		int Max) {
+		int64_t Max) {
 	// This is a C translation of the old implementation by R. Couture.
 	// Effectue la pre-reduction de B au sens de Lenstra-Lenstra-Lovasz. N'utilise
 	// pas les vecteurs m_lat->getBasis().vecNorm et  Wm_lat->getDualBasis().
 
 	//bool withDual = m_lat->withDual();
-	const int REDBAS_e = 40;
-	int i, j, k, h;
+	const int64_t REDBAS_e = 40;
+	int64_t i, j, k, h;
 	Real Cho0ij;
 	Real limite;
 	std::int64_t cpt;
 
-	const int dim = m_lat->getDim();
+	const int64_t dim = m_lat->getDim();
 	if (Max == 0)
 		Max = dim;
 
@@ -1335,10 +1335,10 @@ void Reducer<Int, Real>::redLLL(double delta, std::int64_t maxcpt,
 
 template<typename Int, typename Real>
 void Reducer<Int, Real>::transformStage3Mink(
-		std::vector<std::int64_t> &z, int &k) {
-	int j, i;
+		std::vector<std::int64_t> &z, int64_t &k) {
+	int64_t j, i;
 	std::int64_t q;
-	const int dim = m_lat->getDim();
+	const int64_t dim = m_lat->getDim();
 	bool withDual = m_lat->withDual();
 
 	j = dim - 1;
@@ -1391,10 +1391,10 @@ void Reducer<Int, Real>::transformStage3Mink(
  */
 template<typename Int, typename Real>
 void Reducer<Int, Real>::transformStage3ShortVec(
-		std::vector<std::int64_t> &z, int &k) {
-	int j, i;
+		std::vector<std::int64_t> &z, int64_t &k) {
+	int64_t j, i;
 	std::int64_t q;
-	const int dim = m_lat->getDim();
+	const int64_t dim = m_lat->getDim();
 	j = dim - 1;
 	while (z[j] == 0)
 		--j;
@@ -1426,7 +1426,7 @@ void Reducer<Int, Real>::transformStage3ShortVec(
 //=========================================================================
 
 template<typename Int, typename Real>
-bool Reducer<Int, Real>::tryZMink(int j, int i, int Stage,
+bool Reducer<Int, Real>::tryZMink(int64_t j, int64_t i, int64_t Stage,
 		bool &smaller, const IntMat &WTemp)
 		// If m_countNodes > MaxNodesBB, returns false, otherwise returns true.
 		{
@@ -1435,10 +1435,10 @@ bool Reducer<Int, Real>::tryZMink(int j, int i, int Stage,
 	Real center;
 	std::int64_t zhigh, zlow, h;
 	bool high;
-	int k;
+	int64_t k;
 	Real S1, S2, S3, S4, mR;
 
-	const int dim = m_lat->getDim();
+	const int64_t dim = m_lat->getDim();
 	NTL::conv(mR, m_lat->getModulo());
 
 	++m_countNodes;
@@ -1607,7 +1607,7 @@ bool Reducer<Int, Real>::tryZMink(int j, int i, int Stage,
 //=========================================================================
 
 template<typename Int, typename Real>
-bool Reducer<Int, Real>::redBBMink(int i, int d, int Stage,
+bool Reducer<Int, Real>::redBBMink(int64_t i, int64_t d, int64_t Stage,
 		bool &smaller, bool xx[])
 		/*
 		 * Tries to shorten m_lat->getBasis()[i] using branch-and-bound.
@@ -1620,7 +1620,7 @@ bool Reducer<Int, Real>::redBBMink(int i, int d, int Stage,
 		 */
 		{
 	bool withDual = m_lat->withDual();
-	const int dim = m_lat->getDim();
+	const int64_t dim = m_lat->getDim();
 	IntMat VTemp(dim, dim), WTemp(dim, dim);
 	bool XXTemp[dim];
 	Real tmp;
@@ -1658,7 +1658,7 @@ bool Reducer<Int, Real>::redBBMink(int i, int d, int Stage,
 	m_lat->updateVecNorm();
 	m_lat->permute(i, dim - 1);
 
-	int k, h;
+	int64_t k, h;
 
 	if (PreRedLLLMink) {
 		// On memorise la base courante.
@@ -1740,7 +1740,7 @@ bool Reducer<Int, Real>::redBBMink(int i, int d, int Stage,
 * @norm take value 'L1NORM' or 'L2NORM'
 */
 template<typename Int, typename Real>
-bool Reducer<Int, Real>::tryZShortVec(int j, bool &smaller, NormType norm, std::string decomp) {
+bool Reducer<Int, Real>::tryZShortVec(int64_t j, bool &smaller, NormType norm, std::string decomp) {
 	/*
 	 * This recursive procedure uses the Cholesky decomposition and works for the
 	 * L1NORM and L2NORM.  It is called initially with j=dim-1 by redBBShortVec
@@ -1757,14 +1757,14 @@ bool Reducer<Int, Real>::tryZShortVec(int j, bool &smaller, NormType norm, std::
 	std::int64_t min0, max0;     // Bornes de l'intervalle pour les z_j.
 	std::int64_t zlow, zhigh; // Valeur courante a gauche et a droite du centre.
 	bool high; // Indicates if we are on the right (true) or the left of the center.
-	int k;
+	int64_t k;
 	std::int64_t temp;
 	//
 	std::string Choles("cholesky");
 	std::string Triang("triangular");
 
 
-	const int dim = m_lat->getDim();
+	const int64_t dim = m_lat->getDim();
 	++m_countNodes;
 	if (m_countNodes > maxNodesBB) {
 		std::cerr << "*****   m_countNodes > maxNodesBB = " << maxNodesBB
@@ -1927,8 +1927,8 @@ bool Reducer<Int, Real>::redBBShortVec(NormType norm, std::string decomp) {
 		return false;
 	}
 	bool smaller = false;  // Found a smaller vector?
-	int k, h;
-	const int dim = m_lat->getDim();  // Lattice dimension
+	int64_t k, h;
+	const int64_t dim = m_lat->getDim();  // Lattice dimension
 	Real x;
     // Here we sort the basis, otherwise Cholesky will fail more rapidly
     // due to floating-point errors.
@@ -1976,8 +1976,8 @@ bool Reducer<Int, Real>::redBBShortVec(NormType norm, std::string decomp) {
 	     CopyMatr(m_v,m_lat->getBasis(), dim, dim);
 	 	 constr.lowerTriangularBasis(m_v, m_v2, mod);
 		// CopyMatr(m_lat->getBasis(), m_v2,dim, dim);
-	     for (int i = 0; i < dim; i++){
-		   for (int j = 0; j < dim; j++){
+	     for (int64_t i = 0; i < dim; i++){
+		   for (int64_t j = 0; j < dim; j++){
 			if(i!=j){
 			  m_c0(i,j)=NTL::conv<Real>(m_v2(i,j))/NTL::conv<Real>(m_v2(i,i));		
 		     }
@@ -1988,7 +1988,7 @@ bool Reducer<Int, Real>::redBBShortVec(NormType norm, std::string decomp) {
 		   } 
         }
   
-        for (int i = 0; i < dim; i++) {
+        for (int64_t i = 0; i < dim; i++) {
           m_dc2[i] = m_c0(i, i)*m_c0(i, i);
 		  }
   
@@ -2036,10 +2036,10 @@ bool Reducer<Int, Real>::redBBShortVec(NormType norm, std::string decomp) {
 
 // This works only for the L2 norm.
 template<typename Int, typename Real>
-bool Reducer<Int, Real>::reductMinkowski(int d) {
+bool Reducer<Int, Real>::reductMinkowski(int64_t d) {
 	bool withDual = m_lat->withDual();
-	const int dim = m_lat->getDim();
-	int i;
+	const int64_t dim = m_lat->getDim();
+	int64_t i;
 	std::int64_t totalNodes = 0;
 	bool found;
 	bool smaller;          // A smaller vector has been found

@@ -160,8 +160,8 @@ namespace LatticeTester {
    * @}
    */
 
-  static constexpr unsigned int NB_PRIMES = 6543;
-  extern const std::array<unsigned int, NB_PRIMES> PRIMES_ARRAY;
+  static constexpr uint64_t NB_PRIMES = 6543;
+  extern const std::array<uint64_t, NB_PRIMES> PRIMES_ARRAY;
 
 }
 #endif

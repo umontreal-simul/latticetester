@@ -42,14 +42,14 @@ namespace LatticeTester {
 		 * Constructs a `NormaRogers` for up to `maxDim` dimensions, by assuming that the
 		 * log density is `logDensity` in all dimensions.
         */
-        NormaRogers (double logDensity, int maxDim);
+        NormaRogers (double logDensity, int64_t maxDim);
 
     	/**
     	 * This constructor assumes that the primal lattice has scaling factor \f$m\f$
     	 * and order \f$k\f$, so its density is \f$m^k\f$ for \f$t\geq k\f$, and cannot
     	 * exceed  \f$m^s\f$ for projections in \f$s < k\f$ dimensions.
     	 */
-    	NormaRogers (double logm, int k, int maxDim);
+    	NormaRogers (double logm, int64_t k, int64_t maxDim);
 
     	/**
          * Destructor.
@@ -60,7 +60,7 @@ namespace LatticeTester {
          * Returns the value of the bound on the Hermite constant \f$\gamma_j\f$
          * in dimension \f$j\f$.
          */
-        double getGamma (int j) const;
+        double getGamma (int64_t j) const;
 
       private:
 
@@ -79,7 +79,7 @@ namespace LatticeTester {
         /**
          * Computes the Rogers bound in dimension \f$d\f$.
          */
-        double calcGamma (int d);
+        double calcGamma (int64_t d);
 
     }; // End class NormaRogers
 
@@ -146,7 +146,7 @@ namespace LatticeTester {
 
   /*=======================================================================*/
 
-    double NormaRogers::calcGamma (int dim)
+    double NormaRogers::calcGamma (int64_t dim)
     {
       static const double pi = 3.1415926535897932384;
       static const double e = 2.7182818284590452353;
@@ -162,32 +162,32 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-    NormaRogers::NormaRogers (double logDensity, int maxDim)
+    NormaRogers::NormaRogers (double logDensity, int64_t maxDim)
     : Normalizer (maxDim, "Rogers", L2NORM)
     {
       m_gamma = new double[maxDim + 1];
-      int t0 = maxDim;
+      int64_t t0 = maxDim;
       if (t0 > this->MAX_DIM)
         t0 = this->MAX_DIM;
-      for (int i = 0; i <= t0; i++)
+      for (int64_t i = 0; i <= t0; i++)
         m_gamma[i] = m_gamma0[i];
-      for (int i = t0 + 1; i <= maxDim; i++)
+      for (int64_t i = t0 + 1; i <= maxDim; i++)
         m_gamma[i] = calcGamma(i);
       Normalizer::computeBounds (logDensity);
     }
 
   /*=========================================================================*/
 
-      NormaRogers::NormaRogers (double logm, int k, int maxDim)
+      NormaRogers::NormaRogers (double logm, int64_t k, int64_t maxDim)
       : Normalizer (maxDim, "BestLat", L2NORM)
       {
           m_gamma = new double[maxDim + 1];
-          int t0 = maxDim;
+          int64_t t0 = maxDim;
           if (t0 > this->MAX_DIM)
             t0 = this->MAX_DIM;
-          for (int i = 0; i <= t0; i++)
+          for (int64_t i = 0; i <= t0; i++)
             m_gamma[i] = m_gamma0[i];
-          for (int i = t0 + 1; i <= maxDim; i++)
+          for (int64_t i = t0 + 1; i <= maxDim; i++)
             m_gamma[i] = calcGamma(i);
         Normalizer::computeBounds (logm, k);
       }
@@ -201,7 +201,7 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-    inline double NormaRogers::getGamma (int j) const
+    inline double NormaRogers::getGamma (int64_t j) const
     {
       if (j < 1 || j > this->m_maxDim)
         throw std::out_of_range("NormaRogers::getGamma");

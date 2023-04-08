@@ -48,26 +48,26 @@ namespace LatticeTester {
           * log density is `logDensity` in all dimensions.
           * Restriction: `maxDim`\f$ \le 48\f$.
           */
-         NormaLaminated (double logDensity, int maxDim);
+         NormaLaminated (double logDensity, int64_t maxDim);
 
      	/**
      	 * This constructor assumes that the primal lattice has scaling factor \f$m\f$
      	 * and order \f$k\f$, so its density is \f$m^k\f$ for \f$t\geq k\f$, and cannot
      	 * exceed  \f$m^s\f$ for projections in \f$s < k\f$ dimensions.
      	 */
-     	NormaLaminated (double logm, int k, int maxDim);
+     	NormaLaminated (double logm, int64_t k, int64_t maxDim);
 
      	/**
           * Constructs a `NormaLaminated` for up to `maxDim` dimensions, without computing the bounds.
           * Restriction: `maxDim`\f$ \le 48\f$.
           */
-        NormaLaminated (int maxDim);
+        NormaLaminated (int64_t maxDim);
 
 		/**
           * Returns the value of the bound on the Hermite's constant \f$\gamma_j\f$
           * in dimension \f$j\f$.
           */
-        double getGamma (int j) const;
+        double getGamma (int64_t j) const;
 
       private:
 
@@ -142,7 +142,7 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-    NormaLaminated::NormaLaminated (double logDensity, int maxDim):
+    NormaLaminated::NormaLaminated (double logDensity, int64_t maxDim):
       Normalizer (maxDim, "Laminated", L2NORM)
     {
       if (maxDim > this->MAX_DIM)
@@ -152,7 +152,7 @@ namespace LatticeTester {
 
     /*=========================================================================*/
 
-      NormaLaminated::NormaLaminated (double logm, int k, int maxDim):
+      NormaLaminated::NormaLaminated (double logm, int64_t k, int64_t maxDim):
        Normalizer (maxDim, "Laminated", L2NORM)
       {
         if (maxDim > this->MAX_DIM)
@@ -162,7 +162,7 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-    inline double NormaLaminated::getGamma (int j) const
+    inline double NormaLaminated::getGamma (int64_t j) const
     {
       if (j < 1 || j > this->MAX_DIM)
         throw std::out_of_range("NormaLaminated::getGamma");

@@ -61,13 +61,13 @@ const int64_t primes[] = { 101, 1021, 1048573, 1073741827, 1099511627791,
 // int64_t m = primes[1];      // Modulus = 1021
 int64_t m = primes[2];      // Modulus near 2^{20}
 const PrecisionType prec = DOUBLE;  // For LLL construction.
-const int numRep = 10;  // Number of replications for each case.
-const int numMeth = 10;    // Number of methods, and their names.
+const long numRep = 10;  // Number of replications for each case.
+const long numMeth = 10;    // Number of methods, and their names.
 std::string names[numMeth] = {"UppTri  ", "LowTri  ", "TriGCD  ", "Tri96   ",
 		 "LLL5    ", "LLL8    ", "LLL9    ", "DualUT  ", "DualUT96", "Dual    "};
-const int numSizes = 4; // Number of matrix sizes (choices of dimension).
+const long numSizes = 4; // Number of matrix sizes (choices of dimension).
 //const int dimensions[numSizes] = {10, 20};
-const int dimensions[numSizes] = {10, 20, 30, 40};
+const long dimensions[numSizes] = {10, 20, 30, 40};
 
 int main() {
 	// We use ctime for implementation simplicity

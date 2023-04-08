@@ -97,7 +97,7 @@ public:
 	 * The maximum dimension of the lattices for which this class can give
 	 * an upper bound.
 	 * */
-	static const int MAX_DIM = 48;
+	static const int64_t MAX_DIM = 48;
 
 	/**
 	 * This constructor creates a `Normalizer` by assuming that the density is
@@ -108,7 +108,7 @@ public:
 	 * The `name` parameter gives name that will be printed by the ToString() method.
 	 * The `norm` parameter is the `NormType` used by this object.
 	 */
-	Normalizer(double logDensity, int maxDim, std::string name, NormType norm =
+	Normalizer(double logDensity, int64_t maxDim, std::string name, NormType norm =
 			L2NORM);
 
 	/**
@@ -119,7 +119,7 @@ public:
 	 * To compute bounds for the dual, pass `-logm` instead of `logm`.
 	 * The values of \f$\log m\f$ (in natural basis) and \f$k\f$ must be given as inputs.
 	 */
-	Normalizer(double logm, int k, int maxDim, std::string name,
+	Normalizer(double logm, int64_t k, int64_t maxDim, std::string name,
 			NormType norm = L2NORM);
 
 	/**
@@ -127,7 +127,7 @@ public:
 	 * This is used in the case of rank 1 lattices in the `NormaPalpha`
 	 * class with a prime density.
 	 */
-	Normalizer(int maxDim, std::string Name, NormType norm = L2NORM);
+	Normalizer(int64_t maxDim, std::string Name, NormType norm = L2NORM);
 
 	/**
 	 * Destructor.
@@ -157,7 +157,7 @@ public:
 	 * This method is called by the constructors of subclasses, in which the constants
 	 * `gamma_t` are known.  The bounds can be retrieved via `getBounds()` or `getBound(j)`.
 	 */
-	virtual void computeBounds(double logm, int k);
+	virtual void computeBounds(double logm, int64_t k);
 
 	/**
 	 * Returns a string that describes this object.
@@ -188,7 +188,7 @@ public:
 	 * Returns the maximal dimension for this object. This is the `maxDim`
 	 * parameter of the constructors.
 	 */
-	int getMaxDim() const {
+	int64_t getMaxDim() const {
 		return m_maxDim;
 	}
 
@@ -203,22 +203,22 @@ public:
 	 * Returns the bound for dimension `j` as computed in Normalizer::init().
 	 */
 //<<<<<<< HEAD
-	// double getBound (int j) const;
+	// double getBound (int64_t j) const;
 //=======
-	// double getPreComputedBound (int j) const;
+	// double getPreComputedBound (int64_t j) const;
 
 //>>>>>>> b23681ea0112bce9ba98c1463251528b775075a4
 	/**
 	 * Returns the bound on the length of the shortest nonzero vector in `j` dimensions.
 	 */
-	virtual double getBound(int j) const;
+	virtual double getBound(int64_t j) const;
 
 	/**
 	 * Returns the value of a lattice constant \f$\gamma\f$ in
 	 * dimension \f$j\f$. These constants can be used by subclasses to
 	 * implement `computeBounds()`. For this base class, always returns 1.
 	 */
-	virtual double getGamma(int j) const;
+	virtual double getGamma(int64_t j) const;
 
 protected:
 	/**
@@ -240,7 +240,7 @@ protected:
 	 * Maximum dimension. Only elements 1 to <tt>m_maxDim</tt> (inclusive) of m_bounds below
 	 * will be pre-computed.
 	 */
-	int m_maxDim;
+	int64_t m_maxDim;
 
 	/**
 	 * Contains the bounds on the length of the shortest nonzero vector in
@@ -264,7 +264,7 @@ private:
 	 * Return the min between k et j
 	 */
 
-	int min(int k, int j);
+	int64_t min(int64_t k, int64_t j);
 
 };
 // End class Normalizer
@@ -275,7 +275,7 @@ private:
 //===========================================================================
 
 
-/* Normalizer::Normalizer (double logDensity, int maxDim, std::string name, NormType norm ) 
+/* Normalizer::Normalizer (double logDensity, int64_t maxDim, std::string name, NormType norm )
  : m_name(name), m_norm(norm),m_maxDim(maxDim)
 {
 	m_bounds = new double[maxDim + 1];
@@ -286,7 +286,7 @@ private:
 
 //===========================================================================
 
-Normalizer::Normalizer (int maxDim, std::string name, NormType norm) :
+Normalizer::Normalizer (int64_t maxDim, std::string name, NormType norm) :
  m_name(name), m_norm(norm),m_maxDim(maxDim)
 {
 	m_bounds = new double[maxDim + 1];
@@ -296,7 +296,7 @@ Normalizer::Normalizer (int maxDim, std::string name, NormType norm) :
 
 void Normalizer::computeBounds(double logDensity) {
 	double x;
-	for (int j = 1; j <= m_maxDim; j++) {
+	for (int64_t j = 1; j <= m_maxDim; j++) {
 		x = 0.5 * log(getGamma(j)) - (1.0 / j) * logDensity;
 		m_bounds[j] = exp(x);
 	}
@@ -304,12 +304,12 @@ void Normalizer::computeBounds(double logDensity) {
 
 /*-------------------------------------------------------------------------*/
 
-void Normalizer::computeBounds(double logm, int k) {
+void Normalizer::computeBounds(double logm, int64_t k) {
 	//  double logm =  NTL::log(m);
 	// 	 * The bounds \f$ d_t^*(\eta)\f$ (if `dualF=0`) or \f$ \ell_t^*(\eta)\f$ (if `dualF=1`)
     // if (dualF)  logm = -logm;
 	double x;
-	for (int j = 1; j <= m_maxDim; j++) {
+	for (int64_t j = 1; j <= m_maxDim; j++) {
 		x = 0.5 * log(getGamma(j)) - (1.0 / j) * (min(k, j) * logm);
 		m_bounds[j] = exp(x);
 	}
@@ -317,7 +317,7 @@ void Normalizer::computeBounds(double logm, int k) {
 
 
 /*-------------------------------------------------------------------------*/
- int Normalizer::min(int k, int j)
+ int64_t Normalizer::min(int64_t k, int64_t j)
  {
 	return (k<j)?k:j;
  }
@@ -334,7 +334,7 @@ std::string Normalizer::ToString() const {
 
 	//   os.setf(std::ios::left);
 	os << std::setprecision(13);
-	for (int t = 1; t <= m_maxDim; t++) {
+	for (int64_t t = 1; t <= m_maxDim; t++) {
 		os << " Bound[" << std::setw(2) << std::right << t << "] = "
 				<< std::setw(14) << std::left << m_bounds[t] << "\n";
 	}
@@ -344,14 +344,14 @@ std::string Normalizer::ToString() const {
 
 /*-------------------------------------------------------------------------*/
 
-double Normalizer::getGamma(int) const {
+double Normalizer::getGamma(int64_t) const {
 	// In this abstract class, the gamma_t's are undefined.
 	return -1.0;
 }
 
 /*-------------------------------------------------------------------------*/
 
-double Normalizer::getBound(int j) const {
+double Normalizer::getBound(int64_t j) const {
 	return m_bounds[j];
 }
 

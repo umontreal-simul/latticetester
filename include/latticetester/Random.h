@@ -61,7 +61,7 @@ namespace LatticeTester {
     /**
      * Returns random blocks of \f$s\f$ bits (\f$s\f$-bit integers).
      */
-    std::uint64_t randBits (int s);
+    std::uint64_t randBits (int64_t s);
 
     /**
      * Sets the seed of the generator. If not called, a default seed is used.

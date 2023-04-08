@@ -33,7 +33,7 @@ namespace LatticeTester {
    * Calculates \f$t!\f$, the factorial of \f$t\f$. Might throw if `t` is too
    * large or if std::int64_t can't contain the factorial asked for.
    */
-  std::int64_t lFactorial (int t);
+  std::int64_t lFactorial (int64_t t);
 
   /**
    * Returns the value of the logarithmic derivative of the Gamma function
@@ -58,7 +58,7 @@ namespace LatticeTester {
    * \f}
    * Only degrees \f$n \le 8\f$ are programmed for now.
    */
-  double BernoulliPoly (int n, double x);
+  double BernoulliPoly (int64_t n, double x);
 
   /**
    * Computes the \f$n\f$-th harmonic number \f$H_n  = \sum_{j=1}^n 1/j\f$.

@@ -38,20 +38,20 @@ namespace LatticeTester {
 		 * log density is `logDensity` in all dimensions.
 		 * Restriction: `maxDim`\f$ \le 48\f$.
          */
-        NormaMinkL2 (double logDensity, int maxDim);
+        NormaMinkL2 (double logDensity, int64_t maxDim);
 
     	/**
     	 * This constructor assumes that the primal lattice has scaling factor \f$m\f$
     	 * and order \f$k\f$, so its density is \f$m^k\f$ for \f$t\geq k\f$, and cannot
     	 * exceed  \f$m^s\f$ for projections in \f$s < k\f$ dimensions.
     	 */
-    	NormaMinkL2 (double logm, int k, int maxDim);
+    	NormaMinkL2 (double logm, int64_t k, int64_t maxDim);
 
     	/**
          * Returns the value of the lattice constant \f$\gamma_j\f$ in
          * dimension \f$j\f$.
          */
-        double getGamma (int j) const;
+        double getGamma (int64_t j) const;
 
       private:
 
@@ -124,7 +124,7 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-    NormaMinkL2::NormaMinkL2 (double logDensity, int maxDim):
+    NormaMinkL2::NormaMinkL2 (double logDensity, int64_t maxDim):
       Normalizer (maxDim, "Minkowski", L2NORM)
     {
       if (maxDim > this->MAX_DIM)
@@ -134,7 +134,7 @@ namespace LatticeTester {
 
     /*=========================================================================*/
 
-      NormaMinkL2::NormaMinkL2 (double logm, int k, int maxDim)
+      NormaMinkL2::NormaMinkL2 (double logm, int64_t k, int64_t maxDim)
       : Normalizer (maxDim, "BestLat", L2NORM)
       {
         if (maxDim > this->MAX_DIM)
@@ -144,7 +144,7 @@ namespace LatticeTester {
 
   /*=========================================================================*/
 
-    inline double NormaMinkL2::getGamma (int j) const
+    inline double NormaMinkL2::getGamma (int64_t j) const
     {
       if (j < 1 || j > this->MAX_DIM)
         throw std::out_of_range("NormaMinkL2::getGamma");

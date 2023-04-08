@@ -171,7 +171,7 @@ public:
 	 * It does not update the dual.
 	 */
 	
-	static void CreateExampleMatrixToFile(int &m, int &d, IntVec & a, int & no);
+	static void CreateExampleMatrixToFile(int64_t &m, int64_t &d, IntVec & a, int64_t & no);
 	
 	/**
 	 * Based on modulus m, dimension d and vector a, this function creates at first the 
@@ -180,7 +180,7 @@ public:
 	 * output folder "/output" with the naming convention "modulus_dimension_no.dat"
 	 */
 
-	static void CreateExampleMatrix(int &m, int &d, IntVec & a, IntMat & V);
+	static void CreateExampleMatrix(int64_t &m, int64_t &d, IntVec & a, IntMat & V);
 	
 	/**
 	 * Based on modulus m, dimension d and vector a, this function creates at first the 
@@ -281,13 +281,13 @@ template<>
 void BasisConstruction<NTL::ZZ>::LLLBasisConstruction(NTL::matrix<NTL::ZZ> &gen,
 		NTL::ZZ &m, double delta, PrecisionType prec) {
 	LLLConstruction0 (gen, delta, prec);
-	int rank = gen.NumRows();
-	int dim = gen.NumCols();
+	int64_t rank = gen.NumRows();
+	int64_t dim = gen.NumCols();
 	if (rank == dim)
 		return;
     gen.SetDims(rank + dim, dim);
     // We now add the m e_i vectors, and we redo the LLL.
-    int i, j;
+    int64_t i, j;
     for (i=rank; i < rank+dim; i++) {
         for (j=0; j < dim; j++) {
         	if (i==j) gen[i][j] = m; else gen[i][j] = 0;
@@ -530,13 +530,13 @@ void BasisConstruction<Int>::lowerTriangularBasis(IntMat &gen, IntMat &basis,
 		Int &m) {
 	IntVec coeff, vl, v2;
 	Int C, D, val, gcd;
-	int pc, pl, k;
-	int dim1 = gen.NumRows();
-	int dim2 = gen.NumCols();
+	int64_t pc, pl, k;
+	int64_t dim1 = gen.NumRows();
+	int64_t dim2 = gen.NumCols();
 	pl = dim1 - 1;
 	pc = dim2 - 1;
 	while (pl >= 0 && pc >= 0) {
-		for (int i = 0; i < dim1; i++)
+		for (int64_t i = 0; i < dim1; i++)
 			Modulo(gen(i, pc), m, gen(i, pc));
 		coeff.SetLength(dim2);
 		k = 0;
@@ -548,40 +548,40 @@ void BasisConstruction<Int>::lowerTriangularBasis(IntMat &gen, IntMat &basis,
 			gcd = gen(k, pc);
 			coeff[k] = 1;
 			val = gcd;
-			for (int i = k + 1; i < dim1; i++) {
+			for (int64_t i = k + 1; i < dim1; i++) {
 				if (gen(i, pc) == 0) {
 					coeff[i] = 0;
 					continue;
 				}
 				Euclide(val, gen(i, pc), C, D, gcd);
 				coeff[i] = D;
-				for (int j = 0; j < i; j++)
+				for (int64_t j = 0; j < i; j++)
 					coeff[j] *= C;
 				val = gcd;
 			}
-			int coeffN[dim2];
-			int nb = 0;
-			for (int a = 0; a < dim1; a++) {
+			int64_t coeffN[dim2];
+			int64_t nb = 0;
+			for (int64_t a = 0; a < dim1; a++) {
 				if (coeff[a] != 0) {
 					coeffN[nb] = a;
 					nb++;
 				}
 			}
 			vl.SetLength(dim2);
-			int ind = 0;
-			for (int j = 0; j < dim2; j++) {
-				for (int i = 0; i < nb; i++) {
+			int64_t ind = 0;
+			for (int64_t j = 0; j < dim2; j++) {
+				for (int64_t i = 0; i < nb; i++) {
 					ind = coeffN[i];
 					vl[j] = vl[j] + coeff[ind] * gen(ind, j);
 				}
 				Modulo(vl[j], m, vl[j]);
 			}
-			for (int i = 0; i < dim1; i++) {
+			for (int64_t i = 0; i < dim1; i++) {
 				if (gen(i, pc) != 0) {
 					v2 = (gen(i, pc) / gcd) * vl;
-					for (int j = 0; j < dim2; j++)
+					for (int64_t j = 0; j < dim2; j++)
 						Modulo(v2[j], m, v2[j]);
-					for (int j = 0; j < dim2; j++) {
+					for (int64_t j = 0; j < dim2; j++) {
 						gen(i, j) = gen(i, j) - v2[j];
 						Modulo(gen(i, j), m, gen(i, j));
 					}
@@ -589,7 +589,7 @@ void BasisConstruction<Int>::lowerTriangularBasis(IntMat &gen, IntMat &basis,
 			}
 			basis[pl] = vl;
 		} else {
-			for (int j1 = 0; j1 < dim2; j1++) {
+			for (int64_t j1 = 0; j1 < dim2; j1++) {
 				if (j1 != pl)
 					NTL::clear(basis(pl, j1));
 				else
@@ -661,8 +661,8 @@ void BasisConstruction<Int>::mDualUpperTriangular96(IntMat &basis,
 	}
 	basisDual.SetDims(dim, dim);
 	Int mm = m;            // Local copy of m that can be changed.
-	for (int i = 0; i < dim; i++) {
-		for (int j = i + 1; j < dim; j++)
+	for (int64_t i = 0; i < dim; i++) {
+		for (int64_t j = i + 1; j < dim; j++)
 			NTL::clear(basisDual(i, j));
 		if (!NTL::IsZero(basisDual(i, i))) {
 			Int gcd = NTL::GCD(mm, basis(i, i));
@@ -671,9 +671,9 @@ void BasisConstruction<Int>::mDualUpperTriangular96(IntMat &basis,
 		}
 
 		DivideRound(mm, basis(i, i), basisDual(i, i));
-		for (int j = i - 1; j >= 0; j--) {
+		for (int64_t j = i - 1; j >= 0; j--) {
 			NTL::clear(basisDual(i, j));
-			for (int k = j + 1; k <= i; k++)
+			for (int64_t k = j + 1; k <= i; k++)
 				basisDual(i, j) += basis(j, k) * basisDual(i, k);
 			if (basisDual(i, j) != 0)
 				basisDual(i, j) = -basisDual(i, j);
@@ -698,7 +698,7 @@ void BasisConstruction<NTL::ZZ>::mDualUpperTriangular96( NTL::matrix<NTL::ZZ>  &
 	NTL::ZZ gcd, fac;
 	NTL::ZZ mm = m;            // Local copy of m that can be changed.
 	
-	int dim;
+	int64_t dim;
 	
 	// We must have a triangular basis matrix in the first place.
 	//if (!CheckTriangular(basis, basis.NumRows(), 0))
@@ -712,8 +712,8 @@ void BasisConstruction<NTL::ZZ>::mDualUpperTriangular96( NTL::matrix<NTL::ZZ>  &
 	dim = basis.NumRows();
 	
 	basisDual.SetDims(dim, dim);
-	for (int i = 0; i < dim; i++) {
-		for (int j = i + 1; j < dim; j++)
+	for (int64_t i = 0; i < dim; i++) {
+		for (int64_t j = i + 1; j < dim; j++)
 			NTL::clear(basisDual[i][j]);
 		if (!NTL::IsZero(basisDual[i][i])) {
 			gcd = NTL::GCD(mm, basis[i][i]);
@@ -723,9 +723,9 @@ void BasisConstruction<NTL::ZZ>::mDualUpperTriangular96( NTL::matrix<NTL::ZZ>  &
 		}
 
 		DivideRound(mm, basis[i][i], basisDual[i][i]);
-		for (int j = i - 1; j >= 0; j--) {
+		for (int64_t j = i - 1; j >= 0; j--) {
 			NTL::clear(basisDual(i, j));
-			for (int k = j + 1; k <= i; k++)
+			for (int64_t k = j + 1; k <= i; k++)
 				basisDual[i][j] += basis[j][k] * basisDual[i][k];
 			//if (basisDual(i, j) != 0)
 				negate(basisDual[i][j], basisDual[i][j]);
@@ -756,14 +756,14 @@ void BasisConstruction<NTL::ZZ>::mDualUpperTriangular96( NTL::matrix<NTL::ZZ>  &
 template<typename Int>
 void BasisConstruction<Int>::mDualUpperTriangular(const IntMat &A, IntMat &B,
 		const Int &m) {
-	int dim = A.NumRows();
-	for (int i = 0; i < dim; i++) {
-		for (int j = i + 1; j < dim; j++)
+	int64_t dim = A.NumRows();
+	for (int64_t i = 0; i < dim; i++) {
+		for (int64_t j = i + 1; j < dim; j++)
 			NTL::clear(B(i, j));
 		DivideRound(m, A(i, i), B(i, i));
-		for (int j = i - 1; j >= 0; j--) {
+		for (int64_t j = i - 1; j >= 0; j--) {
 			NTL::clear(B(i, j));
-			for (int k = j + 1; k <= i; k++)
+			for (int64_t k = j + 1; k <= i; k++)
 				B(i, j) += A(j, k) * B(i, k);
 			if (B(i, j) < 0)
 				B(i, j) = -B(i, j);
@@ -795,15 +795,15 @@ void BasisConstruction<int64_t>::mDualUpperTriangular(const NTL::matrix<int64_t>
 template<>
 void BasisConstruction<NTL::ZZ>::mDualUpperTriangular(const NTL::matrix<NTL::ZZ> &A, NTL::matrix<NTL::ZZ> &B,
 		const NTL::ZZ &m) {
-	int dim = A.NumRows();	
+	int64_t dim = A.NumRows();
 	
-	for (int i = 0; i < dim; i++) {
-		for (int j = i + 1; j < dim; j++)
+	for (int64_t i = 0; i < dim; i++) {
+		for (int64_t j = i + 1; j < dim; j++)
 			NTL::clear(B[i][j]);
 		div(B[i][i], m, A[i][i]); 
-		for (int j = i - 1; j >= 0; j--) {
+		for (int64_t j = i - 1; j >= 0; j--) {
 			NTL::clear(B[i][j]);
-			for (int k = j + 1; k <= i; k++)
+			for (int64_t k = j + 1; k <= i; k++)
 				MulSubFrom(B[i][j], A[j][k], B[i][k]);
 			div(B[i][j], B[i][j], A[j][j]);		
 		}
@@ -825,7 +825,7 @@ void BasisConstruction<NTL::ZZ>::mDualBasis(
 		NTL::matrix<NTL::ZZ> &basis, NTL::matrix<NTL::ZZ> &basisDual, NTL::ZZ &m) {
 	NTL::ZZ d, fac;
 		
-	int dim = basis.NumRows();
+	int64_t dim = basis.NumRows();
 	if (dim != basis.NumCols()) {
 		std::cerr << "mDualBasis: the given basis matrix must be square.\n";
 		exit(1);
@@ -836,8 +836,8 @@ void BasisConstruction<NTL::ZZ>::mDualBasis(
 	inv(d, basisDual, basis);
 	NTL::matrix<NTL::ZZ> C = basisDual;
 	div(fac, m, d);
-	for (int i = 0; i < dim; i++) {
-		for (int j = 0; j < dim; j++) {
+	for (int64_t i = 0; i < dim; i++) {
+		for (int64_t j = 0; j < dim; j++) {
 			mul(basisDual[i][j], C[i][j], fac);
 		}
 	}
@@ -851,7 +851,7 @@ void BasisConstruction<Int>::projectionConstructionLLL(
 		IntLattice<Int, Real> &in, IntLattice<Int, Real> &out,
 		const Coordinates &proj) {
 	std::size_t size = proj.size();
-	unsigned int lat_dim = in.getDim();
+	uint64_t lat_dim = in.getDim();
 	if (size > lat_dim)
 		MyExit(1, "More projection coordinates than the dimension of `in`.");
 	IntMat new_basis, tmp(NTL::transpose(in.getBasis()));
@@ -871,26 +871,26 @@ void BasisConstruction<Int>::projectionConstructionLLL(
 }
 
 template<typename Int>
-void BasisConstruction<Int>::CreateExampleMatrixToFile (int & m, int & d, IntVec & a, int & no)
+void BasisConstruction<Int>::CreateExampleMatrixToFile (int64_t & m, int64_t & d, IntVec & a, int64_t & no)
    {	
-		int k = a.length();
+		int64_t k = a.length();
 		
 		IntMat V;
 		V.SetDims(d,d);
 		 		 
-		for (int i = 0; i < k; i++) {
+		for (int64_t i = 0; i < k; i++) {
 			V[i][i] = 1;
 		}
 		 
-		for (int i = 0; i < k; i++) {
-			for (int j = k; j < d; j++) {
-				for (int l = 0; l < k; l++)
+		for (int64_t i = 0; i < k; i++) {
+			for (int64_t j = k; j < d; j++) {
+				for (int64_t l = 0; l < k; l++)
 					V[i][j] += V[i][j-l-1] * a[l];
 				V[i][j] = V[i][j] % m;
 			}
 		}
 		 
-		for (int i = k; i < d; i++) {
+		for (int64_t i = k; i < d; i++) {
 			V[i][i] = m;
 		}
 		 
@@ -902,9 +902,9 @@ void BasisConstruction<Int>::CreateExampleMatrixToFile (int & m, int & d, IntVec
 		std::ofstream myfile;
 		myfile.open ("output/" + std::to_string(m) + "_" + std::to_string(d) + "_" + std::to_string(no) + ".dat"); 
 		myfile << d;		  
-		for (int k = 0; k < d; k++) {
+		for (int64_t k = 0; k < d; k++) {
 			myfile << "\n";
-			for (int l = 0; l < d; l++) {
+			for (int64_t l = 0; l < d; l++) {
 				myfile << V[k][l];
 			  	myfile << " ";
 			}
@@ -914,25 +914,25 @@ void BasisConstruction<Int>::CreateExampleMatrixToFile (int & m, int & d, IntVec
    }
 
 template<typename Int>
-void BasisConstruction<Int>::CreateExampleMatrix (int & m, int & d, IntVec & a, IntMat & V)
+void BasisConstruction<Int>::CreateExampleMatrix (int64_t & m, int64_t & d, IntVec & a, IntMat & V)
    {	
-		int k = a.length();
+		int64_t k = a.length();
 		
 		V.SetDims(d,d);
 		 		 
-		for (int i = 0; i < k; i++) {
+		for (int64_t i = 0; i < k; i++) {
 			V[i][i] = 1;
 		}
 		 
-		for (int i = 0; i < k; i++) {
-			for (int j = k; j < d; j++) {
-				for (int l = 0; l < k; l++)
+		for (int64_t i = 0; i < k; i++) {
+			for (int64_t j = k; j < d; j++) {
+				for (int64_t l = 0; l < k; l++)
 					V[i][j] += V[i][j-l-1] * a[l];
 				V[i][j] = V[i][j] % m;
 			}
 		}
 		 
-		for (int i = k; i < d; i++) {
+		for (int64_t i = k; i < d; i++) {
 			V[i][i] = m;
 		}
 		 

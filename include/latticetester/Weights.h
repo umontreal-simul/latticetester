@@ -53,7 +53,7 @@ namespace LatticeTester {
        * Returns the interlacing factor of the weights. This is used in LatNet Builder
        * to parameterize the figures of merit for interlaced digital nets.
        */ 
-      virtual unsigned int interlacingFactor() const
+      virtual uint64_t interlacingFactor() const
       {
         return 1;
       }

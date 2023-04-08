@@ -38,7 +38,7 @@ namespace LatticeTester {
          * lattices have rank \f$1\f$, with \f$m\f$ points per unit volume.
          * Restriction: \f$2 \le s \le48\f$, \f$\alpha\ge2\f$, and \f$m\f$ prime.
          */
-        NormaPalpha (const std::int64_t m, int alpha, int s, NormType norm = L2NORM);
+        NormaPalpha (const std::int64_t m, int64_t alpha, int64_t s, NormType norm = L2NORM);
 
         /**
          * Computes and returns the bound \f$B_{\alpha}(s)\f$ given in
@@ -52,14 +52,14 @@ namespace LatticeTester {
          * If the conditions for the existence of the bound are not satisfied,
          * the function returns \f$-1\f$.
          */
-        double calcBound (int alpha, int s);
+        double calcBound (int64_t alpha, int64_t s);
 
         /**
          * Preventing the compiler from raising the warning: 
          * ''
          * latticetester/NormaPalpha.h:59:9: warning: 
          * 'LatticeTester::NormaPalpha::init' hides overloaded virtual function [-Woverloaded-virtual]
-         * void init (int alpha);
+         * void init (int64_t alpha);
          * ''
          */
         using Normalizer::computeBounds;
@@ -68,7 +68,7 @@ namespace LatticeTester {
         /**
          * Initializes the bounds for the Palpha normalization.
          */
-        void computeBounds (int alpha);
+        void computeBounds (int64_t alpha);
 
            /**
          * Initializes the bounds for the Palpha normalization.
@@ -80,7 +80,7 @@ namespace LatticeTester {
         /**
          * Returns the value of \f$\alpha\f$.
          */
-        int getAlpha () const { return m_alpha; }
+        int64_t getAlpha () const { return m_alpha; }
 
       private:
 
@@ -92,12 +92,12 @@ namespace LatticeTester {
         /**
          * The value of \f$\alpha\f$.
          */
-        int m_alpha;
+        int64_t m_alpha;
     }; // End class NormaPalpha
 
   //===========================================================================
 
-    NormaPalpha::NormaPalpha (const std::int64_t, int alpha, int maxDim,
+    NormaPalpha::NormaPalpha (const std::int64_t, int64_t alpha, int64_t maxDim,
         NormType norm):
       Normalizer (maxDim, "Palpha", norm)
     {
@@ -117,13 +117,13 @@ namespace LatticeTester {
      */
     void NormaPalpha::computeBounds ()
     {
-      for (int j = 2; j <= this->m_maxDim; j++)
+      for (int64_t j = 2; j <= this->m_maxDim; j++)
         this->m_bounds[j] = calcBound (m_alpha, j);
     }
 
   /*=========================================================================*/
 
-    double NormaPalpha::calcBound (int alpha, int dim)
+    double NormaPalpha::calcBound (int64_t alpha, int64_t dim)
     {
       double Res;
       const double eBasis = 2.71828182845904523536;
@@ -135,7 +135,7 @@ namespace LatticeTester {
         std::cout << "NormaPalpha::calcBound:  alpha < 2.   Returns -1" << std:: endl;
         return -1;
       }
-      int stat = IntFactor<int64_t>::isPrime (m_m, 0);
+      int64_t stat = IntFactor<int64_t>::isPrime (m_m, 0);
       if (stat != PRIME) {
         std::cout << "NormaPalpha::calcBound:  m is not prime.   Returns -1" << std:: endl;
         return -1;

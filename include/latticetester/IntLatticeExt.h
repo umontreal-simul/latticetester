@@ -94,7 +94,7 @@ public:
 	 *
 	 * WARNING: I have reordered the last two parameters to be consistent with IntLattice!
 	 */
-	IntLatticeExt(Int m, int maxDim, NormType norm = L2NORM, bool withDual=false);
+	IntLatticeExt(Int m, int64_t maxDim, NormType norm = L2NORM, bool withDual=false);
 
 	/**
 	 * Copy constructor that makes a copy of `lat`. The maximal dimension
@@ -117,7 +117,7 @@ public:
 	/**
 	 * This returns the rank (order) of the lattice.
 	 */
-	// int getOrder() const { return m_order; }
+	// int64_t getOrder() const { return m_order; }
 	/**
 	 * Increments the dimension of the basis and dual basis vectors by one.
 	 * This implementation initializes the added components to `0` and does not
@@ -139,7 +139,7 @@ public:
 	 * Returns \f$\log m^{2i}\f = i \log m^2$  for \f$1\le i \le k\f$,
 	 * and \f$\log m^{2k}\f$ otherwise, where \f$k\f$ is the lattice rank (or order).
 	 */
-	// double getLgVolDual2 (int i) const { return m_lgVolDual2[i]; }
+	// double getLgVolDual2 (int64_t i) const { return m_lgVolDual2[i]; }
 	/**
 	 * REMOVE: This method precomputes the log of the lattice density (or of its dual),
 	 * as a function of the dimension.  These values are part of the normalization constants used to get
@@ -163,7 +163,7 @@ public:
 	/**
 	 * This virtual method builds a basis for the lattice in `dim` dimensions.
 	 */
-	virtual void buildBasis(int dim);
+	virtual void buildBasis(int64_t dim);
 
 	/**
 	 * REMOVE: This depends on the lattice only via the density.
@@ -180,7 +180,7 @@ public:
 	 * of this lattice.
 	 */
 	// LatticeTester::Normalizer * getNormalizer (NormaType norma,
-	//    int alpha, bool dualF);
+	//    int64_t alpha, bool dualF);
 
 
 	/**
@@ -212,12 +212,12 @@ protected:
 	/**
 	 * REMOVE?  The order (rank) of the basis. Only defined in certain subclasses.
 	 */
-	// int m_order;
+	// int64_t m_order;
 	/**
 	 * The maximum Dimension for the basis (for the full lattice).
 	 * The considered projections cannot have more coordinates than this.
 	 */
-	int m_maxDim;
+	int64_t m_maxDim;
 
 	/**
 	 * A vector of normalization constants.  See `calcLgVolDual2`.
@@ -243,7 +243,7 @@ protected:
 //===========================================================================
 
 template<typename Int, typename Real>
-IntLatticeExt<Int, Real>::IntLatticeExt(Int m, int maxDim, NormType norm,  bool withDual) :
+IntLatticeExt<Int, Real>::IntLatticeExt(Int m, int64_t maxDim, NormType norm,  bool withDual) :
 		IntLattice<Int, Real>(maxDim, norm) {
 	this->m_dim = maxDim;
 	this->m_withDual = withDual;
@@ -281,7 +281,7 @@ IntLatticeExt<Int, Real>::IntLatticeExt(const IntLatticeExt<Int, Real> &lat) :
 template<typename Int, typename Real>
 void IntLatticeExt<Int, Real>::init() {
 	// Reserves space for the projections in up to the dimension dim of the full lattice.
-	int dim = this->getDim();
+	int64_t dim = this->getDim();
 	IntLattice<Int, Real>::initVecNorm();
 	// double temp;   // Used only for m_lgVolDual2.
 	// NTL::conv (temp, this->m_modulo);
@@ -329,15 +329,15 @@ void IntLatticeExt<Int, Real>::copy(const IntLatticeExt<Int, Real> &lat) {
 template<typename Int, typename Real>
 void IntLatticeExt<Int, Real>::incDim() {
 	IntLatticeExt<Int, Real> lattmp(*this);
-	int dim = this->getDim();
+	int64_t dim = this->getDim();
 	this->m_basis.resize(dim + 1, dim + 1);
 	this->m_vecNorm.resize(dim + 1);
 	if (this->m_withDual) {
 		this->m_dualbasis.resize(dim + 1, dim + 1);
 		this->m_dualvecNorm.resize(dim + 1);
 	}
-	for (int i = 0; i < dim; i++) {
-		for (int j = 0; j < dim; j++) {
+	for (int64_t i = 0; i < dim; i++) {
+		for (int64_t j = 0; j < dim; j++) {
 			this->m_basis(i, j) = lattmp.m_basis(i, j);
 			if (this->m_withDual)
 				this->m_dualbasis(i, j) = lattmp.m_dualbasis(i, j);
@@ -359,14 +359,14 @@ void IntLatticeExt<Int, Real>::incDim() {
  void IntLatticeExt<Int, Real>::calcLgVolDual2 (double lgm2)
  {
  if(!(this->m_withDual)) return;
- int dim = this->getDim();
- int rmax = std::min(m_order, dim);
+ int64_t dim = this->getDim();
+ int64_t rmax = std::min(m_order, dim);
 
  m_lgVolDual2[1] = lgm2;
- for (int r = 2; r <= rmax; r++)
+ for (int64_t r = 2; r <= rmax; r++)
  m_lgVolDual2[r] = m_lgVolDual2[r - 1] + lgm2;
  // WARNING [David]: one version had `m_order` instead of `rmax`.
- for (int r = rmax + 1; r <= dim; r++)
+ for (int64_t r = rmax + 1; r <= dim; r++)
  m_lgVolDual2[r] = m_lgVolDual2[r - 1];
  }
  */
@@ -381,10 +381,10 @@ void IntLatticeExt<Int, Real>::incDim() {
  // This is the part of the normalization that depends on the lattice density.
  if (( dualF && m_lgVolDual2[1] < 0.0) ||
  (!dualF && m_lgVolDual2[1] > 0.0)) {
- for (int i = 0; i < this->getDim(); i++)
+ for (int64_t i = 0; i < this->getDim(); i++)
  m_lgVolDual2[i] = -m_lgVolDual2[i];
  }
- //   for (int i = 1; i <= getMaxDim(); i++)
+ //   for (int64_t i = 1; i <= getMaxDim(); i++)
  //      std::cout << " fix  " << m_lgVolDual2[i] << endl;
  }ss
  */
@@ -393,14 +393,14 @@ void IntLatticeExt<Int, Real>::incDim() {
 template<typename Int, typename Real>
 void IntLatticeExt<Int, Real>::buildProjection(
 		IntLatticeExt<Int, Real> *lattice, const Coordinates &proj) {
-	const int dim = this->getDim();
+	const int64_t dim = this->getDim();
 	//  std::cout << "      ESPION_2\n";  getPrimalBasis ().write();
-	int i = 0;
+	int64_t i = 0;
 	IntMat temp, temp2;
 	temp.SetDims(dim, dim);
 	temp2.SetDims(dim, dim);
 	for (auto iter = proj.begin(); iter != proj.end(); ++iter) {
-		for (int j = 0; j < dim; j++) {
+		for (int64_t j = 0; j < dim; j++) {
 			temp(j, i) = this->m_basis(j, (*iter));
 		}
 		++i;
@@ -427,7 +427,7 @@ void IntLatticeExt<Int, Real>::buildProjection(
 //===========================================================================
 
 template<typename Int, typename Real>
-void IntLatticeExt<Int, Real>::buildBasis(int d) {
+void IntLatticeExt<Int, Real>::buildBasis(int64_t d) {
 	// To be re-implemented in subclasses.
 	MyExit(1, " buildBasis(d) does nothing, must be inmplemented in subclass");
 	d++;  // eliminates compiler warning
@@ -438,9 +438,9 @@ void IntLatticeExt<Int, Real>::buildBasis(int d) {
 /**
  template<typename Int, typename Real>
  Normalizer<Real> * IntLatticeExt<Int, Real>::getNormalizer(
- NormaType norma, int alpha, bool dualF)
+ NormaType norma, int64_t alpha, bool dualF)
  {
- int dim = this->getDim();
+ int64_t dim = this->getDim();
  Normalizer<Real> *normal;
 
  Real logDensity;

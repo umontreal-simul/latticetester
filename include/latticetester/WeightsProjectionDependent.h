@@ -66,7 +66,7 @@ namespace LatticeTester {
       /**
        * Returns the number of weights.
        */
-      virtual unsigned int getSize () const 
+      virtual unsigned int64_t getSize () const
       { return (unsigned int) m_weights.size(); } 
 
       /**

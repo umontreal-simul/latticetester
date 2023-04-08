@@ -44,7 +44,7 @@ namespace LatticeTester {
          * Constructor for a factor \f$x\f$ of multiplicity `mult` that has a 
          * PrimeType `stat`
          */
-        IntFactor (const Int & x, int mult = 1,
+        IntFactor (const Int & x, int64_t mult = 1,
             PrimeType stat = UNKNOWN):
           m_factor (x), m_multiplicity (mult), m_status (stat) {   }
 
@@ -61,12 +61,12 @@ namespace LatticeTester {
         /**
          * Returns the multiplicity of this object.
          */
-        int getMultiplicity () const { return m_multiplicity; }
+        int64_t getMultiplicity () const { return m_multiplicity; }
 
         /**
          * Sets the multiplicity of this object to \f$m\f$.
          */
-        void setMultiplicity (int m) { m_multiplicity = m; }
+        void setMultiplicity (int64_t m) { m_multiplicity = m; }
 
         /**
          * Returns the PrimeType of this object.
@@ -115,7 +115,7 @@ namespace LatticeTester {
         /**
          * The multiplicity of this factor.
          */
-        int m_multiplicity;
+        int64_t m_multiplicity;
 
         /**
          * The status of this factor, i.e. whether it is prime, composite, ...
@@ -180,7 +180,7 @@ namespace LatticeTester {
       LIM = NTL::conv<NTL::ZZ>("4295098369");
 
       Int ys = NTL::SqrRoot (y);
-      unsigned int i = 1;
+      uint64_t i = 1;
       while (i < NB_PRIMES && (NbPrem <= ys)) {
         if (y % NbPrem == 0)
           return COMPOSITE;

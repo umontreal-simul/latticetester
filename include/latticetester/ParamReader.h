@@ -58,7 +58,7 @@ namespace LatticeTester {
         typedef NTL::vector<Int> IntVec;
         typedef NTL::matrix<Int> IntMat;
       public:
-        static const int MAX_WORD_SIZE = 64;
+        static const int64_t MAX_WORD_SIZE = 64;
 
         /**
          * Empty constructor. Allocates space for a word.
@@ -88,44 +88,44 @@ namespace LatticeTester {
          * Reads a string from the <tt>pos</tt>-th token of the <tt>ln</tt>-th
          * line into `field`.
          */
-        void readString (std::string & field, unsigned int ln,
-            unsigned int pos);
+        void readString (std::string & field, uint64_t ln,
+            uint64_t pos);
 
         /**
          * Reads a boolean from the <tt>pos</tt>-th token of the <tt>ln</tt>-th
          * line into `field`.
          */
-        void readBool (bool & field, unsigned int ln, unsigned int pos);
+        void readBool (bool & field, uint64_t ln, uint64_t pos);
 
         /**
          * Reads a character from the <tt>pos</tt>-th token of the
          * <tt>ln</tt>-th line into `field`.
          */
-        void readChar (char & field, unsigned int ln, unsigned int pos);
+        void readChar (char & field, uint64_t ln, uint64_t pos);
 
         /**
          * Reads an integer from the <tt>pos</tt>-th token of the
          * <tt>ln</tt>-th line into `field`.
          */
-        void readInt (int & field, unsigned int ln, unsigned int pos);
+        void readInt (int64_t & field, uint64_t ln, uint64_t pos);
 
         /**
          * Reads a std::int64_t from the <tt>pos</tt>-th token of the <tt>ln</tt>-th
          * line into `field`.
          */
-        void readLong (std::int64_t & field, unsigned int ln, unsigned int pos);
+        void readLong (std::int64_t & field, uint64_t ln, uint64_t pos);
 
         /**
          * Reads a large integer from the <tt>pos</tt>-th token of the
          * <tt>ln</tt>-th line into `field`.
          */
-        void readZZ (NTL::ZZ & field, unsigned int ln, int pos);
+        void readZZ (NTL::ZZ & field, uint64_t ln, int64_t pos);
 
         /**
          * Reads a double from the <tt>pos</tt>-th token of the <tt>ln</tt>-th
          * line into `field`.
          */
-        void readDouble (double & field, unsigned int ln, unsigned int pos);
+        void readDouble (double & field, uint64_t ln, uint64_t pos);
 
         /**
          * Reads \f$b\f$, \f$e\f$ and \f$c\f$, starting at the <tt>pos</tt>-th
@@ -143,13 +143,13 @@ namespace LatticeTester {
          * will give \f$r=-31\f$.
          */
         void readNumber3 (Int & r, std::int64_t & b, std::int64_t & e, std::int64_t & c,
-            unsigned int ln, unsigned int pos);
+            uint64_t ln, uint64_t pos);
 
         /**
          * Reads a `BScal` from the <tt>pos</tt>-th token of the <tt>ln</tt>-th
          * line into `field`.
          */
-        void readBScal (Int & field, unsigned int ln, int pos);
+        void readBScal (Int & field, uint64_t ln, int64_t pos);
 
         /**
          * Reads a square `BMat` of size `numPos*numPos` from the 
@@ -158,8 +158,8 @@ namespace LatticeTester {
          * file, starting from token at the position `pos`. `fields` has to be
          * initialized to the right size.
          */
-        void readBMat (IntMat & fields, unsigned int & ln, unsigned int pos,
-            unsigned int numPos, unsigned int numCols);
+        void readBMat (IntMat & fields, uint64_t & ln, uint64_t pos,
+            uint64_t numPos, uint64_t numCols);
 
         /**
          * Reads a square `BMat` of size `numPos*numPos` from the 
@@ -168,44 +168,44 @@ namespace LatticeTester {
          * file, starting from token at the position `pos`. `fields` has to be
          * initialized to the right size.
          */
-        void readBMat (IntMat & fields, unsigned int & ln, unsigned int pos,
-            unsigned int numPos);
+        void readBMat (IntMat & fields, uint64_t & ln, uint64_t pos,
+            uint64_t numPos);
 
         /**
          * Reads a `Int` from the <tt>pos</tt>-th token of the <tt>ln</tt>-th
          * line into `field`.
          */
-        void readMScal (Int & field, unsigned int ln, unsigned int pos);
+        void readMScal (Int & field, uint64_t ln, uint64_t pos);
 
         /**
          * Reads a `Real` from the <tt>pos</tt>-th token of the <tt>ln</tt>-th
          * line into `field`.
          */
-        void readReal (Real & field, unsigned int ln, unsigned int pos);
+        void readReal (Real & field, uint64_t ln, uint64_t pos);
 
         /**
          * Reads `num` tokens (from the <tt>pos</tt>-th token of the
          * <tt>ln</tt>-th line) into `field`, starting at index \f$j\f$ of
          * `field`.
          */
-        void readMVect (IntVec & field, unsigned int & ln, unsigned int pos,
-            unsigned int num, int j);
+        void readMVect (IntVec & field, uint64_t & ln, uint64_t pos,
+            uint64_t num, int64_t j);
 
         /**
          * Reads `num` tokens (from the <tt>pos</tt>-th token of the
          * <tt>ln</tt>-th line) into `field`, starting at index \f$j\f$ of
          * `field`.
          */
-        void readIntVect (int* field, unsigned int ln, unsigned int pos,
-            unsigned int num, int j);
+        void readIntVect (int64_t * field, uint64_t ln, uint64_t pos,
+            uint64_t num, int64_t j);
 
         /**
          * Reads `num` tokens (from the <tt>pos</tt>-th token of the
          * <tt>ln</tt>-th line) into `field`, starting at index \f$j\f$ of
          * `field`.
          */
-        void readDoubleVect (double* field, unsigned int ln, unsigned int pos,
-            unsigned int num, int j);
+        void readDoubleVect (double* field, uint64_t ln, uint64_t pos,
+            uint64_t num, int64_t j);
 
         /**
          * Reads `2k MScal` tokens into vectors `B` and `C`, starting at the
@@ -215,57 +215,57 @@ namespace LatticeTester {
          * coefficient may be given in the form described in `readNumber3`
          * above.
          */
-        //void readInterval (MVect & B, MVect & C, unsigned int & ln, int k);
+        //void readInterval (MVect & B, MVect & C, uint64_t & ln, int64_t k);
 
         /**
          * Reads a norm from the <tt>pos</tt>-th token of the <tt>ln</tt>-th
          * line into `field`.
          */
-        void readNormType (NormType & field, unsigned int ln,
-            unsigned int pos);
+        void readNormType (NormType & field, uint64_t ln,
+            uint64_t pos);
 
         /**
          * Reads a problem type from the <tt>pos</tt>-th token of the
          * <tt>ln</tt>-th line into `field`.
          */
-        void readProblemType (ProblemType& field, unsigned int ln,
-            unsigned int pos);
+        void readProblemType (ProblemType& field, uint64_t ln,
+            uint64_t pos);
 
         /**
          * Reads a test type from the <tt>pos</tt>-th token of the
          * <tt>ln</tt>-th line into `field`.
          */
-        void readCriterionType (CriterionType& field, unsigned int ln,
-            unsigned int pos);
+        void readCriterionType (CriterionType& field, uint64_t ln,
+            uint64_t pos);
 
         /**
          * Reads a type of normalization from the <tt>pos</tt>-th token of the
          * <tt>ln</tt>-th line into `field`.
          */
-        void readNormaType (NormaType & field, unsigned int ln,
-            unsigned int pos);
+        void readNormaType (NormaType & field, uint64_t ln,
+            uint64_t pos);
 
         /**
          * Reads a type of precision from the <tt>pos</tt>-th token of the
          * <tt>ln</tt>-th line into `field`.
          */
-        void readPrecisionType (PrecisionType & field, unsigned int ln,
-            unsigned int pos);
+        void readPrecisionType (PrecisionType & field, uint64_t ln,
+            uint64_t pos);
 
         /**
          * Reads a type of PreReduction from the <tt>pos</tt>-th token of the
          * <tt>ln</tt>-th line into `field`.
          */
-        void readPreRed (PreReductionType & field, unsigned int ln,
-            unsigned int pos);
+        void readPreRed (PreReductionType & field, uint64_t ln,
+            uint64_t pos);
 
 
         /**
          * Reads an output form from the <tt>pos</tt>-th token of the
          * <tt>ln</tt>-th line into `field`.
          */
-        void readOutputType (OutputType & field, unsigned int ln,
-            unsigned int pos);
+        void readOutputType (OutputType & field, uint64_t ln,
+            uint64_t pos);
 
         /**
          * Reads the configuration file into `config`. This reads the file, 
@@ -283,21 +283,21 @@ namespace LatticeTester {
          * string token that can then be converted. This method uses `tokenize`
          * to split the line it has to operate on.
          */
-        void getToken (std::string & field, unsigned int ln, unsigned int pos);
+        void getToken (std::string & field, uint64_t ln, uint64_t pos);
 
         /**
          * This can be called to read a basis construction configuration from
          * the file starting from `ln` (without the `BASIS` line).
          * */
         void readBasisConfig (Config<Int, IntMat> & config,
-            unsigned int& ln);
+            uint64_t & ln);
 
         /**
          * This can be called to read a dual computation configuration from
          * the file starting from `ln` (without the `DUAL` line).
          */
         void readDualConfig (Config<Int, IntMat> & config,
-            unsigned int& ln);
+            uint64_t & ln);
 
 
         /**
@@ -305,7 +305,7 @@ namespace LatticeTester {
          * the file starting from `ln` (without the `REDUCT` line).
          */
         void readReductionConfig (Config<Int, IntMat> & config,
-            unsigned int& ln);
+            uint64_t & ln);
 
 
         /**
@@ -313,7 +313,7 @@ namespace LatticeTester {
          * from the file starting from `ln` (without the `SHORTEST` line).
          */
         void readShortestConfig (Config<Int, IntMat> & config,
-            unsigned int& ln);
+            uint64_t & ln);
 
 
         /**
@@ -322,7 +322,7 @@ namespace LatticeTester {
          * (without the `MERIT` line).
          */
         void readMeritConfig (Config<Int, IntMat> & config,
-            unsigned int& ln);
+            uint64_t & ln);
 
       private:
 
@@ -350,7 +350,7 @@ namespace LatticeTester {
          * function calls `isDelim` on every character to split the line at any
          * of ` ?!,\t\n`. Tokens are stored in vector `tokens`.
          */
-        int tokenize (std::vector<std::string> & tokens, unsigned int ln);
+        int64_t tokenize (std::vector<std::string> & tokens, uint64_t ln);
 
         /**
          * Does nothing for now.
@@ -383,7 +383,7 @@ namespace LatticeTester {
   template<typename Int, typename Real>
     ParamReader<Int, Real>::~ParamReader()
     {
-      for (int i = 0; i < (int) m_lines.size(); i++)
+      for (int64_t i = 0; i < (int) m_lines.size(); i++)
         m_lines[i].clear();
       m_lines.clear();
     }
@@ -418,7 +418,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::getToken(
-        std::string& field, unsigned int ln, unsigned int pos)
+        std::string& field, uint64_t ln, uint64_t pos)
     {
       std::vector<std::string> tokens;
       tokens.reserve(20);
@@ -439,7 +439,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readBasisConfig(
-        Config<Int, IntMat> & config, unsigned int& ln)
+        Config<Int, IntMat> & config, uint64_t & ln)
     {
       config.config.basis = {};
       std::string method;
@@ -460,7 +460,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readDualConfig(
-        Config<Int, IntMat> & config, unsigned int& ln)
+        Config<Int, IntMat> & config, uint64_t & ln)
     {
       config.config.dual = {};
       readOutputType(config.outputType, ++ln, 0);
@@ -474,7 +474,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readReductionConfig(
-        Config<Int, IntMat> & config, unsigned int& ln)
+        Config<Int, IntMat> & config, uint64_t & ln)
     {
       config.config.reduct = {};
       readPreRed(config.config.reduct.method, ++ln, 0);
@@ -489,7 +489,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readShortestConfig(
-        Config<Int, IntMat> & config, unsigned int& ln)
+        Config<Int, IntMat> & config, uint64_t & ln)
     {
       config.config.shortest = {};
       bool reduction;
@@ -506,8 +506,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readMeritConfig(
-        Config<Int, IntMat> & config, unsigned int& ln)
-    {
+          Config<Int, IntMat> & config, uint64_t & ln) {
       config.config.merit = {};
       readCriterionType(config.config.merit.figure, ++ln, 0);
       readNormaType(config.config.merit.norma, ++ln, 0);
@@ -523,8 +522,8 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int, typename Real>
-    int ParamReader<Int, Real>::tokenize(
-        std::vector<std::string>& tokens, unsigned int ln)
+    int64_t ParamReader<Int, Real>::tokenize(
+        std::vector<std::string>& tokens, uint64_t ln)
     {
       if (ln >= m_lines.size()) {
         std::cerr << "Warning: line " << ln << " doesn't exist in param file\n";
@@ -532,10 +531,10 @@ namespace LatticeTester {
       }
       std::string str = m_lines[ln];
       std::string word;
-      int wnum = 0;
+      int64_t wnum = 0;
       bool firstFound = false;
       char c = 0;
-      for (unsigned int i = 0; i < str.length(); i++) {
+      for (uint64_t i = 0; i < str.length(); i++) {
         c = str[i];
         if (!isDelim(c)) {
           std::string tmp(1, c);
@@ -571,7 +570,7 @@ namespace LatticeTester {
     {
       const std::string delim = " ?!,\t\n";
       bool bRetVal = 0;
-      for (int i = 0; delim[i] != 0; ++i) {
+      for (int64_t i = 0; delim[i] != 0; ++i) {
         if (delim[i] == c) {
           bRetVal = 1;
           break;
@@ -586,7 +585,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readBool(
-        bool & field, unsigned int ln, unsigned int pos)
+        bool & field, uint64_t ln, uint64_t pos)
     {
       std::string val;
       getToken(val, ln, pos);
@@ -604,7 +603,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readString(
-        std::string & field, unsigned int ln, unsigned int pos)
+        std::string & field, uint64_t ln, uint64_t pos)
     {
       std::string val;
       getToken(val, ln, pos);
@@ -616,7 +615,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readChar(
-        char & field, unsigned int ln, unsigned int pos)
+        char & field, uint64_t ln, uint64_t pos)
     {
       std::string val;
       getToken(val, ln, pos);
@@ -627,8 +626,8 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readNumber3 (
-        Int & m, std::int64_t & m1, std::int64_t & m2, std::int64_t & m3, unsigned int ln, 
-        unsigned int pos)
+        Int & m, std::int64_t & m1, std::int64_t & m2, std::int64_t & m3, uint64_t ln,
+        uint64_t pos)
     {
       m2 = m3 = 0;
       std::string val;
@@ -651,7 +650,7 @@ namespace LatticeTester {
       in3 >> m3;
       if (! in3)
         return;
-      int sign;
+      int64_t sign;
       if (m < 0) {
         sign = -1;
         m = -m;
@@ -664,8 +663,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readInt(
-        int& field, unsigned int ln, unsigned int pos)
-    {
+        int64_t & field, uint64_t ln, uint64_t pos) {
       std::string val;
       getToken(val, ln, pos);
       field = (int) strtol(val.c_str(), (char **)NULL, 10);
@@ -676,7 +674,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readLong(
-        std::int64_t& field, unsigned int ln, unsigned int pos)
+        std::int64_t& field, uint64_t ln, uint64_t pos)
     {
       std::string val;
       getToken(val, ln, pos);
@@ -688,7 +686,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readZZ(
-        NTL::ZZ & field, unsigned int ln, int pos)
+        NTL::ZZ & field, uint64_t ln, int64_t pos)
     {
       std::string val;
       getToken(val, ln, pos);
@@ -700,7 +698,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readDouble(
-        double& field, unsigned int ln, unsigned int pos)
+        double& field, uint64_t ln, uint64_t pos)
     {
       std::string val;
       getToken(val, ln, pos);
@@ -712,7 +710,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readMScal(
-        Int & field, unsigned int ln, unsigned int pos)
+        Int & field, uint64_t ln, uint64_t pos)
     {
       std::string val;
       getToken(val, ln, pos);
@@ -723,7 +721,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readBScal(
-        Int& field, unsigned int ln, int pos)
+        Int& field, uint64_t ln, int64_t pos)
     {
       std::string val;
       getToken(val, ln, pos);
@@ -734,10 +732,10 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readMVect(
-        IntVec & fields, unsigned int & ln, unsigned int pos,
-        unsigned int numPos, int j)
+        IntVec & fields, uint64_t & ln, uint64_t pos,
+        uint64_t numPos, int64_t j)
     {
-      for (unsigned int i = pos; i < numPos; i++) {
+      for (uint64_t i = pos; i < numPos; i++) {
         readMScal(fields[j], ln, i);
         j++;
       }
@@ -747,11 +745,11 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readBMat(
-        IntMat & fields, unsigned int & ln, unsigned int pos,
-        unsigned int numPos, unsigned int numCols)
+        IntMat & fields, uint64_t & ln, uint64_t pos,
+        uint64_t numPos, uint64_t numCols)
     {
-      for (unsigned int i = pos; i < numPos; i++){
-        for (unsigned int j = pos; j < numCols; j++){
+      for (uint64_t i = pos; i < numPos; i++){
+        for (uint64_t j = pos; j < numCols; j++){
           readBScal(fields(i,j), ln, j);
         }
         ln++;
@@ -763,11 +761,11 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readBMat(
-        IntMat & fields, unsigned int & ln, unsigned int pos,
-        unsigned int numPos)
+        IntMat & fields, uint64_t & ln, uint64_t pos,
+        uint64_t numPos)
     {
-      for (unsigned int i = pos; i < numPos; i++){
-        for (unsigned int j = pos; j < numPos; j++){
+      for (uint64_t i = pos; i < numPos; i++){
+        for (uint64_t j = pos; j < numPos; j++){
           readBScal(fields(i,j), ln, j);
         }
         ln++;
@@ -779,9 +777,9 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readIntVect (
-        int* fields, unsigned int ln, unsigned int pos, unsigned int num, int j)
+        int64_t* fields, uint64_t ln, uint64_t pos, uint64_t num, int64_t j)
     {
-      for (unsigned int i = pos; i < num; i++) {
+      for (uint64_t i = pos; i < num; i++) {
         readInt(fields[j], ln, i);
         j++;
       }
@@ -791,10 +789,10 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readDoubleVect(
-        double* fields, unsigned int ln, unsigned int pos, unsigned int numPos,
-        int j)
+        double* fields, uint64_t ln, uint64_t pos, uint64_t numPos,
+        int64_t j)
     {
-      for (unsigned int i = pos; i <= numPos; i++) {
+      for (uint64_t i = pos; i <= numPos; i++) {
         readDouble(fields[j], ln, i);
         j++;
       }
@@ -804,10 +802,10 @@ namespace LatticeTester {
   //===========================================================================
 
   /*
-   * void ParamReader::readInterval (MVect & B, MVect & C, unsigned int & ln, int k)
+   * void ParamReader::readInterval (MVect & B, MVect & C, uint64_t & ln, int64_t k)
    * {
    * std::int64_t m1, m2, m3;
-   * for (int i = 1; i <= k; i++) {
+   * for (int64_t i = 1; i <= k; i++) {
    * readNumber3 (B[i], m1, m2, m3, ++ln, 1);
    * readNumber3 (C[i], m1, m2, m3, ++ln, 1);
    * assert (C[i] >= B[i]);
@@ -819,7 +817,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readProblemType(
-        ProblemType& field, unsigned int ln, unsigned int pos)
+        ProblemType& field, uint64_t ln, uint64_t pos)
     {
       std::string val;
       getToken(val, ln, pos);
@@ -845,7 +843,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readCriterionType(
-        CriterionType& field, unsigned int ln, unsigned int pos)
+        CriterionType& field, uint64_t ln, uint64_t pos)
     {
       std::string val;
       getToken(val, ln, pos);
@@ -867,7 +865,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readNormType (
-        NormType & field, unsigned int ln, unsigned int pos)
+        NormType & field, uint64_t ln, uint64_t pos)
     {
       std::string val;
       getToken(val, ln, pos);
@@ -893,7 +891,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readNormaType(
-        NormaType& field, unsigned int ln, unsigned int pos)
+        NormaType& field, uint64_t ln, uint64_t pos)
     {
       std::string val;
       getToken(val, ln, pos);
@@ -925,7 +923,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readPrecisionType(
-        PrecisionType& field, unsigned int ln, unsigned int pos)
+        PrecisionType& field, uint64_t ln, uint64_t pos)
     {
       std::string val;
       getToken(val, ln, pos);
@@ -951,7 +949,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readOutputType(
-        OutputType & field, unsigned int ln, unsigned int pos)
+        OutputType & field, uint64_t ln, uint64_t pos)
     {
       std::string val;
       getToken(val, ln, pos);
@@ -975,7 +973,7 @@ namespace LatticeTester {
 
   template<typename Int, typename Real>
     void ParamReader<Int, Real>::readPreRed(
-        PreReductionType& field, unsigned int ln, unsigned int pos)
+        PreReductionType& field, uint64_t ln, uint64_t pos)
     {
       std::string val;
       getToken(val, ln, pos);
@@ -1001,7 +999,7 @@ namespace LatticeTester {
         Config<Int, IntMat> & config)
     {
       getLines ();
-      unsigned int ln = 0;
+      uint64_t ln = 0;
 
       config.filename = m_fileName;
       readProblemType (config.prob, ln, 0);
@@ -1018,9 +1016,9 @@ namespace LatticeTester {
       }
     }
 
-  extern template class ParamReader<std::int64_t, double>;
-  extern template class ParamReader<NTL::ZZ, double>;
-  extern template class ParamReader<NTL::ZZ, NTL::RR>;
+  template class ParamReader<std::int64_t, double>;
+  template class ParamReader<NTL::ZZ, double>;
+  template class ParamReader<NTL::ZZ, NTL::RR>;
 
 } // End namespace LatticeTester
 

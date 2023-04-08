@@ -48,7 +48,7 @@ namespace LatticeTester {
         /**
          * Constructor for a set of \f$t\f$ indices given in the vector `C`.
          */
-        Lacunary (const IntVec & C, int t)
+        Lacunary (const IntVec & C, int64_t t)
         {
           m_dim = t; 
           CreateVect (m_lac, t);
@@ -61,7 +61,7 @@ namespace LatticeTester {
          * should use either one `[]` or `getLac`, or the `calcIndicesStreams()`
          * method.
          */
-        explicit Lacunary (int t = 0) 
+        explicit Lacunary (int64_t t = 0)
         {
           m_dim = t; 
           LatticeTester::CreateVect (m_lac, t); 
@@ -76,19 +76,19 @@ namespace LatticeTester {
          * Returns a reference to the value of <tt>m_lac[i]</tt>. (`m_lac` is
          * the underlying vector storing the set of indices.)
          */
-        Int & operator[] (int i) {return m_lac[i];}
+        Int & operator[] (int64_t i) {return m_lac[i];}
 
         /**
          * Calling the `object.getLac(i)` gives the same result than calling
          * `object[i]`.
          */
-        Int & getLac (int i) {return m_lac[i];}
+        Int & getLac (int64_t i) {return m_lac[i];}
 
         /**
          * Returns the size of the set, that is the number of elements in the
          * vector of indices.
          */
-        int getSize () const { return m_dim; }
+        int64_t getSize () const { return m_dim; }
 
         /**
          * Fills the values of this object with `maxDim` indices starting from
@@ -96,7 +96,7 @@ namespace LatticeTester {
          * this is the case of non-lacunary indices. Returns `true` in the
          * lacunary case, and `false` otherwise.
          */
-        bool calcIndicesStreams (int s, int w, int maxDim);
+        bool calcIndicesStreams (int64_t s, int64_t w, int64_t maxDim);
 
         /**
          * Returns a string that describes this object. This string will contain
@@ -109,7 +109,7 @@ namespace LatticeTester {
         /**
          * The dimension (or size) of <tt>m_lac</tt>.
          */
-        int m_dim;
+        int64_t m_dim;
 
         /**
          * The set of lacunary indices is <tt>m_lac[j]</tt> for \f$j = 0, 1,
@@ -127,7 +127,7 @@ namespace LatticeTester {
       std::ostringstream out;
       out << "dim = " << m_dim;
       out << "\nLac = {\n   ";
-      for (int i = 0; i < m_dim; i++)
+      for (int64_t i = 0; i < m_dim; i++)
         out << m_lac[i] << "\n   ";
       out << "}\n";
       return out.str ();
@@ -137,7 +137,7 @@ namespace LatticeTester {
   /*=========================================================================*/
 
   template<typename Int>
-    bool Lacunary<Int>::calcIndicesStreams (int s, int w, int maxDim)
+    bool Lacunary<Int>::calcIndicesStreams (int64_t s, int64_t w, int64_t maxDim)
     {
 
       if (m_dim < maxDim) {
@@ -150,9 +150,9 @@ namespace LatticeTester {
       NTL::power2 (t1, (std::int64_t) w);
       Int t;
       t = 0;
-      int i = 0;
+      int64_t i = 0;
       while (true) {
-        for (int j = 0; j < s; j++) {
+        for (int64_t j = 0; j < s; j++) {
           if (i < maxDim) {
             m_lac[i] = t + j;
             i++;

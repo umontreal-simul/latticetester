@@ -65,7 +65,7 @@ class Rank1Lattice: public IntLatticeExt<Int, Real> {
          * This constructor does not build the basis, to leave
          * more flexibility in the dimension when doing so.
          */
-        Rank1Lattice (const Int & m, const IntVec & aa, int maxDim,
+        Rank1Lattice (const Int & m, const IntVec & aa, int64_t maxDim,
             // LatticeTester::NormType norm = LatticeTester::L2NORM);
             NormType norm = L2NORM);
 
@@ -74,7 +74,7 @@ class Rank1Lattice: public IntLatticeExt<Int, Real> {
          * Here the generating vector has the form aa = (1, a, a^2 mod m, a^3 mod m, ...)
          * where a is an integer such that 1 < a < m.
          */
-        Rank1Lattice (const Int & m, const Int & a, int maxDim,
+        Rank1Lattice (const Int & m, const Int & a, int64_t maxDim,
             NormType norm = L2NORM);
 
         /**
@@ -133,7 +133,7 @@ class Rank1Lattice: public IntLatticeExt<Int, Real> {
 
 template<typename Int, typename Real>
 Rank1Lattice<Int, Real>::Rank1Lattice (
-         const Int & m, const IntVec & aa, int maxDim, NormType norm):
+         const Int & m, const IntVec & aa, int64_t maxDim, NormType norm):
          IntLatticeExt<Int, Real> (m, maxDim, true, norm) {
     this->m_a = aa;
     init();
@@ -143,7 +143,7 @@ Rank1Lattice<Int, Real>::Rank1Lattice (
 
 template<typename Int, typename Real>
 Rank1Lattice<Int, Real>::Rank1Lattice (
-        const Int & m, const Int & a, int maxDim, NormType norm):
+        const Int & m, const Int & a, int64_t maxDim, NormType norm):
         IntLatticeExt<Int, Real> (m, maxDim, true, norm) {
     m_a.SetDim(maxDim);
 	Int powa(1);  m_a[0] = powa;
@@ -166,7 +166,7 @@ Rank1Lattice<Int, Real>::~Rank1Lattice() {
 template<typename Int, typename Real>
 void Rank1Lattice<Int, Real>::init() {
     IntLatticeExt<Int, Real>::init();
-      // for (int r = 1; r < this->getDim(); r++)
+      // for (int64_t r = 1; r < this->getDim(); r++)
       //   this->m_lgVolDual2[r] = this->m_lgVolDual2[r - 1];
     }
 
@@ -222,11 +222,11 @@ void Rank1Lattice<Int, Real>::buildBasis (long d) {
       this->m_dualbasis.SetDims(d,d);
 
       // conv(m_v[1][1], 1);
-      for (int j = 0; j < d; j++) {
+      for (int64_t j = 0; j < d; j++) {
         this->m_basis (0, j) = this->m_a[j];
       }
-      for (int i = 1; i < d; i++) {
-        for (int j = 0; j < d; j++) {
+      for (int64_t i = 1; i < d; i++) {
+        for (int64_t j = 0; j < d; j++) {
           if (i == j) {
             this->m_basis (i, j) = this->m_modulo;
           } else {

@@ -82,7 +82,7 @@ namespace LatticeTester
 
   std::int64_t gcd (std::int64_t u, std::int64_t v)
   {
-    int shift;
+    int64_t shift;
     if (u < 0) u = -u;
     if (v < 0) v = -v;
 
@@ -124,7 +124,7 @@ namespace LatticeTester
 
   //===========================================================================
 
-  void MyExit (int status, std::string msg)
+  void MyExit (int64_t status, std::string msg)
   {
     std::cout << "\n***** Error " << msg << std::endl;
     exit (status);
@@ -134,12 +134,12 @@ namespace LatticeTester
 
   //===========================================================================
 
-  std::int64_t Factorial(int t)
+  std::int64_t Factorial(int64_t t)
   {
     if (t == 0 || t == 1)
       return 1;
     long fact = 1;
-    for (int i = 2;i <= t;i++) {
+    for (int64_t i = 2;i <= t;i++) {
       fact *= i;
     }
     return fact;
@@ -173,7 +173,7 @@ namespace LatticeTester
     return i + (std::uint64_t) (res / q);
   }
 
-  // Cuts the last bits of LFSR258 64 bits int and converts it to a double
+  // Cuts the last bits of LFSR258 64 bits int64_t and converts it to a double
   // precision number
   double RandU01()
   {
@@ -181,7 +181,7 @@ namespace LatticeTester
   }
 
 
-  std::uint64_t RandBits (int s)
+  std::uint64_t RandBits (int64_t s)
   {
     return RandValue () >> (64 - s);
   }

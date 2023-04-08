@@ -79,7 +79,7 @@
 using namespace LatticeTester;
 
 int main() {
-  int size = 9;
+  int64_t size = 9;
   BasisConstruction<Int> constr; // The basis constructor we will use
   // Those two lines create a reader and ready it to be used.
   ParamReader<Int, Real> reader("44matrixEx.dat");
@@ -96,7 +96,7 @@ int main() {
   IntMat matrix(size, size); // The "recipient"
   IntMat matrixUpper(size, size); // The "recipient"
   Int m(1021);
-  unsigned int ln = 0; // The line counter
+  unsigned int64_t ln = 0; // The line counter
   reader.readBMat(matrix, ln, 0, size);
 
   // Creation of a writer object for file IOExample.out
@@ -114,9 +114,9 @@ int main() {
   writer.newLine();
   writer.writeString("Here is another one.");
   writer.newLine();
-  for (int i = 0; i < matrix.NumRows(); i++) {
+  for (int64_t i = 0; i < matrix.NumRows(); i++) {
     writer.writeString("[");
-    for (int j = 0; j < matrix.NumCols(); j++) {
+    for (int64_t j = 0; j < matrix.NumCols(); j++) {
       writer.writeIntScal(matrix[i][j]);
       if (j == matrix.NumCols()-1) continue;
       writer.writeString(" ");

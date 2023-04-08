@@ -1,4 +1,4 @@
-# This is a comment. This will not count thowards the line count once getLines() has been used.
+# This is a comment. This will not count towards the line count once getLines() has been used.
 # The matrix below is a random non-singular matrix of integers <= 2^31-1
 1 0 0 0 943 663 207 454 496 455 
 0 1 0 0 447 818 247 360 658 866 

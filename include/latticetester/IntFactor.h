@@ -224,8 +224,8 @@ namespace LatticeTester {
       return stat;
     }
 
-  extern template class IntFactor<NTL::ZZ>;
-  extern template class IntFactor<std::int64_t>;
+template class IntFactor<NTL::ZZ>;
+template class IntFactor<std::int64_t>;
 
 }     // namespace LatticeTester
 

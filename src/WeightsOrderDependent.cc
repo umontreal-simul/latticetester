@@ -89,7 +89,7 @@ namespace LatticeTester
 //         node = dnode.child("dimension");
 //         if (!node)
 //           throw pugi::xml_error(dnode, "missing <dimension> element");
-//         int dimension = lexical_cast<int>(node.child_value());
+//         int64_t dimension = lexical_cast<int>(node.child_value());
 // 
 //         // store weight
 //         o->setWeightForOrder(dimension, weight);

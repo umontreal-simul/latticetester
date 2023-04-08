@@ -60,7 +60,7 @@
 using namespace LatticeTester;
 
 
-  const int many_primes = 6;
+  const int64_t many_primes = 6;
   const std::string primes[] = {"1021", "1048573", "1073741827", "1099511627791",
                   "1125899906842597", "18446744073709551629"};
 namespace
@@ -80,17 +80,17 @@ int main()
   double tps = 0;
   //
 
-  for (int j = 0; j < 15; j++)
+  for (int64_t j = 0; j < 15; j++)
   {
-    for (int k = 0; k < 10; k++)
+    for (int64_t k = 0; k < 10; k++)
     {
       //! Variables definition
       ParamReader<Int, Real> reader;
       BasisConstruction<Int> constr; // The basis constructor we will use
       std::string name;
-      int numlines;
+      int64_t numlines;
       IntMat matrix1, matrix2;
-      unsigned int ln;
+      uint64_t ln;
       Int m(1021);
 
       name = "bench/" + prime + "_" + std::to_string(5 * (j + 1)) + "_" + std::to_string(k);
@@ -113,9 +113,9 @@ int main()
   }
 
   std::cout << "Print the array that contain computation tine with the BasisConstruction::upperTriangular \n";
-  for (int i = 0; i < 15; i++)
+  for (int64_t i = 0; i < 15; i++)
   {
-    for (int j = 0; j < 10; j++)
+    for (int64_t j = 0; j < 10; j++)
     {
       std::cout << matTriangularTime(i, j) << "   ";
     }
@@ -124,16 +124,16 @@ int main()
 
   // we repaeat the same code but this time we use Util::triangularization method
 
-  for (int j = 0; j < 15; j++)
+  for (int64_t j = 0; j < 15; j++)
   {
-    for (int k = 0; k < 10; k++)
+    for (int64_t k = 0; k < 10; k++)
     {
 
       ParamReader<Int, Real> reader;
       std::string name;
-      int numlines;
+      int64_t numlines;
       IntMat matrix1, matrix2;
-      unsigned int ln;
+      uint64_t ln;
       // BasisConstruction<Int> constr;
       Int m(1021);
       name = "bench/" + prime + "_" + std::to_string(5 * (j + 1)) + "_" + std::to_string(k);
@@ -159,9 +159,9 @@ int main()
   }
 
   std::cout << "Print the array that contain computation tine with the Util::Triangularization \n";
-  for (int i = 0; i < 15; i++)
+  for (int64_t i = 0; i < 15; i++)
   {
-    for (int j = 0; j < 10; j++)
+    for (int64_t j = 0; j < 10; j++)
     {
       std::cout << matTriangularTime(i, j) << "   ";
     }

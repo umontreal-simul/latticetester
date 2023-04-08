@@ -91,12 +91,12 @@ namespace LatticeTester {
         /**
          * The number of columns of the matrix stored in this object.
          * */
-        int NumCols;
+        int64_t NumCols;
 
         /**
          * The number of rows of the matrix stored in this object.
          * */
-        int NumRows;
+        int64_t NumRows;
 
         /**
          * The basis matrix read from the file.
@@ -128,8 +128,8 @@ namespace LatticeTester {
 
     };
 
-  extern template class Config<std::int64_t, NTL::matrix<std::int64_t>>;
-  extern template class Config<NTL::ZZ, NTL::matrix<NTL::ZZ>>;
+  template class Config<std::int64_t, NTL::matrix<std::int64_t>>;
+  template class Config<NTL::ZZ, NTL::matrix<NTL::ZZ>>;
 
 } // End namespace LatticeTester
 

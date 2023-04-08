@@ -43,11 +43,11 @@ using namespace LatticeTester;
 
 int main() {
   //! Reading a matrix to use the normalizer class
-  int min_dim = 0, max_dim = 10;
+  int64_t min_dim = 0, max_dim = 10;
   ParamReader<Int, Real> reader("./44matrixEx.dat");
   reader.getLines();
   IntMat matrix(max_dim,max_dim);
-  unsigned int ln = 0;
+  unsigned int64_t ln = 0;
   reader.readBMat(matrix, ln, 0, max_dim);
   IntLattice<Int, Real> lat_basis(matrix, max_dim);
   double merit1 = 1.0, merit2 = 1.0;

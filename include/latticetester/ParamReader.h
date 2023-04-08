@@ -383,7 +383,7 @@ namespace LatticeTester {
   template<typename Int, typename Real>
     ParamReader<Int, Real>::~ParamReader()
     {
-      for (int64_t i = 0; i < (int) m_lines.size(); i++)
+      for (int64_t i = 0; i < (int64_t) m_lines.size(); i++)
         m_lines[i].clear();
       m_lines.clear();
     }
@@ -666,7 +666,7 @@ namespace LatticeTester {
         int64_t & field, uint64_t ln, uint64_t pos) {
       std::string val;
       getToken(val, ln, pos);
-      field = (int) strtol(val.c_str(), (char **)NULL, 10);
+      field = (int64_t) strtol(val.c_str(), (char **)NULL, 10);
       //   field = atoi(val.c_str());
     }
 

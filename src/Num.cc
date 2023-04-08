@@ -160,7 +160,7 @@ namespace {
 namespace LatticeTester
 {
 
-  std::int64_t lFactorial (int n)
+  std::int64_t lFactorial (int64_t n)
   {
     if (n < 0 || n > FACT_MAX )
       throw invalid_argument("lFactorial:   n too large");
@@ -231,7 +231,7 @@ namespace LatticeTester
 
     if (x >= 3.0) {
       double x2 = 1.0 / (x * x);
-      int j;
+      int64_t j;
       for (j = 4; j >= 0; j--) {
         prodPj = prodPj * x2 + C4[j];
         prodQj = prodQj * x2 + D4[j];
@@ -240,7 +240,7 @@ namespace LatticeTester
 
     } else if (x >= 0.5) {
       const double X0 = 1.46163214496836234126;
-      int j;
+      int64_t j;
       for (j = 7; j >= 0; j--) {
         prodPj = x * prodPj + C7[j];
         prodQj = x * prodQj + D7[j];
@@ -301,7 +301,7 @@ namespace LatticeTester
 
   //=========================================================================
 
-  double BernoulliPoly (int n, double x)
+  double BernoulliPoly (int64_t n, double x)
   {
     switch (n) {
       case 0:

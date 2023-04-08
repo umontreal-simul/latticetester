@@ -45,26 +45,26 @@
 
 using namespace LatticeTester;  
 
-const int many_primes = 6;
+const int64_t many_primes = 6;
 const std::string primes[] = {"1021", "1048573", "1073741827", "1099511627791",
                   "1125899906842597", "18446744073709551629"};
 
 
 int main() {
   clock_t timer = clock();
-  int leng = 3; //! Actual max dim is 5*leng
+  int64_t leng = 3; //! Actual max dim is 5*leng
   //! This is basically the C method of timing a program. We time globally, but
   //! also for eache dimension and for each size of integers in the matrix.
   clock_t  lll_time[leng], bkz_time[leng],
   sho_cho[leng], sho_tri[leng], tmp;
   clock_t total_times[4];
-  for (int i = 0; i < leng; i++){
+  for (int64_t i = 0; i < leng; i++){
     lll_time[i] = 0;
     bkz_time[i] = 0;
     sho_cho[i] = 0;
     sho_tri[i] = 0;
   }
-  int lll_fails=0, bkz_fails=0;
+  int64_t lll_fails=0, bkz_fails=0;
   Real vec_length[3];
   vec_length[0] = vec_length[1] = vec_length[2] = 0;
 
@@ -77,15 +77,15 @@ int main() {
   IntLattice<Int, Real>* basis;     
   Reducer<Int, Real>* red;
 
-  for (int j = 0; j < leng; j++) {
-    for (int k = 1; k < 2; k++) {
+  for (int64_t j = 0; j < leng; j++) {
+    for (int64_t k = 1; k < 2; k++) {
 
       //! Variables definition
       ParamReader<Int, Real> reader;
       std::string name;
-      int numlines;
+      int64_t numlines;
       IntMat matrix1;
-      unsigned int ln;
+      unsigned int64_t ln;
       std::string s1("cholesky");
       std::string s2("triangular");
       
@@ -137,10 +137,10 @@ int main() {
   
   std::cout << "ALL THE RESULTS ARE NUMBERED IN TERMS OF SYSTEM CLOCK TICKS\n";
   std::cout << "          ";
-  int width1 = getWidth(lll_time, leng, "LLL", total_times, 0);
-  int width2 = getWidth(bkz_time, leng, "BKZ", total_times, 1);
-  int width3 = getWidth(sho_cho, leng, "SV CHO", total_times, 2);
-  int width4 = getWidth(sho_tri, leng, "SV TRI", total_times, 3);
+  int64_t width1 = getWidth(lll_time, leng, "LLL", total_times, 0);
+  int64_t width2 = getWidth(bkz_time, leng, "BKZ", total_times, 1);
+  int64_t width3 = getWidth(sho_cho, leng, "SV CHO", total_times, 2);
+  int64_t width4 = getWidth(sho_tri, leng, "SV TRI", total_times, 3);
   std::cout << std::endl;
 
   std::cout << "Total time" << std::setw(width1) << total_times[0]
@@ -148,7 +148,7 @@ int main() {
     << std::setw(width3) << total_times[2]
     << std::setw(width4) << total_times[3] << std::endl;
   
-  for (int i = 0; i < leng; i++) {
+  for (int64_t i = 0; i < leng; i++) {
     std::cout << "Dim " << std::setw(6) << (i+1)*5 
       << std::setw(width1) << lll_time[i] 
       << std::setw(width2) << bkz_time[i] 

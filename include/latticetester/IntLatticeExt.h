@@ -493,9 +493,9 @@ std::string IntLatticeExt<Int, Real>::toString() const {
 
 //===========================================================================
 
-extern template class IntLatticeExt<std::int64_t, double> ;
-extern template class IntLatticeExt<NTL::ZZ, double> ;
-extern template class IntLatticeExt<NTL::ZZ, NTL::RR> ;
+template class IntLatticeExt<std::int64_t, double> ;
+template class IntLatticeExt<NTL::ZZ, double> ;
+template class IntLatticeExt<NTL::ZZ, NTL::RR> ;
 
 } // End namespace LatticeTester
 

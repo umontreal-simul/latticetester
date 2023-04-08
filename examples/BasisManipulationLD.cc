@@ -104,18 +104,18 @@ int main() {
 		bas_copy.SetDims(dim, dim);
 		m_v.SetDims(dim, dim);
 		m_v2.SetDims(dim, dim);
-		for (int meth = 0; meth < numMeth; meth++)
+		for (int64_t meth = 0; meth < numMeth; meth++)
 			timer[meth][d] = 0;
-	    for (int r = 0; r < numRep; r++) {
+	    for (int64_t r = 0; r < numRep; r++) {
 
 	    	// We use a different file for each rep.
 		    std::string name = "bench/1021_"
 		       + std::to_string(dim) + "_" + std::to_string(r);
 		    ParamReader<Int, Real> reader(name + ".dat");
 	        reader.getLines();
-	        int thisdim;
+	        int64_t thisdim;
 			reader.readInt(thisdim, 0, 0);
-			unsigned int ln=1;
+			uint64_t ln=1;
 			reader.readBMat(bas_mat, ln, 0, dim);
 
 			copy(bas_mat, bas_copy);

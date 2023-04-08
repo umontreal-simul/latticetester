@@ -206,7 +206,7 @@ namespace LatticeTester
 
   //===========================================================================
 
-  const std::array<unsigned int, NB_PRIMES> PRIMES_ARRAY = {{
+  const std::array<uint64_t, NB_PRIMES> PRIMES_ARRAY = {{
     #include "../data/primes.dat"
   }};
 

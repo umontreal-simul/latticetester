@@ -87,7 +87,7 @@ namespace LatticeTester {
 #else
       // moins précise que ci-dessus
       double res = randU01();
-      int d = j - i + 1;
+      int64_t d = j - i + 1;
       return i + static_cast<long>(d * res);
 #endif
     }
@@ -139,7 +139,7 @@ namespace LatticeTester {
 
     //=========================================================================
 
-    uint64_t randBits (int s)
+    uint64_t randBits (int64_t s)
     {
 #ifdef ULONG_64_OUI
       return randValue () >> (64 - s);

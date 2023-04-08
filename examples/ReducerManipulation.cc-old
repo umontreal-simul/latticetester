@@ -27,7 +27,7 @@
 #include "latticetester/FlexTypes.h"
 
 
-  const int many_primes = 6;
+  const int64_t many_primes = 6;
   const std::string primes[] = {"1021", "1048573", "1073741827", "1099511627791",
                   "1125899906842597", "18446744073709551629"};
 
@@ -44,12 +44,12 @@ int main()
   
   ParamReader<Int, Real> reader;
   std::string name;
-  int numlines;
+  int64_t numlines;
   // The primal basis
   IntMat matrix1;
   // The dual basis
   IntMat matrix2;
-  unsigned int ln;
+  uint64_t ln;
 
   std::string s1("cholesky");
   std::string s2("triangular");

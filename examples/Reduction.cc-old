@@ -44,7 +44,7 @@
 
 using namespace LatticeTester;  
 
-const int many_primes = 6;
+const int64_t many_primes = 6;
   const std::string primes[] = {"1021", "1048573", "1073741827", "1099511627791",
                   "1125899906842597", "18446744073709551629"};
 
@@ -52,7 +52,7 @@ const int many_primes = 6;
   // Returns the average of the length of this vector
   Real average(RealVec vector) {
     Real sum(0);
-    for (int i = 0; i<vector.length(); i++) {
+    for (int64_t i = 0; i<vector.length(); i++) {
       sum += vector[i];
     }
     return sum/Real(vector.length());
@@ -62,13 +62,13 @@ const int many_primes = 6;
 
 int main() {
   clock_t timer = clock();
-  int max_dim = 6; //! Actual max dim is 5*max_dim
+  int64_t max_dim = 6; //! Actual max dim is 5*max_dim
   //! This is basically the C method of timing a program. We time globally, but
   //! also for eache dimension and for each size of integers in the matrix.
   clock_t die_time[max_dim], lll_time[max_dim], bkz_time[max_dim],
   sho_die[max_dim], sho_lll[max_dim], sho_bkz[max_dim], tmp;
   clock_t total_times[6];
-  for (int i = 0; i < max_dim; i++){
+  for (int64_t i = 0; i < max_dim; i++){
     lll_time[i] = 0;
     die_time[i] = 0;
     bkz_time[i] = 0;
@@ -76,14 +76,14 @@ int main() {
     sho_lll[i] = 0;
     sho_bkz[i] = 0;
   }
-  int die_fails=0, lll_fails=0, bkz_fails=0;
+  int64_t die_fails=0, lll_fails=0, bkz_fails=0;
   Real vec_length[3];
   vec_length[0] = vec_length[1] = vec_length[2] = 0;
 
   std::string prime = primes[0];
 
-  for (int j = 0; j < max_dim; j++) {
-    for (int k = 0; k < 10; k++) {
+  for (int64_t j = 0; j < max_dim; j++) {
+    for (int64_t k = 0; k < 10; k++) {
       // We dynamically allocate memory to these two pointers every time we need to
       // create an object of their type. This is because of the OOP approach
       // to lattice reduction.
@@ -93,9 +93,9 @@ int main() {
       //! Variables definition
       ParamReader<Int, Real> reader;
       std::string name;
-      int numlines;
+      int64_t numlines;
       IntMat matrix1;
-      unsigned int ln;
+      uint64_t ln;
       std::string s1("cholesky");
       std::string s2("GCDTriangular");
 

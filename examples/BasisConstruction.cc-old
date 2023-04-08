@@ -36,7 +36,7 @@
 
 using namespace LatticeTester;
 
-  const int many_primes = 6;
+  const int64_t many_primes = 6;
   const std::string primes[] = {"1021", "1048573", "1073741827", "1099511627791",
                   "1125899906842597", "18446744073709551629"};
 
@@ -54,10 +54,10 @@ int main() {
   clock_t timer = clock();
   // The different clocks we will use for benchmarking
   // We use ctime for implementation simplicity
-  int max_dim = 6; // Actual max dim is 5*max_dim
+  int64_t max_dim = 6; // Actual max dim is 5*max_dim
   clock_t gcd_time[max_dim], lll_time[max_dim],
   dual1_time[max_dim], dual2_time[max_dim], totals[4];
-  for (int i = 0; i < max_dim; i++) {
+  for (int64_t i = 0; i < max_dim; i++) {
     gcd_time[i] = 0;
     lll_time[i] = 0;
     dual1_time[i] = 0;
@@ -70,14 +70,14 @@ int main() {
   Int mod(1021);
 
   clock_t tmp;
-  for (int j = 0; j < max_dim; j++) {
-    for (int k = 0; k < 10; k++) {
+  for (int64_t j = 0; j < max_dim; j++) {
+    for (int64_t k = 0; k < 10; k++) {
       //! Reader shenanigans
       std::string name = "bench/" + prime + "_" + std::to_string((j+1)*5) + "_" + std::to_string(k);
       ParamReader<Int, Real> reader(name + ".dat");
       reader.getLines();
-      int numlines;
-      unsigned int ln;
+      int64_t numlines;
+      unsigned int64_t ln;
       reader.readInt(numlines, 0, 0);
       // IntMat bas_mat, dua_mat;
       bas_mat.SetDims(numlines, numlines);
@@ -129,17 +129,17 @@ int main() {
 
 
   std::cout << "         ";
-  int width1 = getWidth(gcd_time, max_dim, "GCD", totals, 0);
-  int width2 = getWidth(lll_time, max_dim, "LLL", totals, 1);
-  int width3 = getWidth(dual1_time, max_dim, "DUAL1", totals, 2);
-  int width4 = getWidth(dual2_time, max_dim, "DUAL2", totals, 3);
+  int64_t width1 = getWidth(gcd_time, max_dim, "GCD", totals, 0);
+  int64_t width2 = getWidth(lll_time, max_dim, "LLL", totals, 1);
+  int64_t width3 = getWidth(dual1_time, max_dim, "DUAL1", totals, 2);
+  int64_t width4 = getWidth(dual2_time, max_dim, "DUAL2", totals, 3);
   std::cout << std::endl;
 
   std::cout << "Total time" << std::setw(width1) << totals[0]
     << std::setw(width2) << totals[1]
     << std::setw(width3) << totals[2]
     << std::setw(width4) << totals[3] << std::endl;
-  for (int i = 0; i < max_dim; i++) {
+  for (int64_t i = 0; i < max_dim; i++) {
     std::cout << "Dim" << std::setw(6) << (i+1)*5
       << std::setw(width1) << gcd_time[i] << std::setw(width2) << lll_time[i]
       << std::setw(width3) << dual1_time[i] << std::setw(width4) << dual2_time[i];

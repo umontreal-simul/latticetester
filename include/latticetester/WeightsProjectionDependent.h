@@ -66,8 +66,8 @@ namespace LatticeTester {
       /**
        * Returns the number of weights.
        */
-      virtual unsigned int64_t getSize () const
-      { return (unsigned int) m_weights.size(); } 
+      virtual uint64_t getSize () const
+         { return (uint64_t) m_weights.size(); }
 
       /**
        * Returns a map of weights for all projections whose largest index is

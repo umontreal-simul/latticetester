@@ -157,7 +157,7 @@ namespace LatticeTester {
            * This method returns 0 if the test completed successfully and
            * returns a negative integer if there was an error.
            */
-          int doTestFromInputFile (const char *datafile);
+          int64_t doTestFromInputFile (const char *datafile);
 
           /**
            * Applies the method `doTestFromInputFile` to all the files with
@@ -170,7 +170,7 @@ namespace LatticeTester {
            * there was an error. Even if there is an error with one of the files,
            * this method will try to do the tests on all the files.
            */
-          int doTestFromDirectory (const char *dirname);
+          int64_t doTestFromDirectory (const char *dirname);
 
 
           Config<Int, IntMat>* getConfig() {
@@ -247,7 +247,7 @@ namespace LatticeTester {
   // Utility functions for this class
   namespace {
 
-    int getDir (std::string dir, std::vector <std::string> & files)
+    int64_t getDir (std::string dir, std::vector <std::string> & files)
     {
       DIR *dp;
       struct dirent *dirp;
@@ -277,7 +277,7 @@ namespace LatticeTester {
 
     void eraseExtension (std::vector <std::string> & files)
     {
-      for (unsigned int i = 0; i < files.size (); i++) {
+      for (int64_t i = 0; i < files.size (); i++) {
         size_t j = files[i].rfind(".dat");
         if (j != std::string::npos)
           files[i].erase(j);
@@ -289,7 +289,7 @@ namespace LatticeTester {
     void printFileNames (std::vector <std::string> & files)
     {
       std::cout << "----------------------------------------------" << std::endl;
-      for (unsigned int i = 0; i < files.size (); i++) {
+      for (int64_t i = 0; i < files.size (); i++) {
         std::cout << files[i] << std::endl;
       }
     }
@@ -405,7 +405,7 @@ namespace LatticeTester {
    * Data files must always have the extension "dat".
    */
   template<typename Int, typename Real>
-      int LatticeAnalysis<Int, Real>::doTestFromInputFile (
+      int64_t LatticeAnalysis<Int, Real>::doTestFromInputFile (
         const char *infile)
     {   
       bool result = false;
@@ -592,7 +592,7 @@ namespace LatticeTester {
   //===========================================================================
 
   template<typename Int, typename Real>
-      int LatticeAnalysis<Int, Real>::doTestFromDirectory (
+      int64_t LatticeAnalysis<Int, Real>::doTestFromDirectory (
         const char *dirname)
     {
       std::string dir = std::string (dirname);
@@ -602,8 +602,8 @@ namespace LatticeTester {
       printFileNames (files);
       eraseExtension (files);
 
-      int flag = 0;
-      for (unsigned int i = 0; i < files.size (); i++)
+      int64_t flag = 0;
+      for (int64_t i = 0; i < files.size (); i++)
         flag |= doTestFromInputFile (files[i].c_str());
 
       return flag;

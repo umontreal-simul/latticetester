@@ -24,14 +24,14 @@ int main() {
 
 	BasisConstruction<Int> constr; // The basis constructor we use.
 	//Here we set up the matrix parameters
-    int d = 40; //dimension
-    int m = 1021; //modulus
+    int64_t d = 40; //dimension
+    int64_t m = 1021; //modulus
     IntVec a; //vector for 
-    int k = 6; //length of reccurence in the LCG
+    int64_t k = 6; //length of reccurence in the LCG
     a.SetLength(k);
     
     //Define entries of a
-    for (int i =  0; i < k; i++) {
+    for (int64_t i =  0; i < k; i++) {
     	a[i] = (i+1)*(m-73);
     }
     
@@ -39,7 +39,7 @@ int main() {
 	constr.CreateExampleMatrix(m, d, a, V);
 	std::cout << V;
     
-    int no = 0;//number of output file
+    int64_t no = 0;//number of output file
 	constr.CreateExampleMatrixToFile(m, d, a, no);
 	
 

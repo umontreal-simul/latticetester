@@ -96,7 +96,7 @@ namespace LatticeTester
 //         node = cnode.child("coordinate");
 //         if (!node)
 //           throw pugi::xml_error(cnode, "missing <coordinate> element");
-//         int coordinate = lexical_cast<Weight>(node.child_value());
+//         int64_t coordinate = lexical_cast<Weight>(node.child_value());
 //         // store weight
 //         o->setWeightForCoordinate(coordinate, weight);
 //       }

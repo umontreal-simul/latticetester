@@ -115,7 +115,7 @@ namespace LatticeTester
   {
     string::const_iterator it = token.begin();
     while (it != token.end()) {
-      int c = is.get();
+      int64_t c = is.get();
       if (c != *it) {
         is.putback(c);
         break;

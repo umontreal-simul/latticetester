@@ -105,7 +105,7 @@ Total time: 1.07714 seconds
 using namespace LatticeTester;
 
 //  The following array gives the possible modulo values for the basis examples.
-const int many_primes = 7;
+const int64_t many_primes = 7;
 const std::string primes[] = { "101", "1021", "1048573", "1073741827", "1099511627791",
 		"1125899906842597", "18446744073709551629" };
 
@@ -114,13 +114,13 @@ const std::string prime = primes[2];
 // Int m = primes[2];      // Modulus near 2^{20}
 Int m(1048573);      // Modulus
 const PrecisionType prec = DOUBLE;  // For LLL construction.
-const int numRep = 10;  // Number of replications for each case.
-const int numMeth = 10;    // Number of methods, and their names.
+const int64_t numRep = 10;  // Number of replications for each case.
+const int64_t numMeth = 10;    // Number of methods, and their names.
 std::string names[numMeth] = {"UppTri  ", "LowTri  ", "TriGCD  ", "Tri96   ",
 		 "LLL5    ", "LLL8    ", "LLL9    ", "DualUT  ", "DualUT96", "Dual    "};
-const int numSizes = 4; // Number of matrix sizes (choices of dimension).
-// const int dimensions[numSizes] = {10, 20};
-const int dimensions[numSizes] = {10, 20, 30, 40};
+const int64_t numSizes = 4; // Number of matrix sizes (choices of dimension).
+// const int64_t dimensions[numSizes] = {10, 20};
+const int64_t dimensions[numSizes] = {10, 20, 30, 40};
 
 int main() {
 	// We use ctime for implementation simplicity
@@ -130,25 +130,25 @@ int main() {
 
 	// BasisConstruction<Int> constr; // The basis constructor we use.
 	IntMat bas_mat, bas_copy, m_v, m_v2;
-    int d;
+    int64_t d;
 
 	for (d = 0; d < numSizes; d++) {  // Each matrix size
-		unsigned int dim = dimensions[d]; // The corresponding dimension.
+		uint64_t dim = dimensions[d]; // The corresponding dimension.
 		bas_mat.SetDims(dim, dim);
 		bas_copy.SetDims(dim, dim);
 		m_v.SetDims(dim, dim);
 		m_v2.SetDims(dim, dim);
-		for (int meth = 0; meth < numMeth; meth++)
+		for (int64_t meth = 0; meth < numMeth; meth++)
 			timer[meth][d] = 0;
-	    for (int r = 0; r < numRep; r++) {
+	    for (int64_t r = 0; r < numRep; r++) {
 	    	// We use a different file for each rep.
 		    std::string name = "bench/" + prime + "_"
 		       + std::to_string(dim) + "_" + std::to_string(r);
 		    ParamReader<Int, Real> reader(name + ".dat");
 	        reader.getLines();
-	        int thisdim;
+	        int64_t thisdim;
 			reader.readInt(thisdim, 0, 0);
-			unsigned int ln=1;
+			uint64_t ln=1;
 			reader.readBMat(bas_mat, ln, 0, dim);
 
 			copy(bas_mat, bas_copy);
@@ -213,7 +213,7 @@ int main() {
 	for (d = 0; d < numSizes; d++)
 	    std::cout << std::setw(8) << dimensions[d] << " ";
 	std::cout << std::endl << std::endl;
-	for (int meth = 0; meth < numMeth; meth++) {
+	for (int64_t meth = 0; meth < numMeth; meth++) {
 	    std::cout  << names[meth] << " ";
 	    for (d = 0; d < numSizes; d++)
 		   std::cout << std::setw(8) << timer[meth][d] << " ";

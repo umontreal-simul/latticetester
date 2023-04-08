@@ -100,8 +100,8 @@ namespace NTL {
   double determinant(const NTL::matrix<std::int64_t>& mat) {
     NTL::matrix<NTL::ZZ> temp_mat;
     temp_mat.SetDims(mat.NumCols(), mat.NumCols());
-    for (int i = 0; i < mat.NumCols(); i++) {
-      for (int j = 0; j < mat.NumCols(); j++) {
+    for (int64_t i = 0; i < mat.NumCols(); i++) {
+      for (int64_t j = 0; j < mat.NumCols(); j++) {
         temp_mat[i][j] = mat[i][j];
       }
     }

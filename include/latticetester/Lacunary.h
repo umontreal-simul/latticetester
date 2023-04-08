@@ -165,8 +165,8 @@ namespace LatticeTester {
       }
     }
 
-  extern template class Lacunary<std::int64_t>;
-  extern template class Lacunary<NTL::ZZ>;
+  template class Lacunary<std::int64_t>;
+  template class Lacunary<NTL::ZZ>;
 
 } // End namespace LatticeTester
 

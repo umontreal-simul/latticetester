@@ -29,9 +29,10 @@
  * We can also compare the speed of 'BasisConstruction::upperTriangularBasis'
  * and the speed of 'BasisConstruction::LLLConstruction'
  *
- * RESULTS with m = 1021:
+ * OLD RESULTS on my laptop with m = 1021:   (outdated, with ZZ)
  *
  *  dim:        10      20       30       40
+
 
 UppTri       6590    40472   175472   561106
 LowTri       7070    46714   194587   593768
@@ -45,6 +46,40 @@ DualUT96     1443     6203    63702   502523
 Dual         1261     6574    18648    45761
 
 Total time: 7.55269 seconds
+=========================================================
+
+New results on my laptop with m = 1048573:
+
+lecuyer@xubuntu-22042:~/git/latticetester/build/examples$ ./BasisManipulationLD  (int64_t)
+
+ dim:          10       20       30       40
+
+UppTri        385     1518     4779     9151
+TriGCD        966     4632    14416    30021
+Tri96         799     4587    14860    31337
+LLL5          391     1508     4482     7286
+LLL8          532     3402    10943    19267
+LLL9          646     6316    25108    50430
+DualUT        100      806     2029     3881
+DualUT96      252     1860     6129    13911
+
+Total time: 0.631648 seconds
+
+lecuyer@xubuntu-22042:~/git/latticetester/build/examples$ ./BasisManipulation  (ZZ)
+
+ dim:          10       20       30       40
+
+UppTri        690     3075     8153    16477
+TriGCD       2297    13100    38277    86614
+Tri96        3919    25362    77597   178568
+LLL5          286      604     1152     1882
+LLL8          213     1074     2241     4184
+LLL9          266     1929     4858     8752
+DualUT        148     1018     3048     7040
+DualUT96      328     1909     5818    13447
+Dual         1263     7430    25956    65896
+
+Total time: 1.07714 seconds
 
  **/
 
@@ -70,13 +105,14 @@ Total time: 7.55269 seconds
 using namespace LatticeTester;
 
 //  The following array gives the possible modulo values for the basis examples.
-const int many_primes = 6;
-const std::string primes[] = { "1021", "1048573", "1073741827", "1099511627791",
+const int many_primes = 7;
+const std::string primes[] = { "101", "1021", "1048573", "1073741827", "1099511627791",
 		"1125899906842597", "18446744073709551629" };
 
-//Use basis values modulo 1021
-const std::string prime = primes[0];
-Int m(1021);      // Modulus
+//Use basis values modulo m
+const std::string prime = primes[2];
+// Int m = primes[2];      // Modulus near 2^{20}
+Int m(1048573);      // Modulus
 const PrecisionType prec = DOUBLE;  // For LLL construction.
 const int numRep = 10;  // Number of replications for each case.
 const int numMeth = 10;    // Number of methods, and their names.
@@ -92,7 +128,7 @@ int main() {
 	clock_t timer[numMeth][numSizes];
 	clock_t tmp;
 
-	BasisConstruction<Int> constr; // The basis constructor we use.
+	// BasisConstruction<Int> constr; // The basis constructor we use.
 	IntMat bas_mat, bas_copy, m_v, m_v2;
     int d;
 
@@ -117,17 +153,17 @@ int main() {
 
 			copy(bas_mat, bas_copy);
 			tmp = clock();
-			//constr.upperTriangularBasis(bas_copy, m_v, m);
+			BasisConstruction<Int>::upperTriangularBasis(bas_copy, m_v, m);
 			timer[0][d] += clock() - tmp;
 
 			copy(bas_mat, bas_copy);
 			tmp = clock();
-			//constr.lowerTriangularBasis(bas_copy, m_v, m);
+			//BasisConstruction<Int>::lowerTriangularBasis(bas_copy, m_v, m);
 			timer[1][d] += clock() - tmp;
 
 			copy(bas_mat, bas_copy);
 			tmp = clock();
-			constr.GCDTriangularBasis(bas_copy, m);
+			BasisConstruction<Int>::GCDTriangularBasis(bas_copy, m);
 			timer[2][d] += clock() - tmp;
 
 			copy(bas_mat, bas_copy);
@@ -139,43 +175,43 @@ int main() {
 			// std::cout << " The LLL construction with delta=0.5 \n";
 			copy(bas_mat, bas_copy);
 			tmp = clock();
-			constr.LLLConstruction0(bas_copy, 0.5, prec);
+			BasisConstruction<Int>::LLLConstruction0(bas_copy, 0.5, prec);
 			timer[4][d] += clock() - tmp;
 
 			// std::cout << " The LLL construction with delta=0.8 \n";
 			copy(bas_mat, bas_copy);
 			tmp = clock();
-			constr.LLLConstruction0(bas_copy, 0.8, prec);
+			BasisConstruction<Int>::LLLConstruction0(bas_copy, 0.8, prec);
 			timer[5][d] += clock() - tmp;
 
 			// std::cout << " The LLL constructio with delta=0.99999 \n";
 			copy(bas_mat, bas_copy);
 			tmp = clock();
-			constr.LLLConstruction0(bas_copy, 0.99999, prec);
+			BasisConstruction<Int>::LLLConstruction0(bas_copy, 0.99999, prec);
 			timer[6][d] += clock() - tmp;
 
 			copy(bas_mat, bas_copy);
-			//constr.upperTriangularBasis(bas_copy, m_v, m);
+			BasisConstruction<Int>::upperTriangularBasis(bas_copy, m_v, m);
 			tmp = clock();
-			//constr.mDualUpperTriangular(m_v, m_v2, m);
+			BasisConstruction<Int>::mDualUpperTriangular(m_v, m_v2, m);
 			timer[7][d] += clock() - tmp;
 
 			copy(bas_mat, bas_copy);
-			//constr.upperTriangularBasis(bas_copy, m_v, m);
+			BasisConstruction<Int>::upperTriangularBasis(bas_copy, m_v, m);
 			tmp = clock();
-			//constr.mDualUpperTriangular96(m_v, m_v2, m);
+			BasisConstruction<Int>::mDualUpperTriangular96(m_v, m_v2, m);
 			timer[8][d] += clock() - tmp;
 
 			copy(bas_mat, bas_copy);
 			tmp = clock();
-            //constr.mDualBasis(bas_copy, m_v, m);
+            BasisConstruction<Int>::mDualBasis(bas_copy, m_v, m);
 			timer[9][d] += clock() - tmp;
 		}
 	}
 
-	std::cout << " dim:  ";
+	std::cout << " dim:    ";
 	for (d = 0; d < numSizes; d++)
-	    std::cout << std::setw(6) << dimensions[d] << " ";
+	    std::cout << std::setw(8) << dimensions[d] << " ";
 	std::cout << std::endl << std::endl;
 	for (int meth = 0; meth < numMeth; meth++) {
 	    std::cout  << names[meth] << " ";

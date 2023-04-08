@@ -50,10 +50,10 @@ typedef NTL::vector<int64_t> vector64;
  * On input, the rows of B contain the initial generating vectors.
  * On output, the rows of B form an LLL-reduced lattice basis.
  */
-int64_t LLL64_FP(matrix64 &B, double delta = 0.999999);
+//static int64_t LLL64_FP(matrix64 &B, double delta = 0.999999);
 
 
-int64_t BKZ64_FP(matrix64 &BB, double delta=0.999999, int64_t blockSize=10);
+//static int64_t BKZ64_FP(matrix64 &BB, double delta=0.999999, int64_t blockSize=10);
 
 // };
 
@@ -653,7 +653,7 @@ static int64_t ll_LLL_FP64(matrix64& B, double delta,
 
 /* ************************************************ */
 
-int64_t LLL64_FP (matrix64& B, double delta) {
+static int64_t LLL64_FP (matrix64& B, double delta) {
    int64_t m = B.NumRows();  // m is the number of generating vectors.
    int64_t n = B.NumCols();  // n is the dimension of the vectors.
    int64_t i, j;
@@ -713,7 +713,7 @@ int64_t LLL64_FP (matrix64& B, double delta) {
 
 /******************************************************/
 
-int64_t BKZ64_FP (matrix64& BB, double delta, int64_t blockSize) {
+static int64_t BKZ64_FP (matrix64& BB, double delta, int64_t blockSize) {
    int64_t m = BB.NumRows();
    int64_t n = BB.NumCols();
    int64_t m_orig = m;

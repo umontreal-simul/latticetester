@@ -91,8 +91,10 @@ public:
 	 * expanded/tested
 	 * @param withDual Specifies whether this object contains a dual or not
 	 * @param norm  The norm type to measure the vector lengths.
+	 *
+	 * WARNING: I have reordered the last two parameters to be consistent with IntLattice!
 	 */
-	IntLatticeExt(Int m, int maxDim, bool withDual, NormType norm = L2NORM);
+	IntLatticeExt(Int m, int maxDim, NormType norm = L2NORM, bool withDual=false);
 
 	/**
 	 * Copy constructor that makes a copy of `lat`. The maximal dimension
@@ -179,12 +181,12 @@ public:
 	 */
 	// LatticeTester::Normalizer * getNormalizer (NormaType norma,
 	//    int alpha, bool dualF);
+
+
 	/**
 	 * Selects and stores a vector of indices with lacunary values.
 	 */
-	virtual void setLac(const Lacunary<Int>&) {
-	}
-	;
+	virtual void setLac(const Lacunary<Int>&);
 
 	/**
 	 * Returns a string describing the lattice.
@@ -241,8 +243,7 @@ protected:
 //===========================================================================
 
 template<typename Int, typename Real>
-IntLatticeExt<Int, Real>::IntLatticeExt(Int m, int maxDim, bool withDual,
-		NormType norm) :
+IntLatticeExt<Int, Real>::IntLatticeExt(Int m, int maxDim, NormType norm,  bool withDual) :
 		IntLattice<Int, Real>(maxDim, norm) {
 	this->m_dim = maxDim;
 	this->m_withDual = withDual;

@@ -48,8 +48,8 @@ namespace LatticeTester {
    * When searching for lattices that satisfy this condition, one may assume
    * without loss of generality generality that \f$a_1 = 1\f$.
    */
-  template<typename Int, typename Real>
-    class Rank1Lattice: public IntLatticeExt<Int, Real> {
+template<typename Int, typename Real>
+class Rank1Lattice: public IntLatticeExt<Int, Real> {
 
       private:
         typedef NTL::vector<Int>  IntVec;
@@ -59,14 +59,23 @@ namespace LatticeTester {
       public:
 
         /**
-         * This constructor takes as input the modulus `m`, the generating vector `a`,
+         * This constructor takes as input the modulus `m`, the generating vector `aa`,
          * the (maximal) dimension `maxDim`, and the norm used to measure the vector lengths.
-         * The dimension of the vector `a` should be `maxDim`.
+         * The length of the vector `aa` should be `maxDim`.
          * This constructor does not build the basis, to leave
          * more flexibility in the dimension when doing so.
          */
-        Rank1Lattice (const Int & m, const IntVec & a, int maxDim,
-            LatticeTester::NormType norm = LatticeTester::L2NORM);
+        Rank1Lattice (const Int & m, const IntVec & aa, int maxDim,
+            // LatticeTester::NormType norm = LatticeTester::L2NORM);
+            NormType norm = L2NORM);
+
+        /**
+         * Constructor for the special case of a Korobov lattice.
+         * Here the generating vector has the form aa = (1, a, a^2 mod m, a^3 mod m, ...)
+         * where a is an integer such that 1 < a < m.
+         */
+        Rank1Lattice (const Int & m, const Int & a, int maxDim,
+            NormType norm = L2NORM);
 
         /**
          * Copy constructor.
@@ -76,8 +85,7 @@ namespace LatticeTester {
         /**
          * Assigns `Lat` to this object.
         */
-        Rank1Lattice & operator= (const Rank1Lattice<Int, Real>
-            & Lat);
+        Rank1Lattice & operator= (const Rank1Lattice<Int, Real> & Lat);
 
         /**
          * Destructor.
@@ -85,7 +93,7 @@ namespace LatticeTester {
         ~Rank1Lattice();
 
         /**
-         * Returns the first components of the generating vector \f$a\f$ as a string.
+         * Returns the first components of the generating vector \f$\ba\f$ as a string.
          * The number of components in the string will be the current dimension of the lattice.
          */
         std::string toStringCoef() const;
@@ -113,49 +121,60 @@ namespace LatticeTester {
         void init();
 
         /**
-         * The multipliers (generating vector) of the rank 1 lattice rule.
+         * Vector of multipliers (generating vector) of the rank 1 lattice rule.
          * They are stored for up to `maxDim()` dimensions.
          * The first dimension has index 0.
          */
         IntVec m_a;
     };
 
-  //============================================================================
 
-  template<typename Int, typename Real>
-    Rank1Lattice<Int, Real>::Rank1Lattice (
-        const Int & m, const IntVec & a, int maxDim, NormType norm):
-      IntLatticeExt<Int, Real> (m, maxDim, true, norm)
-  {
-    this->m_a = a;
+//============================================================================
+
+template<typename Int, typename Real>
+Rank1Lattice<Int, Real>::Rank1Lattice (
+         const Int & m, const IntVec & aa, int maxDim, NormType norm):
+         IntLatticeExt<Int, Real> (m, maxDim, true, norm) {
+    this->m_a = aa;
     init();
   }
 
-  //============================================================================
+//============================================================================
 
-  template<typename Int, typename Real>
-    Rank1Lattice<Int, Real>::~Rank1Lattice()
-    {
-      this->m_a.clear ();
+template<typename Int, typename Real>
+Rank1Lattice<Int, Real>::Rank1Lattice (
+        const Int & m, const Int & a, int maxDim, NormType norm):
+        IntLatticeExt<Int, Real> (m, maxDim, true, norm) {
+    m_a.SetDim(maxDim);
+	Int powa(1);  m_a[0] = powa;
+    for (long i=1; i < maxDim; i++) {
+    	powa = (a * powa) % m;
+    	m_a[i] = powa;
+    }
+    init();
+  }
+
+//============================================================================
+
+template<typename Int, typename Real>
+Rank1Lattice<Int, Real>::~Rank1Lattice() {
+      this->m_a.kill ();
     }
 
   //============================================================================
 
-  template<typename Int, typename Real>
-    void Rank1Lattice<Int, Real>::init()
-    {
-      IntLatticeExt<Int, Real>::init();
+template<typename Int, typename Real>
+void Rank1Lattice<Int, Real>::init() {
+    IntLatticeExt<Int, Real>::init();
       // for (int r = 1; r < this->getDim(); r++)
       //   this->m_lgVolDual2[r] = this->m_lgVolDual2[r - 1];
     }
 
   //============================================================================
 
-  template<typename Int, typename Real>
-    Rank1Lattice<Int, Real> &
-    Rank1Lattice<Int, Real>::operator= (
-        const Rank1Lattice<Int, Real> & lat)
-    {
+template<typename Int, typename Real>
+Rank1Lattice<Int, Real> & Rank1Lattice<Int, Real>::operator= (
+         const Rank1Lattice<Int, Real> & lat) {
       if (this == &lat)
         return * this;
       this->copy (lat);
@@ -166,12 +185,11 @@ namespace LatticeTester {
 
   //============================================================================
 
-  template<typename Int, typename Real>
-    Rank1Lattice<Int, Real>::Rank1Lattice (
+template<typename Int, typename Real>
+Rank1Lattice<Int, Real>::Rank1Lattice (
         const Rank1Lattice<Int, Real> & lat):
       IntLatticeExt<Int, Real> (
-          lat.m_modulo, lat.getDim (), lat.getNormType ())
-  {
+          lat.m_modulo, lat.getDim (), lat.getNormType ()) {
     // MyExit (1, "Rank1Lattice:: constructor is incomplete" );
     init ();
     this->m_a = lat.m_a;
@@ -179,17 +197,15 @@ namespace LatticeTester {
 
   //============================================================================
 
-  template<typename Int, typename Real>
-    std::string Rank1Lattice<Int, Real>::toStringCoef ()const
-    {
+template<typename Int, typename Real>
+std::string Rank1Lattice<Int, Real>::toStringCoef ()const {
       return toString (this->m_a, 0, this->getDim ());
     }
 
   //============================================================================
 
-  template<typename Int, typename Real>
-    void Rank1Lattice<Int, Real>::incDim ()
-    {
+template<typename Int, typename Real>
+void Rank1Lattice<Int, Real>::incDim () {
       assert(1 + this->getDim() <= this->m_maxDim);
       buildBasis (1 + this->getDim ());
       this->setNegativeNorm ();
@@ -198,20 +214,17 @@ namespace LatticeTester {
 
   //============================================================================
 
-  template<typename Int, typename Real>
-    void Rank1Lattice<Int, Real>::buildBasis (long d)
-    {
+template<typename Int, typename Real>
+void Rank1Lattice<Int, Real>::buildBasis (long d) {
       assert(d <= this->m_maxDim);
       this->setDim (d);
       this->m_basis.SetDims(d,d);
       this->m_dualbasis.SetDims(d,d);
 
       // conv(m_v[1][1], 1);
-
       for (int j = 0; j < d; j++) {
         this->m_basis (0, j) = this->m_a[j];
       }
-
       for (int i = 1; i < d; i++) {
         for (int j = 0; j < d; j++) {
           if (i == j) {
@@ -221,7 +234,6 @@ namespace LatticeTester {
           }
         }
       }
-
       // if a[0] != 1, the basis must be triangularized
       //BasisConstruction<Int> constr;
       if (this->m_basis (0, 0) != 1) {
@@ -238,17 +250,18 @@ namespace LatticeTester {
 
   //============================================================================
 
-  template<typename Int, typename Real>
-    void Rank1Lattice<Int, Real>::dualize ()
-    {
+template<typename Int, typename Real>
+void Rank1Lattice<Int, Real>::dualize () {
       IntMat tmps(this->m_basis);
       this->m_basis = this->m_dualbasis;
       this->m_dualbasis = tmps;
     }
 
-  extern template class Rank1Lattice<std::int64_t, double>;
-  extern template class Rank1Lattice<NTL::ZZ, double>;
-  extern template class Rank1Lattice<NTL::ZZ, NTL::RR>;
+//============================================================================
+
+template class Rank1Lattice<std::int64_t, double>;
+template class Rank1Lattice<NTL::ZZ, double>;
+template class Rank1Lattice<NTL::ZZ, NTL::RR>;
 
 } // End namespace LatticeTester
 

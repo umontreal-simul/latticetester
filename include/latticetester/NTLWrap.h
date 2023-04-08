@@ -48,11 +48,11 @@ namespace NTL {
 
 /**
  * A subclass of the `NTL::Vec<T>` class. It extends its parent with a some additional
- * methods and overloads (changes) a few others for compatibility with boost.
+ * methods and overloads (changes) a few other methods for compatibility with boost.  !!!!!   BAD!
  * ** WARNING **: Avoid using these redefined methods, because this can be very confusing
  * and dangerous. We should probably remove them!                            *********
  */
-template<typename T> class vector: public Vec<T> {
+template<typename T> class vector: public NTL::Vec<T> {
 public:
 
 	typedef std::int64_t size_type;
@@ -156,6 +156,8 @@ public:
 	}
 
 	/**
+	 * DEPRECATED !!!
+	 *
 	 * Change in the indexation reference for () operator to start from 0.
 	 * In `NTL::Vec<T>` the () operator starts from 1 which is not compatible
 	 * with boost.               ** ALSO DANGEROUS.  USE [] instead. **
@@ -236,6 +238,8 @@ public:
 	}
 
 	/**
+	 * DEPRECATED !!!
+	 *
 	 * Overload to change the indexation reference for (i,j) operator to start
 	 * from 0.
 	 * In NTL::Vec<T> the (i,j) operator starts from 1 which is not compatible
@@ -254,7 +258,7 @@ public:
 
 /**
  * An extension of `NTL::vector<T>` implemented in this module to be used as
- * a matrix row.                     **  WHY THIS EXTENSION ?  REMOVE ? **
+ * a matrix row.                     **  WHY THIS EXTENSION?  REMOVE ? **
  */
 template<class M>
 class matrix_row: public vector<typename M::value_type> {
@@ -280,12 +284,16 @@ public:
  * This is a template overload of the transpose function of NTL. This
  * does basically the same thing as the implementation NTL uses. It might
  * be necessary to implement the swap function for the type `T` for this to work.
+ *
+ * This is bad because it has the same signature as the NTL method,
+ *  and it is probably slower.  Remove?                     !!!!!      *****
+ *  We can replace this by a method that transposes X in place, with a single parameter.
+ *
  * */
 template<typename T>
 static void transpose(NTL::Mat<T> &X, const NTL::Mat<T> &A) {
 	long n = A.NumRows();
 	long m = A.NumCols();
-
 	long i, j;
 
 	// If both matrices have the same address, we need to transpose in place
@@ -339,17 +347,17 @@ typedef Vec<std::int64_t> Vec_64;
 //==========================================
 
 
-inline static void add(int64_t& x, const int64_t& a, const int64_t& b)
+inline static void add(int64_t& x, const int64_t a, const int64_t b)
    { x = a + b; }
 
-inline static void sub(int64_t& x, const int64_t& a, const int64_t& b)
+inline static void sub(int64_t& x, const int64_t a, const int64_t b)
    { x = a - b; }
 
 // x = a - b;  assumes a >= b >= 0.
-inline static void SubPos(int64_t& x, const int64_t& a, const int64_t& b)
+inline static void SubPos(int64_t& x, const int64_t a, const int64_t b)
    { x = a - b; }
 
-inline static void negate(int64_t& x, const int64_t& a)
+inline static void negate(int64_t& x, const int64_t a)
    { x = -a; }
 
 //inline static void abs(int64_t& x, const int64_t& a)
@@ -359,7 +367,15 @@ inline static void negate(int64_t& x, const int64_t& a)
 inline static void mul(long& x, const long a, const long b)
    { x = a * b; }
 
-inline static void sqr(int64_t& x, const int64_t& a)
+// Integer division.
+inline static void div(long& x, const long a, const long b)
+   { x = a / b; }
+
+// Modulo.
+inline static void rem(long& x, const long a, const long b)
+   { x = a % b; }
+
+inline static void sqr(int64_t& x, const int64_t a)
    { x = a * a; }
 
 inline static void MulAddTo(int64_t& x, const long a, const long b)
@@ -378,16 +394,16 @@ inline static void RightShift(int64_t& x, const long a, long k)
 //   {  return (x == 0); }
 
 /*
-double InnerProduct(double *a, double *b, long n) {
-   double s=0;
+static double InnerProduct(double *a, double *b, long n) {
+   register double s=0;
    for (long i = 0; i < n; i++)
       s += a[i]*b[i];
    return s;
 }
 
 
-void InnerProduct(int64_t& xx, const vector64& a, const vector64& b) {
-   int64_t x = 0;
+static void InnerProduct(int64_t& xx, const vector64& a, const vector64& b) {
+   register int64_t x = 0;
    long n = min(a.length(), b.length());
    long i;
    for (i = 0; i < n; i++) {
@@ -397,7 +413,7 @@ void InnerProduct(int64_t& xx, const vector64& a, const vector64& b) {
 }
 */
 
-/*
+
 void static mul(vector64& x, const vector64& a, const long b) {
    long n = a.length();
    x.SetLength(n);
@@ -414,7 +430,6 @@ void static add(vector64& x, const vector64& a, const vector64& b) {
    for (i = 0; i < n; i++)
       add(x[i], a[i], b[i]);
 }
-*/
 
 void static sub(vector64& x, const vector64& a, const vector64& b) {
    long n = a.length();

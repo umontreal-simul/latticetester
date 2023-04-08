@@ -21,7 +21,7 @@
  * two differrent parametter of delta, BasisContruction::mDualUpperTriangular, 
  *  BasisContruction::mDualBasis
  *
- * In this example, we can compare the speed of BasisConstruction::calcDual method
+ * In this example, we can compare the speed of BasisConstruction<Int>::calcDual method
  * which compute an m-dual basis using any basis in input,
  * and BasisConstruction::mDualUpperTriangular method which compute an m-dual basis
  * with an upper triangular basis.
@@ -55,24 +55,19 @@
 using namespace LatticeTester;
 
 //  The following array gives the possible modulo values for the basis examples.
-const int many_primes = 6;
-const std::string primes[] = { "1021", "1048573", "1073741827", "1099511627791",
-		"1125899906842597", "18446744073709551629" };
+const int64_t primes[] = { 101, 1021, 1048573, 1073741827, 1099511627791,
+		1125899906842597 };
 
-//Use basis values modulo 1021
-const std::string prime = primes[0];
-int64_t m = 101;      // Modulus
+// int64_t m = primes[1];      // Modulus = 1021
+int64_t m = primes[2];      // Modulus near 2^{20}
 const PrecisionType prec = DOUBLE;  // For LLL construction.
-const int numRep = 5;  // Number of replications for each case.
+const int numRep = 10;  // Number of replications for each case.
 const int numMeth = 10;    // Number of methods, and their names.
 std::string names[numMeth] = {"UppTri  ", "LowTri  ", "TriGCD  ", "Tri96   ",
 		 "LLL5    ", "LLL8    ", "LLL9    ", "DualUT  ", "DualUT96", "Dual    "};
-//std::string names[numMeth] = {"UppTri  ", "LowTri  ", "TriGCD  ", "Tri96   ",
-//		 "DualUT  ", "DualUT96"};
 const int numSizes = 4; // Number of matrix sizes (choices of dimension).
 //const int dimensions[numSizes] = {10, 20};
 const int dimensions[numSizes] = {10, 20, 30, 40};
-
 
 int main() {
 	// We use ctime for implementation simplicity
@@ -80,7 +75,7 @@ int main() {
 	clock_t timer[numMeth][numSizes];
 	clock_t tmp;
 
-	BasisConstruction<Int> constr; // The basis constructor we use.
+	// BasisConstruction<Int> constr; // The basis constructor we use.
 
 /*
 	IntMat bas_mat, bas_copy, m_v, m_v2;
@@ -98,7 +93,7 @@ int main() {
 	    }
     }
     copy(bas_mat, bas_copy);
-    constr.LLLConstruction0(bas_copy, 0.9);
+    BasisConstruction<Int>::LLLConstruction0(bas_copy, 0.9);
 */
 
 	IntMat bas_mat, bas_copy, m_v, m_v2;
@@ -114,7 +109,7 @@ int main() {
 	    for (int r = 0; r < numRep; r++) {
 
 	    	// We use a different file for each rep.
-		    std::string name = "bench/" + prime + "_"
+		    std::string name = "bench/1021_"
 		       + std::to_string(dim) + "_" + std::to_string(r);
 		    ParamReader<Int, Real> reader(name + ".dat");
 	        reader.getLines();
@@ -125,17 +120,17 @@ int main() {
 
 			copy(bas_mat, bas_copy);
 			tmp = clock();
-			// constr.upperTriangularBasis(bas_copy, m_v, m);
+			BasisConstruction<Int>::upperTriangularBasis(bas_copy, m_v, m);
 			timer[0][d] += clock() - tmp;
 
 			copy(bas_mat, bas_copy);
 			tmp = clock();
-			// constr.lowerTriangularBasis(bas_copy, m_v, m);
+			// BasisConstruction<Int>::lowerTriangularBasis(bas_copy, m_v, m);
 			timer[1][d] += clock() - tmp;
 
 			copy(bas_mat, bas_copy);
 			tmp = clock();
-			constr.GCDTriangularBasis(bas_copy, m);
+			BasisConstruction<Int>::GCDTriangularBasis(bas_copy, m);
 			timer[2][d] += clock() - tmp;
 
 			copy(bas_mat, bas_copy);
@@ -147,46 +142,45 @@ int main() {
 			// std::cout << " The LLL construction with delta=0.5 \n";
 			copy(bas_mat, bas_copy);
 			tmp = clock();
-			constr.LLLConstruction0(bas_copy, 0.5);
+			BasisConstruction<Int>::LLLConstruction0(bas_copy, 0.5);
 			timer[4][d] += clock() - tmp;
 
 			// std::cout << " The LLL construction with delta=0.5 \n";
 			copy(bas_mat, bas_copy);
 			tmp = clock();
-			constr.LLLConstruction0(bas_copy, 0.8);
+			BasisConstruction<Int>::LLLConstruction0(bas_copy, 0.8);
 			timer[5][d] += clock() - tmp;
 
 			// std::cout << " The LLL construction with delta=0.5 \n";
 			copy(bas_mat, bas_copy);
 			tmp = clock();
-			constr.LLLConstruction0(bas_copy, 0.99999);
+			BasisConstruction<Int>::LLLConstruction0(bas_copy, 0.99999);
 			timer[6][d] += clock() - tmp;
 
 			copy(bas_mat, bas_copy);
-			// constr.upperTriangularBasis(bas_copy, m_v, m);
+			BasisConstruction<Int>::GCDTriangularBasis(bas_copy, m);
 			//if (!CheckTriangular(m_v, dim, m)) {
 			//	std::cout << "Matrix not triangular! \n";
 			//}
 			tmp = clock();
-			// constr.mDualUpperTriangular(m_v, m_v2, m);   // **** Float ERROR!!!
+			BasisConstruction<Int>::mDualUpperTriangular(bas_copy, m_v2, m);
 			timer[7][d] += clock() - tmp;
 
 			copy(bas_mat, bas_copy);
-			// constr.upperTriangularBasis(bas_copy, m_v, m);
+			BasisConstruction<Int>::GCDTriangularBasis(bas_copy, m);
 			tmp = clock();
 			//  std::cout << "value of m = " << m << "\n";
 
             // This one was changing the value of m !!!!!
-		    // constr.mDualUpperTriangular96(m_v, m_v2, m);
+		    BasisConstruction<Int>::mDualUpperTriangular96(bas_copy, m_v2, m);
 			timer[8][d] += clock() - tmp;
-
 		}
    }
 
 
-	std::cout << " dim:  ";
+	std::cout << " dim:    ";
 	for (d = 0; d < numSizes; d++)
-	    std::cout << std::setw(6) << dimensions[d] << " ";
+	    std::cout << std::setw(8) << dimensions[d] << " ";
 	std::cout << std::endl << std::endl;
 	for (int meth = 0; meth < numMeth; meth++) {
 	    std::cout  << names[meth] << " ";

@@ -66,14 +66,14 @@ public:
 	 *
 	 * I think we should give the value of m ???
 	 */
-	IntLattice(const int64_t dim, NormType norm = L2NORM, bool withDual = false);
+	IntLattice(Int m, const int64_t dim, bool withDual = false, NormType norm = L2NORM);
 
 	/**
 	 * Constructs a lattice with the given basis, in `dim` dimensions,
 	 * and with the specified norm type. The dual basis and `m` are not initialized.
 	 * The `basis` matrix must be a `dim` by `dim` square integer matrix.
 	 */
-	IntLattice(const IntMat basis, const int64_t dim, NormType norm = L2NORM, bool withDual = false);
+	IntLattice(const IntMat basis, Int m, const int64_t dim, bool withDual = false, NormType norm = L2NORM);
 
 	/**
 	 * Constructs a lattice with the given basis and given m-dual basis for the given `m`,
@@ -425,8 +425,8 @@ protected:
 //===========================================================================
 
 template<typename Int, typename Real>
-IntLattice<Int, Real>::IntLattice(const int64_t dim, NormType norm, bool withDual) :
-		m_dim(dim), m_norm(norm), m_modulo(0), m_withDual(withDual) {
+IntLattice<Int, Real>::IntLattice(const Int m, const int64_t dim, bool withDual, NormType norm) :
+		m_modulo(m), m_dim(dim), m_withDual(withDual), m_norm(norm) {
 	this->m_basis.resize(dim, dim);
 	this->m_vecNorm.resize(dim);
 	initVecNorm();
@@ -435,9 +435,9 @@ IntLattice<Int, Real>::IntLattice(const int64_t dim, NormType norm, bool withDua
 //===========================================================================
 
 template<typename Int, typename Real>
-IntLattice<Int, Real>::IntLattice (const IntMat basis,
-		const int64_t dim, NormType norm, bool withDual) :
-		m_basis(basis), m_dim(dim), m_norm(norm),  m_modulo(0), m_withDual(withDual) {
+IntLattice<Int, Real>::IntLattice (const IntMat basis, const Int m,
+		const int64_t dim, bool withDual, NormType norm) :
+		m_basis(basis), m_modulo(m), m_dim(dim), m_withDual(withDual), m_norm(norm) {
 	this->m_vecNorm.resize(dim);
 	initVecNorm();
 }
@@ -447,10 +447,9 @@ IntLattice<Int, Real>::IntLattice (const IntMat basis,
 template<typename Int, typename Real>
 IntLattice<Int, Real>::IntLattice(const IntMat primalbasis,
 		const IntMat dualbasis, const Int m, const int64_t dim, NormType norm) :
-		IntLattice<Int, Real>(primalbasis, dim, norm, true) {
+		IntLattice<Int, Real>(primalbasis, m, dim, true, norm) {
 	this->m_dualbasis = IntMat(dualbasis);
 	this->m_dualvecNorm.resize(dim);
-	this->m_modulo = m;
 	setDualNegativeNorm();
 }
 
@@ -506,7 +505,7 @@ void IntLattice<Int, Real>::overwriteLattice(
 		this->m_modulo = lat.m_modulo;
 	}
 	else
-		std::cout << "Calling IntLattice::overwriteLattice with wrong dimension"
+		std::cout << "IntLattice::overwriteLattice: wrong dimension"
 				<< std::endl;
 	}
 

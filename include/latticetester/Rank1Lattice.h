@@ -145,7 +145,7 @@ template<typename Int, typename Real>
 Rank1Lattice<Int, Real>::Rank1Lattice (
         const Int & m, const Int & a, int64_t maxDim, NormType norm):
         IntLatticeExt<Int, Real> (m, maxDim, true, norm) {
-    m_a.SetDim(maxDim);
+    m_a.SetLength(maxDim);
 	Int powa(1);  m_a[0] = powa;
     for (long i=1; i < maxDim; i++) {
     	powa = (a * powa) % m;
@@ -256,6 +256,17 @@ void Rank1Lattice<Int, Real>::dualize () {
       this->m_basis = this->m_dualbasis;
       this->m_dualbasis = tmps;
     }
+
+//============================================================================
+
+/**
+ * Selects and stores a vector of indices with lacunary values.
+ */
+template<typename Int>
+void setLac(const Lacunary<Int>& lac) {
+	return;
+}
+
 
 //============================================================================
 

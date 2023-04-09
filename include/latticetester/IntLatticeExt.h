@@ -94,7 +94,7 @@ public:
 	 *
 	 * WARNING: I have reordered the last two parameters to be consistent with IntLattice!
 	 */
-	IntLatticeExt(Int m, int64_t maxDim, NormType norm = L2NORM, bool withDual=false);
+	IntLatticeExt(Int m, int64_t maxDim, bool withDual=false, NormType norm = L2NORM);
 
 	/**
 	 * Copy constructor that makes a copy of `lat`. The maximal dimension
@@ -186,7 +186,7 @@ public:
 	/**
 	 * Selects and stores a vector of indices with lacunary values.
 	 */
-	virtual void setLac(const Lacunary<Int>&);
+//	virtual void setLac(const Lacunary<Int>& lac);
 
 	/**
 	 * Returns a string describing the lattice.
@@ -243,11 +243,10 @@ protected:
 //===========================================================================
 
 template<typename Int, typename Real>
-IntLatticeExt<Int, Real>::IntLatticeExt(Int m, int64_t maxDim, NormType norm,  bool withDual) :
-		IntLattice<Int, Real>(maxDim, norm) {
-	this->m_dim = maxDim;
-	this->m_withDual = withDual;
-	this->m_modulo = m;
+IntLatticeExt<Int, Real>::IntLatticeExt(Int m, int64_t maxDim, bool withDual, NormType norm) :
+		IntLattice<Int, Real>(m, maxDim, withDual, norm) {
+	this->m_maxDim = maxDim;
+	// this->m_withDual = withDual;
 	// m_order = k;
 	// Reserves space for the lattice and the projections in up to maxDim dimensions.
 	init();
@@ -285,7 +284,7 @@ void IntLatticeExt<Int, Real>::init() {
 	IntLattice<Int, Real>::initVecNorm();
 	// double temp;   // Used only for m_lgVolDual2.
 	// NTL::conv (temp, this->m_modulo);
-	m_basisProj.resize(dim, dim);
+	m_basisProj.resize(dim, dim);   // Basis of current projection.
 	if (this->m_withDual) {
 		// m_lgVolDual2 = new double[dim+1];
 		// m_lgm2 = 2.0 * Lg (temp);
@@ -305,8 +304,8 @@ void IntLatticeExt<Int, Real>::kill() {
 
 template<typename Int, typename Real>
 IntLatticeExt<Int, Real>::~IntLatticeExt() {
-	this->m_basisProj.clear();
-	this->m_dualbasisProj.clear();
+	this->m_basisProj.kill();
+	this->m_dualbasisProj.kill();
 	// IntLatticeExt<Int, Real>::~IntLatticeExt();
 }
 

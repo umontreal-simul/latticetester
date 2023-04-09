@@ -1656,13 +1656,11 @@ void copyMatrixToMat(Matr1 &A, Matr2 &B) {
 
 template<typename IntMat>
 void printBase(IntMat bas_mat) {
-	//int64_t l = bas_mat.size1();
-	// int64_t c = bas_mat.size2();
 	int64_t l = bas_mat.NumRows();
 	int64_t c = bas_mat.NumCols();
 	for (int64_t i = 0; i < l; i++) {
 		for (int64_t j = 0; j < c; j++) {
-			std::cout << bas_mat(i, j) << "   ";
+			std::cout << bas_mat[i][j] << "   ";
 		}
 		std::cout << "" << std::endl;
 	}
@@ -1676,18 +1674,18 @@ void printBase2(IntMat bas_mat) {
 	int64_t c = bas_mat.NumCols();
 	for (int64_t i = 1; i <= l; i++) {
 		for (int64_t j = 1; j <= c; j++) {
-			std::cout << bas_mat(i, j) << "   ";
+			std::cout << bas_mat[i][j] << "   ";
 		}
 		std::cout << "" << std::endl;
 	}
 }
 
+// The two matrices must already have the same dimensions!
 template<typename IntMat>
 void copy(IntMat &b1, IntMat &b2) {
-
-	for (int64_t i = 0; i < b1.size1(); i++) {
-		for (int64_t j = 0; j < b1.size2(); j++) {
-			b2(i, j) = b1(i, j);
+	for (int64_t i = 0; i < b1.NumRows(); i++) {
+		for (int64_t j = 0; j < b1.NumCols(); j++) {
+			b2[i][j] = b1[i][j];
 		}
 	}
 }

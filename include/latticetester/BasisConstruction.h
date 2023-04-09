@@ -611,13 +611,12 @@ void BasisConstruction<Int>::GCDTriangularBasis(IntMat &gen, Int &m) {
 	long rows = gen.NumRows();
 	long cols = gen.NumCols();
 	long max_rank = rows < cols ? rows : cols;
-	long rank = 0;
     long i, j, k;
 	Int q, temp;
 	// The basis will have at most max_rank vectors.
 	for (i = 0; i < max_rank; i++) {
-		// We find gcd(matrix[i][i], ..., matrix[rows-1][i]) using Euclid
-		// algorithm and applying transformations to the matrix
+		// We find gcd(gen[i][i], ..., gen[rows-1][i]) using Euclid
+		// algorithm and applying transformations to the rows of gen.
 		for (j = i + 1; j < rows; j++) {
 			while (gen[j][i] != 0) {
 				gen[i].swap(gen[j]);
@@ -626,19 +625,25 @@ void BasisConstruction<Int>::GCDTriangularBasis(IntMat &gen, Int &m) {
 				for (k = 0; k < cols; k++) {
 					// NTL::MulSubFrom(gen[j][k], q, gen[i][k]);
 					NTL::mul(temp, q, gen[i][k]);
-					// gen[j][k] = (gen[j][k] - temp) % m;
-					NTL::rem(gen[j][k], gen[j][k] - temp, m);
+					gen[j][k] = gen[j][k] - temp;
+				}
+				for (k = 0; k < max_rank; k++) {
+			        NTL::rem(gen[j][k], gen[j][k], m);
 				}
 			}
 		}
 		if (gen[i][i] != 0) {
-			rank++;
-			if (gen[i][i] < 0)
-				gen[i] *= Int(-1);
+			if (gen[i][i] < 0)  // change the sign.
+				for (k = 0; k < cols; k++)
+				    gen[i][k] = -gen[i][k];
+			// std::cout << "GCD UT: i, gen[i][i] = " << i << "  " << gen[i][i] << "\n";
 		}
+		else
+	        gen[i][i] = m;
 	}
 	// We remove zero vectors from the basis.
-	gen.SetDims(rank, cols);
+	gen.SetDims(max_rank, cols);
+	// std::cout << "GCD UT: (rank, cols) = " << max_rank << "  " << cols << "\n";
 }
 
 //======================================================

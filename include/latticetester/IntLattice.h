@@ -425,8 +425,9 @@ protected:
 //===========================================================================
 
 template<typename Int, typename Real>
-IntLattice<Int, Real>::IntLattice(const Int m, const int64_t dim, bool withDual, NormType norm) :
-		m_modulo(m), m_dim(dim), m_withDual(withDual), m_norm(norm) {
+IntLattice<Int, Real>::IntLattice(const Int m, const int64_t dim, bool withDual, NormType norm)
+		: m_modulo(m), m_dim(dim), m_withDual(withDual), m_norm(norm) {
+//	this->m_modulo(m); this->m_dim(dim); this->m_withDual(withDual); this->m_norm(norm);
 	this->m_basis.resize(dim, dim);
 	this->m_vecNorm.resize(dim);
 	initVecNorm();
@@ -436,8 +437,10 @@ IntLattice<Int, Real>::IntLattice(const Int m, const int64_t dim, bool withDual,
 
 template<typename Int, typename Real>
 IntLattice<Int, Real>::IntLattice (const IntMat basis, const Int m,
-		const int64_t dim, bool withDual, NormType norm) :
-		m_basis(basis), m_modulo(m), m_dim(dim), m_withDual(withDual), m_norm(norm) {
+		const int64_t dim, bool withDual, NormType norm)
+		: m_basis(basis), m_modulo(m), m_dim(dim), m_withDual(withDual), m_norm(norm) {
+//	this->m_basis(basis);
+//	this->m_modulo(m); this->m_dim(dim); this->m_withDual(withDual); this->m_norm(norm);
 	this->m_vecNorm.resize(dim);
 	initVecNorm();
 }

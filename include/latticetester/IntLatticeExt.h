@@ -152,10 +152,13 @@ public:
 	 */
 	// void computeNormalConstants(bool dualF);
 	//    void fixLatticeNormalization (bool dualF);
+
 	/**
 	 * Builds an upper triangular basis for the projection `proj` for this lattice
 	 * and places this lattice projection in the `lattice` object.
 	 * If the latter maintains a dual basis, then this (triangular) dual basis is also updated.
+	 * Note that the same `lattice` objects can be used when calling this method several
+	 * times to examine different projections.
 	 */
 	void buildProjection(IntLatticeExt<Int, Real> *lattice,
 			const Coordinates &proj);
@@ -248,7 +251,7 @@ IntLatticeExt<Int, Real>::IntLatticeExt(Int m, int64_t maxDim, bool withDual, No
 	this->m_maxDim = maxDim;
 	// this->m_withDual = withDual;
 	// m_order = k;
-	// Reserves space for the lattice and the projections in up to maxDim dimensions.
+	// Reserves space for the lattice and the projections (via init()) in up to maxDim dimensions.
 	init();
 	this->m_basis.resize(this->m_dim, this->m_dim);
 	this->m_vecNorm.resize(this->m_dim);
@@ -410,14 +413,14 @@ void IntLatticeExt<Int, Real>::buildProjection(
 	// so `temp2` will be a square invertible matrix.
 	lattice->setDim(static_cast<int>(proj.size()));
 	// lattice->m_order = m_order;
-	BasisConstruction<Int> bc;
-	bc.upperTriangularBasis(temp, temp2, this->m_modulo);
+	// BasisConstruction<Int> bc;
+	BasisConstruction<Int>::upperTriangularBasis(temp, temp2, this->m_modulo);
 	temp2.SetDims(lattice->getDim(), lattice->getDim());
 	lattice->setNegativeNorm();
 	lattice->m_basis = temp2;
 	lattice->m_withDual = this->m_withDual;
 	if (this->m_withDual) {
-		bc.mDualUpperTriangular(lattice->m_basis, lattice->m_dualbasis,
+		BasisConstruction<Int>::mDualUpperTriangular(lattice->m_basis, lattice->m_dualbasis,
 				this->m_modulo);
 		lattice->setDualNegativeNorm();
 	}
@@ -428,7 +431,7 @@ void IntLatticeExt<Int, Real>::buildProjection(
 template<typename Int, typename Real>
 void IntLatticeExt<Int, Real>::buildBasis(int64_t d) {
 	// To be re-implemented in subclasses.
-	MyExit(1, " buildBasis(d) does nothing, must be inmplemented in subclass");
+	MyExit(1, " buildBasis(d) does nothing, it must be implemented in subclass");
 	d++;  // eliminates compiler warning
 }
 

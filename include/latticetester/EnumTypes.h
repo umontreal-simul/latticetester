@@ -120,9 +120,9 @@ namespace LatticeTester {
    * `PAL` is for the \f$P_{\alpha}\f$ test. <br>
    * `BAL` is for the bound on the \f$P_{\alpha}\f$ test. <br>
    * `NORMPAL` is for the \f$P_{\alpha}\f$ test `PAL`, with the result normalized
-   * over the `BAL` bound. <br>
+   *      over the `BAL` bound. <br>
    * `SEEKPAL` is for the \f$P_{\alpha}\f$ seek, which searches
-   * for good values of the multiplier.
+   *      for good values of the multiplier.
    */
   enum CalcType { PAL, NORMPAL, BAL, SEEKPAL };
 
@@ -136,6 +136,16 @@ namespace LatticeTester {
    * `FULL`: shortest vector search.
    */
   enum PreReductionType { NOPRERED, DIETER, LLL, BKZ, FULL };
+
+  /**
+   * Two possible ways of obtaining a triangular matrix to compute the bounds
+   * in the BB algorithm.
+   *
+   * `CHOLESKY`: use a lower-triangular matrix obtained as the Cholesky decomposition
+   *             of the matrix of scalar products.
+   * `TRIANGULAR`: use a lower-triangular basis
+   */
+  enum DecompType { CHOLESKY, TRIANGULAR };
 
   /**
    * \name toString functions

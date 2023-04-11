@@ -180,7 +180,7 @@ public:
 	}
 
 	/**
-	 * Returns the scaling factor `m`, which is 1 by default.
+	 * Returns the scaling factor `m`.
 	 */
 	Int getModulo() const {
 		return m_modulo;

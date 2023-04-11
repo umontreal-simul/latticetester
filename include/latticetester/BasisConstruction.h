@@ -524,84 +524,105 @@ void BasisConstruction<NTL::ZZ>::upperTriangularBasis (NTL::matrix<NTL::ZZ> &gen
 
 //==============================================================================
 
-// This one needs a deep renovation!
 template<typename Int>
 void BasisConstruction<Int>::lowerTriangularBasis(IntMat &gen, IntMat &basis,
 		Int &m) {
-	IntVec coeff, vl, v2;
-	Int C, D, val, gcd;
-	int64_t pc, pl, k;
-	int64_t dim1 = gen.NumRows();
-	int64_t dim2 = gen.NumCols();
-	pl = dim1 - 1;
-	pc = dim2 - 1;
-	while (pl >= 0 && pc >= 0) {
-		for (int64_t i = 0; i < dim1; i++)
-			Modulo(gen(i, pc), m, gen(i, pc));
-		coeff.SetLength(dim2);
-		k = 0;
-		while (k < dim1 && gen(k, pc) == 0) {
-			coeff[k] = 0;
-			k++;
+	IntVec coeff_gcd, coeff_xi, xi;
+	Int gcd, gcd_tower, C, D;
+	long dim1 = gen.NumRows();
+	long dim2 = gen.NumCols();
+	long i, j, k, l;
+
+	//Define dimensions of vectors
+	coeff_gcd.SetLength(dim2);
+	coeff_xi.SetLength(dim2);
+	xi.SetLength(dim2);
+    
+	for (i = dim2-1; i > -1; i--) {
+		// Reset these vectors to 0, as they may contain nonzero values from the previous i.
+		// xi.clear();   // This call causes a segmentation fault in the int64_t case!
+		// coeff_gcd.clear();
+		for (j = dim2-1; j >-1; j--) {
+		    xi[j] = coeff_gcd[j] = 0;
 		}
-		if (k < dim1) {
-			gcd = gen(k, pc);
-			coeff[k] = 1;
-			val = gcd;
-			for (int64_t i = k + 1; i < dim1; i++) {
-				if (gen(i, pc) == 0) {
-					coeff[i] = 0;
-					continue;
+		// Search for the first non-zero element in the row.
+		for (k = dim1-1; (k > -1 && gen[dim1-1-k][i] == 0); k--) {}
+		//			if (gen[k][i] != 0)	break;
+		// Reduce the other generators as they are used often in what follows.
+		for (j = dim1-1; j > dim1-k-1; j--) {
+		    NTL::rem(gen[j][i], gen[j][i], m);
+		}
+		// The `else` case adds m e_i to the basis matrix.
+		if (k > -1) {
+			gcd = m;    // Will be GCD(m, gen[k][i]);
+			coeff_gcd[k] = 1;
+			gcd_tower = gcd;
+
+			// Find the other coefficients by applying the Euclidean algorithm multiple times
+			for (j = dim1-1; j >dim1-k-1; j--) {
+				if (gen[j][i] == 0)
+					coeff_gcd[j] = 0;
+				else {
+					NTL::XGCD(gcd, C, D, gcd_tower, gen[j][i]);
+					coeff_gcd[j] = D;
+					for (l = dim1-j-1-1; l > -1; l--) {
+						NTL::mul(coeff_gcd[dim1-1-l], coeff_gcd[dim1-1-l], C);
+					}
+					gcd_tower = gcd;
 				}
-				Euclide(val, gen(i, pc), C, D, gcd);
-				coeff[i] = D;
-				for (int64_t j = 0; j < i; j++)
-					coeff[j] *= C;
-				val = gcd;
 			}
-			int64_t coeffN[dim2];
-			int64_t nb = 0;
-			for (int64_t a = 0; a < dim1; a++) {
-				if (coeff[a] != 0) {
-					coeffN[nb] = a;
-					nb++;
+			// If gcd = m, then this basis (row) vector will be `m e_i`.
+			if (gcd==m) {
+				for (j = dim2-1; j > -1; j--) {
+				  if (j != i)
+					  basis[i][j] = 0;
+				  else
+					  basis[i][j] = m;
 				}
 			}
-			vl.SetLength(dim2);
-			int64_t ind = 0;
-			for (int64_t j = 0; j < dim2; j++) {
-				for (int64_t i = 0; i < nb; i++) {
-					ind = coeffN[i];
-					vl[j] = vl[j] + coeff[ind] * gen(ind, j);
+			else {
+				// Reduce the coefficients found during the Euclidean algorithm.
+				for (j = 0; j < dim1; j++) {
+				  NTL::rem(coeff_gcd[dim1-1-j], coeff_gcd[dim1-1-j], m);
 				}
-				Modulo(vl[j], m, vl[j]);
-			}
-			for (int64_t i = 0; i < dim1; i++) {
-				if (gen(i, pc) != 0) {
-					v2 = (gen(i, pc) / gcd) * vl;
-					for (int64_t j = 0; j < dim2; j++)
-						Modulo(v2[j], m, v2[j]);
-					for (int64_t j = 0; j < dim2; j++) {
-						gen(i, j) = gen(i, j) - v2[j];
-						Modulo(gen(i, j), m, gen(i, j));
+				// We have now found all the coefficients and can compute the vector x_i.
+				for (l = dim1-1; l > -1; l--) {
+					if (coeff_gcd[l] != 0) {
+						for (j = dim2-1; j > dim1-1-i-1; j--) {
+							NTL::MulAddTo(xi[j], gen[l][j], coeff_gcd[l]);
+						}
 					}
 				}
+				// Next we calculate the new vectors v_i.
+				// We first calculate the coefficients with which x_i needs to be multiplied.
+				for (j = dim1-1; j > -1; j--) {
+					NTL::div(coeff_xi[j], gen[j][i], gcd);
+					NTL::rem(coeff_xi[j], coeff_xi[j], m);
+					NTL::rem(xi[j], xi[j], m);
+				}
+				// Update the v_i
+				for (l = dim1-1; l > -1; l--) {
+					if (coeff_xi[l] != 0) {
+						for (j = dim2-1; j > dim1-1-i-1; j--) {
+							NTL::MulSubFrom(gen[l][j], coeff_xi[l], xi[j]);
+						}
+					}
+				}
+				// Set the `i`th base vector.
+				basis[i] = xi;
 			}
-			basis[pl] = vl;
 		} else {
-			for (int64_t j1 = 0; j1 < dim2; j1++) {
-				if (j1 != pl)
-					NTL::clear(basis(pl, j1));
+			for (j = dim2-1; j > -1; j--) {
+				if (j != i)
+					basis[i][j] = 0;
 				else
-					basis(pl, j1) = m;
+					basis[i][j] = m;
 			}
 		}
-		coeff.clear();
-		vl.clear();
-		pl--;
-		pc--;
 	}
+    //std::cout << basis;
 }
+
 
 //======================================================
 
@@ -829,7 +850,8 @@ template<>
 void BasisConstruction<NTL::ZZ>::mDualBasis(
 		NTL::matrix<NTL::ZZ> &basis, NTL::matrix<NTL::ZZ> &basisDual, NTL::ZZ &m) {
 	NTL::ZZ d, fac;
-		
+	NTL::matrix<NTL::ZZ> A;
+	
 	int64_t dim = basis.NumRows();
 	if (dim != basis.NumCols()) {
 		std::cerr << "mDualBasis: the given basis matrix must be square.\n";
@@ -840,13 +862,14 @@ void BasisConstruction<NTL::ZZ>::mDualBasis(
 	// These are values that we might use for RNGs.
 	inv(d, basisDual, basis);
 	NTL::matrix<NTL::ZZ> C = basisDual;
-	div(fac, m, d);
+	div(fac, d, m);
 	for (int64_t i = 0; i < dim; i++) {
 		for (int64_t j = 0; j < dim; j++) {
-			mul(basisDual[i][j], C[i][j], fac);
+			div(basisDual[i][j], C[j][i], fac);
 		}
-	}
+	}	
 }
+
 
 //=================================================================================
 

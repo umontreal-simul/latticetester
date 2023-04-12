@@ -222,7 +222,7 @@ public:
 	/**
 	 * Returns `true` iff an m-dual basis is available.
 	 */
-	bool withDual() const {
+	inline bool withDual() const {
 		return m_withDual;
 	}
 
@@ -661,7 +661,7 @@ template<typename Int, typename Real>
 	    return;
 		}
     std::swap(this->m_basis, this->m_dualbasis);
-    this->setNegativeNorm ();
+    this->setNegativeNorm ();        // Maybe we should swap them instead ????
     this->setDualNegativeNorm ();
   }
 

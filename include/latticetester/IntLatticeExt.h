@@ -165,6 +165,7 @@ public:
 
 	/**
 	 * This virtual method builds a basis for the lattice in `dim` dimensions.
+	 * This `dim` must not exceed `maxDim`.
 	 */
 	virtual void buildBasis(int64_t dim);
 

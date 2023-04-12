@@ -46,14 +46,14 @@
 #include "latticetester/EnumTypes.h"
 #include "latticetester/NTLWrap.h"
 
-namespace NTL {
+namespace NTL { // This is DANGEROUS, since functions with same names also appear in NTL !!!
 
 /**
  * \name Some other compatibility utilities
  * @{
  * These functions perform convertions between different types. Most of them
- * do not really need explainations, but sometimes a specific logic is used
- * when doing the convertion.
+ * do not really need explanations, but sometimes a specific logic is used
+ * when doing the conversion.
  */
 
 /**

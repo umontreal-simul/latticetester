@@ -47,6 +47,13 @@ namespace LatticeTester {
    * of points (has the same density \f$m\f$) as the full lattice.
    * When searching for lattices that satisfy this condition, one may assume
    * without loss of generality generality that \f$a_1 = 1\f$.
+   *
+   * ***  CHANGES: added parameter withDual to the constructor.
+   *   Removed  init();
+   *   I changed buildBasis for the dual to use the direct construction.
+   *   incDim needs to be made more efficient, by just updating the basis!
+   *   It seems that setLac could be in IntLattice already.
+   *
    */
 template<typename Int, typename Real>
 class Rank1Lattice: public IntLatticeExt<Int, Real> {
@@ -66,8 +73,7 @@ class Rank1Lattice: public IntLatticeExt<Int, Real> {
          * more flexibility in the dimension when doing so.
          */
         Rank1Lattice (const Int & m, const IntVec & aa, int64_t maxDim,
-            // LatticeTester::NormType norm = LatticeTester::L2NORM);
-            NormType norm = L2NORM);
+        	bool withDual=false, NormType norm = L2NORM);
 
         /**
          * Constructor for the special case of a Korobov lattice.
@@ -75,7 +81,7 @@ class Rank1Lattice: public IntLatticeExt<Int, Real> {
          * where a is an integer such that 1 < a < m.
          */
         Rank1Lattice (const Int & m, const Int & a, int64_t maxDim,
-            NormType norm = L2NORM);
+        	bool withDual=false, NormType norm = L2NORM);
 
         /**
          * Copy constructor.
@@ -100,16 +106,13 @@ class Rank1Lattice: public IntLatticeExt<Int, Real> {
 
         /**
          * Builds a basis in `d` dimensions. This `d` must not exceed `this->maxDim()`.
+         * This initial basis will be upper triangular.
          */
         void buildBasis (long d);
 
         /**
-         * Dualizes the lattice by exchanging the primal and dual bases.
-         */
-        void dualize ();
-
-        /**
-         * Increases the current dimension by 1.
+         * Increases the current dimension by 1 and updates the basis.
+         * The dimension must be smaller than `maxDim` when calling this function.
          */
         void incDim ();
 
@@ -117,13 +120,14 @@ class Rank1Lattice: public IntLatticeExt<Int, Real> {
 
         /**
          * Initializes the rank 1 lattice. This just invokes `IntLatticeExt::init()`.
+         *        So why do we need it ???  check this ....   ?????         *****
          */
-        void init();
+        // void init();
 
         /**
          * Vector of multipliers (generating vector) of the rank 1 lattice rule.
          * They are stored for up to `maxDim()` dimensions.
-         * The first dimension has index 0.
+         * The first coordinate has index 0.
          */
         IntVec m_a;
     };
@@ -133,25 +137,25 @@ class Rank1Lattice: public IntLatticeExt<Int, Real> {
 
 template<typename Int, typename Real>
 Rank1Lattice<Int, Real>::Rank1Lattice (
-         const Int & m, const IntVec & aa, int64_t maxDim, NormType norm):
-         IntLatticeExt<Int, Real> (m, maxDim, true, norm) {
+         const Int & m, const IntVec & aa, int64_t maxDim, bool withDual, NormType norm):
+         IntLatticeExt<Int, Real> (m, maxDim, withDual, norm) {
     this->m_a = aa;
-    init();
+    this->init();
   }
 
 //============================================================================
 
 template<typename Int, typename Real>
 Rank1Lattice<Int, Real>::Rank1Lattice (
-        const Int & m, const Int & a, int64_t maxDim, NormType norm):
-        IntLatticeExt<Int, Real> (m, maxDim, true, norm) {
+        const Int & m, const Int & a, int64_t maxDim, bool withDual, NormType norm):
+        IntLatticeExt<Int, Real> (m, maxDim, withDual, norm) {
     m_a.SetLength(maxDim);
 	Int powa(1);  m_a[0] = powa;
     for (long i=1; i < maxDim; i++) {
     	powa = (a * powa) % m;
     	m_a[i] = powa;
     }
-    init();
+    this->init();    // Does not initialize a basis....
   }
 
 //============================================================================
@@ -159,26 +163,30 @@ Rank1Lattice<Int, Real>::Rank1Lattice (
 template<typename Int, typename Real>
 Rank1Lattice<Int, Real>::~Rank1Lattice() {
       this->m_a.kill ();
+      // ~(this->m_a);
     }
 
   //============================================================================
 
+/*
 template<typename Int, typename Real>
 void Rank1Lattice<Int, Real>::init() {
     IntLatticeExt<Int, Real>::init();
       // for (int64_t r = 1; r < this->getDim(); r++)
       //   this->m_lgVolDual2[r] = this->m_lgVolDual2[r - 1];
     }
+*/
 
   //============================================================================
 
+// Essenti
 template<typename Int, typename Real>
 Rank1Lattice<Int, Real> & Rank1Lattice<Int, Real>::operator= (
          const Rank1Lattice<Int, Real> & lat) {
       if (this == &lat)
-        return * this;
+         return *this;
       this->copy (lat);
-      init ();
+      this->init ();
       this->m_a = lat.m_a;
       return *this;
     }
@@ -189,9 +197,9 @@ template<typename Int, typename Real>
 Rank1Lattice<Int, Real>::Rank1Lattice (
         const Rank1Lattice<Int, Real> & lat):
       IntLatticeExt<Int, Real> (
-          lat.m_modulo, lat.getDim (), lat.getNormType ()) {
+          lat.m_modulo, lat.getDim (), lat.withDual(), lat.getNormType ()) {
     // MyExit (1, "Rank1Lattice:: constructor is incomplete" );
-    init ();
+    this->init ();
     this->m_a = lat.m_a;
   }
 
@@ -206,14 +214,15 @@ std::string Rank1Lattice<Int, Real>::toStringCoef ()const {
 
 template<typename Int, typename Real>
 void Rank1Lattice<Int, Real>::incDim () {
-      assert(1 + this->getDim() <= this->m_maxDim);
-      buildBasis (1 + this->getDim ());
+      assert(this->getDim() < this->m_maxDim);
+      buildBasis (1 + this->getDim ());   // Rebuild from scratch ??   Should just Update !!!
       this->setNegativeNorm ();
       this->setDualNegativeNorm ();
     }
 
   //============================================================================
 
+// The basis is built directly, as explained in the guide of LatMRG.
 template<typename Int, typename Real>
 void Rank1Lattice<Int, Real>::buildBasis (long d) {
       assert(d <= this->m_maxDim);
@@ -221,41 +230,47 @@ void Rank1Lattice<Int, Real>::buildBasis (long d) {
       this->m_basis.SetDims(d,d);
       this->m_dualbasis.SetDims(d,d);
 
-      // conv(m_v[1][1], 1);
+      // This builds an upper triangular basis in a standard way.
       for (int64_t j = 0; j < d; j++) {
-        this->m_basis (0, j) = this->m_a[j];
+        this->m_basis[0][j] = this->m_a[j];
       }
       for (int64_t i = 1; i < d; i++) {
         for (int64_t j = 0; j < d; j++) {
           if (i == j) {
-            this->m_basis (i, j) = this->m_modulo;
+            this->m_basis[i][i] = this->m_modulo;
           } else {
-            this->m_basis (i, j) = 0;
+            this->m_basis[i][j] = 0;
           }
         }
       }
-      // if a[0] != 1, the basis must be triangularized
-      //BasisConstruction<Int> constr;
-      if (this->m_basis (0, 0) != 1) {
-        //constr.GCDConstruction(this->m_basis);
-         Triangularization (
-             this->m_basis, this->m_dualbasis, d, d, this->m_modulo);
-         dualize ();
-      }
-      //constr.mDualTriangular(this->m_basis, this->m_dualbasis, this->m_modulo);
-      calcDual (this->m_basis, this->m_dualbasis, d, this->m_modulo);
       this->setNegativeNorm ();
+
+      if (!this->m_withDual) return;
+      // If `withDual`, we construct the dual basis also in a direct way.
+      this->m_dualbasis[0][0] = this->m_modulo;
+      for (int64_t j = 1; j < d; j++)
+         this->m_basis[0][j] = 0;
+      for (int64_t i = 1; i < d; i++) {
+         this->m_dualbasis[i][0] = -this->m_basis[0][i];
+         for (int64_t j = 0; j < d; j++) {
+            if (i == j) this->m_basis[i][i] = 1;
+            else this->m_basis[i][j] = 0;
+         }
+      }
       this->setDualNegativeNorm ();
     }
 
   //============================================================================
 
+/*
+ *  This is already in IntLattice!
 template<typename Int, typename Real>
 void Rank1Lattice<Int, Real>::dualize () {
       IntMat tmps(this->m_basis);
       this->m_basis = this->m_dualbasis;
       this->m_dualbasis = tmps;
     }
+*/
 
 //============================================================================
 
@@ -263,7 +278,7 @@ void Rank1Lattice<Int, Real>::dualize () {
  * Selects and stores a vector of indices with lacunary values.
  */
 template<typename Int>
-void setLac(const Lacunary<Int>& lac) {
+void setLac(const Lacunary<Int>& lac) {           // ??????????
 	return;
 }
 

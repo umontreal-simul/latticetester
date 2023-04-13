@@ -166,32 +166,30 @@ public:
 
 	/**
 	 * Constructs a basis for the projection `proj` of the lattice `in`,
-	 * using LLLConstruction, and puts it in `out`. The basis is not triangular.
-	 * This will overwrite the lattice basis in `out` and change the dimension.
-	 * It does not update the dual.
+	 * using `LLLConstruction`, and puts it in `out`. The basis is not triangular.
+	 * This will overwrite the basis of the lattice given in `out` and will
+	 * change its dimension. It does not compute the dual.
 	 */
-	
-	static void CreateExampleMatrixToFile(int64_t &m, int64_t &d, IntVec & a, int64_t & no);
+	template<typename Real>
+	static void projectionConstructionLLL(IntLattice<Int, Real> &in,
+			IntLattice<Int, Real> &out, const Coordinates &proj);
+
 	
 	/**
 	 * Based on modulus m, dimension d and vector a, this function creates at first the 
 	 * lattice matrix V of the linear congruential generator. In order to not have V in 
 	 * diagonal form, it applies LLL. The resulting matrix is written to a file in the 
 	 * output folder "/output" with the naming convention "modulus_dimension_no.dat"
-	 */
+	 *
+	static void CreateExampleMatrixToFile(int64_t &m, int64_t &d, IntVec & a, int64_t & no);
 
-	static void CreateExampleMatrix(int64_t &m, int64_t &d, IntVec & a, IntMat & V);
-	
 	/**
 	 * Based on modulus m, dimension d and vector a, this function creates at first the 
 	 * lattice matrix V of the linear congruential generator. In order to not have V in 
 	 * diagonal form, it applies LLL. 
-	 */
-	
-	template<typename Real>
-	static void projectionConstructionLLL(IntLattice<Int, Real> &in,
-			IntLattice<Int, Real> &out, const Coordinates &proj);
-	
+	 *
+	static void CreateExampleMatrix(int64_t &m, int64_t &d, IntVec & a, IntMat & V);
+	*/
 };
 
 //============================================================================
@@ -850,6 +848,8 @@ void BasisConstruction<NTL::ZZ>::mDualBasis(
 
 //=================================================================================
 
+// IntLattice::Put buildProjection together with this one!    ****************
+
 template<typename Int>
 template<typename Real>
 void BasisConstruction<Int>::projectionConstructionLLL(
@@ -867,7 +867,7 @@ void BasisConstruction<Int>::projectionConstructionLLL(
 		if (*it <= lat_dim)
 			new_basis[i] = tmp[*it];
 		else
-			MyExit(1, "Coordinates do not match the dimensions of `in`.");
+			MyExit(1, "A projection coordinate exceeds the dimension of the current basis.");
 		it++;
 	}
 	new_basis = NTL::transpose(new_basis);
@@ -875,9 +875,11 @@ void BasisConstruction<Int>::projectionConstructionLLL(
 	out = IntLattice<Int, Real>(new_basis, size, in.getNormType());
 }
 
-template<typename Int>
-void BasisConstruction<Int>::CreateExampleMatrixToFile (int64_t & m, int64_t & d, IntVec & a, int64_t & no)
-   {	
+
+/*
+
+ template<typename Int>
+void BasisConstruction<Int>::CreateExampleMatrixToFile (int64_t & m, int64_t & d, IntVec & a, int64_t & no)  {
 		int64_t k = a.length();
 		
 		IntMat V;
@@ -898,8 +900,6 @@ void BasisConstruction<Int>::CreateExampleMatrixToFile (int64_t & m, int64_t & d
 		for (int64_t i = k; i < d; i++) {
 			V[i][i] = m;
 		}
-		 
-
 		//Apply LLL to ensure that M is not upper triangular anymore
 		LLLConstruction0 (V, 0.999999, DOUBLE);
 				  		  
@@ -915,7 +915,6 @@ void BasisConstruction<Int>::CreateExampleMatrixToFile (int64_t & m, int64_t & d
 			}
 		}
 	  	myfile.close();		  
-
    }
 
 template<typename Int>
@@ -928,7 +927,6 @@ void BasisConstruction<Int>::CreateExampleMatrix (int64_t & m, int64_t & d, IntV
 		for (int64_t i = 0; i < k; i++) {
 			V[i][i] = 1;
 		}
-		 
 		for (int64_t i = 0; i < k; i++) {
 			for (int64_t j = k; j < d; j++) {
 				for (int64_t l = 0; l < k; l++)
@@ -936,16 +934,13 @@ void BasisConstruction<Int>::CreateExampleMatrix (int64_t & m, int64_t & d, IntV
 				V[i][j] = V[i][j] % m;
 			}
 		}
-		 
 		for (int64_t i = k; i < d; i++) {
 			V[i][i] = m;
 		}
-		 
-
-		//Apply LLL to ensure that M is not upper triangular anymore
+     	//Apply LLL to ensure that M is not upper triangular anymore
 		LLLConstruction0 (V, 0.999999, DOUBLE);		 
-
    }
+*/
 
 
 template class BasisConstruction<std::int64_t>;

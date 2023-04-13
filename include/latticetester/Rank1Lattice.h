@@ -119,7 +119,7 @@ class Rank1Lattice: public IntLatticeExt<Int, Real> {
       protected:
 
         /**
-         * Initializes the rank 1 lattice. This just invokes `IntLatticeExt::init()`.
+         * Initializes the rank 1 lattice. This just invokes `IntLatticeExt::initProj()`.
          *        So why do we need it ???  check this ....   ?????         *****
          */
         // void initProj();

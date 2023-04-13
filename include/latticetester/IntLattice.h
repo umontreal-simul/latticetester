@@ -119,7 +119,7 @@ public:
 	 
 	/**
 	 * Builds an upper triangular basis for the projection `proj` for this lattice
-	 * and places this lattice projection in the `lattice` object.
+	 * and replaces the current `lattice` object by this projection.
 	 * If the latter maintains a dual basis, then this (triangular) dual basis is also updated.
 	 * Note that the same `lattice` objects can be used when calling this method several
 	 * times to examine different projections.
@@ -586,16 +586,20 @@ void IntLattice<Int, Real>::initProj() {
 template<typename Int>
 class BasisConstruction;
 
+// This one should perhaps be moved to BasisConstruction.       ?????????????????
 template<typename Int, typename Real>
 void IntLattice<Int, Real>::buildProjection(
 		IntLattice<Int, Real> *lattice, const Coordinates &proj) {
 	const int64_t dim = this->getDim();
 	int64_t i = 0;
+	// We create two new matrices each time we build a projection!!!
+	// We do not use the matrices initialized by `initProj`  ???
 	IntMat temp, temp2;
-	temp.SetDims(dim, dim);
+	temp.SetDims(dim, dim);  // dim of current lattice.
 	temp2.SetDims(dim, dim);
 	for (auto iter = proj.begin(); iter != proj.end(); ++iter) {
 		// iter runs over the retained columns for the projection.
+		//  What if a column number  *iter  exceeds dim-1  ????
 		for (int64_t j = 0; j < dim; j++) {
 			temp(j, i) = this->m_basis(j, (*iter));
 		}
@@ -605,13 +609,13 @@ void IntLattice<Int, Real>::buildProjection(
 	// We construct a triangular basis for the projection `lattice` and put it in temp2.
 	// The dimension of this projection is assumed to be the projection size,
 	// so `temp2` will be a square invertible matrix.
-	lattice->setDim(static_cast<int>(proj.size()));
+	lattice->setDim(static_cast<int64_t>(proj.size()));  // Changes the lattice dimension!
 	// lattice->m_order = m_order;
 	// BasisConstruction<Int> bc;
 	BasisConstruction<Int>::upperTriangularBasis(temp, temp2, this->m_modulo);
 	temp2.SetDims(lattice->getDim(), lattice->getDim());
 	lattice->setNegativeNorm();
-	lattice->m_basis = temp2;
+	lattice->m_basis = temp2;       //  Current basis is replaced by temp2.
 	lattice->m_withDual = this->m_withDual;
 	if (this->m_withDual) {
 		BasisConstruction<Int>::mDualUpperTriangular(lattice->m_basis, lattice->m_dualbasis,

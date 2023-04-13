@@ -18,9 +18,11 @@
 #ifndef LATTICETESTER_INTLATTICE_H
 #define LATTICETESTER_INTLATTICE_H
 
+#include "latticetester/NTLWrap.h"
 #include "latticetester/EnumTypes.h"
 #include "latticetester/Util.h"
-#include "latticetester/NTLWrap.h"
+#include "latticetester/Coordinates.h"
+#include "latticetester/BasisConstruction.h"
 
 #include <string>
 #include <sstream>
@@ -115,6 +117,16 @@ public:
 	 */
 	void overwriteLattice(const IntLattice<Int, Real> &lat, long n);
 	 
+	/**
+	 * Builds an upper triangular basis for the projection `proj` for this lattice
+	 * and places this lattice projection in the `lattice` object.
+	 * If the latter maintains a dual basis, then this (triangular) dual basis is also updated.
+	 * Note that the same `lattice` objects can be used when calling this method several
+	 * times to examine different projections.
+	 */
+	void buildProjection(IntLattice<Int, Real> *lattice,
+			const Coordinates &proj);
+
 	/**
 	 * Initializes a vector containing the norms of the basis vectors to -1
 	 * for all components.  It means the norms are no longer up to date.
@@ -566,6 +578,45 @@ void IntLattice<Int, Real>::initProj() {
 		// m_lgVolDual2 = new double[dim+1];
 		// m_lgm2 = 2.0 * Lg (temp);
 		// m_lgVolDual2[1] = m_lgm2;
+	}
+}
+
+//===========================================================================
+
+template<typename Int>
+class BasisConstruction;
+
+template<typename Int, typename Real>
+void IntLattice<Int, Real>::buildProjection(
+		IntLattice<Int, Real> *lattice, const Coordinates &proj) {
+	const int64_t dim = this->getDim();
+	int64_t i = 0;
+	IntMat temp, temp2;
+	temp.SetDims(dim, dim);
+	temp2.SetDims(dim, dim);
+	for (auto iter = proj.begin(); iter != proj.end(); ++iter) {
+		// iter runs over the retained columns for the projection.
+		for (int64_t j = 0; j < dim; j++) {
+			temp(j, i) = this->m_basis(j, (*iter));
+		}
+		++i;
+	}
+	// The generating vectors of proj are now in temp.
+	// We construct a triangular basis for the projection `lattice` and put it in temp2.
+	// The dimension of this projection is assumed to be the projection size,
+	// so `temp2` will be a square invertible matrix.
+	lattice->setDim(static_cast<int>(proj.size()));
+	// lattice->m_order = m_order;
+	// BasisConstruction<Int> bc;
+	BasisConstruction<Int>::upperTriangularBasis(temp, temp2, this->m_modulo);
+	temp2.SetDims(lattice->getDim(), lattice->getDim());
+	lattice->setNegativeNorm();
+	lattice->m_basis = temp2;
+	lattice->m_withDual = this->m_withDual;
+	if (this->m_withDual) {
+		BasisConstruction<Int>::mDualUpperTriangular(lattice->m_basis, lattice->m_dualbasis,
+				this->m_modulo);
+		lattice->setDualNegativeNorm();
 	}
 }
 

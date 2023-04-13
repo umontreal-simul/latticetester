@@ -153,15 +153,6 @@ public:
 	// void computeNormalConstants(bool dualF);
 	//    void fixLatticeNormalization (bool dualF);
 
-	/**
-	 * Builds an upper triangular basis for the projection `proj` for this lattice
-	 * and places this lattice projection in the `lattice` object.
-	 * If the latter maintains a dual basis, then this (triangular) dual basis is also updated.
-	 * Note that the same `lattice` objects can be used when calling this method several
-	 * times to examine different projections.
-	 */
-	void buildProjection(IntLatticeExt<Int, Real> *lattice,
-			const Coordinates &proj);
 
 	/**
 	 * This virtual method builds a basis for the lattice in `dim` dimensions.
@@ -351,41 +342,6 @@ void IntLatticeExt<Int, Real>::incDim() {
  //      std::cout << " fix  " << m_lgVolDual2[i] << endl;
  }ss
  */
-
-//===========================================================================
-template<typename Int, typename Real>
-void IntLatticeExt<Int, Real>::buildProjection(
-		IntLatticeExt<Int, Real> *lattice, const Coordinates &proj) {
-	const int64_t dim = this->getDim();
-	//  std::cout << "      ESPION_2\n";  getPrimalBasis ().write();
-	int64_t i = 0;
-	IntMat temp, temp2;
-	temp.SetDims(dim, dim);
-	temp2.SetDims(dim, dim);
-	for (auto iter = proj.begin(); iter != proj.end(); ++iter) {
-		for (int64_t j = 0; j < dim; j++) {
-			temp(j, i) = this->m_basis(j, (*iter));
-		}
-		++i;
-	}
-	// The generating vectors of proj are now in temp.
-	// We construct a triangular basis for the projection `lattice` and put it in temp2.
-	// The dimension of this projection is assumed to be the projection size,
-	// so `temp2` will be a square invertible matrix.
-	lattice->setDim(static_cast<int>(proj.size()));
-	// lattice->m_order = m_order;
-	// BasisConstruction<Int> bc;
-	BasisConstruction<Int>::upperTriangularBasis(temp, temp2, this->m_modulo);
-	temp2.SetDims(lattice->getDim(), lattice->getDim());
-	lattice->setNegativeNorm();
-	lattice->m_basis = temp2;
-	lattice->m_withDual = this->m_withDual;
-	if (this->m_withDual) {
-		BasisConstruction<Int>::mDualUpperTriangular(lattice->m_basis, lattice->m_dualbasis,
-				this->m_modulo);
-		lattice->setDualNegativeNorm();
-	}
-}
 
 //===========================================================================
 

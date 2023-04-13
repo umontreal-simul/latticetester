@@ -128,7 +128,6 @@ namespace LatticeTester
   {
     std::cout << "\n***** Error " << msg << std::endl;
     exit (status);
-
   }
 
 

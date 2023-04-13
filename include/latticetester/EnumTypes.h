@@ -165,6 +165,7 @@ namespace LatticeTester {
   std::string toStringPreRed (PreReductionType);
   std::string toStringOutput (OutputType);
   std::string toStringPrecision (PrecisionType);
+  std::string toStringDecomp(DecompType);
 
   /**
    * @}

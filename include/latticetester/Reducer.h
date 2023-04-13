@@ -1021,7 +1021,7 @@ void Reducer<Int, Real>::reductionFaible(int64_t i, int64_t j)
 	const int64_t dim = m_lat->getDim();
 
 	if (abs(cte) < std::numeric_limits<double>::max()) {
-		// On peut representer cte en LONGINT.
+		// On peut representer cte en int64_t
 		if (abs(cte) > 0.5) {
 			NTL::conv(cteLI, Round(cte));
 			NTL::matrix_row<IntMat> row1(m_lat->getBasis(), j);

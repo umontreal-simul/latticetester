@@ -169,7 +169,9 @@ public:
 		return (*this)[i];
 	}
 
-};  // End class
+};  // End class vector
+
+//============================================================================
 
 /**
  * A subclass of the `NTL::Mat<T>` class. It extends its parent with a few
@@ -251,9 +253,9 @@ public:
 	const T& operator()(size_type i, size_type j) const {
 		return (*this)[i][j];
 	}
-};   // End class
+};   // End class matrix
 
-/************************************************/
+//============================================================================
 
 
 /**
@@ -275,9 +277,168 @@ public:
 	inline ~matrix_row() {
 		this->_vec__rep = 0; /* avoid destruction in parent class */
 	}
-};    // End class
+};    // End class matrix_row
 
 //============================================================================
+
+
+/**
+ * \name Other utilities for compatibility with NTL.
+ * @{
+ * These functions perform conversions between different types. Most of them
+ * do not really need explanations, but sometimes a specific logic is used
+ * when doing the conversion.
+ */
+
+/**
+ * Converts the array of characters (string) `c` into an `std::int64_t` `l`
+ * using the strtol() function of cstdlib.h.
+ */
+inline void conv(std::int64_t &l, const char *c) {
+	l = strtol(c, (char**) NULL, 10);
+}
+
+/**
+ * Converts the array of characters (string) `c` into a `double` `r` using the
+ * strtod() function of cstdlib.h.
+ */
+inline void conv(double &r, const char *c) {
+	r = strtod(c, (char**) NULL);
+}
+
+/**
+ * Converts a `int64_t` to a `double`.
+ *
+inline void conv(double &x, int64_t a) {
+	x = static_cast<double>(a);
+}
+
+ * Converts a `double` to a `int64_t`. This truncates the decimals of a.
+ *
+inline void conv(int64_t &x, double a) {
+	x = static_cast<int64_t>(a);
+}
+
+ * Converts a `int64_t` to a `NTL::ZZ`.
+ *
+inline void conv(ZZ &x, int64_t a) {
+	x = NTL::conv<ZZ>(a);
+}
+
+ * Converts a `NTL::ZZ` to a `int64_t`. This will truncate a if it has to
+ * many digits.
+ *
+inline void conv(int64_t &x, ZZ a) {
+	x = NTL::conv<int64_t>(a);
+}
+
+ * Converts a `int64_t` to a `int64_t`. This will truncate a if it has to
+ * many digits.
+ *
+inline void conv(int64_t &x, int64_t a) {
+	x = static_cast<int64_t>(a);
+}
+
+ * Converts a `int64_t` to a `int64_t`.
+ *
+inline void conv(int64_t &x, int64_t a) {
+	x = static_cast<int64_t>(a);
+}
+
+ * Since both are of the same type, this assigns a to x.
+ *
+inline void conv(int64_t &x, int64_t a) {
+	x = a;
+}
+
+inline void conv(int64_t &x, NTL::RR a) {
+	x = static_cast<int64_t>(NTL::conv<double>(a));
+}
+*/
+
+/**
+ * @}
+ * \name Function overloads
+ * @{
+ * These functions are already implemented in NTL for NTL::ZZ or NTL::RR
+ * types, but not for the other standard types we use. These overloads allow
+ * us to make a simple call to the function in the `NTL` namespace without
+ * worrying about types and still have working algorithms.
+ */
+
+/**
+ * Returns the `bool` resulting of the statement `x == 0`. `IsZero` is already
+ * defined for the type `NTL::ZZ` in NTL, but not for `std::int64_t`.
+ */
+inline bool IsZero(const std::int64_t &x) {
+	return x == 0;
+}
+
+/**
+ * Sets `x` to 0.
+ */
+inline void clear(double &x) {
+	x = 0;
+}
+
+/**
+ * Sets `x` to 0.
+ */
+inline void clear(std::int64_t &x) {
+	x = 0;
+}
+
+/**
+ * Tests if `x` is odd. Returns 1 if it is odd, and 0 if it is even.
+ */
+inline std::int64_t IsOdd(const std::int64_t &x) {
+	return x & 1;
+}
+
+/**
+ * Sets `x` to 1.
+ */
+inline void set(std::int64_t &x) {
+	x = 1;
+}
+
+/**
+ * \name Mathematical functions
+ * @{ These are complementary overloads to NTL power functions.
+ */
+
+/**
+ * Returns \f$p^i\f$.
+ */
+inline std::int64_t power(std::int64_t p, std::int64_t i) {
+	return NTL::power_long(p, i);
+}
+
+/**
+ * Sets \f$z = 2^i\f$.
+ */
+inline void power2(std::int64_t &z, std::int64_t i) {
+	z = NTL::power_long(2, i);
+}
+/**
+ * Sets \f$z = 2^i\f$.
+ */
+inline void power2(NTL::ZZ &z, std::int64_t i) {
+	z = NTL::power_ZZ(2, i);
+}
+
+inline double sqrt(const double &a) {
+	return std::sqrt(a);
+}
+
+//inline double log(const double x) {
+//	return std::log(x);
+//}
+
+inline double inv(const double x) {
+	return 1. / x;
+}
+
 
 /**
  * Transposes `A` into `X`.
@@ -292,9 +453,9 @@ public:
  * */
 template<typename T>
 static void transpose(NTL::Mat<T> &X, const NTL::Mat<T> &A) {
-	long n = A.NumRows();
-	long m = A.NumCols();
-	long i, j;
+	int64_t n = A.NumRows();
+	int64_t m = A.NumCols();
+	int64_t i, j;
 
 	// If both matrices have the same address, we need to transpose in place
 	if (&X == &A) {
@@ -364,39 +525,39 @@ inline static void negate(int64_t& x, const int64_t a)
 //   { x = abs(a); }
 
 
-inline static void mul(long& x, const long a, const long b)
+inline static void mul(int64_t& x, const int64_t a, const int64_t b)
    { x = a * b; }
 
 // Integer division.
-inline static void div(long& x, const long a, const long b)
+inline static void div(int64_t& x, const int64_t a, const int64_t b)
    { x = a / b; }
 
 // Modulo.
-inline static void rem(long& x, const long a, const long b)
+inline static void rem(int64_t& x, const int64_t a, const int64_t b)
    { x = a % b; }
 
 inline static void sqr(int64_t& x, const int64_t a)
    { x = a * a; }
 
-inline static void MulAddTo(int64_t& x, const long a, const long b)
+inline static void MulAddTo(int64_t& x, const int64_t a, const int64_t b)
    { x += a * b; }
 
-inline static void MulSubFrom(int64_t& x, long a, long b)
+inline static void MulSubFrom(int64_t& x, int64_t a, int64_t b)
    { x -= a * b; }
 
-inline static void LeftShift(int64_t& x, const long a, long k)
+inline static void LeftShift(int64_t& x, const int64_t a, int64_t k)
    { x = (a << k); }
 
-inline static void RightShift(int64_t& x, const long a, long k)
+inline static void RightShift(int64_t& x, const int64_t a, int64_t k)
    {  x = (a >> k); }
 
-// inline static bool IsZero(long x)
+// inline static bool IsZero(int64_t x)
 //   {  return (x == 0); }
 
 /*
-static double InnerProduct(double *a, double *b, long n) {
+static double InnerProduct(double *a, double *b, int64_t n) {
    register double s=0;
-   for (long i = 0; i < n; i++)
+   for (int64_t i = 0; i < n; i++)
       s += a[i]*b[i];
    return s;
 }
@@ -404,8 +565,8 @@ static double InnerProduct(double *a, double *b, long n) {
 
 static void InnerProduct(int64_t& xx, const vector64& a, const vector64& b) {
    register int64_t x = 0;
-   long n = min(a.length(), b.length());
-   long i;
+   int64_t n = min(a.length(), b.length());
+   int64_t i;
    for (i = 0; i < n; i++) {
       x += a[i] * b[i];
    }
@@ -414,28 +575,28 @@ static void InnerProduct(int64_t& xx, const vector64& a, const vector64& b) {
 */
 
 
-void static mul(vector64& x, const vector64& a, const long b) {
-   long n = a.length();
+void static mul(vector64& x, const vector64& a, const int64_t b) {
+   int64_t n = a.length();
    x.SetLength(n);
-   long i;
+   int64_t i;
    for (i = 0; i < n; i++)
       mul(x[i], a[i], b);
 }
 
 void static add(vector64& x, const vector64& a, const vector64& b) {
-   long n = a.length();
+   int64_t n = a.length();
    if (b.length() != n) LogicError("vector add: dimension mismatch");
    x.SetLength(n);
-   long i;
+   int64_t i;
    for (i = 0; i < n; i++)
       add(x[i], a[i], b[i]);
 }
 
 void static sub(vector64& x, const vector64& a, const vector64& b) {
-   long n = a.length();
+   int64_t n = a.length();
    if (b.length() != n) LogicError("vector sub: dimension mismatch");
    x.SetLength(n);
-   long i;
+   int64_t i;
    for (i = 0; i < n; i++)
       sub(x[i], a[i], b[i]);
 }
@@ -460,7 +621,7 @@ Mat_64 operator*(const Mat_64 &mat1, const Mat_64 &mat2);
  * Transforms `mat` into the identity matrix of dimensions
  * \f$\text{dim}\times\text{dim}\f$.
  */
-void ident(Mat_64 &mat, long dim);
+void ident(Mat_64 &mat, int64_t dim);
 
 /**
  * Computes and returns the determinant of `mat'.

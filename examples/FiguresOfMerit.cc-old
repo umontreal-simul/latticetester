@@ -49,19 +49,20 @@ int main() {
   IntMat matrix(max_dim,max_dim);
   unsigned int64_t ln = 0;
   reader.readBMat(matrix, ln, 0, max_dim);
-  IntLattice<Int, Real> lat_basis(matrix, max_dim);
+  IntLattice<Int, Real> lat_basis(matrix, max_dim);   // New IntLattice.
   double merit1 = 1.0, merit2 = 1.0;
 
   // The variables specific to the construction of a figure of merit
   WeightsUniform weights(1.0); // This just puts a weight of 1 to everything
   BasisConstruction<Int> constructor; // Computes projections basis
-  IntLattice<Int, Real> proj_basis(max_dim); // To store projections
-  // CoordinateSets namespace contains classes to create iterators on sets of coordinates
+  IntLattice<Int, Real> proj_basis(max_dim);    // Another IntLattice to store projections
+
+  // Creates an iterator over a set of projections.
   CoordinateSets::FromRanges coord(min_dim+1, max_dim, min_dim, max_dim-1);
 
-  // For loop on the iterator built previously
+  // Loop over the selected set of projections.
   for(auto it = coord.begin(); it != coord.end(); it++){
-    // Computing the projection
+    // Computing a basis for the projection, using LLL.     
     constructor.projectionConstructionLLL(lat_basis, proj_basis, *it);
 
     //! Computing the shortest vector in the lattice spanned by matrix

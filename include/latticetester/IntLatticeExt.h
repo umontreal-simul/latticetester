@@ -153,18 +153,10 @@ public:
 	// void computeNormalConstants(bool dualF);
 	//    void fixLatticeNormalization (bool dualF);
 
-	/**
-	 * Builds an upper triangular basis for the projection `proj` for this lattice
-	 * and places this lattice projection in the `lattice` object.
-	 * If the latter maintains a dual basis, then this (triangular) dual basis is also updated.
-	 * Note that the same `lattice` objects can be used when calling this method several
-	 * times to examine different projections.
-	 */
-	void buildProjection(IntLatticeExt<Int, Real> *lattice,
-			const Coordinates &proj);
 
 	/**
 	 * This virtual method builds a basis for the lattice in `dim` dimensions.
+	 * This `dim` must not exceed `maxDim`.
 	 */
 	virtual void buildBasis(int64_t dim);
 
@@ -205,22 +197,9 @@ protected:
 	virtual void kill();
 
 	/**
-	 * Allocates space to the vectors m_basisProj and m_dualbasisProj used internally to store
-	 * the bases for the current projection, and updates the norms.
-	 * This should not be called directly by the user.
-	 * It is called by the constructors and the copy method.
-	 */
-	void init();
-
-	/**
 	 * REMOVE?  The order (rank) of the basis. Only defined in certain subclasses.
 	 */
 	// int64_t m_order;
-	/**
-	 * The maximum Dimension for the basis (for the full lattice).
-	 * The considered projections cannot have more coordinates than this.
-	 */
-	int64_t m_maxDim;
 
 	/**
 	 * A vector of normalization constants.  See `calcLgVolDual2`.
@@ -230,15 +209,6 @@ protected:
 	 * \f$\log_2 (m^2)\f$.
 	 */
 	// double m_lgm2;
-	/**
-	 * The primal basis of the current projection.
-	 */
-	IntMat m_basisProj;
-
-	/**
-	 * The m-dual basis of the current projection.
-	 */
-	IntMat m_dualbasisProj;
 
 };
 // Class IntLatticeExt
@@ -251,8 +221,8 @@ IntLatticeExt<Int, Real>::IntLatticeExt(Int m, int64_t maxDim, bool withDual, No
 	this->m_maxDim = maxDim;
 	// this->m_withDual = withDual;
 	// m_order = k;
-	// Reserves space for the lattice and the projections (via init()) in up to maxDim dimensions.
-	init();
+	// Reserves space for the lattice and the projections (via initProj()) in up to maxDim dimensions.
+	this->initProj();
 	this->m_basis.resize(this->m_dim, this->m_dim);
 	this->m_vecNorm.resize(this->m_dim);
 	this->setNegativeNorm();
@@ -268,31 +238,13 @@ IntLatticeExt<Int, Real>::IntLatticeExt(Int m, int64_t maxDim, bool withDual, No
 template<typename Int, typename Real>
 IntLatticeExt<Int, Real>::IntLatticeExt(const IntLatticeExt<Int, Real> &lat) :
 		IntLattice<Int, Real>(lat) {
-	this->m_withDual = lat.withDual();
+	this->m_withDual = lat.m_withDual;
 	// m_order = lat.m_order;
-	init();
-	m_basisProj = lat.m_basisProj;
+	this->initProj();
+	this->m_basisProj = lat.m_basisProj;
 	if (this->m_withDual) {
 		this->setDualNegativeNorm();
-		m_dualbasisProj = lat.m_dualbasisProj;
-	}
-}
-
-//===========================================================================
-
-template<typename Int, typename Real>
-void IntLatticeExt<Int, Real>::init() {
-	// Reserves space for the projections in up to the dimension dim of the full lattice.
-	int64_t dim = this->getDim();
-	IntLattice<Int, Real>::initVecNorm();
-	// double temp;   // Used only for m_lgVolDual2.
-	// NTL::conv (temp, this->m_modulo);
-	m_basisProj.resize(dim, dim);   // Basis of current projection.
-	if (this->m_withDual) {
-		// m_lgVolDual2 = new double[dim+1];
-		// m_lgm2 = 2.0 * Lg (temp);
-		// m_lgVolDual2[1] = m_lgm2;
-		m_dualbasisProj.resize(dim, dim);
+		this->m_dualbasisProj = lat.m_dualbasisProj;
 	}
 }
 
@@ -321,9 +273,9 @@ void IntLatticeExt<Int, Real>::copy(const IntLatticeExt<Int, Real> &lat) {
 	this->m_modulo = lat.m_modulo;
 	//m_m2 = lat.m_m2;
 	this->m_basis = lat.m_basis;
-	if (lat.withDual())
+	if (lat.m_withDual)
 		this->m_dualbasis = lat.m_dualbasis;
-	init();  // Resizes the bases to the dimensions of the current object.
+	this->initProj();  // Resizes the bases to the dimensions of the current object.
 }
 
 //===========================================================================
@@ -390,41 +342,6 @@ void IntLatticeExt<Int, Real>::incDim() {
  //      std::cout << " fix  " << m_lgVolDual2[i] << endl;
  }ss
  */
-
-//===========================================================================
-template<typename Int, typename Real>
-void IntLatticeExt<Int, Real>::buildProjection(
-		IntLatticeExt<Int, Real> *lattice, const Coordinates &proj) {
-	const int64_t dim = this->getDim();
-	//  std::cout << "      ESPION_2\n";  getPrimalBasis ().write();
-	int64_t i = 0;
-	IntMat temp, temp2;
-	temp.SetDims(dim, dim);
-	temp2.SetDims(dim, dim);
-	for (auto iter = proj.begin(); iter != proj.end(); ++iter) {
-		for (int64_t j = 0; j < dim; j++) {
-			temp(j, i) = this->m_basis(j, (*iter));
-		}
-		++i;
-	}
-	// The generating vectors of proj are now in temp.
-	// We construct a triangular basis for the projection `lattice` and put it in temp2.
-	// The dimension of this projection is assumed to be the projection size,
-	// so `temp2` will be a square invertible matrix.
-	lattice->setDim(static_cast<int>(proj.size()));
-	// lattice->m_order = m_order;
-	// BasisConstruction<Int> bc;
-	BasisConstruction<Int>::upperTriangularBasis(temp, temp2, this->m_modulo);
-	temp2.SetDims(lattice->getDim(), lattice->getDim());
-	lattice->setNegativeNorm();
-	lattice->m_basis = temp2;
-	lattice->m_withDual = this->m_withDual;
-	if (this->m_withDual) {
-		BasisConstruction<Int>::mDualUpperTriangular(lattice->m_basis, lattice->m_dualbasis,
-				this->m_modulo);
-		lattice->setDualNegativeNorm();
-	}
-}
 
 //===========================================================================
 

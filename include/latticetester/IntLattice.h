@@ -18,9 +18,11 @@
 #ifndef LATTICETESTER_INTLATTICE_H
 #define LATTICETESTER_INTLATTICE_H
 
+#include "latticetester/NTLWrap.h"
 #include "latticetester/EnumTypes.h"
 #include "latticetester/Util.h"
-#include "latticetester/NTLWrap.h"
+#include "latticetester/Coordinates.h"
+#include "latticetester/BasisConstruction.h"
 
 #include <string>
 #include <sstream>
@@ -66,14 +68,14 @@ public:
 	 *
 	 * I think we should give the value of m ???
 	 */
-	IntLattice(Int m, const int64_t dim, bool withDual = false, NormType norm = L2NORM);
+	IntLattice(const Int m, const int64_t dim, bool withDual = false, NormType norm = L2NORM);
 
 	/**
 	 * Constructs a lattice with the given basis, in `dim` dimensions,
 	 * and with the specified norm type. The dual basis and `m` are not initialized.
 	 * The `basis` matrix must be a `dim` by `dim` square integer matrix.
 	 */
-	IntLattice(const IntMat basis, Int m, const int64_t dim, bool withDual = false, NormType norm = L2NORM);
+	IntLattice(const IntMat basis, const Int m, const int64_t dim, bool withDual = false, NormType norm = L2NORM);
 
 	/**
 	 * Constructs a lattice with the given basis and given m-dual basis for the given `m`,
@@ -116,10 +118,20 @@ public:
 	void overwriteLattice(const IntLattice<Int, Real> &lat, long n);
 	 
 	/**
+	 * Builds an upper triangular basis for the projection `proj` for this lattice
+	 * and replaces the current `lattice` object by this projection.
+	 * If the latter maintains a dual basis, then this (triangular) dual basis is also updated.
+	 * Note that the same `lattice` objects can be used when calling this method several
+	 * times to examine different projections.
+	 */
+	void buildProjection(IntLattice<Int, Real> *lattice,
+			const Coordinates &proj);
+
+	/**
 	 * Initializes a vector containing the norms of the basis vectors to -1
 	 * for all components.  It means the norms are no longer up to date.
 	 */
-	void initVecNorm();
+	// void initVecNorm();
 
 	/**
 	 * Returns the basis represented in a matrix.
@@ -222,7 +234,7 @@ public:
 	/**
 	 * Returns `true` iff an m-dual basis is available.
 	 */
-	bool withDual() const {
+	bool withDual() {
 		return m_withDual;
 	}
 
@@ -374,6 +386,11 @@ public:
 
 protected:
 
+    /**
+	 * The scaling factor `m` used for rescaling the lattice.
+	 */
+	Int m_modulo;
+
 	/**
 	 * The rows of this matrix are the primal basis vectors.
 	 */
@@ -388,8 +405,15 @@ protected:
 	/**
 	 * The dimension of the lattice, which is the number of (independent) vectors
 	 * in the basis. It cannot exceed the number of coordinates in those vectors.
+	 * It also cannot exceed m_maxDim.
 	 */
 	int64_t m_dim;
+
+	/**
+	 * The maximum Dimension for the basis (for the full lattice).
+	 * The considered projections cannot have more coordinates than this.
+	 */
+	int64_t m_maxDim;
 
 	/**
 	 * The NormType used to measure the vector lengths for this lattice.
@@ -409,15 +433,34 @@ protected:
 	 */
 	RealVec m_dualvecNorm;
 
-    /**
-	 * The scaling factor `m` used for rescaling the lattice. It is 0 when undefined.
-	 */
-	Int m_modulo;
-
 	/**
-	 * This `m_withDual` variable is `true` iff an m-dual basis is available.
+	 * This variable is `true` iff an m-dual basis is available.
 	 */
 	bool m_withDual;
+
+	/**
+	 * `true` iff the current basis is triangular.
+	 */
+	// bool m_triangularBasis;
+
+	/**
+	 * The primal basis of the current projection.
+	 */
+	IntMat m_basisProj;
+
+	/**
+	 * The m-dual basis of the current projection.
+	 */
+	IntMat m_dualbasisProj;
+
+	/**
+	 * Allocates space to the vectors m_basisProj and m_dualbasisProj used internally to store
+	 * the bases for the current projection, and updates the norms.
+	 * This should not be called directly by the user.
+	 * It is called by the constructors and the copy method.
+	 */
+	void initProj();
+
 };
 
 // class IntLattice
@@ -427,10 +470,9 @@ protected:
 template<typename Int, typename Real>
 IntLattice<Int, Real>::IntLattice(const Int m, const int64_t dim, bool withDual, NormType norm)
 		: m_modulo(m), m_dim(dim), m_withDual(withDual), m_norm(norm) {
-//	this->m_modulo(m); this->m_dim(dim); this->m_withDual(withDual); this->m_norm(norm);
 	this->m_basis.resize(dim, dim);
 	this->m_vecNorm.resize(dim);
-	initVecNorm();
+	setNegativeNorm();
 }
 
 //===========================================================================
@@ -439,10 +481,8 @@ template<typename Int, typename Real>
 IntLattice<Int, Real>::IntLattice (const IntMat basis, const Int m,
 		const int64_t dim, bool withDual, NormType norm)
 		: m_basis(basis), m_modulo(m), m_dim(dim), m_withDual(withDual), m_norm(norm) {
-//	this->m_basis(basis);
-//	this->m_modulo(m); this->m_dim(dim); this->m_withDual(withDual); this->m_norm(norm);
 	this->m_vecNorm.resize(dim);
-	initVecNorm();
+	setNegativeNorm();
 }
 
 /*=========================================================================*/
@@ -512,15 +552,88 @@ void IntLattice<Int, Real>::overwriteLattice(
 				<< std::endl;
 	}
 
+
+//===========================================================================
+
+/*
+template<typename Int, typename Real>
+void IntLattice<Int, Real>::init() {
+	int64_t dim = m_dim;
+	this->setNegativeNorm();
+}
+*/
+
+//===========================================================================
+
+template<typename Int, typename Real>
+void IntLattice<Int, Real>::initProj() {
+	// Reserves space for the projections in up to the dimension dim of the full lattice.
+	int64_t dim = m_dim;
+	this->setNegativeNorm();
+	this->m_basisProj.resize(dim, dim);   // Basis of current projection.
+	if (this->m_withDual) {
+		this->m_dualbasisProj.resize(dim, dim);
+		// double temp;   // Used only for m_lgVolDual2.
+		// NTL::conv (temp, this->m_modulo);
+		// m_lgVolDual2 = new double[dim+1];
+		// m_lgm2 = 2.0 * Lg (temp);
+		// m_lgVolDual2[1] = m_lgm2;
+	}
+}
+
+//===========================================================================
+
+template<typename Int>
+class BasisConstruction;
+
+// This one should perhaps be moved to BasisConstruction.       ?????????????????
+template<typename Int, typename Real>
+void IntLattice<Int, Real>::buildProjection(
+		IntLattice<Int, Real> *lattice, const Coordinates &proj) {
+	const int64_t dim = this->getDim();
+	int64_t i = 0;
+	// We create two new matrices each time we build a projection!!!
+	// We do not use the matrices initialized by `initProj`  ???
+	IntMat temp, temp2;
+	temp.SetDims(dim, dim);  // dim of current lattice.
+	temp2.SetDims(dim, dim);
+	for (auto iter = proj.begin(); iter != proj.end(); ++iter) {
+		// iter runs over the retained columns for the projection.
+		//  What if a column number  *iter  exceeds dim-1  ????
+		for (int64_t j = 0; j < dim; j++) {
+			temp(j, i) = this->m_basis(j, (*iter));
+		}
+		++i;
+	}
+	// The generating vectors of proj are now in temp.
+	// We construct a triangular basis for the projection `lattice` and put it in temp2.
+	// The dimension of this projection is assumed to be the projection size,
+	// so `temp2` will be a square invertible matrix.
+	lattice->setDim(static_cast<int64_t>(proj.size()));  // Changes the lattice dimension!
+	// lattice->m_order = m_order;
+	// BasisConstruction<Int> bc;
+	BasisConstruction<Int>::upperTriangularBasis(temp, temp2, this->m_modulo);
+	temp2.SetDims(lattice->getDim(), lattice->getDim());
+	lattice->setNegativeNorm();
+	lattice->m_basis = temp2;       //  Current basis is replaced by temp2.
+	lattice->m_withDual = this->m_withDual;
+	if (this->m_withDual) {
+		BasisConstruction<Int>::mDualUpperTriangular(lattice->m_basis, lattice->m_dualbasis,
+				this->m_modulo);
+		lattice->setDualNegativeNorm();
+	}
+}
+
 /*=========================================================================*/
 
+/*
 template<typename Int, typename Real>
 void IntLattice<Int, Real>::initVecNorm() {
 	for (int64_t i = 0; i < this->m_dim; i++) {
 		this->m_vecNorm[i] = -1;
 	}
 }
-
+*/
 /*=========================================================================*/
 
 template<typename Int, typename Real>
@@ -661,7 +774,7 @@ template<typename Int, typename Real>
 	    return;
 		}
     std::swap(this->m_basis, this->m_dualbasis);
-    this->setNegativeNorm ();
+    this->setNegativeNorm ();        // Maybe we should swap them instead ????
     this->setDualNegativeNorm ();
   }
 

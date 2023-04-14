@@ -743,19 +743,19 @@ bool Reducer<Int, Real>::calculCholesky(RealVec &DC2,
 			else {
 				NTL::matrix_row<IntMat> row1(m_lat->getBasis(), i);
 				NTL::matrix_row<IntMat> row2(m_lat->getBasis(), j);
-				ProdScal<Int>(row1, row2, dim, m_c2(i, j));
+				ProdScal<Int>(row1, row2, dim, m_c2[i][j]);
 			}
 			
 			for (k = 0; k < i; k++)
-				m_c2(i, j) -= C0(k, i) * m_c2(k, j);
+				m_c2[i][j] -= C0[k][i] * m_c2[k][j];
 			if (i == j) {
-				DC2[i] = m_c2(i, i);
+				DC2[i] = m_c2[i][i];
 				if (DC2[i] < 0.0) {
 					negativeCholesky();
 					return false;
 				}
 			} else
-				C0(i, j) = m_c2(i, j) / DC2[i];
+				C0[i][j] = m_c2[i][j] / DC2[i];
 		//add for test		
 		/**  if(i!=j && i<j)		
 	       std::cout<< "C0("<<i<<","<<j<<")="<<C0(i,j)<<" ";	
@@ -1752,7 +1752,7 @@ bool Reducer<Int, Real>::tryZShortVec(int64_t j, bool &smaller, NormType norm, D
 
 	/* Pour une implantation non recursive, ces variables devraient
 	   etre des tableaux indices par j. */
-	Real dc, x, center;
+	Real dc, x, center, mn_xsquare_md;
 	std::int64_t min0, max0;     // Bornes de l'intervalle pour les z_j.
 	std::int64_t zlow, zhigh; // Valeur courante a gauche et a droite du centre.
 	bool high;    // Indicates if we are on the right (true) or the left of the center.
@@ -1772,20 +1772,20 @@ bool Reducer<Int, Real>::tryZShortVec(int64_t j, bool &smaller, NormType norm, D
 	center = 0.0;
 	if (decomp == CHOLESKY) {
 	   for (k = j+1; k < dim; ++k)
-		  center -= m_c0(j,k) * m_zLR[k];
+		  center -= m_c0[j][k] * m_zLR[k];
 	   // This dc is the distance from the center to the boundaries.
 	   // m_lMin2 contains the square length of current shortest vector with the selected norm.
 	   dc = sqrt((m_lMin2 - m_n2[j]) / m_dc2[j]);
 	 }
 	 if (decomp == TRIANGULAR && norm == L2NORM) {
 	    for (k = 0 ; k<j; ++k)
-	 		center -= m_c0(j,k) * m_zLR[k];
+	 		center -= m_c0[j][k] * m_zLR[k];
        	dc = sqrt((m_lMin2 - m_n2[j]) / m_dc2[j]);
 	 }
      if (decomp == TRIANGULAR && norm == L1NORM) {
 	   for (k = j+1; k < dim; ++k)
-		  center -= m_c0(k,j) * m_zLR[k];
-       dc = (m_lMin - m_n2[j])  / m_c0(j,j);
+		  center -= m_c0[k][j] * m_zLR[k];
+       dc = (m_lMin - m_n2[j])  / m_c0[j][j];
 	  }	
 	// Compute two integers min0 and max0 that are the min and max integers in the interval.
 	if (!m_foundZero)
@@ -1832,9 +1832,10 @@ bool Reducer<Int, Real>::tryZShortVec(int64_t j, bool &smaller, NormType norm, D
 
 		// Computing m_n2[j-1].
 		x = m_zLR[j] - center;
+		mn_xsquare_md = m_n2[j] + x * x * m_dc2[j];
 		if (j == 0) {
 			// All the zj have been selected: we have a vector to test.
-			if (m_lMin2 > m_n2[0] + x * x * m_dc2[0]) {
+			if (m_lMin2 > mn_xsquare_md) {
 				/* Check if we have a shorter nonzero vector. */
 				if (!m_foundZero) {
 					// Le premier vecteur trouve sera zero.
@@ -1865,13 +1866,13 @@ bool Reducer<Int, Real>::tryZShortVec(int64_t j, bool &smaller, NormType norm, D
 					}
 				}
 			}
-		} else if (m_lMin2 > m_n2[j] + x * x * m_dc2[j]) {
+		} else if (m_lMin2 > mn_xsquare_md) {
 			// There is still hope; we continue the recursion.
-			m_n2[j - 1] = m_n2[j] + x * x * m_dc2[j];
+			m_n2[j - 1] = mn_xsquare_md;
 			if (!tryZShortVec(j - 1, smaller, norm, decomp))
 				return false;
 		} else
-			m_n2[j - 1] = m_n2[j] + x * x * m_dc2[j];
+			m_n2[j - 1] = mn_xsquare_md;
 		if (high) {
 			++zhigh;
 			if (zlow >= min0)

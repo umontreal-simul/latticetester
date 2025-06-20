@@ -1,0 +1,25 @@
+var NTLWrap_8h =
+[
+    [ "conv", "d6/daa/NTLWrap_8h.html#a07b6d8586b6a40e65a3bee1608d3e389", null ],
+    [ "conv", "d6/daa/NTLWrap_8h.html#a7ccb62fcab3fca4d4cf9c2b55061e63f", null ],
+    [ "IsZero", "d6/daa/NTLWrap_8h.html#a1629b29c99a1aed8f591c523c9047519", null ],
+    [ "clear", "d6/daa/NTLWrap_8h.html#a2deeffef7195d2c3508b7618c6aed677", null ],
+    [ "clear", "d6/daa/NTLWrap_8h.html#ad8cb07e3a9d3182f488269307cfef6b0", null ],
+    [ "IsOdd", "d6/daa/NTLWrap_8h.html#a09130bf26372f547e7ed646aca78c0be", null ],
+    [ "set", "d6/daa/NTLWrap_8h.html#a968f8ba311c0012dd1ee4f024ae54e51", null ],
+    [ "power", "d6/daa/NTLWrap_8h.html#a369678174d23f9f3b894bbcb332ada72", null ],
+    [ "power2", "d6/daa/NTLWrap_8h.html#a75c240b4ff3905479a42cdfc0b8b6857", null ],
+    [ "power2", "d6/daa/NTLWrap_8h.html#a2196092756677cc86a6b6d65250d5cbc", null ],
+    [ "add", "d6/daa/NTLWrap_8h.html#ad706f73a850d4215a26ad6ac73566ac8", null ],
+    [ "sub", "d6/daa/NTLWrap_8h.html#a8ff24fda41f5af49e0080534b37883b1", null ],
+    [ "SubPos", "d6/daa/NTLWrap_8h.html#a9636ec7e28fe0d6c694183a850db6353", null ],
+    [ "negate", "d6/daa/NTLWrap_8h.html#adbac0255b366a433bdcf592255aa0380", null ],
+    [ "mul", "d6/daa/NTLWrap_8h.html#a9b18934c734704b6369d4e93d6b558f8", null ],
+    [ "div", "d6/daa/NTLWrap_8h.html#a7f811c8c9b462434ff7ffabc9d407012", null ],
+    [ "rem", "d6/daa/NTLWrap_8h.html#a297a35563497d1d1d602f0c4038a9023", null ],
+    [ "sqr", "d6/daa/NTLWrap_8h.html#a03f9187dcf71dda715dd76f277690145", null ],
+    [ "MulAddTo", "d6/daa/NTLWrap_8h.html#a9aa0159dd8f37a4c72dce137fc72ccd5", null ],
+    [ "MulSubFrom", "d6/daa/NTLWrap_8h.html#afb24ba43ee5b0172c26a59ffbd4600b0", null ],
+    [ "LeftShift", "d6/daa/NTLWrap_8h.html#adaf7cf0f02336d79aff2ffd34b83405f", null ],
+    [ "RightShift", "d6/daa/NTLWrap_8h.html#ad42c7563fab61201df7026f4bec83a95", null ]
+];

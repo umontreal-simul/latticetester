@@ -1,16 +1,16 @@
 var searchData=
 [
-  ['defaulttab',['defaultTab',['../d4/dc5/classLatticeTester_1_1Writer.html#a1441012188deb29a8ac42450a50214c6',1,'LatticeTester::Writer::defaultTab()'],['../d2/d30/classLatticeTester_1_1WriterRes.html#af87a29499b71b5183221ac392ff3d167',1,'LatticeTester::WriterRes::defaultTab()']]],
-  ['deletematr',['DeleteMatr',['../d8/d74/namespaceLatticeTester.html#a229c9368d745b9c4cae68c1b65e0e39c',1,'LatticeTester::DeleteMatr(Real **&amp;A, int d)'],['../d8/d74/namespaceLatticeTester.html#a0c884b60a0c4ee06455bf1c8e1819d35',1,'LatticeTester::DeleteMatr(Real **&amp;A, int line, int col)'],['../d8/d74/namespaceLatticeTester.html#a0f66d14fcb15c8a2e358b9ab5e08b524',1,'LatticeTester::DeleteMatr(IntMat &amp;A)']]],
-  ['deletevect',['DeleteVect',['../d8/d74/namespaceLatticeTester.html#a3290d1c59f58412753021d37fd9059c3',1,'LatticeTester::DeleteVect(Real *&amp;A)'],['../d8/d74/namespaceLatticeTester.html#a74b9ac2e545b1a8e3febffe458488898',1,'LatticeTester::DeleteVect(Vect &amp;A)']]],
-  ['digamma',['Digamma',['../d8/d74/namespaceLatticeTester.html#a886c94b54767104cea58e0f1b6c0d11e',1,'LatticeTester']]],
-  ['divide',['Divide',['../d8/d74/namespaceLatticeTester.html#aeccbd231b4002cadbaac0157871f5570',1,'LatticeTester']]],
-  ['divideround',['DivideRound',['../d8/d74/namespaceLatticeTester.html#a76b74332cd4ded85d51dc6020b930772',1,'LatticeTester']]],
-  ['dotest',['doTest',['../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a7dae9b32ccbaf612bffd0e2a62f612bd',1,'LatticeTester::LatticeAnalysis']]],
-  ['dotestfromdirectory',['doTestFromDirectory',['../df/d59/classLatticeTester_1_1LatticeAnalysis.html#ae4ea746678d3ddf687edbfa6d67089b2',1,'LatticeTester::LatticeAnalysis']]],
-  ['dotestfrominputfile',['doTestFromInputFile',['../df/d59/classLatticeTester_1_1LatticeAnalysis.html#a80dc121973168ab4a0640890da993ac7',1,'LatticeTester::LatticeAnalysis']]],
-  ['dual_5fbasis',['dual_basis',['../d8/dcd/classLatticeTester_1_1Config.html#abff5734f9014cc807f92b6744c8facd7',1,'LatticeTester::Config']]],
-  ['dualconstruction',['DualConstruction',['../d0/d18/classLatticeTester_1_1BasisConstruction.html#a0783fc67f85f004cd66c1035ef065b8a',1,'LatticeTester::BasisConstruction']]],
-  ['dualize',['dualize',['../d6/dc0/classLatticeTester_1_1IntLattice.html#a5e1b05159ba762a632273f2d3273ec9e',1,'LatticeTester::IntLattice::dualize()'],['../de/dfe/classLatticeTester_1_1Rank1Lattice.html#aad299f05cc3c03540b2cc44e23b13473',1,'LatticeTester::Rank1Lattice::dualize()']]],
-  ['dualslow',['DualSlow',['../d0/d18/classLatticeTester_1_1BasisConstruction.html#ab486a7a6110df22a049122bb81fb2bf9',1,'LatticeTester::BasisConstruction']]]
+  ['days_0',['DAYS',['../d9/d32/classLatticeTester_1_1Chrono.html#afd6d46c7ce75e32bdbb9dbfe49728dbfa76e7acb5aa152cb48e5ed083874b8569',1,'LatticeTester::Chrono']]],
+  ['decomptypebb_1',['DecompTypeBB',['../d8/d74/namespaceLatticeTester.html#a5bf461b8f167cc8c7ebebc8ee6a96ee4',1,'LatticeTester']]],
+  ['deletematr_2',['DeleteMatr',['../d8/d74/namespaceLatticeTester.html#a2b3fbf56b76e1a95c0f935bb0acca3a4',1,'LatticeTester::DeleteMatr(Real **&amp;A, int64_t d)'],['../d8/d74/namespaceLatticeTester.html#adb7b6d86bbad87845663bfb8e8e00d06',1,'LatticeTester::DeleteMatr(Real **&amp;A, int64_t line, int64_t col)'],['../d8/d74/namespaceLatticeTester.html#a0f66d14fcb15c8a2e358b9ab5e08b524',1,'LatticeTester::DeleteMatr(IntMat &amp;A)']]],
+  ['deletevect_3',['DeleteVect',['../d8/d74/namespaceLatticeTester.html#a3290d1c59f58412753021d37fd9059c3',1,'LatticeTester::DeleteVect(Real *&amp;A)'],['../d8/d74/namespaceLatticeTester.html#a74b9ac2e545b1a8e3febffe458488898',1,'LatticeTester::DeleteVect(Vect &amp;A)']]],
+  ['digamma_4',['Digamma',['../d8/d74/namespaceLatticeTester.html#a886c94b54767104cea58e0f1b6c0d11e',1,'LatticeTester']]],
+  ['div_5',['div',['../d2/d5a/namespaceNTL.html#a7f811c8c9b462434ff7ffabc9d407012',1,'NTL']]],
+  ['divide_6',['Divide',['../d8/d74/namespaceLatticeTester.html#aeccbd231b4002cadbaac0157871f5570',1,'LatticeTester']]],
+  ['divideround_7',['DivideRound',['../d8/d74/namespaceLatticeTester.html#a76b74332cd4ded85d51dc6020b930772',1,'LatticeTester']]],
+  ['documentation_8',['Lattice Tester Online Documentation',['../index.html',1,'']]],
+  ['documentation_9',['Notes on this documentation',['../index.html#notes',1,'']]],
+  ['double_10',['DOUBLE',['../d8/d74/namespaceLatticeTester.html#a94f96ff406f8b56147a2b7fd96209cb2a14b6ff7a5d157ffdfd9ab4d80d7f5ea6',1,'LatticeTester']]],
+  ['dual_11',['DUAL',['../d8/d74/namespaceLatticeTester.html#aad7b917d5ef7e8167bc50aa56109faffa6230d8b5b7473284e7ae5ce9c99a879a',1,'LatticeTester']]],
+  ['dualize_12',['dualize',['../d6/dc0/classLatticeTester_1_1IntLattice.html#a4b8a47950cce207b8995b9226ddf469d',1,'LatticeTester::IntLattice']]]
 ];

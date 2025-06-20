@@ -4,6 +4,6 @@ var classLatticeTester_1_1Coordinates =
     [ "Coordinates", "d9/dd3/classLatticeTester_1_1Coordinates.html#a2e8c153e209543f63d791c7be1f4177e", null ],
     [ "Coordinates", "d9/dd3/classLatticeTester_1_1Coordinates.html#ac2a01dcf5c448bada0676d8863329568", null ],
     [ "Coordinates", "d9/dd3/classLatticeTester_1_1Coordinates.html#a3ba161735a7a4b6a24e83d099924a981", null ],
-    [ "operator<<", "d9/dd3/classLatticeTester_1_1Coordinates.html#ade83b8750d65c6a2439a403120936cd0", null ],
-    [ "operator>>", "d9/dd3/classLatticeTester_1_1Coordinates.html#aa37c81ea931a77792ad768af0e8db97f", null ]
+    [ "operator<<", "d9/dd3/classLatticeTester_1_1Coordinates.html#a246df9b0832e4c4fc450c83aa5e171ab", null ],
+    [ "operator>>", "d9/dd3/classLatticeTester_1_1Coordinates.html#ac71356dcc070f0bc5a4ed43864bd9971", null ]
 ];

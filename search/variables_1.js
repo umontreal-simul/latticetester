@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['dual_5fbasis',['dual_basis',['../d8/dcd/classLatticeTester_1_1Config.html#abff5734f9014cc807f92b6744c8facd7',1,'LatticeTester::Config']]]
+  ['two_5fexp_0',['TWO_EXP',['../d8/d74/namespaceLatticeTester.html#ae5f464bde0cd79b7bbc47ff090e49b31',1,'LatticeTester']]]
 ];

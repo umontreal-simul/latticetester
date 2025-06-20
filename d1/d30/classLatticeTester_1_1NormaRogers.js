@@ -1,6 +1,7 @@
 var classLatticeTester_1_1NormaRogers =
 [
-    [ "NormaRogers", "d1/d30/classLatticeTester_1_1NormaRogers.html#adc66e97e5e36c94a7ad8e0713e2a6d15", null ],
-    [ "~NormaRogers", "d1/d30/classLatticeTester_1_1NormaRogers.html#ad8ca50d0a0ae0fd6b730290afb602329", null ],
-    [ "getGamma", "d1/d30/classLatticeTester_1_1NormaRogers.html#ad41051e12294a439ba5f68e98177fe3f", null ]
+    [ "NormaRogers", "d1/d30/classLatticeTester_1_1NormaRogers.html#ae516774da77473d65d64e65708dbf87f", null ],
+    [ "NormaRogers", "d1/d30/classLatticeTester_1_1NormaRogers.html#ad2c81ffb6aa506fd8c294db929860a9e", null ],
+    [ "~NormaRogers", "d1/d30/classLatticeTester_1_1NormaRogers.html#abaf1ccfe60a4f88cab28735a2cd70d3d", null ],
+    [ "getGamma", "d1/d30/classLatticeTester_1_1NormaRogers.html#a760e0f62a26f7e373ef45a35d9a7531c", null ]
 ];

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['mat_5f64',['Mat_64',['../d2/d5a/namespaceNTL.html#a60a94702129d4e1861593e9b065d6977',1,'NTL']]]
+  ['weight_0',['Weight',['../d8/d74/namespaceLatticeTester.html#a951f7e7b03767aa0971dde55f9d328ec',1,'LatticeTester']]],
+  ['weightsmap_1',['WeightsMap',['../d2/d23/classLatticeTester_1_1WeightsProjectionDependent.html#acad0b80804d73b79fb6f674d06f51e29',1,'LatticeTester::WeightsProjectionDependent']]]
 ];
